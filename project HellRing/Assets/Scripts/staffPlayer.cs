@@ -53,35 +53,34 @@ public class staffPlayer : MonoBehaviour
     }
        
         
-        private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // item pickup  
+        if (collision.CompareTag("staffBox"))
         {
-            // item pickup  
-            if (collision.CompareTag("staffBox"))
-            {
-                pickupAllow = true;
-            }
+             pickupAllow = true;
+        }
 
         // damaged by theFalsePresence
         if (collision.CompareTag("enemyknockbackBox"))
         {
             anim.SetTrigger("Hurt");
         }
-
     }
 
-        private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("staffBox"))
         {
-            if (collision.CompareTag("staffBox"))
-            {
-                pickupAllow = false;
-            }
-        }
-
-        private void Pickup()
-        {
-            this.sr.enabled = true;
-            Destroy(GameObject.FindWithTag("swordPlayer"));
-            Destroy(GameObject.FindWithTag("hammerPlayer"));
+            pickupAllow = false;
         }
     }
+
+    private void Pickup()
+    {
+        this.sr.enabled = true;
+        Destroy(GameObject.FindWithTag("swordPlayer"));
+        Destroy(GameObject.FindWithTag("hammerPlayer"));
+    }
+}
 

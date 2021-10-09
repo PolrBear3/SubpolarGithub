@@ -64,14 +64,15 @@ public class swordPlayer : MonoBehaviour
         anim.SetInteger("state", (int)state);
     }
     
-    // Item Pickup function
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Item Pickup function 
         if (collision.CompareTag("swordBox"))
         {
             pickupAllow = true;
         }
-
+        
+        // animation getting hurt from enemy function
         if (collision.CompareTag("enemyknockbackBox"))
         {
             anim.SetTrigger("Hurt");

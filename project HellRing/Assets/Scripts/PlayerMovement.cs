@@ -15,6 +15,12 @@ public class PlayerMovement : MonoBehaviour
     public static int playermaxHealth = 100;
     public static int playercurrentHealth;
 
+    // knockback
+    public float knockback;
+    public float knockbackLength;
+    public float knockbackCount;
+    public bool knockfromRight;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -74,6 +80,12 @@ public class PlayerMovement : MonoBehaviour
         facing = !facing;
         transform.Rotate(0f, 180f, 0f);
     }
+    
+    // turn off player sprite after pickup item
+    private void Pickup()
+    {
+        this.sr.enabled = false;
+    }
 
     // player movement animation
     private void UpdateAnimationUpdate()
@@ -94,18 +106,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
         anim.SetInteger("state", (int)state);
-    }
-
-    // knockback
-    public float knockback;
-    public float knockbackLength;
-    public float knockbackCount;
-    public bool knockfromRight;
-    
+    }  
     
     // choose item pickup function
     private void OnTriggerEnter2D(Collider2D collision)
-    {
+    { 
         if (collision.CompareTag("swordBox") || collision.CompareTag("staffBox") || collision.CompareTag("hammerBox"))
         {
             pickupAllow = true;
@@ -128,15 +133,6 @@ public class PlayerMovement : MonoBehaviour
             Die();
         }
     }
-
-    private void Pickup()
-    {
-        this.sr.enabled = false;
-    }
-
-    
-    
-    
     void Die()
     {
         Debug.Log("Player died");

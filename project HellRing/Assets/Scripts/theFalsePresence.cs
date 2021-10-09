@@ -13,12 +13,7 @@ public class theFalsePresence : MonoBehaviour
     float agroRange;
     [SerializeField]
     float moveSpeed;
-    bool melee = false;
-
-    public float knockback;
-    public float knockbackLength;
-    public float knockbackCount;
-    public bool knockfromRight;
+    public static bool melee = false;
 
     void Start()
     {
@@ -36,7 +31,7 @@ public class theFalsePresence : MonoBehaviour
         // agro and chase
         if (distance < agroRange)
         {
-            movementChaseKnockback();
+            movementChase();
             anim.SetBool("Walk", true);
         }
         else
@@ -45,34 +40,19 @@ public class theFalsePresence : MonoBehaviour
             anim.SetBool("Walk", false);
         }
 
-        void movementChaseKnockback()
+        void movementChase()
         {
-            if (knockbackCount <= 0)
+            if (transform.position.x < target.position.x)
             {
-                if (transform.position.x < target.position.x)
-                {
-                    // target is on the left so move right 
-                    rb.velocity = new Vector2(moveSpeed, 0);
-                    transform.localScale = new Vector2(1, 1);
-                }
-                else if (transform.position.x > target.position.x)
-                {
-                    // target is on the right so move left
-                    rb.velocity = new Vector2(-moveSpeed, 0);
-                    transform.localScale = new Vector2(-1, 1);
-                }
+                 // target is on the left so move right 
+                 rb.velocity = new Vector2(moveSpeed, 0);
+                 transform.localScale = new Vector2(1, 1);
             }
-            else
+            else if (transform.position.x > target.position.x)
             {
-                if (knockfromRight)
-                {
-                    rb.velocity = new Vector2(-knockback, knockback);
-                }
-                if (!knockfromRight)
-                {
-                    rb.velocity = new Vector2(knockback, knockback);
-                }
-                knockbackCount -= Time.deltaTime;
+                 // target is on the right so move left
+                 rb.velocity = new Vector2(-moveSpeed, 0);
+                 transform.localScale = new Vector2(-1, 1);
             }
         }
         
@@ -86,21 +66,7 @@ public class theFalsePresence : MonoBehaviour
             anim.SetBool("Melee", false);
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Player"))
-        {
-            melee = true;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Player"))
-        {
-            melee = false;
-        }
-    }
-
+    
     // theFalsePresence condition
     public void TakeDamage(int damage)
     {
