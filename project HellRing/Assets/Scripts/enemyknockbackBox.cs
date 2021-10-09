@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class knockbackForEnemy : MonoBehaviour
+public class enemyknockbackBox : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -11,7 +11,7 @@ public class knockbackForEnemy : MonoBehaviour
             var player = collision.GetComponent<PlayerMovement>();
             player.knockbackCount = player.knockbackLength;
 
-            if(collision.transform.position.x < transform.position.x)
+            if (collision.transform.position.x < transform.position.x)
             {
                 player.knockfromRight = true;
             }

@@ -27,11 +27,11 @@ public class hammerPlayer : MonoBehaviour
         }
 
         // melee attack update and attack cool time
-        if(Time.time >= nextAttackTime)
+        if (Time.time >= nextAttackTime)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                Melee();
+                anim.SetTrigger("Melee");
                 nextAttackTime = Time.time + 3f / attackRate;
             }
         }
@@ -43,7 +43,7 @@ public class hammerPlayer : MonoBehaviour
         // animation update
         updateAnim();
     }
-   
+
     // movement animation
     private void updateAnim()
     {
@@ -61,11 +61,11 @@ public class hammerPlayer : MonoBehaviour
         {
             state = MovementState.hammerPlayerIdle;
         }
-        
+
         anim.SetInteger("state", (int)state);
     }
 
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // item pickup function
@@ -75,7 +75,7 @@ public class hammerPlayer : MonoBehaviour
         }
 
         // damaged by theFalsePresence
-        if (collision.CompareTag("theFalsePresenceDamageBox"))
+        if (collision.CompareTag("enemyknockbackBox"))
         {
             anim.SetTrigger("Hurt");
         }
@@ -97,23 +97,4 @@ public class hammerPlayer : MonoBehaviour
         Destroy(GameObject.FindWithTag("staffPlayer"));
     }
 
-    // attack function
-    private void Melee()
-    {
-        anim.SetTrigger("Melee");
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(damagePoint.position, damageRange, enemyLayers);
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            enemy.GetComponent<enemycontrolM1>().TakeDamage(30); //attack damage 
-        }
-    }
-    public Transform damagePoint;
-    public float damageRange;
-    public LayerMask enemyLayers;
-    private void OnDrawGizmosSelected()
-    {
-        if (damagePoint == null)
-            return;
-        Gizmos.DrawWireSphere(damagePoint.position, damageRange);
-    }
 }

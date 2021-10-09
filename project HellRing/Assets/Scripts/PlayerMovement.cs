@@ -12,15 +12,15 @@ public class PlayerMovement : MonoBehaviour
     bool facing = true;
     [SerializeField] private float movespeed;
     private enum MovementState { idle, walk }
-    public int maxHealth = 100;
-    int currentHealth;
+    public static int playermaxHealth = 100;
+    public static int playercurrentHealth;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = this.GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        currentHealth = maxHealth;
+        playercurrentHealth = playermaxHealth;
     }
 
     void Update()
@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // player health check message
-        Debug.Log("Player current health: " + currentHealth);
+        Debug.Log("Player current health: " + playercurrentHealth);
     }
     
     // player flip
@@ -110,12 +110,6 @@ public class PlayerMovement : MonoBehaviour
         {
             pickupAllow = true;
         }
-
-    // theFalsePresence
-        if (collision.CompareTag("theFalsePresenceDamageBox"))
-        {
-            theFalsePresence();
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -126,11 +120,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // player condition on every enemy
-    void theFalsePresence()
+    // player condition 
+    void condition()
     {
-        currentHealth -= 3; //TheFalsePresence damage
-        if (currentHealth <= 0)
+        if (playercurrentHealth <= 0)
         {
             Die();
         }

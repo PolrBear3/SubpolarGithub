@@ -83,7 +83,6 @@ GameObject:
   - component: {fileID: 617692927513455153}
   - component: {fileID: 617692927513455182}
   - component: {fileID: 617692927513455183}
-  - component: {fileID: 617692927513455180}
   m_Layer: 7
   m_Name: theFalsePresence
   m_TagString: Enemy
@@ -223,22 +222,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.8645506, y: 2.8984432}
   m_EdgeRadius: 0
---- !u!114 &617692927513455180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617692927513455181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e500e1e4eacea444a6d3fda1902bbe7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  agroRange: 10
-  moveSpeed: 2
-  knockback: 10
-  knockbackLength: 0.1
-  knockbackCount: 0
-  knockfromRight: 0

@@ -62,7 +62,7 @@ public class staffPlayer : MonoBehaviour
             }
 
         // damaged by theFalsePresence
-        if (collision.CompareTag("theFalsePresenceDamageBox"))
+        if (collision.CompareTag("enemyknockbackBox"))
         {
             anim.SetTrigger("Hurt");
         }

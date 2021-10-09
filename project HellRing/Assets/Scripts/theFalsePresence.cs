@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemycontrolM1 : MonoBehaviour
+public class theFalsePresence : MonoBehaviour
 {
     private Rigidbody2D rb;
     Animator anim;
-    public int maxHealth = 100;
-    int currentHealth;
+    static public int theFalsePresenceMaxHealth = 100;
+    static public int theFalsePresencecurrentHealth;
     Transform target;
     [SerializeField]
     float agroRange;
@@ -23,7 +23,7 @@ public class enemycontrolM1 : MonoBehaviour
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        currentHealth = maxHealth;
+        theFalsePresencecurrentHealth = theFalsePresenceMaxHealth;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -104,9 +104,9 @@ public class enemycontrolM1 : MonoBehaviour
     // theFalsePresence condition
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        theFalsePresencecurrentHealth -= damage;
         anim.SetTrigger("Hurt");
-        if(currentHealth <= 0)
+        if(theFalsePresencecurrentHealth <= 0)
         {
             Die();
         }

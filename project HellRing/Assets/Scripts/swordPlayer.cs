@@ -31,7 +31,7 @@ public class swordPlayer : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                Melee();
+                anim.SetTrigger("Melee");
                 nextAttackTime = Time.time + 1f / attackRate;
             }
         }
@@ -72,8 +72,7 @@ public class swordPlayer : MonoBehaviour
             pickupAllow = true;
         }
 
-        // damaged by theFalsePresence
-        if (collision.CompareTag("theFalsePresenceDamageBox"))
+        if (collision.CompareTag("enemyknockbackBox"))
         {
             anim.SetTrigger("Hurt");
         }
@@ -92,25 +91,5 @@ public class swordPlayer : MonoBehaviour
         this.sr.enabled = true;
         Destroy(GameObject.FindWithTag("staffPlayer"));
         Destroy(GameObject.FindWithTag("hammerPlayer"));
-    }
-
-    // Attack function
-    private void Melee()
-    {
-        anim.SetTrigger("Melee");
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(damagePoint.position, damageRange, enemyLayers);
-        foreach(Collider2D enemy in hitEnemies)
-        {
-            enemy.GetComponent<enemycontrolM1>().TakeDamage(10); //attack damage 
-        }
-    }
-    public Transform damagePoint;
-    public float damageRange;
-    public LayerMask enemyLayers;
-    private void OnDrawGizmosSelected()
-    {
-        if (damagePoint == null)
-            return;
-        Gizmos.DrawWireSphere(damagePoint.position, damageRange);
     }
 }
