@@ -8,7 +8,8 @@ public class knockbackForPlayer : MonoBehaviour
         {
             if (collision.CompareTag("Enemy"))
             {
-                var hit = collision.GetComponent<theFalsepresenceController>();
+            var hit = collision.GetComponent<enemycontrolM1>();
+                
                 hit.knockbackCount = hit.knockbackLength;
 
                 if (collision.transform.position.x < transform.position.x)
@@ -20,6 +21,5 @@ public class knockbackForPlayer : MonoBehaviour
                     hit.knockfromRight = false;
                 }
             }
-        }
-    
+        } 
 }

@@ -126,11 +126,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Pickup()
-    {
-        this.sr.enabled = false;
-    }
-
     // player condition on every enemy
     void theFalsePresence()
     {
@@ -140,6 +135,12 @@ public class PlayerMovement : MonoBehaviour
             Die();
         }
     }
+
+    private void Pickup()
+    {
+        this.sr.enabled = false;
+    }
+
     
     
     

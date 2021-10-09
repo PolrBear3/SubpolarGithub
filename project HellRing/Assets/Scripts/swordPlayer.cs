@@ -101,7 +101,7 @@ public class swordPlayer : MonoBehaviour
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(damagePoint.position, damageRange, enemyLayers);
         foreach(Collider2D enemy in hitEnemies)
         {
-            enemy.GetComponent<theFalsepresenceController>().TakeDamage(10); //attack damage 
+            enemy.GetComponent<enemycontrolM1>().TakeDamage(10); //attack damage 
         }
     }
     public Transform damagePoint;
