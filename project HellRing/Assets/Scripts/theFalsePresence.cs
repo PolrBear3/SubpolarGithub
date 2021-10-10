@@ -6,8 +6,8 @@ public class theFalsePresence : MonoBehaviour
 {
     private Rigidbody2D rb;
     Animator anim;
-    static public int theFalsePresenceMaxHealth = 100;
-    static public int theFalsePresencecurrentHealth;
+    public int theFalsePresenceMaxHealth = 100;
+    public int theFalsePresencecurrentHealth;
     Transform target;
     [SerializeField]
     float agroRange;
@@ -40,22 +40,6 @@ public class theFalsePresence : MonoBehaviour
             anim.SetBool("Walk", false);
         }
 
-        void movementChase()
-        {
-            if (transform.position.x < target.position.x)
-            {
-                 // target is on the left so move right 
-                 rb.velocity = new Vector2(moveSpeed, 0);
-                 transform.localScale = new Vector2(1, 1);
-            }
-            else if (transform.position.x > target.position.x)
-            {
-                 // target is on the right so move left
-                 rb.velocity = new Vector2(-moveSpeed, 0);
-                 transform.localScale = new Vector2(-1, 1);
-            }
-        }
-        
         // attack 
         if (melee)
         {
@@ -66,22 +50,48 @@ public class theFalsePresence : MonoBehaviour
             anim.SetBool("Melee", false);
         }
     }
-    
-    // theFalsePresence condition
-    public void TakeDamage(int damage)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        theFalsePresencecurrentHealth -= damage;
-        anim.SetTrigger("Hurt");
-        if(theFalsePresencecurrentHealth <= 0)
+        // attack by sword
+        if (collision.CompareTag("swordDamagePoint"))
         {
-            Die();
+            theFalsePresencecurrentHealth -= 10;
+            anim.SetTrigger("Hurt");
+        }
+        // attack by hammer
+        if (collision.CompareTag("hammerDamagePoint"))
+        {
+            theFalsePresencecurrentHealth -= 30;
+            anim.SetTrigger("Hurt");
         }
     }
-    void Die()
+
+    void movementChase()
     {
-        anim.SetBool("isDead", true);
-        moveSpeed = 0f;
-        GetComponent<Collider2D>().enabled = false;
-        Destroy(gameObject, 6f);
+        if (transform.position.x < target.position.x)
+        {
+            // target is on the left so move right 
+            rb.velocity = new Vector2(moveSpeed, 0);
+            transform.localScale = new Vector2(1, 1);
+        }
+        else if (transform.position.x > target.position.x)
+        {
+            // target is on the right so move left
+            rb.velocity = new Vector2(-moveSpeed, 0);
+            transform.localScale = new Vector2(-1, 1);
+        }
+    }
+
+    // theFalsePresence condition
+    void die()
+    {
+        if(theFalsePresencecurrentHealth <= 0)
+        {
+            anim.SetBool("isDead", true);
+            moveSpeed = 0f;
+            GetComponent<Collider2D>().enabled = false;
+            Destroy(gameObject, 6f);
+        }
     }
 }

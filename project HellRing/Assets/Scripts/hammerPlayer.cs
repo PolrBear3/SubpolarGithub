@@ -73,13 +73,6 @@ public class hammerPlayer : MonoBehaviour
         {
             pickupAllow = true;
         }
-
-        // damaged by theFalsePresence
-        if (collision.CompareTag("enemyknockbackBox"))
-        {
-            anim.SetTrigger("Hurt");
-        }
-
     }
 
     private void OnTriggerExit2D(Collider2D collision)

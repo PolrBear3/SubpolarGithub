@@ -71,12 +71,6 @@ public class swordPlayer : MonoBehaviour
         {
             pickupAllow = true;
         }
-        
-        // animation getting hurt from enemy function
-        if (collision.CompareTag("enemyknockbackBox"))
-        {
-            anim.SetTrigger("Hurt");
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         // for player picking up item
         if (pickupAllow && Input.GetKeyDown(KeyCode.E))
         {
-            Pickup();
+            this.sr.enabled = false;    // turning off noWeaponPlayer sprite renderer after player pickup weapon
         }
 
         // player health check message
@@ -79,12 +79,6 @@ public class PlayerMovement : MonoBehaviour
     {
         facing = !facing;
         transform.Rotate(0f, 180f, 0f);
-    }
-    
-    // turn off player sprite after pickup item
-    private void Pickup()
-    {
-        this.sr.enabled = false;
     }
 
     // player movement animation
