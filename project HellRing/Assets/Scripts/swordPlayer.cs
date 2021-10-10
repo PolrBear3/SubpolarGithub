@@ -5,7 +5,7 @@ using UnityEngine;
 public class swordPlayer : MonoBehaviour
 {
     public SpriteRenderer sr;
-    private Animator anim;
+    public static Animator swordAnim;
     private bool pickupAllow;
     private float m;
     private enum MovementState { swordPlayerIdle, swordPlayerWalk }
@@ -15,7 +15,7 @@ public class swordPlayer : MonoBehaviour
     private void Start()
     {
         sr = this.GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+        swordAnim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -31,7 +31,7 @@ public class swordPlayer : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                anim.SetTrigger("Melee");
+                swordAnim.SetTrigger("Melee");
                 nextAttackTime = Time.time + 1f / attackRate;
             }
         }
@@ -61,7 +61,7 @@ public class swordPlayer : MonoBehaviour
             state = MovementState.swordPlayerIdle;
         }
         
-        anim.SetInteger("state", (int)state);
+        swordAnim.SetInteger("state", (int)state);
     }
     
     private void OnTriggerEnter2D(Collider2D collision)
@@ -70,6 +70,12 @@ public class swordPlayer : MonoBehaviour
         if (collision.CompareTag("swordBox"))
         {
             pickupAllow = true;
+        }
+
+        // hurt animation
+        if (collision.CompareTag("enemyknockbackBox"))
+        {
+            swordAnim.SetTrigger("Hurt");
         }
     }
 

@@ -5,21 +5,16 @@ using UnityEngine;
 public class theFalsePresence : MonoBehaviour
 {
     private Rigidbody2D rb;
-    Animator anim;
-    public int theFalsePresenceMaxHealth = 100;
-    public int theFalsePresencecurrentHealth;
+    public static Animator theFalsePresenceAnim;
     Transform target;
-    [SerializeField]
-    float agroRange;
-    [SerializeField]
-    float moveSpeed;
+    public static float TFPagroRange = 6f;
+    public static float TFPmoveSpeed = 2f;
     public static bool melee = false;
 
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        theFalsePresencecurrentHealth = theFalsePresenceMaxHealth;
-        anim = GetComponent<Animator>();
+        theFalsePresenceAnim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -29,41 +24,25 @@ public class theFalsePresence : MonoBehaviour
         float distance = Vector2.Distance(transform.position, target.position);
 
         // agro and chase
-        if (distance < agroRange)
+        if (distance < TFPagroRange)
         {
             movementChase();
-            anim.SetBool("Walk", true);
+            theFalsePresenceAnim.SetBool("Walk", true);
         }
         else
         {
             rb.velocity = new Vector2(0, 0);
-            anim.SetBool("Walk", false);
+            theFalsePresenceAnim.SetBool("Walk", false);
         }
 
         // attack 
         if (melee)
         {
-            anim.SetBool("Melee", true);
+            theFalsePresenceAnim.SetBool("Melee", true);
         }
         else
         {
-            anim.SetBool("Melee", false);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // attack by sword
-        if (collision.CompareTag("swordDamagePoint"))
-        {
-            theFalsePresencecurrentHealth -= 10;
-            anim.SetTrigger("Hurt");
-        }
-        // attack by hammer
-        if (collision.CompareTag("hammerDamagePoint"))
-        {
-            theFalsePresencecurrentHealth -= 30;
-            anim.SetTrigger("Hurt");
+            theFalsePresenceAnim.SetBool("Melee", false);
         }
     }
 
@@ -72,26 +51,14 @@ public class theFalsePresence : MonoBehaviour
         if (transform.position.x < target.position.x)
         {
             // target is on the left so move right 
-            rb.velocity = new Vector2(moveSpeed, 0);
+            rb.velocity = new Vector2(TFPmoveSpeed, 0);
             transform.localScale = new Vector2(1, 1);
         }
         else if (transform.position.x > target.position.x)
         {
             // target is on the right so move left
-            rb.velocity = new Vector2(-moveSpeed, 0);
+            rb.velocity = new Vector2(-TFPmoveSpeed, 0);
             transform.localScale = new Vector2(-1, 1);
-        }
-    }
-
-    // theFalsePresence condition
-    void die()
-    {
-        if(theFalsePresencecurrentHealth <= 0)
-        {
-            anim.SetBool("isDead", true);
-            moveSpeed = 0f;
-            GetComponent<Collider2D>().enabled = false;
-            Destroy(gameObject, 6f);
         }
     }
 }

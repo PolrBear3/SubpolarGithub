@@ -5,20 +5,20 @@ using UnityEngine;
 public class hammerPlayer : MonoBehaviour
 {
     public SpriteRenderer sr;
-    private Animator anim;
+    public static Animator hammerAnim;
     private bool pickupAllow;
     private float m;
     private enum MovementState { hammerPlayerIdle, hammerPlayerWalk }
     public float attackRate = 2f;
     float nextAttackTime = 0f;
 
-    void Start()
+    private void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+        sr = this.GetComponent<SpriteRenderer>();
+        hammerAnim = GetComponent<Animator>();
     }
 
-    void Update()
+    private void Update()
     {
         // item pickup update
         if (pickupAllow && Input.GetKeyDown(KeyCode.E))
@@ -31,14 +31,13 @@ public class hammerPlayer : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                anim.SetTrigger("Melee");
+                hammerAnim.SetTrigger("Melee");
                 nextAttackTime = Time.time + 3f / attackRate;
             }
         }
 
         // player movement update
         m = Input.GetAxisRaw("Horizontal");
-
 
         // animation update
         updateAnim();
@@ -62,7 +61,7 @@ public class hammerPlayer : MonoBehaviour
             state = MovementState.hammerPlayerIdle;
         }
 
-        anim.SetInteger("state", (int)state);
+        hammerAnim.SetInteger("state", (int)state);
     }
 
 
@@ -72,6 +71,12 @@ public class hammerPlayer : MonoBehaviour
         if (collision.CompareTag("hammerBox"))
         {
             pickupAllow = true;
+        }
+
+        // hurt animation
+        if (collision.CompareTag("enemyknockbackBox"))
+        {
+            hammerAnim.SetTrigger("Hurt");
         }
     }
 

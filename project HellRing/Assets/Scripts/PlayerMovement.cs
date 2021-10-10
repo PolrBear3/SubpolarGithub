@@ -70,8 +70,14 @@ public class PlayerMovement : MonoBehaviour
             this.sr.enabled = false;    // turning off noWeaponPlayer sprite renderer after player pickup weapon
         }
 
-        // player health check message
+        // player health check 
         Debug.Log("Player current health: " + playercurrentHealth);
+
+        // player condition
+        if (playercurrentHealth <= 0)
+        {
+            Debug.Log("Player died");
+        }
     }
     
     // player flip
@@ -117,19 +123,6 @@ public class PlayerMovement : MonoBehaviour
         {
             pickupAllow = false;
         }
-    }
-
-    // player condition 
-    void condition()
-    {
-        if (playercurrentHealth <= 0)
-        {
-            Die();
-        }
-    }
-    void Die()
-    {
-        Debug.Log("Player died");
     }
 }
 

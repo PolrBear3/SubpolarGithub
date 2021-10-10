@@ -5,15 +5,15 @@ using UnityEngine;
 public class staffPlayer : MonoBehaviour
 {
     public SpriteRenderer sr;
-    private Animator anim;
+    public static Animator staffAnim;
     private bool pickupAllow;
     private float m;
     private enum MovementState { staffPlayerIdle, staffPlayerWalk }
       
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+        sr = this.GetComponent<SpriteRenderer>();
+        staffAnim = GetComponent<Animator>();
     }
 
     void Update()
@@ -49,7 +49,7 @@ public class staffPlayer : MonoBehaviour
             state = MovementState.staffPlayerIdle;
         }
        
-        anim.SetInteger("state", (int)state);
+        staffAnim.SetInteger("state", (int)state);
     }
        
         
@@ -64,7 +64,7 @@ public class staffPlayer : MonoBehaviour
         // damaged by theFalsePresence
         if (collision.CompareTag("enemyknockbackBox"))
         {
-            anim.SetTrigger("Hurt");
+            staffAnim.SetTrigger("Hurt");
         }
     }
 
