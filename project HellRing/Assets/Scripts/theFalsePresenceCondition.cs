@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class theFalsePresenceCondition : MonoBehaviour
 {
-    public static int theFalsePresenceMaxHealth = 100;
-    public static int theFalsePresencecurrentHealth;
+    public int maxHealth = 100;
+    public int currentHealth;
 
     void Start()
     {
-        theFalsePresencecurrentHealth = theFalsePresenceMaxHealth;
+        currentHealth = maxHealth;
     }
 
     void Update()
     {
         // theFalsePresence condition
-        print("theFalsePresenceHealth: " + theFalsePresencecurrentHealth);
-        if (theFalsePresencecurrentHealth <= 0)
+        print("theFalsePresenceHealth: " + currentHealth);
+        if (currentHealth <= 0)
         {
             GetComponent<Collider2D>().enabled = false;
             theFalsePresence.anim.SetBool("isDead", true);
-            theFalsePresence.TFPmoveSpeed = 0f;
+            theFalsePresence.moveSpeed = 0f;
             Destroy(transform.parent.gameObject, 6f);
         }
     }
@@ -30,13 +30,13 @@ public class theFalsePresenceCondition : MonoBehaviour
         // attack by sword
         if (collision.CompareTag("swordDamagePoint"))
         {
-            theFalsePresencecurrentHealth -= 10;
+            currentHealth -= 10;
             theFalsePresence.anim.SetTrigger("Hurt");
         }
         // attack by hammer
         if (collision.CompareTag("hammerDamagePoint"))
         {
-            theFalsePresencecurrentHealth -= 30;
+            currentHealth -= 30;
             theFalsePresence.anim.SetTrigger("Hurt");
         }
     }

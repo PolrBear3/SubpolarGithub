@@ -7,8 +7,8 @@ public class theFalsePresence : MonoBehaviour
     private Rigidbody2D rb;
     public static Animator anim;
     Transform target;
-    public static float TFPagroRange = 6f;
-    public static float TFPmoveSpeed = 2f;
+    public float agroRange = 6f;
+    public static float moveSpeed = 2f;
     public static bool melee = false;
 
     void Start()
@@ -24,7 +24,7 @@ public class theFalsePresence : MonoBehaviour
         float distance = Vector2.Distance(transform.position, target.position);
 
         // agro and chase
-        if (distance < TFPagroRange)
+        if (distance < agroRange)
         {
             movementChase();
             anim.SetBool("Walk", true);
@@ -52,13 +52,13 @@ public class theFalsePresence : MonoBehaviour
         if (transform.position.x < target.position.x)
         {
             // target is on the left so move right 
-            rb.velocity = new Vector2(TFPmoveSpeed, 0);
+            rb.velocity = new Vector2(moveSpeed, 0);
             transform.localScale = new Vector2(1, 1);
         }
         else if (transform.position.x > target.position.x)
         {
             // target is on the right so move left
-            rb.velocity = new Vector2(-TFPmoveSpeed, 0);
+            rb.velocity = new Vector2(-moveSpeed, 0);
             transform.localScale = new Vector2(-1, 1);
         }
     }

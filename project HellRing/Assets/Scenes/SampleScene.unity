@@ -1502,6 +1502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
+  anim: {fileID: 0}
 --- !u!1 &662512744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,7 +1998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
-  attackRate: 2
+  anim: {fileID: 0}
 --- !u!61 &1056869843
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2113,8 +2114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25bb42460a70bd4b97cbc5cda275c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  knockbackPower: 200
-  knockbackDuration: 1
+  knockbackPower: 150
 --- !u!1 &1332980249
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,7 +2163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
-  attackRate: 2
+  anim: {fileID: 0}
 --- !u!95 &1332980252
 Animator:
   serializedVersion: 3
@@ -2331,7 +2331,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockbackPower: 50
-  knockbackDuration: 1
 --- !u!1 &1477821668
 GameObject:
   m_ObjectHideFlags: 0

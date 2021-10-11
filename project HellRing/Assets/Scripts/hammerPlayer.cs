@@ -5,17 +5,17 @@ using UnityEngine;
 public class hammerPlayer : MonoBehaviour
 {
     public SpriteRenderer sr;
-    public static Animator hammerAnim;
+    public Animator anim;
     private bool pickupAllow;
     private float m;
     private enum MovementState { hammerPlayerIdle, hammerPlayerWalk }
-    public float attackRate = 2f;
+    float attackRate = 2f;
     float nextAttackTime = 0f;
 
     private void Start()
     {
         sr = this.GetComponent<SpriteRenderer>();
-        hammerAnim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -31,8 +31,8 @@ public class hammerPlayer : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                hammerAnim.SetTrigger("Melee");
-                nextAttackTime = Time.time + 4f / attackRate;
+                anim.SetTrigger("Melee");
+                nextAttackTime = Time.time + 4f / attackRate;   // melee cool time
             }
         }
 
@@ -61,7 +61,7 @@ public class hammerPlayer : MonoBehaviour
             state = MovementState.hammerPlayerIdle;
         }
 
-        hammerAnim.SetInteger("state", (int)state);
+        anim.SetInteger("state", (int)state);
     }
 
 
@@ -76,7 +76,7 @@ public class hammerPlayer : MonoBehaviour
         // hurt animation
         if (collision.CompareTag("enemyknockbackBox"))
         {
-            hammerAnim.SetTrigger("Hurt");
+            anim.SetTrigger("Hurt");
         }
     }
 

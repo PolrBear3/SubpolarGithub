@@ -5,7 +5,7 @@ using UnityEngine;
 public class playerknockbackBox : MonoBehaviour
 {
     public float knockbackPower;
-    public float knockbackDuration = 1;
+    float knockbackDuration = 1;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -5,17 +5,17 @@ using UnityEngine;
 public class swordPlayer : MonoBehaviour
 {
     public SpriteRenderer sr;
-    public static Animator swordAnim;
+    public Animator anim;
     private bool pickupAllow;
     private float m;
     private enum MovementState { swordPlayerIdle, swordPlayerWalk }
-    public float attackRate = 2f;
+    float attackRate = 2f;
     float nextAttackTime = 0f;
 
     private void Start()
     {
         sr = this.GetComponent<SpriteRenderer>();
-        swordAnim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -31,8 +31,8 @@ public class swordPlayer : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                swordAnim.SetTrigger("Melee");
-                nextAttackTime = Time.time + 2f / attackRate;
+                anim.SetTrigger("Melee");
+                nextAttackTime = Time.time + 2f / attackRate;   // melee cool time
             }
         }
      
@@ -61,7 +61,7 @@ public class swordPlayer : MonoBehaviour
             state = MovementState.swordPlayerIdle;
         }
         
-        swordAnim.SetInteger("state", (int)state);
+        anim.SetInteger("state", (int)state);
     }
     
     private void OnTriggerEnter2D(Collider2D collision)
@@ -75,7 +75,7 @@ public class swordPlayer : MonoBehaviour
         // hurt animation
         if (collision.CompareTag("enemyknockbackBox"))
         {
-            swordAnim.SetTrigger("Hurt");
+            anim.SetTrigger("Hurt");
         }
     }
 
