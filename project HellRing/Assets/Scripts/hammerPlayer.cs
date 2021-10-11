@@ -32,7 +32,7 @@ public class hammerPlayer : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 hammerAnim.SetTrigger("Melee");
-                nextAttackTime = Time.time + 3f / attackRate;
+                nextAttackTime = Time.time + 4f / attackRate;
             }
         }
 

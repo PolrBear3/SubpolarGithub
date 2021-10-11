@@ -32,7 +32,7 @@ public class swordPlayer : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 swordAnim.SetTrigger("Melee");
-                nextAttackTime = Time.time + 1f / attackRate;
+                nextAttackTime = Time.time + 2f / attackRate;
             }
         }
      

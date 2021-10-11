@@ -19,7 +19,7 @@ public class theFalsePresenceCondition : MonoBehaviour
         if (theFalsePresencecurrentHealth <= 0)
         {
             GetComponent<Collider2D>().enabled = false;
-            theFalsePresence.theFalsePresenceAnim.SetBool("isDead", true);
+            theFalsePresence.anim.SetBool("isDead", true);
             theFalsePresence.TFPmoveSpeed = 0f;
             Destroy(transform.parent.gameObject, 6f);
         }
@@ -31,13 +31,13 @@ public class theFalsePresenceCondition : MonoBehaviour
         if (collision.CompareTag("swordDamagePoint"))
         {
             theFalsePresencecurrentHealth -= 10;
-            theFalsePresence.theFalsePresenceAnim.SetTrigger("Hurt");
+            theFalsePresence.anim.SetTrigger("Hurt");
         }
         // attack by hammer
         if (collision.CompareTag("hammerDamagePoint"))
         {
             theFalsePresencecurrentHealth -= 30;
-            theFalsePresence.theFalsePresenceAnim.SetTrigger("Hurt");
+            theFalsePresence.anim.SetTrigger("Hurt");
         }
     }
 

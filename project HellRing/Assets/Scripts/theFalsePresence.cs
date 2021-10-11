@@ -5,7 +5,7 @@ using UnityEngine;
 public class theFalsePresence : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public static Animator theFalsePresenceAnim;
+    public static Animator anim;
     Transform target;
     public static float TFPagroRange = 6f;
     public static float TFPmoveSpeed = 2f;
@@ -14,7 +14,7 @@ public class theFalsePresence : MonoBehaviour
     void Start()
     {
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        theFalsePresenceAnim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -27,25 +27,26 @@ public class theFalsePresence : MonoBehaviour
         if (distance < TFPagroRange)
         {
             movementChase();
-            theFalsePresenceAnim.SetBool("Walk", true);
+            anim.SetBool("Walk", true);
         }
         else
         {
             rb.velocity = new Vector2(0, 0);
-            theFalsePresenceAnim.SetBool("Walk", false);
+            anim.SetBool("Walk", false);
         }
 
         // attack 
         if (melee)
         {
-            theFalsePresenceAnim.SetBool("Melee", true);
+            anim.SetBool("Melee", true);
         }
         else
         {
-            theFalsePresenceAnim.SetBool("Melee", false);
+            anim.SetBool("Melee", false);
         }
     }
 
+    // movement, chase
     void movementChase()
     {
         if (transform.position.x < target.position.x)
@@ -60,5 +61,26 @@ public class theFalsePresence : MonoBehaviour
             rb.velocity = new Vector2(-TFPmoveSpeed, 0);
             transform.localScale = new Vector2(-1, 1);
         }
+    }
+
+    // knockback
+    public static theFalsePresence TFPinstance;
+    
+    private void Awake()
+    {
+        TFPinstance = this;
+    }
+
+    public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj)
+    {
+        float timer = 0;
+
+        while (knockbackDuration > timer)
+        {
+            timer += Time.deltaTime;
+            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
+            rb.AddForce(-direction * knockbackPower);
+        }
+        yield return 0;
     }
 }
