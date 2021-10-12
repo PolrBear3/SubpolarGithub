@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 51832316}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1505,7 +1505,7 @@ MonoBehaviour:
   sr: {fileID: 0}
   anim: {fileID: 0}
   shootPoint: {fileID: 1874653361}
-  staffParticle: {fileID: 7267708436090126436, guid: 1e27361c07f020f4f94e5dd92dafe930, type: 3}
+  staffParticle: {fileID: 3692560515126140829, guid: 1e27361c07f020f4f94e5dd92dafe930, type: 3}
 --- !u!1 &662512744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2803,7 +2803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e500e1e4eacea444a6d3fda1902bbe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agroRange: 6
+  agroRange: 20
 --- !u!61 &8097930733529221664
 BoxCollider2D:
   m_ObjectHideFlags: 0

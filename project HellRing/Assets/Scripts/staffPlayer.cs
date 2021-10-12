@@ -9,6 +9,8 @@ public class staffPlayer : MonoBehaviour
     private bool pickupAllow;
     private float m;
     private enum MovementState { staffPlayerIdle, staffPlayerWalk }
+    float attackRate = 2f;
+    float nextAttackTime = 0f;
       
     void Start()
     {
@@ -25,11 +27,13 @@ public class staffPlayer : MonoBehaviour
         }
 
         // melee update
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Time.time >= nextAttackTime)
         {
-            // anim.SetTrigger("Melee");
+            if (Input.GetKeyDown(KeyCode.Q))
             {
+                // anim.SetTrigger("Melee");
                 Melee();
+                nextAttackTime = Time.time + 3f / attackRate;
             }
         }
         
