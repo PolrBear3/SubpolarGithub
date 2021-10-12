@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator anim;
-    private float m;    
+    public static float m;    
     private bool pickupAllow;
     bool facing = true;
     [SerializeField] private float movespeed;
@@ -52,11 +52,11 @@ public class PlayerMovement : MonoBehaviour
         }
         
         // player flipping update
-        if(m<0 && facing)
+        if(m>0 && !facing)
         {
             flip();
         }
-        else if (m>0 && !facing)
+        else if (m<0 && facing)
         {
             flip();
         }

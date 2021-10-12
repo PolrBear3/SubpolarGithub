@@ -24,6 +24,15 @@ public class staffPlayer : MonoBehaviour
             Pickup();
         }
 
+        // melee update
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            // anim.SetTrigger("Melee");
+            {
+                Melee();
+            }
+        }
+        
         // player movement update
         m = Input.GetAxisRaw("Horizontal");
 
@@ -76,11 +85,21 @@ public class staffPlayer : MonoBehaviour
         }
     }
 
+    // pickup
     private void Pickup()
     {
         this.sr.enabled = true;
         Destroy(GameObject.FindWithTag("swordPlayer"));
         Destroy(GameObject.FindWithTag("hammerPlayer"));
+    }
+
+    // melee
+    public Transform shootPoint;
+    public GameObject staffParticle;
+    
+    void Melee()
+    {
+        Instantiate(staffParticle, shootPoint.position, shootPoint.rotation);
     }
 }
 

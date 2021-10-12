@@ -30,13 +30,19 @@ public class theFalsePresenceCondition : MonoBehaviour
         // attack by sword
         if (collision.CompareTag("swordDamagePoint"))
         {
-            currentHealth -= 10;
+            currentHealth -= 20;
             theFalsePresence.anim.SetTrigger("Hurt");
         }
         // attack by hammer
         if (collision.CompareTag("hammerDamagePoint"))
         {
             currentHealth -= 30;
+            theFalsePresence.anim.SetTrigger("Hurt");
+        }
+
+        if (collision.CompareTag("staffParticle"))
+        {
+            currentHealth -= 10;
             theFalsePresence.anim.SetTrigger("Hurt");
         }
     }
