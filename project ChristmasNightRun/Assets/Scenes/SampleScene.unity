@@ -305,10 +305,10 @@ GameObject:
   m_Component:
   - component: {fileID: 312382436}
   - component: {fileID: 312382435}
+  - component: {fileID: 312382439}
+  - component: {fileID: 312382440}
   - component: {fileID: 312382438}
   - component: {fileID: 312382437}
-  - component: {fileID: 312382440}
-  - component: {fileID: 312382439}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -413,6 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab37678c528e0f45ac5f1ed35a6a5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumphight: 7
   dropPoint: {fileID: 183518610}
   present: {fileID: 3824532003652621084, guid: 174688b268e4c0d42b289b7056e8c276, type: 3}
 --- !u!61 &312382439
@@ -456,12 +457,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 5
 --- !u!1 &323075155
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +860,7 @@ GameObject:
   - component: {fileID: 433409231}
   - component: {fileID: 433409230}
   - component: {fileID: 433409229}
+  - component: {fileID: 433409233}
   - component: {fileID: 433409228}
   - component: {fileID: 433409232}
   m_Layer: 0
@@ -1011,6 +1013,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!68 &433409233
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433409226}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.2}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -2.88, y: 0}
+  - {x: 2.88, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1797,6 +1821,7 @@ GameObject:
   - component: {fileID: 1855792240}
   - component: {fileID: 1855792239}
   - component: {fileID: 1855792238}
+  - component: {fileID: 1855792242}
   - component: {fileID: 1855792237}
   - component: {fileID: 1855792241}
   m_Layer: 0
@@ -1949,6 +1974,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!68 &1855792242
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855792235}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.2}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -2.88, y: 0}
+  - {x: 2.88, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1 &1933296883
 GameObject:
   m_ObjectHideFlags: 0
