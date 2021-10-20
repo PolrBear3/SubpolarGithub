@@ -5,13 +5,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
-    
-    float dropRate = 2f;
-    float nextDropTime = 0f;
-    
-    public float jumphight;
-    float nextJumpTime = 0f;
-    float jumpRate = 2.4f;
 
     private void Start()
     {
@@ -29,20 +22,35 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Time.time > nextJumpTime)
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (isGrounded)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumphight);
-                nextJumpTime = Time.time + 1f / jumpRate;
+                Jump();
             }
         }
     }
 
+    private void FixedUpdate()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
     public Transform dropPoint;
     public GameObject present;
+    float dropRate = 2f;
+    float nextDropTime = 0f;
     void Drop()
     {
         Instantiate(present, dropPoint.position, dropPoint.rotation);
+    }
+    
+    public float jumphight;
+    bool isGrounded;
+    public Transform groundCheck;
+    public LayerMask groundLayer;
+    void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, jumphight);
     }
 }
