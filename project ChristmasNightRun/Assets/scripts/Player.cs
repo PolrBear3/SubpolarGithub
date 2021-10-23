@@ -5,8 +5,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
-    Vector2 constForward;
-    [SerializeField] private float moveSpeed;
 
     private void Start()
     {
@@ -15,11 +13,6 @@ public class Player : MonoBehaviour
     
     private void Update()
     {
-        //Movement
-        constForward = gameObject.transform.position;
-        constForward.x += moveSpeed;
-        gameObject.transform.position = constForward;
-        
         //Drop
         if (Time.time > nextDropTime)
         {
@@ -38,6 +31,7 @@ public class Player : MonoBehaviour
                 Jump();
             }
         }
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
 
     //Drop
@@ -54,6 +48,7 @@ public class Player : MonoBehaviour
     public float jumphight;
     bool isGrounded;
     public Transform groundCheck;
+    public LayerMask groundLayer;
     void Jump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumphight);

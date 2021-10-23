@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class presents : MonoBehaviour
 {
-    public float speed = 5f;
+    public float speed;
     public Rigidbody2D rb;
 
     void Start()
