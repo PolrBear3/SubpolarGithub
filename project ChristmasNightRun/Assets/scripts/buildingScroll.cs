@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class buildingScroll : MonoBehaviour
 {
-    public BoxCollider2D bc;
-    public Rigidbody2D rb;
+    private BoxCollider2D bc;
+    private Rigidbody2D rb;
     private float width;
     private float scrollSpeed = -2f;
 
