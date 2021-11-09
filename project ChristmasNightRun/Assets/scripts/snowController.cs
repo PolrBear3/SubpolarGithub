@@ -6,7 +6,8 @@ public class snowController : MonoBehaviour
 {
     private Rigidbody2D rb;
     Vector2 move;
-    [SerializeField] private float moveSpeed;
+    public float moveSpeed;
+    public float maxSpeed;
 
     void Start()
     {
@@ -16,6 +17,10 @@ public class snowController : MonoBehaviour
     void Update()
     {
         move = gameObject.transform.position;
+        if (moveSpeed < maxSpeed)
+        {
+            moveSpeed += 0.00001f * Time.deltaTime;
+        }
         move.x += moveSpeed;
         gameObject.transform.position = move;
     }

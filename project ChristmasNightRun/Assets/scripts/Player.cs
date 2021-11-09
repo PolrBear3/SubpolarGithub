@@ -21,13 +21,13 @@ public class Player : MonoBehaviour
     {
         //Move
         move = gameObject.transform.position;
-        gameObject.transform.position = move;
-        move.x = moveSpeed;
         if(moveSpeed < maxSpeed)
         {
-            moveSpeed += 0.01f * Time.deltaTime;
+            moveSpeed += 0.00001f * Time.deltaTime;
         }
-        
+        move.x += moveSpeed;
+        gameObject.transform.position = move;
+
 
         //Drop
         if (Time.time > nextDropTime)
