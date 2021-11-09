@@ -5,14 +5,30 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator anim;
+    Vector2 move;
+    public float moveSpeed;
+    public float maxSpeed;
+    
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
     
     private void Update()
     {
+        //Move
+        move = gameObject.transform.position;
+        gameObject.transform.position = move;
+        move.x = moveSpeed;
+        if(moveSpeed < maxSpeed)
+        {
+            moveSpeed += 0.01f * Time.deltaTime;
+        }
+        
+
         //Drop
         if (Time.time > nextDropTime)
         {
@@ -32,16 +48,24 @@ public class Player : MonoBehaviour
             }
         }
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        //Slide
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            anim.SetTrigger("slide");
+        }
     }
 
     //Drop
     public Transform dropPoint;
-    public GameObject present;
+    public GameObject[] presents;
+    int randomInt;
     float dropRate = 2f;
     float nextDropTime = 0f;
     void Drop()
     {
-        Instantiate(present, dropPoint.position, dropPoint.rotation);
+        randomInt = Random.Range(0, presents.Length);
+        Instantiate(presents[randomInt], dropPoint.position, dropPoint.rotation);
     }
     
     //Jump
@@ -52,5 +76,14 @@ public class Player : MonoBehaviour
     void Jump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumphight);
+    }
+
+    //GameOver
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("destroyBox"))
+        {
+            Destroy(gameObject);
+        }
     }
 }
