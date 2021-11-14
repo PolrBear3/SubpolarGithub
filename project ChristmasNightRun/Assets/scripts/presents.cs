@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class presents : MonoBehaviour
 {
-    public float speed;
-    public Rigidbody2D rb;
-    [SerializeField] float rotSpeed;
+    float speed = 2f;
+    private Rigidbody2D rb;
+    float rotSpeed = 1.5f;
 
     void Start()
     {
