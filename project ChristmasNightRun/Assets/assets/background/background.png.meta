@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 4e9a217f8911bf24e82f5c941e20eaee
+guid: 02e4ed27b2637174580505737309ebe3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2419265815392390448
-    second: newBridgeStart_0
+      213: -7443756053782179069
+    second: background_0
   - first:
-      213: -7433804639668953760
-    second: newBridgeStart_1
+      213: -3192133289119773823
+    second: background_1
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -93,17 +93,41 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: newBridgeStart_0
+      name: background_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 144
-        height: 80
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +135,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0d27a480f8a0d6ed0800000000000000
-      internalID: -2419265815392390448
+      spriteID: 30356abce4772b890800000000000000
+      internalID: -7443756053782179069
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: newBridgeStart_1
+      name: background_1
       rect:
         serializedVersion: 2
         x: 144
         y: 0
         width: 144
-        height: 80
+        height: 200
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,8 +156,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 06d91e2f012d5d890800000000000000
-      internalID: -7433804639668953760
+      spriteID: 18b015aafa343b3d0800000000000000
+      internalID: -3192133289119773823
       vertices: []
       indices: 
       edges: []
