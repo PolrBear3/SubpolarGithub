@@ -41,7 +41,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -5.27}
@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 322273986193660627}
   - component: {fileID: 8028540466546057474}
   - component: {fileID: 3349391665923244135}
+  - component: {fileID: 4523979384197082868}
   m_Layer: 0
   m_Name: constructionSite
   m_TagString: Untagged
@@ -213,6 +214,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b6abc32503d4e645805a521168fc9c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4523979384197082868
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4009193967062662012}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: abbb0216761be844dae2540f997e89bb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6487089982932333579
 GameObject:
   m_ObjectHideFlags: 0

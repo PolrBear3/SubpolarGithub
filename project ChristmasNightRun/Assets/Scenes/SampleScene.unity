@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.0025
-  maxSpeed: 0.005
+  maxSpeed: 0.0055
   dropPoint: {fileID: 183518610}
   presents:
   - {fileID: 7333998774856606061, guid: 174688b268e4c0d42b289b7056e8c276, type: 3}
@@ -496,8 +496,8 @@ GameObject:
   - component: {fileID: 370694227}
   - component: {fileID: 370694229}
   - component: {fileID: 370694228}
-  - component: {fileID: 370694230}
   - component: {fileID: 370694231}
+  - component: {fileID: 370694230}
   m_Layer: 0
   m_Name: snowGenerator
   m_TagString: Untagged
@@ -5304,7 +5304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.0025
-  maxSpeed: 0.005
+  maxSpeed: 0.0055
 --- !u!50 &370694231
 Rigidbody2D:
   serializedVersion: 4
