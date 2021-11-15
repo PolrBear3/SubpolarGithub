@@ -156,6 +156,7 @@ MonoBehaviour:
   levelPartList:
   - {fileID: 1796432003230582586, guid: 1cd1a47e4dc33aa47865f64c6df31d0c, type: 3}
   - {fileID: 4816363251357548625, guid: fa998b0d22ea7cc43b49b3b5c60795cb, type: 3}
+  - {fileID: 3439763733924392438, guid: 7fbb6bf33bf5b0647886f3cf0968bf27, type: 3}
   player: {fileID: 312382436}
 --- !u!4 &18626515
 Transform:
@@ -425,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.0025
-  maxSpeed: 0.007
+  maxSpeed: 0.005
   dropPoint: {fileID: 183518610}
   presents:
   - {fileID: 7333998774856606061, guid: 174688b268e4c0d42b289b7056e8c276, type: 3}
@@ -5303,7 +5304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.0025
-  maxSpeed: 0.007
+  maxSpeed: 0.005
 --- !u!50 &370694231
 Rigidbody2D:
   serializedVersion: 4
@@ -5932,7 +5933,7 @@ GameObject:
   - component: {fileID: 1374928340}
   - component: {fileID: 1374928341}
   m_Layer: 0
-  m_Name: destroyBoxfowPresents
+  m_Name: destroyBoxforPresents
   m_TagString: destroyBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6398,7 +6399,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.0808768, y: -0.16815467}
+  m_Offset: {x: 1.0752606, y: -0.93374175}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6409,7 +6410,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5200052, y: 0.06158009}
+  m_Size: {x: 1.5087729, y: 1.5927535}
   m_EdgeRadius: 0
 --- !u!61 &8597246977901558782
 BoxCollider2D:
