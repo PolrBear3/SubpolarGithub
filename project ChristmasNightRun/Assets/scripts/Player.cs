@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     Vector2 move;
     public float moveSpeed;
     public float maxSpeed;
-    
 
     private void Start()
     {
@@ -32,15 +31,15 @@ public class Player : MonoBehaviour
         //Drop
         if (Time.time > nextDropTime)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) ^ swipeManager.tap) 
             {
                 Drop();
                 nextDropTime = Time.time + 1f / dropRate;
             }
         }
 
-        //Jump
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        //Jump  
+        if (Input.GetKeyDown(KeyCode.UpArrow) ^ swipeManager.swipeUp)
         {
             if (isGrounded)
             {
@@ -50,7 +49,7 @@ public class Player : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
         //Slide
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) ^ swipeManager.swipeDown)
         {
             anim.SetTrigger("slide");
         }
