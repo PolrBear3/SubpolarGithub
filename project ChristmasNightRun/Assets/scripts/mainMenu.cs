@@ -10,8 +10,18 @@ public class mainMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void quitGame()
+    public void inventory()
     {
-        Application.Quit();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+    }
+    
+    public void back()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+    }
+    
+    public void toBag2()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
