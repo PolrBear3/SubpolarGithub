@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class presents : MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class presents : MonoBehaviour
     private Rigidbody2D rb;
     float rotSpeed = 1.5f;
 
+    [SerializeField] private skinManager skinManager;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = transform.right * speed;
+
+        GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
     }
 
     void Update()
