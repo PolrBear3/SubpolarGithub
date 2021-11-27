@@ -10,9 +10,13 @@ public class skinShopItem : MonoBehaviour
     [SerializeField] private Button buyButton;
     [SerializeField] private Text costText;
     private Skin skin;
+
+    Animator anim;
     
     void Start()
     {
+        anim = GetComponent<Animator>();
+        
         skin = skinManager.skins[skinIndex];
 
         GetComponent<Image>().sprite = skin.sprite;
