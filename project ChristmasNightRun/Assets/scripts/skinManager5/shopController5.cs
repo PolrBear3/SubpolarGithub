@@ -11,7 +11,7 @@ public class shopController5 : MonoBehaviour
 
     void Update()
     {
-        coinsText.text = "Coins: " + PlayerPrefs.GetInt("Coins");
+        coinsText.text = "" + PlayerPrefs.GetInt("Coins");
         selectedSkin5.sprite = skinManager5.GetSelectedSkin5().sprite5;
     }
 }

@@ -12,7 +12,7 @@ public class shopController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        coinsText.text = "Coins: " + PlayerPrefs.GetInt("Coins");
+        coinsText.text = "" + PlayerPrefs.GetInt("Coins");
         selectedSkin.sprite = skinManager.GetSelectedSkin().sprite;
     }
 }

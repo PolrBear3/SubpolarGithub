@@ -1710,6 +1710,7 @@ GameObject:
   - component: {fileID: 842537896}
   - component: {fileID: 842537895}
   - component: {fileID: 842537894}
+  - component: {fileID: 842537897}
   m_Layer: 5
   m_Name: coinText
   m_TagString: Untagged
@@ -1750,7 +1751,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'coins: 0'
+  m_Text: 0
 --- !u!222 &842537895
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1778,6 +1779,19 @@ RectTransform:
   m_AnchoredPosition: {x: -47.6, y: -6.5}
   m_SizeDelta: {x: 181.5819, y: 56.66}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &842537897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842537893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f66197ff8e840b4eaf2bf5f64bd3ca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinsText: {fileID: 842537894}
 --- !u!1 &861723544
 GameObject:
   m_ObjectHideFlags: 0

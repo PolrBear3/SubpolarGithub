@@ -11,11 +11,12 @@ public class target : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("present"))
         {
             anim.SetTrigger("smile");
+            coinText.AddCoins();
         }
     }
 }
