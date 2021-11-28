@@ -85,6 +85,9 @@ public class Player : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
             coinText.coinSave();
+            scoreManager.highscoreSave();
+            //setting current score back to 0
+            scoreManager.score = 0.0f;
         }
     }
 }
