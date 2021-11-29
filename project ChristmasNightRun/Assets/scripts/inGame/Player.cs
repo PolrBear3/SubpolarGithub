@@ -84,6 +84,8 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("destroyBox"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            //moving top right UI to gameOverMenu 
+            Destroy(GameObject.FindWithTag("scoreUI"));
             coinText.coinSave();
             scoreManager.highscoreSave();
             //setting current score back to 0
