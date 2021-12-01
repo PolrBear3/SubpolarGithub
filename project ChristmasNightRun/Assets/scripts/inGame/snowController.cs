@@ -24,4 +24,20 @@ public class snowController : MonoBehaviour
         move.x += moveSpeed;
         gameObject.transform.position = move;
     }
+
+    //pause
+    void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.GamePlay;
+    }
 }
