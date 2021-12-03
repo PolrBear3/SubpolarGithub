@@ -67,13 +67,33 @@ public class playerForMobile : MonoBehaviour
         anim.SetTrigger("slide");
     }
 
+    //pause
+    void Awake()
+    {
+        GameStateManager.Instance.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameStateManager.Instance.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void OnGameStateChanged(GameState newGameState)
+    {
+        enabled = newGameState == GameState.GamePlay;
+    }
+
     //GameOver
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("destroyBox"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            gameOverMenu.gameOver = true;
+            scoreManager.GameOver();
             coinText.coinSave();
+            scoreManager.highscoreSave();
+            //moving top right UI to gameOverMenu 
+            Destroy(GameObject.FindWithTag("scoreUI"));
         }
     }
 }
