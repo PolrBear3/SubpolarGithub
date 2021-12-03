@@ -40,4 +40,14 @@ public class mainMenu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 4);
     }
+
+    public void shop()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 7);
+    }
+
+    public void shopBack()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 7);
+    }
 }

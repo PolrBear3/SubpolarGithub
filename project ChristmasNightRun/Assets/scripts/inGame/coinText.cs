@@ -23,6 +23,11 @@ public class coinText : MonoBehaviour
         coins += 1;
     }
 
+    public static void AddCoins10000()
+    {
+        coins += 10000;
+    }
+
     public static void coinSave()
     {
         PlayerPrefs.SetInt("Coins", coins);
