@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class mainMenu : MonoBehaviour
-{
+{   
     public void playGame()
     {
         scoreManager.score = 0.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        lifeForAds.currentLives -= 1;
+        PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
     }
 
     public void inventory()
