@@ -9,6 +9,8 @@ public class mainMenu : MonoBehaviour
     {
         scoreManager.score = 0.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        ////takes away current life
         lifeForAds.currentLives -= 1;
         PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
     }

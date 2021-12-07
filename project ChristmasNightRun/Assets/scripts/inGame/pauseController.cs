@@ -41,6 +41,11 @@ public class pauseController : MonoBehaviour
 
     public void Restart()
     {
+        //takes away current life
+        lifeForAds.currentLives -= 1;
+        PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
+        
+        //turns on pause menu
         pauseMenu.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 0);
         scoreManager.score = 0.0f;
@@ -50,6 +55,7 @@ public class pauseController : MonoBehaviour
 
     public void MainMenu()
     {
+        PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);

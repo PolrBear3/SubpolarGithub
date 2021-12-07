@@ -41,10 +41,15 @@ public class scoreManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
     }
 
     public void playAgain()
     {
+        //takes away current life
+        lifeForAds.currentLives -= 1;
+        PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
+        
         scoreManager.score = 0.0f;
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 0);
