@@ -23,9 +23,30 @@ public class coinText : MonoBehaviour
         coins += 1;
     }
 
+    public static void AddCoinsforAd()
+    {
+        coins += 100;
+    }
+    
+    public static void AddCoins5000()
+    {
+        coins += 5000;
+    }
     public static void AddCoins10000()
     {
         coins += 10000;
+    }
+    public static void AddCoins30000()
+    {
+        coins += 30000;
+    }
+    public static void AddCoins50000()
+    {
+        coins += 50000;
+    }
+    public static void AddCoins100000()
+    {
+        coins += 100000;
     }
 
     public static void coinSave()

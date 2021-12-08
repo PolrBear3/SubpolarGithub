@@ -36,4 +36,10 @@ public class adManager : MonoBehaviour
         lifeForAds.currentLives += 1;
     }
 
+    public void PlayAdforJoy()
+    {
+        Advertisement.Show("Rewarded_Android");
+        coinText.AddCoinsforAd();
+    }
+
 }

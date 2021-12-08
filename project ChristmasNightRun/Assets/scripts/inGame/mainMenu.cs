@@ -53,5 +53,6 @@ public class mainMenu : MonoBehaviour
     public void shopBack()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 7);
+        coinText.coinSave();
     }
 }
