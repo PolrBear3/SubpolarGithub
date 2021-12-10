@@ -18,7 +18,7 @@ public class adManager : MonoBehaviour
 
     void Update()
     {
-        if (lifeForAds.currentLives == 0)
+        if (lifeForAds.currentLives <= 0)
         {
             adButton.SetActive(true);
         }

@@ -12042,6 +12042,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5301619612937638012}
   - component: {fileID: 5301619612937638013}
+  - component: {fileID: 5301619612937638014}
   m_Layer: 5
   m_Name: currentLives
   m_TagString: Untagged
@@ -12084,6 +12085,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLivesText: {fileID: 5301619612826214528}
+--- !u!114 &5301619612937638014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5301619612937638011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f0c31a4b74db5b4f95d34de1c33bf19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition: {fileID: 7662817081840482456, guid: bdae39f961bd90f48949cc11173b695e, type: 3}
 --- !u!61 &5378703367921648100
 BoxCollider2D:
   m_ObjectHideFlags: 0

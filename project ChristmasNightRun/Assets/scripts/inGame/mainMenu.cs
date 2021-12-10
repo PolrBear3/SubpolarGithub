@@ -4,15 +4,31 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class mainMenu : MonoBehaviour
-{   
+{
+    public Animator transition;
+
     public void playGame()
     {
+        // reloads current score back to 0 when exiting game
         scoreManager.score = 0.0f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        transition.SetTrigger("Start");
+        LoadnextLevel();
 
         ////takes away current life
         lifeForAds.currentLives -= 1;
         PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
+    }
+
+    public void LoadnextLevel()
+    {
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
+    }
+
+    IEnumerator LoadLevel(int levelIndex)
+    {
+        yield return new WaitForSeconds(1.3f);
+        SceneManager.LoadScene(levelIndex);
     }
 
     public void inventory()
