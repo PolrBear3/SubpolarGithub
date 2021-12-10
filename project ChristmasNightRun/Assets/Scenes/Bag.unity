@@ -488,7 +488,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1976227710}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnBuyButtonPressed
         m_Mode: 1
@@ -714,8 +714,9 @@ GameObject:
   - component: {fileID: 183313622}
   - component: {fileID: 183313621}
   - component: {fileID: 183313620}
+  - component: {fileID: 183313619}
   m_Layer: 5
-  m_Name: 2 5
+  m_Name: pinkPiano
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -741,6 +742,22 @@ RectTransform:
   m_AnchoredPosition: {x: -46.299988, y: 72.79999}
   m_SizeDelta: {x: 100, y: 99.999}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &183313619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183313617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60eb5c6a647bbfd41b2a900622199f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinManager: {fileID: 11400000, guid: 76978c03d1e251d4eb10bb35686c60b6, type: 2}
+  skinIndex: 9
+  buyButton: {fileID: 2057687214}
+  costText: {fileID: 1193119962}
 --- !u!114 &183313620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,7 +802,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 183313619}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnSkinPressed
         m_Mode: 1
@@ -817,7 +834,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: a8cbb853e0033e746bb3e27f1b45fe04, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1748,7 +1765,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2029634422}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnBuyButtonPressed
         m_Mode: 1
@@ -2475,9 +2492,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
-
-'
+  m_Text: 1000
 --- !u!222 &676497953
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3789,7 +3804,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
+  m_Text: '1000
 
 '
 --- !u!222 &1193119963
@@ -4108,6 +4123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f0c31a4b74db5b4f95d34de1c33bf19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transition: {fileID: 0}
 --- !u!1 &1300570362
 GameObject:
   m_ObjectHideFlags: 0
@@ -4427,7 +4443,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
+  m_Text: '600
 
 '
 --- !u!222 &1428140017
@@ -5104,6 +5120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f0c31a4b74db5b4f95d34de1c33bf19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transition: {fileID: 0}
 --- !u!114 &1694222330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5611,6 +5628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f0c31a4b74db5b4f95d34de1c33bf19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transition: {fileID: 0}
 --- !u!1 &1909457064
 GameObject:
   m_ObjectHideFlags: 0
@@ -5844,8 +5862,9 @@ GameObject:
   - component: {fileID: 1976227713}
   - component: {fileID: 1976227712}
   - component: {fileID: 1976227711}
+  - component: {fileID: 1976227710}
   m_Layer: 5
-  m_Name: 2 4
+  m_Name: guitar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5868,9 +5887,25 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -159.20001, y: 72.79999}
+  m_AnchoredPosition: {x: -159.20004, y: 72.79999}
   m_SizeDelta: {x: 100, y: 99.999}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1976227710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976227708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60eb5c6a647bbfd41b2a900622199f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinManager: {fileID: 11400000, guid: 76978c03d1e251d4eb10bb35686c60b6, type: 2}
+  skinIndex: 8
+  buyButton: {fileID: 95553829}
+  costText: {fileID: 676497952}
 --- !u!114 &1976227711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5915,7 +5950,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1976227710}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnSkinPressed
         m_Mode: 1
@@ -5947,7 +5982,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f2e2da72a0489d246b36b451a80e5f65, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6127,8 +6162,9 @@ GameObject:
   - component: {fileID: 2029634425}
   - component: {fileID: 2029634424}
   - component: {fileID: 2029634423}
+  - component: {fileID: 2029634422}
   m_Layer: 5
-  m_Name: 2 3
+  m_Name: footBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6151,9 +6187,25 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -273.2, y: 72.79999}
+  m_AnchoredPosition: {x: -273.20004, y: 72.79999}
   m_SizeDelta: {x: 100, y: 99.999}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2029634422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2029634420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60eb5c6a647bbfd41b2a900622199f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinManager: {fileID: 11400000, guid: 76978c03d1e251d4eb10bb35686c60b6, type: 2}
+  skinIndex: 7
+  buyButton: {fileID: 442803986}
+  costText: {fileID: 1428140016}
 --- !u!114 &2029634423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6198,7 +6250,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2029634422}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnSkinPressed
         m_Mode: 1
@@ -6230,7 +6282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: b4663b74c2bcd7147b251326e2117047, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6481,7 +6533,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 183313619}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnBuyButtonPressed
         m_Mode: 1
@@ -6777,9 +6829,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
-
-'
+  m_Text: 5000
 --- !u!222 &272994797534992531
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6808,7 +6858,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 7099309826937612153, guid: 750a4763f0ec8ff428fe78c3ebe8a91e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6937,7 +6987,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
+  m_Text: '2500
 
 '
 --- !u!222 &997053635908638329
@@ -7083,8 +7133,9 @@ GameObject:
   - component: {fileID: 3195844107678836956}
   - component: {fileID: 311588129993939840}
   - component: {fileID: 8893937584713130980}
+  - component: {fileID: 5984599988644219084}
   m_Layer: 5
-  m_Name: 3 1
+  m_Name: teddyBear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7208,7 +7259,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
+  m_Text: '5000
 
 '
 --- !u!114 &2121470776847410115
@@ -7507,7 +7558,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
+  m_Text: '1500
 
 '
 --- !u!114 &2653225602375764633
@@ -7925,7 +7976,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
+  m_Text: '4000
 
 '
 --- !u!222 &3319248239128713506
@@ -8428,9 +8479,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
-
-'
+  m_Text: 2500
 --- !u!224 &4164614796813932471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8590,7 +8639,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
+  m_Text: '2000
 
 '
 --- !u!224 &4498755830343513966
@@ -9062,9 +9111,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
-
-'
+  m_Text: 1500
 --- !u!222 &5342301599764783870
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9397,6 +9444,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5984599988644219084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679556646961523284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60eb5c6a647bbfd41b2a900622199f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinManager: {fileID: 11400000, guid: 76978c03d1e251d4eb10bb35686c60b6, type: 2}
+  skinIndex: 10
+  buyButton: {fileID: 6992896166037624854}
+  costText: {fileID: 2572536051917687262}
 --- !u!114 &6016159622557503175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9460,9 +9523,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
-
-'
+  m_Text: 2000
 --- !u!1 &6285358730986918327
 GameObject:
   m_ObjectHideFlags: 0
@@ -9878,9 +9939,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0
-
-'
+  m_Text: 4000
 --- !u!224 &6824118142671893150
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9965,7 +10024,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5984599988644219084}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnBuyButtonPressed
         m_Mode: 1
@@ -10915,7 +10974,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5984599988644219084}
         m_TargetAssemblyTypeName: skinShopItem, Assembly-CSharp
         m_MethodName: OnSkinPressed
         m_Mode: 1
