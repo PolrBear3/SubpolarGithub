@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
+    AudioSource runsound;
+    public AudioClip slide;
+
     Vector2 move;
     public float moveSpeed;
     public float maxSpeed;
@@ -15,44 +18,26 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        runsound = GetComponent<AudioSource>();
     }
-    
+
     private void Update()
     {
         //Move
         move = gameObject.transform.position;
-        if(moveSpeed < maxSpeed)
+        if (moveSpeed < maxSpeed)
         {
             moveSpeed += 0.00001f * Time.deltaTime;
         }
         move.x += moveSpeed;
         gameObject.transform.position = move;
 
-
-        //Drop
-        if (Time.time > nextDropTime)
-        {
-            if (Input.GetKeyDown(KeyCode.Space)) 
-            {
-                Drop();
-                nextDropTime = Time.time + 1f / dropRate;
-            }
-        }
-
-        //Jump  
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if (isGrounded)
-            {
-                Jump();
-            }
-        }
+        //for GroundCheck
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
-        //Slide
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        { 
-            anim.SetTrigger("slide");
+        if (isGrounded == false)
+        {
+            Jumpsound();
         }
     }
 
@@ -62,20 +47,34 @@ public class Player : MonoBehaviour
     int randomInt;
     float dropRate = 2f;
     float nextDropTime = 0f;
-    void Drop()
+    public void Drop()
     {
-        randomInt = Random.Range(0, presents.Length);
-        Instantiate(presents[randomInt], dropPoint.position, dropPoint.rotation);
+        if (Time.time > nextDropTime)
+        {
+            randomInt = Random.Range(0, presents.Length);
+            Instantiate(presents[randomInt], dropPoint.position, dropPoint.rotation);
+            nextDropTime = Time.time + 1f / dropRate;
+        }
     }
-    
+
     //Jump
     public float jumphight;
     bool isGrounded;
     public Transform groundCheck;
     public LayerMask groundLayer;
-    void Jump()
+    public void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumphight);
+        if (isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumphight);
+        }
+    }
+
+    //Slide
+    public void Slide()
+    {
+        runsound.PlayOneShot(slide);
+        anim.SetTrigger("slide");
     }
 
     //pause
@@ -106,5 +105,15 @@ public class Player : MonoBehaviour
             //moving top right UI to gameOverMenu 
             Destroy(GameObject.FindWithTag("scoreUI"));
         }
+    }
+
+    //Sound
+    private void Runsound()
+    {
+        runsound.Play();
+    }
+    private void Jumpsound()
+    {
+        runsound.Stop();
     }
 }

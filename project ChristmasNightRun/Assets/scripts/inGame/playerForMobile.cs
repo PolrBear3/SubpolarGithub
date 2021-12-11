@@ -7,6 +7,9 @@ public class playerForMobile : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
+    AudioSource runsound;
+    public AudioClip slide;
+    
     Vector2 move;
     public float moveSpeed;
     public float maxSpeed;
@@ -15,13 +18,14 @@ public class playerForMobile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        runsound = GetComponent<AudioSource>();
     }
 
     private void Update()
-    {
+    {   
         //Move
         move = gameObject.transform.position;
-        if (moveSpeed < maxSpeed)
+        if(moveSpeed < maxSpeed)
         {
             moveSpeed += 0.00001f * Time.deltaTime;
         }
@@ -30,6 +34,11 @@ public class playerForMobile : MonoBehaviour
 
         //for GroundCheck
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        if (isGrounded == false)
+        {
+            Jumpsound();
+        }
     }
 
     //Drop
@@ -64,6 +73,7 @@ public class playerForMobile : MonoBehaviour
     //Slide
     public void Slide()
     {
+        runsound.PlayOneShot(slide);
         anim.SetTrigger("slide");
     }
 
@@ -95,5 +105,15 @@ public class playerForMobile : MonoBehaviour
             //moving top right UI to gameOverMenu 
             Destroy(GameObject.FindWithTag("scoreUI"));
         }
+    }
+
+    //Sound
+    private void Runsound()
+    {
+        runsound.Play();
+    }
+    private void Jumpsound()
+    {
+        runsound.Stop();
     }
 }
