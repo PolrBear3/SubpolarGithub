@@ -7,8 +7,9 @@ public class playerForMobile : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
-    AudioSource runsound;
-    public AudioClip slide;
+    
+    // if change platform, go to pauseController and change reference to Player audio for pause and resume sound stop
+    public static AudioSource audioSRC;
     
     Vector2 move;
     public float moveSpeed;
@@ -18,7 +19,7 @@ public class playerForMobile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        runsound = GetComponent<AudioSource>();
+        audioSRC = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -34,11 +35,6 @@ public class playerForMobile : MonoBehaviour
 
         //for GroundCheck
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-
-        if (isGrounded == false)
-        {
-            Jumpsound();
-        }
     }
 
     //Drop
@@ -47,10 +43,12 @@ public class playerForMobile : MonoBehaviour
     int randomInt;
     float dropRate = 2f;
     float nextDropTime = 0f;
+    
     public void Drop()
     {
         if (Time.time > nextDropTime)
         {
+            FindObjectOfType<audioManager>().Play("PlayerThrow");
             randomInt = Random.Range(0, presents.Length);
             Instantiate(presents[randomInt], dropPoint.position, dropPoint.rotation);
             nextDropTime = Time.time + 1f / dropRate;
@@ -62,8 +60,11 @@ public class playerForMobile : MonoBehaviour
     bool isGrounded;
     public Transform groundCheck;
     public LayerMask groundLayer;
+    
     public void Jump()
     {
+        FindObjectOfType<audioManager>().Play("PlayerJump");
+        
         if (isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumphight);
@@ -73,7 +74,7 @@ public class playerForMobile : MonoBehaviour
     //Slide
     public void Slide()
     {
-        runsound.PlayOneShot(slide);
+        FindObjectOfType<audioManager>().Play("PlayerSlide");
         anim.SetTrigger("slide");
     }
 
@@ -105,15 +106,5 @@ public class playerForMobile : MonoBehaviour
             //moving top right UI to gameOverMenu 
             Destroy(GameObject.FindWithTag("scoreUI"));
         }
-    }
-
-    //Sound
-    private void Runsound()
-    {
-        runsound.Play();
-    }
-    private void Jumpsound()
-    {
-        runsound.Stop();
     }
 }

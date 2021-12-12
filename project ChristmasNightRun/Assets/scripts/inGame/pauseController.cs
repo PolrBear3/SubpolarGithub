@@ -18,6 +18,8 @@ public class pauseController : MonoBehaviour
         pauseButton.SetActive(false);
         Time.timeScale = 0f;
         gameIsPaused = true;
+
+        playerForMobile.audioSRC.Stop();
     }
 
     // pause/play for player and camera and snow effect box
@@ -37,6 +39,8 @@ public class pauseController : MonoBehaviour
         pauseMenu.SetActive(false);
         pauseButton.SetActive(true);
         Time.timeScale = 1f;
+
+        playerForMobile.audioSRC.Play();
     }
 
     public void Restart()

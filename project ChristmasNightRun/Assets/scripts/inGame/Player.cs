@@ -7,8 +7,9 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
-    AudioSource runsound;
-    public AudioClip slide;
+
+    // if change platform, go to pauseController and change reference to Player audio for pause and resume sound stop
+    public static AudioSource audioMNG;
 
     Vector2 move;
     public float moveSpeed;
@@ -18,7 +19,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        runsound = GetComponent<AudioSource>();
+        audioMNG = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -34,11 +35,6 @@ public class Player : MonoBehaviour
 
         //for GroundCheck
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-
-        if (isGrounded == false)
-        {
-            Jumpsound();
-        }
     }
 
     //Drop
@@ -47,6 +43,7 @@ public class Player : MonoBehaviour
     int randomInt;
     float dropRate = 2f;
     float nextDropTime = 0f;
+
     public void Drop()
     {
         if (Time.time > nextDropTime)
@@ -62,6 +59,7 @@ public class Player : MonoBehaviour
     bool isGrounded;
     public Transform groundCheck;
     public LayerMask groundLayer;
+
     public void Jump()
     {
         if (isGrounded)
@@ -73,7 +71,6 @@ public class Player : MonoBehaviour
     //Slide
     public void Slide()
     {
-        runsound.PlayOneShot(slide);
         anim.SetTrigger("slide");
     }
 
@@ -105,15 +102,5 @@ public class Player : MonoBehaviour
             //moving top right UI to gameOverMenu 
             Destroy(GameObject.FindWithTag("scoreUI"));
         }
-    }
-
-    //Sound
-    private void Runsound()
-    {
-        runsound.Play();
-    }
-    private void Jumpsound()
-    {
-        runsound.Stop();
     }
 }
