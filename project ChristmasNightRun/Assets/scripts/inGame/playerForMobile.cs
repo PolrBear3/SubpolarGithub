@@ -28,7 +28,7 @@ public class playerForMobile : MonoBehaviour
         move = gameObject.transform.position;
         if(moveSpeed < maxSpeed)
         {
-            moveSpeed += 0.00001f * Time.deltaTime;
+            moveSpeed += 0.00008f * Time.deltaTime;
         }
         move.x += moveSpeed;
         gameObject.transform.position = move;
