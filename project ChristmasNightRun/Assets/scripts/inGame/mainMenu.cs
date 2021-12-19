@@ -73,4 +73,14 @@ public class mainMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 7);
         coinText.coinSave();
     }
+
+    public void credit()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 8);
+    }
+
+    public void creditBack()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 8);
+    }
 }

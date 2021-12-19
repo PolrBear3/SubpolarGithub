@@ -14,12 +14,12 @@ public class snowController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         move = gameObject.transform.position;
         if (moveSpeed < maxSpeed)
         {
-            moveSpeed += 0.00001f * Time.deltaTime;
+            moveSpeed += 0.00005f * Time.deltaTime;
         }
         move.x += moveSpeed;
         gameObject.transform.position = move;

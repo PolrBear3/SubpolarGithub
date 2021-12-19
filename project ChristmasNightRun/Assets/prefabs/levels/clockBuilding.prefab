@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5836717900314034886
 Transform:
@@ -45,7 +45,7 @@ GameObject:
   m_TagString: destroyBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2114786539644105030
 Transform:
@@ -101,7 +101,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &3397987374457376417
 Transform:
@@ -141,7 +141,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1846321425420877119
 Transform:
@@ -170,7 +170,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.8586831, y: -1.1362386}
+  m_Offset: {x: -2.019658, y: -1.1362386}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -181,7 +181,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3211412, y: 1.2344637}
+  m_Size: {x: 1.3239975, y: 1.2344637}
   m_EdgeRadius: 0
 --- !u!61 &3347412458508549009
 BoxCollider2D:
@@ -196,7 +196,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.7202644, y: -0.37479854}
+  m_Offset: {x: -1.8799796, y: -0.37479854}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -207,7 +207,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16162872, y: 0.27254534}
+  m_Size: {x: 0.15725231, y: 0.27254534}
   m_EdgeRadius: 0
 --- !u!61 &960928750206236844
 BoxCollider2D:
@@ -222,7 +222,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.07947636, y: -1.0011361}
+  m_Offset: {x: -0.078644276, y: -1.0011361}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -233,7 +233,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.7578373, y: 1.4393315}
+  m_Size: {x: 2.0026102, y: 1.4393315}
   m_EdgeRadius: 0
 --- !u!61 &7482347415831158476
 BoxCollider2D:
@@ -248,7 +248,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.13923359, y: -0.13702321}
+  m_Offset: {x: -0.29950714, y: -0.13702321}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -259,7 +259,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.44306755, y: 0.2751031}
+  m_Size: {x: 0.43524933, y: 0.2751031}
   m_EdgeRadius: 0
 --- !u!61 &9000113716528435541
 BoxCollider2D:
@@ -331,7 +331,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5241388042273055620
 Transform:
@@ -514,6 +514,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: orangeGuy
       objectReference: {fileID: 0}
+    - target: {fileID: 6692889540729933330, guid: 3afcc6db8ba689f4aa98ca3991bf8238, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3afcc6db8ba689f4aa98ca3991bf8238, type: 3}
 --- !u!4 &3242967796732261712 stripped
@@ -576,6 +580,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: dad
       objectReference: {fileID: 0}
+    - target: {fileID: 6556611977722936078, guid: 5aa1d287e2928f143a4c9b0d24f1e1ae, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aa1d287e2928f143a4c9b0d24f1e1ae, type: 3}
 --- !u!4 &8952843242571447789 stripped
@@ -593,6 +601,10 @@ PrefabInstance:
     - target: {fileID: 2975545412222101585, guid: 7b41959ac5ab3574d97d20311ba72c4d, type: 3}
       propertyPath: m_Name
       value: mom
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975545412222101585, guid: 7b41959ac5ab3574d97d20311ba72c4d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3560940903995073181, guid: 7b41959ac5ab3574d97d20311ba72c4d, type: 3}
       propertyPath: m_RootOrder
@@ -655,6 +667,10 @@ PrefabInstance:
     - target: {fileID: 1527907246104586851, guid: e8dad62b4873bf94f95124559ea3fe32, type: 3}
       propertyPath: m_Name
       value: christmasBoy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1527907246104586851, guid: e8dad62b4873bf94f95124559ea3fe32, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1606560660099408024, guid: e8dad62b4873bf94f95124559ea3fe32, type: 3}
       propertyPath: m_RootOrder

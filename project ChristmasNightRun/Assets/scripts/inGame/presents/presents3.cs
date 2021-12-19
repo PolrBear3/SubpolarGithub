@@ -7,7 +7,7 @@ public class presents3 : MonoBehaviour
 {
     float speed = 2f;
     private Rigidbody2D rb;
-    float rotSpeed = 1.5f;
+    float rotSpeed = 3f;
 
     [SerializeField] private skinManager3 skinManager3;
 
@@ -19,7 +19,7 @@ public class presents3 : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = skinManager3.GetSelectedSkin3().sprite3;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         transform.Rotate(new Vector3(0, 0, -rotSpeed));
     }

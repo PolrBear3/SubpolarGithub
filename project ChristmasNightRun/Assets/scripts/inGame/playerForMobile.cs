@@ -22,13 +22,13 @@ public class playerForMobile : MonoBehaviour
         audioSRC = GetComponent<AudioSource>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {   
         //Move
         move = gameObject.transform.position;
         if(moveSpeed < maxSpeed)
         {
-            moveSpeed += 0.00008f * Time.deltaTime;
+            moveSpeed += 0.00005f * Time.deltaTime;
         }
         move.x += moveSpeed;
         gameObject.transform.position = move;

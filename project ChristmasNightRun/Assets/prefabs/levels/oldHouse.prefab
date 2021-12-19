@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &8381392964369779742
 Transform:
@@ -51,7 +51,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6568759212819371060
 Transform:
@@ -82,7 +82,7 @@ GameObject:
   m_TagString: destroyBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &819349626304526989
 Transform:
@@ -143,7 +143,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2728227762826596151
 Transform:
@@ -307,7 +307,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4509493127661996453
 Transform:
@@ -364,8 +364,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -690137071
-  m_SortingLayer: 1
+  m_SortingLayerID: -1395207011
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 467716194456878836, guid: 9f5bfd619dfd2384ab8a246caf5b92f5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -490,6 +490,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bedroomBoy
       objectReference: {fileID: 0}
+    - target: {fileID: 5355888004453832882, guid: 32e60ef3e157a8c42bdecff0addb3f2a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32e60ef3e157a8c42bdecff0addb3f2a, type: 3}
 --- !u!4 &2240214547186286990 stripped
@@ -507,6 +511,10 @@ PrefabInstance:
     - target: {fileID: 2975364591127649917, guid: e53eb3bd7228904438d59158656828ad, type: 3}
       propertyPath: m_Name
       value: whiteGuy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2975364591127649917, guid: e53eb3bd7228904438d59158656828ad, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7772286312801076395, guid: e53eb3bd7228904438d59158656828ad, type: 3}
       propertyPath: m_RootOrder
@@ -614,6 +622,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: smokeGuy
       objectReference: {fileID: 0}
+    - target: {fileID: 8769792683110925085, guid: 027ad80f68fa64180af362d8bcb883ca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 027ad80f68fa64180af362d8bcb883ca, type: 3}
 --- !u!4 &2272654364540744279 stripped
@@ -631,6 +643,10 @@ PrefabInstance:
     - target: {fileID: 1500886632415652451, guid: b1838adcab87ebb4a86b47767d67f2dc, type: 3}
       propertyPath: m_Name
       value: blueBoy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1500886632415652451, guid: b1838adcab87ebb4a86b47767d67f2dc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1500886632415652476, guid: b1838adcab87ebb4a86b47767d67f2dc, type: 3}
       propertyPath: m_RootOrder
@@ -738,6 +754,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: redMan
       objectReference: {fileID: 0}
+    - target: {fileID: 4652670916849643072, guid: 30635b9a347c40e48b7e11ac813f4442, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30635b9a347c40e48b7e11ac813f4442, type: 3}
 --- !u!4 &8341358623322120942 stripped
@@ -804,6 +824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: dad
       objectReference: {fileID: 0}
+    - target: {fileID: 6556611977722936078, guid: 5aa1d287e2928f143a4c9b0d24f1e1ae, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 8285402757455288263, guid: 5aa1d287e2928f143a4c9b0d24f1e1ae, type: 3}
       propertyPath: m_Size.x
       value: 0.107008934
@@ -841,6 +865,10 @@ PrefabInstance:
     - target: {fileID: 923647777049233885, guid: af8ecf9358f2e8846b3ecaf30feec43c, type: 3}
       propertyPath: m_Name
       value: bedroomGirl
+      objectReference: {fileID: 0}
+    - target: {fileID: 923647777049233885, guid: af8ecf9358f2e8846b3ecaf30feec43c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 2681087569747593416, guid: af8ecf9358f2e8846b3ecaf30feec43c, type: 3}
       propertyPath: m_RootOrder

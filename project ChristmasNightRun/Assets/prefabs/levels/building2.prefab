@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1235621827893689994
 Transform:
@@ -48,7 +48,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4816363251357548625
 Transform:
@@ -192,7 +192,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &8826743379281684868
 Transform:
@@ -221,7 +221,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.3586624, y: -0.52698684}
+  m_Offset: {x: -1.4194367, y: -0.52698684}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -232,7 +232,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.3130698, y: 0.06418276}
+  m_Size: {x: 2.2821994, y: 0.06418276}
   m_EdgeRadius: 0
 --- !u!61 &6161214386928108906
 BoxCollider2D:
@@ -275,7 +275,7 @@ GameObject:
   m_TagString: destroyBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5630842684999991853
 Transform:
@@ -331,7 +331,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &6511958261045499370
 Transform:
@@ -363,6 +363,10 @@ PrefabInstance:
     - target: {fileID: 2348653680554033030, guid: 7324a3f30edb0204e832d5093339525d, type: 3}
       propertyPath: m_Name
       value: purpleWoman
+      objectReference: {fileID: 0}
+    - target: {fileID: 2348653680554033030, guid: 7324a3f30edb0204e832d5093339525d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 5154302503184613815, guid: 7324a3f30edb0204e832d5093339525d, type: 3}
       propertyPath: m_RootOrder
@@ -425,6 +429,10 @@ PrefabInstance:
     - target: {fileID: 3190271517775542415, guid: dc873260b91a6474cb0a411c48103221, type: 3}
       propertyPath: m_Name
       value: blueMan
+      objectReference: {fileID: 0}
+    - target: {fileID: 3190271517775542415, guid: dc873260b91a6474cb0a411c48103221, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 4819771924155881236, guid: dc873260b91a6474cb0a411c48103221, type: 3}
       propertyPath: m_FlipX
@@ -556,6 +564,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bedroomBoy
       objectReference: {fileID: 0}
+    - target: {fileID: 5355888004453832882, guid: 32e60ef3e157a8c42bdecff0addb3f2a, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32e60ef3e157a8c42bdecff0addb3f2a, type: 3}
 --- !u!4 &9214799454397220824 stripped
@@ -630,6 +642,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: blackGuy
       objectReference: {fileID: 0}
+    - target: {fileID: 6471839255963813955, guid: ee3a7abc89c199b4298b9dc01d5b1795, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee3a7abc89c199b4298b9dc01d5b1795, type: 3}
 --- !u!4 &5991681154324835853 stripped
@@ -692,6 +708,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: hatGuy
       objectReference: {fileID: 0}
+    - target: {fileID: 6847290062881375293, guid: 99254a8e69a1c35428f814dc1e15cd33, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99254a8e69a1c35428f814dc1e15cd33, type: 3}
 --- !u!4 &2534294151871824497 stripped
@@ -753,6 +773,10 @@ PrefabInstance:
     - target: {fileID: 6083206023147515947, guid: 46167fd7a1544bd44b9980a2bff4c9f3, type: 3}
       propertyPath: m_Name
       value: discoGuy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6083206023147515947, guid: 46167fd7a1544bd44b9980a2bff4c9f3, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46167fd7a1544bd44b9980a2bff4c9f3, type: 3}

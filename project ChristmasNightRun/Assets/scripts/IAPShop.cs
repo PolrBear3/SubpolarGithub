@@ -5,7 +5,7 @@ using UnityEngine.Purchasing;
 
 public class IAPShop : MonoBehaviour
 {
-    private string Joys5000 = "com.SubpolarGames.ChristmasNightRun.5000Joys";
+    private string Joys5000 = "com.subpolargames.christmasnightrun.5000joys";
     public void OnPurchaseComplete5000Joys(Product product)
     {
         if (product.definition.id == Joys5000)
@@ -15,7 +15,7 @@ public class IAPShop : MonoBehaviour
         }
     }
 
-    private string Joys10000 = "com.SubpolarGames.ChristmasNightRun.10000Joys";
+    private string Joys10000 = "com.subpolargames.christmasnightrun.10000joys";
     public void OnPurchaseComplete10000Joys(Product product)
     {
         if (product.definition.id == Joys10000)
@@ -25,7 +25,7 @@ public class IAPShop : MonoBehaviour
         }
     }
 
-    private string Joys30000 = "com.SubpolarGames.ChristmasNightRun.30000Joys";
+    private string Joys30000 = "com.subpolargames.christmasnightrun.30000joys";
     public void OnPurchaseComplete30000Joys(Product product)
     {
         if (product.definition.id == Joys30000)
@@ -35,7 +35,7 @@ public class IAPShop : MonoBehaviour
         }
     }
 
-    private string Joys50000 = "com.SubpolarGames.ChristmasNightRun.50000Joys";
+    private string Joys50000 = "com.subpolargames.christmasnightrun.50000joys";
     public void OnPurchaseComplete50000Joys(Product product)
     {
         if (product.definition.id == Joys50000)
@@ -45,7 +45,7 @@ public class IAPShop : MonoBehaviour
         }
     }
 
-    private string Joys100000 = "com.SubpolarGames.ChristmasNightRun.100000Joys";
+    private string Joys100000 = "com.subpolargames.christmasnightrun.100000joys";
     public void OnPurchaseComplete100000Joys(Product product)
     {
         if (product.definition.id == Joys100000)
