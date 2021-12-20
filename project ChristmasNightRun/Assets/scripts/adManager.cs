@@ -28,11 +28,9 @@ public class adManager : MonoBehaviour
         }
     }
 
-    public void PlayAd()
+    public void PlayAdforLife()
     {
         Advertisement.Show("Rewarded_Android");
-        
-        //after ad is watch it adds additional 1 life
         lifeForAds.currentLives += 2;
         PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
     }
