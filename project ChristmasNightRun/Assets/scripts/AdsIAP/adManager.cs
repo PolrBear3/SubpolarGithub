@@ -3,17 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class watchAdforJoy : MonoBehaviour, IUnityAdsListener
+public class adManager : MonoBehaviour, IUnityAdsListener
 {
-#if UNITY_ANDROID
     string gameID = "4492207";
-#endif
 
-    public GameObject adButtonforJoy;
+    public GameObject adButton;
 
     void Start()
     {
         Advertisement.Initialize(gameID);
+    }
+
+    void Update()
+    {
+        if (lifeForAds.currentLives <= 0)
+        {
+            adButton.SetActive(true);
+        }
+        else
+        {
+            adButton.SetActive(false);
+        }
     }
 
     void OnEnable()
@@ -26,19 +36,19 @@ public class watchAdforJoy : MonoBehaviour, IUnityAdsListener
         Advertisement.RemoveListener(this);
     }
 
-    public void PlayAdforJoy(string c)
+    public void PlayAdforLife(string p)
     {
-        Advertisement.Show(c);
+        Advertisement.Show(p);
     }
-
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
-        if (showResult == ShowResult.Finished)
+        if(showResult == ShowResult.Finished)
         {
-            coinText.AddCoinsforAd();
+            lifeForAds.currentLives += 2;
+            PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
         }
-        else if (showResult == ShowResult.Failed)
+        else if(showResult == ShowResult.Failed)
         {
             Debug.Log("Ad failure");
         }
@@ -51,6 +61,6 @@ public class watchAdforJoy : MonoBehaviour, IUnityAdsListener
     {
     }
     public void OnUnityAdsDidStart(string placementId)
-    {
+    {  
     }
 }
