@@ -18,7 +18,6 @@ public class mainMenu : MonoBehaviour
         ////takes away current life
         lifeForAds.currentLives -= 1;
         PlayerPrefs.SetInt("Lives", lifeForAds.currentLives);
-
         FindObjectOfType<audioManager>().Play("CurtainSound");
     }
 
