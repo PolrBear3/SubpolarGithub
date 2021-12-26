@@ -24,9 +24,9 @@ public class watchAdforJoy : MonoBehaviour, IUnityAdsListener
         Advertisement.RemoveListener(this);
     }
 
-    public void PlayAdforJoy(string c)
+    public void PlayAdforJoy()
     {
-        Advertisement.Show(c);
+        Advertisement.Show("Rewarded_Android");
     }
 
 
