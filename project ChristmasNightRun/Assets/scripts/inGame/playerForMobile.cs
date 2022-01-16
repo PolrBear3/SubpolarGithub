@@ -35,6 +35,15 @@ public class playerForMobile : MonoBehaviour
 
         //for GroundCheck
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        if (!audioSRC.isPlaying && isGrounded)
+        {
+            audioSRC.Play();
+        }
+        else if (audioSRC.isPlaying && isGrounded == false)
+        {
+            audioSRC.Stop();
+        }
     }
 
     //Drop
@@ -99,6 +108,7 @@ public class playerForMobile : MonoBehaviour
     {
         if (collision.CompareTag("destroyBox"))
         {
+            audioSRC.Pause();
             gameOverMenu.gameOver = true;
             scoreManager.GameOver();
             coinText.coinSave();

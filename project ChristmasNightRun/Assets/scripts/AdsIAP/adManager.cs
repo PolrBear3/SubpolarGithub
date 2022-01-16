@@ -36,9 +36,9 @@ public class adManager : MonoBehaviour, IUnityAdsListener
         Advertisement.RemoveListener(this);
     }
 
-    public void PlayAdforLife(string p)
+    public void PlayAdforLife()
     {
-        Advertisement.Show(p);
+        Advertisement.Show("Rewarded_Android");
     }
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
