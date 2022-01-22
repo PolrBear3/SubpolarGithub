@@ -7,48 +7,89 @@ public class object_controller : MonoBehaviour
     public static bool hasItem;
 
     public GameObject fireBall;
+    public GameObject fireBall_dropped;
     bool fireBall_scanner;
 
     public GameObject iceBall;
+    public GameObject iceBall_dropped;
     bool iceBall_scanner;
+
+    public GameObject cane;
+    public GameObject cane_dropped;
+    bool cane_scanner;
+
+    public GameObject spear;
+    public GameObject spear_dropped;
+    bool spear_scanner;
 
     private void Update()
     {
-        // pickup function /////////////////////////////////////////////////////////
+        pickUp();
+        drop();
+    }
+
+    void pickUp()
+    {
         if (Input.GetKeyDown(KeyCode.E) && hasItem == false)
         {
-            // pickup fireball
             if (fireBall_scanner == true)
             {
                 fireBall.SetActive(true);
                 fireBall_scanner = false;
                 hasItem = true;
             }
-            
-            // pickup iceball
+
             if (iceBall_scanner == true)
             {
                 iceBall.SetActive(true);
                 iceBall_scanner = false;
                 hasItem = true;
             }
-        }
 
-        // drop function /////////////////////////////////////////////////////////
+            if (cane_scanner == true)
+            {
+                cane.SetActive(true);
+                cane_scanner = false;
+                hasItem = true;
+            }
+
+            if (spear_scanner == true)
+            {
+                spear.SetActive(true);
+                spear_scanner = false;
+                hasItem = true;
+            }
+        }
+    }
+
+    void drop()
+    {
         if (Input.GetKeyDown(KeyCode.Q) && hasItem == true)
         {
             hasItem = false;
 
-            // drop fireball
             if (fireBall.activeSelf == true)
             {
                 fireBall.SetActive(false);
+                Instantiate(fireBall_dropped, transform.position, Quaternion.identity);
             }
 
-            // drop iceball
             if (iceBall.activeSelf == true)
             {
                 iceBall.SetActive(false);
+                Instantiate(iceBall_dropped, transform.position, Quaternion.identity);
+            }
+
+            if (cane.activeSelf == true)
+            {
+                cane.SetActive(false);
+                Instantiate(cane_dropped, transform.position, Quaternion.identity);
+            }
+
+            if (spear.activeSelf == true)
+            {
+                spear.SetActive(false);
+                Instantiate(spear_dropped, transform.position, Quaternion.identity);
             }
         }
     }
@@ -64,6 +105,14 @@ public class object_controller : MonoBehaviour
         {
             iceBall_scanner = true;
         }
+        if (collision.CompareTag("cane"))
+        {
+            cane_scanner = true;
+        }
+        if (collision.CompareTag("spear"))
+        {
+            spear_scanner = true;
+        }
     }
     
     private void OnTriggerExit2D(Collider2D collision)
@@ -75,6 +124,14 @@ public class object_controller : MonoBehaviour
         if (collision.CompareTag("iceBall"))
         {
             iceBall_scanner = false;
+        }
+        if (collision.CompareTag("cane"))
+        {
+            cane_scanner = false;
+        }
+        if (collision.CompareTag("spear"))
+        {
+            spear_scanner = false;
         }
     }
 }

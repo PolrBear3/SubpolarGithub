@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class dropped_objects : MonoBehaviour
 {
-    private bool scan;
+    bool scan;
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && scan == true && object_controller.hasItem == false)
+        if (Input.GetKeyDown(KeyCode.E) && scan == true)
         {
             Destroy(gameObject, 0.01f);
+        }
+
+        if(object_controller.hasItem == true)
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+        else if(object_controller.hasItem == false)
+        {
+            GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 
