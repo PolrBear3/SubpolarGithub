@@ -6,6 +6,8 @@ public class object_controller : MonoBehaviour
 {
     public static bool hasItem;
 
+    public GameObject melee;
+
     public GameObject fireBall;
     bool fireBall_scanner;
 
@@ -22,6 +24,16 @@ public class object_controller : MonoBehaviour
     {
         pickUp();
         drop();
+
+        // defalut state of player
+        if (hasItem == false)
+        {
+            melee.SetActive(true);
+        }
+        else if (hasItem == true)
+        {
+            melee.SetActive(false);
+        }
     }
 
     void pickUp()

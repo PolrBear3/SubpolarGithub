@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4a38145a77eb35747b8f6bbafaa9a5ea
+guid: 5aef9ea8795a6c64caa0d403fb8908c9
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -128,7 +128,28 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: blueGuy_lifeBar_0
+      name: box2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 32
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9fa5a583a2f45640adf8c0c8c97fc96
+      internalID: -1769249612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: box2_3
       rect:
         serializedVersion: 2
         x: 0
@@ -142,50 +163,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 235ed20483e0d0f41bdf34286ab605d9
-      internalID: -800293543
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: blueGuy_lifeBar_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 91ed013588b5258498fb158e9d072814
-      internalID: 1864582329
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: blueGuy_lifeBar_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3c4de078595c06f4781468fc622c8dca
-      internalID: 1329047247
+      spriteID: 693335da1a954e24395448fbbad0ba0f
+      internalID: -723370485
       vertices: []
       indices: 
       edges: []
@@ -201,9 +180,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      blueGuy_lifeBar_0: -800293543
-      blueGuy_lifeBar_1: 1864582329
-      blueGuy_lifeBar_2: 1329047247
+      box2_3: -723370485
+      box2_1: 1510966754
+      box2_0: -1769249612
+      box2_2: -1681630496
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
