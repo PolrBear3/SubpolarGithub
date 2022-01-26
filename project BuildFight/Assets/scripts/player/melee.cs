@@ -5,6 +5,9 @@ using UnityEngine;
 public class melee : MonoBehaviour
 {
     Animator anim;
+
+    bool scan = false;
+    public int damage;
     
     void Awake()
     {
@@ -16,6 +19,31 @@ public class melee : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("melee");
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            anim.SetTrigger("melee2");
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("box"))
+        {
+            if (scan == false)
+            {
+                scan = true;
+                collision.GetComponent<boxHealth>().currentHealth -= damage;
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("box"))
+        {
+            scan = false;
         }
     }
 }
