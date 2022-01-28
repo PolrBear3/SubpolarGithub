@@ -37,11 +37,23 @@ public class melee : MonoBehaviour
                 collision.GetComponent<boxHealth>().currentHealth -= damage;
             }
         }
+        if (collision.CompareTag("wall"))
+        {
+            if (isHit == false)
+            {
+                isHit = true;
+                collision.GetComponent<wall>().currentHealth -= damage;
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("box"))
+        {
+            isHit = false;
+        }
+        if (collision.CompareTag("wall"))
         {
             isHit = false;
         }
