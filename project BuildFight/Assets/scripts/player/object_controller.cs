@@ -24,8 +24,11 @@ public class object_controller : MonoBehaviour
     {
         pickUp();
         drop();
+        Player_Default_State();
+    }
 
-        // defalut state of player
+    void Player_Default_State()
+    {
         if (hasItem == false)
         {
             melee.SetActive(true);

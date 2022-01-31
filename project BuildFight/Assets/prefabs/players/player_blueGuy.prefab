@@ -333,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4d1cf5dba437d4e86b693e8a8a2ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationPoint: {fileID: 5702793623841375622}
 --- !u!1 &5702793624304940767
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,7 +1224,7 @@ BoxCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.06062651, y: 0.01804124}

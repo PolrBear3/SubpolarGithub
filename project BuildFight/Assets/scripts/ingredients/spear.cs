@@ -16,6 +16,11 @@ public class spear : MonoBehaviour
 
     void Update()
     {
+        Input_Animation();
+    }
+
+    void Input_Animation()
+    {
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("spear_Melee");
@@ -29,7 +34,7 @@ public class spear : MonoBehaviour
             if (isHit == false)
             {
                 isHit = true;
-                collision.GetComponent<boxHealth>().currentHealth -= damage;
+                collision.GetComponent<box>().currentHealth -= damage;
             }
         }
         if (collision.CompareTag("wall"))

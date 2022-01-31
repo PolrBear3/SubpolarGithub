@@ -6,7 +6,7 @@ public class melee : MonoBehaviour
 {
     Animator anim;
 
-    bool isHit = false;
+    bool isHit;
     public int damage;
     
     void Awake()
@@ -15,6 +15,11 @@ public class melee : MonoBehaviour
     }
 
     void Update()
+    {
+        Input_Animation();
+    }
+
+    void Input_Animation()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -34,7 +39,7 @@ public class melee : MonoBehaviour
             if (isHit == false)
             {
                 isHit = true;
-                collision.GetComponent<boxHealth>().currentHealth -= damage;
+                collision.GetComponent<box>().currentHealth -= damage;
             }
         }
         if (collision.CompareTag("wall"))

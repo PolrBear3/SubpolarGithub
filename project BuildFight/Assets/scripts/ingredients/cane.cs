@@ -14,8 +14,12 @@ public class cane : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        Input_Animation();
+    }
+
+    void Input_Animation()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -30,7 +34,7 @@ public class cane : MonoBehaviour
             if (isHit == false)
             {
                 isHit = true;
-                collision.GetComponent<boxHealth>().currentHealth -= damage;
+                collision.GetComponent<box>().currentHealth -= damage;
             }
         }
         if (collision.CompareTag("wall"))

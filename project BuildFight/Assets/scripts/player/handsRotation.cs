@@ -4,20 +4,36 @@ using UnityEngine;
 
 public class handsRotation : MonoBehaviour
 {
-    Transform aimTransform;
     
     void Awake()
     {
-        aimTransform = transform.Find("rotationPoint");
+        RotationPoint_Assign();
     }
 
     void FixedUpdate()
+    {
+        Mouse_Follow();
+    }
+
+    Transform aimTransform;
+    void Mouse_Follow()
     {
         Vector3 mousePosition = GetMouseWorldPosition();
         Vector3 aimDirection = (mousePosition - transform.position).normalized;
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
         aimTransform.eulerAngles = new Vector3(0, 0, angle);
     }
+
+    public GameObject rotationPoint;
+    void RotationPoint_Assign()
+    {
+        aimTransform = rotationPoint.transform;
+    }
+
+
+
+
+
 
     public static Vector3 GetMouseWorldPosition()
     {

@@ -13,8 +13,13 @@ public class playerAnimation : MonoBehaviour
 
     void Update()
     {
-        if(playerMovement.horizontal == 1 || playerMovement.vertical == 1 ||
-           playerMovement.horizontal == -1 || playerMovement.vertical == -1)
+        Player_Move_Animation();
+    }
+
+    void Player_Move_Animation()
+    {
+        if (playerMovement.horizontal == 1 || playerMovement.vertical == 1 ||
+   playerMovement.horizontal == -1 || playerMovement.vertical == -1)
         {
             anim.SetBool("isMoving", true);
         }

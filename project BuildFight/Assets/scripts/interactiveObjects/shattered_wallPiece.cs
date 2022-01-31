@@ -5,9 +5,6 @@ using UnityEngine;
 public class shattered_wallPiece : MonoBehaviour
 {
     Rigidbody2D rb;
-    float dirX;
-    float dirY;
-    float torque;
 
     private void Awake()
     {
@@ -16,13 +13,21 @@ public class shattered_wallPiece : MonoBehaviour
 
     void Start()
     {
-        dirX = Random.Range(-1, 5);
-        dirY = Random.Range(-1, 5);
+        Scatter_and_Disapear();
+    }
+
+    float dirX;
+    float dirY;
+    float torque;
+    void Scatter_and_Disapear()
+    {
+        dirX = Random.Range(-3, 3);
+        dirY = Random.Range(-3, 3);
         torque = Random.Range(5, 15);
 
         rb.AddForce(new Vector2(dirX, dirY), ForceMode2D.Impulse);
         rb.AddTorque(torque, ForceMode2D.Force);
 
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, 4f);
     }
 }
