@@ -8,6 +8,7 @@ public class object_controller : MonoBehaviour
 
     public GameObject melee;
 
+    /// Ingredients///////////////////////////////////////////////////////////////////////
     public GameObject fireBall;
     bool fireBall_scanner;
 
@@ -20,9 +21,23 @@ public class object_controller : MonoBehaviour
     public GameObject spear;
     bool spear_scanner;
 
+    /// Items///////////////////////////////////////////////////////////////////////
+    public GameObject fireStaff;
+    bool fireStaff_scanner;
+
+    public GameObject fireSpear;
+    bool fireSpear_scanner;
+
+    public GameObject iceStaff;
+    bool iceStaff_scanner;
+
+    public GameObject iceSpear;
+    bool iceSpear_scanner;
+
     private void Update()
     {
-        pickUp();
+        pickUp_Ingredients();
+        pickUp_Items();
         drop();
         Player_Default_State();
     }
@@ -39,7 +54,7 @@ public class object_controller : MonoBehaviour
         }
     }
 
-    void pickUp()
+    void pickUp_Ingredients()
     {
         if (Input.GetKeyDown(KeyCode.E) && hasItem == false)
         {
@@ -68,6 +83,40 @@ public class object_controller : MonoBehaviour
             {
                 spear.SetActive(true);
                 spear_scanner = false;
+                hasItem = true;
+            }
+        }
+    }
+
+    void pickUp_Items()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && hasItem == false)
+        {
+            if (fireStaff_scanner == true)
+            {
+                fireStaff.SetActive(true);
+                fireStaff_scanner = false;
+                hasItem = true;
+            }
+            
+            if (fireSpear_scanner == true)
+            {
+                fireSpear.SetActive(true);
+                fireSpear_scanner = false;
+                hasItem = true;
+            }
+
+            if (iceStaff_scanner == true)
+            {
+                iceStaff.SetActive(true);
+                iceStaff_scanner = false;
+                hasItem = true;
+            }
+
+            if (iceSpear_scanner == true)
+            {
+                iceSpear.SetActive(true);
+                iceSpear_scanner = false;
                 hasItem = true;
             }
         }
@@ -120,6 +169,22 @@ public class object_controller : MonoBehaviour
         {
             spear_scanner = true;
         }
+        if (collision.CompareTag("fireStaff"))
+        {
+            fireBall_scanner = true;
+        }
+        if (collision.CompareTag("fireSpear"))
+        {
+            fireSpear_scanner = true;
+        }
+        if (collision.CompareTag("iceStaff"))
+        {
+            iceStaff_scanner = true;
+        }
+        if (collision.CompareTag("iceSpear"))
+        {
+            iceSpear_scanner = true;
+        }
     }
     
     private void OnTriggerExit2D(Collider2D collision)
@@ -139,6 +204,22 @@ public class object_controller : MonoBehaviour
         if (collision.CompareTag("spear"))
         {
             spear_scanner = false;
+        }
+        if (collision.CompareTag("fireStaff"))
+        {
+            fireBall_scanner = true;
+        }
+        if (collision.CompareTag("fireSpear"))
+        {
+            fireSpear_scanner = true;
+        }
+        if (collision.CompareTag("iceStaff"))
+        {
+            iceStaff_scanner = true;
+        }
+        if (collision.CompareTag("iceSpear"))
+        {
+            iceSpear_scanner = true;
         }
     }
 }
