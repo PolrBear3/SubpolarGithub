@@ -50,6 +50,22 @@ public class melee : MonoBehaviour
                 collision.GetComponent<wall>().currentHealth -= damage;
             }
         }
+        if (collision.CompareTag("barrierRL"))
+        {
+            if (isHit == false)
+            {
+                isHit = true;
+                collision.GetComponent<barrierRL>().currentHealth -= damage;
+            }
+        }
+        if (collision.CompareTag("barrierTB"))
+        {
+            if (isHit == false)
+            {
+                isHit = true;
+                collision.GetComponent<barrierTB>().currentHealth -= damage;
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -59,6 +75,14 @@ public class melee : MonoBehaviour
             isHit = false;
         }
         if (collision.CompareTag("wall"))
+        {
+            isHit = false;
+        }
+        if (collision.CompareTag("barrierRL"))
+        {
+            isHit = false;
+        }
+        if (collision.CompareTag("barrierTB"))
         {
             isHit = false;
         }

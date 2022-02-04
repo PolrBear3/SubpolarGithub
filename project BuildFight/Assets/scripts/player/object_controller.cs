@@ -36,9 +36,8 @@ public class object_controller : MonoBehaviour
 
     private void Update()
     {
-        pickUp_Ingredients();
-        pickUp_Items();
-        drop();
+        PickUp();
+        Drop();
         Player_Default_State();
     }
 
@@ -54,10 +53,11 @@ public class object_controller : MonoBehaviour
         }
     }
 
-    void pickUp_Ingredients()
+    void PickUp()
     {
         if (Input.GetKeyDown(KeyCode.E) && hasItem == false)
         {
+            /// Ingredients///////////////////////////////////////////////////////////////////////
             if (fireBall_scanner == true)
             {
                 fireBall.SetActive(true);
@@ -85,13 +85,8 @@ public class object_controller : MonoBehaviour
                 spear_scanner = false;
                 hasItem = true;
             }
-        }
-    }
-
-    void pickUp_Items()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && hasItem == false)
-        {
+            
+            /// Items///////////////////////////////////////////////////////////////////////
             if (fireStaff_scanner == true)
             {
                 fireStaff.SetActive(true);
@@ -122,12 +117,13 @@ public class object_controller : MonoBehaviour
         }
     }
 
-    void drop()
+    void Drop()
     {
         if (Input.GetKeyDown(KeyCode.Q) && hasItem == true)
         {
             hasItem = false;
 
+            /// Ingredients///////////////////////////////////////////////////////////////////////
             if (fireBall.activeSelf == true)
             {
                 fireBall.SetActive(false);
@@ -146,6 +142,27 @@ public class object_controller : MonoBehaviour
             if (spear.activeSelf == true)
             {
                 spear.SetActive(false);
+            }
+
+            /// Items///////////////////////////////////////////////////////////////////////
+            if (fireStaff.activeSelf == true)
+            {
+                fireStaff.SetActive(false);
+            }
+
+            if (fireSpear.activeSelf == true)
+            {
+                fireSpear.SetActive(false);
+            }
+
+            if (iceStaff.activeSelf == true)
+            {
+                iceStaff.SetActive(false);
+            }
+
+            if (iceSpear.activeSelf == true)
+            {
+                iceSpear.SetActive(false);
             }
         }
     }
@@ -171,7 +188,7 @@ public class object_controller : MonoBehaviour
         }
         if (collision.CompareTag("fireStaff"))
         {
-            fireBall_scanner = true;
+            fireStaff_scanner = true;
         }
         if (collision.CompareTag("fireSpear"))
         {
@@ -207,19 +224,19 @@ public class object_controller : MonoBehaviour
         }
         if (collision.CompareTag("fireStaff"))
         {
-            fireBall_scanner = true;
+            fireStaff_scanner = false;
         }
         if (collision.CompareTag("fireSpear"))
         {
-            fireSpear_scanner = true;
+            fireSpear_scanner = false;
         }
         if (collision.CompareTag("iceStaff"))
         {
-            iceStaff_scanner = true;
+            iceStaff_scanner = false;
         }
         if (collision.CompareTag("iceSpear"))
         {
-            iceSpear_scanner = true;
+            iceSpear_scanner = false;
         }
     }
 }

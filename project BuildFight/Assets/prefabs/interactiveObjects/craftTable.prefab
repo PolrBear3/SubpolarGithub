@@ -477,6 +477,7 @@ GameObject:
   - component: {fileID: 8540713638162844011}
   - component: {fileID: 8540713638162844008}
   - component: {fileID: 8540713638162844009}
+  - component: {fileID: 3287969485356787141}
   m_Layer: 0
   m_Name: craftTable
   m_TagString: Untagged
@@ -613,11 +614,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2002d7066718745b6968ef25039857, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  craftComplete: 0
-  slot1_bc: {fileID: 8540713637589104680}
-  slot2_bc: {fileID: 8540713639524208420}
   slot1: {fileID: 8540713637589104681}
   slot2: {fileID: 8540713639524208423}
+  slot1_bc: {fileID: 8540713637589104680}
+  slot2_bc: {fileID: 8540713639524208420}
 --- !u!114 &8540713638162844009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,8 +630,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992404986f9707c43928a60de72ff3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instantiatePoint: {fileID: 7223357913084984627}
   controller: {fileID: 8540713638162844008}
+  instantiatePoint: {fileID: 7223357913084984627}
   fireBall_slot1: {fileID: 6458107733687865600}
   fireBall_slot2: {fileID: 8540713639096816143}
   iceBall_slot1: {fileID: 9179289562831028058}
@@ -644,6 +644,19 @@ MonoBehaviour:
   fireSpear: {fileID: 7856910446039303608, guid: e1e1a3e7d64bdbe41abc90342340fc38, type: 3}
   iceStaff: {fileID: 6906348599397509641, guid: 79cf465f7ce8786458fe5b2cef8722f6, type: 3}
   iceSpear: {fileID: 117083076732612787, guid: 6f65ba6d527fbb443bae96c65f5df627, type: 3}
+--- !u!114 &3287969485356787141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540713638162844023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d4b0cc2d698384baadb2047da7ba25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 8540713638162844008}
 --- !u!1 &8540713638314061815
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,6 +919,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8540713638493899839}
   - component: {fileID: 8540713638493899836}
+  - component: {fileID: 3407997756141848163}
   m_Layer: 0
   m_Name: craftArea
   m_TagString: Untagged
@@ -980,6 +994,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3407997756141848163
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540713638493899838}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ca91820bcd82e4a4aa4d7d5566a97fff, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8540713639096816143
 GameObject:
   m_ObjectHideFlags: 0
