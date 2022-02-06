@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class playerAnimation : MonoBehaviour
 {
+    public playerMovement playerMovement;
+    
     Animator anim;
     
     void Awake()
@@ -18,14 +20,14 @@ public class playerAnimation : MonoBehaviour
 
     void Player_Move_Animation()
     {
-        if (playerMovement.horizontal == 1 || playerMovement.vertical == 1 ||
-   playerMovement.horizontal == -1 || playerMovement.vertical == -1)
+        if (playerMovement.horizontal > 0 || playerMovement.horizontal < 0 ||
+            playerMovement.vertical > 0 || playerMovement.vertical < 0)
         {
-            anim.SetBool("isMoving", true);
+            anim.SetFloat("isMoving", playerMovement.horizontal);
         }
         else
         {
-            anim.SetBool("isMoving", false);
+            anim.SetFloat("isMoving", 0);
         }
     }
 }

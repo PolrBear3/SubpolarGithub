@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class handsRotation : MonoBehaviour
 {
-    
     void Awake()
     {
         RotationPoint_Assign();

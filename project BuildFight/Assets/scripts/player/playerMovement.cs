@@ -22,8 +22,8 @@ public class playerMovement : MonoBehaviour
         Diagonal_Movement_SLowDown();
     }
 
-    public static float horizontal;
-    public static float vertical;
+    public float horizontal;
+    public float vertical;
     void Movement_Input()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
