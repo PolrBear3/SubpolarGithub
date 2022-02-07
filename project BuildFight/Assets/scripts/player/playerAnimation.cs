@@ -15,19 +15,31 @@ public class playerAnimation : MonoBehaviour
 
     void Update()
     {
-        Player_Move_Animation();
+        Player_Animation();
     }
 
-    void Player_Move_Animation()
+    public Transform player;
+    void Player_Animation()
     {
-        if (playerMovement.horizontal > 0 || playerMovement.horizontal < 0 ||
-            playerMovement.vertical > 0 || playerMovement.vertical < 0)
+        // mouse position
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(player.position);
+
+        if (Input.mousePosition.x < screenPos.x)
         {
-            anim.SetFloat("isMoving", playerMovement.horizontal);
+            anim.SetTrigger("mouseLeft");
         }
         else
         {
-            anim.SetFloat("isMoving", 0);
+            anim.SetTrigger("mouseRight");
+        }
+
+        if (playerMovement.horizontal != 0 || playerMovement.vertical != 0)
+        {
+            anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            anim.SetBool("isMoving", false);
         }
     }
 }
