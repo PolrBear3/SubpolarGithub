@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class object_controller : MonoBehaviour
-{
-    public static bool hasItem;
-
+{   
     public GameObject melee;
 
     /// Ingredients///////////////////////////////////////////////////////////////////////
@@ -37,132 +35,92 @@ public class object_controller : MonoBehaviour
     private void Update()
     {
         PickUp();
-        Drop();
-        Player_Default_State();
+        TurnOn_Hand2();
     }
 
-    void Player_Default_State()
+    public GameObject hand2;
+    void TurnOn_Hand2()
     {
-        if (hasItem == false)
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            melee.SetActive(true);
+            hand2.SetActive(true);
+            TurnOff_Itself();
         }
-        else if (hasItem == true)
+    }
+    
+    void TurnOff_Itself()
+    {
+        gameObject.SetActive(false);
+    }
+
+    void Restart_All_Objects()
+    {
+        foreach (Transform child in transform)
         {
-            melee.SetActive(false);
+            child.gameObject.SetActive(false);
         }
     }
 
     void PickUp()
     {
-        if (Input.GetKeyDown(KeyCode.E) && hasItem == false)
+        if (Input.GetKeyDown(KeyCode.E))
         {
             /// Ingredients///////////////////////////////////////////////////////////////////////
             if (fireBall_scanner == true)
             {
+                Restart_All_Objects();
                 fireBall.SetActive(true);
                 fireBall_scanner = false;
-                hasItem = true;
             }
 
             if (iceBall_scanner == true)
             {
+                Restart_All_Objects();
                 iceBall.SetActive(true);
                 iceBall_scanner = false;
-                hasItem = true;
             }
 
             if (cane_scanner == true)
             {
+                Restart_All_Objects();
                 cane.SetActive(true);
                 cane_scanner = false;
-                hasItem = true;
             }
 
             if (spear_scanner == true)
             {
+                Restart_All_Objects();
                 spear.SetActive(true);
                 spear_scanner = false;
-                hasItem = true;
             }
             
             /// Items///////////////////////////////////////////////////////////////////////
             if (fireStaff_scanner == true)
             {
+                Restart_All_Objects();
                 fireStaff.SetActive(true);
                 fireStaff_scanner = false;
-                hasItem = true;
             }
             
             if (fireSpear_scanner == true)
             {
+                Restart_All_Objects();
                 fireSpear.SetActive(true);
                 fireSpear_scanner = false;
-                hasItem = true;
             }
 
             if (iceStaff_scanner == true)
             {
+                Restart_All_Objects();
                 iceStaff.SetActive(true);
                 iceStaff_scanner = false;
-                hasItem = true;
             }
 
             if (iceSpear_scanner == true)
             {
+                Restart_All_Objects();
                 iceSpear.SetActive(true);
                 iceSpear_scanner = false;
-                hasItem = true;
-            }
-        }
-    }
-
-    void Drop()
-    {
-        if (Input.GetKeyDown(KeyCode.Q) && hasItem == true)
-        {
-            hasItem = false;
-
-            /// Ingredients///////////////////////////////////////////////////////////////////////
-            if (fireBall.activeSelf == true)
-            {
-                fireBall.SetActive(false);
-            }
-
-            if (iceBall.activeSelf == true)
-            {
-                iceBall.SetActive(false);
-            }
-
-            if (cane.activeSelf == true)
-            {
-                cane.SetActive(false);
-            }
-
-            if (spear.activeSelf == true)
-            {
-                spear.SetActive(false);
-            }
-
-            /// Items///////////////////////////////////////////////////////////////////////
-            if (fireStaff.activeSelf == true)
-            {
-                fireStaff.SetActive(false);
-            }
-
-            if (fireSpear.activeSelf == true)
-            {
-                fireSpear.SetActive(false);
-            }
-
-            if (iceStaff.activeSelf == true)
-            {
-                iceStaff.SetActive(false);
-            }
-
-            if (iceSpear.activeSelf == true)
-            {
-                iceSpear.SetActive(false);
             }
         }
     }

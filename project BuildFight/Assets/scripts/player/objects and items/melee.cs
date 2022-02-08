@@ -63,7 +63,7 @@ public class melee : MonoBehaviour
             if (isHit == false)
             {
                 isHit = true;
-                collision.GetComponent<barrierTB>().currentHealth -= damage;
+                collision.GetComponent<barrierB>().currentHealth -= damage;
             }
         }
     }

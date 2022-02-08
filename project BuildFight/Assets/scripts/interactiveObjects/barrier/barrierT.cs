@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class barrierTB : MonoBehaviour
+public class barrierT : MonoBehaviour
 {
     SpriteRenderer sr;
 

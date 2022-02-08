@@ -18,48 +18,25 @@ public class playerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Single_Direction_Movement();
-        Diagonal_Movement_SLowDown();
+        Movement();
     }
 
+    [HideInInspector]
     public float horizontal;
+    [HideInInspector]
     public float vertical;
+    private Vector2 moveDirection;
     void Movement_Input()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+
+        moveDirection = new Vector2(horizontal, vertical).normalized;
     }
 
     public float speed;
-    void Single_Direction_Movement()
+    void Movement()
     {
-        rb.velocity = new Vector2(horizontal * speed, vertical * speed);
-    }
-
-    void Diagonal_Movement_SLowDown()
-    {
-        // top-right movement
-        if (horizontal >= 1 && vertical >= 1)
-        {
-            rb.velocity = new Vector2(horizontal * speed, vertical * speed) / 1.3f;
-        }
-
-        // top-left movement
-        if (horizontal <= -1 && vertical >= 1)
-        {
-            rb.velocity = new Vector2(horizontal * speed, vertical * speed) / 1.3f;
-        }
-
-        // bottom-right movement
-        if (horizontal >= 1 && vertical <= -1)
-        {
-            rb.velocity = new Vector2(horizontal * speed, vertical * speed) / 1.3f;
-        }
-
-        // bottom-left movement
-        if (horizontal <= -1 && vertical <= -1)
-        {
-            rb.velocity = new Vector2(horizontal * speed, vertical * speed) / 1.3f;
-        }
+        rb.velocity = new Vector2(moveDirection.x * speed, moveDirection.y * speed);
     }
 }

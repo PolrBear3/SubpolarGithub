@@ -42,14 +42,14 @@ public class slot1_Display : MonoBehaviour
 
     void Display_Object()
     {
-        if (Input.GetKeyDown(KeyCode.E) && object_controller.hasItem == true && playerScanned == true)
+        if (Input.GetKeyDown(KeyCode.E) && playerScanned == true)
         {
             if (fireBallhandHeld.activeSelf == true)
             {
                 fireBallhandHeld.SetActive(false);
                 fireBallslot1.SetActive(true);
                 slot1Empty = false;
-                object_controller.hasItem = false;
+ 
             }
 
             if (iceBallhandHeld.activeSelf == true)
@@ -57,7 +57,6 @@ public class slot1_Display : MonoBehaviour
                 iceBallhandHeld.SetActive(false);
                 iceBallslot1.SetActive(true);
                 slot1Empty = false;
-                object_controller.hasItem = false;
             }
 
             if (canehandHeld.activeSelf == true)
@@ -65,7 +64,6 @@ public class slot1_Display : MonoBehaviour
                 canehandHeld.SetActive(false);
                 caneslot1.SetActive(true);
                 slot1Empty = false;
-                object_controller.hasItem = false;
             }
 
             if (spearhandHeld.activeSelf == true)
@@ -73,7 +71,6 @@ public class slot1_Display : MonoBehaviour
                 spearhandHeld.SetActive(false);
                 spearslot1.SetActive(true);
                 slot1Empty = false;
-                object_controller.hasItem = false;
             }
         }
     }
