@@ -50,20 +50,13 @@ public class melee : MonoBehaviour
                 collision.GetComponent<wall>().currentHealth -= damage;
             }
         }
-        if (collision.CompareTag("barrierRL"))
+        if (collision.CompareTag("barrier"))
         {
             if (isHit == false)
             {
                 isHit = true;
-                collision.GetComponent<barrierRL>().currentHealth -= damage;
-            }
-        }
-        if (collision.CompareTag("barrierTB"))
-        {
-            if (isHit == false)
-            {
-                isHit = true;
-                collision.GetComponent<barrierB>().currentHealth -= damage;
+                collision.GetComponent<barrier>().currentHealth -= damage;
+                collision.GetComponent<barrier>().spreadPiecesCycle -= 1;
             }
         }
     }
@@ -78,11 +71,7 @@ public class melee : MonoBehaviour
         {
             isHit = false;
         }
-        if (collision.CompareTag("barrierRL"))
-        {
-            isHit = false;
-        }
-        if (collision.CompareTag("barrierTB"))
+        if (collision.CompareTag("barrier"))
         {
             isHit = false;
         }
