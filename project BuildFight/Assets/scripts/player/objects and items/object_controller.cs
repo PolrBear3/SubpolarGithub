@@ -35,6 +35,7 @@ public class object_controller : MonoBehaviour
     private void Update()
     {
         PickUp();
+        Drop();
         TurnOn_Hand2();
     }
 
@@ -58,6 +59,24 @@ public class object_controller : MonoBehaviour
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(false);
+        }
+    }
+
+    float startTime = 0f;
+    float holdTime = 0.7f;
+    void Drop()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            startTime = Time.time;
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (startTime + holdTime <= Time.time)
+            {
+                Restart_All_Objects();
+                melee.SetActive(true);
+            }
         }
     }
 

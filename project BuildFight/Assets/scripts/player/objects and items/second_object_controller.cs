@@ -40,6 +40,7 @@ public class second_object_controller : MonoBehaviour
     private void Update()
     {
         PickUp();
+        Drop();
         TurnOn_Hand1();
     }
 
@@ -57,6 +58,32 @@ public class second_object_controller : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    void Restart_All_Objects()
+    {
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    float startTime = 0f;
+    float holdTime = 0.7f;
+    void Drop()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            startTime = Time.time;
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            if (startTime + holdTime <= Time.time)
+            {
+                Restart_All_Objects();
+                melee.SetActive(true);
+            }
+        }
+    }
+
     void PickUp()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -64,24 +91,28 @@ public class second_object_controller : MonoBehaviour
             /// Ingredients///////////////////////////////////////////////////////////////////////
             if (fireBall_scanner == true)
             {
+                Restart_All_Objects();
                 fireBall.SetActive(true);
                 fireBall_scanner = false;
             }
 
             if (iceBall_scanner == true)
             {
+                Restart_All_Objects();
                 iceBall.SetActive(true);
                 iceBall_scanner = false;
             }
 
             if (cane_scanner == true)
             {
+                Restart_All_Objects();
                 cane.SetActive(true);
                 cane_scanner = false;
             }
 
             if (spear_scanner == true)
             {
+                Restart_All_Objects();
                 spear.SetActive(true);
                 spear_scanner = false;
             }
@@ -89,24 +120,28 @@ public class second_object_controller : MonoBehaviour
             /// Items///////////////////////////////////////////////////////////////////////
             if (fireStaff_scanner == true)
             {
+                Restart_All_Objects();
                 fireStaff.SetActive(true);
                 fireStaff_scanner = false;
             }
 
             if (fireSpear_scanner == true)
             {
+                Restart_All_Objects();
                 fireSpear.SetActive(true);
                 fireSpear_scanner = false;
             }
 
             if (iceStaff_scanner == true)
             {
+                Restart_All_Objects();
                 iceStaff.SetActive(true);
                 iceStaff_scanner = false;
             }
 
             if (iceSpear_scanner == true)
             {
+                Restart_All_Objects();
                 iceSpear.SetActive(true);
                 iceSpear_scanner = false;
             }
