@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class object_controller : MonoBehaviour
-{   
+{
     public GameObject melee;
 
     /// Ingredients///////////////////////////////////////////////////////////////////////
@@ -40,9 +40,10 @@ public class object_controller : MonoBehaviour
     }
 
     public GameObject hand2;
+    public canAttack canAttack;
     void TurnOn_Hand2()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2) && canAttack.enableAttack == true)
         {
             hand2.SetActive(true);
             TurnOff_Itself();
@@ -61,6 +62,15 @@ public class object_controller : MonoBehaviour
             child.gameObject.SetActive(false);
         }
     }
+    public void Melee()
+    {
+        melee.SetActive(true);
+    }
+    public void Default_State()
+    {
+        Restart_All_Objects();
+        Melee();
+    }
 
     float startTime = 0f;
     float holdTime = 0.7f;
@@ -74,8 +84,7 @@ public class object_controller : MonoBehaviour
         {
             if (startTime + holdTime <= Time.time)
             {
-                Restart_All_Objects();
-                melee.SetActive(true);
+                Default_State();
             }
         }
     }

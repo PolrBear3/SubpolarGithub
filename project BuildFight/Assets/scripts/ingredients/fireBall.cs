@@ -9,6 +9,10 @@ public class fireBall : MonoBehaviour
     bool isHit = false;
     public int damage;
 
+    float startTime = 0f;
+    public float coolTime;
+    public canAttack canAttack;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -16,14 +20,21 @@ public class fireBall : MonoBehaviour
 
     void Update()
     {
-        Input_Animation();
+        Input_Animatio_andCoolDownn();
     }
 
-    void Input_Animation()
+    void Input_Animatio_andCoolDownn()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && canAttack.enableAttack == true)
         {
             anim.SetTrigger("fireBall_melee");
+            startTime = Time.time;
+            canAttack.enableAttack = false;
+        }
+
+        if (startTime + coolTime <= Time.time)
+        {
+            canAttack.enableAttack = true;
         }
     }
 

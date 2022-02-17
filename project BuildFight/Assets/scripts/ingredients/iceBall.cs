@@ -9,6 +9,10 @@ public class iceBall : MonoBehaviour
     bool isHit;
     public int damage;
 
+    float startTime = 0f;
+    public float coolTime;
+    public canAttack canAttack;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -16,14 +20,21 @@ public class iceBall : MonoBehaviour
 
     void Update()
     {
-        Input_Animation();
+        Input_Animation_andCoolDownn();
     }
 
-    void Input_Animation()
+    void Input_Animation_andCoolDownn()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && canAttack.enableAttack == true)
         {
             anim.SetTrigger("iceBall_Melee");
+            startTime = Time.time;
+            canAttack.enableAttack = false;
+        }
+
+        if (startTime + coolTime <= Time.time)
+        {
+            canAttack.enableAttack = true;
         }
     }
 

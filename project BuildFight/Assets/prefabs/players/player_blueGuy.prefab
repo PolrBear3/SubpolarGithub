@@ -146,6 +146,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  coolTime: 0.5
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &1434724039723903246
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 8
+  coolTime: 0.7
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &3997347851652696566
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +442,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 13
+  coolTime: 0.7
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &4681391982952385913
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +674,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  coolTime: 0.5
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &5296384945158564394
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,6 +766,7 @@ MonoBehaviour:
   iceStaff: {fileID: 5969680941774660257}
   iceSpear: {fileID: 4681391982952385913}
   hand1: {fileID: 8367016082513501894}
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &5823220777832760987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
+  coolTime: 0.5
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &8367016080673364681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,6 +1141,7 @@ GameObject:
   - component: {fileID: 8367016080673364686}
   - component: {fileID: 8367016080673364685}
   - component: {fileID: 8367016080673364673}
+  - component: {fileID: 4128960997127455815}
   m_Layer: 0
   m_Name: player_blueGuy
   m_TagString: player
@@ -1315,6 +1327,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPoint: {fileID: 8367016080818482821}
+--- !u!114 &4128960997127455815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367016080673364681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 748b32415e391384db45ba342124a660, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableAttack: 0
 --- !u!1 &8367016080818482821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1683,6 +1708,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  coolTime: 0.5
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &8367016081424506332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1829,6 +1856,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 13
+  coolTime: 0.7
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &8367016081652939700
 GameObject:
   m_ObjectHideFlags: 0
@@ -2059,6 +2088,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+  coolTime: 0.5
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &8367016081940314967
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,6 +2236,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 8
+  coolTime: 0.7
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &8367016082023711285
 GameObject:
   m_ObjectHideFlags: 0
@@ -2351,6 +2384,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
+  coolTime: 0.5
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &8367016082067214874
 GameObject:
   m_ObjectHideFlags: 0
@@ -2651,6 +2686,7 @@ MonoBehaviour:
   iceStaff: {fileID: 8367016082067214874}
   iceSpear: {fileID: 8367016081652939700}
   hand2: {fileID: 5296384945158564394}
+  canAttack: {fileID: 4128960997127455815}
 --- !u!1 &8551967891591263938
 GameObject:
   m_ObjectHideFlags: 0

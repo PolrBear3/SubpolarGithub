@@ -215,12 +215,16 @@ MonoBehaviour:
   controller: {fileID: 6805254124797034302}
   slot1Empty: 1
   fireBallhandHeld: {fileID: 0}
+  fireBallhandHeld2: {fileID: 0}
   fireBallslot1: {fileID: 4164759691117836685}
   iceBallhandHeld: {fileID: 0}
+  iceBallhandHeld2: {fileID: 0}
   iceBallslot1: {fileID: 1020983063780157458}
   canehandHeld: {fileID: 0}
+  canehandHeld2: {fileID: 0}
   caneslot1: {fileID: 149173120259667842}
   spearhandHeld: {fileID: 0}
+  spearhandHeld2: {fileID: 0}
   spearslot1: {fileID: 709243801668175809}
 --- !u!1 &709243801668175809
 GameObject:
@@ -334,7 +338,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1013296737765120494}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.89, y: -0.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -440,6 +444,10 @@ MonoBehaviour:
   slot2: {fileID: 4853459223575225297}
   slot1_bc: {fileID: 8168727835720223889}
   slot2_bc: {fileID: 3192835122268946658}
+  hand1: {fileID: 0}
+  playerObjectController: {fileID: 0}
+  hand2: {fileID: 0}
+  playerSecondObjectController: {fileID: 0}
 --- !u!114 &4344076193069659870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,10 +483,10 @@ MonoBehaviour:
   cane_slot2: {fileID: 3418391452137963123}
   spear_slot1: {fileID: 709243801668175809}
   spear_slot2: {fileID: 6814878363119335041}
-  fireStaff: {fileID: 0}
-  fireSpear: {fileID: 0}
-  iceStaff: {fileID: 0}
-  iceSpear: {fileID: 0}
+  fireStaff: {fileID: 1645369804250814524, guid: 544306bdd780e9d46922cdf19ec86ac4, type: 3}
+  fireSpear: {fileID: 7856910446039303608, guid: e1e1a3e7d64bdbe41abc90342340fc38, type: 3}
+  iceStaff: {fileID: 6906348599397509641, guid: 79cf465f7ce8786458fe5b2cef8722f6, type: 3}
+  iceSpear: {fileID: 117083076732612787, guid: 6f65ba6d527fbb443bae96c65f5df627, type: 3}
 --- !u!1 &1020983063780157458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,12 +1153,16 @@ MonoBehaviour:
   controller: {fileID: 6805254124797034302}
   slot2Empty: 1
   fireBallhandHeld: {fileID: 0}
+  fireBallhandHeld2: {fileID: 0}
   fireBallslot1: {fileID: 5023924580643638322}
   iceBallhandHeld: {fileID: 0}
+  iceBallhandHeld2: {fileID: 0}
   iceBallslot1: {fileID: 4774959189411544804}
   canehandHeld: {fileID: 0}
+  canehandHeld2: {fileID: 0}
   caneslot1: {fileID: 3418391452137963123}
   spearhandHeld: {fileID: 0}
+  spearhandHeld2: {fileID: 0}
   spearslot1: {fileID: 6814878363119335041}
 --- !u!1 &6814878363119335041
 GameObject:

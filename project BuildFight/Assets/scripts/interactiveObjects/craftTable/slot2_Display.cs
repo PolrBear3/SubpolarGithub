@@ -12,15 +12,19 @@ public class slot2_Display : MonoBehaviour
 
     /// ///////////////////////////////////////////////////////////////////////
     public GameObject fireBallhandHeld;
+    public GameObject fireBallhandHeld2;
     public GameObject fireBallslot1;
 
     public GameObject iceBallhandHeld;
+    public GameObject iceBallhandHeld2;
     public GameObject iceBallslot1;
 
     public GameObject canehandHeld;
+    public GameObject canehandHeld2;
     public GameObject caneslot1;
 
     public GameObject spearhandHeld;
+    public GameObject spearhandHeld2;
     public GameObject spearslot1;
 
     void Update()
@@ -44,32 +48,60 @@ public class slot2_Display : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && playerScanned == true)
         {
-            if (fireBallhandHeld.activeSelf == true)
+            // fireBall
+            if (fireBallhandHeld.activeSelf == true && controller.hand1.activeSelf == true)
             {
-                fireBallhandHeld.SetActive(false);
                 fireBallslot1.SetActive(true);
                 slot2Empty = false;
+                controller.playerObjectController.Default_State();
+            }
+            else if (fireBallhandHeld2.activeSelf == true && controller.hand2.activeSelf == true)
+            {
+                fireBallslot1.SetActive(true);
+                slot2Empty = false;
+                controller.playerSecondObjectController.Default_State();
             }
 
-            if (iceBallhandHeld.activeSelf == true)
+            // iceBall
+            if (iceBallhandHeld.activeSelf == true && controller.hand1.activeSelf == true)
             {
-                iceBallhandHeld.SetActive(false);
                 iceBallslot1.SetActive(true);
                 slot2Empty = false;
+                controller.playerObjectController.Default_State();
+            }
+            else if (iceBallhandHeld2.activeSelf == true && controller.hand2.activeSelf == true)
+            {
+                iceBallslot1.SetActive(true);
+                slot2Empty = false;
+                controller.playerSecondObjectController.Default_State();
             }
 
-            if (canehandHeld.activeSelf == true)
+            // cane
+            if (canehandHeld.activeSelf == true && controller.hand1.activeSelf == true)
             {
-                canehandHeld.SetActive(false);
                 caneslot1.SetActive(true);
                 slot2Empty = false;
+                controller.playerObjectController.Default_State();
+            }
+            else if (canehandHeld2.activeSelf == true && controller.hand2.activeSelf == true)
+            {
+                caneslot1.SetActive(true);
+                slot2Empty = false;
+                controller.playerSecondObjectController.Default_State();
             }
 
-            if (spearhandHeld.activeSelf == true)
+            // spear
+            if (spearhandHeld.activeSelf == true && controller.hand1.activeSelf == true)
             {
-                spearhandHeld.SetActive(false);
                 spearslot1.SetActive(true);
                 slot2Empty = false;
+                controller.playerObjectController.Default_State();
+            }
+            else if (spearhandHeld2.activeSelf == true && controller.hand2.activeSelf == true)
+            {
+                spearslot1.SetActive(true);
+                slot2Empty = false;
+                controller.playerSecondObjectController.Default_State();
             }
         }
     }

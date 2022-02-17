@@ -9,6 +9,12 @@ public class CraftTable_Controller : MonoBehaviour
 
     public BoxCollider2D slot1_bc;
     public BoxCollider2D slot2_bc;
+
+    public GameObject hand1;
+    public object_controller playerObjectController;
+
+    public GameObject hand2;
+    public second_object_controller playerSecondObjectController;
   
     void Start()
     {

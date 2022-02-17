@@ -8,7 +8,11 @@ public class melee : MonoBehaviour
 
     bool isHit;
     public int damage;
-    
+
+    float startTime = 0f;
+    public float coolTime;
+    public canAttack canAttack;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
@@ -16,19 +20,28 @@ public class melee : MonoBehaviour
 
     void Update()
     {
-        Input_Animation();
+        Input_Animation_andCoolDown();
     }
 
-    void Input_Animation()
+    void Input_Animation_andCoolDown()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && canAttack.enableAttack == true)
         {
             anim.SetTrigger("melee");
+            startTime = Time.time;
+            canAttack.enableAttack = false;
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && canAttack.enableAttack == true)
         {
             anim.SetTrigger("melee2");
+            startTime = Time.time;
+            canAttack.enableAttack = false;
+        }
+
+        if (startTime + coolTime <= Time.time)
+        {
+            canAttack.enableAttack = true;
         }
     }
 

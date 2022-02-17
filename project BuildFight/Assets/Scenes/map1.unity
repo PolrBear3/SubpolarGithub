@@ -180,6 +180,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9130074dbbb1c3f4680f078a13012fe5, type: 3}
+--- !u!1 &181543606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3997347851652696566, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &212562963 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8367016082513501913, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860947524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 258d5c28bacad434393e689d58c340fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &488462026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1434724039723903246, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &517487184 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7374870498162721924, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577939090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eed464a99133c154aa42d66093efd248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +294,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &546062279
 GameObject:
@@ -3517,6 +3549,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54d50649ab5291c47b167db7bc46db97, type: 3}
+--- !u!1 &577939090 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5296384945158564394, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &670002367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3587,6 +3624,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8367016081940314967, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
   m_PrefabInstance: {fileID: 1912050221}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &860947524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8367016082513501894, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1284177694
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3644,6 +3686,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9130074dbbb1c3f4680f078a13012fe5, type: 3}
+--- !u!1 &1302049383 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4847412894817492553, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1410012193
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3834,7 +3881,7 @@ Transform:
   - {fileID: 546062280}
   - {fileID: 1593534907}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1743264124
 PrefabInstance:
@@ -3852,9 +3899,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 837972249}
     - target: {fileID: 4853459223575225297, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: canehandHeld2
+      value: 
+      objectReference: {fileID: 488462026}
+    - target: {fileID: 4853459223575225297, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
       propertyPath: spearhandHeld
       value: 
       objectReference: {fileID: 1501561948}
+    - target: {fileID: 4853459223575225297, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: spearhandHeld2
+      value: 
+      objectReference: {fileID: 181543606}
     - target: {fileID: 4853459223575225297, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
       propertyPath: iceBallhandHeld
       value: 
@@ -3863,9 +3918,33 @@ PrefabInstance:
       propertyPath: fireBallhandHeld
       value: 
       objectReference: {fileID: 2078022135}
+    - target: {fileID: 4853459223575225297, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: iceBallhandHeld2
+      value: 
+      objectReference: {fileID: 1302049383}
+    - target: {fileID: 4853459223575225297, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: fireBallhandHeld2
+      value: 
+      objectReference: {fileID: 1918423501}
+    - target: {fileID: 6805254124797034302, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: hand1
+      value: 
+      objectReference: {fileID: 860947524}
+    - target: {fileID: 6805254124797034302, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: hand2
+      value: 
+      objectReference: {fileID: 577939090}
+    - target: {fileID: 6805254124797034302, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: playerObjectController
+      value: 
+      objectReference: {fileID: 212562963}
+    - target: {fileID: 6805254124797034302, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: playerSecondObjectController
+      value: 
+      objectReference: {fileID: 517487184}
     - target: {fileID: 8004747296646553273, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8004747296646553273, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3907,30 +3986,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8054584251956633650, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
-      propertyPath: iceSpear
-      value: 
-      objectReference: {fileID: 117083076732612787, guid: 6f65ba6d527fbb443bae96c65f5df627, type: 3}
-    - target: {fileID: 8054584251956633650, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
-      propertyPath: iceStaff
-      value: 
-      objectReference: {fileID: 6906348599397509641, guid: 79cf465f7ce8786458fe5b2cef8722f6, type: 3}
-    - target: {fileID: 8054584251956633650, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
-      propertyPath: fireSpear
-      value: 
-      objectReference: {fileID: 7856910446039303608, guid: e1e1a3e7d64bdbe41abc90342340fc38, type: 3}
-    - target: {fileID: 8054584251956633650, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
-      propertyPath: fireStaff
-      value: 
-      objectReference: {fileID: 1645369804250814524, guid: 544306bdd780e9d46922cdf19ec86ac4, type: 3}
     - target: {fileID: 8554639294702292899, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
       propertyPath: canehandHeld
       value: 
       objectReference: {fileID: 837972249}
     - target: {fileID: 8554639294702292899, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: canehandHeld2
+      value: 
+      objectReference: {fileID: 488462026}
+    - target: {fileID: 8554639294702292899, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
       propertyPath: spearhandHeld
       value: 
       objectReference: {fileID: 1501561948}
+    - target: {fileID: 8554639294702292899, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: spearhandHeld2
+      value: 
+      objectReference: {fileID: 181543606}
     - target: {fileID: 8554639294702292899, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
       propertyPath: iceBallhandHeld
       value: 
@@ -3939,6 +4010,14 @@ PrefabInstance:
       propertyPath: fireBallhandHeld
       value: 
       objectReference: {fileID: 2078022135}
+    - target: {fileID: 8554639294702292899, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: iceBallhandHeld2
+      value: 
+      objectReference: {fileID: 1302049383}
+    - target: {fileID: 8554639294702292899, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
+      propertyPath: fireBallhandHeld2
+      value: 
+      objectReference: {fileID: 1918423501}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd54e3916da2dde4c854b1ae729ffbe2, type: 3}
 --- !u!1 &1795485432 stripped
@@ -4016,7 +4095,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8367016080673364683, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8367016080673364683, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4058,8 +4137,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8367016081424506335, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+      propertyPath: coolTime
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367016081940315050, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+      propertyPath: coolTime
+      value: 0.6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+--- !u!1 &1918423501 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1358241860238408937, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}
+  m_PrefabInstance: {fileID: 1912050221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2078022135 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8367016081186330038, guid: e55f8a2e2297aae4e9870d7c062bc097, type: 3}

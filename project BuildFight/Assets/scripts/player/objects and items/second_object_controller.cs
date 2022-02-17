@@ -45,11 +45,12 @@ public class second_object_controller : MonoBehaviour
     }
 
     public GameObject hand1;
+    public canAttack canAttack;
     void TurnOn_Hand1()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && canAttack.enableAttack == true)
         {
-            hand1.SetActive(true);
+            hand1.SetActive(true);               
             TurnOff_Itself();
         }
     }
@@ -65,6 +66,15 @@ public class second_object_controller : MonoBehaviour
             child.gameObject.SetActive(false);
         }
     }
+    public void Melee()
+    {
+        melee.SetActive(true);
+    }
+    public void Default_State()
+    {
+        Restart_All_Objects();
+        Melee();
+    }
 
     float startTime = 0f;
     float holdTime = 0.7f;
@@ -78,8 +88,7 @@ public class second_object_controller : MonoBehaviour
         {
             if (startTime + holdTime <= Time.time)
             {
-                Restart_All_Objects();
-                melee.SetActive(true);
+                Default_State();
             }
         }
     }
