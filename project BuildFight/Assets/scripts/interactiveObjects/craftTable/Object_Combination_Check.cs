@@ -43,6 +43,7 @@ public class Object_Combination_Check : MonoBehaviour
             {
                 if (controller.slot1.slot1Empty == false && controller.slot2.slot2Empty == false)
                 {
+                    controller.anim.SetTrigger("craft");
                     Instantiate(fireStaff, instantiatePoint.transform.position, Quaternion.identity);
                     controller.slot1.slot1Empty = true;
                     controller.slot2.slot2Empty = true;
@@ -57,6 +58,7 @@ public class Object_Combination_Check : MonoBehaviour
             {
                 if (controller.slot1.slot1Empty == false && controller.slot2.slot2Empty == false)
                 {
+                    controller.anim.SetTrigger("craft");
                     Instantiate(fireSpear, instantiatePoint.transform.position, Quaternion.identity);
                     controller.slot1.slot1Empty = true;
                     controller.slot2.slot2Empty = true;
@@ -71,6 +73,7 @@ public class Object_Combination_Check : MonoBehaviour
             {
                 if (controller.slot1.slot1Empty == false && controller.slot2.slot2Empty == false)
                 {
+                    controller.anim.SetTrigger("craft");
                     Instantiate(iceStaff, instantiatePoint.transform.position, Quaternion.identity);
                     controller.slot1.slot1Empty = true;
                     controller.slot2.slot2Empty = true;
@@ -85,6 +88,7 @@ public class Object_Combination_Check : MonoBehaviour
             {
                 if (controller.slot1.slot1Empty == false && controller.slot2.slot2Empty == false)
                 {
+                    controller.anim.SetTrigger("craft");
                     Instantiate(iceSpear, instantiatePoint.transform.position, Quaternion.identity);
                     controller.slot1.slot1Empty = true;
                     controller.slot2.slot2Empty = true;

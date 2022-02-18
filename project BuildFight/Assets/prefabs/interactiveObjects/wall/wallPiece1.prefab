@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8348920676584027170}
   - component: {fileID: 5932060964073150017}
   - component: {fileID: 7842594671339569809}
-  - component: {fileID: -1268189449363133183}
   - component: {fileID: 8887516923798975544}
+  - component: {fileID: -1268189449363133183}
   m_Layer: 0
   m_Name: wallPiece1
   m_TagString: Untagged
@@ -108,6 +108,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8887516923798975544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659135473269324166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7219a8a4650fc2949b4ea8133d7b972e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &-1268189449363133183
 Animator:
   serializedVersion: 4
@@ -128,15 +140,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8887516923798975544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8659135473269324166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7219a8a4650fc2949b4ea8133d7b972e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

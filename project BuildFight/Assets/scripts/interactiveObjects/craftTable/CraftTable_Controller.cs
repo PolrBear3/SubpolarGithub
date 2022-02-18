@@ -15,7 +15,15 @@ public class CraftTable_Controller : MonoBehaviour
 
     public GameObject hand2;
     public second_object_controller playerSecondObjectController;
-  
+
+    [HideInInspector]
+    public Animator anim;
+
+    void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     void Start()
     {
         slot2_bc.enabled = false;
