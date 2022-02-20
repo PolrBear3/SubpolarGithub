@@ -27,11 +27,14 @@ public class CraftTable_Controller : MonoBehaviour
     void Start()
     {
         slot2_bc.enabled = false;
+        currentTime = maxTime;
     }
 
     void Update()
     {
         Each_Slot_Fill_Check();
+        Timer_for_slot1();
+        Debug.Log(currentTime);
     }
 
     void Each_Slot_Fill_Check()
@@ -46,6 +49,20 @@ public class CraftTable_Controller : MonoBehaviour
         {
             slot1_bc.enabled = true;
             slot2_bc.enabled = false;
+        }
+    }
+
+    float currentTime;
+    float maxTime = 5f;
+    void Timer_for_slot1()
+    {
+        if (slot1.slot1Empty == false)
+        {
+            currentTime -= Time.deltaTime;
+        }
+        if (currentTime <= 0)
+        {
+            slot1.slot1Empty = true;
         }
     }
 }
