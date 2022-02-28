@@ -16,6 +16,7 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
         Movement_Input();
+        Jump();
     }
 
     void FixedUpdate()
@@ -34,5 +35,14 @@ public class Player_Movement : MonoBehaviour
     void Movement()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+    }
+
+    public float jumpForce;
+    void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
     }
 }
