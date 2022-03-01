@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 4808770525774724516}
   - component: {fileID: 4808770525774724517}
   - component: {fileID: 4808770525774724518}
+  - component: {fileID: -3567753725830763727}
   - component: {fileID: 4808770525774724519}
+  - component: {fileID: -8090987111666380849}
   m_Layer: 0
   m_Name: Astroid_Ceres_4
   m_TagString: Untagged
@@ -107,6 +109,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &-3567753725830763727
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4808770525774724536}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 0.5}
+    newSize: {x: 0.5, y: 0.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!114 &4808770525774724519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,5 +145,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6e6f0c2c382c95429c77b5a676249d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  escapePod_controller: {fileID: 7411124915415258157, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+--- !u!114 &-8090987111666380849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4808770525774724536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c98b46ed8006960498bf1967d62dd130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

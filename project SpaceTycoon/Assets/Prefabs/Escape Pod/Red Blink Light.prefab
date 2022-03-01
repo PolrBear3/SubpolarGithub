@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &404426057402879494
+--- !u!1 &312387363507093190
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5676315127936245513}
-  - component: {fileID: 3662891593004029213}
-  - component: {fileID: 5182327051668219292}
+  - component: {fileID: 5696859419633053641}
+  - component: {fileID: 3682864236029355485}
+  - component: {fileID: 5053688605022934364}
   m_Layer: 0
   m_Name: Red Blink Light
   m_TagString: Untagged
@@ -18,28 +18,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5676315127936245513
+--- !u!4 &5696859419633053641
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 404426057402879494}
+  m_GameObject: {fileID: 312387363507093190}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.197, y: -0.065, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3662891593004029213
+--- !u!114 &3682864236029355485
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 404426057402879494}
+  m_GameObject: {fileID: 312387363507093190}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Intensity: 0.5
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 000000002b65a9a34f669491c90a0d3a374810c36b90a09bc526fd97
+  m_ApplyToSortingLayers: 000000002b65a9a34f669491c90a0d3a374810c36b90a09bc526fd974bec1c76
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -168,14 +168,14 @@ MonoBehaviour:
   - {x: 0.0066294074, y: -0.0071267486, z: 0}
   - {x: 0.006849125, y: 0.008163482, z: 0}
   - {x: -0.0077955425, y: 0.00816676, z: 0}
---- !u!95 &5182327051668219292
+--- !u!95 &5053688605022934364
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 404426057402879494}
+  m_GameObject: {fileID: 312387363507093190}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b24b94847163b6f4cacc648eef4581a5, type: 2}
