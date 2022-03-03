@@ -128,17 +128,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4726863485145108887, guid: ae066e21b50062c41912a2c5b5dd8265, type: 3}
   m_PrefabInstance: {fileID: 4726863485162780870}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &100400133 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 100400133, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
-  m_PrefabInstance: {fileID: 7411124915163806355}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6845c556a4940a8439417965a990574f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +348,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1654497396 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 757079924, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+  m_PrefabInstance: {fileID: 7411124915163806355}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1802372169 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5347602010587318659, guid: 065b78a6e57c3bf44a58874067feb3e2, type: 3}
@@ -370,6 +364,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956c84b9c2c036d4ead997af27e61e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1875944071 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 608846583, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+  m_PrefabInstance: {fileID: 7411124915163806355}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1910804125
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,6 +490,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50771c65def6344cbf78081557ed773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2134794192 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1169718468, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+  m_PrefabInstance: {fileID: 7411124915163806355}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2134794193 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1169718469, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+  m_PrefabInstance: {fileID: 7411124915163806355}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4726863485162780870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -618,16 +627,36 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100400132, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.361
+      value: 0.122
       objectReference: {fileID: 0}
     - target: {fileID: 100400132, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.157
+      value: 0.641
       objectReference: {fileID: 0}
-    - target: {fileID: 859065261, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
-      propertyPath: objects
+    - target: {fileID: 100400133, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+      propertyPath: snapPoint
       value: 
-      objectReference: {fileID: 100400133}
+      objectReference: {fileID: 2134794193}
+    - target: {fileID: 100400133, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+      propertyPath: snapPoints
+      value: 
+      objectReference: {fileID: 2134794192}
+    - target: {fileID: 100400133, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+      propertyPath: snapPoints.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 100400133, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+      propertyPath: snapPoints.Array.data[0]
+      value: 
+      objectReference: {fileID: 1654497396}
+    - target: {fileID: 100400133, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+      propertyPath: snapPoints.Array.data[1]
+      value: 
+      objectReference: {fileID: 1875944071}
+    - target: {fileID: 859065260, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.151
+      objectReference: {fileID: 0}
     - target: {fileID: 7411124915415258152, guid: 4368ce672827cb14b8ef7cb9b6235b4a, type: 3}
       propertyPath: m_Name
       value: Escape Pod

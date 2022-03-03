@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100400130}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.302, y: -0.181, z: 0}
+  m_LocalPosition: {x: 0.122, y: 0.641, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -418,7 +418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 859065260}
-  - component: {fileID: 859065261}
+  - component: {fileID: 479872129}
   m_Layer: 0
   m_Name: Snap Controller
   m_TagString: Untagged
@@ -446,7 +446,7 @@ Transform:
   m_Father: {fileID: 668885122}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &859065261
+--- !u!114 &479872129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -459,14 +459,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snapPoints:
+  - {fileID: 757079924}
   - {fileID: 608846583}
   - {fileID: 571622445}
   - {fileID: 870983914}
-  - {fileID: 757079924}
   - {fileID: 1169718469}
   draggableObjects:
   - {fileID: 100400133}
   snapRange: 0.2
+  originalPos: {fileID: 904910289}
 --- !u!1 &870983913
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +576,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 904910288}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.425, y: 0.037, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
