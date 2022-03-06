@@ -17,12 +17,16 @@ public class EscapePod_ChairBed : MonoBehaviour
 
     public void ChairBed_Options_On()
     {
-        ChairBed_options.SetActive(true);
+        if (SpaceTycoon_Main_GameController.isOptionMenuOn == false)
+        {
+            ChairBed_options.SetActive(true);
+            SpaceTycoon_Main_GameController.isOptionMenuOn = true;
+        }
     }
-
     public void ChairBed_Options_Off()
     {
         ChairBed_options.SetActive(false);
+        SpaceTycoon_Main_GameController.isOptionMenuOn = false;
     }
 
     private void snapCheck()
@@ -89,5 +93,34 @@ public class EscapePod_ChairBed : MonoBehaviour
         {
             positionButton7.SetActive(true);
         }
+    }
+
+    public void Craft_ChairBed_SnapPoint1()
+    {
+
+    }
+    public void Craft_ChairBed_SnapPoint2()
+    {
+
+    }
+    public void Craft_ChairBed_SnapPoint3()
+    {
+
+    }
+    public void Craft_ChairBed_SnapPoint4()
+    {
+
+    }
+    public void Craft_ChairBed_SnapPoint5()
+    {
+
+    }
+    public void Craft_ChairBed_SnapPoint6()
+    {
+
+    }
+    public void Craft_ChairBed_SnapPoint7()
+    {
+
     }
 }
