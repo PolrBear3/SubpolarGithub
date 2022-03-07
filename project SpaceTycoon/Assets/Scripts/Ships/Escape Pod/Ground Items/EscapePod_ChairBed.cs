@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class EscapePod_ChairBed : MonoBehaviour
 {
+    public EscapePod_CraftTable_MainController controller;
+    
     public GameObject ChairBed_options;
 
-    public GameObject positionButton1, positionButton2, positionButton3, positionButton4, positionButton5, positionButton6, positionButton7;
+    public snapPoint snapPoint1, snapPoint2, snapPoint3, 
+                      snapPoint4, snapPoint5, snapPoint6, snapPoint7;
 
-    public GameObject snapPoint1, snapPoint2, snapPoint3, snapPoint4, snapPoint5, snapPoint6, snapPoint7;
+    public GameObject positionButton1, positionButton2, positionButton3, 
+                      positionButton4, positionButton5, positionButton6, positionButton7;
 
     private void Update()
     {
-        snapCheck();
+        Option_Button_Availability();
     }
 
     public void ChairBed_Options_On()
@@ -29,67 +33,67 @@ public class EscapePod_ChairBed : MonoBehaviour
         SpaceTycoon_Main_GameController.isOptionMenuOn = false;
     }
 
-    private void snapCheck()
+    private void Option_Button_Availability()
     {
-        if (snapPoint1.activeSelf == false)
+        if (controller.snapPoint1.sr.enabled == false)
         {
             positionButton1.SetActive(false);
         }
-        else if (snapPoint1.activeSelf == true)
+        else if (controller.snapPoint1.sr.enabled == true)
         {
             positionButton1.SetActive(true);
         }
 
-        if (snapPoint2.activeSelf == false)
+        if (controller.snapPoint2.sr.enabled == false)
         {
             positionButton2.SetActive(false);
         }
-        else if (snapPoint2.activeSelf == true)
+        else if (controller.snapPoint2.sr.enabled == true)
         {
             positionButton2.SetActive(true);
         }
 
-        if (snapPoint3.activeSelf == false)
+        if (controller.snapPoint3.sr.enabled == false)
         {
             positionButton3.SetActive(false);
         }
-        else if (snapPoint3.activeSelf == true)
+        else if (controller.snapPoint3.sr.enabled == true)
         {
             positionButton3.SetActive(true);
         }
 
-        if (snapPoint4.activeSelf == false)
+        if (controller.snapPoint4.sr.enabled == false)
         {
             positionButton4.SetActive(false);
         }
-        else if (snapPoint4.activeSelf == true)
+        else if (controller.snapPoint4.sr.enabled == true)
         {
             positionButton4.SetActive(true);
         }
 
-        if (snapPoint5.activeSelf == false)
+        if (controller.snapPoint5.sr.enabled == false)
         {
             positionButton5.SetActive(false);
         }
-        else if (snapPoint5.activeSelf == true)
+        else if (controller.snapPoint5.sr.enabled == true)
         {
             positionButton5.SetActive(true);
         }
 
-        if (snapPoint6.activeSelf == false)
+        if (controller.snapPoint6.sr.enabled == false)
         {
             positionButton6.SetActive(false);
         }
-        else if (snapPoint6.activeSelf == true)
+        else if (controller.snapPoint6.sr.enabled == true)
         {
             positionButton6.SetActive(true);
         }
 
-        if (snapPoint7.activeSelf == false)
+        if (controller.snapPoint7.sr.enabled == false)
         {
             positionButton7.SetActive(false);
         }
-        else if (snapPoint7.activeSelf == true)
+        else if (controller.snapPoint7.sr.enabled == true)
         {
             positionButton7.SetActive(true);
         }

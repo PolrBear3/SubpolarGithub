@@ -21,7 +21,7 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
     public GameObject allSnapPoints;
 
     public snapPoint snapPoint1, snapPoint2, snapPoint3, 
-                      snapPoint4, snapPoint5, snapPoint6, snapPoint7;
+                     snapPoint4, snapPoint5, snapPoint6, snapPoint7;
 
     public GameObject positionButton1, positionButton2, positionButton3, 
                       positionButton4, positionButton5, positionButton6, positionButton7;

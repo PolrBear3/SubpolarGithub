@@ -30,24 +30,12 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
     {
         if (controller.playerDetection == true)
         {
-            controller.snapPoint1.sr.enabled = true;
-            controller.snapPoint2.sr.enabled = true;
-            controller.snapPoint3.sr.enabled = true;
-            controller.snapPoint4.sr.enabled = true;
-            controller.snapPoint5.sr.enabled = true;
-            controller.snapPoint6.sr.enabled = true;
-            controller.snapPoint7.sr.enabled = true;
+            controller.allSnapPoints.SetActive(true);
         }
 
         if (controller.playerDetection == false)
         {
-            controller.snapPoint1.sr.enabled = false;
-            controller.snapPoint2.sr.enabled = false;
-            controller.snapPoint3.sr.enabled = false;
-            controller.snapPoint4.sr.enabled = false;
-            controller.snapPoint5.sr.enabled = false;
-            controller.snapPoint6.sr.enabled = false;
-            controller.snapPoint7.sr.enabled = false;
+            controller.allSnapPoints.SetActive(false);
         }
     }
 
