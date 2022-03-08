@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EscapePod_ChairBed : MonoBehaviour
+public class EscapePod_ChairBed_Craft : MonoBehaviour
 {
     public EscapePod_CraftTable_MainController controller;
+
+    public GameObject chairBed_prefab;
     
     public GameObject ChairBed_options;
-
-    public snapPoint snapPoint1, snapPoint2, snapPoint3, 
-                      snapPoint4, snapPoint5, snapPoint6, snapPoint7;
 
     public GameObject positionButton1, positionButton2, positionButton3, 
                       positionButton4, positionButton5, positionButton6, positionButton7;
@@ -19,6 +18,7 @@ public class EscapePod_ChairBed : MonoBehaviour
         Option_Button_Availability();
     }
 
+    // options 
     public void ChairBed_Options_On()
     {
         if (SpaceTycoon_Main_GameController.isOptionMenuOn == false)
@@ -99,32 +99,33 @@ public class EscapePod_ChairBed : MonoBehaviour
         }
     }
 
+    // craft chairBed
     public void Craft_ChairBed_SnapPoint1()
     {
-
+        Instantiate(chairBed_prefab, controller.snapPoint1.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint2()
     {
-
+        Instantiate(chairBed_prefab, controller.snapPoint2.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint3()
     {
-
+        Instantiate(chairBed_prefab, controller.snapPoint3.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint4()
     {
-
+        Instantiate(chairBed_prefab, controller.snapPoint4.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint5()
     {
-
+        Instantiate(chairBed_prefab, controller.snapPoint5.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint6()
     {
-
+        Instantiate(chairBed_prefab, controller.snapPoint6.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint7()
     {
-
+        Instantiate(chairBed_prefab, controller.snapPoint7.transform.position, Quaternion.identity);
     }
 }
