@@ -5,4 +5,5 @@ using UnityEngine;
 public class SpaceTycoon_Main_GameController : MonoBehaviour
 {
     public static bool isOptionMenuOn = false;
+    public static bool isPanelMenuOn = false;
 }
