@@ -109,7 +109,10 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
     public void Manual_TurnOff_All()
     {
         controller.mainPanel.SetActive(false);
+
         controller.craftTable_options.SetActive(false);
+        controller.chairBed_options.SetActive(false);
+
         SpaceTycoon_Main_GameController.isOptionMenuOn = false;
         SpaceTycoon_Main_GameController.isPanelMenuOn = false;
     }
@@ -118,12 +121,16 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
         if (controller.playerDetection == false)
         {
             controller.mainPanel.SetActive(false);
+
             controller.craftTable_options.SetActive(false);
             controller.chairBed_options.SetActive(false);
+
             SpaceTycoon_Main_GameController.isOptionMenuOn = false;
             SpaceTycoon_Main_GameController.isPanelMenuOn = false;
         }
     }
+
+    // icon
     public void Icon_Pressed()
     {
         controller.mainPanel.SetActive(true);
@@ -131,11 +138,11 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
     }
     void Icon_Popup()
     {
-        if (controller.playerDetection == true)
+        if (controller.playerDetection == true && SpaceTycoon_Main_GameController.isPanelMenuOn == false)
         {
             controller.icon.SetActive(true);
         }
-        else if (controller.playerDetection == false)
+        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true)
         {
             controller.icon.SetActive(false);
         }
