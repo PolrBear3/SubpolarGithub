@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 380485756414350516}
   - component: {fileID: 5238788267438748900}
   - component: {fileID: 1398555421737299507}
-  - component: {fileID: 5238788267438748903}
   m_Layer: 0
   m_Name: SnapPoint6
   m_TagString: Untagged
@@ -126,27 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
---- !u!50 &5238788267438748903
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535057151334216059}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &1127073594577762243
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +370,6 @@ GameObject:
   - component: {fileID: 2956216578094258140}
   - component: {fileID: 7411124914344202879}
   - component: {fileID: 7496806436303778626}
-  - component: {fileID: 7411124914344202882}
   m_Layer: 0
   m_Name: SnapPoint4
   m_TagString: Untagged
@@ -506,27 +483,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
---- !u!50 &7411124914344202882
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2956216578094258142}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &2956216578332942404
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,7 +495,6 @@ GameObject:
   - component: {fileID: 2956216578332942402}
   - component: {fileID: 7411124914842936805}
   - component: {fileID: 6890876795495605074}
-  - component: {fileID: 9048676155313279929}
   m_Layer: 0
   m_Name: SnapPoint1
   m_TagString: Untagged
@@ -653,27 +608,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
---- !u!50 &9048676155313279929
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2956216578332942404}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &2956216578382084891
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +620,6 @@ GameObject:
   - component: {fileID: 2956216578382084889}
   - component: {fileID: 7411124914594315972}
   - component: {fileID: 7194186433348249844}
-  - component: {fileID: 7411124914594315975}
   m_Layer: 0
   m_Name: SnapPoint3
   m_TagString: Untagged
@@ -800,27 +733,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
---- !u!50 &7411124914594315975
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2956216578382084891}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &2956216578428477366
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,7 +783,6 @@ GameObject:
   - component: {fileID: 2956216578486418895}
   - component: {fileID: 7411124914690259050}
   - component: {fileID: 8316334957411636083}
-  - component: {fileID: 7411124914690259053}
   m_Layer: 0
   m_Name: SnapPoint2
   m_TagString: Untagged
@@ -985,27 +896,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
---- !u!50 &7411124914690259053
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2956216578486418881}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!1 &2956216578997191667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,7 +907,6 @@ GameObject:
   - component: {fileID: 2956216578997191666}
   - component: {fileID: 2956216578997191665}
   - component: {fileID: 7411124916329301595}
-  - component: {fileID: 7425213424064160324}
   - component: {fileID: 5382218026327961839}
   m_Layer: 0
   m_Name: SnapPoint7
@@ -1119,27 +1008,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.030712366, y: 0.030712381}
   m_EdgeRadius: 0
---- !u!50 &7425213424064160324
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2956216578997191667}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!114 &5382218026327961839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3505,7 +3373,6 @@ GameObject:
   - component: {fileID: 8711849673514604523}
   - component: {fileID: 1251413167362626535}
   - component: {fileID: 4408462657927475639}
-  - component: {fileID: 1251413167362626538}
   m_Layer: 0
   m_Name: SnapPoint5
   m_TagString: Untagged
@@ -3619,24 +3486,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
---- !u!50 &1251413167362626538
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6810256470911751750}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 7
