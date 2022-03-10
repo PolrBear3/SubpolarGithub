@@ -15,17 +15,17 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     }
 
     // icon
-    void Icon_Popup()
+    void Icon_Popup() 
     {
+        // is on 
         if (controller.playerDetection == true && SpaceTycoon_Main_GameController.isPanelMenuOn == false)
         {
             controller.icon.SetActive(true);
-            SpaceTycoon_Main_GameController.isPanelMenuOn = true;
         }
-        if (controller.playerDetection == false || controller.mainPanel.activeSelf == true)
+        // is off
+        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true)
         {
             controller.icon.SetActive(false);
-            SpaceTycoon_Main_GameController.isPanelMenuOn = false;
         }
     }
     public void Icon_Pressed()
@@ -42,7 +42,7 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     }
     void Automatic_Off()
     {
-        if (controller.playerDetection == false)
+        if (controller.playerDetection == false && controller.mainPanel.activeSelf == true)
         {
             controller.mainPanel.SetActive(false);
             SpaceTycoon_Main_GameController.isPanelMenuOn = false;
@@ -63,7 +63,7 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
         // give back chairBed ingredients to player
     }
 
-    void Mode_Check_for_Button()
+    void Mode_Check_for_Button() 
     {
         if (controller.chairMode == true)
         {

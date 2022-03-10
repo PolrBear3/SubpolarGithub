@@ -126,7 +126,7 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
     }
     void Automatic_TurnOff_All()
     {
-        if (controller.playerDetection == false)
+        if (controller.playerDetection == false && controller.mainPanel.activeSelf == true)
         {
             controller.mainPanel.SetActive(false);
 
@@ -150,7 +150,7 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
         {
             controller.icon.SetActive(true);
         }
-        if (controller.playerDetection == false || controller.mainPanel.activeSelf == true)
+        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true)
         {
             controller.icon.SetActive(false);
         }
