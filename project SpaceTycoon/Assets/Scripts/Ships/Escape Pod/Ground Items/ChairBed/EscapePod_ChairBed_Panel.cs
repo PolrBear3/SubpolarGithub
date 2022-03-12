@@ -34,8 +34,34 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
         SpaceTycoon_Main_GameController.isPanelMenuOn = true;
     }
 
-    // main panel
-    public void Manual_Off()
+    private int iconOrderNumber;
+    void icon_Order_Set()
+    {
+        if (SpaceTycoon_Main_GameController.numberOfIconsOn == 0)
+        {
+            iconOrderNumber = 1;
+            SpaceTycoon_Main_GameController.numberOfIconsOn += 1;
+        }
+        else if (SpaceTycoon_Main_GameController.numberOfIconsOn == 0)
+        {
+            iconOrderNumber = 2;
+            SpaceTycoon_Main_GameController.numberOfIconsOn += 1;
+        }
+    }
+    void Set_Icon_Position()
+    {
+        if (iconOrderNumber == 1)
+        {
+            controller.icon.transform.localPosition = new Vector2(-140, -120);
+        }
+        if (iconOrderNumber == 2)
+        {
+            controller.icon.transform.localPosition = new Vector2(-140, -60);
+        }
+    }
+
+        // main panel
+        public void Manual_Off()
     {
         controller.mainPanel.SetActive(false);
         SpaceTycoon_Main_GameController.isPanelMenuOn = false;
