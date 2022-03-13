@@ -156,6 +156,11 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
         }
     }
 
+    void Icon_Position()
+    {
+        // ???
+    }
+
     // craft table options menu
     public void CraftTable_Options_On()
     {
