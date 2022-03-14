@@ -2,40 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class icon : MonoBehaviour
+public class Icon : MonoBehaviour
 {
-    private bool otherIconDetect;
-
-    private void Update()
+    private void Start()
     {
-        Icon_Position_Set();
+        Set_Icon_Position();
     }
 
-    private void Icon_Position_Set()
+    void Set_Icon_Position()
     {
-        if (otherIconDetect == false)
+        if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 0)
         {
-            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-450, 120);
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, 300);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
         }
-        else if (otherIconDetect == true)
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 1 && SpaceTycoon_Main_GameController.point2Empty == true)
         {
-            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-450, 60);
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, 240);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("icon"))
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 2 && SpaceTycoon_Main_GameController.point3Empty == true)
         {
-            otherIconDetect = true;
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, 180);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("icon"))
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 3)
         {
-            otherIconDetect = false;
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, 120);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
+        }
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 4)
+        {
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, 60);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
+        }
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 5)
+        {
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, 0);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
+        }
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 6)
+        {
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, -120);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
+        }
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 7)
+        {
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, -180);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
+        }
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 8)
+        {
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, -240);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
+        }
+        else if (SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod == 9)
+        {
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(-480, -300);
+            SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod += 1;
         }
     }
 }

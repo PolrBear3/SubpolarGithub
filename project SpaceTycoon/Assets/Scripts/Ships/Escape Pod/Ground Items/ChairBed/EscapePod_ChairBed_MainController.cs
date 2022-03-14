@@ -6,6 +6,7 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
 {
     [HideInInspector]
     public bool playerDetection;
+
     [HideInInspector]
     public bool chairMode = true;
 

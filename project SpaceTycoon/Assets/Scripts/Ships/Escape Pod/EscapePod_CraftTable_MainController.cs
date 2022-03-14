@@ -31,7 +31,7 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
         {
             playerDetection = true;
             anim.SetBool("onMenu", true);
-        } 
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

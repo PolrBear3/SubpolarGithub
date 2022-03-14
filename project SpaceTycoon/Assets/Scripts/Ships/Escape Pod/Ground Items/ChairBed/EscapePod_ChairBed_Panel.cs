@@ -34,11 +34,6 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
         SpaceTycoon_Main_GameController.isPanelMenuOn = true;
     }
 
-    void Icon_Position()
-    {
-        // ???
-    }
-
     // main panel
     public void Manual_Off()
     {
@@ -65,6 +60,7 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     public void Dismantle()
     {
         Destroy(EscapePod_ChairBed_gameObject);
+        SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod -= 1;
         // give back chairBed ingredients to player
     }
 

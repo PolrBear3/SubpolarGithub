@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EscapePod_CraftTable_Panel : MonoBehaviour
 {
@@ -154,11 +153,6 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
         {
             controller.icon.SetActive(false);
         }
-    }
-
-    void Icon_Position()
-    {
-        // ???
     }
 
     // craft table options menu
