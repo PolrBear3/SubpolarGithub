@@ -11,6 +11,7 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
     public bool chairMode = true;
 
     public GameObject icon;
+    public GameObject iconBoxCollider;
     public GameObject mainPanel;
     public GameObject chairModeButton;
     public GameObject bedModeButton;

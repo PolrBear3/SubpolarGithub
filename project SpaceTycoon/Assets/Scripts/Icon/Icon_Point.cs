@@ -14,4 +14,12 @@ public class Icon_Point : MonoBehaviour
             iconDetection = true;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("icon"))
+        {
+            iconDetection = false;
+        }
+    }
 }

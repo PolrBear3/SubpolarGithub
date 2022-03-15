@@ -59,8 +59,8 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
 
     public void Dismantle()
     {
+        controller.iconBoxCollider.SetActive(false);
         Destroy(EscapePod_ChairBed_gameObject);
-        SpaceTycoon_Main_GameController.currentIconNumbers_EscapePod -= 1;
         // give back chairBed ingredients to player
     }
 
