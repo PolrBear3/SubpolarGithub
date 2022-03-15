@@ -7,7 +7,6 @@ public class Icon_Points_Manager : MonoBehaviour
     private void Update()
     {
         Icon_Point_Empty_Check();
-        Debug.Log(point2Empty);
     }
 
     public Icon_Point point1;
