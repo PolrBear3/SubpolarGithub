@@ -11,7 +11,6 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     {
         Icon_Popup();
         Automatic_Off();
-        Mode_Check_for_Button();
     }
 
     // icon
@@ -51,10 +50,19 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     
     // functions
     private bool facingLeft = false;
-    public void Rotate()
+    public void Rotate_Right()
     {
         facingLeft = !facingLeft;
         EscapePod_ChairBed_gameObject.transform.Rotate(0f, 180f, 0f);
+        controller.rotateRightButton.SetActive(false);
+        controller.roateLeftButton.SetActive(true);
+    }
+    public void Rotate_Left()
+    {
+        facingLeft = !facingLeft;
+        EscapePod_ChairBed_gameObject.transform.Rotate(0f, 180f, 0f);
+        controller.roateLeftButton.SetActive(false);
+        controller.rotateRightButton.SetActive(true);
     }
 
     public void Dismantle()
@@ -62,20 +70,6 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
         controller.iconBoxCollider.SetActive(false);
         Destroy(EscapePod_ChairBed_gameObject);
         // give back chairBed ingredients to player
-    }
-
-    void Mode_Check_for_Button() 
-    {
-        if (controller.chairMode == true)
-        {
-            controller.chairModeButton.SetActive(false);
-            controller.bedModeButton.SetActive(true);
-        }
-        if (controller.chairMode == false)
-        {
-            controller.chairModeButton.SetActive(true);
-            controller.bedModeButton.SetActive(false);
-        }
     }
 
     public void Change_to_Bed()

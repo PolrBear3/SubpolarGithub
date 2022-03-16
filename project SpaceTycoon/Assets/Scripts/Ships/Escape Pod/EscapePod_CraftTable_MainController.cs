@@ -27,7 +27,7 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("player_hand"))
         {
             playerDetection = true;
             anim.SetBool("onMenu", true);
@@ -35,7 +35,7 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("player_hand"))
         {
             playerDetection = false;
             anim.SetBool("onMenu", false);

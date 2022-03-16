@@ -13,6 +13,8 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
     public GameObject icon;
     public GameObject iconBoxCollider;
     public GameObject mainPanel;
+    public GameObject rotateRightButton;
+    public GameObject roateLeftButton;
     public GameObject chairModeButton;
     public GameObject bedModeButton;
 
@@ -21,6 +23,11 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
     public Sprite bed;
     public Sprite chair;
 
+    private void Start()
+    {
+        rotateRightButton.SetActive(false);
+    }
+
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -28,14 +35,14 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("player_hand"))
         {
             playerDetection = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("player_hand"))
         {
             playerDetection = false;
         }
