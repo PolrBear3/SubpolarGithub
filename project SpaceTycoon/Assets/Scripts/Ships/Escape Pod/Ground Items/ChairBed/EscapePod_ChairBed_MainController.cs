@@ -6,6 +6,8 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
 {
     [HideInInspector]
     public bool playerDetection;
+    [HideInInspector]
+    public GameObject player;
 
     [HideInInspector]
     public bool chairMode = true;
@@ -13,24 +15,27 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
     public GameObject icon;
     public GameObject iconBoxCollider;
     public GameObject mainPanel;
+
     public GameObject rotateRightButton;
     public GameObject roateLeftButton;
     public GameObject chairModeButton;
     public GameObject bedModeButton;
+
+    public GameObject sleepButton;
+    public GameObject sitButton;
+
+    public GameObject sitPosition;
+    public GameObject sleepPosition;
 
     [HideInInspector]
     public SpriteRenderer sr;
     public Sprite bed;
     public Sprite chair;
 
-    private void Start()
-    {
-        rotateRightButton.SetActive(false);
-    }
-
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

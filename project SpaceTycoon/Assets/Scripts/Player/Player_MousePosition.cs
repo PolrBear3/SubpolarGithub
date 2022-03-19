@@ -13,24 +13,35 @@ public class Player_MousePosition : MonoBehaviour
         Mouse_Position();
     }
 
-    bool facingRight = false;
     void Mouse_Position()
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(player.position);
 
-        if (Input.mousePosition.x < screenPosition.x && !facingRight)
+        if (Input.mousePosition.x < screenPosition.x && !Player_State.player_isFacing_Left)
         {
-            Flip();
+            if (Player_State.player_isSleeping == false)
+            {
+                if (Player_State.player_isSitting == false)
+                {
+                    Flip();
+                }
+            }
         }
-        if (Input.mousePosition.x > screenPosition.x && facingRight)
+        if (Input.mousePosition.x > screenPosition.x && Player_State.player_isFacing_Left)
         {
-            Flip();
+            if (Player_State.player_isSleeping == false)
+            {
+                if (Player_State.player_isSitting == false)
+                {
+                    Flip();
+                }
+            }
         }
     }
 
     void Flip()
     {
-        facingRight = !facingRight;
+        Player_State.player_isFacing_Left = !Player_State.player_isFacing_Left;
 
         transform.Rotate(0f, 180f, 0f);
     }

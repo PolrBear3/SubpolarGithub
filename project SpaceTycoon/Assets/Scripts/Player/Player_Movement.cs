@@ -18,6 +18,7 @@ public class Player_Movement : MonoBehaviour
         Movement_Input();
         Jump();
         Check_if_Ground();
+        Check_if_Sitting_or_Sleeping();
     }
 
     void FixedUpdate()
@@ -47,7 +48,8 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
-    bool isGround = false;
+    [HideInInspector]
+    public bool isGround = false;
     public Transform foot;
     public float footRadius;
     public LayerMask groundLayer;
@@ -67,5 +69,17 @@ public class Player_Movement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(foot.position, footRadius);
+    }
+
+    void Check_if_Sitting_or_Sleeping()
+    {
+        if (Player_State.player_isSitting || Player_State.player_isSleeping)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        }
+        if (Player_State.player_isMoving)
+        {
+            rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        }
     }
 }
