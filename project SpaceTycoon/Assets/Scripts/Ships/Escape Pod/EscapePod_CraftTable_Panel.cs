@@ -157,17 +157,20 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
         {
             controller.icon.SetActive(true);
         }
-        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true)
+        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true || SpaceTycoon_Main_GameController.isIconAvailable == false)
         {
             controller.icon.SetActive(false);
         }
     }
 
-    // craft table options menu
+    // options menu
     public void CraftTable_Options_On()
     {
-        controller.craftTable_options.SetActive(true);
-        SpaceTycoon_Main_GameController.isGroundOptionMenuOn = true;
+        if (SpaceTycoon_Main_GameController.isGroundOptionMenuOn == false)
+        {
+            controller.craftTable_options.SetActive(true);
+            SpaceTycoon_Main_GameController.isGroundOptionMenuOn = true;
+        }
     }
     public void CraftTable_Options_Off()
     {
