@@ -80,6 +80,7 @@ public class Player_Movement : MonoBehaviour
         if (Player_State.player_isMoving)
         {
             rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation; 
         }
     }
 }
