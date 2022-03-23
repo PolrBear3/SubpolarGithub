@@ -9,6 +9,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     [HideInInspector]
     public bool playerDetection;
     public GameObject icon;
+    public GameObject iconBoxCollider;
     public GameObject mainPanel;
 
     // sliders

@@ -157,7 +157,7 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
         {
             controller.icon.SetActive(true);
         }
-        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true || SpaceTycoon_Main_GameController.isIconAvailable == false)
+        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true)
         {
             controller.icon.SetActive(false);
         }

@@ -48,11 +48,11 @@ public class Player_State : MonoBehaviour
         // if player is sleeping, cannot interact with any object
         if (player_isSleeping == true)
         {
-            SpaceTycoon_Main_GameController.isIconAvailable = false;
+            playerController.playerHand.SetActive(false);
         }
         else
         {
-            SpaceTycoon_Main_GameController.isIconAvailable = true;
+            playerController.playerHand.SetActive(true);
         }
     }
 

@@ -28,8 +28,8 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
             controller.icon.SetActive(true);
         }
         // is off
-        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true || SpaceTycoon_Main_GameController.isIconAvailable == false
-        || Player_State.player_isSitting == true || Player_State.player_isSleeping == true)
+        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true || 
+          Player_State.player_isSitting == true || Player_State.player_isSleeping == true)
         {
             controller.icon.SetActive(false);
         }

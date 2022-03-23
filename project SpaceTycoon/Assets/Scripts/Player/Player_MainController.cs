@@ -9,4 +9,7 @@ public class Player_MainController : MonoBehaviour
     public Player_State playerState;
     public Player_Animation playerAnimation;
     public Player_MousePosition playerMousePosition;
+
+    // other
+    public GameObject playerHand;
 }
