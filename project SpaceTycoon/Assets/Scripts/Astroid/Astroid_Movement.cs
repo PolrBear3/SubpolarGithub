@@ -4,63 +4,94 @@ using UnityEngine;
 
 public class Astroid_Movement : MonoBehaviour
 {
-    public EscapePod_MainController escapePod_controller;
-
-    Rigidbody2D rb;
-
-    float dirX = -1;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); 
     }
 
-    void FixedUpdate()
+    private void Update()
     {
         Speed_Control();
     }
 
+    void FixedUpdate()
+    {
+        Movement();
+    }
+
+    Rigidbody2D rb;
+
+    float dirX = -1;
+    
+    float speed = 0f;
+    float maxSpeed;
+    float acceleration = 0.2f;
+
+    void Movement()
+    {
+        rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
+    }
+    
     void Speed_Control()
     {
-        if (escapePod_controller.speed0 == true)
+        if (SpaceTycoon_Main_GameController.Shipspeed0 == true)
         {
-            Speed0();
+            maxSpeed = 0f;
+            
+            // low
+            if (speed > maxSpeed)
+            {
+                speed = speed - (acceleration * Time.deltaTime);
+            }
         }
-        else if (escapePod_controller.speed1 == true)
+        else if (SpaceTycoon_Main_GameController.Shipspeed1 == true)
         {
-            Speed1();
+            maxSpeed = 1f;
+            
+            // low
+            if (speed < maxSpeed)
+            {
+                speed = speed + (acceleration * Time.deltaTime);
+            }
+
+            // high
+            if (speed > maxSpeed)
+            {
+                speed = speed - (acceleration * Time.deltaTime);
+            }
         }
-        else if (escapePod_controller.speed2 == true)
+        else if (SpaceTycoon_Main_GameController.Shipspeed2 == true)
         {
-            Speed2();
+            maxSpeed = 2f;
+
+            // low
+            if (speed < maxSpeed)
+            {
+                speed = speed + (acceleration * Time.deltaTime);
+            }
+
+            // high
+            if (speed > maxSpeed)
+            {
+                speed = speed - (acceleration * Time.deltaTime);
+            }
         }
-        else if (escapePod_controller.speed3 == true)
+        else if (SpaceTycoon_Main_GameController.Shipspeed3 == true)
         {
-            Speed3();
+            maxSpeed = 3f;
+
+            // low
+            if (speed < maxSpeed)
+            {
+                speed = speed + (acceleration * Time.deltaTime);
+            }
+
+            // high
+            if (speed > maxSpeed)
+            {
+                speed = speed - (acceleration * Time.deltaTime);
+            }
         }
-    }
-
-    float speed0 = 0f;
-    void Speed0()
-    {
-        rb.velocity = new Vector2(dirX * speed0, rb.velocity.y);
-    }
-
-    float speed1 = 1f;
-    void Speed1()
-    {
-        rb.velocity = new Vector2(dirX * speed1, rb.velocity.y);
-    }
-
-    float speed2 = 2f;
-    void Speed2()
-    {
-        rb.velocity = new Vector2(dirX * speed2, rb.velocity.y);
-    }
-
-    float speed3 = 3f;
-    void Speed3()
-    {
-        rb.velocity = new Vector2(dirX * speed3, rb.velocity.y);
     }
 }

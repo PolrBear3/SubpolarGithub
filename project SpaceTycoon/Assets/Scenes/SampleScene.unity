@@ -1743,7 +1743,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956c84b9c2c036d4ead997af27e61e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  escapePod_controller: {fileID: 7143718590530246998}
   ceres:
   - {fileID: 3063712127643078568, guid: a657eb741c1edcc4aa3bdcf3322bec55, type: 3}
   - {fileID: 6001962045039122284, guid: 2a4166b6a8748ec459672625c70d7411, type: 3}
@@ -2139,9 +2138,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.000015258789
       objectReference: {fileID: 0}
+    - target: {fileID: 7551543010527485937, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7598732136560190335, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
       propertyPath: m_FalloffIntensity
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8050030652872273823, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8067857743967476882, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
       propertyPath: m_RootOrder
@@ -2299,17 +2306,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b4fad3a46691499aa194121ec71a173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7143718590530246998 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5755333730241112858, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
-  m_PrefabInstance: {fileID: 6788360704374310551}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b50771c65def6344cbf78081557ed773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7470955894880449078 stripped
