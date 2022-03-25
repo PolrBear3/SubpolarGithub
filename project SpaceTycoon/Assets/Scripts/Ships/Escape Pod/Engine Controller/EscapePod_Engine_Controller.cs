@@ -14,6 +14,9 @@ public class EscapePod_Engine_Controller : MonoBehaviour
 
     // sliders
     public Slider speed;
+    [HideInInspector]
+    public float currentspeedSliderValue = 0f, setSpeedSliderValue, accelerationValue = 5f;
+    
     public Slider energyFuel;
     public Slider emergencyEnergyFuel;
 
@@ -21,7 +24,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     public GameObject mainEngineOnButton, mainEngineOffButton, mainEngineLight;
     public GameObject side1EngineOnButton, side1EngineOffButton, side1EngineLight;
     public GameObject side2EngineOnButton, side2EngineOffButton, side2EngineLight;
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("player_hand"))

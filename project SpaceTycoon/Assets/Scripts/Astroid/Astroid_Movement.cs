@@ -24,74 +24,41 @@ public class Astroid_Movement : MonoBehaviour
 
     float dirX = -1;
     
-    float speed = 0f;
-    float maxSpeed;
-    float acceleration = 0.2f;
+    float currentSpeed = 0f, setSpeed, acceleration = 0.05f;
 
     void Movement()
     {
-        rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
+        rb.velocity = new Vector2(dirX * currentSpeed, rb.velocity.y);
     }
-    
+
     void Speed_Control()
     {
-        if (SpaceTycoon_Main_GameController.Shipspeed0 == true)
+        if (SpaceTycoon_Main_GameController.shipSpeed0)
         {
-            maxSpeed = 0f;
-            
-            // low
-            if (speed > maxSpeed)
-            {
-                speed = speed - (acceleration * Time.deltaTime);
-            }
+            setSpeed = 0f;
         }
-        else if (SpaceTycoon_Main_GameController.Shipspeed1 == true)
+        if (SpaceTycoon_Main_GameController.shipSpeed1)
         {
-            maxSpeed = 1f;
-            
-            // low
-            if (speed < maxSpeed)
-            {
-                speed = speed + (acceleration * Time.deltaTime);
-            }
-
-            // high
-            if (speed > maxSpeed)
-            {
-                speed = speed - (acceleration * Time.deltaTime);
-            }
+            setSpeed = 0.5f;
         }
-        else if (SpaceTycoon_Main_GameController.Shipspeed2 == true)
+        if (SpaceTycoon_Main_GameController.shipSpeed2)
         {
-            maxSpeed = 2f;
-
-            // low
-            if (speed < maxSpeed)
-            {
-                speed = speed + (acceleration * Time.deltaTime);
-            }
-
-            // high
-            if (speed > maxSpeed)
-            {
-                speed = speed - (acceleration * Time.deltaTime);
-            }
+            setSpeed = 1f;
         }
-        else if (SpaceTycoon_Main_GameController.Shipspeed3 == true)
+        if (SpaceTycoon_Main_GameController.shipSpeed3)
         {
-            maxSpeed = 3f;
+            setSpeed = 1.5f;
+        }
 
-            // low
-            if (speed < maxSpeed)
-            {
-                speed = speed + (acceleration * Time.deltaTime);
-            }
-
-            // high
-            if (speed > maxSpeed)
-            {
-                speed = speed - (acceleration * Time.deltaTime);
-            }
+        // low
+        if (currentSpeed < setSpeed)
+        {
+            currentSpeed = currentSpeed + (acceleration * Time.deltaTime);
+        }
+        // high
+        else if (currentSpeed > setSpeed)
+        {
+            currentSpeed = currentSpeed - (acceleration * Time.deltaTime);
         }
     }
 }

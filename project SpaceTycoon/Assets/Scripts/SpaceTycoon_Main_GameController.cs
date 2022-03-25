@@ -17,20 +17,20 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     // ship speed
     public static int EnginesOn = 0;
     
-    public static bool Shipspeed0;
+    public static bool shipSpeed0;
     [HideInInspector]
-    public static bool Shipspeed1;
+    public static bool shipSpeed1;
     [HideInInspector]
-    public static bool Shipspeed2;
+    public static bool shipSpeed2;
     [HideInInspector]
-    public static bool Shipspeed3;
+    public static bool shipSpeed3;
 
     void Reset_Speed()
     {
-        Shipspeed0 = false;
-        Shipspeed1 = false;
-        Shipspeed2 = false;
-        Shipspeed3 = false;
+        shipSpeed0 = false;
+        shipSpeed1 = false;
+        shipSpeed2 = false;
+        shipSpeed3 = false;
     }
 
     void Enignes_Amount_Speed()
@@ -38,22 +38,22 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         if (EnginesOn == 0)
         {
             Reset_Speed();
-            Shipspeed0 = true;
+            shipSpeed0 = true;
         }
         if (EnginesOn == 1)
         {
             Reset_Speed();
-            Shipspeed1 = true;
+            shipSpeed1 = true;
         }
         if (EnginesOn == 2)
         {
             Reset_Speed();
-            Shipspeed2 = true;
+            shipSpeed2 = true;
         }
         if (EnginesOn == 3)
         {
             Reset_Speed();
-            Shipspeed3 = true;
+            shipSpeed3 = true;
         }
     }
 }

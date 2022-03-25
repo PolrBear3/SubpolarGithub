@@ -29,7 +29,7 @@ public class Astroid_Shooter : MonoBehaviour
     {
         randomCeres = ceres[Random.Range(0, ceres.Length)];
 
-        if (Time.time > nextSpawn && SpaceTycoon_Main_GameController.Shipspeed0 == false)
+        if (Time.time > nextSpawn && SpaceTycoon_Main_GameController.shipSpeed0 == false)
         {
             nextSpawn = Time.time + spawnRate;
            
@@ -37,7 +37,7 @@ public class Astroid_Shooter : MonoBehaviour
             whereToSpawn = new Vector2 (transform.position.x, randY);
             Instantiate(randomCeres, whereToSpawn, Quaternion.identity);
         }
-        if (Time.time > nextSpawn2 && SpaceTycoon_Main_GameController.Shipspeed0 == false)
+        if (Time.time > nextSpawn2 && SpaceTycoon_Main_GameController.shipSpeed0 == false)
         {
             nextSpawn2 = Time.time + spawnRate2;
 
@@ -45,7 +45,7 @@ public class Astroid_Shooter : MonoBehaviour
             whereToSpawn2 = new Vector2(transform.position.x, randY2);
             Instantiate(randomCeres, whereToSpawn2, Quaternion.identity);
         }
-        if (Time.time > nextSpawn3 && SpaceTycoon_Main_GameController.Shipspeed0 == false)
+        if (Time.time > nextSpawn3 && SpaceTycoon_Main_GameController.shipSpeed0 == false)
         {
             nextSpawn3 = Time.time + spawnRate3;
 

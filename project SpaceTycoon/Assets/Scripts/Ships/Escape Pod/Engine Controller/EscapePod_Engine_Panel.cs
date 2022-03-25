@@ -10,6 +10,7 @@ public class EscapePod_Engine_Panel : MonoBehaviour
     {
         Icon_Popup();
         Automatic_Off();
+        speedSliderSet();
     }
 
     // icon
@@ -44,6 +45,38 @@ public class EscapePod_Engine_Panel : MonoBehaviour
         {
             controller.mainPanel.SetActive(false);
             SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+        }
+    }
+
+    // sliders
+    void speedSliderSet()
+    {
+        controller.speed.value = controller.currentspeedSliderValue;
+
+        if (SpaceTycoon_Main_GameController.shipSpeed0)
+        {
+            controller.setSpeedSliderValue = 0f;
+        }
+        if (SpaceTycoon_Main_GameController.shipSpeed1)
+        {
+            controller.setSpeedSliderValue = 30f;
+        }
+        if (SpaceTycoon_Main_GameController.shipSpeed2)
+        {
+            controller.setSpeedSliderValue = 60f;
+        }
+        if (SpaceTycoon_Main_GameController.shipSpeed3)
+        {
+            controller.setSpeedSliderValue = 90f;
+        }
+
+        if (controller.currentspeedSliderValue > controller.setSpeedSliderValue)
+        {
+            controller.currentspeedSliderValue = controller.currentspeedSliderValue - (controller.accelerationValue * Time.deltaTime);
+        }
+        else if (controller.currentspeedSliderValue < controller.setSpeedSliderValue)
+        {
+            controller.currentspeedSliderValue = controller.currentspeedSliderValue + (controller.accelerationValue * Time.deltaTime);
         }
     }
 
