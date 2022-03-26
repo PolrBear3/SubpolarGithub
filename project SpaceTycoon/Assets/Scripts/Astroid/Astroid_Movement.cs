@@ -33,19 +33,19 @@ public class Astroid_Movement : MonoBehaviour
 
     void Speed_Control()
     {
-        if (SpaceTycoon_Main_GameController.shipSpeed0)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 0)
         {
             setSpeed = 0f;
         }
-        if (SpaceTycoon_Main_GameController.shipSpeed1)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 1)
         {
             setSpeed = 0.5f;
         }
-        if (SpaceTycoon_Main_GameController.shipSpeed2)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 2)
         {
             setSpeed = 1f;
         }
-        if (SpaceTycoon_Main_GameController.shipSpeed3)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 3)
         {
             setSpeed = 1.5f;
         }

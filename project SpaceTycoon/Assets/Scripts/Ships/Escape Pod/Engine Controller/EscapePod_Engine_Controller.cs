@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class EscapePod_Engine_Controller : MonoBehaviour
 {
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    [HideInInspector]
+    public Animator anim;
+    
     // main
     [HideInInspector]
     public bool playerDetection;
@@ -13,12 +21,25 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     public GameObject mainPanel;
 
     // sliders
-    public Slider speed;
+    public Slider speedSlider;
     [HideInInspector]
-    public float currentspeedSliderValue = 0f, setSpeedSliderValue, accelerationValue = 5f;
-    
-    public Slider energyFuel;
-    public Slider emergencyEnergyFuel;
+    public float currentspeedSliderValue = 0f, setSpeedSliderValue, speedAccelerationValue = 5f;
+
+    public GameObject energyFuel;
+    public Slider energyFuelSlider;
+    [HideInInspector]
+    public float currentEnergyFuel;
+    public float maxEnergyFuel = 40f;
+    [HideInInspector]
+    public bool isEnergyFuelEmpty = false;
+
+    public GameObject emergencyFuel;
+    public Slider emergencyEnergyFuelSlider;
+    [HideInInspector]
+    public float currentEmergencyFuel;
+    public float maxEmergencyFuel = 20f;
+    [HideInInspector]
+    public bool isEmergencyFuelEmpty = false;
 
     // engine on off buttons
     public GameObject mainEngineOnButton, mainEngineOffButton, mainEngineLight;

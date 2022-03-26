@@ -5,12 +5,20 @@ using UnityEngine;
 public class EscapePod_Engine_Panel : MonoBehaviour
 {
     public EscapePod_Engine_Controller controller;
-    
+
+    private void Start()
+    {
+        Set_Max_Min_EnergyFuel();
+    }
+
     private void Update()
     {
         Icon_Popup();
         Automatic_Off();
-        speedSliderSet();
+        Speed_SliderSet();
+        EnergyFuel_Empty_Check();
+        EnergyFuel_SliderSet();
+        EmergencyFuel_SliderSet();
     }
 
     // icon
@@ -48,35 +56,114 @@ public class EscapePod_Engine_Panel : MonoBehaviour
         }
     }
 
-    // sliders
-    void speedSliderSet()
+    // speed
+    void Speed_SliderSet()
     {
-        controller.speed.value = controller.currentspeedSliderValue;
+        controller.speedSlider.value = controller.currentspeedSliderValue;
 
-        if (SpaceTycoon_Main_GameController.shipSpeed0)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 0)
         {
             controller.setSpeedSliderValue = 0f;
         }
-        if (SpaceTycoon_Main_GameController.shipSpeed1)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 1)
         {
             controller.setSpeedSliderValue = 30f;
         }
-        if (SpaceTycoon_Main_GameController.shipSpeed2)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 2)
         {
             controller.setSpeedSliderValue = 60f;
         }
-        if (SpaceTycoon_Main_GameController.shipSpeed3)
+        if (SpaceTycoon_Main_GameController.EnginesOn == 3)
         {
             controller.setSpeedSliderValue = 90f;
         }
 
         if (controller.currentspeedSliderValue > controller.setSpeedSliderValue)
         {
-            controller.currentspeedSliderValue = controller.currentspeedSliderValue - (controller.accelerationValue * Time.deltaTime);
+            controller.currentspeedSliderValue = controller.currentspeedSliderValue - (controller.speedAccelerationValue * Time.deltaTime);
         }
         else if (controller.currentspeedSliderValue < controller.setSpeedSliderValue)
         {
-            controller.currentspeedSliderValue = controller.currentspeedSliderValue + (controller.accelerationValue * Time.deltaTime);
+            controller.currentspeedSliderValue = controller.currentspeedSliderValue + (controller.speedAccelerationValue * Time.deltaTime);
+        }
+    }
+    
+    // fuel
+    void Set_Max_Min_EnergyFuel()
+    {
+        controller.currentEnergyFuel = controller.maxEnergyFuel;
+        controller.currentEmergencyFuel = controller.maxEmergencyFuel;
+    }
+    void EnergyFuel_Empty_Check()
+    {
+        if (controller.currentEnergyFuel <= 0)
+        {
+            controller.isEnergyFuelEmpty = true;
+            controller.emergencyFuel.SetActive(true);
+            controller.energyFuel.SetActive(false);
+            controller.anim.SetBool("isUsingEmergencyFuel", true);
+        }
+        else
+        {
+            controller.isEnergyFuelEmpty = false;
+            controller.energyFuel.SetActive(true);
+            controller.emergencyFuel.SetActive(false);
+            controller.anim.SetBool("isUsingEmergencyFuel", false);
+        }
+
+        if (controller.currentEmergencyFuel <= 0)
+        {
+            controller.isEmergencyFuelEmpty = true;
+        }
+        else
+        {
+            controller.isEmergencyFuelEmpty = false;
+        }
+
+        if (controller.isEnergyFuelEmpty && controller.isEmergencyFuelEmpty)
+        {
+            All_Engines_Off();
+        }
+    }
+
+    void EnergyFuel_SliderSet()
+    {
+        controller.energyFuelSlider.value = controller.currentEnergyFuel;
+
+        if (controller.isEnergyFuelEmpty == false)
+        {
+            if (SpaceTycoon_Main_GameController.EnginesOn == 1)
+            {
+                controller.currentEnergyFuel -= 1 * Time.deltaTime;
+            }
+            if (SpaceTycoon_Main_GameController.EnginesOn == 2)
+            {
+                controller.currentEnergyFuel -= 2 * Time.deltaTime;
+            }
+            if (SpaceTycoon_Main_GameController.EnginesOn == 3)
+            {
+                controller.currentEnergyFuel -= 3 * Time.deltaTime;
+            }
+        }
+    }
+    void EmergencyFuel_SliderSet()
+    {
+        controller.emergencyEnergyFuelSlider.value = controller.currentEmergencyFuel;
+
+        if (controller.isEnergyFuelEmpty && controller.isEmergencyFuelEmpty == false)
+        {
+            if (SpaceTycoon_Main_GameController.EnginesOn == 1)
+            {
+                controller.currentEmergencyFuel -= 1 * Time.deltaTime;
+            }
+            if (SpaceTycoon_Main_GameController.EnginesOn == 2)
+            {
+                controller.currentEmergencyFuel -= 2 * Time.deltaTime;
+            }
+            if (SpaceTycoon_Main_GameController.EnginesOn == 3)
+            {
+                controller.currentEmergencyFuel -= 3 * Time.deltaTime;
+            }
         }
     }
 
@@ -124,5 +211,12 @@ public class EscapePod_Engine_Panel : MonoBehaviour
         controller.side2EngineOffButton.SetActive(false);
         controller.side2EngineLight.SetActive(false);
         SpaceTycoon_Main_GameController.EnginesOn -= 1;
+    }
+
+    void All_Engines_Off()
+    {
+        MainEngineOff();
+        Side1EngineOff();
+        Side2EngineOff();
     }
 }
