@@ -103,7 +103,7 @@ public class EscapePod_Engine_Panel : MonoBehaviour
             controller.energyFuel.SetActive(false);
             controller.anim.SetBool("isUsingEmergencyFuel", true);
         }
-        else
+        if (controller.currentEnergyFuel > 0)
         {
             controller.isEnergyFuelEmpty = false;
             controller.energyFuel.SetActive(true);
@@ -115,7 +115,7 @@ public class EscapePod_Engine_Panel : MonoBehaviour
         {
             controller.isEmergencyFuelEmpty = true;
         }
-        else
+        if (controller.currentEmergencyFuel > 0)
         {
             controller.isEmergencyFuelEmpty = false;
         }
