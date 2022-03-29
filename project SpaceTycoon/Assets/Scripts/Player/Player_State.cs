@@ -98,5 +98,7 @@ public class Player_State : MonoBehaviour
         {
             player_currentTirednessLevel -= 2f * Time.deltaTime;
         }
+
+        // if player is wearing pajamas && player_isSleeping >> player_currentTirednessLevel -= 4f * Time.deltaTime;
     }
 }

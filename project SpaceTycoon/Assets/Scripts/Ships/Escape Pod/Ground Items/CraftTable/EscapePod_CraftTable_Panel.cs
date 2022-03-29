@@ -125,6 +125,7 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
 
         controller.craftTable_options.SetActive(false);
         controller.chairBed_options.SetActive(false);
+        controller.closet_options.SetActive(false);
 
         SpaceTycoon_Main_GameController.isGroundOptionMenuOn = false;
         SpaceTycoon_Main_GameController.isWallOptionMenuOn = false;
@@ -138,6 +139,7 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
 
             controller.craftTable_options.SetActive(false);
             controller.chairBed_options.SetActive(false);
+            controller.closet_options.SetActive(false);
 
             SpaceTycoon_Main_GameController.isGroundOptionMenuOn = false;
             SpaceTycoon_Main_GameController.isWallOptionMenuOn = false;
@@ -166,15 +168,22 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
     // options menu
     public void CraftTable_Options_On()
     {
-        if (SpaceTycoon_Main_GameController.isGroundOptionMenuOn == false)
-        {
-            controller.craftTable_options.SetActive(true);
-            SpaceTycoon_Main_GameController.isGroundOptionMenuOn = true;
-        }
+        controller.mainPanelScript.TurnOff_All_Options();
+        controller.craftTable_options.SetActive(true);
+        SpaceTycoon_Main_GameController.isGroundOptionMenuOn = true;
     }
     public void CraftTable_Options_Off()
     {
+        TurnOff_All_Options();
+    }
+
+    public void TurnOff_All_Options()
+    {
         controller.craftTable_options.SetActive(false);
+        controller.chairBed_options.SetActive(false);
+        controller.closet_options.SetActive(false);
+
+        SpaceTycoon_Main_GameController.isWallOptionMenuOn = false;
         SpaceTycoon_Main_GameController.isGroundOptionMenuOn = false;
     }
 

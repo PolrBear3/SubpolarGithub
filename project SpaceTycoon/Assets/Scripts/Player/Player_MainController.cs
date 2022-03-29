@@ -9,7 +9,8 @@ public class Player_MainController : MonoBehaviour
     public Player_State playerState;
     public Player_Animation playerAnimation;
     public Player_MousePosition playerMousePosition;
+    public Player_Outfit playerOutfit;
 
-    // other
+    // object and item interaction
     public GameObject playerHand;
 }

@@ -16,7 +16,8 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
 
     public GameObject icon;
     public GameObject mainPanel;
-    public GameObject craftTable_options, chairBed_options;
+    public EscapePod_CraftTable_Panel mainPanelScript;
+    public GameObject craftTable_options, chairBed_options, closet_options;
 
     public GameObject allGroundSnapPoints;
     public snapPoint GsnapPoint1, GsnapPoint2, GsnapPoint3, 

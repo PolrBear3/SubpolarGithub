@@ -33,18 +33,16 @@ public class Player_Movement : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
     }
 
-    public float speed;
     void Movement()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutFit.movementSpeed, rb.velocity.y);
     }
 
-    public float jumpForce;
     void Jump()
     {
         if (Input.GetKeyDown(KeyCode.W) && isGround)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutFit.jumpForce);
         }
     }
 
