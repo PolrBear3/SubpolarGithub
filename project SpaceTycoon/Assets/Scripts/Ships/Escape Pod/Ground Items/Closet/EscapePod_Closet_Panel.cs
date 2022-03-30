@@ -7,6 +7,7 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     private void Update()
     {
         Icon_Popup();
+        Automatic_Exit();
     }
 
     public GameObject gameObject_closet;
@@ -40,16 +41,43 @@ public class EscapePod_Closet_Panel : MonoBehaviour
         SpaceTycoon_Main_GameController.isPanelMenuOn = true;
     }
 
-    // basic options
-    // exit
+    // exit menu
+    public void Manual_Exit()
+    {
+        controller.mainPanel.SetActive(false);
+        SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+    }
+    void Automatic_Exit()
+    {
+        if (controller.playerDetection == false && controller.mainPanel.activeSelf == true)
+        {
+            controller.mainPanel.SetActive(false);
+            SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+        }
+    }
+
     // dismantle
+    public void Dismantle()
+    {
+        controller.iconBoxCollider.SetActive(false);
+        Destroy(gameObject_closet);
+        // 1 EscapePod closet available in crafttable
+    }
 
     // innerWear
-    // option
-    // select
+        // option menu
+        // select
+    public void Select_InnerWear()
+    {
+        Player_Outfit.outfitNum = 1;
+    }
 
     // spaceSuit
-    // option
-    // craft
-    // select
+        // option menu
+            // craft
+        // select
+    public void Select_SpaceSuit()
+    {
+        Player_Outfit.outfitNum = 2;
+    }
 }

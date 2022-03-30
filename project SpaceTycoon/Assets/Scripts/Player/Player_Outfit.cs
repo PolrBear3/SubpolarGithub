@@ -9,14 +9,32 @@ public class Player_Outfit : MonoBehaviour
         Default_Outfit();
     }
 
+    private void Update()
+    {
+        Outfit_Num_Set();
+    }
+
     public Player_MainController playerController;
 
     public Albert_Outfits currentOutFit;
+    public static int outfitNum;
 
     public Albert_Outfits innerWear, spaceSuit;
 
     void Default_Outfit()
     {
-        currentOutFit = innerWear;
+        outfitNum = 1;
+    }
+
+    void Outfit_Num_Set()
+    {
+        if (outfitNum == 1)
+        {
+            currentOutFit = innerWear;
+        }
+        if (outfitNum == 2)
+        {
+            currentOutFit = spaceSuit;
+        }
     }
 }

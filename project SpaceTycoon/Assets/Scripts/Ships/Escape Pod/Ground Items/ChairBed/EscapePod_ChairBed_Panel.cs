@@ -76,7 +76,7 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     {
         controller.iconBoxCollider.SetActive(false);
         Destroy(EscapePod_ChairBed_gameObject);
-        // give back chairBed ingredients to player
+        // 1 EscapePod chairbed available in crafttable
     }
 
     public void Change_to_Bed()
