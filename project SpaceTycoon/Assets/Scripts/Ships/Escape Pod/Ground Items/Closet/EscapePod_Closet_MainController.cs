@@ -21,10 +21,10 @@ public class EscapePod_Closet_MainController : MonoBehaviour
     public bool spaceSuitUnlocked = false;
 
     // innerWear
-    public GameObject innerWearOption, innerWearSelectButton;
+    public GameObject innerWearSelectButton;
 
     // spaceSuit
-    public GameObject spaceSuitOption, spaceSuitCraftButton, spaceSuitSelectButton;
+    public GameObject spaceSuitOptionButton, spaceSuitOptionPanel, spaceSuitSelectButton;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -13,10 +13,9 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     public GameObject gameObject_closet;
     public EscapePod_Closet_MainController controller;
 
-    void TurnOff_All_Options()
+    public void TurnOff_All_Options()
     {
-        controller.innerWearOption.SetActive(false);
-        controller.spaceSuitOption.SetActive(false);
+        controller.spaceSuitOptionPanel.SetActive(false);
     }
     
     // icon
@@ -65,18 +64,28 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     }
 
     // innerWear
-        // option menu
         // select
-    public void Select_InnerWear()
+    public void InnerWear_Select()
     {
         Player_Outfit.outfitNum = 1;
     }
 
     // spaceSuit
         // option menu
-            // craft
+    public void SpaceSuit_Options()
+    {
+        controller.spaceSuitOptionPanel.SetActive(true);
+    }
+        // craft
+    public void SpaceSuit_Craft()
+    {
+        // if player has all the ingredients
+        TurnOff_All_Options();
+        controller.spaceSuitOptionButton.SetActive(false);
+        controller.spaceSuitSelectButton.SetActive(true);
+    }
         // select
-    public void Select_SpaceSuit()
+    public void SpaceSuit_Select()
     {
         Player_Outfit.outfitNum = 2;
     }
