@@ -29,7 +29,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     public Slider energyFuelSlider;
     [HideInInspector]
     public float currentEnergyFuel;
-    public float maxEnergyFuel = 40f;
+    public float maxEnergyFuel = 400f;
     [HideInInspector]
     public bool isEnergyFuelEmpty = false;
 
@@ -37,7 +37,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     public Slider emergencyEnergyFuelSlider;
     [HideInInspector]
     public float currentEmergencyFuel;
-    public float maxEmergencyFuel = 20f;
+    public float maxEmergencyFuel = 200f;
     [HideInInspector]
     public bool isEmergencyFuelEmpty = false;
 

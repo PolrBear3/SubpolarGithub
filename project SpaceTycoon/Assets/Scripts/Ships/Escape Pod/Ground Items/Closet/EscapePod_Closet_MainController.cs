@@ -16,15 +16,12 @@ public class EscapePod_Closet_MainController : MonoBehaviour
 
     public GameObject icon, iconBoxCollider, mainPanel;
 
-    // unlocked state
-    [HideInInspector]
-    public bool spaceSuitUnlocked = false;
-
     // innerWear
     public GameObject innerWearSelectButton;
-
     // spaceSuit
     public GameObject spaceSuitOptionButton, spaceSuitOptionPanel, spaceSuitSelectButton;
+    // pajamas
+    public GameObject pajamasOptionButton, pajamasOptionPanel, pajamasSelectButton;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

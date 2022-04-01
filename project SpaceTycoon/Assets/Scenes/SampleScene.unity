@@ -245,6 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 53651797}
+  innerWear: {fileID: 22100000, guid: c2725a7f80e347244be5d0fc79b9003e, type: 2}
+  spaceSuit: {fileID: 22100000, guid: 109f845f9372a5e46ac8f605e56c0de0, type: 2}
 --- !u!114 &53651796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +284,6 @@ MonoBehaviour:
   playerAnimation: {fileID: 53651795}
   playerMousePosition: {fileID: 53651794}
   playerOutfit: {fileID: 941096406809412550}
-  playerHand: {fileID: 1273852733}
 --- !u!50 &53651798
 Rigidbody2D:
   serializedVersion: 4
@@ -363,6 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 53651797}
+  playerHand: {fileID: 1273852733}
 --- !u!1 &125261093
 GameObject:
   m_ObjectHideFlags: 0
@@ -1959,7 +1961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 53651797}
-  currentOutFit: {fileID: 11400000, guid: e8f7e88ee6437b64aa7fb7800515d418, type: 2}
+  currentOutFit: {fileID: 11400000, guid: 6e2cf940c2c88ba46b01bc893d34148c, type: 2}
   innerWear: {fileID: 11400000, guid: 6e2cf940c2c88ba46b01bc893d34148c, type: 2}
   spaceSuit: {fileID: 11400000, guid: e8f7e88ee6437b64aa7fb7800515d418, type: 2}
 --- !u!114 &2075176230077017927 stripped
@@ -2401,6 +2403,14 @@ PrefabInstance:
     - target: {fileID: 8067857743967476882, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.00014781952
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585289426336125442, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
+      propertyPath: maxEnergyFuel
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8585289426336125442, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
+      propertyPath: maxEmergencyFuel
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8689596794547476565, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
       propertyPath: m_IsActive

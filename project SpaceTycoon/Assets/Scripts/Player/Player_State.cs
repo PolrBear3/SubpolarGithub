@@ -18,6 +18,8 @@ public class Player_State : MonoBehaviour
 
     public Player_MainController playerController;
 
+    public GameObject playerHand;
+
     public static bool player_isFacing_Left = false;
     public static bool player_isMoving = false;
 
@@ -48,11 +50,11 @@ public class Player_State : MonoBehaviour
         // if player is sleeping, cannot interact with any object
         if (player_isSleeping == true)
         {
-            playerController.playerHand.SetActive(false);
+            playerHand.SetActive(false);
         }
         else
         {
-            playerController.playerHand.SetActive(true);
+            playerHand.SetActive(true);
         }
     }
 
@@ -94,9 +96,14 @@ public class Player_State : MonoBehaviour
         }
 
         // if player is sleeping, tiredness decreases 2 each sec
-        if (player_isSleeping)
+        if (player_isSleeping && Player_Outfit.outfitNum != 3)
         {
             player_currentTirednessLevel -= 2f * Time.deltaTime;
+        }
+        // if player is sleeping and wearing pajamas, tiredness decreases 4 each sec
+        if (player_isSleeping && Player_Outfit.outfitNum == 3)
+        {
+            player_currentTirednessLevel -= 4f * Time.deltaTime;
         }
 
         // if player is wearing pajamas && player_isSleeping >> player_currentTirednessLevel -= 4f * Time.deltaTime;

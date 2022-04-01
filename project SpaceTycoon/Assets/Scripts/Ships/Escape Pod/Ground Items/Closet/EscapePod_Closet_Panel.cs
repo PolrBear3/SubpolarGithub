@@ -8,6 +8,7 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     {
         Icon_Popup();
         Automatic_Exit();
+        Unlock_Outfit();
     }
 
     public GameObject gameObject_closet;
@@ -16,6 +17,21 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     public void TurnOff_All_Options()
     {
         controller.spaceSuitOptionPanel.SetActive(false);
+        controller.pajamasOptionPanel.SetActive(false);
+    }
+    
+    void Unlock_Outfit()
+    {
+        if (Player_Outfit.isSpaceSuitUnlocked)
+        {
+            controller.spaceSuitOptionButton.SetActive(false);
+            controller.spaceSuitSelectButton.SetActive(true);
+        }
+        if (Player_Outfit.isPajamasUnlocked)
+        {
+            controller.pajamasOptionButton.SetActive(false);
+            controller.pajamasSelectButton.SetActive(true);
+        }
     }
     
     // icon
@@ -63,30 +79,44 @@ public class EscapePod_Closet_Panel : MonoBehaviour
         // 1 EscapePod closet available in crafttable
     }
 
+
     // innerWear
-        // select
     public void InnerWear_Select()
     {
         Player_Outfit.outfitNum = 1;
     }
 
     // spaceSuit
-        // option menu
     public void SpaceSuit_Options()
     {
+        TurnOff_All_Options();
         controller.spaceSuitOptionPanel.SetActive(true);
     }
-        // craft
     public void SpaceSuit_Craft()
     {
         // if player has all the ingredients
         TurnOff_All_Options();
-        controller.spaceSuitOptionButton.SetActive(false);
-        controller.spaceSuitSelectButton.SetActive(true);
+        Player_Outfit.isSpaceSuitUnlocked = true;
     }
-        // select
     public void SpaceSuit_Select()
     {
         Player_Outfit.outfitNum = 2;
+    }
+
+    // pajamas
+    public void Pajamas_Options()
+    {
+        TurnOff_All_Options();
+        controller.pajamasOptionPanel.SetActive(true);
+    }
+    public void Pajamas_Craft()
+    {
+        // if player has all the ingredients
+        TurnOff_All_Options();
+        Player_Outfit.isPajamasUnlocked = true;
+    }
+    public void Pajamas_Select()
+    {
+        Player_Outfit.outfitNum = 3;
     }
 }

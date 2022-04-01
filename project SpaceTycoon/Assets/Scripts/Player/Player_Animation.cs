@@ -17,6 +17,7 @@ public class Player_Animation : MonoBehaviour
     {
         MoveCheck_Animation();
         Sit_Sleep_Check_Animation();
+        Set_Animation_Accordingto_Outfit();
     }
 
     void MoveCheck_Animation()
@@ -49,6 +50,23 @@ public class Player_Animation : MonoBehaviour
         else
         {
             anim.SetBool("isSleeping", false);
+        }
+    }
+
+    public RuntimeAnimatorController innerWear, spaceSuit, pajamas;
+    void Set_Animation_Accordingto_Outfit()
+    {
+        if (Player_Outfit.outfitNum == 1)
+        {
+            anim.runtimeAnimatorController = innerWear as RuntimeAnimatorController;
+        }
+        if (Player_Outfit.outfitNum == 2)
+        {
+            anim.runtimeAnimatorController = spaceSuit as RuntimeAnimatorController;
+        }
+        if (Player_Outfit.outfitNum == 3)
+        {
+            anim.runtimeAnimatorController = pajamas as RuntimeAnimatorController;
         }
     }
 }

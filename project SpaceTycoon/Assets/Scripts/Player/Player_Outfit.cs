@@ -14,12 +14,15 @@ public class Player_Outfit : MonoBehaviour
         Outfit_Num_Set();
     }
 
+    private SpriteRenderer sr;
+
     public Player_MainController playerController;
 
     public Albert_Outfits currentOutFit;
     public static int outfitNum;
-
-    public Albert_Outfits innerWear, spaceSuit;
+    
+    public static bool isSpaceSuitUnlocked = false, isPajamasUnlocked = false;
+    public Albert_Outfits innerWear, spaceSuit, pajamas;
 
     void Default_Outfit()
     {
@@ -35,6 +38,10 @@ public class Player_Outfit : MonoBehaviour
         if (outfitNum == 2)
         {
             currentOutFit = spaceSuit;
+        }
+        if (outfitNum == 3)
+        {
+            currentOutFit = pajamas;
         }
     }
 }

@@ -10,7 +10,4 @@ public class Player_MainController : MonoBehaviour
     public Player_Animation playerAnimation;
     public Player_MousePosition playerMousePosition;
     public Player_Outfit playerOutfit;
-
-    // object and item interaction
-    public GameObject playerHand;
 }
