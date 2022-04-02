@@ -74,9 +74,9 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
 
     public void Dismantle()
     {
+        SpaceTycoon_Main_GameController.chairBed_storage += 1;
         controller.iconBoxCollider.SetActive(false);
         Destroy(EscapePod_ChairBed_gameObject);
-        // 1 EscapePod chairbed available in crafttable
     }
 
     public void Change_to_Bed()

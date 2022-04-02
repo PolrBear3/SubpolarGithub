@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EscapePod_ChairBed_Craft : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class EscapePod_ChairBed_Craft : MonoBehaviour
     private void Update()
     {
         Option_Button_Availability();
+        Storage_Text_Connection();
+        Storage_Check_for_RefundButton();
     }
 
     private void Option_Button_Availability()
@@ -96,33 +99,78 @@ public class EscapePod_ChairBed_Craft : MonoBehaviour
         controller.mainPanelScript.TurnOff_All_Options();
     }
 
-    // craft chairBed
+    // refund
+    public GameObject refundButton;
+    void Storage_Check_for_RefundButton()
+    {
+        if (SpaceTycoon_Main_GameController.chairBed_storage == 0)
+        {
+            refundButton.SetActive(false);
+        }
+        else
+        {
+            refundButton.SetActive(true);
+        }
+    }
+    public void Storage_Refund()
+    {
+        SpaceTycoon_Main_GameController.chairBed_storage -= 1;
+        // give back 1/3 of ingredients
+    }
+
+    // craft 
+    public Text chairBed_storage_text;
+    void Storage_Text_Connection()
+    {
+        chairBed_storage_text.text = "" + SpaceTycoon_Main_GameController.chairBed_storage;
+    }
+
+    void Storage_Check()
+    {
+        if (SpaceTycoon_Main_GameController.chairBed_storage > 0)
+        {
+            SpaceTycoon_Main_GameController.chairBed_storage -= 1;
+        }
+        if (SpaceTycoon_Main_GameController.chairBed_storage == 0)
+        {
+            // ingredients spend
+        }
+    }
+
+
     public void Craft_ChairBed_SnapPoint1()
     {
+        Storage_Check();
         Instantiate(chairBed_prefab, controller.GsnapPoint1.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint2()
     {
+        Storage_Check();
         Instantiate(chairBed_prefab, controller.GsnapPoint2.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint3()
     {
+        Storage_Check();
         Instantiate(chairBed_prefab, controller.GsnapPoint3.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint4()
     {
+        Storage_Check();
         Instantiate(chairBed_prefab, controller.GsnapPoint4.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint5()
     {
+        Storage_Check();
         Instantiate(chairBed_prefab, controller.GsnapPoint5.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint6()
     {
+        Storage_Check();
         Instantiate(chairBed_prefab, controller.GsnapPoint6.transform.position, Quaternion.identity);
     }
     public void Craft_ChairBed_SnapPoint7()
     {
+        Storage_Check();
         Instantiate(chairBed_prefab, controller.GsnapPoint7.transform.position, Quaternion.identity);
     }
 }

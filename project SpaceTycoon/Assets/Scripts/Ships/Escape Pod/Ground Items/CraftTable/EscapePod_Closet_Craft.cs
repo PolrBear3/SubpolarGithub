@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EscapePod_Closet_Craft : MonoBehaviour
 {
     private void Update()
     {
         Option_Button_Availability();
+        Storage_Text_Connection();
+        Storage_Check_for_RefundButton();
     }
 
     public EscapePod_CraftTable_MainController controller;
@@ -94,33 +97,77 @@ public class EscapePod_Closet_Craft : MonoBehaviour
         controller.mainPanelScript.TurnOff_All_Options();
     }
 
+    // refund
+    public GameObject refundButton;
+    void Storage_Check_for_RefundButton()
+    {
+        if (SpaceTycoon_Main_GameController.closet_storage == 0)
+        {
+            refundButton.SetActive(false);
+        }
+        else
+        {
+            refundButton.SetActive(true);
+        }
+    }
+    public void Storage_Refund()
+    {
+        SpaceTycoon_Main_GameController.closet_storage -= 1;
+        // give back 1/3 of ingredients
+    }
+
     // craft
+    public Text closet_storage_text;
+    void Storage_Text_Connection()
+    {
+        closet_storage_text.text = "" + SpaceTycoon_Main_GameController.closet_storage;
+    }
+
+    void Storage_Check()
+    {
+        if (SpaceTycoon_Main_GameController.closet_storage > 0)
+        {
+            SpaceTycoon_Main_GameController.closet_storage -= 1;
+        }
+        if (SpaceTycoon_Main_GameController.closet_storage == 0)
+        {
+            // ingredients spend
+        }
+    }
+
     public void Craft_SnapPoint1()
     {
+        Storage_Check();
         Instantiate(closetPrefab, controller.GsnapPoint1.transform.position, Quaternion.identity);
     }
     public void Craft_SnapPoint2()
     {
+        Storage_Check();
         Instantiate(closetPrefab, controller.GsnapPoint2.transform.position, Quaternion.identity);
     }
     public void Craft_SnapPoint3()
     {
+        Storage_Check();
         Instantiate(closetPrefab, controller.GsnapPoint3.transform.position, Quaternion.identity);
     }
     public void Craft_SnapPoint4()
     {
+        Storage_Check();
         Instantiate(closetPrefab, controller.GsnapPoint4.transform.position, Quaternion.identity);
     }
     public void Craft_SnapPoint5()
     {
+        Storage_Check();
         Instantiate(closetPrefab, controller.GsnapPoint5.transform.position, Quaternion.identity);
     }
     public void Craft_SnapPoint6()
     {
+        Storage_Check();
         Instantiate(closetPrefab, controller.GsnapPoint6.transform.position, Quaternion.identity);
     }
     public void Craft_SnapPoint7()
     {
+        Storage_Check();
         Instantiate(closetPrefab, controller.GsnapPoint7.transform.position, Quaternion.identity);
     }
 }

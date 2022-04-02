@@ -23,4 +23,8 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
             EnginesOn = 0;
         }
     }
+
+    // craftable object storage
+    public static int chairBed_storage = 0;
+    public static int closet_storage = 0;
 }

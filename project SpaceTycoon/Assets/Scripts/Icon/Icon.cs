@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Icon : MonoBehaviour
 {
-    public GameObject iconBoxCollider;
-    
     private void Start()
     {
         Set_Icon_Position();
     }
+
+    public GameObject iconBoxCollider;
 
     void Set_Icon_Position()
     {

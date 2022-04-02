@@ -74,9 +74,9 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     // dismantle
     public void Dismantle()
     {
+        SpaceTycoon_Main_GameController.closet_storage += 1;
         controller.iconBoxCollider.SetActive(false);
         Destroy(gameObject_closet);
-        // 1 EscapePod closet available in crafttable
     }
 
 
