@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class InventorySystem
+public class JetPack : MonoBehaviour
 {
-
+    public New_Item jetPack;
 }
