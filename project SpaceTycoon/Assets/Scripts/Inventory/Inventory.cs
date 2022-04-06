@@ -10,7 +10,8 @@ public class Inventory : MonoBehaviour
     }
 
     public Item_Slot currentSlot, backSlot, throwable1Slot, throwable2Slot;
-    public static bool currentSlotEmpty, backSlotEmpty, throwable1Empty, throwable2Empty;
+    [HideInInspector]
+    public bool currentSlotEmpty, backSlotEmpty, throwable1Empty, throwable2Empty;
 
     void InventorySlot_Empty_Check()
     {

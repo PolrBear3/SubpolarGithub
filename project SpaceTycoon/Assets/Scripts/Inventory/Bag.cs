@@ -10,7 +10,8 @@ public class Bag : MonoBehaviour
     }
 
     public Item_Slot slot1, slot2, slot3, slot4;
-    public static bool slot1Empty, slot2Empty, slot3Empty, slot4Empty;
+    [HideInInspector]
+    public bool slot1Empty, slot2Empty, slot3Empty, slot4Empty;
 
     void BagSlot_Empty_Check()
     {
