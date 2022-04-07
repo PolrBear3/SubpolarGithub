@@ -7,6 +7,8 @@ public class Bag : MonoBehaviour
     private void Update()
     {
         BagSlot_Empty_Check();
+        Debug.Log("1: " + slot1.slotEmpty);
+        Debug.Log("2: " + slot2.slotEmpty);
     }
 
     public Item_Slot slot1, slot2, slot3, slot4;

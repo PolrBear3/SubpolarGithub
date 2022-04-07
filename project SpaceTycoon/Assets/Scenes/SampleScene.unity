@@ -316,6 +316,7 @@ Transform:
   m_Children:
   - {fileID: 1273852734}
   - {fileID: 1980497872}
+  - {fileID: 1092312806}
   - {fileID: 1077509426}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -2067,14 +2068,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077509425}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1035964948}
   m_Father: {fileID: 53651793}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1077509427
 MonoBehaviour:
@@ -2088,6 +2089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02390da288eb52b4a9646372550080e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jetPack_icon_inventory: {fileID: 6967997436136970490, guid: 117dcaa7594a5184c90a55200d591e5c, type: 3}
   inventory: {fileID: 42535784}
   bag: {fileID: 882866932}
   currentSlot: {fileID: 1639091538}
@@ -2097,7 +2099,40 @@ MonoBehaviour:
   bagSlot1: {fileID: 1745312146}
   bagSlot2: {fileID: 1271692111}
   bagSlot3: {fileID: 549258052}
-  bagslot4: {fileID: 2074432139}
+  bagSlot4: {fileID: 2074432139}
+  jetPack: {fileID: 1610653743}
+--- !u!1 &1092312805
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1092312806}
+  m_Layer: 0
+  m_Name: items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1092312806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092312805}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1610653744}
+  m_Father: {fileID: 53651793}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1163097191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2467,6 +2502,91 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.17204747, y: 0.18848768}
   m_EdgeRadius: 0
+--- !u!1 &1610653743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1610653744}
+  - component: {fileID: 1610653745}
+  - component: {fileID: 1661660423364869412}
+  m_Layer: 0
+  m_Name: JetPack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1610653744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610653743}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0155, y: 0.008, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1092312806}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1610653745
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610653743}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -1745017147
+  m_SortingLayer: 7
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -5775435, guid: 51bd6c874bd9eb04885fdc9359171911, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.1875, y: 0.140625}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1639091537
 GameObject:
   m_ObjectHideFlags: 0
@@ -3262,6 +3382,18 @@ MonoBehaviour:
   innerWear: {fileID: 11400000, guid: 6e2cf940c2c88ba46b01bc893d34148c, type: 2}
   spaceSuit: {fileID: 11400000, guid: e8f7e88ee6437b64aa7fb7800515d418, type: 2}
   pajamas: {fileID: 11400000, guid: eeb20e2bfd203904281fdb66e312f7bc, type: 2}
+--- !u!114 &1661660423364869412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610653743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 431b3b096fa90d3409b915b131b3c61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2075176230077017927 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4826059799791708624, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
