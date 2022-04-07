@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Item_Slot : MonoBehaviour
 {
+    private void Start()
+    {
+        slotEmpty = true;
+    }
+
     [HideInInspector]
     public bool slotEmpty;
 

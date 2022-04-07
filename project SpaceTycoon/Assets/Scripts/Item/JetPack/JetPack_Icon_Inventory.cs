@@ -17,32 +17,6 @@ public class JetPack_Icon_Inventory : MonoBehaviour
 
     public void Move_to_Bag()
     {
-        Instantiate_to_Bag();
-        // enable jetpack on player
-        controller.jetPack.SetActive(false);
-        // box collider off
-        bc.enabled = false;
-        // destroy this gameobject
-        Destroy(gameObject);
-    }
-
-    public void Instantiate_to_Bag()
-    {
-        if (controller.bag.slot1Empty == true)
-        {
-            Instantiate(jetPack_icon_Bag, controller.bagSlot1);
-        }
-        else if (controller.bag.slot2Empty == true)
-        {
-            Instantiate(jetPack_icon_Bag, controller.bagSlot2);
-        }
-        else if (controller.bag.slot3Empty == true)
-        {
-            Instantiate(jetPack_icon_Bag, controller.bagSlot3);
-        }
-        else if (controller.bag.slot4Empty == true)
-        {
-            Instantiate(jetPack_icon_Bag, controller.bagSlot4);
-        }
+        controller.Instantiate_Bag_Icon(jetPack_icon_Bag, controller.jetPack, bc, gameObject);
     }
 }
