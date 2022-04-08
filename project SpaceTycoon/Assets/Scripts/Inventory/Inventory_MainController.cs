@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Inventory_MainController : MonoBehaviour
 {
-    public GameObject bagIcon;
-    private void Start()
-    {
-        Instantiate(bagIcon, bag1T);
-    }
-
     // inventory slots
     public Item_Slot currentS, backS, throwable1S, throwable2S;
     public Transform currentT, backT, throwable1T, throwable2T;
