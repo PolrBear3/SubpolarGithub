@@ -7,7 +7,7 @@ public class JetPack_Icon_Inventory : MonoBehaviour
     private void Awake()
     {
         bc = GetComponent<BoxCollider2D>();
-        controller = GameObject.Find("Inventory").GetComponent<Inventory_MainController>();
+        controller = GameObject.Find("Inventory Gadget Option").GetComponent<Inventory_MainController>();
     }
 
     BoxCollider2D bc;

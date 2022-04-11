@@ -15,6 +15,9 @@ public class Inventory_MainController : MonoBehaviour
     // player items
     public GameObject jetPack;
 
+    // inventory menu
+    public GameObject inventoryMenu;
+
     // icon instantiate functions
     public void Instantiate_Inventory_Icon(string itemType, GameObject inventoryIcon, GameObject item, BoxCollider2D bc, GameObject thisIcon)
     {
