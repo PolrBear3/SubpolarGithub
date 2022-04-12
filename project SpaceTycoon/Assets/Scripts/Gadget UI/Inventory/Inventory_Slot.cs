@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item_Slot : MonoBehaviour
+public class Inventory_Slot : MonoBehaviour
 {
     private void Start()
     {

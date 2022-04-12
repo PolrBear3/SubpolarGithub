@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Inventory_Menu : MonoBehaviour
 {
+    private void Update()
+    {
+        Change_Bag_Test_Function();
+    }
+
     public Gadget_MainController gadgetController;
     public Inventory_MainController inventoryController;
 
@@ -21,5 +26,25 @@ public class Inventory_Menu : MonoBehaviour
     {
         gadgetController.TurnOff_All_Menu();
         inventoryController.anim.SetBool("isPressed", false);
+    }
+
+    // modify this part when 'item modify table' is made
+    void Change_Bag_Test_Function()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            inventoryController.Reset_Bag_Level();
+            inventoryController.bagLevel1.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            inventoryController.Reset_Bag_Level();
+            inventoryController.bagLevel2.SetActive(true);
+            foreach (var slots in inventoryController.Level2BagSlots)
+            {
+                slots.SetActive(true);
+            }
+        }
     }
 }

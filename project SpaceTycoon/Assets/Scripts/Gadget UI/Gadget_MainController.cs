@@ -13,9 +13,9 @@ public class Gadget_MainController : MonoBehaviour
     {
         isGadgetMenuOn = false;
 
-        foreach(var menus in gadgetMenus)
+        foreach(var menu in gadgetMenus)
         {
-            menus.SetActive(false);
+            menu.SetActive(false);
         }
     }
 }
