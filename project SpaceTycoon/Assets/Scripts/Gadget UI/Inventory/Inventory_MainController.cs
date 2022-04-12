@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Inventory_MainController : MonoBehaviour
 {
+    public Animator anim;
+
     // inventory slots
     public Item_Slot currentS, backS, throwable1S, throwable2S;
     public Transform currentT, backT, throwable1T, throwable2T;
