@@ -4,12 +4,27 @@ using UnityEngine;
 
 public class Icon : MonoBehaviour
 {
-    private void Start()
+    private void OnEnable()
     {
         Set_Icon_Position();
     }
 
+    private void OnDisable()
+    {
+        Set_Icon_to_Default_Position();
+    }
+
     public GameObject iconBoxCollider;
+
+    public GameObject mainPanel;
+    void Set_Icon_to_Default_Position()
+    {
+        if (mainPanel.activeSelf == false)
+        {
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            iconBoxCollider.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        }
+    }
 
     void Set_Icon_Position()
     {

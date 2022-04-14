@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class Inventory_MainController : MonoBehaviour
 {
+    public GameObject jetPackBagIcon;
+    private void Start()
+    {
+        // jetpack made to bag slot example
+        Instantiate(jetPackBagIcon, bag1T);
+    }
+
     public Animator anim;
 
     // inventory slots
-    public Bag_Slot currentS, backS, throwable1S, throwable2S;
+    public Inventory_Slot currentS, backS, throwable1S, throwable2S;
     public Transform currentT, backT, throwable1T, throwable2T;
 
     // bag slots

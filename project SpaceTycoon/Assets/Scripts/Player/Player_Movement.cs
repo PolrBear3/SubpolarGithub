@@ -16,8 +16,9 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
         Movement_Input();
-        Jump();
         Check_if_Ground();
+        Jump();
+        JetPack_Fly();
         Check_if_Sitting_or_Sleeping();
     }
 
@@ -26,23 +27,33 @@ public class Player_Movement : MonoBehaviour
         Movement();
     }
 
+    // horizontal movement
     [HideInInspector]
     public float horizontal;
     void Movement_Input()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
     }
-
     void Movement()
     {
         rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutFit.movementSpeed, rb.velocity.y);
     }
 
+    // jump vertical movement and JetPack fly
+    public GameObject JetPack;
+    public JetPack jetPack;
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.W) && isGround)
+        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false)
         {
             rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutFit.jumpForce);
+        }
+    }
+    void JetPack_Fly()
+    {
+        if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true)
+        {
+            rb.AddForce(Vector2.up * jetPack.flyForce);
         }
     }
 
@@ -69,6 +80,7 @@ public class Player_Movement : MonoBehaviour
         Gizmos.DrawWireSphere(foot.position, footRadius);
     }
 
+    // sit sleep check
     void Check_if_Sitting_or_Sleeping()
     {
         if (Player_State.player_isSitting || Player_State.player_isSleeping)
