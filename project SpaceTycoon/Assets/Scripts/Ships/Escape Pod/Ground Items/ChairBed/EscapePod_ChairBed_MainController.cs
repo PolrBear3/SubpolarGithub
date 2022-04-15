@@ -12,7 +12,8 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
     [HideInInspector]
     public bool chairMode = true;
 
-    public GameObject icon;
+    public GameObject Icon;
+    public Icon icon;
     public GameObject iconBoxCollider;
     public GameObject mainPanel;
 
@@ -43,6 +44,7 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = true;
+            icon.Set_Icon_Position();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -50,6 +52,7 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = false;
+            icon.Set_Icon_to_Default_Position();
         }
     }
 }

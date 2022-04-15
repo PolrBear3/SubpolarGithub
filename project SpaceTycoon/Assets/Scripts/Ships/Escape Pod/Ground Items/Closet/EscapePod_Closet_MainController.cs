@@ -14,7 +14,8 @@ public class EscapePod_Closet_MainController : MonoBehaviour
     [HideInInspector]
     public bool playerDetection;
 
-    public GameObject icon, iconBoxCollider, mainPanel;
+    public GameObject Icon, iconBoxCollider, mainPanel;
+    public Icon icon;
 
     // innerWear
     public GameObject innerWearSelectButton;
@@ -28,6 +29,7 @@ public class EscapePod_Closet_MainController : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = true;
+            icon.Set_Icon_Position();
             anim.SetBool("playerDetected", true);
         }
     }
@@ -36,6 +38,7 @@ public class EscapePod_Closet_MainController : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = false;
+            icon.Set_Icon_to_Default_Position();
             anim.SetBool("playerDetected", false);
         }
     }

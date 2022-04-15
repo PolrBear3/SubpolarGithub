@@ -44,16 +44,24 @@ public class Player_Movement : MonoBehaviour
     public JetPack jetPack;
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false)
+        if (Input.GetKeyDown(KeyCode.W) && isGround)
         {
-            rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutFit.jumpForce);
+            if (JetPack.activeSelf == false || jetPack.outOfFuel == true)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutFit.jumpForce);
+            }
         }
     }
     void JetPack_Fly()
     {
-        if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true)
+        if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true && jetPack.outOfFuel == false)
         {
+            jetPack.buttonPressed = true;
             rb.AddForce(Vector2.up * jetPack.flyForce);
+        }
+        else
+        {
+            jetPack.buttonPressed = false;
         }
     }
 

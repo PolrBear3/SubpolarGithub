@@ -14,7 +14,8 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
     [HideInInspector]
     public bool playerDetection;
 
-    public GameObject icon;
+    public GameObject Icon;
+    public Icon icon;
     public GameObject mainPanel;
     public EscapePod_CraftTable_Panel mainPanelScript;
     public GameObject craftTable_options, chairBed_options, closet_options;
@@ -35,6 +36,7 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = true;
+            icon.Set_Icon_Position();
             anim.SetBool("onMenu", true);
         }
     }
@@ -43,6 +45,7 @@ public class EscapePod_CraftTable_MainController : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = false;
+            icon.Set_Icon_to_Default_Position();
             anim.SetBool("onMenu", false);
         }
     }

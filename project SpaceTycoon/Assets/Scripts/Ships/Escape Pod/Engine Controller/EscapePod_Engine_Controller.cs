@@ -16,7 +16,8 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     // main
     [HideInInspector]
     public bool playerDetection;
-    public GameObject icon;
+    public GameObject Icon;
+    public Icon icon;
     public GameObject iconBoxCollider;
     public GameObject mainPanel;
 
@@ -51,6 +52,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = true;
+            icon.Set_Icon_Position();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -58,6 +60,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
         if (collision.CompareTag("player_hand"))
         {
             playerDetection = false;
+            icon.Set_Icon_to_Default_Position();
         }
     }
 }

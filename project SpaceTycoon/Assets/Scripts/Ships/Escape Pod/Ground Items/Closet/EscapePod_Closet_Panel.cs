@@ -40,12 +40,12 @@ public class EscapePod_Closet_Panel : MonoBehaviour
         // on
         if (controller.playerDetection && SpaceTycoon_Main_GameController.isPanelMenuOn == false)
         {
-            controller.icon.SetActive(true);
+            controller.Icon.SetActive(true);
         }
         // off
         if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn)
         {
-            controller.icon.SetActive(false);
+            controller.Icon.SetActive(false);
         }
     }
 
