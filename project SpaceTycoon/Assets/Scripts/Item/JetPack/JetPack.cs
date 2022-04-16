@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class JetPack : MonoBehaviour
-{
+{   
     private void Start()
     {
-        Set_Max_Fuel();
+        Set_Current_Fuel();
     }
 
     private void Update()
@@ -35,11 +35,12 @@ public class JetPack : MonoBehaviour
     }
 
     float maxEnergyFuel = 50f;
-    float currentEnergyFuel;
+    [HideInInspector]
+    public float currentEnergyFuel;
     [HideInInspector]
     public bool outOfFuel = false;
 
-    void Set_Max_Fuel()
+    void Set_Current_Fuel()
     {
         currentEnergyFuel = maxEnergyFuel;
     }

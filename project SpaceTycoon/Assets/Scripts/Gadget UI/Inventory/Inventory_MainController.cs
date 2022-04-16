@@ -5,6 +5,7 @@ using UnityEngine;
 public class Inventory_MainController : MonoBehaviour
 {
     public GameObject jetPackBagIcon;
+
     private void Start()
     {
         // jetpack made to bag slot example
@@ -21,7 +22,7 @@ public class Inventory_MainController : MonoBehaviour
     public List<GameObject> Level2BagSlots;
 
     public Bag_Slot bag1S, bag2S, bag3S, bag4S, // level 1
-                     bag5S, bag6S, bag7S, bag8S; // level 2
+                    bag5S, bag6S, bag7S, bag8S; // level 2
     
     public Transform bag1T, bag2T, bag3T, bag4T, // level 1
                      bag5T, bag6T, bag7T, bag8T; // level 2
