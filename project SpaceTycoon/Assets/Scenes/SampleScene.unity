@@ -277,7 +277,7 @@ RectTransform:
   - {fileID: 1163097192}
   - {fileID: 1070994846}
   m_Father: {fileID: 285576015}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -654,11 +654,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jetPackBagIcon: {fileID: 2775511319157842631, guid: 122c8a133a4f02d46b055820ff29046c, type: 3}
+  cell: {fileID: 8465356850115174079, guid: d338881f89ee8a34695338a7dd27d08b, type: 3}
   anim: {fileID: 1249469926}
   currentS: {fileID: 1639091543}
   backS: {fileID: 2104994853}
   throwable1S: {fileID: 1163097197}
   throwable2S: {fileID: 1070994851}
+  currentD: {fileID: 1639091544}
+  backD: {fileID: 2104994854}
+  throwable1D: {fileID: 1163097198}
+  throwable2D: {fileID: 1070994852}
   currentT: {fileID: 1639091538}
   backT: {fileID: 2104994848}
   throwable1T: {fileID: 1163097192}
@@ -731,8 +736,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 101568629}
-  - {fileID: 882866929}
   - {fileID: 42535781}
+  - {fileID: 882866929}
   - {fileID: 973793879}
   m_Father: {fileID: 1592493180}
   m_RootOrder: 1
@@ -1749,7 +1754,7 @@ RectTransform:
   - {fileID: 1023908361}
   - {fileID: 1243430142}
   m_Father: {fileID: 285576015}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2098,6 +2103,7 @@ GameObject:
   - component: {fileID: 1070994847}
   - component: {fileID: 1070994850}
   - component: {fileID: 1070994851}
+  - component: {fileID: 1070994852}
   m_Layer: 5
   m_Name: Throwable2 Slot
   m_TagString: Untagged
@@ -2203,6 +2209,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotEmpty: 0
+--- !u!114 &1070994852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070994845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc750f5d738778f468203551ffba0d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemIconDetection: 0
 --- !u!1 &1092312805
 GameObject:
   m_ObjectHideFlags: 0
@@ -2248,6 +2267,7 @@ GameObject:
   - component: {fileID: 1163097193}
   - component: {fileID: 1163097196}
   - component: {fileID: 1163097197}
+  - component: {fileID: 1163097198}
   m_Layer: 5
   m_Name: Throwable1 Slot
   m_TagString: Untagged
@@ -2353,6 +2373,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotEmpty: 0
+--- !u!114 &1163097198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163097191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc750f5d738778f468203551ffba0d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemIconDetection: 0
 --- !u!1 &1198948406
 GameObject:
   m_ObjectHideFlags: 0
@@ -3561,6 +3594,7 @@ GameObject:
   - component: {fileID: 1639091539}
   - component: {fileID: 1639091542}
   - component: {fileID: 1639091543}
+  - component: {fileID: 1639091544}
   m_Layer: 5
   m_Name: Current Slot
   m_TagString: Untagged
@@ -3666,6 +3700,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotEmpty: 0
+--- !u!114 &1639091544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639091537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc750f5d738778f468203551ffba0d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemIconDetection: 0
 --- !u!1 &1660664193
 GameObject:
   m_ObjectHideFlags: 0
@@ -4385,6 +4432,7 @@ GameObject:
   - component: {fileID: 2104994849}
   - component: {fileID: 2104994852}
   - component: {fileID: 2104994853}
+  - component: {fileID: 2104994854}
   m_Layer: 5
   m_Name: Back Slot
   m_TagString: Untagged
@@ -4490,6 +4538,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotEmpty: 0
+--- !u!114 &2104994854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104994847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc750f5d738778f468203551ffba0d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemIconDetection: 0
 --- !u!1 &2143407903 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7071422288593630478, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
@@ -4525,9 +4586,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1357587558}
-  flyForce: 0.2
+  flyForce: 0.25
   buttonPressed: 0
-  currentEnergyFuel: 0
   outOfFuel: 0
 --- !u!1001 &6775637224871351191
 PrefabInstance:

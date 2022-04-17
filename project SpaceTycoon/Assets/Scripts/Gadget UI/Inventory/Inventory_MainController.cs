@@ -16,6 +16,7 @@ public class Inventory_MainController : MonoBehaviour
 
     // inventory slots
     public Inventory_Slot currentS, backS, throwable1S, throwable2S;
+    public ItemIcon_Detector currentD, backD, throwable1D, throwable2D;
     public Transform currentT, backT, throwable1T, throwable2T;
 
     // bag slots

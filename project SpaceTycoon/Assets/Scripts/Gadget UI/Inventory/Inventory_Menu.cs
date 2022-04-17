@@ -14,12 +14,10 @@ public class Inventory_Menu : MonoBehaviour
 
     public void Menu_On()
     {
-        if (Gadget_MainController.isGadgetMenuOn == false)
-        {
-            inventoryController.inventoryMenu.SetActive(true);
-            inventoryController.anim.SetBool("isPressed", true);
-            Gadget_MainController.isGadgetMenuOn = true;
-        }
+        gadgetController.TurnOff_All_Menu();
+        inventoryController.inventoryMenu.SetActive(true);
+        inventoryController.anim.SetBool("isPressed", true);
+        Gadget_MainController.isGadgetMenuOn = true;
     }
 
     public void Menu_Off()

@@ -19,4 +19,27 @@ public class JetPack_Icon_Inventory : MonoBehaviour
     {
         controller.Instantiate_Bag_Icon(jetPack_icon_Bag, controller.jetPack, bc, gameObject);
     }
+
+    bool fuelCharged;
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("fuelItem_Icon"))
+        {
+            fuelCharged = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("fuelItem_Icon"))
+        {
+            fuelCharged = false;
+        }
+    }
+    void Fuel_Charge_Check()
+    {
+        if (fuelCharged)
+        {
+            JetPack.currentEnergyFuel += 25;
+        }
+    }
 }
