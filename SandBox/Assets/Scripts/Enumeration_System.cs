@@ -4,32 +4,25 @@ using UnityEngine;
 
 public class Enumeration_System : MonoBehaviour
 {
-    public enum Days { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday }
+    public enum Movements { left, right, up, down }
 
-    public Days currentDay;
+    public Movements movement;
 
-    public void Check_Message()
+    public void Switch_Function()
     {
-        switch (currentDay)
+        switch (movement)
         {
-            case Days.Monday:
-                Debug.Log("You can fall apart");
+            case Movements.left:
+                Debug.Log("Player moving left");
                 break;
-            case Days.Tuesday:
-            case Days.Wednesday:
-                Debug.Log("Break my heart");
-                    break;
-            case Days.Thursday:
-                Debug.Log("Doesn't even start");
+            case Movements.right:
+                Debug.Log("Player moving right");
                 break;
-            case Days.Friday:
-                Debug.Log("I'm in love");
+            case Movements.up:
+                Debug.Log("Player jumped");
                 break;
-            case Days.Saturday:
-                Debug.Log("Wait");
-                break;
-            case Days.Sunday:
-                Debug.Log("Always comes to late");
+            case Movements.down:
+                Debug.Log("Player ducked");
                 break;
         }
     }
