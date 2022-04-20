@@ -2,45 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-struct MyFavoriteMovies
+struct Weapon
 {
-    public string genreType;
-    public int rating;
-    public string[] movieNames;
+    public string name;
+    public int damage;
+    public int price;
 }
 
 public class Struct_System : MonoBehaviour
 {
-    public string genreType;
-    public int rating;
-    public string[] movieNames;
-
-    MyFavoriteMovies movies;
-    
     private void Start()
     {
-        Set();
+        Set_New_Weapon();
     }
 
-    void Set()
-    {
-        movies = new MyFavoriteMovies();
+    Weapon[] weapons = new Weapon[3];
 
-        movies.genreType = genreType;
-        movies.rating = rating;
-        movies.movieNames = movieNames;
+    void Set_New_Weapon()
+    {
+        weapons[0].name = "sword";
+        weapons[0].damage = 5;
+        weapons[0].price = 1;
+
+        weapons[1].name = "arrow";
+        weapons[1].damage = 2;
+        weapons[1].price = 3;
+
+        weapons[2].name = "hammer";
+        weapons[2].damage = 8;
+        weapons[2].price = 4;
     }
 
-    public void Print()
+    public void Print_Weapon_Info()
     {
-        Debug.Log(movies.genreType);
-        Debug.Log(movies.rating);
-
-        int i = 0;
-        while (i < movies.movieNames.Length)
+        for (int i = 0; i < weapons.Length; i++)
         {
-            Debug.Log(movies.movieNames[i]);
-            i += 1;
+            Debug.Log(weapons[i].name);
+            Debug.Log(weapons[i].damage);
+            Debug.Log(weapons[i].price);
         }
     }
 }

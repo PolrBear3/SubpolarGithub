@@ -301,14 +301,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1154624704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8da3f9a76382c43f49d7f610f90295f0, type: 3}
+  m_Script: {fileID: 11500000, guid: cabc75f5c6c9cc349bc7a0e67aafd49d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objects:
-  - {fileID: 1236148669}
-  - {fileID: 1453325993}
-  - {fileID: 1208699649}
-  bagLevel: 1
 --- !u!1 &1208699649
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,8 +565,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1154624707}
-        m_TargetAssemblyTypeName: Switch_System, Assembly-CSharp
-        m_MethodName: Turn_On_and_Off
+        m_TargetAssemblyTypeName: Struct_System, Assembly-CSharp
+        m_MethodName: Print_Weapon_Info
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
