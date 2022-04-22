@@ -2,30 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-struct PropertyPerson
+struct Person
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string FullName
-    {
-        get
-        {
-            return FirstName + " " + LastName;
-        }
-    }
+    private string _firstName;
+    public string firstName { get { return _firstName; } set { _firstName = value; } }
+    private string _lastName;
+    public string lastName { get { return _lastName; } set { _lastName = value; } }
+
+    public string fullName { get { return _firstName + " " + _lastName; }}
 }
 
 public class Properties : MonoBehaviour
 {
-    PropertyPerson person;
+    Person person = new Person();
 
     private void Start()
     {
-        person = new PropertyPerson();
-
-        person.FirstName = "David";
-        person.LastName = "Kim";
-
-        Debug.Log(person.FullName);
+        person.firstName = "David";
+        person.lastName = "Kim";
+        Debug.Log(person.fullName);
     }
 }
