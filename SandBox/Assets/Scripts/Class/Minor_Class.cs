@@ -4,32 +4,27 @@ using UnityEngine;
 
 public class Minor_Class : MonoBehaviour
 {
-    EarthBoss earthBoss = new EarthBoss();
-    WaterBoss waterBoss = new WaterBoss();
-    FireBoss fireBoss = new FireBoss();
+    Rock rock = new Rock();
+    Paper paper = new Paper();
+    Scissors scissors = new Scissors();
 
-    private void Start()
+    void Rock_Result()
     {
-        earthBoss.SetHealth(200);
-        waterBoss.SetHealth(150);
-        fireBoss.SetHealth(100);
+        rock.Result_Message("rock", Class.againstType.scissors);
+    }
+    void Paper_Result()
+    {
+        paper.Result_Message("paper", Class.againstType.scissors);
+    }
+    void Scissors_Result()
+    {
+        scissors.Result_Message("scissors", Class.againstType.scissors);
     }
 
-    public void EarthBoss_Take_Damge()
+    public void Print_Result_Message()
     {
-        earthBoss.Take_Damage(10, Boss.type.fire);
-        earthBoss.Show_Current_Health();
-    }
-
-    public void WaterBoss_Take_Damage()
-    {
-        waterBoss.Take_Damage(10, Boss.type.earth);
-        waterBoss.Show_Current_Health();
-    }
-
-    public void FireBoss_Take_Damage()
-    {
-        fireBoss.Take_Damage(10, Boss.type.water);
-        fireBoss.Show_Current_Health();
+        Rock_Result();
+        Paper_Result();
+        Scissors_Result();
     }
 }

@@ -2,73 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss
+public class Class
 {
-    private string _name;
-    public string name { get { return _name; } set { _name = value; } }
+    private string _typeName;
+    public string typename { get { return _typeName; } set { _typeName = value; } }
+    
+    public enum againstType { rock, paper, scissors}
 
-    private int _health;
-    public int health { get { return _health; } set { _health = value; } }
-
-    public enum type { earth, water, fire}
-
-    public void SetHealth(int health)
+    public virtual void Result_Message(string typename, againstType type)
     {
-        this.health = health;
-    }
-
-    public virtual void Take_Damage(int damage, type type)
-    {
-        _health -= damage;
-    }
-
-    public void Show_Current_Health()
-    {
-        Debug.Log(_health);
+        Debug.Log(typename + ": you tied");
     }
 }
 
-public class EarthBoss : Boss
+public class Rock : Class
 {
-    public override void Take_Damage(int damage, type type)
+    public override void Result_Message(string typename, againstType type)
     {
-        if (type == type.fire)
+        if (type == againstType.paper)
         {
-            base.Take_Damage(damage * 2, type);
+            Debug.Log(typename + ": you lost");
         }
-        if (type == type.water)
+        else if (type == againstType.scissors)
         {
-            base.Take_Damage(damage / 2, type);
+            Debug.Log(typename + ": you won");
+        }
+        else
+        {
+            base.Result_Message(typename, type);
         }
     }
 }
 
-public class WaterBoss : Boss
+public class Paper : Class
 {
-    public override void Take_Damage(int damage, type type)
+    public override void Result_Message(string typename, againstType type)
     {
-        if (type == type.fire)
+        if (type == againstType.rock)
         {
-            base.Take_Damage(damage / 2, type);
+            Debug.Log(typename + ": you won");
         }
-        if (type == type.earth)
+        else if (type == againstType.scissors)
         {
-            base.Take_Damage(damage * 2, type);
+            Debug.Log(typename + ": you lost");
+        }
+        else
+        {
+            base.Result_Message(typename, type);
         }
     }
 }
 
-public class FireBoss : Boss
+public class Scissors : Class
 {
-    public override void Take_Damage(int damage, type type)
+    public override void Result_Message(string typename, againstType type)
     {
-        if (type == type.water)
+        if (type == againstType.rock)
         {
-            base.Take_Damage(damage * 2, type);
+            Debug.Log(typename + ": you lost");
         }
-        if (type == type.earth)
+        else if (type == againstType.paper)
         {
-            base.Take_Damage(damage / 2, type);
+            Debug.Log(typename + ": you won");
+        }
+        else
+        {
+            base.Result_Message(typename, type);
         }
     }
 }
