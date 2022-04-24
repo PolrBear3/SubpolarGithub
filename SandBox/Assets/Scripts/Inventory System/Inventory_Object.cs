@@ -55,13 +55,13 @@ public class Inventory_Slot
         this.amount = amount;
     }
 
-    public void Add_Amount(int amount)
+    public void Add_Amount(int addAmount)
     {
-        this.amount += amount;
+        amount += addAmount;
     }
 
-    public void Decrease_Amount(int amount)
+    public void Decrease_Amount(int subtractAmount)
     {
-        this.amount -= amount;
+        amount -= subtractAmount;
     }
 }

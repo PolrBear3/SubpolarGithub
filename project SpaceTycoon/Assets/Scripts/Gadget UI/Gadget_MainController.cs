@@ -7,15 +7,17 @@ public class Gadget_MainController : MonoBehaviour
     public static bool isGadgetMenuOn = false;
 
     // gadget menus
-    public List<GameObject> gadgetMenus;
+    public GameObject[] menus;
 
     public void TurnOff_All_Menu()
     {
-        isGadgetMenuOn = false;
-
-        foreach(var menu in gadgetMenus)
+        for (int i=0; i < menus.Length; i++)
         {
-            menu.SetActive(false);
+            if (menus[i].activeSelf)
+            {
+                menus[i].SetActive(false);
+                break;
+            }
         }
     }
 }

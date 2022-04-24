@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum itemType { current, back, throwable1, throwable2 }
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "New Item")]
 public class Item_Object : ScriptableObject
 {
     public GameObject itemPrefab;
