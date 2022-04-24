@@ -497,6 +497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 266172233}
+  - component: {fileID: 266172234}
   m_Layer: 0
   m_Name: Inventory Gadget
   m_TagString: Untagged
@@ -520,6 +521,23 @@ Transform:
   m_Father: {fileID: 1813089876}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &266172234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266172232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a0f41888c0716459ebbe4a4e8beeee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBag: {fileID: 11400000, guid: 84aa17e257a9eae4984c6dcc25a2b843, type: 2}
+  itemInfoData:
+  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
+  - {fileID: 11400000, guid: c69c78fc6f6484ae288d6e5a5a835845, type: 2}
+  - {fileID: 11400000, guid: 426692991462c466fb2327801dfd1d20, type: 2}
 --- !u!1 &285576014
 GameObject:
   m_ObjectHideFlags: 0
