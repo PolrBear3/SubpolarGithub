@@ -46,6 +46,4 @@ public class Bag : ScriptableObject
             }
         }
     }
-
-    // move to Inventory
 }
