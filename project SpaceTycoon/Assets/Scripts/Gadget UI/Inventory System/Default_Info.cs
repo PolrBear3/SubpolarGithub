@@ -8,6 +8,6 @@ public class Default_Info : ScriptableObject
 {
     public ItemType itemType;
     public string itemName;
-    public Sprite itemIcon;
+    public GameObject itemIcon;
     public int maxAmount;
 }
