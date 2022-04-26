@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType { current, back, throwable1, throwable2, ingredient }
+public enum ItemType { current, back, throwable, ingredient }
 
 public class Default_Info : ScriptableObject
 {

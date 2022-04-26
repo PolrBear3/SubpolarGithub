@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Inventory_MainController : MonoBehaviour
 {
+    // player bag and inventory scriptable objects
     public Inventory inventory;
     public Bag bag;
 
+    // display script connection
     public Inventory_Display display;
 
+    // bag and inventory snap points
     public Transform bagSnapPoints;
+    public Transform[] inventorySnapPoints;
 
     // for craft table item lists
     public Default_Info[] currentItems;
@@ -17,19 +21,36 @@ public class Inventory_MainController : MonoBehaviour
     public Default_Info[] throwableItems;
     public Default_Info[] ingredients;
 
-    // test functions
+    // craftng and subtracting test function
     private void Update()
     {
-        Craft_Ceres();
+        Craft();
+        Subtract();
     }
-    public void Craft_Ceres()
+    public void Craft()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            bag.Add_Item(ingredients[0], 1);
-            display.Create_Bag_Display();
+            inventory.Add_Item(backItems[0], 1);
+            display.Update_Display();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            bag.Add_Item(backItems[0], 1);
+            display.Update_Display();
         }
     }
-
-    // public void subtract ceres
+    public void Subtract()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            inventory.Subtract_Item(backItems[0], 1);
+            display.Update_Display();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            bag.Subtract_Item(backItems[0], 1);
+            display.Update_Display();
+        }
+    }
 }   
