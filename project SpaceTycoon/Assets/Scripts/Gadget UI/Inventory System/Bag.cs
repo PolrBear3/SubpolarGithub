@@ -23,7 +23,6 @@ public class Bag : ScriptableObject
                 break;
             }
         }
-
         // if there is 0 item in the storage, create new item in storage
         if (!inStorage)
         {

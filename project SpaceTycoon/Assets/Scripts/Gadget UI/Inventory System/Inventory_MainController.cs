@@ -21,35 +21,16 @@ public class Inventory_MainController : MonoBehaviour
     public Default_Info[] throwableItems;
     public Default_Info[] ingredients;
 
-    // craftng and subtracting test function
+    // craft jetpack test function
     private void Update()
     {
         Craft();
-        Subtract();
     }
     public void Craft()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            inventory.Add_Item(throwableItems[0], 1);
-            display.Update_Display();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            bag.Add_Item(throwableItems[0], 1);
-            display.Update_Display();
-        }
-    }
-    public void Subtract()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            inventory.Subtract_Item(throwableItems[0], 1);
-            display.Update_Display();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            bag.Subtract_Item(throwableItems[0], 1);
+            bag.Add_Item(backItems[0], 1);
             display.Update_Display();
         }
     }

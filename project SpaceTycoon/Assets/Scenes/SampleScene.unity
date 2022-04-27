@@ -158,7 +158,7 @@ RectTransform:
   - {fileID: 1163097192}
   - {fileID: 1070994846}
   m_Father: {fileID: 285576015}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -481,7 +481,7 @@ RectTransform:
   - {fileID: 1447847409}
   - {fileID: 1198948409}
   m_Father: {fileID: 285576015}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -546,8 +546,7 @@ MonoBehaviour:
   currentItems: []
   backItems:
   - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
-  throwableItems:
-  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
+  throwableItems: []
   ingredients:
   - {fileID: 11400000, guid: 426692991462c466fb2327801dfd1d20, type: 2}
 --- !u!114 &266172235
@@ -591,8 +590,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 101568629}
   - {fileID: 42535781}
+  - {fileID: 101568629}
   - {fileID: 882866929}
   - {fileID: 1063582048}
   - {fileID: 973793879}
