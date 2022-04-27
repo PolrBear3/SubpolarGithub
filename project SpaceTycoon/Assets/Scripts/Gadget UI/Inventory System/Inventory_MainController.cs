@@ -31,12 +31,12 @@ public class Inventory_MainController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            inventory.Add_Item(backItems[0], 1);
+            inventory.Add_Item(throwableItems[0], 1);
             display.Update_Display();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            bag.Add_Item(backItems[0], 1);
+            bag.Add_Item(throwableItems[0], 1);
             display.Update_Display();
         }
     }
@@ -44,12 +44,12 @@ public class Inventory_MainController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            inventory.Subtract_Item(backItems[0], 1);
+            inventory.Subtract_Item(throwableItems[0], 1);
             display.Update_Display();
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            bag.Subtract_Item(backItems[0], 1);
+            bag.Subtract_Item(throwableItems[0], 1);
             display.Update_Display();
         }
     }

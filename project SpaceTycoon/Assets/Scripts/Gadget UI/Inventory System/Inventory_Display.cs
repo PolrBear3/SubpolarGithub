@@ -48,6 +48,8 @@ public class Inventory_Display : MonoBehaviour
     {
         Reset_Inventory_Display();
 
+        bool throwable1Taken = false;
+
         for (int i = 0; i < controller.inventory.storage.Count; i++)
         {
             // check the item type and place to that snappoint type
@@ -63,12 +65,13 @@ public class Inventory_Display : MonoBehaviour
             }
             else if (controller.inventory.storage[i].info.itemType == ItemType.throwable)
             {
-                if (controller.inventorySnapPoints[2].childCount == 0)
+                if (!throwable1Taken)
                 {
                     var obj = Instantiate(controller.inventory.storage[i].info.itemIcon, controller.inventorySnapPoints[2]);
                     obj.GetComponentInChildren<Text>().text = controller.inventory.storage[i].currentAmount.ToString();
+                    throwable1Taken = true;
                 }
-                else if (controller.inventorySnapPoints[2].childCount >= 1)
+                else if (throwable1Taken)
                 {
                     var obj = Instantiate(controller.inventory.storage[i].info.itemIcon, controller.inventorySnapPoints[3]);
                     obj.GetComponentInChildren<Text>().text = controller.inventory.storage[i].currentAmount.ToString();
