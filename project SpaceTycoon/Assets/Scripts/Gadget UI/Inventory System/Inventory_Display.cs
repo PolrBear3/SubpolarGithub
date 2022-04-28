@@ -91,7 +91,7 @@ public class Inventory_Display : MonoBehaviour
     }
 
     // item move functions
-    public void Move_fromInventory_toBag(Default_Info info, GameObject toBagButton, GameObject toInventoryButton)
+    public void Move_fromInventory_toBag(Default_Info info)
     {
         for (int i = 0; i < controller.inventory.storage.Count; i++)
         {
@@ -103,10 +103,8 @@ public class Inventory_Display : MonoBehaviour
                 break;
             }
         }
-        toBagButton.SetActive(false);
-        toInventoryButton.SetActive(true);
     }
-    public void Move_fromBag_toInventory(Default_Info info, GameObject toBagButton, GameObject toInventoryButton)
+    public void Move_fromBag_toInventory(Default_Info info)
     {
         for (int i = 0; i < controller.bag.storage.Count; i++)
         {
@@ -118,7 +116,5 @@ public class Inventory_Display : MonoBehaviour
                 break;
             }
         }
-        toInventoryButton.SetActive(false);
-        toBagButton.SetActive(true);
     }
 }

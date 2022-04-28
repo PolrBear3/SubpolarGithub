@@ -11,15 +11,14 @@ public class Item_Icon : MonoBehaviour
 
     Inventory_Display display;
     public Default_Info itemInfo;
-    public GameObject toBagButton, toInventoryButton;
 
     public void Move_toBag()
     {
-        display.Move_fromInventory_toBag(itemInfo, toBagButton, toInventoryButton);
+        display.Move_fromInventory_toBag(itemInfo);
     }
 
     public void Move_toInventory()
     {
-        display.Move_fromBag_toInventory(itemInfo, toBagButton, toInventoryButton);
+        display.Move_fromBag_toInventory(itemInfo);
     }
 }
