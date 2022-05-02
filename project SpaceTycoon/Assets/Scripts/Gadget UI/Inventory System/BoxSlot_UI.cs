@@ -10,6 +10,7 @@ public class BoxSlot_UI : MonoBehaviour
     private Button button;
 
     public Box_Slot assignedBoxSlot => _assignedBoxSlot;
+    public Box_Display parentDisplay { get; private set; }
 
     private void Awake()
     {
@@ -17,6 +18,8 @@ public class BoxSlot_UI : MonoBehaviour
 
         button.GetComponent<Button>();
         button?.onClick.AddListener(On_UISlot_Click);
+
+        parentDisplay = transform.parent.GetComponent<Box_Display>();
     }
 
     public void Init(Box_Slot slot)
@@ -31,6 +34,7 @@ public class BoxSlot_UI : MonoBehaviour
         {
             _itemSprite.sprite = slot.itemInfo.itemIcon;
             _itemSprite.color = Color.white;
+
             if (slot.currentAmount > 1) _itemCount.text = slot.currentAmount.ToString();
             else _itemCount.text = "";
         }
@@ -55,6 +59,6 @@ public class BoxSlot_UI : MonoBehaviour
 
     public void On_UISlot_Click()
     {
-
+        parentDisplay?.Slot_Clicked(this);
     }
 }
