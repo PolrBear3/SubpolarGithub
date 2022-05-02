@@ -16,7 +16,7 @@ public class BoxSlot_UI : MonoBehaviour
     {
         Clear_Slot();
 
-        button.GetComponent<Button>();
+        button = GetComponent<Button>();
         button?.onClick.AddListener(On_UISlot_Click);
 
         parentDisplay = transform.parent.GetComponent<Box_Display>();
