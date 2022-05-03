@@ -31,6 +31,20 @@ public class Box_Slot
         _currentAmount = -1;
     }
 
+    public void Assign_Item(Box_Slot boxSlot)
+    {
+        if (_itemInfo == boxSlot.itemInfo)
+        {
+            Add_to_Stack(boxSlot._currentAmount);
+        }
+        else
+        {
+            _itemInfo = boxSlot._itemInfo;
+            _currentAmount = 0;
+            Add_to_Stack(boxSlot._currentAmount);
+        }
+    }
+
     public void Add_to_Stack(int addAmount)
     {
         _currentAmount += addAmount;

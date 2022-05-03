@@ -31,8 +31,37 @@ public abstract class Box_Display : MonoBehaviour
         }
     }
 
-    public void Slot_Clicked(BoxSlot_UI clickedSlot)
+    public void Slot_Clicked(BoxSlot_UI clickedUISlot)
     {
-        Debug.Log("slot clicked");
+        if (clickedUISlot.assignedBoxSlot.itemInfo != null && mouseBoxItem.assignedBoxSlot.itemInfo == null)
+        {
+            // key press grab split
+
+            // grab
+            mouseBoxItem.Update_Mouse_Slot(clickedUISlot.assignedBoxSlot);
+            clickedUISlot.Clear_Slot();
+            return;
+        }
+
+        // clicked slot item X, mouse has item > place mouse item to the clicked slot
+        if (clickedUISlot.assignedBoxSlot.itemInfo == null && mouseBoxItem.assignedBoxSlot.itemInfo != null)
+        {
+            clickedUISlot.assignedBoxSlot.Assign_Item(mouseBoxItem.assignedBoxSlot);
+            clickedUISlot.Update_UISlot();
+
+            mouseBoxItem.Clear_Slot();
+        }
+    }
+
+    private void Swap_Slots(BoxSlot_UI clickedUISlot)
+    {
+        var clonedSlot = new Box_Slot(mouseBoxItem.assignedBoxSlot.itemInfo, mouseBoxItem.assignedBoxSlot.currentAmount);
+        mouseBoxItem.Clear_Slot();
+
+        mouseBoxItem.Update_Mouse_Slot(clickedUISlot.assignedBoxSlot);
+
+        clickedUISlot.Clear_Slot();
+        clickedUISlot.assignedBoxSlot.Assign_Item(clonedSlot);
+        clickedUISlot.Update_UISlot();
     }
 }
