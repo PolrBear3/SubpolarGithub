@@ -13,10 +13,16 @@ public class Player_Inventory : MonoBehaviour
 
     void Add_JetPack()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             var boxHolder = GetComponent<Box_Holder>();
             boxHolder.boxSystem.Add_to_Box(items[0], 1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            var boxHolder = GetComponent<Box_Holder>();
+            boxHolder.boxSystem.Add_to_Box(items[1], 1);
         }
     }
 }
