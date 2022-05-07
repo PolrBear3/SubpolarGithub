@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class JetPack : MonoBehaviour
-{   
+{
     private void Start()
     {
         Set_Current_Fuel();
@@ -11,10 +11,9 @@ public class JetPack : MonoBehaviour
 
     private void Update()
     {
-        Set_Max_Fuel();
         Button_Press_Function();
-        Outof_Fuel_Function();
-        Debug.Log(currentEnergyFuel);
+        Limit_Current_Fuel();
+        Outof_Fuel();
     }
 
     public Animator anim;
@@ -36,33 +35,34 @@ public class JetPack : MonoBehaviour
         }
     }
 
-    float maxEnergyFuel = 50f;
+    public BackSlot backSlot;
+    public float maxEnergyFuel;
     [HideInInspector]
-    public static float currentEnergyFuel;
+    public float currentEnergyFuel;
     [HideInInspector]
     public bool outOfFuel = false;
 
-    void Set_Max_Fuel()
-    {
-        if (currentEnergyFuel >= maxEnergyFuel)
-        {
-            currentEnergyFuel = maxEnergyFuel;
-        }
-    }
     void Set_Current_Fuel()
     {
         currentEnergyFuel = maxEnergyFuel;
     }
-    void Outof_Fuel_Function()
+    void Limit_Current_Fuel()
+    {
+        if (currentEnergyFuel > maxEnergyFuel)
+        {
+            currentEnergyFuel = maxEnergyFuel;
+        }
+    }
+    void Use_Fuel()
+    {
+        currentEnergyFuel -= 1 * Time.deltaTime;
+    }
+    void Outof_Fuel()
     {
         if (currentEnergyFuel <= 0f)
         {
             currentEnergyFuel = 0f;
             outOfFuel = true;
         }
-    }
-    void Use_Fuel()
-    {
-        currentEnergyFuel -= 1 * Time.deltaTime;
     }
 }

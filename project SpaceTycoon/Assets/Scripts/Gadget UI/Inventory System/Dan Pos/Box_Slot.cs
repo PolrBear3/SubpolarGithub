@@ -45,6 +45,7 @@ public class Box_Slot
         }
     }
 
+    // stack amount functions
     public void Add_to_Stack(int addAmount)
     {
         _currentAmount += addAmount;

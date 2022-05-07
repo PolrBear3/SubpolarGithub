@@ -31,7 +31,7 @@ public class Mouse_Item_Icon : MonoBehaviour
         {
             transform.position = Mouse.current.position.ReadValue();
 
-            if (Mouse.current.leftButton.wasPressedThisFrame && !Is_Pointer_Over_UIObject())
+            if (BoxSlot_UI.slotClicked && Mouse.current.leftButton.wasPressedThisFrame && !Is_Pointer_Over_UIObject())
             {
                 Clear_Slot();
             }

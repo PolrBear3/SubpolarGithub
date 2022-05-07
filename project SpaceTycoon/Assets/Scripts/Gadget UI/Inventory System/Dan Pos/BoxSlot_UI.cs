@@ -15,7 +15,6 @@ public class BoxSlot_UI : MonoBehaviour
     private void Awake()
     {
         Clear_Slot();
-
         button = GetComponent<Button>();
         button?.onClick.AddListener(On_UISlot_Click);
 
@@ -60,5 +59,12 @@ public class BoxSlot_UI : MonoBehaviour
     public void On_UISlot_Click()
     {
         parentDisplay?.Slot_Clicked(this);
+    }
+
+    public static bool slotClicked = false;
+    public void Slot_Clicked()
+    {
+        slotClicked = true;
+        slotClicked = false;
     }
 }
