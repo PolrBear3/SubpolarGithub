@@ -131,13 +131,13 @@ TextureImporter:
       name: Inventory_UI_0
       rect:
         serializedVersion: 2
-        x: 8
+        x: 16
         y: 16
-        width: 48
+        width: 32
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 15, y: 10, z: 15, w: 10}
+      border: {x: 5, y: 5, z: 5, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -152,13 +152,13 @@ TextureImporter:
       name: Inventory_UI_1
       rect:
         serializedVersion: 2
-        x: 87
-        y: 23
-        width: 18
-        height: 18
+        x: 80
+        y: 16
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -173,7 +173,28 @@ TextureImporter:
       name: Inventory_UI_2
       rect:
         serializedVersion: 2
-        x: 147
+        x: 144
+        y: 16
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da073e87d19d9674ca4c5599ade17f34
+      internalID: -1817920494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_UI_3
+      rect:
+        serializedVersion: 2
+        x: 211
         y: 16
         width: 26
         height: 33
@@ -184,8 +205,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: da073e87d19d9674ca4c5599ade17f34
-      internalID: -1817920494
+      spriteID: 47430a6ed824a2b4da9a8763f9b7bc37
+      internalID: -2079524985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory_UI_4
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 16
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e5bc7d90290a7d40bdc563905b58219
+      internalID: 2082733427
       vertices: []
       indices: 
       edges: []
@@ -202,6 +244,8 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Inventory_UI_1: -1829515105
+      Inventory_UI_3: -2079524985
+      Inventory_UI_4: 2082733427
       Inventory_UI_2: -1817920494
       Inventory_UI_0: 1688028193
   spritePackingTag: 

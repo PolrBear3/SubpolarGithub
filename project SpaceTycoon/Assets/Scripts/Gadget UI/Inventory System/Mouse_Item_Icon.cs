@@ -11,6 +11,8 @@ public class Mouse_Item_Icon : MonoBehaviour
     public Text itemCount;
     public Box_Slot assignedBoxSlot;
 
+    public static bool holdingItemOnMouse = false;
+
     private void Awake()
     {
         itemSprite.color = Color.clear;
@@ -19,6 +21,7 @@ public class Mouse_Item_Icon : MonoBehaviour
 
     public void Update_Mouse_Slot(Box_Slot boxSlot)
     {
+        holdingItemOnMouse = true;
         assignedBoxSlot.Assign_Item(boxSlot);
         itemSprite.sprite = boxSlot.itemInfo.itemIcon;
         itemCount.text = boxSlot.currentAmount.ToString();
@@ -40,6 +43,7 @@ public class Mouse_Item_Icon : MonoBehaviour
 
     public void Clear_Slot()
     {
+        holdingItemOnMouse = false;
         assignedBoxSlot.Clear_Slot();
         itemCount.text = "";
         itemSprite.color = Color.clear;
