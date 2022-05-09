@@ -11,26 +11,29 @@ public class Player_Inventory : MonoBehaviour
     }
 
     public Gadget_MainController controller;
+
+    public Animator openmenuButton;
     public GameObject inventoryMenu;
     public GameObject mouseItemIcon;
     
     public void Open_Inventory_Menu()
     {
         inventoryMenu.SetActive(true);
+        openmenuButton.SetBool("isPressed", true);
     }
 
     public void Close_Inventory_Menu()
     {
         controller.Close_All_Menu();
+        openmenuButton.SetBool("isPressed", false);
     }
 
+    // craft jetpack test function
     private void Update()
     {
         Add_JetPack();
     }
-
     public List<Item_Info> items = new List<Item_Info>();
-
     void Add_JetPack()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
