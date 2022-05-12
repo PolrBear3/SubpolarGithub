@@ -67,4 +67,18 @@ public class BoxSlot_UI : MonoBehaviour
         slotClicked = true;
         slotClicked = false;
     }
+
+    public GameObject lockedImage;
+    public bool unlocked = false;
+    void Slot_Lock_and_Unlock()
+    {
+        if (!unlocked)
+        {
+            lockedImage.SetActive(true);
+        }
+        if (unlocked)
+        {
+            lockedImage.SetActive(false);
+        }
+    }
 }
