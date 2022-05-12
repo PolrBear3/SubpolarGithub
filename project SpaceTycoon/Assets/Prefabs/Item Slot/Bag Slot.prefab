@@ -153,6 +153,17 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
+  unlocked: 0
+  lockedImage: {fileID: 5710559717750878363}
+  slotTypes:
+  - {fileID: 917209903, guid: e1833ecbb9242884ca4da0a0cd65a873, type: 3}
+  - {fileID: 917209903, guid: e1833ecbb9242884ca4da0a0cd65a873, type: 3}
+  - {fileID: 1638247431, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: 1638247431, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: 1638247431, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: 1638247431, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: 1638247431, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  currentSlotType: {fileID: 0}
 --- !u!1 &41175519718308744
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1558847780275477058
 RectTransform:
   m_ObjectHideFlags: 0

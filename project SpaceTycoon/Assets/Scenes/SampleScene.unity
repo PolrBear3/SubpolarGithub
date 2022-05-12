@@ -749,6 +749,15 @@ MonoBehaviour:
   - {fileID: 1705552959}
   - {fileID: 1919986061}
   - {fileID: 966154982}
+  - {fileID: 966154982}
+  bagTypes:
+  - {fileID: 954599381, guid: e1833ecbb9242884ca4da0a0cd65a873, type: 3}
+  - {fileID: 954599381, guid: e1833ecbb9242884ca4da0a0cd65a873, type: 3}
+  - {fileID: -1055497854, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: -1055497854, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: -1055497854, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: -1055497854, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
+  - {fileID: -1055497854, guid: 69803c5e9000e60429c3f68bfb28cae7, type: 3}
 --- !u!1001 &171456612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1071,6 +1080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1813089877}
+  staticDisplay: {fileID: 167949181}
   openmenuButton: {fileID: 1249469926}
   inventoryMenu: {fileID: 1455137429}
   mouseItemIcon: {fileID: 615297518254033234}
@@ -8753,6 +8763,10 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
+  unlocked: 0
+  lockedImage: {fileID: 0}
+  slotTypes: []
+  currentSlotType: {fileID: 0}
 --- !u!114 &5061904349628063642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8770,6 +8784,10 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
+  unlocked: 0
+  lockedImage: {fileID: 0}
+  slotTypes: []
+  currentSlotType: {fileID: 0}
 --- !u!114 &5061904349633529034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8787,6 +8805,10 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
+  unlocked: 0
+  lockedImage: {fileID: 0}
+  slotTypes: []
+  currentSlotType: {fileID: 0}
 --- !u!114 &5061904350078003866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8804,6 +8826,10 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
+  unlocked: 0
+  lockedImage: {fileID: 0}
+  slotTypes: []
+  currentSlotType: {fileID: 0}
 --- !u!1001 &6775637224871351191
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -8,9 +8,20 @@ public class Player_Inventory : MonoBehaviour
     {
         inventoryMenu.SetActive(false);
         mouseItemIcon.SetActive(true);
+
+        // test
+        Unlock_Bag_Level1_Slot();
+    }
+
+    private void Update()
+    {
+        // test
+        Add_JetPack();
+        Input_Unlock_Bag_Slot();
     }
 
     public Gadget_MainController controller;
+    public Static_Box_Display staticDisplay;
 
     public Animator openmenuButton;
     public GameObject inventoryMenu;
@@ -29,10 +40,6 @@ public class Player_Inventory : MonoBehaviour
     }
 
     // craft jetpack test function
-    private void Update()
-    {
-        Add_JetPack();
-    }
     public List<Item_Info> items = new List<Item_Info>();
     void Add_JetPack()
     {
@@ -41,5 +48,23 @@ public class Player_Inventory : MonoBehaviour
             var boxHolder = GetComponent<Box_Holder>();
             boxHolder.boxSystem.Add_to_Box(items[0], 1);
         }
+    }
+
+    // unlock Bag Level test function
+    void Input_Unlock_Bag_Slot()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Unlock_Bag_Level2_Slot();
+        }
+    }
+    
+    void Unlock_Bag_Level1_Slot()
+    {
+        staticDisplay.Unlock_Bag_Level(0, 4, 1);
+    }
+    void Unlock_Bag_Level2_Slot()
+    {
+        staticDisplay.Unlock_Bag_Level(4, 8, 2);
     }
 }

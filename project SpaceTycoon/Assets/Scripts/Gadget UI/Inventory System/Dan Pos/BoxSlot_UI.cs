@@ -19,6 +19,8 @@ public class BoxSlot_UI : MonoBehaviour
         button?.onClick.AddListener(On_UISlot_Click);
 
         parentDisplay = transform.parent.GetComponent<Box_Display>();
+
+        currentSlotType = GetComponent<Image>();
     }
 
     public void Init(Box_Slot slot)
@@ -68,17 +70,23 @@ public class BoxSlot_UI : MonoBehaviour
         slotClicked = false;
     }
 
-    public GameObject lockedImage;
+    [HideInInspector]
     public bool unlocked = false;
-    void Slot_Lock_and_Unlock()
+    public GameObject lockedImage;
+    public Sprite[] slotTypes;
+    [HideInInspector]
+    public Image currentSlotType;
+    public void Slot_Status_Update()
     {
         if (!unlocked)
         {
             lockedImage.SetActive(true);
+            button.enabled = false;
         }
         if (unlocked)
         {
             lockedImage.SetActive(false);
+            button.enabled = true;
         }
     }
 }
