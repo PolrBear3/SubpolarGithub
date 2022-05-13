@@ -8,6 +8,8 @@ public class Static_Box_Display : Box_Display
     [SerializeField] private Box_Holder _boxHolder;
     [SerializeField] private BoxSlot_UI[] _slots;
     public BoxSlot_UI[] slots => _slots;
+    [SerializeField] private BoxSlot_UI[] _currentInventorySlots;
+    public BoxSlot_UI[] currentInventorySlots => _currentInventorySlots;
 
     private void Awake()
     {
@@ -25,6 +27,8 @@ public class Static_Box_Display : Box_Display
         }
 
         Assign_Slot(_boxSystem);
+
+        Unlock_Current_Inventory_atStart();
     }
 
     public override void Assign_Slot(Box_System boxToDisplay)
@@ -50,10 +54,19 @@ public class Static_Box_Display : Box_Display
         }
 
         // sprite for bag level
-        for (int i = 0; i < bagTypes.Length; i++)
+        for (int i = 0; i < _slots.Length; i++)
         {
             currentBagType.sprite = bagTypes[currentBagLevel];
             _slots[i].currentSlotType.sprite = _slots[i].slotTypes[currentBagLevel];
+            // _slots[i].text.color change
+        }
+    }
+
+    void Unlock_Current_Inventory_atStart()
+    {
+        for (int i = 0; i < _currentInventorySlots.Length; i++)
+        {
+            _currentInventorySlots[i].unlocked = true;
         }
     }
 }

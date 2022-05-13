@@ -23,6 +23,11 @@ public class BoxSlot_UI : MonoBehaviour
         currentSlotType = GetComponent<Image>();
     }
 
+    private void Start()
+    {
+        Slot_Status_Update();
+    }
+
     public void Init(Box_Slot slot)
     {
         _assignedBoxSlot = slot;

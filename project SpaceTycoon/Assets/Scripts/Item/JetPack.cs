@@ -35,7 +35,6 @@ public class JetPack : MonoBehaviour
         }
     }
 
-    public BackSlot backSlot;
     public float maxEnergyFuel;
     [HideInInspector]
     public float currentEnergyFuel;
