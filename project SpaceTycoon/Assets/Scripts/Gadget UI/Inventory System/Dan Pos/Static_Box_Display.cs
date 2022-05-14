@@ -37,9 +37,24 @@ public class Static_Box_Display : Box_Display
         }
     }
 
-    public void Unlock_Bag_Level(int starti, int endi, int currentBagLevel)
+    int starti = 0, endi = 4;
+    public void Unlock_Slot_Level(int currentBagLevel)
     {
-        // slot unlock for bag level
+        int startBagLevel = 1;
+
+        // assign start and end i according to bag level
+        for (int i = 0; i < 7; i++)
+        {
+            if (startBagLevel != currentBagLevel)
+            {
+                startBagLevel++;
+                starti += 4;
+                endi += 4;
+            }
+            else break;
+        }
+
+        // unlock assigned slots
         for (int i = starti; i < endi; i++)
         {
             _slots[i].unlocked = true;

@@ -61,10 +61,11 @@ public class Player_Inventory : MonoBehaviour
     
     void Unlock_Bag_Level1_Slot()
     {
-        staticDisplay.Unlock_Bag_Level(0, 4, 1);
+        staticDisplay.Unlock_Slot_Level(1);
     }
     void Unlock_Bag_Level2_Slot()
     {
-        staticDisplay.Unlock_Bag_Level(4, 8, 2);
+        staticDisplay.Unlock_Slot_Level(2);
+
     }
 }
