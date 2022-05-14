@@ -10,7 +10,7 @@ public class Player_Inventory : MonoBehaviour
         mouseItemIcon.SetActive(true);
 
         // test
-        Unlock_Bag_Level1_Slot();
+        staticDisplay.Unlock_Slot_Level(1);
     }
 
     private void Update()
@@ -29,14 +29,12 @@ public class Player_Inventory : MonoBehaviour
     
     public void Open_Inventory_Menu()
     {
-        inventoryMenu.SetActive(true);
-        openmenuButton.SetBool("isPressed", true);
+        controller.Open_Gadget_Menu(inventoryMenu, openmenuButton);
     }
 
     public void Close_Inventory_Menu()
     {
-        controller.Close_All_Menu();
-        openmenuButton.SetBool("isPressed", false);
+        controller.Close_All_Gadget_Menus(openmenuButton);
     }
 
     // craft jetpack test function
@@ -55,17 +53,7 @@ public class Player_Inventory : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            Unlock_Bag_Level2_Slot();
+            staticDisplay.Unlock_Slot_Level(2);
         }
-    }
-    
-    void Unlock_Bag_Level1_Slot()
-    {
-        staticDisplay.Unlock_Slot_Level(1);
-    }
-    void Unlock_Bag_Level2_Slot()
-    {
-        staticDisplay.Unlock_Slot_Level(2);
-
     }
 }

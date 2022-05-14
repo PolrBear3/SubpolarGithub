@@ -6,7 +6,7 @@ public class BackSlot : MonoBehaviour
 {
     private void Update()
     {
-        Check_Item();
+        Inventory_Slot_Status_Update();
     }
 
     public BoxSlot_UI boxSlotUI;
@@ -14,17 +14,22 @@ public class BackSlot : MonoBehaviour
     public List<Item_Info> itemInfo = new List<Item_Info>();
     public List<GameObject> playerItems = new List<GameObject>();
 
-    public void Check_Item()
+    public void Inventory_Slot_Status_Update()
     {
-        for (int i = 0; i < itemInfo.Count; i++)
+        if (boxSlotUI.assignedBoxSlot != null)
         {
-            if (boxSlotUI.assignedBoxSlot.itemInfo == itemInfo[i])
+            for (int i = 0; i < itemInfo.Count; i++)
             {
-                playerItems[i].SetActive(true);
-            }
-            else
-            {
-                playerItems[i].SetActive(false);
+                if (boxSlotUI.assignedBoxSlot.itemInfo == itemInfo[i])
+                {
+                    playerItems[i].SetActive(true);
+                    Debug.Log("Searching");
+                }
+                else
+                {
+                    playerItems[i].SetActive(false);
+                    Debug.Log("Deactivating");
+                }
             }
         }
     }
