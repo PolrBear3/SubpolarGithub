@@ -11,11 +11,6 @@ public class Static_Box_Display : Box_Display
     [SerializeField] private BoxSlot_UI[] _currentInventorySlots;
     public BoxSlot_UI[] currentInventorySlots => _currentInventorySlots;
 
-    private void Awake()
-    {
-        currentBagType = GetComponent<Image>();
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -42,8 +37,6 @@ public class Static_Box_Display : Box_Display
         }
     }
 
-    public Sprite[] bagTypes;
-    Image currentBagType;
     public void Unlock_Bag_Level(int starti, int endi, int currentBagLevel)
     {
         // slot unlock for bag level
@@ -51,14 +44,6 @@ public class Static_Box_Display : Box_Display
         {
             _slots[i].unlocked = true;
             _slots[i].Slot_Status_Update();
-        }
-
-        // sprite for bag level
-        for (int i = 0; i < _slots.Length; i++)
-        {
-            currentBagType.sprite = bagTypes[currentBagLevel];
-            _slots[i].currentSlotType.sprite = _slots[i].slotTypes[currentBagLevel];
-            // _slots[i].text.color change
         }
     }
 

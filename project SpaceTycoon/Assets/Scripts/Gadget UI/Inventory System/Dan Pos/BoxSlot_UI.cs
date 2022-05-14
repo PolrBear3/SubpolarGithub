@@ -19,8 +19,6 @@ public class BoxSlot_UI : MonoBehaviour
         button?.onClick.AddListener(On_UISlot_Click);
 
         parentDisplay = transform.parent.GetComponent<Box_Display>();
-
-        currentSlotType = GetComponent<Image>();
     }
 
     private void Start()
@@ -78,9 +76,6 @@ public class BoxSlot_UI : MonoBehaviour
     [HideInInspector]
     public bool unlocked = false;
     public GameObject lockedImage;
-    public Sprite[] slotTypes;
-    [HideInInspector]
-    public Image currentSlotType;
     public void Slot_Status_Update()
     {
         if (!unlocked)
