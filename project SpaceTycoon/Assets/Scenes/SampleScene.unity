@@ -6714,6 +6714,7 @@ GameObject:
   - component: {fileID: 41175518729305845}
   - component: {fileID: 41175518729305866}
   - component: {fileID: 5061904350078003866}
+  - component: {fileID: 5061904350078003867}
   m_Layer: 5
   m_Name: throwable1 Slot
   m_TagString: Untagged
@@ -6815,7 +6816,7 @@ GameObject:
   - component: {fileID: 41175519156227061}
   - component: {fileID: 41175519156226570}
   - component: {fileID: 5061904349628063642}
-  - component: {fileID: 511204650571572726}
+  - component: {fileID: 5061904349628063643}
   m_Layer: 5
   m_Name: Back Slot
   m_TagString: Untagged
@@ -6993,6 +6994,7 @@ GameObject:
   - component: {fileID: 41175519156457637}
   - component: {fileID: 41175519156457818}
   - component: {fileID: 5061904349633529034}
+  - component: {fileID: 5061904349633529035}
   m_Layer: 5
   m_Name: throwable2 Slot
   m_TagString: Untagged
@@ -7250,6 +7252,7 @@ GameObject:
   - component: {fileID: 41175519849015685}
   - component: {fileID: 41175519849015418}
   - component: {fileID: 5061904349184196074}
+  - component: {fileID: 5061904349184196075}
   m_Layer: 5
   m_Name: Hand Slot
   m_TagString: Untagged
@@ -7958,23 +7961,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &511204650571572726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 41175519156226568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 065f686883fbb5d4c8fc50f99497a1df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boxSlotUI: {fileID: 5061904349628063642}
-  itemInfo:
-  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
-  playerItems:
-  - {fileID: 1610653743}
 --- !u!222 &615297517563846208
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8187,6 +8173,11 @@ MonoBehaviour:
   assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
+  inventorySlot:
+  - {fileID: 5061904350078003867}
+  - {fileID: 5061904349633529035}
+  - {fileID: 5061904349628063643}
+  - {fileID: 5061904349184196075}
 --- !u!114 &941096406809412550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8241,6 +8232,21 @@ MonoBehaviour:
     _currentAmount: -1
   unlocked: 0
   lockedImage: {fileID: 2043460231}
+--- !u!114 &5061904349184196075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41175519849015416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065f686883fbb5d4c8fc50f99497a1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxSlotUI: {fileID: 5061904349184196074}
+  itemInfo: []
+  playerItems: []
 --- !u!114 &5061904349628063642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8260,6 +8266,23 @@ MonoBehaviour:
     _currentAmount: -1
   unlocked: 0
   lockedImage: {fileID: 1095555122}
+--- !u!114 &5061904349628063643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41175519156226568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065f686883fbb5d4c8fc50f99497a1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxSlotUI: {fileID: 5061904349628063642}
+  itemInfo:
+  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
+  playerItems:
+  - {fileID: 1610653743}
 --- !u!114 &5061904349633529034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8279,6 +8302,21 @@ MonoBehaviour:
     _currentAmount: -1
   unlocked: 0
   lockedImage: {fileID: 66221116}
+--- !u!114 &5061904349633529035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41175519156457816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065f686883fbb5d4c8fc50f99497a1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxSlotUI: {fileID: 5061904349633529034}
+  itemInfo: []
+  playerItems: []
 --- !u!114 &5061904350078003866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8298,6 +8336,21 @@ MonoBehaviour:
     _currentAmount: -1
   unlocked: 0
   lockedImage: {fileID: 1338385903}
+--- !u!114 &5061904350078003867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41175518729305864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065f686883fbb5d4c8fc50f99497a1df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxSlotUI: {fileID: 5061904350078003866}
+  itemInfo: []
+  playerItems: []
 --- !u!1001 &6775637224871351191
 PrefabInstance:
   m_ObjectHideFlags: 0

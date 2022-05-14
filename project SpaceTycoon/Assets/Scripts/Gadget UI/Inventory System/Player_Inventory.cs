@@ -39,6 +39,7 @@ public class Player_Inventory : MonoBehaviour
 
     // craft jetpack test function
     public List<Item_Info> items = new List<Item_Info>();
+    
     void Add_JetPack()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
