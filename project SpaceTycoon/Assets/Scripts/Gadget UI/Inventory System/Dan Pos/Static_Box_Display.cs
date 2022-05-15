@@ -66,6 +66,7 @@ public class Static_Box_Display : Box_Display
         for (int i = 0; i < _currentInventorySlots.Length; i++)
         {
             _currentInventorySlots[i].unlocked = true;
+            _currentInventorySlots[i].Slot_Status_Update();
         }
     }
 }
