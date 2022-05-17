@@ -38,22 +38,26 @@ public class Static_Box_Display : Box_Display
 
     void Restart_Slot_Level()
     {
-
+        for (int i = 0; i < _slots.Length; i++)
+        {
+            _slots[i].unlocked = false;
+            _slots[i].Slot_Status_Update();
+        }
     }
 
     int endi;
-    public void Unlock_Slot_Level(int currentBagLevel)
+    public void Unlock_Slot_Level(int wantedLevel)
     {
         // restart slot unlock state
-
+        Restart_Slot_Level();
 
         // assign slots
-        if (currentBagLevel == 1) { endi = 4; }
-        if (currentBagLevel == 2) { endi = 8; }
-        if (currentBagLevel == 3) { endi = 12; }
-        if (currentBagLevel == 4) { endi = 16; }
-        if (currentBagLevel == 5) { endi = 20; }
-        if (currentBagLevel == 6) { endi = 24; }
+        if (wantedLevel == 1) { endi = 4; }
+        if (wantedLevel == 2) { endi = 8; }
+        if (wantedLevel == 3) { endi = 12; }
+        if (wantedLevel == 4) { endi = 16; }
+        if (wantedLevel == 5) { endi = 20; }
+        if (wantedLevel == 6) { endi = 24; }
 
         // unlock assigned slots
         for (int i = 0; i < endi; i++)
@@ -72,4 +76,3 @@ public class Static_Box_Display : Box_Display
         }
     }
 }
-  

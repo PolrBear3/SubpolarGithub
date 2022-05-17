@@ -51,11 +51,15 @@ public class Player_Inventory : MonoBehaviour
     // unlock Bag Level test function
     void Input_Unlock_Bag_Slot()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            staticDisplay.Unlock_Slot_Level(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             staticDisplay.Unlock_Slot_Level(2);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
+        if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             staticDisplay.Unlock_Slot_Level(3);
         }
@@ -63,11 +67,11 @@ public class Player_Inventory : MonoBehaviour
         {
             staticDisplay.Unlock_Slot_Level(4);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha8))
+        if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             staticDisplay.Unlock_Slot_Level(5);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha9))
+        if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             staticDisplay.Unlock_Slot_Level(6);
         }

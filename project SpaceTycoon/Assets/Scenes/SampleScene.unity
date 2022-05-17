@@ -787,6 +787,7 @@ GameObject:
   - component: {fileID: 167949179}
   - component: {fileID: 167949178}
   - component: {fileID: 167949181}
+  - component: {fileID: 167949182}
   m_Layer: 5
   m_Name: Bag
   m_TagString: Untagged
@@ -913,7 +914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseBoxItem: {fileID: 615297518254033236}
-  _boxHolder: {fileID: 1455137431}
+  _boxHolder: {fileID: 167949182}
   _slots:
   - {fileID: 1172047480}
   - {fileID: 1277843843}
@@ -945,6 +946,69 @@ MonoBehaviour:
   - {fileID: 4562304005756051049}
   - {fileID: 979808603940278084}
   - {fileID: 2803209768082207549}
+--- !u!114 &167949182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167949176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d3d5ecf0e6e554eac0cbb699f9b019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxSize: 24
+  _boxSystem:
+    _boxSlots:
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
+    - _itemInfo: {fileID: 0}
+      _currentAmount: 0
 --- !u!114 &184539588 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}
@@ -1180,7 +1244,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 266172233}
-  - component: {fileID: 266172238}
   m_Layer: 0
   m_Name: Inventory Gadget
   m_TagString: Untagged
@@ -1204,26 +1267,6 @@ Transform:
   m_Father: {fileID: 1813089876}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &266172238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 266172232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6f85808061801b40b2619c813bdd0a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 1813089877}
-  staticDisplay: {fileID: 167949181}
-  boxHolder: {fileID: 1455137431}
-  openmenuButton: {fileID: 1249469926}
-  inventoryMenu: {fileID: 1455137429}
-  mouseItemIcon: {fileID: 615297518254033234}
-  items:
-  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
 --- !u!1001 &276959175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1653,7 +1696,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 266172238}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player_Inventory, Assembly-CSharp
         m_MethodName: Close_Inventory_Menu
         m_Mode: 1
@@ -3682,7 +3725,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 266172238}
+      - m_Target: {fileID: 1455137431}
         m_TargetAssemblyTypeName: Player_Inventory, Assembly-CSharp
         m_MethodName: Open_Inventory_Menu
         m_Mode: 1
@@ -4220,7 +4263,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1455137430}
-  - component: {fileID: 1455137432}
   - component: {fileID: 1455137431}
   m_Layer: 0
   m_Name: Inventory Menu
@@ -4261,25 +4303,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1455137429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06d3d5ecf0e6e554eac0cbb699f9b019, type: 3}
+  m_Script: {fileID: 11500000, guid: d6f85808061801b40b2619c813bdd0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxSize: 24
-  _boxSystem:
-    _boxSlots: []
---- !u!114 &1455137432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1455137429}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd264c928b7bdd547956315157b3f850, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 1607912697}
+  controller: {fileID: 1813089877}
+  staticDisplay: {fileID: 167949181}
+  boxHolder: {fileID: 167949182}
+  openmenuButton: {fileID: 1249469926}
+  inventoryMenu: {fileID: 1455137429}
+  mouseItemIcon: {fileID: 615297518254033234}
+  items:
+  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
 --- !u!114 &1458755942 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}
@@ -4606,6 +4640,7 @@ GameObject:
   - component: {fileID: 1607912694}
   - component: {fileID: 1607912696}
   - component: {fileID: 1607912697}
+  - component: {fileID: 1607912698}
   m_Layer: 5
   m_Name: Current Inventory
   m_TagString: Untagged
@@ -4713,6 +4748,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseBoxItem: {fileID: 615297518254033236}
   slotPrefab: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}
+--- !u!114 &1607912698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607912692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd264c928b7bdd547956315157b3f850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryPanel: {fileID: 1607912697}
 --- !u!1 &1610653743
 GameObject:
   m_ObjectHideFlags: 0
