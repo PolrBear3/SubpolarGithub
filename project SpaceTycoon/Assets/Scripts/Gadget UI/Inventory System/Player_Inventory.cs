@@ -22,10 +22,10 @@ public class Player_Inventory : MonoBehaviour
 
     public Gadget_MainController controller;
     public Static_Box_Display staticDisplay;
+    public Box_Holder boxHolder;
 
     public Animator openmenuButton;
-    public GameObject inventoryMenu;
-    public GameObject mouseItemIcon;
+    public GameObject inventoryMenu, mouseItemIcon;
     
     public void Open_Inventory_Menu()
     {
@@ -44,7 +44,6 @@ public class Player_Inventory : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            var boxHolder = GetComponent<Box_Holder>();
             boxHolder.boxSystem.Add_to_Box(items[0], 1);
         }
     }
@@ -55,6 +54,22 @@ public class Player_Inventory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             staticDisplay.Unlock_Slot_Level(2);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            staticDisplay.Unlock_Slot_Level(3);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            staticDisplay.Unlock_Slot_Level(4);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            staticDisplay.Unlock_Slot_Level(5);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            staticDisplay.Unlock_Slot_Level(6);
         }
     }
 }

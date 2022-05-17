@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseBoxItem: {fileID: 615297518254033236}
-  _boxHolder: {fileID: 266172236}
+  _boxHolder: {fileID: 1455137431}
   _slots:
   - {fileID: 1172047480}
   - {fileID: 1277843843}
@@ -1180,8 +1180,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 266172233}
-  - component: {fileID: 266172237}
-  - component: {fileID: 266172236}
   - component: {fileID: 266172238}
   m_Layer: 0
   m_Name: Inventory Gadget
@@ -1206,34 +1204,6 @@ Transform:
   m_Father: {fileID: 1813089876}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &266172236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 266172232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06d3d5ecf0e6e554eac0cbb699f9b019, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boxSize: 24
-  _boxSystem:
-    _boxSlots: []
---- !u!114 &266172237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 266172232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd264c928b7bdd547956315157b3f850, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 1607912697}
 --- !u!114 &266172238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1248,6 +1218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1813089877}
   staticDisplay: {fileID: 167949181}
+  boxHolder: {fileID: 1455137431}
   openmenuButton: {fileID: 1249469926}
   inventoryMenu: {fileID: 1455137429}
   mouseItemIcon: {fileID: 615297518254033234}
@@ -4249,6 +4220,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1455137430}
+  - component: {fileID: 1455137432}
+  - component: {fileID: 1455137431}
   m_Layer: 0
   m_Name: Inventory Menu
   m_TagString: Untagged
@@ -4279,6 +4252,34 @@ RectTransform:
   m_AnchoredPosition: {x: -140, y: 16.276}
   m_SizeDelta: {x: 269.3188, y: 545.5519}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1455137431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455137429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d3d5ecf0e6e554eac0cbb699f9b019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boxSize: 24
+  _boxSystem:
+    _boxSlots: []
+--- !u!114 &1455137432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455137429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd264c928b7bdd547956315157b3f850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryPanel: {fileID: 1607912697}
 --- !u!114 &1458755942 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}
