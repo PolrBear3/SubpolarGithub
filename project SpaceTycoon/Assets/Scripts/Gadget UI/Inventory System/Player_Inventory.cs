@@ -45,6 +45,7 @@ public class Player_Inventory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             boxHolder.boxSystem.Add_to_Box(items[0], 1);
+
         }
     }
 

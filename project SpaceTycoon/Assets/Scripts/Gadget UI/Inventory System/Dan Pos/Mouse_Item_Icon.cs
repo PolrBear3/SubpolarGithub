@@ -11,6 +11,7 @@ public class Mouse_Item_Icon : MonoBehaviour
     public Text itemCount;
     public Box_Slot assignedBoxSlot;
 
+    public Static_Box_Display staticDisplay;
     public static bool holdingItemOnMouse = false;
     public InventorySlot[] inventorySlot;
 
@@ -20,7 +21,7 @@ public class Mouse_Item_Icon : MonoBehaviour
         itemCount.text = "";
     }
 
-    void Update_Inventory_Slot_Status()
+    void Update_Inventory_Slot_Status() // need to put these functions in other script
     {
         for (int i = 0; i < inventorySlot.Length; i++)
         {

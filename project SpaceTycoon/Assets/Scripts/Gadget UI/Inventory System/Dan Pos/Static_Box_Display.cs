@@ -25,6 +25,11 @@ public class Static_Box_Display : Box_Display
         Unlock_Current_Inventory_atStart();
     }
 
+    private void Update()
+    {
+        BagSlot_Full_Check();
+    }
+
     public override void Assign_Slot(Box_System boxToDisplay)
     {
         _slotDictionary = new Dictionary<BoxSlot_UI, Box_Slot>();
@@ -59,11 +64,28 @@ public class Static_Box_Display : Box_Display
         if (wantedLevel == 5) { endi = 20; }
         if (wantedLevel == 6) { endi = 24; }
 
+        // set max slot size
+        maxAvailable = endi;
+
         // unlock assigned slots
         for (int i = 0; i < endi; i++)
         {
             _slots[i].unlocked = true;
             _slots[i].Slot_Status_Update();
+        }
+    }
+
+    public int maxAvailable, currentAmount;
+    public bool slotFull = false;
+    public void BagSlot_Full_Check()
+    {
+        if (currentAmount == maxAvailable)
+        {
+            slotFull = true;
+        }
+        else
+        {
+            slotFull = false;
         }
     }
 
