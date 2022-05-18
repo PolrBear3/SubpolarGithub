@@ -914,6 +914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseBoxItem: {fileID: 615297518254033236}
+  controller: {fileID: 1455137431}
   _boxHolder: {fileID: 167949182}
   _slots:
   - {fileID: 1172047480}
@@ -946,9 +947,6 @@ MonoBehaviour:
   - {fileID: 4562304005756051049}
   - {fileID: 979808603940278084}
   - {fileID: 2803209768082207549}
-  maxAvailable: 0
-  currentAmount: 0
-  slotFull: 0
 --- !u!114 &167949182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -961,6 +959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d3d5ecf0e6e554eac0cbb699f9b019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 1455137431}
   boxSize: 24
   _boxSystem:
     _boxSlots:
@@ -1012,6 +1011,9 @@ MonoBehaviour:
       _currentAmount: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+  items:
+  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
+  - {fileID: 11400000, guid: 24cf769bec17d814090c022db0682646, type: 2}
 --- !u!114 &184539588 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}
@@ -4315,8 +4317,6 @@ MonoBehaviour:
   openmenuButton: {fileID: 1249469926}
   inventoryMenu: {fileID: 1455137429}
   mouseItemIcon: {fileID: 615297518254033234}
-  items:
-  - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
 --- !u!114 &1458755942 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}

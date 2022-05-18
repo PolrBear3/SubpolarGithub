@@ -16,7 +16,7 @@ public class Player_Inventory : MonoBehaviour
     private void Update()
     {
         // test
-        Add_JetPack();
+        Add_Item();
         Input_Unlock_Bag_Slot();
     }
 
@@ -38,14 +38,16 @@ public class Player_Inventory : MonoBehaviour
     }
 
     // craft jetpack test function
-    public List<Item_Info> items = new List<Item_Info>();
-    
-    void Add_JetPack()
+
+    void Add_Item()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            boxHolder.boxSystem.Add_to_Box(items[0], 1);
-
+            boxHolder.Craft_Item(0, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            boxHolder.Craft_Item(1, 1);
         }
     }
 
