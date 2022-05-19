@@ -10,7 +10,7 @@ public class Player_Inventory : MonoBehaviour
         mouseItemIcon.SetActive(true);
 
         // test
-        staticDisplay.Unlock_Slot_Level(1);
+        boxHolder.Unlock_Slot_Level(1);
     }
 
     private void Update()
@@ -56,27 +56,27 @@ public class Player_Inventory : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            staticDisplay.Unlock_Slot_Level(1);
+            boxHolder.Unlock_Slot_Level(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            staticDisplay.Unlock_Slot_Level(2);
+            boxHolder.Unlock_Slot_Level(2);
         }
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            staticDisplay.Unlock_Slot_Level(3);
+            boxHolder.Unlock_Slot_Level(3);
         }
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            staticDisplay.Unlock_Slot_Level(4);
+            boxHolder.Unlock_Slot_Level(4);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            staticDisplay.Unlock_Slot_Level(5);
+            boxHolder.Unlock_Slot_Level(5);
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            staticDisplay.Unlock_Slot_Level(6);
+            boxHolder.Unlock_Slot_Level(6);
         }
     }
 }

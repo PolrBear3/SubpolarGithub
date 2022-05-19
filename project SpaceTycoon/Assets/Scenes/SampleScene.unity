@@ -914,7 +914,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseBoxItem: {fileID: 615297518254033236}
-  controller: {fileID: 1455137431}
   _boxHolder: {fileID: 167949182}
   _slots:
   - {fileID: 1172047480}
@@ -942,11 +941,6 @@ MonoBehaviour:
   - {fileID: 287825706}
   - {fileID: 729245927}
   - {fileID: 729245927}
-  _currentInventorySlots:
-  - {fileID: 1263757127807938994}
-  - {fileID: 4562304005756051049}
-  - {fileID: 979808603940278084}
-  - {fileID: 2803209768082207549}
 --- !u!114 &167949182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -959,58 +953,86 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06d3d5ecf0e6e554eac0cbb699f9b019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1455137431}
   boxSize: 24
   _boxSystem:
     _boxSlots:
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
+      unlocked: 0
+  _currentInventorySlots:
+  - {fileID: 1263757127807938994}
+  - {fileID: 4562304005756051049}
+  - {fileID: 979808603940278084}
+  - {fileID: 2803209768082207549}
   items:
   - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
   - {fileID: 11400000, guid: 24cf769bec17d814090c022db0682646, type: 2}
@@ -6051,6 +6073,7 @@ MonoBehaviour:
   assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
+    unlocked: 0
   staticDisplay: {fileID: 0}
   inventorySlot:
   - {fileID: 6279411700713530846}
@@ -6091,7 +6114,7 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
-  unlocked: 0
+    unlocked: 0
   lockedImage: {fileID: 331153499893351810}
 --- !u!224 &1063842360365686399
 RectTransform:
@@ -6130,7 +6153,7 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
-  unlocked: 0
+    unlocked: 0
   lockedImage: {fileID: 1768015281908759412}
 --- !u!114 &1661660423364869412
 MonoBehaviour:
@@ -6281,7 +6304,7 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
-  unlocked: 0
+    unlocked: 0
   lockedImage: {fileID: 3451873393271372283}
 --- !u!222 &3239565485102169252
 CanvasRenderer:
@@ -6468,7 +6491,7 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
-  unlocked: 0
+    unlocked: 0
   lockedImage: {fileID: 3913640941131420847}
 --- !u!1 &4671054100221090863
 GameObject:

@@ -53,12 +53,26 @@ public class Box_System
     public bool Contains_Item(Item_Info itemToAdd, out List<Box_Slot> boxSlot)
     {
         boxSlot = boxSlots.Where(i => i.itemInfo == itemToAdd).ToList();
-        return boxSlot == null ? false : true;
+        if (boxSlot == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public bool Has_Free_Slot(out Box_Slot freeSlot)
     {
         freeSlot = boxSlots.FirstOrDefault(i => i.itemInfo == null);
-        return freeSlot == null ? false : true;
+        if (freeSlot == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

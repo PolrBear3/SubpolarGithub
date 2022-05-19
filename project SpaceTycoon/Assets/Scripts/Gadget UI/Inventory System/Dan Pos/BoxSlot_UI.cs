@@ -24,9 +24,9 @@ public class BoxSlot_UI : MonoBehaviour
         parentDisplay = transform.parent.GetComponent<Box_Display>();
     }
 
-    private void Start()
+    private void Update()
     {
-        Slot_Status_Update();
+        Slot_Unlock_UI_Check();
     }
 
     public void Init(Box_Slot slot)
@@ -35,26 +35,9 @@ public class BoxSlot_UI : MonoBehaviour
         Update_UISlot(slot);
     }
 
-    [HideInInspector]
-    public bool unlocked = false;
-    public GameObject lockedImage;
-    public void Slot_Status_Update()
-    {
-        if (!unlocked)
-        {
-            lockedImage.SetActive(true);
-            button.enabled = false;
-        }
-        if (unlocked)
-        {
-            lockedImage.SetActive(false);
-            button.enabled = true;
-        }
-    }
-
     public void Update_UISlot(Box_Slot slot)
     {
-        if (slot.itemInfo != null && unlocked)
+        if (slot.itemInfo != null)
         {
             _itemSprite.sprite = slot.itemInfo.itemIcon;
             _itemSprite.color = Color.white;
@@ -91,5 +74,20 @@ public class BoxSlot_UI : MonoBehaviour
     {
         slotClicked = true;
         slotClicked = false;
+    }
+
+    public GameObject lockedImage;
+    public void Slot_Unlock_UI_Check()
+    {
+        if (!_assignedBoxSlot.unlocked)
+        {
+            lockedImage.SetActive(true);
+            button.enabled = false;
+        }
+        if (_assignedBoxSlot.unlocked)
+        {
+            lockedImage.SetActive(false);
+            button.enabled = true;
+        }
     }
 }

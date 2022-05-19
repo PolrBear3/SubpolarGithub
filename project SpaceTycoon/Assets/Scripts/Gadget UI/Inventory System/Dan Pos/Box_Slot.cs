@@ -24,6 +24,9 @@ public class Box_Slot
         Clear_Slot();
     }
 
+    // slot unlockstatus
+    public bool unlocked = false;
+
     // amount control
     public void Clear_Slot()
     {
