@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Box_UI_Controller : MonoBehaviour
+public class CurrentInventory_UI_Controller : MonoBehaviour
 {
-    public Dynamic_Box_Display inventoryPanel;
+    public Dynamic_CurrentInventory_Display inventoryPanel;
 
     private void OnEnable()
     {

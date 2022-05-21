@@ -11,21 +11,12 @@ public class Box_Holder : MonoBehaviour
         _boxSystem = new Box_System(boxSize);
     }
 
-    private void Start()
-    {
-        Unlock_Current_Inventory_atStart();
-    }
-
     [SerializeField] private int boxSize;
 
     [SerializeField] protected Box_System _boxSystem;
     public Box_System boxSystem => _boxSystem;
 
-    [SerializeField] private BoxSlot_UI[] _currentInventorySlots;
-    public BoxSlot_UI[] currentInventorySlots => _currentInventorySlots;
-
     public static UnityAction<Box_System> boxSlotUpdateRequested;
-
 
     // slot space available check before crafting item
     bool Slot_Full_Check()
@@ -65,20 +56,12 @@ public class Box_Holder : MonoBehaviour
         }
     }
 
-
-
+    // slot unlock function
     void Restart_Slot_Level()
     {
         for (int i = 0; i < _boxSystem.boxSlots.Count; i++)
         {
             _boxSystem.boxSlots[i].unlocked = false;
-        }
-    }
-    void Unlock_Current_Inventory_atStart()
-    {
-        for (int i = 0; i < _currentInventorySlots.Length; i++)
-        {
-            _currentInventorySlots[i].assignedBoxSlot.unlocked = true;
         }
     }
 

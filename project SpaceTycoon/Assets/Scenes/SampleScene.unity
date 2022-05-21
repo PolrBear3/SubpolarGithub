@@ -1028,11 +1028,6 @@ MonoBehaviour:
     - _itemInfo: {fileID: 0}
       _currentAmount: 0
       unlocked: 0
-  _currentInventorySlots:
-  - {fileID: 1263757127807938994}
-  - {fileID: 4562304005756051049}
-  - {fileID: 979808603940278084}
-  - {fileID: 2803209768082207549}
   items:
   - {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
   - {fileID: 11400000, guid: 24cf769bec17d814090c022db0682646, type: 2}
@@ -4664,8 +4659,8 @@ GameObject:
   - component: {fileID: 1607912695}
   - component: {fileID: 1607912694}
   - component: {fileID: 1607912696}
-  - component: {fileID: 1607912697}
   - component: {fileID: 1607912698}
+  - component: {fileID: 1607912697}
   m_Layer: 5
   m_Name: Current Inventory
   m_TagString: Untagged
@@ -4768,11 +4763,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1607912692}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 885386856c8180341b8da627a3c2aa60, type: 3}
+  m_Script: {fileID: 11500000, guid: dd264c928b7bdd547956315157b3f850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseBoxItem: {fileID: 615297518254033236}
-  slotPrefab: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}
+  inventoryPanel: {fileID: 1607912698}
 --- !u!114 &1607912698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4782,10 +4776,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1607912692}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd264c928b7bdd547956315157b3f850, type: 3}
+  m_Script: {fileID: 11500000, guid: 885386856c8180341b8da627a3c2aa60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 1607912697}
+  mouseBoxItem: {fileID: 615297518254033236}
+  slotPrefab: {fileID: 5061904349715511901, guid: 1dd38ef27b2b9a148842c717732ffd3c, type: 3}
+  _currentInventorySlots:
+  - {fileID: 1263757127807938994}
+  - {fileID: 4562304005756051049}
+  - {fileID: 979808603940278084}
+  - {fileID: 2803209768082207549}
 --- !u!1 &1610653743
 GameObject:
   m_ObjectHideFlags: 0
@@ -6074,7 +6074,6 @@ MonoBehaviour:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
     unlocked: 0
-  staticDisplay: {fileID: 0}
   inventorySlot:
   - {fileID: 6279411700713530846}
   - {fileID: 8790385007488420860}

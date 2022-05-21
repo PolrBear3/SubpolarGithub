@@ -11,7 +11,6 @@ public class Mouse_Item_Icon : MonoBehaviour
     public Text itemCount;
     public Box_Slot assignedBoxSlot;
 
-    public Static_Box_Display staticDisplay;
     public static bool holdingItemOnMouse = false;
     public InventorySlot[] inventorySlot;
 
