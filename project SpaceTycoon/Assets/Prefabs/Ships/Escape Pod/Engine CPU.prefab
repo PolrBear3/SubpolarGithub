@@ -613,22 +613,22 @@ MonoBehaviour:
   anim: {fileID: 0}
   playerDetection: 0
   Icon: {fileID: 7460660166934986035}
-  icon: {fileID: 2595337226891479201}
   iconBoxCollider: {fileID: 1214587314720436209}
   mainPanel: {fileID: 6581422553672249902}
+  icon: {fileID: 2595337226891479201}
   speedSlider: {fileID: 260153487851615521}
   currentspeedSliderValue: 0
   setSpeedSliderValue: 0
   speedAccelerationValue: 5
   energyFuel: {fileID: 8499472265136110803}
   energyFuelSlider: {fileID: 5590202430541427068}
-  currentEnergyFuel: 0
   maxEnergyFuel: 400
+  currentEnergyFuel: 0
   isEnergyFuelEmpty: 0
   emergencyFuel: {fileID: 4723924752912327773}
   emergencyEnergyFuelSlider: {fileID: 2526304575784752521}
-  currentEmergencyFuel: 0
   maxEmergencyFuel: 200
+  currentEmergencyFuel: 0
   isEmergencyFuelEmpty: 0
   mainEngineOnButton: {fileID: 7283308976221495320}
   mainEngineOffButton: {fileID: 5538085935573774292}
@@ -3046,6 +3046,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16bfdb1c31611544286b6b319ba617ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDetection: 0
+  player: {fileID: 0}
+  chairMode: 1
+  Icon: {fileID: 0}
+  icon: {fileID: 0}
+  iconBoxCollider: {fileID: 0}
+  mainPanel: {fileID: 0}
+  rotateRightButton: {fileID: 0}
+  roateLeftButton: {fileID: 0}
+  chairModeButton: {fileID: 0}
+  bedModeButton: {fileID: 0}
+  sleepButton: {fileID: 0}
+  sitButton: {fileID: 0}
+  sitPosition: {fileID: 0}
+  sleepPosition: {fileID: 0}
+  sr: {fileID: 0}
+  bed: {fileID: 0}
+  chair: {fileID: 0}
   controller: {fileID: 3481979228251747711}
 --- !u!1 &6581422553672249902
 GameObject:
@@ -3643,9 +3661,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8962294796771571746}
-        m_TargetAssemblyTypeName: EscapePod_Engine_Panel, Assembly-CSharp
-        m_MethodName: Icon_Pressed
+      - m_Target: {fileID: 3481979228251747711}
+        m_TargetAssemblyTypeName: EscapePod_Engine_Controller, Assembly-CSharp
+        m_MethodName: Icon_Press
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

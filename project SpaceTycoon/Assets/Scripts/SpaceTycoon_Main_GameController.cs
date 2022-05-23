@@ -23,19 +23,19 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
             objectIcon.SetActive(false);
         }
     }
-    public void Icon_Press(GameObject objectIcon)
+    public void Icon_Pressed(GameObject objectIcon)
     {
         objectIcon.SetActive(true);
         isPanelMenuOn = true;
     }
 
     // Object Main Panel Constructors
-    public void Manual_TurnOff(GameObject objectMenu)
+    public void Manual_TurnOff_ObjectPanel(GameObject objectMenu)
     {
         objectMenu.SetActive(false);
         isPanelMenuOn = false;
     }
-    public void Automatic_TurnOff(bool playerDetection, GameObject objectMenu)
+    public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu)
     {
         if (!playerDetection && objectMenu.activeSelf)
         {
@@ -44,7 +44,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         }
     }
 
-    // Engines
+    // Ship Engine Constructors
     public static int EnginesOn = 0;
     void Engines_Min_Set()
     {

@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EscapePod_Engine_Controller : MonoBehaviour
+public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
 {
     private void Awake()
     {
         anim = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        Icon_Popup_UpdateCheck(playerDetection, Icon);
+    }
+
+    public void Icon_Press()
+    {
+        Icon_Pressed(Icon);
     }
 
     [HideInInspector]
@@ -16,29 +26,29 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     // main
     [HideInInspector]
     public bool playerDetection;
-    public GameObject Icon;
+    public GameObject Icon, iconBoxCollider, mainPanel;
     public Icon icon;
-    public GameObject iconBoxCollider;
-    public GameObject mainPanel;
 
     // sliders
     public Slider speedSlider;
     [HideInInspector]
     public float currentspeedSliderValue = 0f, setSpeedSliderValue, speedAccelerationValue = 5f;
 
+    // energy fuel
     public GameObject energyFuel;
     public Slider energyFuelSlider;
     [HideInInspector]
-    public float currentEnergyFuel;
     public float maxEnergyFuel = 400f;
+    public float currentEnergyFuel;
     [HideInInspector]
     public bool isEnergyFuelEmpty = false;
 
+    // emergency energy fuel
     public GameObject emergencyFuel;
     public Slider emergencyEnergyFuelSlider;
+    public float maxEmergencyFuel = 200f;
     [HideInInspector]
     public float currentEmergencyFuel;
-    public float maxEmergencyFuel = 200f;
     [HideInInspector]
     public bool isEmergencyFuelEmpty = false;
 

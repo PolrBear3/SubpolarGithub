@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EscapePod_Engine_Panel : MonoBehaviour
+public class EscapePod_Engine_Panel : EscapePod_ChairBed_MainController
 {
     public EscapePod_Engine_Controller controller;
 
@@ -13,32 +13,11 @@ public class EscapePod_Engine_Panel : MonoBehaviour
 
     private void Update()
     {
-        Icon_Popup();
         Automatic_Off();
         Speed_SliderSet();
         EnergyFuel_Empty_Check();
         EnergyFuel_SliderSet();
         EmergencyFuel_SliderSet();
-    }
-
-    // icon
-    void Icon_Popup()
-    {
-        // on
-        if (controller.playerDetection == true && SpaceTycoon_Main_GameController.isPanelMenuOn == false)
-        {
-            controller.Icon.SetActive(true);
-        }
-        // off
-        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true)
-        {
-            controller.Icon.SetActive(false);
-        }
-    }
-    public void Icon_Pressed()
-    {
-        controller.mainPanel.SetActive(true);
-        SpaceTycoon_Main_GameController.isPanelMenuOn = true;
     }
 
     // main panel
