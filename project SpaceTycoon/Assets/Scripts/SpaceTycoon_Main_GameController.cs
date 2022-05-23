@@ -23,9 +23,9 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
             objectIcon.SetActive(false);
         }
     }
-    public void Icon_Pressed(GameObject objectIcon)
+    public void Icon_Pressed(GameObject objectMenu)
     {
-        objectIcon.SetActive(true);
+        objectMenu.SetActive(true);
         isPanelMenuOn = true;
     }
 
@@ -53,24 +53,24 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
             EnginesOn = 0;
         }
     }
-    public void Engine_On_Off(GameObject onButton, GameObject offButton, GameObject engineLight)
+    public void Engine_On_Pressed(GameObject onButton, GameObject offButton, GameObject engineLight)
     {
-        // engine on
-        if (offButton.activeSelf)
-        {
-            onButton.SetActive(true);
-            engineLight.SetActive(true);
-            EnginesOn += 1;
-        }
-        // engine off
-        if (onButton.activeSelf)
-        {
-            offButton.SetActive(true);
-            engineLight.SetActive(false);
-            EnginesOn -= 1;
-        }
+        onButton.SetActive(false);
+        offButton.SetActive(true);
+        engineLight.SetActive(true);
+        EnginesOn += 1;
+    }
+    public void Engine_Off_Pressed(GameObject onButton, GameObject offButton, GameObject engineLight)
+    {
+        onButton.SetActive(true);
+        offButton.SetActive(false);
+        engineLight.SetActive(false);
+        EnginesOn -= 1;
         Engines_Min_Set();
     }
+
+    // Ship Energy Fuel Constructors
+
 
     // craftable object storage
     public static int chairBed_storage = 0;
