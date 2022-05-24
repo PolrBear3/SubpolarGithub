@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 3063712127643078571}
   - component: {fileID: 3063712127643078570}
   - component: {fileID: -1131698831471606050}
-  - component: {fileID: 3063712127643078569}
-  - component: {fileID: 1602344482787186530}
+  - component: {fileID: 4363672312758415790}
   m_Layer: 0
-  m_Name: Astroid_Ceres_0
+  m_Name: Astroid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,7 +134,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &3063712127643078569
+--- !u!114 &4363672312758415790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,19 +143,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3063712127643078568}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6e6f0c2c382c95429c77b5a676249d8, type: 3}
+  m_Script: {fileID: 11500000, guid: 19dd839046b8ff244bcb6f9291b9c748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  escapePod_controller: {fileID: 5755333730241112858, guid: d9222914a9f04d848bc6054e82ca9955, type: 3}
---- !u!114 &1602344482787186530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3063712127643078568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c98b46ed8006960498bf1967d62dd130, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  shipSectorLocation: 1
+  Sector1Astroids:
+  - {fileID: 11400000, guid: b20d0cd58cf04f84eacb6f90739d3683, type: 2}
+  - {fileID: 11400000, guid: 5cb6a73276510344da5bb1205b1062e8, type: 2}
+  - {fileID: 11400000, guid: 292e18bb00ddcac419c89ea1eb67812b, type: 2}
+  - {fileID: 11400000, guid: a09c4b7ff9aaaf54f9a8661a9cd7c600, type: 2}
+  - {fileID: 11400000, guid: acd41f21369fc4d4db229a479ae0772c, type: 2}
+  - {fileID: 11400000, guid: 0e4c87ea469104d46b72a7c118c94170, type: 2}
+  Sector2Astroids: []
