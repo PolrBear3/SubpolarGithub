@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Astroid_Shooter : MonoBehaviour
 {
-    public GameObject[] ceres;
-    GameObject randomCeres;
-    
+    public GameObject[] ceres;    
     float randY;
     float randY2;
     float randY3;
@@ -27,7 +25,7 @@ public class Astroid_Shooter : MonoBehaviour
 
     void Shoot_Sector1_Astroids()
     {
-        randomCeres = ceres[Random.Range(0, ceres.Length)];
+        var randomCeres = ceres[Random.Range(0, ceres.Length)];
 
         if (Time.time > nextSpawn && SpaceTycoon_Main_GameController.EnginesOn > 0)
         {

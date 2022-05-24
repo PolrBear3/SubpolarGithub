@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Astroid_Movement : MonoBehaviour
 {
-
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); 
@@ -24,7 +23,7 @@ public class Astroid_Movement : MonoBehaviour
 
     float dirX = -1;
     
-    float currentSpeed = 0f, setSpeed, acceleration = 0.05f;
+    float currentSpeed, setSpeed, accelerationRate = 0.05f;
 
     void Movement()
     {
@@ -53,12 +52,12 @@ public class Astroid_Movement : MonoBehaviour
         // low
         if (currentSpeed < setSpeed)
         {
-            currentSpeed = currentSpeed + (acceleration * Time.deltaTime);
+            currentSpeed = currentSpeed + (accelerationRate * Time.deltaTime);
         }
         // high
         else if (currentSpeed > setSpeed)
         {
-            currentSpeed = currentSpeed - (acceleration * Time.deltaTime);
+            currentSpeed = currentSpeed - (accelerationRate * Time.deltaTime);
         }
     }
 }

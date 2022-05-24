@@ -69,10 +69,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         Engines_Min_Set();
     }
 
-    // Ship Energy Fuel Constructors
-
-
-    // craftable object storage
+    // Craftable Object Storage
     public static int chairBed_storage = 0;
     public static int closet_storage = 0;
 }
