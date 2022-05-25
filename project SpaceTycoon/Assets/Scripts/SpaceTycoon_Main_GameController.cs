@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class SpaceTycoon_Main_GameController : MonoBehaviour
 {
-    // UI Static Bool
+    // Main Game Variables
     public static bool isGroundOptionMenuOn = false;
     public static bool isWallOptionMenuOn = false;
     public static bool isPanelMenuOn = false;
+    public int EnginesOn = 0;
+    public int shipSectorLocation = 1;
+
+    // Craftable Object Storage
+    public static int chairBed_storage = 0;
+    public static int closet_storage = 0;
 
     // Object Icon Constructors
     public void Icon_Popup_UpdateCheck(bool playerDetection, GameObject objectIcon)
@@ -45,7 +51,6 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     }
 
     // Ship Engine Constructors
-    public static int EnginesOn = 0;
     void Engines_Min_Set()
     {
         if (EnginesOn <= 0)
@@ -68,12 +73,4 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         EnginesOn -= 1;
         Engines_Min_Set();
     }
-
-    // Current Sector Location
-    [HideInInspector]
-    public int shipSectorLocation = 1;
-
-    // Craftable Object Storage
-    public static int chairBed_storage = 0;
-    public static int closet_storage = 0;
 }

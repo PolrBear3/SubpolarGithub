@@ -8,6 +8,7 @@ public class Astroid_State : SpaceTycoon_Main_GameController
     SpriteRenderer sr;
 
     public Astroid_ScrObj[] Sector1Astroids;
+    public Astroid_ScrObj[] Sector2Astroids;
 
     Astroid_ScrObj thisAstroid;
     float currentSpeed, setSpeed;
@@ -18,6 +19,7 @@ public class Astroid_State : SpaceTycoon_Main_GameController
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
@@ -54,8 +56,14 @@ public class Astroid_State : SpaceTycoon_Main_GameController
         {
             randomAstroidNum = Random.Range(0, Sector1Astroids.Length);
             thisAstroid = Sector1Astroids[randomAstroidNum];
-            sr.sprite = thisAstroid.astroidSprite; // not working
         }
+        if (shipSectorLocation == 2)
+        {
+            randomAstroidNum = Random.Range(0, Sector2Astroids.Length);
+            thisAstroid = Sector2Astroids[randomAstroidNum];
+        }
+
+        sr.sprite = thisAstroid.astroidSprite;
     }
 
     void Astroid_Speed_Conditions()

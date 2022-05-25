@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Astroid_Instantiator : MonoBehaviour
+public class Astroid_Instantiator : SpaceTycoon_Main_GameController
 {
     public GameObject astroid;    
     float randY;
@@ -25,7 +25,7 @@ public class Astroid_Instantiator : MonoBehaviour
 
     void Shoot_Sector1_Astroids()
     {
-        if (Time.time > nextSpawn && SpaceTycoon_Main_GameController.EnginesOn > 0)
+        if (Time.time > nextSpawn && EnginesOn > 0)
         {
             nextSpawn = Time.time + spawnRate;
            
@@ -33,7 +33,7 @@ public class Astroid_Instantiator : MonoBehaviour
             whereToSpawn = new Vector2 (transform.position.x, randY);
             Instantiate(astroid, whereToSpawn, Quaternion.identity);
         }
-        if (Time.time > nextSpawn2 && SpaceTycoon_Main_GameController.EnginesOn > 0)
+        if (Time.time > nextSpawn2 && EnginesOn > 0)
         {
             nextSpawn2 = Time.time + spawnRate2;
 
@@ -41,7 +41,7 @@ public class Astroid_Instantiator : MonoBehaviour
             whereToSpawn2 = new Vector2(transform.position.x, randY2);
             Instantiate(astroid, whereToSpawn2, Quaternion.identity);
         }
-        if (Time.time > nextSpawn3 && SpaceTycoon_Main_GameController.EnginesOn > 0)
+        if (Time.time > nextSpawn3 && EnginesOn > 0)
         {
             nextSpawn3 = Time.time + spawnRate3;
 
