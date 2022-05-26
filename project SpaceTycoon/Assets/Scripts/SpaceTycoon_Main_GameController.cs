@@ -8,8 +8,8 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     public static bool isGroundOptionMenuOn = false;
     public static bool isWallOptionMenuOn = false;
     public static bool isPanelMenuOn = false;
-    public int EnginesOn = 0;
-    public int shipSectorLocation = 1;
+    public static int EnginesOn = 0;
+    public static int shipSectorLocation = 1;
 
     // Craftable Object Storage
     public static int chairBed_storage = 0;
