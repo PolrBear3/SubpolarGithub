@@ -11,7 +11,7 @@ public class Astroid_State : SpaceTycoon_Main_GameController
     public Astroid_ScrObj[] Sector2Astroids;
 
     Astroid_ScrObj thisAstroid;
-    float currentSpeed, setSpeed;
+    float currentSpeed, setSpeed, currentRotationSpeed, SetRotationSpeed;
     
     int randomAstroidNum;
     int currentEnginesOn = 0;
@@ -48,6 +48,7 @@ public class Astroid_State : SpaceTycoon_Main_GameController
     void Astroid_Movement()
     {
         rb.velocity = new Vector2(-1 * currentSpeed, rb.velocity.y);
+        transform.rotation *= Quaternion.Euler(0, 0, currentRotationSpeed);
     }
 
     void Astroid_Start_Settings()
@@ -68,26 +69,37 @@ public class Astroid_State : SpaceTycoon_Main_GameController
 
     void Astroid_Speed_Conditions()
     {
+        // speed setting update
         if (currentEnginesOn < EnginesOn)
         {
             setSpeed += thisAstroid.speedChangeValue;
+            SetRotationSpeed += thisAstroid.rotationChangeValue;
             currentEnginesOn += 1;
         }
-        if (currentEnginesOn > EnginesOn)
+        else if (currentEnginesOn > EnginesOn)
         {
             setSpeed -= thisAstroid.speedChangeValue;
+            SetRotationSpeed -= thisAstroid.rotationChangeValue;
             currentEnginesOn -= 1;
         }
 
-        // low
+        // acceleration and deceleration update
         if (currentSpeed < setSpeed)
         {
             currentSpeed = currentSpeed + (thisAstroid.accelerationRate * Time.deltaTime);
         }
-        // high
         else if (currentSpeed > setSpeed)
         {
             currentSpeed = currentSpeed - (thisAstroid.accelerationRate * Time.deltaTime);
+        }
+
+        if (currentRotationSpeed < SetRotationSpeed)
+        {
+            currentRotationSpeed = currentRotationSpeed + (thisAstroid.accelerationRate * Time.deltaTime);
+        }
+        else if (currentRotationSpeed > SetRotationSpeed)
+        {
+            currentRotationSpeed = currentRotationSpeed - (thisAstroid.accelerationRate * Time.deltaTime);
         }
     }
 }

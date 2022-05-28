@@ -8,4 +8,5 @@ public class Astroid_ScrObj : ScriptableObject
     public Sprite astroidSprite;
     public float accelerationRate = 0.05f;
     public float speedChangeValue = 0.5f;
+    public float rotationChangeValue;
 }
