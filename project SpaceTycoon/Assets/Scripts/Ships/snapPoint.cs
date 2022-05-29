@@ -23,12 +23,12 @@ public class snapPoint : MonoBehaviour
     {
         if (objectPlaced == true)
         {
-            this.sr.enabled = false;
+            sr.enabled = false;
         }
 
         if (objectPlaced == false)
         {
-            this.sr.enabled = true;
+            sr.enabled = true;
         }
     }
 

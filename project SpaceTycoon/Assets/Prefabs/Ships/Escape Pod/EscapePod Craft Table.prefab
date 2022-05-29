@@ -287,7 +287,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Craft_SnapPoint3
         m_Mode: 1
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Closet_Option_Off
         m_Mode: 1
@@ -753,7 +753,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Closet_Option_On
         m_Mode: 1
@@ -1015,7 +1015,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Craft_SnapPoint1
         m_Mode: 1
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
         m_MethodName: SnapPoint7
         m_Mode: 1
@@ -1672,7 +1672,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
         m_MethodName: SnapPoint2
         m_Mode: 1
@@ -2007,7 +2007,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Craft_SnapPoint7
         m_Mode: 1
@@ -2686,9 +2686,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
-        m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
-        m_MethodName: CraftTable_Options_Off
+      - m_Target: {fileID: 2105873735446201577}
+        m_TargetAssemblyTypeName: EscapePod_CraftTable, Assembly-CSharp
+        m_MethodName: Exit_Option
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3426,7 +3426,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Craft_SnapPoint5
         m_Mode: 1
@@ -3814,7 +3814,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Craft_SnapPoint4
         m_Mode: 1
@@ -3835,7 +3835,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7532576951290313400}
-  - component: {fileID: 7466699967196156087}
   m_Layer: 5
   m_Name: Closet
   m_TagString: Untagged
@@ -3864,30 +3863,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7466699967196156087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4406598907085548251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc22f105a2dcc29428b4639c87c15d53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 5314832780137575476}
-  closetPrefab: {fileID: 4023923371963303848, guid: f137fae339df0dd42b6694eabb9c20fe, type: 3}
-  closetOption: {fileID: 2054387395231836732}
-  positionButton1: {fileID: 1413053769453619524}
-  positionButton2: {fileID: 9032503158964548362}
-  positionButton3: {fileID: 490474010809195121}
-  positionButton4: {fileID: 4148980653511306195}
-  positionButton5: {fileID: 3932306874208957516}
-  positionButton6: {fileID: 4953903820732159289}
-  positionButton7: {fileID: 2201046594346590397}
-  refundButton: {fileID: 7019386022698854494}
-  closet_storage_text: {fileID: 1400310810008590808}
 --- !u!1 &4450065346644660582
 GameObject:
   m_ObjectHideFlags: 0
@@ -4322,7 +4297,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Craft_SnapPoint6
         m_Mode: 1
@@ -4346,7 +4321,7 @@ GameObject:
   - component: {fileID: 5314832779656262115}
   - component: {fileID: 5314832779656262114}
   m_Layer: 5
-  m_Name: EscapePod CraftTable Options Panel
+  m_Name: CraftTable Options
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4422,7 +4397,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5314832779772006849}
-  - component: {fileID: 5314832779772006862}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -4453,20 +4427,6 @@ RectTransform:
   m_AnchoredPosition: {x: 610, y: 0}
   m_SizeDelta: {x: 1220, y: 686}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5314832779772006862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5314832779772006848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4490353b06bf49f438f4a4b5c40cdda0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EscapePod_CraftTable_gameObject: {fileID: 5314832780137575479}
-  controller: {fileID: 5314832780137575476}
 --- !u!1 &5314832779853906929
 GameObject:
   m_ObjectHideFlags: 0
@@ -4720,7 +4680,7 @@ GameObject:
   - component: {fileID: 5314832780137575472}
   - component: {fileID: 5314832780137575473}
   - component: {fileID: 5314832780137575477}
-  - component: {fileID: 5314832780137575476}
+  - component: {fileID: 2105873735446201577}
   m_Layer: 0
   m_Name: EscapePod Craft Table
   m_TagString: object
@@ -4863,7 +4823,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5314832780137575476
+--- !u!114 &2105873735446201577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4872,40 +4832,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5314832780137575479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a29cbf57cd61d84c9449bb4c2c6a99a, type: 3}
+  m_Script: {fileID: 11500000, guid: 99367983daa9c1c46b74765d650d9768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundPoints: []
+  wallPoints: []
+  objectOptions:
+  - {fileID: 5314832779656262116}
+  - {fileID: 5314832781238015778}
+  - {fileID: 2054387395231836732}
   playerDetection: 0
-  Icon: {fileID: 5314832780762259863}
-  icon: {fileID: 1987273902012361735}
   mainPanel: {fileID: 5314832780516961909}
-  mainPanelScript: {fileID: 5314832779772006862}
-  craftTable_options: {fileID: 5314832779656262116}
-  chairBed_options: {fileID: 5314832781238015778}
-  closet_options: {fileID: 2054387395231836732}
-  allGroundSnapPoints: {fileID: 0}
-  GsnapPoint1: {fileID: 0}
-  GsnapPoint2: {fileID: 0}
-  GsnapPoint3: {fileID: 0}
-  GsnapPoint4: {fileID: 0}
-  GsnapPoint5: {fileID: 0}
-  GsnapPoint6: {fileID: 0}
-  GsnapPoint7: {fileID: 0}
-  allWallSnapPoints: {fileID: 0}
-  WsnapPoint1: {fileID: 0}
-  WsnapPoint2: {fileID: 0}
-  WsnapPoint3: {fileID: 0}
-  WsnapPoint4: {fileID: 0}
-  WsnapPoint5: {fileID: 0}
-  WsnapPoint6: {fileID: 0}
-  WsnapPoint7: {fileID: 0}
-  positionButton1: {fileID: 5314832781504792837}
-  positionButton2: {fileID: 2049836565120173168}
-  positionButton3: {fileID: 7774005374425929091}
-  positionButton4: {fileID: 6732669618712973878}
-  positionButton5: {fileID: 6749469779561849939}
-  positionButton6: {fileID: 7863762426841209997}
-  positionButton7: {fileID: 1905352977607630756}
+  icon: {fileID: 1987273902012361735}
 --- !u!1 &5314832780176126114
 GameObject:
   m_ObjectHideFlags: 0
@@ -5102,7 +5040,7 @@ GameObject:
   - component: {fileID: 5314832780516961904}
   - component: {fileID: 5314832780516961907}
   m_Layer: 5
-  m_Name: EscapePod CraftTable Main Panel
+  m_Name: CraftTable Main Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5366,13 +5304,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
-        m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
+      - m_Target: {fileID: 2105873735446201577}
+        m_TargetAssemblyTypeName: SpaceTycoon_Main_GameController, Assembly-CSharp
         m_MethodName: Icon_Pressed
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 5314832780516961909}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5520,7 +5458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde220d334eaf264cba793ec80895a46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 5314832780137575476}
+  controller: {fileID: 0}
   chairBed_prefab: {fileID: 5104276040574436254, guid: ec316d85c5ecf4ee595d2381b7fe4e7d, type: 3}
   ChairBed_options: {fileID: 5314832781238015778}
   positionButton1: {fileID: 8198691445303154410}
@@ -5733,7 +5671,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
         m_MethodName: SnapPoint1
         m_Mode: 1
@@ -5842,7 +5780,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -5867,9 +5805,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
-        m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
-        m_MethodName: CraftTable_Options_On
+      - m_Target: {fileID: 2105873735446201577}
+        m_TargetAssemblyTypeName: EscapePod_CraftTable, Assembly-CSharp
+        m_MethodName: Open_Option
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6705,7 +6643,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
         m_MethodName: SnapPoint4
         m_Mode: 1
@@ -6839,7 +6777,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
         m_MethodName: SnapPoint5
         m_Mode: 1
@@ -7091,7 +7029,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Storage_Refund
         m_Mode: 1
@@ -7377,7 +7315,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
         m_MethodName: SnapPoint3
         m_Mode: 1
@@ -7511,7 +7449,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
         m_MethodName: SnapPoint6
         m_Mode: 1
@@ -7779,9 +7717,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5314832779772006862}
-        m_TargetAssemblyTypeName: EscapePod_CraftTable_Panel, Assembly-CSharp
-        m_MethodName: Manual_TurnOff_All
+      - m_Target: {fileID: 2105873735446201577}
+        m_TargetAssemblyTypeName: EscapePod_CraftTable, Assembly-CSharp
+        m_MethodName: Exit_Menu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8631,7 +8569,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7466699967196156087}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_Closet_Craft, Assembly-CSharp
         m_MethodName: Craft_SnapPoint2
         m_Mode: 1

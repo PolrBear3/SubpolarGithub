@@ -36,18 +36,41 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     }
 
     // Object Main Panel Constructors
-    public void Manual_TurnOff_ObjectPanel(GameObject objectMenu)
+    public void Manual_TurnOff_ObjectPanel(GameObject objectMenu, GameObject[] objectOptions)
     {
         objectMenu.SetActive(false);
+        TurnOff_All_Options_inObjectPanel(objectOptions);
         isPanelMenuOn = false;
+        isGroundOptionMenuOn = false;
+        isWallOptionMenuOn = false;
     }
-    public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu)
+    public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu, GameObject[] objectOptions)
     {
         if (!playerDetection && objectMenu.activeSelf)
         {
             objectMenu.SetActive(false);
+            TurnOff_All_Options_inObjectPanel(objectOptions);
             isPanelMenuOn = false;
+            isGroundOptionMenuOn = false;
+            isWallOptionMenuOn = false;
         }
+    }
+
+    // Object Options panel Constructors
+    public void TurnOn_Single_Options_inObjectPanel(GameObject objectOptionMenu)
+    {
+        objectOptionMenu.SetActive(true);
+        isGroundOptionMenuOn = true;
+        isWallOptionMenuOn = true;
+    }
+    public void TurnOff_All_Options_inObjectPanel(GameObject[] optionList)
+    {
+        for (int i = 0; i < optionList.Length; i++)
+        {
+            optionList[i].SetActive(false);
+        }
+        isGroundOptionMenuOn = false;
+        isWallOptionMenuOn = false;
     }
 
     // Ship Engine Constructors

@@ -11,7 +11,7 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
     // main
     [HideInInspector]
     public bool playerDetection;
-    public GameObject Icon, iconBoxCollider, mainPanel;
+    public GameObject mainPanel;
     public Icon icon;
 
     // sliders
@@ -54,8 +54,8 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
 
     private void Update()
     {
-        Icon_Popup_UpdateCheck(playerDetection, Icon);
-        Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
+        Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
+        Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, null);
         Ship_Speed_Condition();
         EnergyFuel_Condition();
         EmergencyFuel_Condition();

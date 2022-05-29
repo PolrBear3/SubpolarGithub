@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EscapePod_CraftTable_Panel : MonoBehaviour
+public class EscapePod_CraftTable_Panel : SpaceTycoon_Main_GameController
 {
     public GameObject EscapePod_CraftTable_gameObject;
     public EscapePod_CraftTable_MainController controller;
@@ -95,24 +95,24 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
     // snap points
     void OnOff_Ground_SnapPoints()
     {
-        if (SpaceTycoon_Main_GameController.isGroundOptionMenuOn == true)
+        if (isGroundOptionMenuOn == true)
         {
             controller.allGroundSnapPoints.SetActive(true);
         }
 
-        if (SpaceTycoon_Main_GameController.isGroundOptionMenuOn == false)
+        if (isGroundOptionMenuOn == false)
         {
             controller.allGroundSnapPoints.SetActive(false);
         }
     }
     void OnOff_Wall_SnapPoints()
     {
-        if (SpaceTycoon_Main_GameController.isWallOptionMenuOn == true)
+        if (isWallOptionMenuOn == true)
         {
             controller.allWallSnapPoints.SetActive(true);
         }
 
-        if (SpaceTycoon_Main_GameController.isWallOptionMenuOn == false)
+        if (isWallOptionMenuOn == false)
         {
             controller.allWallSnapPoints.SetActive(false);
         }
@@ -141,9 +141,9 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
             controller.chairBed_options.SetActive(false);
             controller.closet_options.SetActive(false);
 
-            SpaceTycoon_Main_GameController.isGroundOptionMenuOn = false;
-            SpaceTycoon_Main_GameController.isWallOptionMenuOn = false;
-            SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+            isGroundOptionMenuOn = false;
+            isWallOptionMenuOn = false;
+            isPanelMenuOn = false;
         }
     }
 
@@ -170,7 +170,7 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
     {
         controller.mainPanelScript.TurnOff_All_Options();
         controller.craftTable_options.SetActive(true);
-        SpaceTycoon_Main_GameController.isGroundOptionMenuOn = true;
+        isGroundOptionMenuOn = true;
     }
     public void CraftTable_Options_Off()
     {
@@ -183,8 +183,8 @@ public class EscapePod_CraftTable_Panel : MonoBehaviour
         controller.chairBed_options.SetActive(false);
         controller.closet_options.SetActive(false);
 
-        SpaceTycoon_Main_GameController.isWallOptionMenuOn = false;
-        SpaceTycoon_Main_GameController.isGroundOptionMenuOn = false;
+        isWallOptionMenuOn = false;
+        isGroundOptionMenuOn = false;
     }
 
     // craft table change position
