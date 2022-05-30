@@ -7,7 +7,9 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
     Animator anim;
     
     public snapPoint[] groundPoints;
+    public SnapPoint_Button[] groundButtons;
     public snapPoint[] wallPoints;
+    public SnapPoint_Button[] wallButtons;
     public GameObject[] objectOptions;
     
     [HideInInspector]
@@ -23,7 +25,7 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
 
     private void Start()
     {
-        
+
     }
 
     private void Update()
@@ -51,6 +53,7 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
         }
     }
 
+    // Basic Menu Functions
     void Automatic_TurnOff_MainPanel()
     {
         Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, objectOptions);
@@ -67,5 +70,23 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
     public void Exit_Option()
     {
         TurnOff_All_Options_inObjectPanel(objectOptions);
+    }
+
+    // Options and Craft Functions
+        // button availability check
+
+    public void Move_CraftTable()
+    {
+        for (int i = 0; i < groundButtons.Length; i++)
+        {
+            if (groundButtons[i].buttonPressed)
+            {
+                gameObject.transform.position = groundPoints[i].gameObject.transform.position;
+                gameObject.transform.parent = groundPoints[i].gameObject.transform;
+                groundPoints[i].Object_Placed_Check();
+                groundButtons[i].Set_Backto_UnPressed();
+                break;
+            }
+        }
     }
 }
