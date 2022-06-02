@@ -7,18 +7,16 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
     Animator anim;
 
     // gameobject ground and wall snappoints
-    public GameObject[] groundSnapPoints;
-    public snapPoint[] groundPoints;
+    public snapPoint[] groundSnapPoints;
     public GameObject[] groundSnapPointButtons;
     public SnapPoint_Button[] groundButtons;
 
-    public GameObject[] wallSnapPoints;
-    public snapPoint[] wallPoints;
+    public snapPoint[] wallSnapPoints;
     public GameObject[] wallSnapPointButtons;
     public SnapPoint_Button[] wallButtons;
 
     public GameObject[] objectOptionMenus;
-
+    
     [HideInInspector]
     public bool playerDetection;
     
@@ -33,6 +31,8 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
     private void Start()
     {
         Move_CraftTable();
+        GroundSnapPoints_Sprite_Off();
+        WallSnapPoints_Sprite_Off();
     }
 
     private void Update()
@@ -57,6 +57,9 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
             playerDetection = false;
             icon.Set_Icon_to_Default_Position();
             anim.SetBool("onMenu", false);
+
+            GroundSnapPoints_Sprite_Off();
+            WallSnapPoints_Sprite_Off();
         }
     }
 
@@ -65,28 +68,63 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
     {
         Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, objectOptionMenus);
     }
-    public void Open_Option()
-    {
-        TurnOn_Single_Options_inObjectPanel(objectOptionMenus[0]);
-    }
     public void Exit_Menu()
     {
         Manual_TurnOff_ObjectPanel(mainPanel, objectOptionMenus);
         TurnOff_All_Options_inObjectPanel(objectOptionMenus);
     }
+    public void Open_Option()
+    {
+        TurnOn_Single_Options_inObjectPanel(objectOptionMenus[0]);
+        GroundSnapPoints_Sprite_On();
+        SnapPoint_Availability_Update();
+    }
     public void Exit_Option()
     {
         TurnOff_All_Options_inObjectPanel(objectOptionMenus);
+        GroundSnapPoints_Sprite_Off();
+        WallSnapPoints_Sprite_Off();
+    }
+
+    // Options SnapPoint Sprite ON and OFF
+    public void GroundSnapPoints_Sprite_On()
+    {
+        for (int i = 0; i < groundSnapPoints.Length; i++)
+        {
+            groundSnapPoints[i].Sprite_On();
+        }
+    }
+    public void GroundSnapPoints_Sprite_Off()
+    {
+        for (int i = 0; i < groundSnapPoints.Length; i++)
+        {
+            groundSnapPoints[i].Sprite_Off();
+        }
+    }
+
+    public void WallSnapPoints_Sprite_On()
+    {
+        for (int i = 0; i < wallSnapPoints.Length; i++)
+        {
+            wallSnapPoints[i].Sprite_Off();
+        }
+    }
+    public void WallSnapPoints_Sprite_Off()
+    {
+        for (int i = 0; i < wallSnapPoints.Length; i++)
+        {
+            wallSnapPoints[i].Sprite_Off();
+        }
     }
 
     // Options and Craft Functions
     void SnapPoint_Availability_Update()
     {
-        for (int i = 0; i < groundPoints.Length; i++)
+        for (int i = 0; i < groundSnapPoints.Length; i++)
         {
-            groundPoints[i].Object_Placed_Check();
+            groundSnapPoints[i].Object_Placed_Check();
 
-            if (groundPoints[i].objectPlaced)
+            if (groundSnapPoints[i].objectPlaced)
             {
                 groundSnapPointButtons[i].SetActive(false);
             }
@@ -102,8 +140,8 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
         {
             if (groundButtons[i].buttonPressed)
             {
-                gameObject.transform.position = groundPoints[i].gameObject.transform.position;
-                gameObject.transform.parent = groundPoints[i].gameObject.transform;
+                gameObject.transform.position = groundSnapPoints[i].gameObject.transform.position;
+                gameObject.transform.parent = groundSnapPoints[i].gameObject.transform;
                 groundButtons[i].Set_Backto_UnPressed();
                 break;
             }
