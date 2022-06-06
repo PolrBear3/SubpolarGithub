@@ -5,24 +5,27 @@ using UnityEngine;
 public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
 {
     Animator anim;
+    [HideInInspector]
+    public bool playerDetection;
 
     // gameobject ground and wall snappoints
     public snapPoint[] groundSnapPoints;
     public GameObject[] groundSnapPointButtons;
-    public SnapPoint_Button[] groundButtons;
+    public Button_Detector[] groundButtons;
 
     public snapPoint[] wallSnapPoints;
     public GameObject[] wallSnapPointButtons;
-    public SnapPoint_Button[] wallButtons;
+    public Button_Detector[] wallButtons;
 
-    public GameObject[] objectOptionMenus;
-    
-    [HideInInspector]
-    public bool playerDetection;
+    public GameObject[] optionMenus;
+
+    public int openedObjOptionID;
+    public Button_Detector[] objectCraftOptionButtons;
+    public Object_ScrObj[] objectInfo;
     
     public GameObject mainPanel;
     public Icon icon;
-
+    
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -30,7 +33,7 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
 
     private void Start()
     {
-        Move_CraftTable();
+        SnapPoint_Availability_Update();
         GroundSnapPoints_Sprite_Off();
         WallSnapPoints_Sprite_Off();
     }
@@ -66,58 +69,21 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
     // Basic Menu Functions
     void Automatic_TurnOff_MainPanel()
     {
-        Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, objectOptionMenus);
+        Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, optionMenus);
     }
     public void Exit_Menu()
     {
-        Manual_TurnOff_ObjectPanel(mainPanel, objectOptionMenus);
-        TurnOff_All_Options_inObjectPanel(objectOptionMenus);
-    }
-    public void Open_Option()
-    {
-        TurnOn_Single_Options_inObjectPanel(objectOptionMenus[0]);
-        GroundSnapPoints_Sprite_On();
-        SnapPoint_Availability_Update();
+        Manual_TurnOff_ObjectPanel(mainPanel, optionMenus);
+        TurnOff_All_Options_inObjectPanel(optionMenus);
     }
     public void Exit_Option()
     {
-        TurnOff_All_Options_inObjectPanel(objectOptionMenus);
+        TurnOff_All_Options_inObjectPanel(optionMenus);
         GroundSnapPoints_Sprite_Off();
         WallSnapPoints_Sprite_Off();
     }
 
     // Options SnapPoint Sprite ON and OFF
-    public void GroundSnapPoints_Sprite_On()
-    {
-        for (int i = 0; i < groundSnapPoints.Length; i++)
-        {
-            groundSnapPoints[i].Sprite_On();
-        }
-    }
-    public void GroundSnapPoints_Sprite_Off()
-    {
-        for (int i = 0; i < groundSnapPoints.Length; i++)
-        {
-            groundSnapPoints[i].Sprite_Off();
-        }
-    }
-
-    public void WallSnapPoints_Sprite_On()
-    {
-        for (int i = 0; i < wallSnapPoints.Length; i++)
-        {
-            wallSnapPoints[i].Sprite_Off();
-        }
-    }
-    public void WallSnapPoints_Sprite_Off()
-    {
-        for (int i = 0; i < wallSnapPoints.Length; i++)
-        {
-            wallSnapPoints[i].Sprite_Off();
-        }
-    }
-
-    // Options and Craft Functions
     void SnapPoint_Availability_Update()
     {
         for (int i = 0; i < groundSnapPoints.Length; i++)
@@ -134,15 +100,102 @@ public class EscapePod_CraftTable : SpaceTycoon_Main_GameController
             }
         }
     }
-    public void Move_CraftTable()
+
+    public void GroundSnapPoints_Sprite_On()
+    {
+        for (int i = 0; i < groundSnapPoints.Length; i++)
+        {
+            groundSnapPoints[i].Sprite_On();
+        }
+        SnapPoint_Availability_Update();
+    }
+    public void GroundSnapPoints_Sprite_Off()
+    {
+        for (int i = 0; i < groundSnapPoints.Length; i++)
+        {
+            groundSnapPoints[i].Sprite_Off();
+        }
+    }
+
+    public void WallSnapPoints_Sprite_On()
+    {
+        for (int i = 0; i < wallSnapPoints.Length; i++)
+        {
+            wallSnapPoints[i].Sprite_Off();
+        }
+        SnapPoint_Availability_Update();
+    }
+    public void WallSnapPoints_Sprite_Off()
+    {
+        for (int i = 0; i < wallSnapPoints.Length; i++)
+        {
+            wallSnapPoints[i].Sprite_Off();
+        }
+    }
+      
+    // Options and Craft Functions
+    public void Object_ID_Set(Object_ScrObj objectButtonScrObj)
+    {
+        Exit_Option();
+        SnapPoint_Availability_Update();
+        for (int i = 0; i < objectInfo.Length; i++)
+        {
+            if (objectButtonScrObj.objectID == objectInfo[i].objectID)
+            {
+                openedObjOptionID = objectInfo[i].objectID;
+                
+                if (objectInfo[i].objectType == ObjectType.ground)
+                {
+                    TurnOn_Single_Options_inObjectPanel(optionMenus[0]);
+                    GroundSnapPoints_Sprite_On();
+                }
+                else if (objectInfo[i].objectType == ObjectType.wall)
+                {
+                    TurnOn_Single_Options_inObjectPanel(optionMenus[1]);
+                    WallSnapPoints_Sprite_On();
+                }
+                break;
+            }
+        }
+    }
+    public void Ground_Object_Craft()
     {
         for (int i = 0; i < groundButtons.Length; i++)
         {
-            if (groundButtons[i].buttonPressed)
+            // change crafttable position
+            if (openedObjOptionID == 0)
             {
-                gameObject.transform.position = groundSnapPoints[i].gameObject.transform.position;
-                gameObject.transform.parent = groundSnapPoints[i].gameObject.transform;
-                groundButtons[i].Set_Backto_UnPressed();
+                if (groundButtons[i].buttonPressed)
+                {
+                    gameObject.transform.position = groundSnapPoints[i].gameObject.transform.position;
+                    gameObject.transform.parent = groundSnapPoints[i].gameObject.transform;
+                    groundButtons[i].Set_Backto_UnPressed();
+                    break;
+                }
+            }
+            // craft object
+            else
+            {
+                if (groundButtons[i].buttonPressed)
+                {
+                    var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, groundSnapPoints[i].transform);
+                    craftedObject.transform.parent = groundSnapPoints[i].gameObject.transform;
+                    groundButtons[i].Set_Backto_UnPressed();
+                    break;
+                }
+            }
+        }
+        SnapPoint_Availability_Update();
+    }
+    public void Wall_Object_Craft()
+    {
+        for (int i = 0; i < wallButtons.Length; i++)
+        {
+            if (wallButtons[i].buttonPressed)
+            {
+                var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, wallSnapPoints[i].transform);
+                craftedObject.transform.parent = wallSnapPoints[i].gameObject.transform;
+                wallButtons[i].Set_Backto_UnPressed();
                 break;
             }
         }

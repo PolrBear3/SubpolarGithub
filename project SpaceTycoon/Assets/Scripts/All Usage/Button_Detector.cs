@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SnapPoint_Button : MonoBehaviour
+public class Button_Detector : MonoBehaviour
 {
     [HideInInspector]
     public bool buttonPressed = false;
