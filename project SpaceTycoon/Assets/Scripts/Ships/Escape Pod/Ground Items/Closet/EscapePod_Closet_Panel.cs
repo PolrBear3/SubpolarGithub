@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EscapePod_Closet_Panel : MonoBehaviour
+public class EscapePod_Closet_Panel : SpaceTycoon_Main_GameController
 {
     private void Update()
     {
@@ -38,12 +38,12 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     void Icon_Popup()
     {
         // on
-        if (controller.playerDetection && SpaceTycoon_Main_GameController.isPanelMenuOn == false)
+        if (controller.playerDetection && isPanelMenuOn == false)
         {
             controller.Icon.SetActive(true);
         }
         // off
-        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn)
+        if (controller.playerDetection == false || isPanelMenuOn)
         {
             controller.Icon.SetActive(false);
         }
@@ -53,28 +53,28 @@ public class EscapePod_Closet_Panel : MonoBehaviour
     public void Icon_Pressed()
     {
         controller.mainPanel.SetActive(true);
-        SpaceTycoon_Main_GameController.isPanelMenuOn = true;
+        isPanelMenuOn = true;
     }
 
     // exit menu
     public void Manual_Exit()
     {
         controller.mainPanel.SetActive(false);
-        SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+        isPanelMenuOn = false;
     }
     void Automatic_Exit()
     {
         if (controller.playerDetection == false && controller.mainPanel.activeSelf == true)
         {
             controller.mainPanel.SetActive(false);
-            SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+            isPanelMenuOn = false;
         }
     }
 
     // dismantle
     public void Dismantle()
     {
-        SpaceTycoon_Main_GameController.closet_storage += 1;
+        // closet_storage += 1;
         controller.iconBoxCollider.SetActive(false);
         Destroy(gameObject_closet);
     }

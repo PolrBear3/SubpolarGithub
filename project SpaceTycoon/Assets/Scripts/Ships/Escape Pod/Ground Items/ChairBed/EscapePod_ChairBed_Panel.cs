@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EscapePod_ChairBed_Panel : MonoBehaviour
+public class EscapePod_ChairBed_Panel : SpaceTycoon_Main_GameController
 {
     public GameObject EscapePod_ChairBed_gameObject;
     public EscapePod_ChairBed_MainController controller;
@@ -23,12 +23,12 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     void Icon_Popup() 
     {
         // is on 
-        if (controller.playerDetection == true && SpaceTycoon_Main_GameController.isPanelMenuOn == false)
+        if (controller.playerDetection == true && isPanelMenuOn == false)
         {
             controller.Icon.SetActive(true);
         }
         // is off
-        if (controller.playerDetection == false || SpaceTycoon_Main_GameController.isPanelMenuOn == true || 
+        if (controller.playerDetection == false || isPanelMenuOn == true || 
           Player_State.player_isSitting == true || Player_State.player_isSleeping == true)
         {
             controller.Icon.SetActive(false);
@@ -37,21 +37,21 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
     public void Icon_Pressed()
     {
         controller.mainPanel.SetActive(true);
-        SpaceTycoon_Main_GameController.isPanelMenuOn = true;
+        isPanelMenuOn = true;
     }
 
     // main panel
     public void Manual_Off()
     {
         controller.mainPanel.SetActive(false);
-        SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+        isPanelMenuOn = false;
     }
     void Automatic_Off()
     {
         if (controller.playerDetection == false && controller.mainPanel.activeSelf == true)
         {
             controller.mainPanel.SetActive(false);
-            SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+            isPanelMenuOn = false;
         }
     }
     
@@ -74,7 +74,7 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
 
     public void Dismantle()
     {
-        SpaceTycoon_Main_GameController.chairBed_storage += 1;
+        // chairBed_storage += 1;
         controller.iconBoxCollider.SetActive(false);
         Destroy(EscapePod_ChairBed_gameObject);
     }
@@ -122,7 +122,7 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
 
         // main panel automatic off
         controller.mainPanel.SetActive(false);
-        SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+        isPanelMenuOn = false;
 
         // player sitting = true, gains sleep energy
     }
@@ -143,7 +143,7 @@ public class EscapePod_ChairBed_Panel : MonoBehaviour
 
         // main panel automatic off
         controller.mainPanel.SetActive(false);
-        SpaceTycoon_Main_GameController.isPanelMenuOn = false;
+        isPanelMenuOn = false;
 
         // player sleeping = true, gains sleep energy
     }

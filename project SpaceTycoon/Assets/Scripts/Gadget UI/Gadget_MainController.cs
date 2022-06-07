@@ -10,7 +10,7 @@ public class Gadget_MainController : MonoBehaviour
     {
         for (int i=0; i < menus.Length; i++)
         {
-            if (menus[i].activeSelf && !Mouse_Item_Icon.holdingItemOnMouse)
+            if (!Mouse_Item_Icon.holdingItemOnMouse)
             {
                 menus[i].SetActive(false);
                 openMenuButton.SetBool("isPressed", false);

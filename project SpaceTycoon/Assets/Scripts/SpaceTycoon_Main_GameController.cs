@@ -2,18 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct ObjectStorage
+{
+    public Object_ScrObj objectInfo;
+    public int leftAmount;
+}
+
 public class SpaceTycoon_Main_GameController : MonoBehaviour
 {
     // Main Game Variables
     public static bool isGroundOptionMenuOn = false;
     public static bool isWallOptionMenuOn = false;
     public static bool isPanelMenuOn = false;
+
+    // In Game Conditions
     public static int EnginesOn = 0;
     public static int shipSectorLocation = 1;
 
     // Craftable Object Storage
-    public static int chairBed_storage = 0;
-    public static int closet_storage = 0;
+    [SerializeField] private ObjectStorage[] _objectStorages;
+    public ObjectStorage[] objectStorages => _objectStorages;
 
     // Object Icon Constructors
     public void Icon_Popup_UpdateCheck(bool playerDetection, GameObject objectIcon)

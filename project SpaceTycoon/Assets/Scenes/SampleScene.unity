@@ -4877,6 +4877,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d5e589e35ec4d4e92a2482676055e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objectStorages:
+  - objectInfo: {fileID: 11400000, guid: c14063ff3f9dd424bae30b7627fb71a2, type: 2}
+    leftAmount: 0
+  - objectInfo: {fileID: 11400000, guid: 700bdcb7ffc524741887cb1404d7c825, type: 2}
+    leftAmount: 0
 --- !u!4 &975484535
 Transform:
   m_ObjectHideFlags: 0
@@ -7663,6 +7668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956c84b9c2c036d4ead997af27e61e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objectStorages: []
   astroid: {fileID: 3063712127643078568, guid: a657eb741c1edcc4aa3bdcf3322bec55, type: 3}
   spawnCoolTime: 1
   coolTimeChangeValue: 0.1
@@ -9174,6 +9180,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3f7f6d7e7bdce348a9e81d7d9e6ab9e, type: 2}
   - {fileID: 11400000, guid: c14063ff3f9dd424bae30b7627fb71a2, type: 2}
   - {fileID: 11400000, guid: 700bdcb7ffc524741887cb1404d7c825, type: 2}
+  objectCurrentStorageText:
+  - {fileID: 2725735117011307865}
+  - {fileID: 641341444083943846}
   mainPanel: {fileID: 5929679021502578187}
   icon: {fileID: 7970307028974713}
 --- !u!1 &508326666686138731
@@ -12107,6 +12116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e21eeb9f043f643bfa3f10702189c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objectStorages: []
   anim: {fileID: 0}
   playerDetection: 0
   mainPanel: {fileID: 8623170046136580934}
@@ -17833,12 +17843,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 482438108327384215}
-        m_TargetAssemblyTypeName: SpaceTycoon_Main_GameController, Assembly-CSharp
-        m_MethodName: Icon_Pressed
-        m_Mode: 2
+        m_TargetAssemblyTypeName: EscapePod_CraftTable, Assembly-CSharp
+        m_MethodName: Open_MainPanel
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 5929679021502578187}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

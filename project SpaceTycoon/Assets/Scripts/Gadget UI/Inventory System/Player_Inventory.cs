@@ -6,9 +6,6 @@ public class Player_Inventory : MonoBehaviour
 {
     private void Start()
     {
-        inventoryMenu.SetActive(false);
-        mouseItemIcon.SetActive(true);
-
         // test
         boxHolder.Unlock_Slot_Level(1);
     }
