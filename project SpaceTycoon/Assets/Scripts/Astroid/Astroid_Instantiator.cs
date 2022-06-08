@@ -2,14 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Astroid_Instantiator : SpaceTycoon_Main_GameController
+public class Astroid_Instantiator : MonoBehaviour
 {
+    SpaceTycoon_Main_GameController controller;
+
     public GameObject astroid;
     float randY;
     Vector2 whereToSpawn;
     public float spawnCoolTime = 1f, coolTimeChangeValue = 0.1f;
     float currentRate;
     int currentEnginesOn = 0;
+
+    private void Awake()
+    {
+        controller = controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
+    }
 
     private void Update()
     {
@@ -19,13 +26,13 @@ public class Astroid_Instantiator : SpaceTycoon_Main_GameController
 
     void SpawnCoolTime_Conditions()
     {
-        if (currentEnginesOn < EnginesOn)
+        if (currentEnginesOn < controller.EnginesOn)
         {
             spawnCoolTime -= coolTimeChangeValue;
 
             currentEnginesOn += 1;
         }
-        if (currentEnginesOn > EnginesOn)
+        if (currentEnginesOn > controller.EnginesOn)
         {
             spawnCoolTime += coolTimeChangeValue;
 
@@ -35,7 +42,7 @@ public class Astroid_Instantiator : SpaceTycoon_Main_GameController
 
     void Instantiate_Astroid()
     {
-        if (EnginesOn > 0)
+        if (controller.EnginesOn > 0)
         {
             currentRate += Time.deltaTime;
 

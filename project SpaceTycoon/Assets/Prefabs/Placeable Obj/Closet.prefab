@@ -564,6 +564,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f2016659c10bb45b1d771265e62493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnginesOn: 0
+  shipSectorLocation: 1
+  _objectStorages: []
   gameObject_closet: {fileID: 4023923371963303848}
   controller: {fileID: 5331833505968586447}
 --- !u!1 &725842295898010712
@@ -1924,7 +1927,7 @@ GameObject:
   - component: {fileID: 5331833505968586447}
   m_Layer: 0
   m_Name: Closet
-  m_TagString: object
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

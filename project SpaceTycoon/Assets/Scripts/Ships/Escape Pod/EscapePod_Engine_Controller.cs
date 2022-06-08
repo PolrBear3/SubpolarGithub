@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
+public class EscapePod_Engine_Controller : MonoBehaviour
 {
+    SpaceTycoon_Main_GameController controller;
+
     [HideInInspector]
     public Animator anim;
     
@@ -44,6 +46,7 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
     
     private void Awake()
     {
+        controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
         anim = GetComponent<Animator>();
     }
 
@@ -54,8 +57,8 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
 
     private void Update()
     {
-        Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
-        Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, null);
+        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
+        controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, null);
         Ship_Speed_Condition();
         EnergyFuel_Condition();
         EmergencyFuel_Condition();
@@ -79,32 +82,42 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
         }
     }
 
+    // Basic Menu Functions
+    public void Open_MainPanel()
+    {
+        controller.Icon_Pressed(mainPanel);
+    }
+    public void Exit_MainPanel()
+    {
+        controller.Manual_TurnOff_ObjectPanel(mainPanel, null);
+    }
+
     // Engine On and Off
     public void MainEngine_On_Press()
     {
-        Engine_On_Pressed(mainEngineOnButton, mainEngineOffButton, mainEngineLight);
+        controller.Engine_On_Pressed(mainEngineOnButton, mainEngineOffButton, mainEngineLight);
     }
     public void MainEngine_Off_Press()
     {
-        Engine_Off_Pressed(mainEngineOnButton, mainEngineOffButton, mainEngineLight);
+        controller.Engine_Off_Pressed(mainEngineOnButton, mainEngineOffButton, mainEngineLight);
     }
 
     public void Side1Engine_On_Press()
     {
-        Engine_On_Pressed(side1EngineOnButton, side1EngineOffButton, side1EngineLight);
+        controller.Engine_On_Pressed(side1EngineOnButton, side1EngineOffButton, side1EngineLight);
     }
     public void Side1Engine_Off_Press()
     {
-        Engine_Off_Pressed(side1EngineOnButton, side1EngineOffButton, side1EngineLight);
+        controller.Engine_Off_Pressed(side1EngineOnButton, side1EngineOffButton, side1EngineLight);
     } 
 
     public void Side2Engine_On_Press()
     {
-        Engine_On_Pressed(side2EngineOnButton, side2EngineOffButton, side2EngineLight);
+        controller.Engine_On_Pressed(side2EngineOnButton, side2EngineOffButton, side2EngineLight);
     }
     public void Side2Engine_Off_Press()
     {
-        Engine_Off_Pressed(side2EngineOnButton, side2EngineOffButton, side2EngineLight);
+        controller.Engine_Off_Pressed(side2EngineOnButton, side2EngineOffButton, side2EngineLight);
     }
 
     // Energy Fuel Conditions
@@ -120,19 +133,19 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
         // UI Slider Bar
         speedSlider.value = currentspeedSliderValue;
 
-        if (EnginesOn == 0)
+        if (controller.EnginesOn == 0)
         {
             setSpeedSliderValue = 0f;
         }
-        if (EnginesOn == 1)
+        if (controller.EnginesOn == 1)
         {
             setSpeedSliderValue = 30f;
         }
-        if (EnginesOn == 2)
+        if (controller.EnginesOn == 2)
         {
             setSpeedSliderValue = 60f;
         }
-        if (EnginesOn == 3)
+        if (controller.EnginesOn == 3)
         {
             setSpeedSliderValue = 90f;
         }
@@ -155,15 +168,15 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
 
         if (EnergyFuelDepleted == false)
         {
-            if (EnginesOn == 1)
+            if (controller.EnginesOn == 1)
             {
                 currentEnergyFuel -= 1 * Time.deltaTime;
             }
-            if (EnginesOn == 2)
+            if (controller.EnginesOn == 2)
             {
                 currentEnergyFuel -= 2 * Time.deltaTime;
             }
-            if (EnginesOn == 3)
+            if (controller.EnginesOn == 3)
             {
                 currentEnergyFuel -= 3 * Time.deltaTime;
             }
@@ -176,15 +189,15 @@ public class EscapePod_Engine_Controller : SpaceTycoon_Main_GameController
 
         if (EnergyFuelDepleted && EmergencyFuelDepleted == false)
         {
-            if (EnginesOn == 1)
+            if (controller.EnginesOn == 1)
             {
                 currentEmergencyFuel -= 1 * Time.deltaTime;
             }
-            if (EnginesOn == 2)
+            if (controller.EnginesOn == 2)
             {
                 currentEmergencyFuel -= 2 * Time.deltaTime;
             }
-            if (EnginesOn == 3)
+            if (controller.EnginesOn == 3)
             {
                 currentEmergencyFuel -= 3 * Time.deltaTime;
             }

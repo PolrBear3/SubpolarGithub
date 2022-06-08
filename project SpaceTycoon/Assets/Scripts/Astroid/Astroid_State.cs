@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Astroid_State : SpaceTycoon_Main_GameController
+public class Astroid_State : MonoBehaviour
 {
+    SpaceTycoon_Main_GameController controller;
+
     Rigidbody2D rb;
     SpriteRenderer sr;
 
@@ -18,6 +20,7 @@ public class Astroid_State : SpaceTycoon_Main_GameController
 
     private void Awake()
     {
+        controller = controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
     }
@@ -53,12 +56,12 @@ public class Astroid_State : SpaceTycoon_Main_GameController
 
     void Astroid_Start_Settings()
     {
-        if (shipSectorLocation == 1)
+        if (controller.shipSectorLocation == 1)
         {
             randomAstroidNum = Random.Range(0, Sector1Astroids.Length);
             thisAstroid = Sector1Astroids[randomAstroidNum];
         }
-        if (shipSectorLocation == 2)
+        if (controller.shipSectorLocation == 2)
         {
             randomAstroidNum = Random.Range(0, Sector2Astroids.Length);
             thisAstroid = Sector2Astroids[randomAstroidNum];
@@ -70,13 +73,13 @@ public class Astroid_State : SpaceTycoon_Main_GameController
     void Astroid_Speed_Conditions()
     {
         // speed setting update
-        if (currentEnginesOn < EnginesOn)
+        if (currentEnginesOn < controller.EnginesOn)
         {
             setSpeed += thisAstroid.speedChangeValue;
             SetRotationSpeed += thisAstroid.rotationChangeValue;
             currentEnginesOn += 1;
         }
-        else if (currentEnginesOn > EnginesOn)
+        else if (currentEnginesOn > controller.EnginesOn)
         {
             setSpeed -= thisAstroid.speedChangeValue;
             SetRotationSpeed -= thisAstroid.rotationChangeValue;

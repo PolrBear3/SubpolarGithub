@@ -956,6 +956,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946c55a6880454721bdb0cfc5f0726bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnginesOn: 0
+  shipSectorLocation: 1
+  _objectStorages: []
   EscapePod_ChairBed_gameObject: {fileID: 5104276040574436254}
   controller: {fileID: 1569118780561539510}
 --- !u!1 &3925500239250812265
@@ -1480,7 +1483,7 @@ GameObject:
   - component: {fileID: 1569118780561539510}
   m_Layer: 0
   m_Name: ChairBed
-  m_TagString: object
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

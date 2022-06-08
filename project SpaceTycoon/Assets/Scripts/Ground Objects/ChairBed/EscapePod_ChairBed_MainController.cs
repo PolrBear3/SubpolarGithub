@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EscapePod_ChairBed_MainController : MonoBehaviour
 {
+    SpaceTycoon_Main_GameController controller;
+
     [HideInInspector]
     public bool playerDetection;
     [HideInInspector]
@@ -35,8 +37,9 @@ public class EscapePod_ChairBed_MainController : MonoBehaviour
 
     private void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
+        controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
         player = GameObject.FindGameObjectWithTag("Player");
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

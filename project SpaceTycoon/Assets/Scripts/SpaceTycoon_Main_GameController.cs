@@ -17,8 +17,8 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     public static bool isPanelMenuOn = false;
 
     // In Game Conditions
-    public static int EnginesOn = 0;
-    public static int shipSectorLocation = 1;
+    public int EnginesOn = 0;
+    public int shipSectorLocation = 1;
 
     // Craftable Object Storage
     [SerializeField] private ObjectStorage[] _objectStorages;

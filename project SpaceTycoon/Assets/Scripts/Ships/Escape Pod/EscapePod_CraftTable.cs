@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EscapePod_CraftTable : MonoBehaviour
 {
-    SpaceTycoon_Main_GameController SMC;
+    SpaceTycoon_Main_GameController controller;
 
     Animator anim;
     [HideInInspector]
@@ -32,7 +32,7 @@ public class EscapePod_CraftTable : MonoBehaviour
     
     private void Awake()
     {
-        SMC = GameObject.Find("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
+        controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
         anim = GetComponent<Animator>();
     }
 
@@ -45,7 +45,7 @@ public class EscapePod_CraftTable : MonoBehaviour
 
     private void Update()
     {
-        SMC.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
+        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
         Automatic_TurnOff_MainPanel();
     }
 
@@ -74,20 +74,20 @@ public class EscapePod_CraftTable : MonoBehaviour
     // Basic Menu Functions
     public void Open_MainPanel()
     {
-        SMC.Icon_Pressed(mainPanel);
+        controller.Icon_Pressed(mainPanel);
     }
     void Automatic_TurnOff_MainPanel()
     {
-        SMC.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, optionMenus);
+        controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, optionMenus);
     }
     public void Exit_Menu()
     {
-        SMC.Manual_TurnOff_ObjectPanel(mainPanel, optionMenus);
-        SMC.TurnOff_All_Options_inObjectPanel(optionMenus);
+        controller.Manual_TurnOff_ObjectPanel(mainPanel, optionMenus);
+        controller.TurnOff_All_Options_inObjectPanel(optionMenus);
     }
     public void Exit_Option()
     {
-        SMC.TurnOff_All_Options_inObjectPanel(optionMenus);
+        controller.TurnOff_All_Options_inObjectPanel(optionMenus);
         GroundSnapPoints_Sprite_Off();
         WallSnapPoints_Sprite_Off();
     }
@@ -113,7 +113,7 @@ public class EscapePod_CraftTable : MonoBehaviour
         // object current storage text update
         for (int i = 0; i < objectCurrentStorageText.Length; i++)
         {
-            objectCurrentStorageText[i].text = SMC.objectStorages[i].leftAmount.ToString();
+            objectCurrentStorageText[i].text = controller.objectStorages[i].leftAmount.ToString();
         }
     }
 
@@ -162,12 +162,12 @@ public class EscapePod_CraftTable : MonoBehaviour
                 
                 if (objectInfo[i].objectType == ObjectType.ground)
                 {
-                    SMC.TurnOn_Single_Options_inObjectPanel(optionMenus[0]);
+                    controller.TurnOn_Single_Options_inObjectPanel(optionMenus[0]);
                     GroundSnapPoints_Sprite_On();
                 }
                 else if (objectInfo[i].objectType == ObjectType.wall)
                 {
-                    SMC.TurnOn_Single_Options_inObjectPanel(optionMenus[1]);
+                    controller.TurnOn_Single_Options_inObjectPanel(optionMenus[1]);
                     WallSnapPoints_Sprite_On();
                 }
                 break;
