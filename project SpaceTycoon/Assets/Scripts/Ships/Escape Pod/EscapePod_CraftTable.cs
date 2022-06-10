@@ -46,7 +46,9 @@ public class EscapePod_CraftTable : MonoBehaviour
     private void Update()
     {
         controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
-        Automatic_TurnOff_MainPanel();
+        controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
+        controller.Automatic_TurnOff_All_Options_inObjectPanel(playerDetection, optionMenus);
+        Automatic_SnapPoint_Sprite_Off();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -65,9 +67,6 @@ public class EscapePod_CraftTable : MonoBehaviour
             playerDetection = false;
             icon.Set_Icon_to_Default_Position();
             anim.SetBool("onMenu", false);
-
-            GroundSnapPoints_Sprite_Off();
-            WallSnapPoints_Sprite_Off();
         }
     }
 
@@ -76,18 +75,16 @@ public class EscapePod_CraftTable : MonoBehaviour
     {
         controller.Icon_Pressed(mainPanel);
     }
-    void Automatic_TurnOff_MainPanel()
-    {
-        controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, optionMenus);
-    }
     public void Exit_Menu()
     {
-        controller.Manual_TurnOff_ObjectPanel(mainPanel, optionMenus);
-        controller.TurnOff_All_Options_inObjectPanel(optionMenus);
+        controller.Manual_TurnOff_ObjectPanel(mainPanel);
+        controller.Manual_TurnOff_All_Options_inObjectPanel(optionMenus);
+        GroundSnapPoints_Sprite_Off();
+        WallSnapPoints_Sprite_Off();
     }
     public void Exit_Option()
     {
-        controller.TurnOff_All_Options_inObjectPanel(optionMenus);
+        controller.Manual_TurnOff_All_Options_inObjectPanel(optionMenus);
         GroundSnapPoints_Sprite_Off();
         WallSnapPoints_Sprite_Off();
     }
@@ -114,6 +111,14 @@ public class EscapePod_CraftTable : MonoBehaviour
         for (int i = 0; i < objectCurrentStorageText.Length; i++)
         {
             objectCurrentStorageText[i].text = controller.objectStorages[i].leftAmount.ToString();
+        }
+    }
+    void Automatic_SnapPoint_Sprite_Off()
+    {
+        if (!playerDetection)
+        {
+            GroundSnapPoints_Sprite_Off();
+            WallSnapPoints_Sprite_Off();
         }
     }
 

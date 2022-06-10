@@ -45,20 +45,18 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     }
 
     // Object Main Panel Constructors
-    public void Manual_TurnOff_ObjectPanel(GameObject objectMenu, GameObject[] objectOptions)
+    public void Manual_TurnOff_ObjectPanel(GameObject objectMenu)
     {
         objectMenu.SetActive(false);
-        TurnOff_All_Options_inObjectPanel(objectOptions);
         isPanelMenuOn = false;
         isGroundOptionMenuOn = false;
         isWallOptionMenuOn = false;
     }
-    public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu, GameObject[] objectOptions)
+    public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu)
     {
         if (!playerDetection && objectMenu.activeSelf)
         {
             objectMenu.SetActive(false);
-            TurnOff_All_Options_inObjectPanel(objectOptions);
             isPanelMenuOn = false;
             isGroundOptionMenuOn = false;
             isWallOptionMenuOn = false;
@@ -66,20 +64,51 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     }
 
     // Object Options panel Constructors
-    public void TurnOn_Single_Options_inObjectPanel(GameObject objectOptionMenu)
+    public void TurnOn_Single_Options_inObjectPanel(GameObject objectMenu)
     {
-        objectOptionMenu.SetActive(true);
+        objectMenu.SetActive(true);
         isGroundOptionMenuOn = true;
         isWallOptionMenuOn = true;
     }
-    public void TurnOff_All_Options_inObjectPanel(GameObject[] optionList)
+
+    public void Manual_TurnOff_All_Options_inObjectPanel(GameObject[] objectOptions)
     {
-        for (int i = 0; i < optionList.Length; i++)
+        for (int i = 0; i < objectOptions.Length; i++)
         {
-            optionList[i].SetActive(false);
+            objectOptions[i].SetActive(false);
         }
         isGroundOptionMenuOn = false;
         isWallOptionMenuOn = false;
+    }
+    public void Automatic_TurnOff_All_Options_inObjectPanel(bool playerDetection, GameObject[] objectOptions)
+    {
+        if (!playerDetection)
+        {
+            for (int i = 0; i < objectOptions.Length; i++)
+            {
+                objectOptions[i].SetActive(false);
+            }
+            isGroundOptionMenuOn = false;
+            isWallOptionMenuOn = false;
+        }
+    }
+
+    // Object Default Function Constructors
+    public void Object_Dismantle(Object_ScrObj objectInfo, int storageStoreAmount, Icon icon, GameObject thisGameObject)
+    {
+        for (int i = 0; i < objectStorages.Length; i++)
+        {
+            if (objectStorages[i].objectInfo == objectInfo)
+            {
+                objectStorages[i].leftAmount += storageStoreAmount;
+                icon.iconBoxCollider.SetActive(false);
+                Destroy(thisGameObject);
+                isPanelMenuOn = false;
+                isGroundOptionMenuOn = false;
+                isWallOptionMenuOn = false;
+                break;
+            }
+        }
     }
 
     // Ship Engine Constructors

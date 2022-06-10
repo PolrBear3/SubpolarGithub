@@ -213,8 +213,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
-        m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
+      - m_Target: {fileID: 4829327010963555076}
+        m_TargetAssemblyTypeName: ChairBed, Assembly-CSharp
         m_MethodName: Rotate_Right
         m_Mode: 1
         m_Arguments:
@@ -346,8 +346,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
-        m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
+      - m_Target: {fileID: 4829327010963555076}
+        m_TargetAssemblyTypeName: ChairBed, Assembly-CSharp
         m_MethodName: Rotate_Left
         m_Mode: 1
         m_Arguments:
@@ -560,8 +560,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
-        m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
+      - m_Target: {fileID: 4829327010963555076}
+        m_TargetAssemblyTypeName: ChairBed, Assembly-CSharp
         m_MethodName: Dismantle
         m_Mode: 1
         m_Arguments:
@@ -694,7 +694,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
         m_MethodName: Sleep
         m_Mode: 1
@@ -913,7 +913,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4699744554992849748}
-  - component: {fileID: 4799619244130341444}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -944,23 +943,6 @@ RectTransform:
   m_AnchoredPosition: {x: 610, y: 0}
   m_SizeDelta: {x: 1220, y: 686}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4799619244130341444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3688305304621455108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 946c55a6880454721bdb0cfc5f0726bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnginesOn: 0
-  shipSectorLocation: 1
-  _objectStorages: []
-  EscapePod_ChairBed_gameObject: {fileID: 5104276040574436254}
-  controller: {fileID: 1569118780561539510}
 --- !u!1 &3925500239250812265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1162,9 +1144,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
-        m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
-        m_MethodName: Change_to_Bed
+      - m_Target: {fileID: 4829327010963555076}
+        m_TargetAssemblyTypeName: ChairBed, Assembly-CSharp
+        m_MethodName: ChangeTo_Bed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1456,9 +1438,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
-        m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
-        m_MethodName: Manual_Off
+      - m_Target: {fileID: 4829327010963555076}
+        m_TargetAssemblyTypeName: ChairBed, Assembly-CSharp
+        m_MethodName: Exit_MainPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1480,7 +1462,7 @@ GameObject:
   - component: {fileID: 5104276040574436252}
   - component: {fileID: 6690215103499468981}
   - component: {fileID: 5104276040574436253}
-  - component: {fileID: 1569118780561539510}
+  - component: {fileID: 4829327010963555076}
   m_Layer: 0
   m_Name: ChairBed
   m_TagString: Untagged
@@ -1605,7 +1587,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.09436809, y: 0.11010504}
   m_EdgeRadius: 0
---- !u!114 &1569118780561539510
+--- !u!114 &4829327010963555076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1617,24 +1599,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529f15fb315324ee49ac53dcb333b1f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerDetection: 0
-  player: {fileID: 2861690143980187647, guid: a5331a1b272bc9d419d9850fe6097f83, type: 3}
-  chairMode: 1
-  Icon: {fileID: 2122278796}
+  objectInfo: {fileID: 11400000, guid: c14063ff3f9dd424bae30b7627fb71a2, type: 2}
   icon: {fileID: 7377009130154934424}
-  iconBoxCollider: {fileID: 2826944424156151209}
   mainPanel: {fileID: 1089514322406452983}
-  rotateRightButton: {fileID: 948685140079018341}
-  roateLeftButton: {fileID: 1070401190783691765}
-  chairModeButton: {fileID: 8210086265429116455}
-  bedModeButton: {fileID: 4066481916846851924}
-  sleepButton: {fileID: 1885124466170792157}
-  sitButton: {fileID: 8560280579741289106}
-  sitPosition: {fileID: 8731577701818129727}
-  sleepPosition: {fileID: 2556772848788076544}
-  sr: {fileID: 0}
-  bed: {fileID: -855299061, guid: a335601052764504aa7bd1b668a9e3f3, type: 3}
-  chair: {fileID: -701027749, guid: a335601052764504aa7bd1b668a9e3f3, type: 3}
+  rotateButtons:
+  - {fileID: 948685140079018341}
+  - {fileID: 1070401190783691765}
+  modeButtons:
+  - {fileID: 8210086265429116455}
+  - {fileID: 4066481916846851924}
+  playerActionButtons:
+  - {fileID: 8560280579741289106}
+  - {fileID: 1885124466170792157}
+  sitSleepTransforms:
+  - {fileID: 8820324842150699458}
+  - {fileID: 5116278368541572393}
+  chairBedSprites:
+  - {fileID: -701027749, guid: a335601052764504aa7bd1b668a9e3f3, type: 3}
+  - {fileID: -855299061, guid: a335601052764504aa7bd1b668a9e3f3, type: 3}
 --- !u!1 &6433036719469314303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1933,9 +1915,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
-        m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
-        m_MethodName: Icon_Pressed
+      - m_Target: {fileID: 4829327010963555076}
+        m_TargetAssemblyTypeName: ChairBed, Assembly-CSharp
+        m_MethodName: Open_MainPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2066,9 +2048,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
-        m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
-        m_MethodName: Change_to_Chair
+      - m_Target: {fileID: 4829327010963555076}
+        m_TargetAssemblyTypeName: ChairBed, Assembly-CSharp
+        m_MethodName: ChangeTo_Chair
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2200,7 +2182,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4799619244130341444}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EscapePod_ChairBed_Panel, Assembly-CSharp
         m_MethodName: Sit
         m_Mode: 1

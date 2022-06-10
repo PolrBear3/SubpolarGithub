@@ -58,7 +58,8 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     private void Update()
     {
         controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
-        controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel, null);
+        controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
+
         Ship_Speed_Condition();
         EnergyFuel_Condition();
         EmergencyFuel_Condition();
@@ -89,7 +90,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
     }
     public void Exit_MainPanel()
     {
-        controller.Manual_TurnOff_ObjectPanel(mainPanel, null);
+        controller.Manual_TurnOff_ObjectPanel(mainPanel);
     }
 
     // Engine On and Off
