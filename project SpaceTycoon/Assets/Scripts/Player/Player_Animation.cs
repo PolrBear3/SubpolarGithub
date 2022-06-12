@@ -5,8 +5,9 @@ using UnityEngine;
 public class Player_Animation : MonoBehaviour
 {
     public Player_MainController playerController;
-
+    
     Animator anim;
+    public RuntimeAnimatorController[] outfitRuntimeAnimators;
 
     void Awake()
     {
@@ -17,7 +18,6 @@ public class Player_Animation : MonoBehaviour
     {
         MoveCheck_Animation();
         Sit_Sleep_Check_Animation();
-        Set_Animation_Accordingto_Outfit();
     }
 
     void MoveCheck_Animation()
@@ -31,7 +31,6 @@ public class Player_Animation : MonoBehaviour
             anim.SetBool("isMoving", false);
         }
     }
-
     void Sit_Sleep_Check_Animation()
     {
         if (Player_State.player_isSitting == true)
@@ -52,21 +51,8 @@ public class Player_Animation : MonoBehaviour
             anim.SetBool("isSleeping", false);
         }
     }
-
-    public RuntimeAnimatorController innerWear, spaceSuit, pajamas;
-    void Set_Animation_Accordingto_Outfit()
+    public void Outfit_RunTimeAnimator_Set()
     {
-        if (Player_Outfit.outfitNum == 1)
-        {
-            anim.runtimeAnimatorController = innerWear as RuntimeAnimatorController;
-        }
-        if (Player_Outfit.outfitNum == 2)
-        {
-            anim.runtimeAnimatorController = spaceSuit as RuntimeAnimatorController;
-        }
-        if (Player_Outfit.outfitNum == 3)
-        {
-            anim.runtimeAnimatorController = pajamas as RuntimeAnimatorController;
-        }
+        anim.runtimeAnimatorController = playerController.playerOutfit.currentOutFit.outfitRuntimeAnimator;
     }
 }

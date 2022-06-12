@@ -2,46 +2,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct OutfitUnlock
+{
+    public Albert_Outfits outfitInfo;
+    public bool unlocked;
+}
+
 public class Player_Outfit : MonoBehaviour
 {
+    public Player_MainController playerController;
+
+    public OutfitUnlock[] outfitUnlocks;
+    public Albert_Outfits currentOutFit; //connect to runctimeAnimator
+
     private void Start()
     {
-        Default_Outfit();
+
     }
 
     private void Update()
     {
-        Outfit_Num_Set();
+        Z_for_Innerwear();
+        X_for_SpaceSuit();
+        C_for_Pajamas();
     }
 
-    private SpriteRenderer sr;
+    public void OutFit_Set_Update (Albert_Outfits outfitInfo)
+    {
+        for (int i = 0; i < outfitUnlocks.Length; i++)
+        {
+            if (outfitInfo == outfitUnlocks[i].outfitInfo)
+            {
+                currentOutFit = outfitUnlocks[i].outfitInfo;
+                playerController.playerAnimation.Outfit_RunTimeAnimator_Set();
+                break;
+            }
+        }
+    }
 
-    public Player_MainController playerController;
-
-    public Albert_Outfits currentOutFit;
-    public static int outfitNum;
+    // use these functions as example for closet
+    public Albert_Outfits[] outfits;
     
-    public static bool isSpaceSuitUnlocked = false, isPajamasUnlocked = false;
-    public Albert_Outfits innerWear, spaceSuit, pajamas;
-
-    void Default_Outfit()
+    void Z_for_Innerwear()
     {
-        outfitNum = 1;
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            OutFit_Set_Update(outfits[0]);
+        }
     }
-
-    void Outfit_Num_Set()
+    void X_for_SpaceSuit()
     {
-        if (outfitNum == 1)
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            currentOutFit = innerWear;
+            OutFit_Set_Update(outfits[1]);
         }
-        if (outfitNum == 2)
+    }
+    void C_for_Pajamas()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            currentOutFit = spaceSuit;
-        }
-        if (outfitNum == 3)
-        {
-            currentOutFit = pajamas;
+            OutFit_Set_Update(outfits[2]);
         }
     }
 }

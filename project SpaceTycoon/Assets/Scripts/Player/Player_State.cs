@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class Player_State : MonoBehaviour
 {
-    private void Start()
-    {
-        player_currentHealth = player_maxHealth;
-    }
-
-    private void Update()
-    {
-        Player_State_Check();
-        Health();
-        Tiredness();
-    }
-
     public Player_MainController playerController;
 
     public GameObject playerHand;
@@ -31,6 +19,18 @@ public class Player_State : MonoBehaviour
 
     public static float player_maxTirednessLevel = 100f;
     public static float player_currentTirednessLevel = 0f;
+
+    private void Start()
+    {
+        player_currentHealth = player_maxHealth;
+    }
+
+    private void Update()
+    {
+        Player_State_Check();
+        Health();
+        Tiredness();
+    }
 
     void Player_State_Check()
     {
@@ -96,15 +96,8 @@ public class Player_State : MonoBehaviour
         }
 
         // if player is sleeping, tiredness decreases 2 each sec
-        if (player_isSleeping && Player_Outfit.outfitNum != 3)
-        {
-            player_currentTirednessLevel -= 2f * Time.deltaTime;
-        }
+
         // if player is sleeping and wearing pajamas, tiredness decreases 4 each sec
-        if (player_isSleeping && Player_Outfit.outfitNum == 3)
-        {
-            player_currentTirednessLevel -= 4f * Time.deltaTime;
-        }
 
         // if player is wearing pajamas && player_isSleeping >> player_currentTirednessLevel -= 4f * Time.deltaTime;
     }
