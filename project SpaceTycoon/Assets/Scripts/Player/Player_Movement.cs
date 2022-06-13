@@ -36,7 +36,7 @@ public class Player_Movement : MonoBehaviour
     }
     void Movement()
     {
-        rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutFit.movementSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
     }
 
     // jump vertical movement and JetPack fly
@@ -48,7 +48,7 @@ public class Player_Movement : MonoBehaviour
         {
             if (JetPack.activeSelf == false || jetPack.outOfFuel == true)
             {
-                rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutFit.jumpForce);
+                rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
             }
         }
     }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player_Animation : MonoBehaviour
 {
     public Player_MainController playerController;
-    
     Animator anim;
+
     public RuntimeAnimatorController[] outfitRuntimeAnimators;
 
     void Awake()
@@ -51,8 +51,9 @@ public class Player_Animation : MonoBehaviour
             anim.SetBool("isSleeping", false);
         }
     }
+
     public void Outfit_RunTimeAnimator_Set()
     {
-        anim.runtimeAnimatorController = playerController.playerOutfit.currentOutFit.outfitRuntimeAnimator;
+        anim.runtimeAnimatorController = playerController.playerOutfit.currentOutfit.outfitRuntimeAnimator;
     }
 }

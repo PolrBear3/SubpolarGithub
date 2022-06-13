@@ -197,7 +197,7 @@ public class EscapePod_CraftTable : MonoBehaviour
             // craft object
             else
             {
-                if (groundButtons[i].buttonPressed)
+                if (groundButtons[i].buttonPressed) // ?? storage check
                 {
                     var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, groundSnapPoints[i].transform);
                     craftedObject.transform.parent = groundSnapPoints[i].gameObject.transform;

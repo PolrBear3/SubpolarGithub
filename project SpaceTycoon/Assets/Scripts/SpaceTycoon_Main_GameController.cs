@@ -70,6 +70,12 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         isGroundOptionMenuOn = true;
         isWallOptionMenuOn = true;
     }
+    public void TurnOff_Single_Options_inObjectPanel(GameObject objectMenu)
+    {
+        objectMenu.SetActive(false);
+        isGroundOptionMenuOn = false;
+        isWallOptionMenuOn = false;
+    }
 
     public void Manual_TurnOff_All_Options_inObjectPanel(GameObject[] objectOptions)
     {

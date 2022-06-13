@@ -6,14 +6,13 @@ public class ChairBed : MonoBehaviour
 {
     SpaceTycoon_Main_GameController controller;
     Player_MainController player;
-    public Object_ScrObj objectInfo;
 
     bool playerDetection;
-
-    bool facingLeft = false;
-
+    public Object_ScrObj objectInfo;
     public Icon icon;
     public GameObject mainPanel;
+
+    bool facingLeft = false;
 
     public GameObject[] rotateButtons;
     public GameObject[] modeButtons;
@@ -69,7 +68,6 @@ public class ChairBed : MonoBehaviour
     {
         controller.Manual_TurnOff_ObjectPanel(mainPanel);
     }
-
     public void Dismantle()
     {
         controller.Object_Dismantle(objectInfo, 1, icon, gameObject);
