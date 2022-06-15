@@ -7,6 +7,8 @@ public struct OutfitUnlock
 {
     public Albert_Outfits outfitInfo;
     public bool unlocked;
+    public GameObject lockedImage;
+    public GameObject unlockedImage;
 }
 
 public class Closet : MonoBehaviour
@@ -28,7 +30,11 @@ public class Closet : MonoBehaviour
         controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_MainController>();
         anim = GetComponent<Animator>();
-    }  
+    }
+    private void Start()
+    {
+        Unlock_Check_for_Image();
+    }
     private void Update()
     {
         controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
@@ -98,6 +104,24 @@ public class Closet : MonoBehaviour
     public void Outfit_Craft()
     {
         closetOutfits[openedOutfitID].unlocked = true;
+        Unlock_Check_for_Image();
         Exit_Option();
+    }
+    public void Unlock_Check_for_Image()
+    {
+        for (int i = 0; i < closetOutfits.Length; i++)
+        {
+            if (closetOutfits[i].unlocked)
+            {
+                closetOutfits[i].unlockedImage.SetActive(true);
+                closetOutfits[i].lockedImage.SetActive(false);
+
+            }
+            else if (!closetOutfits[i].unlocked)
+            {
+                closetOutfits[i].unlockedImage.SetActive(false);
+                closetOutfits[i].lockedImage.SetActive(true);
+            }
+        }
     }
 }
