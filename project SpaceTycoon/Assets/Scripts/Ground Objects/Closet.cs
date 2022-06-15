@@ -28,11 +28,7 @@ public class Closet : MonoBehaviour
         controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_MainController>();
         anim = GetComponent<Animator>();
-    }
-    private void Start()
-    {
-        
-    }
+    }  
     private void Update()
     {
         controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
@@ -101,6 +97,7 @@ public class Closet : MonoBehaviour
     // closet function
     public void Outfit_Craft()
     {
-
+        closetOutfits[openedOutfitID].unlocked = true;
+        Exit_Option();
     }
 }
