@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player_MousePosition : MonoBehaviour
 {
     public Player_MainController playerController;
-
     public Transform player;
+    public bool facingLeft;
 
     void Update()
     {
@@ -17,31 +17,18 @@ public class Player_MousePosition : MonoBehaviour
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(player.position);
 
-        if (Input.mousePosition.x < screenPosition.x && !Player_State.player_isFacing_Left)
+        if (Input.mousePosition.x < screenPosition.x && !facingLeft)
         {
-            if (Player_State.player_isSleeping == false)
-            {
-                if (Player_State.player_isSitting == false)
-                {
-                    Flip();
-                }
-            }
+            Flip();
         }
-        if (Input.mousePosition.x > screenPosition.x && Player_State.player_isFacing_Left)
+        if (Input.mousePosition.x > screenPosition.x && facingLeft)
         {
-            if (Player_State.player_isSleeping == false)
-            {
-                if (Player_State.player_isSitting == false)
-                {
-                    Flip();
-                }
-            }
+            Flip();
         }
     }
-
     void Flip()
     {
-        Player_State.player_isFacing_Left = !Player_State.player_isFacing_Left;
+        facingLeft = !facingLeft;
 
         transform.Rotate(0f, 180f, 0f);
     }

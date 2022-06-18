@@ -756,6 +756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 53651797}
   player: {fileID: 53651793}
+  facingLeft: 0
 --- !u!114 &53651795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -787,14 +788,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 53651797}
   horizontal: 0
-  JetPack: {fileID: 1610653743}
-  jetPack: {fileID: 1661660423364869412}
   isGround: 0
   foot: {fileID: 1980497872}
   footRadius: 0.03
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  JetPack: {fileID: 1610653743}
+  jetPack: {fileID: 1661660423364869412}
 --- !u!114 &53651797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,7 +893,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 53651797}
-  playerHand: {fileID: 1273852733}
+  playerStates:
+  - playerStateType: 0
+    maxStateSize: 100
+    currentStateSize: 0
+  - playerStateType: 1
+    maxStateSize: 100
+    currentStateSize: 0
 --- !u!1001 &87165401
 PrefabInstance:
   m_ObjectHideFlags: 0

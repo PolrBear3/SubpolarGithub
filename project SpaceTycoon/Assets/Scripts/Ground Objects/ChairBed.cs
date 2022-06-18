@@ -101,4 +101,21 @@ public class ChairBed : MonoBehaviour
         rotateButtons[0].SetActive(true);
         rotateButtons[1].SetActive(false);
     }
+
+    public void Player_Sit()
+    {
+        player.transform.position = sitSleepTransforms[0].position;
+
+        // set player's animation to sit
+        // flip player to chairbed's facing position
+        // main panel off
+        // player gets sit energy
+    }
+    public void Player_Sleep()
+    {
+        // set player's animation to sleep
+        // flip player to chairbed's facing position
+        // main panel off
+        // player gets sleep energy
+    }
 }

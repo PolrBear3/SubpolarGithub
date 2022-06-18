@@ -8,6 +8,21 @@ public class Player_Movement : MonoBehaviour
 
     Rigidbody2D rb;
 
+    // horizontal movement variable
+    [HideInInspector]
+    public float horizontal;
+
+    // ground check variables
+    [HideInInspector]
+    public bool isGround = false;
+    public Transform foot;
+    public float footRadius;
+    public LayerMask groundLayer;
+
+    // ?? jetpack movement check
+    public GameObject JetPack;
+    public JetPack jetPack;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -19,7 +34,6 @@ public class Player_Movement : MonoBehaviour
         Check_if_Ground();
         Jump();
         JetPack_Fly();
-        Check_if_Sitting_or_Sleeping();
     }
 
     void FixedUpdate()
@@ -27,9 +41,6 @@ public class Player_Movement : MonoBehaviour
         Movement();
     }
 
-    // horizontal movement
-    [HideInInspector]
-    public float horizontal;
     void Movement_Input()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
@@ -39,9 +50,6 @@ public class Player_Movement : MonoBehaviour
         rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
     }
 
-    // jump vertical movement and JetPack fly
-    public GameObject JetPack;
-    public JetPack jetPack;
     void Jump()
     {
         if (Input.GetKeyDown(KeyCode.W) && isGround)
@@ -52,6 +60,7 @@ public class Player_Movement : MonoBehaviour
             }
         }
     }
+
     void JetPack_Fly()
     {
         if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true && jetPack.outOfFuel == false)
@@ -65,11 +74,6 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
-    [HideInInspector]
-    public bool isGround = false;
-    public Transform foot;
-    public float footRadius;
-    public LayerMask groundLayer;
     void Check_if_Ground()
     {
         Collider2D collider = Physics2D.OverlapCircle(foot.position, footRadius, groundLayer);
@@ -86,19 +90,5 @@ public class Player_Movement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(foot.position, footRadius);
-    }
-
-    // sit sleep check
-    void Check_if_Sitting_or_Sleeping()
-    {
-        if (Player_State.player_isSitting || Player_State.player_isSleeping)
-        {
-            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-        }
-        if (Player_State.player_isMoving)
-        {
-            rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation; 
-        }
     }
 }

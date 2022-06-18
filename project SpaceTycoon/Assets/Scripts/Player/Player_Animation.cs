@@ -17,7 +17,6 @@ public class Player_Animation : MonoBehaviour
     void Update()
     {
         MoveCheck_Animation();
-        Sit_Sleep_Check_Animation();
     }
 
     void MoveCheck_Animation()
@@ -29,26 +28,6 @@ public class Player_Animation : MonoBehaviour
         else
         {
             anim.SetBool("isMoving", false);
-        }
-    }
-    void Sit_Sleep_Check_Animation()
-    {
-        if (Player_State.player_isSitting == true)
-        {
-            anim.SetBool("isSitting", true);
-        }
-        else
-        {
-            anim.SetBool("isSitting", false);
-        }
-
-        if (Player_State.player_isSleeping == true)
-        {
-            anim.SetBool("isSleeping", true);
-        }
-        else
-        {
-            anim.SetBool("isSleeping", false);
         }
     }
 
