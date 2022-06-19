@@ -49,16 +49,29 @@ public class Player_Movement : MonoBehaviour
     {
         rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
     }
-
-    void Jump()
+    public bool Player_is_Moving()
     {
-        if (Input.GetKeyDown(KeyCode.W) && isGround)
+        if (rb.velocity.x != 0 && JetPack.activeSelf == false || jetPack.outOfFuel == true) { return true; }
+        else return false;
+    }
+
+    public void Jump()
+    {
+        if (Player_is_Jumping())
         {
-            if (JetPack.activeSelf == false || jetPack.outOfFuel == true)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
-            }
+            rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
         }
+    }
+    public bool Player_is_Jumping()
+    {
+        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false || jetPack.outOfFuel == true) { return true; }
+        else return false;
+    }
+
+    public bool Player_is_Standing()
+    {
+        if (rb.velocity.magnitude == 0 && JetPack.activeSelf == false || jetPack.outOfFuel == true) { return true; }
+        else return false;
     }
 
     void JetPack_Fly()
