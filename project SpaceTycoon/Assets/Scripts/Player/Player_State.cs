@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum playerStateType { health, tiredness }
-
 [System.Serializable]
 public struct PlayerState
 {
@@ -12,11 +11,20 @@ public struct PlayerState
     public float currentStateSize;
 }
 
+public enum PlayerActionType { isSitting, isSleeping }
+[System.Serializable]
+public struct PlayerAction
+{
+    public PlayerActionType playerActionType;
+    public bool actionActive;
+    public float actionMultiplySize;
+}
+
 public class Player_State : MonoBehaviour
 {
     public Player_MainController playerController;
-
     public PlayerState[] playerStates;
+    public PlayerAction[] playerActions;
 
     private void Start()
     {
@@ -25,7 +33,9 @@ public class Player_State : MonoBehaviour
 
     private void Update()
     {
-        Player_Tiredness_State();
+        Player_isStanding();
+        Player_isMoving();
+        Test_Sit();
     }
 
     void Set_Current_State_Level()
@@ -36,56 +46,96 @@ public class Player_State : MonoBehaviour
         }
     }
 
-    // player state constructors
-    bool Check_Max_Status_Size(float currentSize, float maxSize)
+    // state constructors
+    bool Set_Max_Size(int playerStateNum)
     {
-        if (currentSize <= maxSize) { return true; }
+        if (playerStates[playerStateNum].currentStateSize <= playerStates[playerStateNum].maxStateSize) { return true; }
         else return false;
     }
-    bool Check_Min_Status_Size(float currentSize)
+    bool Set_Min_Size(int playerStateNum)
     {
-        if (currentSize >= 0) { return true; }
+        if (playerStates[playerStateNum].currentStateSize >= 0) { return true; }
         else return false;
     }
 
-    void Player_Increase_Status(float healSize)
+    public void Increase_State_Size(int playerStateNum, float increaseSize)
     {
-        playerStates[1].currentStateSize += healSize * Time.deltaTime;
+        if (Set_Max_Size(playerStateNum))
+        {
+            playerStates[playerStateNum].currentStateSize += Time.deltaTime * increaseSize;
+        }
     }
-    void Player_Decrease_Status(float decreseSize)
+    public void Deplete_State_Size(int playerStateNum, float depleteSize)
     {
-        playerStates[1].currentStateSize -= decreseSize * Time.deltaTime;
-    }
-    void Player_Subtract_Status(float subtractSize)
-    {
-        playerStates[1].currentStateSize -= subtractSize;
+        if (Set_Min_Size(playerStateNum))
+        {
+            playerStates[playerStateNum].currentStateSize -= Time.deltaTime * depleteSize;
+        }
     }
 
-    // player state public constructors
-
-    // player state update check
-    void Player_Tiredness_State()
+    public void Add_State_Size(int playerStateNum, float increaseSize)
     {
-        if (playerController.playerMovement.Player_is_Moving())
+        if (Set_Max_Size(playerStateNum))
         {
-            if (Check_Min_Status_Size(playerStates[1].currentStateSize))
+            playerStates[playerStateNum].currentStateSize += increaseSize;
+        }
+    }
+    public void Subtract_State_Size(int playerStateNum, float subtractSize)
+    {
+        if (Set_Min_Size(playerStateNum))
+        {
+            playerStates[playerStateNum].currentStateSize -= subtractSize;
+        }
+    }
+
+    public void Player_Action(PlayerActionType actionType)
+    {
+        for (int i = 0; i < playerActions.Length; i++)
+        {
+            if(actionType == playerActions[i].playerActionType)
             {
-                Player_Decrease_Status(playerController.playerOutfit.currentOutfit.tirednessDepleteSize);
+                playerActions[i].actionActive = true;
+                break;
             }
         }
-        if (playerController.playerMovement.Player_is_Jumping())
+    }
+
+    // player state update
+    void Player_isMoving()
+    {
+        if (playerController.playerMovement.Movement_Check())
         {
-            if (Check_Min_Status_Size(playerStates[1].currentStateSize))
+            Deplete_State_Size(1, playerController.playerOutfit.currentOutfit.tirednessDepleteSize);
+        }
+    }
+    void Player_isStanding()
+    {
+        if (playerController.playerMovement.Standing_Check() && !Player_OnAction())
+        {
+            Increase_State_Size(1, playerController.playerOutfit.currentOutfit.tirednessHealSize);
+        }
+    }
+    
+    bool Player_OnAction()
+    {
+        for (int i = 0; i < playerActions.Length; i++)
+        {
+            if (playerActions[i].actionActive == true)
             {
-                Player_Subtract_Status(playerController.playerOutfit.currentOutfit.jumpTirednessSubtractSize);
+                return true;
             }
         }
-        if (playerController.playerMovement.Player_is_Standing())
+        return false;
+    }
+
+
+
+    // test
+    void Test_Sit()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            if (Check_Max_Status_Size(playerStates[1].currentStateSize, playerStates[1].maxStateSize))
-            {
-                Player_Increase_Status(playerController.playerOutfit.currentOutfit.tirednessHealSize);
-            }
+            Player_Action(PlayerActionType.isSitting);
         }
     }
 }

@@ -6,6 +6,7 @@ public class Player_MousePosition : MonoBehaviour
 {
     public Player_MainController playerController;
     public Transform player;
+    [HideInInspector]
     public bool facingLeft;
 
     void Update()

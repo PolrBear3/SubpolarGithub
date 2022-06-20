@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9461dbf600fe9ae409f970b9ad63f921, type: 3}
   m_Name: InnerWear
   m_EditorClassIdentifier: 
+  outfitID: 0
   outfitRuntimeAnimator: {fileID: 22100000, guid: c2725a7f80e347244be5d0fc79b9003e, type: 2}
   movementSpeed: 0.3
   jumpForce: 0.3
+  tirednessDepleteSize: 0.5
+  jumpTirednessSubtractSize: 0.25
+  tirednessHealSize: 0.3

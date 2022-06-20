@@ -32,13 +32,24 @@ public class Player_Movement : MonoBehaviour
     {
         Movement_Input();
         Check_if_Ground();
-        Jump();
         JetPack_Fly();
+        Jump();
     }
 
     void FixedUpdate()
     {
         Movement();
+    }
+
+    public bool Standing_Check()
+    {
+        if (rb.velocity.magnitude == 0 && isGround) { return true; }
+        else return false;
+    }
+    public bool Movement_Check()
+    {
+        if (rb.velocity.x != 0 && isGround) { return true; }
+        else return false;
     }
 
     void Movement_Input()
@@ -49,31 +60,16 @@ public class Player_Movement : MonoBehaviour
     {
         rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
     }
-    public bool Player_is_Moving()
+    
+    void Jump()
     {
-        if (rb.velocity.x != 0 && JetPack.activeSelf == false || jetPack.outOfFuel == true) { return true; }
-        else return false;
-    }
-
-    public void Jump()
-    {
-        if (Player_is_Jumping())
+        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false || jetPack.outOfFuel == true)
         {
             rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
+
+            playerController.playerState.Subtract_State_Size(1, playerController.playerOutfit.currentOutfit.jumpTirednessSubtractSize);
         }
     }
-    public bool Player_is_Jumping()
-    {
-        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false || jetPack.outOfFuel == true) { return true; }
-        else return false;
-    }
-
-    public bool Player_is_Standing()
-    {
-        if (rb.velocity.magnitude == 0 && JetPack.activeSelf == false || jetPack.outOfFuel == true) { return true; }
-        else return false;
-    }
-
     void JetPack_Fly()
     {
         if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true && jetPack.outOfFuel == false)
