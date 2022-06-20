@@ -11,12 +11,11 @@ public struct PlayerState
     public float currentStateSize;
 }
 
-public enum PlayerActionType { isSitting, isSleeping }
+public enum PlayerActionType { isDefault, isSitting, isSleeping }
 [System.Serializable]
 public struct PlayerAction
 {
     public PlayerActionType playerActionType;
-    public bool actionActive;
     public float actionMultiplySize;
 }
 
@@ -24,6 +23,7 @@ public class Player_State : MonoBehaviour
 {
     public Player_MainController playerController;
     public PlayerState[] playerStates;
+    public PlayerAction playerCurrentAction;
     public PlayerAction[] playerActions;
 
     private void Start()
@@ -35,7 +35,6 @@ public class Player_State : MonoBehaviour
     {
         Player_isStanding();
         Player_isMoving();
-        Test_Sit();
     }
 
     void Set_Current_State_Level()
@@ -88,16 +87,22 @@ public class Player_State : MonoBehaviour
         }
     }
 
+    // action constructors
     public void Player_Action(PlayerActionType actionType)
     {
         for (int i = 0; i < playerActions.Length; i++)
         {
             if(actionType == playerActions[i].playerActionType)
             {
-                playerActions[i].actionActive = true;
+                playerCurrentAction = playerActions[i];
                 break;
             }
         }
+    }
+    public bool Player_Current_Action_Check(PlayerActionType actionType)
+    {
+        if (actionType == playerCurrentAction.playerActionType) { return true; }
+        else return false;
     }
 
     // player state update
@@ -105,37 +110,18 @@ public class Player_State : MonoBehaviour
     {
         if (playerController.playerMovement.Movement_Check())
         {
+            Player_Action(PlayerActionType.isDefault);
             Deplete_State_Size(1, playerController.playerOutfit.currentOutfit.tirednessDepleteSize);
         }
     }
     void Player_isStanding()
     {
-        if (playerController.playerMovement.Standing_Check() && !Player_OnAction())
+        if (playerController.playerMovement.Standing_Check() && Player_Current_Action_Check(PlayerActionType.isDefault))
         {
             Increase_State_Size(1, playerController.playerOutfit.currentOutfit.tirednessHealSize);
         }
     }
-    
-    bool Player_OnAction()
-    {
-        for (int i = 0; i < playerActions.Length; i++)
-        {
-            if (playerActions[i].actionActive == true)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
-
-
-    // test
-    void Test_Sit()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            Player_Action(PlayerActionType.isSitting);
-        }
-    }
+        // single player state update (increase and deplete)
+        // check if current action is increase state or deplete state
 }

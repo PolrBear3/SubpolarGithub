@@ -900,12 +900,15 @@ MonoBehaviour:
   - playerStateType: 1
     maxStateSize: 100
     currentStateSize: 0
+  playerCurrentAction:
+    playerActionType: 0
+    actionMultiplySize: 0
   playerActions:
   - playerActionType: 0
-    actionActive: 0
     actionMultiplySize: 0
   - playerActionType: 1
-    actionActive: 0
+    actionMultiplySize: 0
+  - playerActionType: 2
     actionMultiplySize: 0
 --- !u!1001 &87165401
 PrefabInstance:
