@@ -66,8 +66,6 @@ public class Player_Movement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false || jetPack.outOfFuel == true)
         {
             rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
-
-            playerController.playerState.Subtract_State_Size(1, playerController.playerOutfit.currentOutfit.jumpTirednessSubtractSize);
         }
     }
     void JetPack_Fly()
