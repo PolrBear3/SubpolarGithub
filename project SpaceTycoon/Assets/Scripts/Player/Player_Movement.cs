@@ -42,16 +42,6 @@ public class Player_Movement : MonoBehaviour
         Movement();
     }
 
-    public void Freeze_RigidBody()
-    {
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
-    }
-    public void UnFreeze_RigidBody()
-    {
-        rb.constraints = RigidbodyConstraints2D.None;
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-    }
-
     void Check_if_Ground()
     {
         Collider2D collider = Physics2D.OverlapCircle(foot.position, footRadius, groundLayer);

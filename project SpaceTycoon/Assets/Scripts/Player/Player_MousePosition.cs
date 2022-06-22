@@ -8,6 +8,7 @@ public class Player_MousePosition : MonoBehaviour
     public Transform player;
     [HideInInspector]
     public bool facingLeft;
+    public bool mouseFlip_Freeze = false;
 
     void Update()
     {
@@ -18,19 +19,22 @@ public class Player_MousePosition : MonoBehaviour
     {
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(player.position);
 
-        if (Input.mousePosition.x < screenPosition.x && !facingLeft)
+        if (!mouseFlip_Freeze)
         {
-            Flip();
-        }
-        if (Input.mousePosition.x > screenPosition.x && facingLeft)
-        {
-            Flip();
+            if (Input.mousePosition.x < screenPosition.x && !facingLeft)
+            {
+                Flip_Player();
+            }
+            if (Input.mousePosition.x > screenPosition.x && facingLeft)
+            {
+                Flip_Player();
+            }
         }
     }
-    void Flip()
-    {
-        facingLeft = !facingLeft;
 
+    public void Flip_Player()
+    {
         transform.Rotate(0f, 180f, 0f);
+        facingLeft = !facingLeft;
     }
 }

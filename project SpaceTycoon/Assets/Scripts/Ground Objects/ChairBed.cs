@@ -109,11 +109,8 @@ public class ChairBed : MonoBehaviour
         // set player's animation to sit and
         player.playerAnimation.Set_Sit_Animation();
         // freeze rigidbody
-        player.playerMovement.Freeze_RigidBody();
         // freeze flip
-
         // flip player to chairbed's facing position
-
         // main panel off
         // player gets additional sleep energy
     }
@@ -124,11 +121,8 @@ public class ChairBed : MonoBehaviour
         // set player's animation to sleep and
         player.playerAnimation.Set_Sleep_Animation();
         // freeze rigidbody
-        player.playerMovement.Freeze_RigidBody();
         // freeze flip
-
         // flip player to chairbed's facing position
-
         // main panel off
         // can't open any object menu
         // player gets sleep energy
