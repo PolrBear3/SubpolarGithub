@@ -104,14 +104,31 @@ public class ChairBed : MonoBehaviour
 
     public void Player_Sit()
     {
+        // set player to this chairbed position
         player.transform.position = sitSleepTransforms[0].position;
+        // set player's animation to sit and
+        player.playerAnimation.Set_Sit_Animation();
+        // freeze rigidbody
+        player.playerMovement.Freeze_RigidBody();
+        // freeze flip
+
+        // flip player to chairbed's facing position
+
+        // main panel off
+        // player gets additional sleep energy
     }
     public void Player_Sleep()
     {
+        // set player to this chairbed position
         player.transform.position = sitSleepTransforms[1].position;
-        // set player's animation to sleep
+        // set player's animation to sleep and
+        player.playerAnimation.Set_Sleep_Animation();
+        // freeze rigidbody
+        player.playerMovement.Freeze_RigidBody();
+        // freeze flip
+
         // flip player to chairbed's facing position
-        // freeze player rigidbody
+
         // main panel off
         // can't open any object menu
         // player gets sleep energy

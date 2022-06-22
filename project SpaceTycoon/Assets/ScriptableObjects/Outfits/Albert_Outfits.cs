@@ -11,7 +11,8 @@ public class Albert_Outfits : ScriptableObject
     public float movementSpeed;
     public float jumpForce;
 
-    public float tirednessDepleteSize;
-    public float jumpTirednessSubtractSize;
-    public float tirednessHealSize;
+    public float tirednessIncreaseSize;
+    public float tirednessDecreaseSize;
+    public float tirednessAddSize;
+    public float tirednessSubtractSize;
 }

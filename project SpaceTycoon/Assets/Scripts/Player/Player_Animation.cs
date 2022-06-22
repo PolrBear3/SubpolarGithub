@@ -16,12 +16,17 @@ public class Player_Animation : MonoBehaviour
 
     void Update()
     {
-        MoveCheck_Animation();
+        MoveCheck_Animation_Update();
     }
 
-    void MoveCheck_Animation()
+    public void Outfit_RunTimeAnimator_Set()
     {
-        if (playerController.playerMovement.horizontal > 0 || playerController.playerMovement.horizontal < 0)
+        anim.runtimeAnimatorController = playerController.playerOutfit.currentOutfit.outfitRuntimeAnimator;
+    }
+    
+    void MoveCheck_Animation_Update()
+    {
+        if (playerController.playerMovement.isMoving())
         {
             anim.SetBool("isMoving", true);
         }
@@ -31,8 +36,17 @@ public class Player_Animation : MonoBehaviour
         }
     }
 
-    public void Outfit_RunTimeAnimator_Set()
+    public void Restart_All_Animation()
     {
-        anim.runtimeAnimatorController = playerController.playerOutfit.currentOutfit.outfitRuntimeAnimator;
+        anim.SetBool("isSitting", false);
+        anim.SetBool("isSleeping", false);
+    }
+    public void Set_Sit_Animation()
+    {
+        anim.SetBool("isSitting", true);
+    }
+    public void Set_Sleep_Animation()
+    {
+        anim.SetBool("isSleeping", true);
     }
 }

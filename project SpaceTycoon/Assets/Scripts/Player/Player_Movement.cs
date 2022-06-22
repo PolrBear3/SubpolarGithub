@@ -34,6 +34,7 @@ public class Player_Movement : MonoBehaviour
         Check_if_Ground();
         JetPack_Fly();
         Jump();
+        Tiredness_Update();
     }
 
     void FixedUpdate()
@@ -41,44 +42,14 @@ public class Player_Movement : MonoBehaviour
         Movement();
     }
 
-    public bool Standing_Check()
+    public void Freeze_RigidBody()
     {
-        if (rb.velocity.magnitude == 0 && isGround) { return true; }
-        else return false;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
-    public bool Movement_Check()
+    public void UnFreeze_RigidBody()
     {
-        if (rb.velocity.x != 0 && isGround) { return true; }
-        else return false;
-    }
-
-    void Movement_Input()
-    {
-        horizontal = Input.GetAxisRaw("Horizontal");
-    }
-    void Movement()
-    {
-        rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
-    }
-    
-    void Jump()
-    {
-        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false || jetPack.outOfFuel == true)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
-        }
-    }
-    void JetPack_Fly()
-    {
-        if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true && jetPack.outOfFuel == false)
-        {
-            jetPack.buttonPressed = true;
-            rb.AddForce(Vector2.up * jetPack.flyForce);
-        }
-        else
-        {
-            jetPack.buttonPressed = false;
-        }
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     void Check_if_Ground()
@@ -97,5 +68,79 @@ public class Player_Movement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(foot.position, footRadius);
+    }
+
+    void Movement_Input()
+    {
+        horizontal = Input.GetAxisRaw("Horizontal");
+    }
+    void Movement()
+    {
+        rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
+    }
+    void Jump()
+    {
+        var addSize = playerController.playerOutfit.currentOutfit.tirednessAddSize;
+
+        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false || jetPack.outOfFuel == true)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
+
+            // add tiredness if player jumps
+            playerController.playerState.Add_State_Size(1, addSize);
+            
+            if (!playerController.playerState.State_CurrentlyNot_Max(1))
+            {
+                // if tiredness is max, subtract health
+                playerController.playerState.Subtract_State_Size(0, addSize);
+            }
+        }
+    }
+
+    public bool isMoving()
+    {
+        if (rb.velocity.x != 0 && isGround) { return true; }
+        else return false;
+    }
+    public bool isNotMoving()
+    {
+        if (rb.velocity.magnitude == 0) { return true; }
+        else return false;
+    }
+
+    void Tiredness_Update()
+    {
+        var decreaseSize = playerController.playerOutfit.currentOutfit.tirednessDecreaseSize;
+        var increaseSize = playerController.playerOutfit.currentOutfit.tirednessIncreaseSize;
+
+        if (isNotMoving())
+        {
+            // decrease tiredness if player is not moving
+            playerController.playerState.Decrease_State_Size(1, decreaseSize);
+        }
+        if (isMoving())
+        {
+            // increase tiredness if player moves
+            playerController.playerState.Increase_State_Size(1, increaseSize);
+            
+            if (!playerController.playerState.State_CurrentlyNot_Max(1))
+            {
+                // if tiredness is max, decrease health
+                playerController.playerState.Decrease_State_Size(0, increaseSize);
+            }
+        }
+    }
+    
+    void JetPack_Fly()
+    {
+        if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true && jetPack.outOfFuel == false)
+        {
+            jetPack.buttonPressed = true;
+            rb.AddForce(Vector2.up * jetPack.flyForce);
+        }
+        else
+        {
+            jetPack.buttonPressed = false;
+        }
     }
 }
