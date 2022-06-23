@@ -8,7 +8,7 @@ public class Player_MousePosition : MonoBehaviour
     public Transform player;
     [HideInInspector]
     public bool facingLeft;
-    public bool mouseFlip_Freeze = false;
+    bool mouseFlip_Freeze = false;
 
     void Update()
     {
@@ -36,5 +36,14 @@ public class Player_MousePosition : MonoBehaviour
     {
         transform.Rotate(0f, 180f, 0f);
         facingLeft = !facingLeft;
+    }
+
+    public void Freeze_MouseFlip()
+    {
+        mouseFlip_Freeze = true;
+    }
+    public void UnFreeze_MouseFlip()
+    {
+        mouseFlip_Freeze = false;
     }
 }

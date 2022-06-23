@@ -41,6 +41,7 @@ public class Player_Animation : MonoBehaviour
         anim.SetBool("isSitting", false);
         anim.SetBool("isSleeping", false);
     }
+    
     public void Set_Sit_Animation()
     {
         anim.SetBool("isSitting", true);

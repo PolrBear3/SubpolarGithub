@@ -12,7 +12,9 @@ public class ChairBed : MonoBehaviour
     public Icon icon;
     public GameObject mainPanel;
 
-    bool facingLeft = false;
+    bool facingLeft = false, usingSit = false, usingSleep = false;
+
+    public float sitDecreaseBonus, sleepDecreaseBonus;
 
     public GameObject[] rotateButtons;
     public GameObject[] modeButtons;
@@ -22,6 +24,7 @@ public class ChairBed : MonoBehaviour
 
     SpriteRenderer sr;
     public Sprite[] chairBedSprites;
+
 
     private void Awake()
     {
@@ -40,6 +43,7 @@ public class ChairBed : MonoBehaviour
     {
         controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
         controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
+        Check_SitSleep_for_TirednessDecrease();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -102,29 +106,74 @@ public class ChairBed : MonoBehaviour
         rotateButtons[1].SetActive(false);
     }
 
+    void Check_SitSleep_for_TirednessDecrease()
+    {
+        if (usingSit)
+        {
+            player.playerState.Decrease_State_Size(1, sitDecreaseBonus);
+        }
+        if (usingSleep)
+        {
+            player.playerState.Decrease_State_Size(1, sleepDecreaseBonus);
+        }
+    }
+
     public void Player_Sit()
     {
         // set player to this chairbed position
         player.transform.position = sitSleepTransforms[0].position;
+        // freeze rigidbody
+        player.playerMovement.Freeze_Player();
         // set player's animation to sit and
         player.playerAnimation.Set_Sit_Animation();
-        // freeze rigidbody
         // freeze flip
+        player.playerMousePosition.Freeze_MouseFlip();
         // flip player to chairbed's facing position
+        if (!facingLeft)
+        {
+            player.playerMousePosition.Flip_Player();
+        }
         // main panel off
-        // player gets additional sleep energy
+        mainPanel.SetActive(false);
+        // make other objects interactable near chair ???
+
+        // activate leave button
+        playerActionButtons[2].SetActive(true);
+        // player gets additional detiredness
+        usingSit = true;
     }
     public void Player_Sleep()
     {
         // set player to this chairbed position
         player.transform.position = sitSleepTransforms[1].position;
+        // freeze rigidbody
+        player.playerMovement.Freeze_Player();
         // set player's animation to sleep and
         player.playerAnimation.Set_Sleep_Animation();
-        // freeze rigidbody
         // freeze flip
+        player.playerMousePosition.Freeze_MouseFlip();
         // flip player to chairbed's facing position
+        if (!facingLeft)
+        {
+            player.playerMousePosition.Flip_Player();
+        }
         // main panel off
-        // can't open any object menu
-        // player gets sleep energy
+        mainPanel.SetActive(false);
+        // activate leave button
+        playerActionButtons[2].SetActive(true);
+        // player gets additional detiredness
+        usingSleep = true;
+    }
+
+    public void Leave_Object()
+    {
+        
+        player.playerMovement.UnFreeze_Player();
+        player.playerAnimation.Restart_All_Animation();
+        player.playerMousePosition.UnFreeze_MouseFlip();
+        mainPanel.SetActive(true);
+        playerActionButtons[2].SetActive(false);
+        usingSit = false;
+        usingSleep = false;
     }
 }
