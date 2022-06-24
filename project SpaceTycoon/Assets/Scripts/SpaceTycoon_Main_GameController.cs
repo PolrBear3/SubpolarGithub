@@ -15,6 +15,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     public static bool isGroundOptionMenuOn = false;
     public static bool isWallOptionMenuOn = false;
     public static bool isPanelMenuOn = false;
+    public int multitaskAvailable = 2;
 
     // In Game Conditions
     public int EnginesOn = 0;
@@ -24,11 +25,16 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     [SerializeField] private ObjectStorage[] _objectStorages;
     public ObjectStorage[] objectStorages => _objectStorages;
 
+    private void Update()
+    {
+        Debug.Log(multitaskAvailable);
+    }
+
     // Object Icon Constructors
     public void Icon_Popup_UpdateCheck(bool playerDetection, GameObject objectIcon)
     {
         // icon on condition
-        if (playerDetection && !isPanelMenuOn)
+        if (playerDetection && !isPanelMenuOn && multitaskAvailable > 0)
         {
             objectIcon.SetActive(true);
         }
@@ -42,6 +48,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     {
         objectMenu.SetActive(true);
         isPanelMenuOn = true;
+        multitaskAvailable -= 1;
     }
 
     // Object Main Panel Constructors
@@ -51,6 +58,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         isPanelMenuOn = false;
         isGroundOptionMenuOn = false;
         isWallOptionMenuOn = false;
+        multitaskAvailable += 1;
     }
     public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu)
     {
@@ -60,6 +68,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
             isPanelMenuOn = false;
             isGroundOptionMenuOn = false;
             isWallOptionMenuOn = false;
+            multitaskAvailable += 1;
         }
     }
 
@@ -112,6 +121,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
                 isPanelMenuOn = false;
                 isGroundOptionMenuOn = false;
                 isWallOptionMenuOn = false;
+                multitaskAvailable += 1;
                 break;
             }
         }

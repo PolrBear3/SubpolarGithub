@@ -25,7 +25,6 @@ public class ChairBed : MonoBehaviour
     SpriteRenderer sr;
     public Sprite[] chairBedSprites;
 
-
     private void Awake()
     {
         controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
@@ -133,10 +132,10 @@ public class ChairBed : MonoBehaviour
         {
             player.playerMousePosition.Flip_Player();
         }
-        // main panel off
-        mainPanel.SetActive(false);
-        // make other objects interactable near chair ???
-
+        // make other objects interactable except this chair
+        playerDetection = false;
+        Exit_MainPanel();
+        controller.multitaskAvailable -= 1;
         // activate leave button
         playerActionButtons[2].SetActive(true);
         // player gets additional detiredness
@@ -157,8 +156,9 @@ public class ChairBed : MonoBehaviour
         {
             player.playerMousePosition.Flip_Player();
         }
-        // main panel off
-        mainPanel.SetActive(false);
+        // cant multitask with other objects
+        Exit_MainPanel();
+        controller.multitaskAvailable -= 2;
         // activate leave button
         playerActionButtons[2].SetActive(true);
         // player gets additional detiredness
@@ -169,10 +169,17 @@ public class ChairBed : MonoBehaviour
     {
         
         player.playerMovement.UnFreeze_Player();
+        
         player.playerAnimation.Restart_All_Animation();
+        
         player.playerMousePosition.UnFreeze_MouseFlip();
-        mainPanel.SetActive(true);
+        
         playerActionButtons[2].SetActive(false);
+        mainPanel.SetActive(false);
+
+        if (usingSit) { controller.multitaskAvailable += 1; }
+        else if (usingSleep) { controller.multitaskAvailable += 2; }
+
         usingSit = false;
         usingSleep = false;
     }
