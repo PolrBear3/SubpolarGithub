@@ -7,6 +7,7 @@ public class Albert_Outfits : ScriptableObject
 {
     public int outfitID;
     public RuntimeAnimatorController outfitRuntimeAnimator;
+    public Sprite outfitSprite;
     
     public float movementSpeed;
     public float jumpForce;

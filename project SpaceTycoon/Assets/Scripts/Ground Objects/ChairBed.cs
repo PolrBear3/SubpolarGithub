@@ -117,69 +117,49 @@ public class ChairBed : MonoBehaviour
         }
     }
 
-    public void Player_Sit()
+    public void Sit_Sleep()
     {
-        // set player to this chairbed position
-        player.transform.position = sitSleepTransforms[0].position;
-        // freeze rigidbody
+        playerActionButtons[2].SetActive(true);
         player.playerMovement.Freeze_Player();
-        // set player's animation to sit and
-        player.playerAnimation.Set_Sit_Animation();
-        // freeze flip
         player.playerMousePosition.Freeze_MouseFlip();
-        // flip player to chairbed's facing position
         if (!facingLeft)
         {
             player.playerMousePosition.Flip_Player();
         }
-        // make other objects interactable except this chair
-        playerDetection = false;
-        Exit_MainPanel();
-        controller.multitaskAvailable -= 1;
-        // activate leave button
-        playerActionButtons[2].SetActive(true);
-        // player gets additional detiredness
-        usingSit = true;
-    }
-    public void Player_Sleep()
-    {
-        // set player to this chairbed position
-        player.transform.position = sitSleepTransforms[1].position;
-        // freeze rigidbody
-        player.playerMovement.Freeze_Player();
-        // set player's animation to sleep and
-        player.playerAnimation.Set_Sleep_Animation();
-        // freeze flip
-        player.playerMousePosition.Freeze_MouseFlip();
-        // flip player to chairbed's facing position
-        if (!facingLeft)
-        {
-            player.playerMousePosition.Flip_Player();
-        }
-        // cant multitask with other objects
-        Exit_MainPanel();
-        controller.multitaskAvailable -= 2;
-        // activate leave button
-        playerActionButtons[2].SetActive(true);
-        // player gets additional detiredness
-        usingSleep = true;
-    }
 
+        if (playerActionButtons[0].activeSelf)
+        {
+            player.transform.position = sitSleepTransforms[0].position;
+            player.playerAnimation.Set_Sit_Animation();
+            playerDetection = false;
+            Exit_MainPanel();
+            controller.multitaskAvailable -= 1;
+            usingSit = true;
+        }
+        else if (playerActionButtons[1].activeSelf)
+        {
+            player.transform.position = sitSleepTransforms[1].position;
+            player.playerAnimation.Set_Sleep_Animation();
+            Exit_MainPanel();
+            controller.multitaskAvailable -= 2;
+            usingSleep = true;
+        }
+
+    }
     public void Leave_Object()
     {
-        
+        // unfreeze rigidbody
         player.playerMovement.UnFreeze_Player();
-        
+        // reset player's animation
         player.playerAnimation.Restart_All_Animation();
-        
+        // unfreeze flip
         player.playerMousePosition.UnFreeze_MouseFlip();
-        
+        // deactivate leave button
         playerActionButtons[2].SetActive(false);
-        mainPanel.SetActive(false);
-
+        // add multitasking state  
         if (usingSit) { controller.multitaskAvailable += 1; }
         else if (usingSleep) { controller.multitaskAvailable += 2; }
-
+        // player does not get bonus tiredness decrease
         usingSit = false;
         usingSleep = false;
     }

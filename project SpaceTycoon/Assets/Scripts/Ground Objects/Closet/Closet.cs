@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct OutfitUnlock
@@ -17,13 +18,14 @@ public class Closet : MonoBehaviour
     Player_MainController player;
     Animator anim;
 
-    public OutfitUnlock[] closetOutfits;
+    public OutfitUnlock[] unlockCheckOutfits;
 
     bool playerDetection;
     public Object_ScrObj objectInfo;
     public Icon icon;
     public GameObject mainPanel, optionPanel;
     public int openedOutfitID;
+    public Image previewImage;
 
     private void Awake()
     {
@@ -39,6 +41,7 @@ public class Closet : MonoBehaviour
     {
         controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
         controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
+        controller.Automatic_TurnOff_Single_Options_inObjectPanel(playerDetection, optionPanel);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -71,21 +74,22 @@ public class Closet : MonoBehaviour
     }
     public void Open_Option(Albert_Outfits outfitInfo)
     {
-        for (int i = 0; i < closetOutfits.Length; i++)
+        for (int i = 0; i < unlockCheckOutfits.Length; i++)
         {
             Exit_Option();
             
-            if (outfitInfo.outfitID == closetOutfits[i].outfitInfo.outfitID)
+            if (outfitInfo.outfitID == unlockCheckOutfits[i].outfitInfo.outfitID)
             {
-                openedOutfitID = closetOutfits[i].outfitInfo.outfitID;
+                openedOutfitID = unlockCheckOutfits[i].outfitInfo.outfitID;
+                previewImage.sprite = outfitInfo.outfitSprite;
                 
-                if (!closetOutfits[openedOutfitID].unlocked)
+                if (!unlockCheckOutfits[openedOutfitID].unlocked)
                 {
                     controller.TurnOn_Single_Options_inObjectPanel(optionPanel);
                 }
-                else if (closetOutfits[openedOutfitID].unlocked)
+                else if (unlockCheckOutfits[openedOutfitID].unlocked)
                 {
-                    player.playerOutfit.Update_Player_Outfit(closetOutfits[openedOutfitID].outfitInfo);
+                    player.playerOutfit.Update_Player_Outfit(unlockCheckOutfits[openedOutfitID].outfitInfo);
                 }
                 break;
             }
@@ -103,24 +107,24 @@ public class Closet : MonoBehaviour
     // closet function
     public void Outfit_Craft()
     {
-        closetOutfits[openedOutfitID].unlocked = true;
+        unlockCheckOutfits[openedOutfitID].unlocked = true;
         Unlock_Check_for_Image();
         Exit_Option();
     }
     public void Unlock_Check_for_Image()
     {
-        for (int i = 0; i < closetOutfits.Length; i++)
+        for (int i = 0; i < unlockCheckOutfits.Length; i++)
         {
-            if (closetOutfits[i].unlocked)
+            if (unlockCheckOutfits[i].unlocked)
             {
-                closetOutfits[i].unlockedImage.SetActive(true);
-                closetOutfits[i].lockedImage.SetActive(false);
+                unlockCheckOutfits[i].unlockedImage.SetActive(true);
+                unlockCheckOutfits[i].lockedImage.SetActive(false);
 
             }
-            else if (!closetOutfits[i].unlocked)
+            else if (!unlockCheckOutfits[i].unlocked)
             {
-                closetOutfits[i].unlockedImage.SetActive(false);
-                closetOutfits[i].lockedImage.SetActive(true);
+                unlockCheckOutfits[i].unlockedImage.SetActive(false);
+                unlockCheckOutfits[i].lockedImage.SetActive(true);
             }
         }
     }

@@ -11,10 +11,8 @@ public struct ObjectStorage
 
 public class SpaceTycoon_Main_GameController : MonoBehaviour
 {
-    // Main Game Variables
-    public static bool isGroundOptionMenuOn = false;
-    public static bool isWallOptionMenuOn = false;
-    public static bool isPanelMenuOn = false;
+    // Main Menu UI Control
+    public bool isPanelMenuOn = false;
     public int multitaskAvailable = 2;
 
     // In Game Conditions
@@ -24,11 +22,6 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     // Craftable Object Storage
     [SerializeField] private ObjectStorage[] _objectStorages;
     public ObjectStorage[] objectStorages => _objectStorages;
-
-    private void Update()
-    {
-        Debug.Log(multitaskAvailable);
-    }
 
     // Object Icon Constructors
     public void Icon_Popup_UpdateCheck(bool playerDetection, GameObject objectIcon)
@@ -56,8 +49,6 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     {
         objectMenu.SetActive(false);
         isPanelMenuOn = false;
-        isGroundOptionMenuOn = false;
-        isWallOptionMenuOn = false;
         multitaskAvailable += 1;
     }
     public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu)
@@ -66,8 +57,6 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         {
             objectMenu.SetActive(false);
             isPanelMenuOn = false;
-            isGroundOptionMenuOn = false;
-            isWallOptionMenuOn = false;
             multitaskAvailable += 1;
         }
     }
@@ -76,14 +65,10 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     public void TurnOn_Single_Options_inObjectPanel(GameObject objectMenu)
     {
         objectMenu.SetActive(true);
-        isGroundOptionMenuOn = true;
-        isWallOptionMenuOn = true;
     }
     public void TurnOff_Single_Options_inObjectPanel(GameObject objectMenu)
     {
         objectMenu.SetActive(false);
-        isGroundOptionMenuOn = false;
-        isWallOptionMenuOn = false;
     }
 
     public void Manual_TurnOff_All_Options_inObjectPanel(GameObject[] objectOptions)
@@ -92,8 +77,6 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         {
             objectOptions[i].SetActive(false);
         }
-        isGroundOptionMenuOn = false;
-        isWallOptionMenuOn = false;
     }
     public void Automatic_TurnOff_All_Options_inObjectPanel(bool playerDetection, GameObject[] objectOptions)
     {
@@ -103,8 +86,13 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
             {
                 objectOptions[i].SetActive(false);
             }
-            isGroundOptionMenuOn = false;
-            isWallOptionMenuOn = false;
+        }
+    }
+    public void Automatic_TurnOff_Single_Options_inObjectPanel(bool playerDetection, GameObject objectOption)
+    {
+        if (!playerDetection)
+        {
+            objectOption.SetActive(false);
         }
     }
 
@@ -119,8 +107,6 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
                 icon.iconBoxCollider.SetActive(false);
                 Destroy(thisGameObject);
                 isPanelMenuOn = false;
-                isGroundOptionMenuOn = false;
-                isWallOptionMenuOn = false;
                 multitaskAvailable += 1;
                 break;
             }
