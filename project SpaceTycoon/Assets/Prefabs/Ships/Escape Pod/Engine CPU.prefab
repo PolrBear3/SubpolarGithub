@@ -612,8 +612,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   playerDetection: 0
-  Icon: {fileID: 7460660166934986035}
-  iconBoxCollider: {fileID: 1214587314720436209}
   mainPanel: {fileID: 6581422553672249902}
   icon: {fileID: 2595337226891479201}
   speedSlider: {fileID: 260153487851615521}
@@ -1100,12 +1098,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3481979228251747711}
-        m_TargetAssemblyTypeName: SpaceTycoon_Main_GameController, Assembly-CSharp
-        m_MethodName: Manual_TurnOff_ObjectPanel
-        m_Mode: 2
+        m_TargetAssemblyTypeName: EscapePod_Engine_Controller, Assembly-CSharp
+        m_MethodName: Exit_MainPanel
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 6581422553672249902}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3630,12 +3628,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3481979228251747711}
-        m_TargetAssemblyTypeName: SpaceTycoon_Main_GameController, Assembly-CSharp
-        m_MethodName: Icon_Pressed
-        m_Mode: 2
+        m_TargetAssemblyTypeName: EscapePod_Engine_Controller, Assembly-CSharp
+        m_MethodName: Open_MainPanel
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 6581422553672249902}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

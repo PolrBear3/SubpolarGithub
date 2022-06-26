@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +27,7 @@ public class EscapePod_CraftTable : MonoBehaviour
     public Text[] objectCurrentStorageText;
     public GameObject mainPanel;
     public Icon icon;
-    
+
     private void Awake()
     {
         controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
@@ -41,6 +39,7 @@ public class EscapePod_CraftTable : MonoBehaviour
         SnapPoint_ObjectStorage_Availability_Update();
         GroundSnapPoints_Sprite_Off();
         WallSnapPoints_Sprite_Off();
+        Storage_Text_Update();
     }
 
     private void Update()
@@ -153,7 +152,50 @@ public class EscapePod_CraftTable : MonoBehaviour
             wallSnapPoints[i].Sprite_Off();
         }
     }
-      
+
+    // storage system
+    void Storage_Extra_Amount_Check()
+    {
+        if (controller.objectStorages[openedObjOptionID].leftAmount != 0)
+        {
+            controller.objectStorages[openedObjOptionID].leftAmount -= 1;
+            Storage_Text_Update();
+        }
+        else if (controller.objectStorages[openedObjOptionID].leftAmount == 0)
+        {
+            // spend ingredients
+        }
+    }
+
+    public void Storage_Text_Update()
+    {
+        for (int i = 0; i < objectCurrentStorageText.Length; i++)
+        {
+
+            objectCurrentStorageText[i].text = controller.objectStorages[i].leftAmount.ToString();
+        }
+    }
+    public void Refund_Object_forIngredients(Object_ScrObj objectInfo)
+    {
+        for (int i = 0; i < controller.objectStorages.Length; i++)
+        {
+            if (controller.objectStorages[i].objectInfo == objectInfo)
+            {
+                if (controller.objectStorages[i].leftAmount != 0)
+                {
+                    controller.objectStorages[i].leftAmount -= 1;
+                    Storage_Text_Update();
+                }
+
+                if (controller.objectStorages[i].leftAmount == 0)
+                {
+                    controller.objectStorages[i].leftAmount = 0;
+                    // does not give ingredients
+                }
+            }
+        }
+    }
+
     // Options and Craft Functions
     public void Object_ID_Set(Object_ScrObj objectButtonScrObj)
     {
@@ -164,7 +206,7 @@ public class EscapePod_CraftTable : MonoBehaviour
             if (objectButtonScrObj.objectID == objectInfo[i].objectID)
             {
                 openedObjOptionID = objectInfo[i].objectID;
-                
+
                 if (objectInfo[i].objectType == ObjectType.ground)
                 {
                     controller.TurnOn_Single_Options_inObjectPanel(optionMenus[0]);
@@ -179,6 +221,7 @@ public class EscapePod_CraftTable : MonoBehaviour
             }
         }
     }
+        // bool Player_has_Ingredients();
     public void Ground_Object_Craft()
     {
         for (int i = 0; i < groundButtons.Length; i++)
@@ -197,8 +240,9 @@ public class EscapePod_CraftTable : MonoBehaviour
             // craft object
             else
             {
-                if (groundButtons[i].buttonPressed) // ?? storage check
+                if (groundButtons[i].buttonPressed)
                 {
+                    Storage_Extra_Amount_Check();
                     var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, groundSnapPoints[i].transform);
                     craftedObject.transform.parent = groundSnapPoints[i].gameObject.transform;
                     groundButtons[i].Set_Backto_UnPressed();
@@ -214,6 +258,7 @@ public class EscapePod_CraftTable : MonoBehaviour
         {
             if (wallButtons[i].buttonPressed)
             {
+                Storage_Extra_Amount_Check();
                 var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, wallSnapPoints[i].transform);
                 craftedObject.transform.parent = wallSnapPoints[i].gameObject.transform;
                 wallButtons[i].Set_Backto_UnPressed();
