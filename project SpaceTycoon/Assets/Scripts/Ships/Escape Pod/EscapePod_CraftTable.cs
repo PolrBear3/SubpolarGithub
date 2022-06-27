@@ -11,21 +11,16 @@ public class EscapePod_CraftTable : MonoBehaviour
 
     // gameobject ground and wall snappoints
     public snapPoint[] groundSnapPoints;
-    public GameObject[] groundSnapPointButtons;
-    public Button_Detector[] groundButtons;
+    public snapPoint_Buttons[] groundSnapPointButtons;
 
     public snapPoint[] wallSnapPoints;
-    public GameObject[] wallSnapPointButtons;
-    public Button_Detector[] wallButtons;
-
-    public GameObject[] optionMenus;
+    public snapPoint_Buttons[] wallSnapPointButtons;
 
     public int openedObjOptionID;
     public Button_Detector[] objectCraftOptionButtons;
     public Object_ScrObj[] objectInfo;
 
-    public Text[] objectCurrentStorageText;
-    public GameObject mainPanel;
+    public GameObject mainPanel, optionPanel;
     public Icon icon;
 
     private void Awake()
@@ -36,9 +31,9 @@ public class EscapePod_CraftTable : MonoBehaviour
 
     private void Start()
     {
-        SnapPoint_ObjectStorage_Availability_Update();
-        GroundSnapPoints_Sprite_Off();
-        WallSnapPoints_Sprite_Off();
+        SnapPoint_Button_Availability_Update();
+        GroundSnapPoints_Off();
+        WallSnapPoints_Off();
         Storage_Text_Update();
     }
 
@@ -46,8 +41,8 @@ public class EscapePod_CraftTable : MonoBehaviour
     {
         controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
         controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
-        controller.Automatic_TurnOff_All_Options_inObjectPanel(playerDetection, optionMenus);
-        Automatic_SnapPoint_Sprite_Off();
+        controller.Automatic_TurnOff_Single_Options_inObjectPanel(playerDetection, optionPanel);
+        Automatic_SnapPoint_Off();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -77,19 +72,19 @@ public class EscapePod_CraftTable : MonoBehaviour
     public void Exit_Menu()
     {
         controller.Manual_TurnOff_ObjectPanel(mainPanel);
-        controller.Manual_TurnOff_All_Options_inObjectPanel(optionMenus);
-        GroundSnapPoints_Sprite_Off();
-        WallSnapPoints_Sprite_Off();
+        controller.TurnOff_Single_Options_inObjectPanel(optionPanel);
+        GroundSnapPoints_Off();
+        WallSnapPoints_Off();
     }
     public void Exit_Option()
     {
-        controller.Manual_TurnOff_All_Options_inObjectPanel(optionMenus);
-        GroundSnapPoints_Sprite_Off();
-        WallSnapPoints_Sprite_Off();
+        controller.TurnOff_Single_Options_inObjectPanel(optionPanel);
+        GroundSnapPoints_Off();
+        WallSnapPoints_Off();
     }
 
-    // Options SnapPoint Sprite ON and OFF
-    void SnapPoint_ObjectStorage_Availability_Update()
+    // Options SnapPoint ON and OFF
+    void SnapPoint_Button_Availability_Update()
     {
         // snappoint update
         for (int i = 0; i < groundSnapPoints.Length; i++)
@@ -98,58 +93,57 @@ public class EscapePod_CraftTable : MonoBehaviour
 
             if (groundSnapPoints[i].objectPlaced)
             {
-                groundSnapPointButtons[i].SetActive(false);
+                groundSnapPointButtons[i].SnapPoint_Button_UnAvailable();
             }
             else
             {
-                groundSnapPointButtons[i].SetActive(true);
+                groundSnapPointButtons[i].SnapPoint_Button_Available();
             }
         }
-
-        // object current storage text update
-        for (int i = 0; i < objectCurrentStorageText.Length; i++)
-        {
-            objectCurrentStorageText[i].text = controller.objectStorages[i].leftAmount.ToString();
-        }
     }
-    void Automatic_SnapPoint_Sprite_Off()
+
+    void Automatic_SnapPoint_Off()
     {
         if (!playerDetection)
         {
-            GroundSnapPoints_Sprite_Off();
-            WallSnapPoints_Sprite_Off();
+            GroundSnapPoints_Off();
+            WallSnapPoints_Off();
         }
     }
 
-    public void GroundSnapPoints_Sprite_On()
+    public void GroundSnapPoints_On()
     {
         for (int i = 0; i < groundSnapPoints.Length; i++)
         {
             groundSnapPoints[i].Sprite_On();
+            groundSnapPointButtons[i].SnapPoint_Button_Available();
         }
-        SnapPoint_ObjectStorage_Availability_Update();
+        SnapPoint_Button_Availability_Update();
     }
-    public void GroundSnapPoints_Sprite_Off()
+    public void GroundSnapPoints_Off()
     {
         for (int i = 0; i < groundSnapPoints.Length; i++)
         {
             groundSnapPoints[i].Sprite_Off();
+            groundSnapPointButtons[i].SnapPoint_Button_UnAvailable();
         }
     }
 
-    public void WallSnapPoints_Sprite_On()
+    public void WallSnapPoints_On()
     {
         for (int i = 0; i < wallSnapPoints.Length; i++)
         {
             wallSnapPoints[i].Sprite_Off();
+            wallSnapPointButtons[i].SnapPoint_Button_Available();
         }
-        SnapPoint_ObjectStorage_Availability_Update();
+        SnapPoint_Button_Availability_Update();
     }
-    public void WallSnapPoints_Sprite_Off()
+    public void WallSnapPoints_Off()
     {
         for (int i = 0; i < wallSnapPoints.Length; i++)
         {
             wallSnapPoints[i].Sprite_Off();
+            wallSnapPointButtons[i].SnapPoint_Button_UnAvailable();
         }
     }
 
@@ -169,11 +163,7 @@ public class EscapePod_CraftTable : MonoBehaviour
 
     public void Storage_Text_Update()
     {
-        for (int i = 0; i < objectCurrentStorageText.Length; i++)
-        {
 
-            objectCurrentStorageText[i].text = controller.objectStorages[i].leftAmount.ToString();
-        }
     }
     public void Refund_Object_forIngredients(Object_ScrObj objectInfo)
     {
@@ -197,25 +187,24 @@ public class EscapePod_CraftTable : MonoBehaviour
     }
 
     // Options and Craft Functions
-    public void Object_ID_Set(Object_ScrObj objectButtonScrObj)
+    public void Object_ID_Set(Object_ScrObj objectButtonScrObj) 
     {
         Exit_Option();
-        SnapPoint_ObjectStorage_Availability_Update();
+        SnapPoint_Button_Availability_Update();
         for (int i = 0; i < objectInfo.Length; i++)
         {
             if (objectButtonScrObj.objectID == objectInfo[i].objectID)
             {
                 openedObjOptionID = objectInfo[i].objectID;
+                controller.TurnOn_Single_Options_inObjectPanel(optionPanel);
 
                 if (objectInfo[i].objectType == ObjectType.ground)
                 {
-                    controller.TurnOn_Single_Options_inObjectPanel(optionMenus[0]);
-                    GroundSnapPoints_Sprite_On();
+                    GroundSnapPoints_On();
                 }
                 else if (objectInfo[i].objectType == ObjectType.wall)
                 {
-                    controller.TurnOn_Single_Options_inObjectPanel(optionMenus[1]);
-                    WallSnapPoints_Sprite_On();
+                    WallSnapPoints_On();
                 }
                 break;
             }
@@ -224,47 +213,47 @@ public class EscapePod_CraftTable : MonoBehaviour
         // bool Player_has_Ingredients();
     public void Ground_Object_Craft()
     {
-        for (int i = 0; i < groundButtons.Length; i++)
+        for (int i = 0; i < groundSnapPointButtons.Length; i++)
         {
             // change crafttable position
             if (openedObjOptionID == 0)
             {
-                if (groundButtons[i].buttonPressed)
+                if (groundSnapPointButtons[i].buttonPressed)
                 {
                     gameObject.transform.position = groundSnapPoints[i].gameObject.transform.position;
                     gameObject.transform.parent = groundSnapPoints[i].gameObject.transform;
-                    groundButtons[i].Set_Backto_UnPressed();
+                    groundSnapPointButtons[i].Set_Backto_UnPressed();
                     break;
                 }
             }
             // craft object
             else
             {
-                if (groundButtons[i].buttonPressed)
+                if (groundSnapPointButtons[i].buttonPressed)
                 {
                     Storage_Extra_Amount_Check();
                     var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, groundSnapPoints[i].transform);
                     craftedObject.transform.parent = groundSnapPoints[i].gameObject.transform;
-                    groundButtons[i].Set_Backto_UnPressed();
+                    groundSnapPointButtons[i].Set_Backto_UnPressed();
                     break;
                 }
             }
         }
-        SnapPoint_ObjectStorage_Availability_Update();
+        SnapPoint_Button_Availability_Update();
     }
     public void Wall_Object_Craft()
     {
-        for (int i = 0; i < wallButtons.Length; i++)
+        for (int i = 0; i < wallSnapPointButtons.Length; i++)
         {
-            if (wallButtons[i].buttonPressed)
+            if (wallSnapPointButtons[i].buttonPressed)
             {
                 Storage_Extra_Amount_Check();
                 var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, wallSnapPoints[i].transform);
                 craftedObject.transform.parent = wallSnapPoints[i].gameObject.transform;
-                wallButtons[i].Set_Backto_UnPressed();
+                wallSnapPointButtons[i].Set_Backto_UnPressed();
                 break;
             }
         }
-        SnapPoint_ObjectStorage_Availability_Update();
+        SnapPoint_Button_Availability_Update();
     }
 }
