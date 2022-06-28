@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FarmTile_Menu : MonoBehaviour
+public class UnPlanted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
     
@@ -19,5 +19,17 @@ public class FarmTile_Menu : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void Open()
+    {
+        gameObject.SetActive(true);
+        // tweet animation
+    }
+
+    public void Close()
+    {
+        gameObject.SetActive(false);
+        // tweet animation
     }
 }
