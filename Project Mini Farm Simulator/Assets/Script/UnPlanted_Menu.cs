@@ -5,8 +5,27 @@ using UnityEngine;
 public class UnPlanted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
-    
-    // Open_Tweet() {}
+    RectTransform rectTransform;
+    public LeanTweenType tweenType;
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+    }
+
+    public void Open()
+    {
+        LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
+    }
+    public void Close()
+    {
+        controller.Reset_All_Tile_Highlights();
+        LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
+    }
+    public void PlantSeed_Close()
+    {
+        LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
+    }
 
     public void Plant_Seed(Seed_ScrObj seedtype)
     {
@@ -16,20 +35,11 @@ public class UnPlanted_Menu : MonoBehaviour
             {
                 controller.farmTiles[i].plantSeed = seedtype;
                 controller.farmTiles[i].seedPlanted = true;
+                // set farm tile seed image to seed type image
+                PlantSeed_Close();
+                controller.plantedMenu.Open();
                 break;
             }
         }
-    }
-
-    public void Open()
-    {
-        gameObject.SetActive(true);
-        // tweet animation
-    }
-
-    public void Close()
-    {
-        gameObject.SetActive(false);
-        // tweet animation
     }
 }

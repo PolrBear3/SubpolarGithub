@@ -35,26 +35,34 @@ public class FarmTile : MonoBehaviour
         image.enabled = true;
     }
 
+    public void Highlight_Tile()
+    {
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+    }
+    public void UnHighlight_Tile()
+    {
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+    }
+
     public void Open_Menu(FarmTile farmTile)
     {
         // detecting which tile was pressed
         controller.Set_OpenTileNum(farmTile);
 
-        // reset menu
-        Close_Menu();
+        // reset 
+        controller.Reset_All_Menu();
+        controller.Reset_All_Tile_Highlights();
+        
+        // highlight pressed tile
+        Highlight_Tile();
 
         if (!seedPlanted)
         {
-            controller.unPlantMenu.Open();
+            controller.unPlantedMenu.Open();
         }
         else if (seedPlanted)
         {
-            Debug.Log("planted menu opened!");
+            controller.plantedMenu.Open();
         }
-    }
-    public void Close_Menu()
-    {
-        controller.unPlantMenu.Close();
-        Debug.Log("planted menu closed!");
     }
 }
