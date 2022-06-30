@@ -27,4 +27,12 @@ public class MainGame_Controller : MonoBehaviour
             farmTiles[i].UnHighlight_Tile();
         }
     }
+
+    public void Lock_Tile_Except_Row1()
+    {
+        for (int i = 5; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].Lock_Tile();
+        }
+    }
 }

@@ -7,6 +7,6 @@ using UnityEngine.UI;
 public class Seed_ScrObj : ScriptableObject
 {
     public int seedID;
-    public Sprite sprite;
+    public Sprite[] sprites;
     public int minFinishDays, maxFinishDays;
 }

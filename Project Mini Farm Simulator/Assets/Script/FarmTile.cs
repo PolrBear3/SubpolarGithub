@@ -7,32 +7,33 @@ public class FarmTile : MonoBehaviour
 {
     MainGame_Controller controller;
 
-    Button button;
-    Image image;
+    [HideInInspector]
+    public Image image;
 
     public int tileNum;
-    public bool seedPlanted = false;
+    public bool tileLocked = false, seedPlanted = false;
+    public Sprite[] defaultTileSprites;
 
     public Seed_ScrObj plantSeed = null;
 
     public void Awake()
     {
         controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<MainGame_Controller>();
-        button = GetComponent<Button>();
         image = GetComponent<Image>();
     }
 
     public void Lock_Tile()
     {
-        button.enabled = false;
+        tileLocked = true;
+
         // locked tile image
-        image.enabled = false;
+        image.sprite = defaultTileSprites[0];
     }
     public void Unlock_Tile()
     {
-        button.enabled = true;
-        // normal tile image
-        image.enabled = true;
+        tileLocked = false;
+
+        image.sprite = defaultTileSprites[1];
     }
 
     public void Highlight_Tile()
