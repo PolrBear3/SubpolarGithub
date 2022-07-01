@@ -225,8 +225,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 0}
   tileNum: 0
+  tileLocked: 0
   seedPlanted: 0
   defaultTileSprites:
   - {fileID: 21300000, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}
   - {fileID: 21300000, guid: def7443a443d74d45bb19ac343840659, type: 3}
-  plantSeed: {fileID: 0}
+  plantedSeed: {fileID: 0}
+  tileSeedStatus:
+    dayPassed: 0
+    fullGrownDay: 0

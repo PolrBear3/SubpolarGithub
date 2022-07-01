@@ -8,5 +8,8 @@ public class Seed_ScrObj : ScriptableObject
 {
     public int seedID;
     public Sprite[] sprites;
+    // set min and max range around 5
     public int minFinishDays, maxFinishDays;
+
+    public int seedBuyPrice, harvestSellPrice;
 }

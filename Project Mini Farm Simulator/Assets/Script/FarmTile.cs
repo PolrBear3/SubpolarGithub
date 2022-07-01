@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public struct AfterSeedStatus
+{
+    public int dayPassed;
+    public int fullGrownDay;
+}
+
 public class FarmTile : MonoBehaviour
 {
     MainGame_Controller controller;
@@ -14,7 +21,8 @@ public class FarmTile : MonoBehaviour
     public bool tileLocked = false, seedPlanted = false;
     public Sprite[] defaultTileSprites;
 
-    public Seed_ScrObj plantSeed = null;
+    public Seed_ScrObj plantedSeed = null;
+    public AfterSeedStatus tileSeedStatus;
 
     public void Awake()
     {
@@ -64,6 +72,26 @@ public class FarmTile : MonoBehaviour
         else if (seedPlanted)
         {
             controller.plantedMenu.Open();
+        }
+    }
+
+    // after seed plant system 
+    public void Seed_Planted_Start_Set()
+    {
+        tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
+        tileSeedStatus.dayPassed = 0;
+    }
+    public void Seed_Planted_Status_Update()
+    {
+        if (seedPlanted)
+        {
+            tileSeedStatus.dayPassed += 1;
+            
+            // full grown complete check
+            if (tileSeedStatus.dayPassed == tileSeedStatus.fullGrownDay)
+            {
+                Debug.Log("Full Grow Complete");
+            }
         }
     }
 }

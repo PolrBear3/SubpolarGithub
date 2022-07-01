@@ -33,9 +33,10 @@ public class UnPlanted_Menu : MonoBehaviour
         {
             if (controller.openedTileNum == controller.farmTiles[i].tileNum)
             {
-                controller.farmTiles[i].plantSeed = seedtype;
                 controller.farmTiles[i].image.sprite = seedtype.sprites[0];
                 controller.farmTiles[i].seedPlanted = true;
+                controller.farmTiles[i].plantedSeed = seedtype;
+                controller.farmTiles[i].Seed_Planted_Start_Set();
                 // set farm tile seed image to seed type image
                 PlantSeed_Close();
                 controller.plantedMenu.Open();
