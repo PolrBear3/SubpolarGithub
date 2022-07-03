@@ -21,6 +21,10 @@ public class EscapePod_CraftTable : MonoBehaviour
     public Object_ScrObj[] objectInfo;
 
     public GameObject mainPanel, optionPanel;
+    public Image currentSelectedObjImage;
+    public Text currentSelectedObjDescription;
+    public Sprite deafultObjSprite;
+    public string deafultObjDescription;
     public Icon icon;
 
     private void Awake()
@@ -187,10 +191,23 @@ public class EscapePod_CraftTable : MonoBehaviour
     }
 
     // Options and Craft Functions
+    private void Current_Object_Preview(Object_ScrObj objectInfo)
+    {
+        currentSelectedObjImage.sprite = objectInfo.objectSprite;
+        currentSelectedObjDescription.text = objectInfo.objectDescription;
+
+        if (currentSelectedObjImage.sprite == null)
+        {
+            currentSelectedObjImage.sprite = deafultObjSprite;
+            currentSelectedObjDescription.text = deafultObjDescription;
+        }
+    }
     public void Object_ID_Set(Object_ScrObj objectButtonScrObj) 
     {
         Exit_Option();
         SnapPoint_Button_Availability_Update();
+        Current_Object_Preview(objectButtonScrObj);
+
         for (int i = 0; i < objectInfo.Length; i++)
         {
             if (objectButtonScrObj.objectID == objectInfo[i].objectID)

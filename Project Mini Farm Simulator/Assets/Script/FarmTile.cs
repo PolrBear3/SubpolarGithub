@@ -90,8 +90,20 @@ public class FarmTile : MonoBehaviour
             // full grown complete check
             if (tileSeedStatus.dayPassed == tileSeedStatus.fullGrownDay)
             {
-                Debug.Log("Full Grow Complete");
+                
             }
         }
+    }
+
+    // pulbic system
+    public void Harvest_Tile()
+    {
+        image.sprite = defaultTileSprites[1];
+        plantedSeed = null;
+        seedPlanted = false;
+        tileSeedStatus.dayPassed = 0;
+        controller.Reset_All_Menu();
+        controller.unPlantedMenu.Open();
+        Highlight_Tile();
     }
 }
