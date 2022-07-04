@@ -17,7 +17,7 @@ public class FarmTile : MonoBehaviour
     [HideInInspector]
     public Image image;
 
-    public int tileNum;
+    public int tileNum, tilePrice;
     public bool tileLocked = false, seedPlanted = false;
     public Sprite[] defaultTileSprites;
 
@@ -64,8 +64,12 @@ public class FarmTile : MonoBehaviour
         
         // highlight pressed tile
         Highlight_Tile();
-
-        if (!seedPlanted)
+        
+        if (tileLocked)
+        {
+            controller.lockedMenu.Open();
+        }
+        else if (!seedPlanted)
         {
             controller.unPlantedMenu.Open();
         }

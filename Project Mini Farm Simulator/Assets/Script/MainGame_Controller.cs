@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainGame_Controller : MonoBehaviour
 {
     public Default_Menu defaultMenu;
+    public Locked_Menu lockedMenu;
     public UnPlanted_Menu unPlantedMenu;
     public Planted_Menu plantedMenu;
     public Time_System timeSystem;
@@ -17,9 +18,22 @@ public class MainGame_Controller : MonoBehaviour
     private int _money = 0;
     public int money => _money;
 
+    private void Start()
+    {
+        Lock_All_Tiles();
+    }
+
+    // tile functions
     public void Set_OpenTileNum(FarmTile farmTile)
     {
         openedTileNum = farmTile.tileNum;
+    }
+    private void Lock_All_Tiles()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].Lock_Tile();
+        }
     }
 
     // ui functions
