@@ -41,6 +41,7 @@ public class MainGame_Controller : MonoBehaviour
     {
         unPlantedMenu.Close();
         plantedMenu.Close();
+        lockedMenu.Close();
     }
     public void Reset_All_Tile_Highlights()
     {
@@ -53,12 +54,15 @@ public class MainGame_Controller : MonoBehaviour
     // money functions
     public void Add_Money(int amount)
     {
+        // from default menu, tween animation +cash moving fade 
         _money += amount;
+        defaultMenu.Money_Update_Fade_Tween(true, amount);
         defaultMenu.Money_Text_Update();
     }
     public void Subtract_Money(int amount)
     {
         _money -= amount;
+        defaultMenu.Money_Update_Fade_Tween(false, amount);
         defaultMenu.Money_Text_Update();
     }
 }

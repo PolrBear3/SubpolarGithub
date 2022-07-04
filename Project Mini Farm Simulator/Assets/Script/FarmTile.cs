@@ -91,10 +91,16 @@ public class FarmTile : MonoBehaviour
         {
             tileSeedStatus.dayPassed += 1;
             
-            // full grown complete check
-            if (tileSeedStatus.dayPassed == tileSeedStatus.fullGrownDay)
+            // half grown complete check
+            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
             {
-                
+                image.sprite = plantedSeed.sprites[1];
+            }
+
+            // full grown complete check
+            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
+            {
+                image.sprite = plantedSeed.sprites[2];
             }
         }
     }

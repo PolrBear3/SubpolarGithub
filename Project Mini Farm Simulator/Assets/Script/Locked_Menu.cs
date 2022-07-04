@@ -34,6 +34,7 @@ public class Locked_Menu : MonoBehaviour
 
         if (controller.money >= selectedTile.tilePrice)
         {
+            controller.Subtract_Money(selectedTile.tilePrice);
             selectedTile.Unlock_Tile();
             Close();
         }

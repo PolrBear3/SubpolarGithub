@@ -10,6 +10,10 @@ public class Default_Menu : MonoBehaviour
     public GameObject nextDayFade;
     public Text currentInGameDayText, moneyText;
 
+    public RectTransform addMoneyFadeTextBox;
+    public Text addMoneyFadeText;
+    public LeanTweenType addMoneyTweenType;
+
     private void Start()
     {
         Money_Text_Update();
@@ -40,5 +44,24 @@ public class Default_Menu : MonoBehaviour
     public void Money_Text_Update()
     {
         moneyText.text = "$ " + controller.money.ToString();
+    }
+    public void Money_Update_Fade_Tween(bool isAdd, int amount)
+    {
+        // fade 
+        LeanTween.move(addMoneyFadeTextBox, new Vector2(-4.899982f, -18.7f), 0.5f).setEase(addMoneyTweenType);
+        LeanTween.alphaText(addMoneyFadeTextBox, 0.7f, 0.5f);
+
+        // original 
+        LeanTween.alphaText(addMoneyFadeTextBox, 0f, 0.25f).setDelay(0.5f);
+        LeanTween.move(addMoneyFadeTextBox, new Vector2(-4.899982f, -8.8f), 0f).setDelay(0.75f);
+
+        if (isAdd)
+        {
+            addMoneyFadeText.text = "+$ " + amount.ToString();
+        }
+        else if (!isAdd)
+        {
+            addMoneyFadeText.text = "-$ " + amount.ToString();
+        }
     }
 }
