@@ -48,10 +48,34 @@ public class Planted_Menu : MonoBehaviour
         }
     }
 
+    public void Water_Seed()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        if (!currentFarmTile.tileSeedStatus.currentDayWatered)
+        {
+            currentFarmTile.tileSeedStatus.watered += 1;
+            currentFarmTile.tileSeedStatus.currentDayWatered = true;
+
+            // if the seed is fully grown to crop, watering doesn't count
+            if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
+            {
+                currentFarmTile.tileSeedStatus.watered -= 1;
+            }
+        }
+    }
     public void Harvest_Sell()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        controller.Add_Money(currentFarmTile.plantedSeed.harvestSellPrice);
-        currentFarmTile.Harvest_Tile();
+        
+        // crop quality bonus
+        int sellBonus = 0;
+        if (currentFarmTile.tileSeedStatus.watered >= currentFarmTile.tileSeedStatus.dayPassed) { sellBonus = 3; }
+        else if (currentFarmTile.tileSeedStatus.watered >= currentFarmTile.tileSeedStatus.dayPassed / 2) { sellBonus = 1; }
+        else { sellBonus = 0; }
+
+        // calculate total
+        controller.Add_Money(currentFarmTile.plantedSeed.harvestSellPrice + sellBonus);
+        currentFarmTile.Reset_Tile();
     }
 }

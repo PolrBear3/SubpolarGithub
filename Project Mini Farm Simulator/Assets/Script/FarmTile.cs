@@ -8,6 +8,9 @@ public struct AfterSeedStatus
 {
     public int dayPassed;
     public int fullGrownDay;
+    public int watered;
+    public int daysWithoutWater;
+    public bool currentDayWatered;
 }
 
 public class FarmTile : MonoBehaviour
@@ -89,7 +92,11 @@ public class FarmTile : MonoBehaviour
     {
         if (seedPlanted)
         {
+            Watering_Check();
+
+            // reset next day
             tileSeedStatus.dayPassed += 1;
+            tileSeedStatus.currentDayWatered = false;
             
             // half grown complete check
             if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
@@ -104,14 +111,46 @@ public class FarmTile : MonoBehaviour
             }
         }
     }
+    private void Watering_Check()
+    {
+        if (!tileSeedStatus.currentDayWatered)
+        {
+            tileSeedStatus.daysWithoutWater += 1;
+        }
+        else if (tileSeedStatus.currentDayWatered)
+        {
+            tileSeedStatus.daysWithoutWater = 0;
+        }
+
+        // 2 days without water
+        if (tileSeedStatus.daysWithoutWater >= 3)
+        {
+            tileSeedStatus.dayPassed -= 1;
+        }
+
+        // 3 days without water
+        if (tileSeedStatus.daysWithoutWater >= 4)
+        {
+            image.sprite = defaultTileSprites[1];
+            plantedSeed = null;
+            seedPlanted = false;
+            tileSeedStatus.dayPassed = 0;
+            tileSeedStatus.watered = 0;
+            tileSeedStatus.daysWithoutWater = 0;
+            controller.Reset_All_Menu();
+            controller.Reset_All_Tile_Highlights();
+        }
+    }
 
     // pulbic system
-    public void Harvest_Tile()
+    public void Reset_Tile()
     {
         image.sprite = defaultTileSprites[1];
         plantedSeed = null;
         seedPlanted = false;
         tileSeedStatus.dayPassed = 0;
+        tileSeedStatus.watered = 0;
+        tileSeedStatus.daysWithoutWater = 0;
         controller.Reset_All_Menu();
         controller.unPlantedMenu.Open();
         Highlight_Tile();
