@@ -22,7 +22,7 @@ public class EscapePod_CraftTable : MonoBehaviour
 
     public GameObject mainPanel, optionPanel;
     public Image currentSelectedObjImage;
-    public Text currentSelectedObjDescription;
+    public Text currentSelectedObjDescription, currentSelectedObjStorageAmount;
     public Sprite deafultObjSprite;
     public string deafultObjDescription;
     public Icon icon;
@@ -38,7 +38,6 @@ public class EscapePod_CraftTable : MonoBehaviour
         SnapPoint_Button_Availability_Update();
         GroundSnapPoints_Off();
         WallSnapPoints_Off();
-        Storage_Text_Update();
     }
 
     private void Update()
@@ -152,42 +151,33 @@ public class EscapePod_CraftTable : MonoBehaviour
     }
 
     // storage system
-    void Storage_Extra_Amount_Check()
+    private void Storage_Extra_Amount_Check()
     {
         if (controller.objectStorages[openedObjOptionID].leftAmount != 0)
         {
             controller.objectStorages[openedObjOptionID].leftAmount -= 1;
-            Storage_Text_Update();
         }
         else if (controller.objectStorages[openedObjOptionID].leftAmount == 0)
         {
             // spend ingredients
         }
     }
-
-    public void Storage_Text_Update()
+    public void Refund_Object_forIngredients()
     {
-
-    }
-    public void Refund_Object_forIngredients(Object_ScrObj objectInfo)
-    {
-        for (int i = 0; i < controller.objectStorages.Length; i++)
+        if (controller.objectStorages[openedObjOptionID].leftAmount > 0)
         {
-            if (controller.objectStorages[i].objectInfo == objectInfo)
-            {
-                if (controller.objectStorages[i].leftAmount != 0)
-                {
-                    controller.objectStorages[i].leftAmount -= 1;
-                    Storage_Text_Update();
-                }
-
-                if (controller.objectStorages[i].leftAmount == 0)
-                {
-                    controller.objectStorages[i].leftAmount = 0;
-                    // does not give ingredients
-                }
-            }
+            controller.objectStorages[openedObjOptionID].leftAmount -= 1;
+            Debug.Log("half of ingredients refund successful!");
         }
+
+        if (controller.objectStorages[openedObjOptionID].leftAmount == 0)
+        {
+            controller.objectStorages[openedObjOptionID].leftAmount = 0;
+            Debug.Log("current opened object has 0 storage. refund failed!");
+            // does not give ingredients
+        }
+
+        currentSelectedObjStorageAmount.text = controller.objectStorages[openedObjOptionID].leftAmount.ToString();
     }
 
     // Options and Craft Functions
@@ -195,18 +185,19 @@ public class EscapePod_CraftTable : MonoBehaviour
     {
         currentSelectedObjImage.sprite = objectInfo.objectSprite;
         currentSelectedObjDescription.text = objectInfo.objectDescription;
+        currentSelectedObjStorageAmount.text = controller.objectStorages[openedObjOptionID].leftAmount.ToString();
 
         if (currentSelectedObjImage.sprite == null)
         {
             currentSelectedObjImage.sprite = deafultObjSprite;
             currentSelectedObjDescription.text = deafultObjDescription;
+            currentSelectedObjStorageAmount.text = " ";
         }
     }
     public void Object_ID_Set(Object_ScrObj objectButtonScrObj) 
     {
         Exit_Option();
         SnapPoint_Button_Availability_Update();
-        Current_Object_Preview(objectButtonScrObj);
 
         for (int i = 0; i < objectInfo.Length; i++)
         {
@@ -226,6 +217,7 @@ public class EscapePod_CraftTable : MonoBehaviour
                 break;
             }
         }
+        Current_Object_Preview(objectButtonScrObj);
     }
         // bool Player_has_Ingredients();
     public void Ground_Object_Craft()
