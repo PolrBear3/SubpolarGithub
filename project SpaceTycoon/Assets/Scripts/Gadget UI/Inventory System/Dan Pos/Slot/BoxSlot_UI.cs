@@ -11,9 +11,11 @@ public class BoxSlot_UI : MonoBehaviour
     [SerializeField] private Box_Slot _assignedBoxSlot;
     public Box_Slot assignedBoxSlot => _assignedBoxSlot;
 
+    public Box_Display parentDisplay { get; private set; }
+    
     private Button button;
 
-    public Box_Display parentDisplay { get; private set; }
+    public GameObject lockedImage;
 
     private void Awake()
     {
@@ -43,7 +45,6 @@ public class BoxSlot_UI : MonoBehaviour
             _itemSprite.color = Color.white;
             if (slot.currentAmount > 1) _itemCount.text = slot.currentAmount.ToString();
             else _itemCount.text = "";
-
         }
         else
         {
@@ -69,14 +70,6 @@ public class BoxSlot_UI : MonoBehaviour
         parentDisplay?.Slot_Clicked(this);
     }
 
-    public static bool slotClicked = false;
-    public void Slot_Clicked()
-    {
-        slotClicked = true;
-        slotClicked = false;
-    }
-
-    public GameObject lockedImage;
     public void Slot_Unlock_UI_Check()
     {
         if (!_assignedBoxSlot.unlocked)

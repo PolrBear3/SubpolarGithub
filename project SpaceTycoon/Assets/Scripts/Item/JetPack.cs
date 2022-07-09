@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class JetPack : MonoBehaviour
 {
+    public Player_MainController playerController;
+    public Animator anim;
+
+    public float flyForce;
+    [HideInInspector]
+    public bool buttonPressed;
+
+    public float maxEnergyFuel;
+    [HideInInspector]
+    public float currentEnergyFuel;
+    [HideInInspector]
+    public bool outOfFuel = false;
+
     private void Start()
     {
         Set_Current_Fuel();
@@ -14,15 +27,26 @@ public class JetPack : MonoBehaviour
         Button_Press_Function();
         Limit_Current_Fuel();
         Outof_Fuel();
+
+        JetPack_Active_Use();
     }
 
-    public Animator anim;
+    private void JetPack_Active_Use()
+    {
+        var playerMovement = playerController.playerMovement;
+        
+        if (!outOfFuel && Input.GetKey(KeyCode.W))
+        {
+            buttonPressed = true;
+            playerMovement.rb.AddForce(Vector2.up * flyForce);
+        }
+        else
+        {
+            buttonPressed = false;
+        }
+    }
 
-    public float flyForce;
-    [HideInInspector]
-    public bool buttonPressed;
-
-    void Button_Press_Function()
+    private void Button_Press_Function()
     {
         if (buttonPressed)
         {
@@ -34,29 +58,22 @@ public class JetPack : MonoBehaviour
             anim.SetBool("isPressed", false);
         }
     }
-
-    public float maxEnergyFuel;
-    [HideInInspector]
-    public float currentEnergyFuel;
-    [HideInInspector]
-    public bool outOfFuel = false;
-
-    void Set_Current_Fuel()
+    private void Set_Current_Fuel()
     {
         currentEnergyFuel = maxEnergyFuel;
     }
-    void Limit_Current_Fuel()
+    private void Limit_Current_Fuel()
     {
         if (currentEnergyFuel > maxEnergyFuel)
         {
             currentEnergyFuel = maxEnergyFuel;
         }
     }
-    void Use_Fuel()
+    private void Use_Fuel()
     {
         currentEnergyFuel -= 1 * Time.deltaTime;
     }
-    void Outof_Fuel()
+    private void Outof_Fuel()
     {
         if (currentEnergyFuel <= 0f)
         {

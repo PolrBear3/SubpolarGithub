@@ -125,19 +125,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 41175519376846386}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5061904349715511901}
-        m_TargetAssemblyTypeName: BoxSlot_UI, Assembly-CSharp
-        m_MethodName: Slot_Clicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &5061904349715511901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +143,7 @@ MonoBehaviour:
   _assignedBoxSlot:
     _itemInfo: {fileID: 0}
     _currentAmount: -1
-  unlocked: 0
+    unlocked: 0
   lockedImage: {fileID: 5710559717750878363}
 --- !u!1 &41175519718308744
 GameObject:

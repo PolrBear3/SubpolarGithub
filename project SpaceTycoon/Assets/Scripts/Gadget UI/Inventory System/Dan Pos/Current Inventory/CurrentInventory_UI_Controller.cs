@@ -17,7 +17,7 @@ public class CurrentInventory_UI_Controller : MonoBehaviour
         Box_Holder.boxSlotUpdateRequested -= Display_Inventory;
     }
 
-    void Display_Inventory(Box_System invToDisplay)
+    private void Display_Inventory(Box_System invToDisplay)
     {
         inventoryPanel.Refresh_Dynamic_Box(invToDisplay);
     }

@@ -6,7 +6,8 @@ public class Player_Movement : MonoBehaviour
 {
     public Player_MainController playerController;
 
-    Rigidbody2D rb;
+    [HideInInspector]
+    public Rigidbody2D rb;
 
     // horizontal movement variable
     [HideInInspector]
@@ -30,10 +31,9 @@ public class Player_Movement : MonoBehaviour
 
     void Update()
     {
-        Movement_Input();
         Check_if_Ground();
-        JetPack_Fly();
-        Jump();
+        Movement_Input();
+        Default_Jump();
         Tiredness_Update();
     }
 
@@ -52,7 +52,7 @@ public class Player_Movement : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
-    void Check_if_Ground()
+    private void Check_if_Ground()
     {
         Collider2D collider = Physics2D.OverlapCircle(foot.position, footRadius, groundLayer);
 
@@ -70,25 +70,26 @@ public class Player_Movement : MonoBehaviour
         Gizmos.DrawWireSphere(foot.position, footRadius);
     }
 
-    void Movement_Input()
+    private void Movement_Input()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
     }
-    void Movement()
+    private void Movement()
     {
         rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
     }
-    void Jump()
+
+    void Default_Jump()
     {
         var addSize = playerController.playerOutfit.currentOutfit.tirednessAddSize;
 
-        if (Input.GetKeyDown(KeyCode.W) && isGround && JetPack.activeSelf == false || jetPack.outOfFuel == true)
+        if (Input.GetKeyDown(KeyCode.W) && isGround)
         {
             rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
 
             // add tiredness if player jumps
             playerController.playerState.Add_State_Size(1, addSize);
-            
+
             if (!playerController.playerState.State_CurrentlyNot_Max(1))
             {
                 // if tiredness is max, subtract health
@@ -104,11 +105,11 @@ public class Player_Movement : MonoBehaviour
     }
     public bool isNotMoving()
     {
-        if (rb.velocity.magnitude == 0) { return true; }
+        if (rb.velocity.magnitude == 0 && isGround) { return true; }
         else return false;
     }
 
-    void Tiredness_Update()
+    private void Tiredness_Update()
     {
         var decreaseSize = playerController.playerOutfit.currentOutfit.tirednessDecreaseSize;
         var increaseSize = playerController.playerOutfit.currentOutfit.tirednessIncreaseSize;
@@ -128,19 +129,6 @@ public class Player_Movement : MonoBehaviour
                 // if tiredness is max, decrease health
                 playerController.playerState.Decrease_State_Size(0, increaseSize);
             }
-        }
-    }
-    
-    void JetPack_Fly()
-    {
-        if (Input.GetKey(KeyCode.W) && JetPack.activeSelf == true && jetPack.outOfFuel == false)
-        {
-            jetPack.buttonPressed = true;
-            rb.AddForce(Vector2.up * jetPack.flyForce);
-        }
-        else
-        {
-            jetPack.buttonPressed = false;
         }
     }
 }

@@ -19,7 +19,7 @@ public class Dynamic_CurrentInventory_Display : Box_Display
     public void Refresh_Dynamic_Box(Box_System boxToDisplay)
     {
         Clear_Slot();
-        _boxSystem = boxToDisplay; // check
+        _boxSystem = boxToDisplay;
         Assign_Slot(boxToDisplay);
     }
 

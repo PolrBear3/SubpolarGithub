@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Player_Inventory : MonoBehaviour
 {
+    public Gadget_MainController controller;
+    
+    public Animator openmenuButton;
+    public GameObject inventoryMenu;
+    
+    public Box_Holder boxHolder;
+
     private void Start()
     {
         // test
@@ -17,13 +24,6 @@ public class Player_Inventory : MonoBehaviour
         Input_Unlock_Bag_Slot();
     }
 
-    public Gadget_MainController controller;
-    public Static_Box_Display staticDisplay;
-    public Box_Holder boxHolder;
-
-    public Animator openmenuButton;
-    public GameObject inventoryMenu, mouseItemIcon;
-    
     public void Open_Inventory_Menu()
     {
         controller.Open_Gadget_Menu(inventoryMenu, openmenuButton);
@@ -35,16 +35,15 @@ public class Player_Inventory : MonoBehaviour
     }
 
     // craft jetpack test function
-
     void Add_Item()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            boxHolder.Craft_Item(0, 1);
+            boxHolder.Craft_Item(ItemType2.ingredient, 0 , 1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            boxHolder.Craft_Item(1, 1);
+            boxHolder.Craft_Item(ItemType2.item, 0, 1);
         }
     }
 

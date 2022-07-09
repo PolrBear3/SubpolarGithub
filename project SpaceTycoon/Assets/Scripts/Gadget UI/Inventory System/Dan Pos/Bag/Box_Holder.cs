@@ -5,11 +5,8 @@ using UnityEngine.Events;
 
 [System.Serializable]
 public class Box_Holder : MonoBehaviour
-{   
-    private void Awake()
-    {
-        _boxSystem = new Box_System(boxSize);
-    }
+{
+    SpaceTycoon_Main_GameController controller;
 
     [SerializeField] private int boxSize;
 
@@ -17,6 +14,12 @@ public class Box_Holder : MonoBehaviour
     public Box_System boxSystem => _boxSystem;
 
     public static UnityAction<Box_System> boxSlotUpdateRequested;
+
+    private void Awake()
+    {
+        controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
+        _boxSystem = new Box_System(boxSize);
+    }
 
     // slot space available check before crafting item
     bool Slot_Full_Check()
@@ -31,9 +34,9 @@ public class Box_Holder : MonoBehaviour
         return false; // if it went through everything and couldn't find an available slot, it returns false
     }
     // check if wanted crafting item can be stacked when all slots are full
-    bool Slot_StackFull_Check(Item_Info itemToAdd, int amountToAdd)
+    bool Slot_StackFull_Check(Item_Info itemInfo, int amountToAdd)
     {
-        if (_boxSystem.Contains_Item(itemToAdd, out List<Box_Slot> boxSlot))
+        if (_boxSystem.Contains_Item(itemInfo, out List<Box_Slot> boxSlot))
         {
             foreach (var slot in boxSlot)
             {
@@ -47,12 +50,25 @@ public class Box_Holder : MonoBehaviour
     }
 
     // craft item function
-    public List<Item_Info> items = new List<Item_Info>();
-    public void Craft_Item(int itemNum, int amount)
+    public void Craft_Item(ItemType2 itemType2, int itemNum, int amount)
     {
-        if (Slot_Full_Check() || Slot_StackFull_Check(items[itemNum], amount))
+        if (itemType2 == ItemType2.ingredient)
         {
-            _boxSystem.Add_to_Box(items[itemNum], amount);
+            var selectedItem = controller.ingredients;
+
+            if (Slot_Full_Check() || Slot_StackFull_Check(selectedItem[itemNum], amount))
+            {
+                _boxSystem.Add_to_Box(selectedItem[itemNum], amount);
+            }
+        }
+        else if (itemType2 == ItemType2.item)
+        {
+            var selectedItem = controller.items;
+
+            if (Slot_Full_Check() || Slot_StackFull_Check(selectedItem[itemNum], amount))
+            {
+                _boxSystem.Add_to_Box(selectedItem[itemNum], amount);
+            }
         }
     }
 

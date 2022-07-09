@@ -9,7 +9,12 @@ public class InventorySlot : MonoBehaviour
     public List<Item_Info> itemInfo = new List<Item_Info>();
     public List<GameObject> playerItems = new List<GameObject>();
 
-    public void Inventory_Slot_Status_Update()
+    private void Update()
+    {
+        Item_Active_Update();
+    }
+
+    private void Item_Active_Update()
     {
         for (int i = 0; i < itemInfo.Count; i++)
         {

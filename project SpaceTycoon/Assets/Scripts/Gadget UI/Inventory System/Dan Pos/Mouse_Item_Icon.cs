@@ -11,8 +11,7 @@ public class Mouse_Item_Icon : MonoBehaviour
     public Text itemCount;
     public Box_Slot assignedBoxSlot;
 
-    public static bool holdingItemOnMouse = false;
-    public InventorySlot[] inventorySlot;
+    public bool holdingItemOnMouse = false;
 
     private void Awake()
     {
@@ -20,12 +19,9 @@ public class Mouse_Item_Icon : MonoBehaviour
         itemCount.text = "";
     }
 
-    void Update_Inventory_Slot_Status() // need to put these functions in other script
+    private void Update()
     {
-        for (int i = 0; i < inventorySlot.Length; i++)
-        {
-            inventorySlot[i].Inventory_Slot_Status_Update();
-        }
+        Mouse_has_Item_ReadValue();
     }
 
     public void Update_Mouse_Slot(Box_Slot boxSlot)
@@ -38,17 +34,16 @@ public class Mouse_Item_Icon : MonoBehaviour
         itemSprite.color = Color.white;
     }
 
-    private void Update()
+    private void Mouse_has_Item_ReadValue()
     {
         if (assignedBoxSlot.itemInfo != null)
         {
-            Update_Inventory_Slot_Status();
-
             transform.position = Mouse.current.position.ReadValue();
 
-            if (BoxSlot_UI.slotClicked && Mouse.current.leftButton.wasPressedThisFrame && !Is_Pointer_Over_UIObject())
+            if (Mouse.current.leftButton.wasPressedThisFrame && !Is_Pointer_Over_UIObject())
             {
                 Clear_Slot();
+                // move back to bag slot ??
             }
         }
     }
@@ -56,7 +51,6 @@ public class Mouse_Item_Icon : MonoBehaviour
     public void Clear_Slot()
     {
         holdingItemOnMouse = false;
-        Update_Inventory_Slot_Status();
 
         assignedBoxSlot.Clear_Slot();
         itemCount.text = "";

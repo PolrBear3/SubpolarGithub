@@ -5,12 +5,13 @@ using UnityEngine;
 public class Gadget_MainController : MonoBehaviour
 {
     public GameObject[] menus;
+    public Mouse_Item_Icon mouseItemIcon;
 
     public void Close_All_Gadget_Menus(Animator openMenuButton)
     {
         for (int i=0; i < menus.Length; i++)
         {
-            if (!Mouse_Item_Icon.holdingItemOnMouse)
+            if (!mouseItemIcon.holdingItemOnMouse)
             {
                 menus[i].SetActive(false);
                 openMenuButton.SetBool("isPressed", false);
@@ -21,7 +22,7 @@ public class Gadget_MainController : MonoBehaviour
 
     public void Open_Gadget_Menu(GameObject menu, Animator openMenuButton)
     {
-        if (!Mouse_Item_Icon.holdingItemOnMouse)
+        if (!mouseItemIcon.holdingItemOnMouse)
         {
             Close_All_Gadget_Menus(openMenuButton);
             menu.SetActive(true);

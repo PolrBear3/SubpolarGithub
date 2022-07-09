@@ -13,10 +13,7 @@ public abstract class Box_Display : MonoBehaviour
     public Box_System boxSystem => _boxSystem;
     public Dictionary<BoxSlot_UI, Box_Slot> slotDictionary => _slotDictionary;
 
-    protected virtual void Start()
-    {
-
-    }
+    protected virtual void Start() {}
 
     public abstract void Assign_Slot(Box_System boxToDisplay);
 
@@ -94,8 +91,8 @@ public abstract class Box_Display : MonoBehaviour
     private void Swap_Slots(BoxSlot_UI clickedUISlot)
     {
         var clonedSlot = new Box_Slot(mouseBoxItem.assignedBoxSlot.itemInfo, mouseBoxItem.assignedBoxSlot.currentAmount);
+        
         mouseBoxItem.Clear_Slot();
-
         mouseBoxItem.Update_Mouse_Slot(clickedUISlot.assignedBoxSlot);
 
         clickedUISlot.Clear_Slot();
