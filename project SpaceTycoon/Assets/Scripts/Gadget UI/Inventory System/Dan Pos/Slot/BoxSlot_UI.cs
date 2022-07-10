@@ -26,11 +26,6 @@ public class BoxSlot_UI : MonoBehaviour
         parentDisplay = transform.parent.GetComponent<Box_Display>();
     }
 
-    private void Update()
-    {
-        Slot_Unlock_UI_Check();
-    }
-
     public void Init(Box_Slot slot)
     {
         _assignedBoxSlot = slot;
@@ -70,17 +65,17 @@ public class BoxSlot_UI : MonoBehaviour
         parentDisplay?.Slot_Clicked(this);
     }
 
-    public void Slot_Unlock_UI_Check()
+    public void Last_Clicked_Slot(bool lastClickedBag)
     {
-        if (!_assignedBoxSlot.unlocked)
+        if (lastClickedBag)
         {
-            lockedImage.SetActive(true);
-            button.enabled = false;
+            // return to bag
+            Mouse_Item_Icon.lastClickedBag = true;
         }
-        if (_assignedBoxSlot.unlocked)
+        else if (!lastClickedBag)
         {
-            lockedImage.SetActive(false);
-            button.enabled = true;
+            // return to inventory
+            Mouse_Item_Icon.lastClickedBag = false;
         }
     }
 }

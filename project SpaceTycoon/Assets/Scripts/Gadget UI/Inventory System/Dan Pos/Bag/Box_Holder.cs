@@ -26,7 +26,7 @@ public class Box_Holder : MonoBehaviour
     {
         for (int i = 0; i < _boxSystem.boxSlots.Count; i++) // goes through all slots until it finds an available slot
         {
-            if (_boxSystem.boxSlots[i].itemInfo == null && _boxSystem.boxSlots[i].unlocked)
+            if (_boxSystem.boxSlots[i].itemInfo == null)
             {
                 return true; // if it finds the first available slot, it returns true and breaks the loop
             }
@@ -69,36 +69,6 @@ public class Box_Holder : MonoBehaviour
             {
                 _boxSystem.Add_to_Box(selectedItem[itemNum], amount);
             }
-        }
-    }
-
-    // slot unlock function
-    void Restart_Slot_Level()
-    {
-        for (int i = 0; i < _boxSystem.boxSlots.Count; i++)
-        {
-            _boxSystem.boxSlots[i].unlocked = false;
-        }
-    }
-
-    int endi;
-    public void Unlock_Slot_Level(int wantedLevel)
-    {
-        // restart slot unlock state
-        Restart_Slot_Level();
-
-        // assign slots
-        if (wantedLevel == 1) { endi = 4; }
-        if (wantedLevel == 2) { endi = 8; }
-        if (wantedLevel == 3) { endi = 12; }
-        if (wantedLevel == 4) { endi = 16; }
-        if (wantedLevel == 5) { endi = 20; }
-        if (wantedLevel == 6) { endi = 24; }
-
-        // unlock assigned slots
-        for (int i = 0; i < endi; i++)
-        {
-            _boxSystem.boxSlots[i].unlocked = true;
         }
     }
 }
