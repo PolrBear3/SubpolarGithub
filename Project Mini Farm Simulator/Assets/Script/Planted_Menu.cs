@@ -13,19 +13,31 @@ public class Planted_Menu : MonoBehaviour
     public Text plantedDayPassed;
 
     public GameObject[] harvestButtons;
+    public Button[] allAvailableButtons;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
     }
 
+    private void Button_Shield(bool activate)
+    {
+        for (int i = 0; i < allAvailableButtons.Length; i++)
+        {
+            if (activate) { allAvailableButtons[i].enabled = false; }
+            else if (!activate) { allAvailableButtons[i].enabled = true; }
+        }
+    }
+
     public void Open()
     {
+        Button_Shield(false);
         Seed_Information_Update();
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
     }
     public void Close()
     {
+        Button_Shield(true);
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
