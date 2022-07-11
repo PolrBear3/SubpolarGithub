@@ -34,7 +34,7 @@ public class Planted_Menu : MonoBehaviour
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         plantedDayPassed.text = currentFarmTile.tileSeedStatus.dayPassed.ToString();
-        plantedSeedImage.sprite = currentFarmTile.plantedSeed.sprites[1];
+        plantedSeedImage.sprite = currentFarmTile.plantedSeed.sprites[3];
 
         if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
         {
