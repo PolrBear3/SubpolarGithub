@@ -8,29 +8,41 @@ public class UnPlanted_Menu : MonoBehaviour
     public MainGame_Controller controller;
     RectTransform rectTransform;
     public LeanTweenType tweenType;
-    public Button[] allSeedButtons;
+    public Button[] allAvailableButtons;
+    public GameObject[] buttonPages;
+
+    public Image currentCropImage, currentBuffImage;
+    public Seed_ScrObj currentSeedInfo;
+    public Buff_ScrObj currentBuffInfo;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
     }
+    private void Start()
+    {
+        buttonPages[1].SetActive(false);
+        buttonPages[3].SetActive(false);
+    }
 
     private void Button_Shield(bool activate)
     {
-        for (int i = 0; i < allSeedButtons.Length; i++)
+        for (int i = 0; i < allAvailableButtons.Length; i++)
         {
-            if (activate) { allSeedButtons[i].enabled = false; }
-            else if (!activate) { allSeedButtons[i].enabled = true; }
+            if (activate) { allAvailableButtons[i].enabled = false; }
+            else if (!activate) { allAvailableButtons[i].enabled = true; }
         }
     }
 
     public void Open()
     {
+        Goto_Seed_Selection();
         Button_Shield(false);
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
     }
     public void Close()
     {
+        Reset_Selections();
         Button_Shield(true);
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
@@ -41,27 +53,111 @@ public class UnPlanted_Menu : MonoBehaviour
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
 
-    public void Plant_Seed(Seed_ScrObj seedtype)
+    public void Goto_Seed_Selection()
+    {
+        buttonPages[0].SetActive(true);
+        buttonPages[1].SetActive(false);
+
+        buttonPages[2].SetActive(true);
+        buttonPages[3].SetActive(false);
+    }
+    public void Goto_Buff_Selection()
+    {
+        buttonPages[0].SetActive(false);
+        buttonPages[1].SetActive(true);
+
+        buttonPages[2].SetActive(false);
+        buttonPages[3].SetActive(true);
+    }
+
+    private void Reset_Selections()
+    {
+        currentSeedInfo = null;
+        currentCropImage.sprite = null;
+        currentBuffInfo = null;
+        currentBuffImage.sprite = null;
+    }
+    private void Check_Selections_Complete()
+    {
+        if (currentSeedInfo != null && currentBuffInfo != null)
+        {
+            allAvailableButtons[0].enabled = true;
+        }
+    }
+    public void Select_Seed(Seed_ScrObj seedInfo)
+    {
+        currentSeedInfo = seedInfo;
+        currentCropImage.sprite = seedInfo.sprites[3];
+        Check_Selections_Complete();
+    }
+    public void Select_Buff(Buff_ScrObj buffInfo)
+    {
+        currentBuffInfo = buffInfo;
+        currentBuffInfo.sprite = buffInfo.sprite;
+        Check_Selections_Complete();
+    }
+
+    private void Only_Seed_Calculation()
     {
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
             if (controller.openedTileNum == controller.farmTiles[i].tileNum)
             {
-                if (controller.money >= seedtype.seedBuyPrice)
+                if (controller.money >= currentSeedInfo.seedBuyPrice)
                 {
                     PlantSeed_Close();
-                    controller.Subtract_Money(seedtype.seedBuyPrice);
-                    controller.farmTiles[i].image.sprite = seedtype.sprites[0];
+                    controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
+                    controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
                     controller.farmTiles[i].seedPlanted = true;
-                    controller.farmTiles[i].plantedSeed = seedtype;
+                    controller.farmTiles[i].plantedSeed = currentSeedInfo;
                     controller.farmTiles[i].Seed_Planted_Start_Set();
                     controller.plantedMenu.Open();
+                    Reset_Selections();
                     break;
                 }
                 else
                 {
                     Debug.Log("Not Enough Money!");
                 }
+            }
+        }
+    }
+    private void Full_Seed_Calculation()
+    {
+        for (int i = 0; i < controller.farmTiles.Length; i++)
+        {
+            if (controller.openedTileNum == controller.farmTiles[i].tileNum)
+            {
+                if (controller.money >= currentSeedInfo.seedBuyPrice + currentBuffInfo.buffPrice)
+                {
+                    PlantSeed_Close();
+                    controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
+                    controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
+                    controller.farmTiles[i].seedPlanted = true;
+                    controller.farmTiles[i].plantedSeed = currentSeedInfo;
+                    controller.farmTiles[i].Seed_Planted_Start_Set();
+                    controller.plantedMenu.Open();
+                    Reset_Selections();
+                    break;
+                }
+                else
+                {
+                    Debug.Log("Not Enough Money!");
+                }
+            }
+        }
+    }
+    public void Plant_Seed()
+    {
+        if (currentSeedInfo != null)
+        {
+            if (currentBuffInfo == null)
+            {
+                Only_Seed_Calculation();
+            }
+            else
+            {
+                Full_Seed_Calculation();
             }
         }
     }

@@ -22,8 +22,8 @@ public class Seed_Button : MonoBehaviour
         seedPriceText.text = "$ " + seedInfo.seedBuyPrice.ToString();
     }
 
-    public void Plant_This_Seed()
+    public void Select_This_Seed()
     {
-        menu.Plant_Seed(seedInfo);
+        menu.Select_Seed(seedInfo);
     }
 }

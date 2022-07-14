@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4586990693471152197}
   - component: {fileID: 6526753294162055290}
   m_Layer: 5
-  m_Name: Seed Button
+  m_Name: Seed Button 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 8048999848462355454}
   - component: {fileID: 1003907752451625960}
   m_Layer: 5
-  m_Name: Buy Button
+  m_Name: Select Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -264,7 +264,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6526753294162055290}
         m_TargetAssemblyTypeName: Seed_Button, Assembly-CSharp
-        m_MethodName: Plant_This_Seed
+        m_MethodName: Select_This_Seed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
