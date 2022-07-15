@@ -25,6 +25,7 @@ public class FarmTile : MonoBehaviour
     public Sprite[] defaultTileSprites;
 
     public Seed_ScrObj plantedSeed = null;
+    public Buff_ScrObj selectedBuff = null;
     public AfterSeedStatus tileSeedStatus;
 
     public void Awake()
@@ -82,35 +83,33 @@ public class FarmTile : MonoBehaviour
         }
     }
 
-    // after seed plant system 
-    public void Seed_Planted_Start_Set()
+    // seed plant start system 
+    private void Default_Seed_Planted_Start_Set()
     {
         tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
         tileSeedStatus.dayPassed = 0;
     }
-    public void Seed_Planted_Status_Update()
+    private void Start_Buff_Event_Check()
     {
-        if (seedPlanted)
+        tileSeedStatus.dayPassed += selectedBuff.startAdvantageDayPoint;
+        tileSeedStatus.watered += selectedBuff.startAdvantageDayPoint;
+    }
+    public void Seed_Planted_Start_Set()
+    {
+        // seed plant start without buff
+        if (selectedBuff == null)
         {
-            Watering_Check();
-
-            // reset next day
-            tileSeedStatus.dayPassed += 1;
-            tileSeedStatus.currentDayWatered = false;
-            
-            // half grown complete check
-            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
-            {
-                image.sprite = plantedSeed.sprites[1];
-            }
-
-            // full grown complete check
-            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
-            {
-                image.sprite = plantedSeed.sprites[2];
-            }
+            Default_Seed_Planted_Start_Set();
+        }
+        // seed plant start with buff calculation
+        else if (selectedBuff)
+        {
+            Default_Seed_Planted_Start_Set();
+            Start_Buff_Event_Check();
         }
     }
+    
+    // seed plant update system
     private void Watering_Check()
     {
         if (!tileSeedStatus.currentDayWatered)
@@ -141,12 +140,59 @@ public class FarmTile : MonoBehaviour
             controller.Reset_All_Tile_Highlights();
         }
     }
+    private void Default_Seed_Planted_Update()
+    {
+        if (seedPlanted)
+        {
+            Watering_Check();
+
+            // reset next day
+            tileSeedStatus.dayPassed += 1;
+            tileSeedStatus.currentDayWatered = false;
+
+            // half grown complete check
+            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
+            {
+                image.sprite = plantedSeed.sprites[1];
+            }
+
+            // full grown complete check
+            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
+            {
+                image.sprite = plantedSeed.sprites[2];
+            }
+        }
+    }
+    private void Buff_Event_Check()
+    {
+        if (Random.value > selectedBuff.updateAdvantagePercentage * 0.01f)
+        {
+            tileSeedStatus.dayPassed += selectedBuff.updateAdvantageDayPoint;
+            tileSeedStatus.watered += selectedBuff.updateAdvantageDayPoint;
+            tileSeedStatus.currentDayWatered = true;
+        }
+    }
+    public void Seed_Planted_Status_Update()
+    {
+        // seed plant update without buff
+        if (selectedBuff == null)
+        {
+            Default_Seed_Planted_Update();
+        }
+        // seed plant update with buff calculation
+        else
+        {
+            Buff_Event_Check();
+            Default_Seed_Planted_Update();
+        }
+    }
 
     // pulbic system
     public void Reset_Tile()
     {
         image.sprite = defaultTileSprites[1];
         plantedSeed = null;
+        selectedBuff = null;
         seedPlanted = false;
         tileSeedStatus.dayPassed = 0;
         tileSeedStatus.watered = 0;

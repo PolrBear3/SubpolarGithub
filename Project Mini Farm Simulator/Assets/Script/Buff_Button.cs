@@ -21,4 +21,9 @@ public class Buff_Button : MonoBehaviour
         buffImage.sprite = buffInfo.sprite;
         buffPriceText.text = "$ " + buffInfo.buffPrice.ToString();
     }
+
+    public void Select_This_Buff()
+    {
+        menu.Select_Buff(buffInfo);
+    }
 }

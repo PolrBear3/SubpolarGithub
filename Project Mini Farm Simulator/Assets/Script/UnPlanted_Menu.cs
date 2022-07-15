@@ -97,7 +97,7 @@ public class UnPlanted_Menu : MonoBehaviour
         Check_Selections_Complete();
     }
 
-    private void Only_Seed_Calculation()
+    private void Only_Seed_Price_Calculation()
     {
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
@@ -122,7 +122,7 @@ public class UnPlanted_Menu : MonoBehaviour
             }
         }
     }
-    private void Full_Seed_Calculation()
+    private void Full_Seed_Price_Calculation()
     {
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
@@ -135,6 +135,7 @@ public class UnPlanted_Menu : MonoBehaviour
                     controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
                     controller.farmTiles[i].seedPlanted = true;
                     controller.farmTiles[i].plantedSeed = currentSeedInfo;
+                    controller.farmTiles[i].selectedBuff = currentBuffInfo;
                     controller.farmTiles[i].Seed_Planted_Start_Set();
                     controller.plantedMenu.Open();
                     Reset_Selections();
@@ -153,11 +154,11 @@ public class UnPlanted_Menu : MonoBehaviour
         {
             if (currentBuffInfo == null)
             {
-                Only_Seed_Calculation();
+                Only_Seed_Price_Calculation();
             }
             else
             {
-                Full_Seed_Calculation();
+                Full_Seed_Price_Calculation();
             }
         }
     }
