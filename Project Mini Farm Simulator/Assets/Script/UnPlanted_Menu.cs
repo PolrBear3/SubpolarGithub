@@ -12,6 +12,7 @@ public class UnPlanted_Menu : MonoBehaviour
     public GameObject[] buttonPages;
 
     public Image currentCropImage, currentBuffImage;
+    public Sprite nullCropSprite, nullBuffSprite;
     public Seed_ScrObj currentSeedInfo;
     public Buff_ScrObj currentBuffInfo;
 
@@ -73,9 +74,9 @@ public class UnPlanted_Menu : MonoBehaviour
     private void Reset_Selections()
     {
         currentSeedInfo = null;
-        currentCropImage.sprite = null;
+        currentCropImage.sprite = nullCropSprite;
         currentBuffInfo = null;
-        currentBuffImage.sprite = null;
+        currentBuffImage.sprite = nullBuffSprite;
     }
     private void Check_Selections_Complete()
     {
