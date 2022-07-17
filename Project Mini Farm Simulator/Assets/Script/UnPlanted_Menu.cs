@@ -11,6 +11,11 @@ public class UnPlanted_Menu : MonoBehaviour
     public Button[] allAvailableButtons;
     public GameObject[] buttonPages;
 
+    public GameObject[] toolTipPanels;
+    public Image[] toolTipSprites;
+    public Text[] seedToolTipTexts;
+    public Text[] buffToolTipTexts;
+
     public Image currentCropImage, currentBuffImage;
     public Sprite nullCropSprite, nullBuffSprite;
     public Seed_ScrObj currentSeedInfo;
@@ -163,4 +168,22 @@ public class UnPlanted_Menu : MonoBehaviour
             }
         }
     }
+
+    // tool tip information order > sprite, name, description, price, sellPrice, average grow day
+    public void Show_Seed_ToolTip(Seed_ScrObj currentHoveringSeed)
+    {
+        toolTipSprites[0].sprite = currentHoveringSeed.sprites[3];
+        seedToolTipTexts[0].text = currentHoveringSeed.seedName;
+        seedToolTipTexts[1].text = currentHoveringSeed.seedDescription;
+        seedToolTipTexts[2].text = currentHoveringSeed.seedBuyPrice.ToString();
+        seedToolTipTexts[3].text = currentHoveringSeed.harvestSellPrice.ToString();
+        seedToolTipTexts[4].text = 
+        currentHoveringSeed.minFinishDays + "~" + currentHoveringSeed.maxFinishDays + " days".ToString();
+
+        toolTipPanels[0].SetActive(true);
+    }
+    public void hide_Seed_ToolTip()
+    {
+        toolTipPanels[0].SetActive(false);
+    } 
 }
