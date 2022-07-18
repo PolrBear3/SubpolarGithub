@@ -175,9 +175,9 @@ public class UnPlanted_Menu : MonoBehaviour
         toolTipSprites[0].sprite = currentHoveringSeed.sprites[3];
         seedToolTipTexts[0].text = currentHoveringSeed.seedName;
         seedToolTipTexts[1].text = currentHoveringSeed.seedDescription;
-        seedToolTipTexts[2].text = currentHoveringSeed.seedBuyPrice.ToString();
-        seedToolTipTexts[3].text = currentHoveringSeed.harvestSellPrice.ToString();
-        seedToolTipTexts[4].text = 
+        seedToolTipTexts[2].text = "seed price: $ " + currentHoveringSeed.seedBuyPrice.ToString();
+        seedToolTipTexts[3].text = "sell price: $ " + currentHoveringSeed.harvestSellPrice.ToString();
+        seedToolTipTexts[4].text = "harvest: " + 
         currentHoveringSeed.minFinishDays + "~" + currentHoveringSeed.maxFinishDays + " days".ToString();
 
         toolTipPanels[0].SetActive(true);
