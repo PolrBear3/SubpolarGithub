@@ -76,18 +76,42 @@ public class Planted_Menu : MonoBehaviour
             }
         }
     }
+
+    private int Harvest_Bonus_Check()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum].tileSeedStatus;
+
+        // tier 1
+        if (currentFarmTile.watered >= currentFarmTile.fullGrownDay)
+        {
+            return 3;
+        }
+        // tier 2
+        else if (currentFarmTile.watered >= currentFarmTile.fullGrownDay * 0.75f)
+        {
+            return 2;
+        }
+        // tier 3
+        else if (currentFarmTile.watered >= currentFarmTile.fullGrownDay * 0.5f)
+        {
+            return 1;
+        }
+        // tier 4
+        else return 0;
+    }
     public void Harvest_Sell()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        
-        // crop quality bonus
-        int sellBonus = 0;
-        if (currentFarmTile.tileSeedStatus.watered >= currentFarmTile.tileSeedStatus.dayPassed) { sellBonus = 3; }
-        else if (currentFarmTile.tileSeedStatus.watered >= currentFarmTile.tileSeedStatus.dayPassed / 2) { sellBonus = 1; }
-        else { sellBonus = 0; }
 
         // calculate total
-        controller.Add_Money(currentFarmTile.plantedSeed.harvestSellPrice + sellBonus);
+        if (Harvest_Bonus_Check() > 0)
+        {
+            controller.Add_Money_withBonus(currentFarmTile.plantedSeed.harvestSellPrice, Harvest_Bonus_Check());
+        }
+        else if (Harvest_Bonus_Check() == 0)
+        {
+            controller.Add_Money(currentFarmTile.plantedSeed.harvestSellPrice);
+        }
         currentFarmTile.Reset_Tile();
     }
 }

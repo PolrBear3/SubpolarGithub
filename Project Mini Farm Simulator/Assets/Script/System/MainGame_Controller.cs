@@ -59,6 +59,13 @@ public class MainGame_Controller : MonoBehaviour
         defaultMenu.Money_Update_Fade_Tween(true, amount);
         defaultMenu.Money_Text_Update();
     }
+    public void Add_Money_withBonus(int originalAmount, int bonusAmount)
+    {
+        _money += originalAmount; 
+        _money += bonusAmount; //? single or double line
+        defaultMenu.Money_withBonus_Update_Fade_Tween(originalAmount, bonusAmount);
+        defaultMenu.Money_Text_Update();
+    }
     public void Subtract_Money(int amount)
     {
         _money -= amount;

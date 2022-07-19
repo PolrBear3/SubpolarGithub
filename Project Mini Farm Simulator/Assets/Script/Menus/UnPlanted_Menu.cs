@@ -185,5 +185,19 @@ public class UnPlanted_Menu : MonoBehaviour
     public void hide_Seed_ToolTip()
     {
         toolTipPanels[0].SetActive(false);
-    } 
+    }
+
+    public void Show_Buff_ToolTip(Buff_ScrObj currenthoveringBuff)
+    {
+        toolTipSprites[1].sprite = currenthoveringBuff.sprite;
+        buffToolTipTexts[0].text = currenthoveringBuff.buffName;
+        buffToolTipTexts[1].text = currenthoveringBuff.description;
+        buffToolTipTexts[2].text = "buff price: $ " + currenthoveringBuff.buffPrice.ToString();
+
+        toolTipPanels[1].SetActive(true);
+    }
+    public void Hide_Buff_ToolTip()
+    {
+        toolTipPanels[1].SetActive(false);
+    }
 }

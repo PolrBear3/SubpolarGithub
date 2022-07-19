@@ -9,8 +9,11 @@ public class Buff_ScrObj : ScriptableObject
 {
     public int buffID;
     public Sprite sprite;
-    public int buffPrice;
+    public string buffName;
     public BuffType buffType;
+    [TextArea(5, 10)]
+    public string description;
+    public int buffPrice;
 
     public int startAdvantageDayPoint;
 
