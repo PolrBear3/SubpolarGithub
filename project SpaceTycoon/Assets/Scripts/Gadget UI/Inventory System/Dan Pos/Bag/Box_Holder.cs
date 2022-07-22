@@ -49,8 +49,8 @@ public class Box_Holder : MonoBehaviour
         return false;
     }
 
-    // craft item function
-    public void Craft_Item(ItemType2 itemType2, int itemNum, int amount)
+    // craft and add item to this boxHolder function
+    public void Add_Item(ItemType2 itemType2, int itemNum, int amount)
     {
         if (itemType2 == ItemType2.ingredient)
         {
@@ -70,5 +70,11 @@ public class Box_Holder : MonoBehaviour
                 _boxSystem.Add_to_Box(selectedItem[itemNum], amount);
             }
         }
+    }
+
+    public void Craft_Item(Item_Info itemInfo, int amount)
+    {
+        _boxSystem.Add_to_Box(itemInfo, amount);
+        Debug.Log("check");
     }
 }

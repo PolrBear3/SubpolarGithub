@@ -13,8 +13,8 @@ public class ItemCraftTable : MonoBehaviour
     public Object_ScrObj objectInfo;
     public Icon icon;
     public GameObject[] panels;
-    public GameObject[] itemTypeLists;
 
+    public GameObject[] itemTypeLists;
     public Item_Info currentlyOpenedItem;
     public Image currentlyOpenedItemSprite;
 
@@ -101,4 +101,6 @@ public class ItemCraftTable : MonoBehaviour
         Reset_All_ItemLists();
         itemTypeLists[2].SetActive(true);
     }
+
+    // Crafting Item to Player Bag
 }

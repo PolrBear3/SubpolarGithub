@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class ItemCraftTable_ToolTip : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject toolTipPanel;
+    public RectTransform toolTipPanelRT;
+    public RectTransform[] toolTipPositions;
+
+    private void Update_ToolTip_Info(Item_Info itemInfo)
     {
-        
+        // toolTip sprite, name, description
+    }
+    private void Set_ToolTip_Position(int rowNum)
+    {
+        toolTipPanelRT.anchoredPosition = toolTipPositions[rowNum].anchoredPosition;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToolTip_On(Item_Info item_Info, int rowNum)
     {
-        
+        Update_ToolTip_Info(item_Info);
+        Set_ToolTip_Position(rowNum);
+        toolTipPanel.SetActive(true);
+    }
+    public void ToolTip_Off()
+    {
+        toolTipPanel.SetActive(false);
     }
 }
