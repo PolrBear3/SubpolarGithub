@@ -71,10 +71,4 @@ public class Box_Holder : MonoBehaviour
             }
         }
     }
-
-    public void Craft_Item(Item_Info itemInfo, int amount)
-    {
-        _boxSystem.Add_to_Box(itemInfo, amount);
-        Debug.Log("check");
-    }
 }

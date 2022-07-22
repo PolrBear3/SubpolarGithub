@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player_Inventory : MonoBehaviour
 {
-    public Gadget_MainController controller;
+    public Gadget_MainController gadgetController;
     
     public Animator openmenuButton;
     public GameObject inventoryMenu;
@@ -13,11 +13,11 @@ public class Player_Inventory : MonoBehaviour
 
     public void Open_Inventory_Menu()
     {
-        controller.Open_Gadget_Menu(inventoryMenu, openmenuButton);
+        gadgetController.Open_Gadget_Menu(inventoryMenu, openmenuButton);
     }
 
     public void Close_Inventory_Menu()
     {
-        controller.Close_All_Gadget_Menus(openmenuButton);
+        gadgetController.Close_All_Gadget_Menus(openmenuButton);
     }
 }

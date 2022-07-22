@@ -16,6 +16,7 @@ public class ItemCraftTable : MonoBehaviour
 
     public GameObject[] itemTypeLists;
     public Item_Info currentlyOpenedItem;
+    public Item_Info jetPack;
     public Image currentlyOpenedItemSprite;
 
     private void Awake()
@@ -101,6 +102,4 @@ public class ItemCraftTable : MonoBehaviour
         Reset_All_ItemLists();
         itemTypeLists[2].SetActive(true);
     }
-
-    // Crafting Item to Player Bag
 }
