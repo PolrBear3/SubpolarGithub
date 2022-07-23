@@ -18,26 +18,49 @@ public class Slot : MonoBehaviour
     public Text amountText;
 
     //
+    private bool Move_Check()
+    {
+        if (Slots_Controller.saveSlot1 != null)
+        {
+            return true;
+        }
+        else return false;
+    }
 
-
-    //
     public void Select_Slot()
     {
-        if (!slotSelected)
-        {
-            system.DeSelect_All_Slots();
-            slotSelected = true;
-            slotSelectHighlighter.SetActive(true);
-        }
-        else if (slotSelected)
-        {
-            DeSelect_Slot();
-        }
+        slotSelected = true;
+        slotSelectHighlighter.SetActive(true);
     }
     public void DeSelect_Slot()
     {
         slotSelected = false;
         slotSelectHighlighter.SetActive(false);
+    }
+
+    //
+    public void Click_Slot()
+    {
+        if (Move_Check())
+        {
+            Empty_Slot();
+            Assign_Slot(Slots_Controller.saveSlot1.currentItem, Slots_Controller.saveSlot1.slotAmount);
+            Slots_Controller.Clear_SaveSlot1();
+        }
+        else
+        {
+            if (!slotSelected)
+            {
+                system.DeSelect_All_Slots();
+                Select_Slot();
+                Slots_Controller.Assign_SaveSlot(this);
+            }
+            else if (slotSelected)
+            {
+                DeSelect_Slot();
+                Slots_Controller.Clear_SaveSlot1();
+            }
+        }
     }
 
     //
