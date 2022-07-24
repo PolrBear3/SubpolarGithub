@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class Slots_DataBase : MonoBehaviour
 {
-    public Slot staticSlot;
-    public Slot normalSlot;
+    public Static_Slots_System staticSlotsSystem;
+    public Slots_System slotsSystem;
 
-    public void Save_StaticSlot(Slot slot)
+    public void Connect_Slots_System(Slots_System slotsSystem)
     {
-        staticSlot = slot;
+        this.slotsSystem = slotsSystem;
     }
-    public void Save_NormalSlot(Slot slot)
+    public void Reset_Slots_System()
     {
-        normalSlot = slot;
+        slotsSystem = null;
     }
 
-    public void Clear_StaticSlot()
+    public void Move_SlotsSystem_to_StaticSlotsSystem(Item_Info itemInfo, int amount)
     {
-        staticSlot = null;
+        staticSlotsSystem.Assign_to_EmptySlot(itemInfo, amount);
     }
-    public void Clear_NormalSlot()
+    public void Move_StaticSlotsSystem_to_SlotsSystem(Item_Info itemInfo, int amount)
     {
-        normalSlot = null;
+        slotsSystem.Assign_to_EmptySlot(itemInfo, amount);
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour
+public class Static_Slot : MonoBehaviour
 {
-    public Slots_System system;
+    public Static_Slots_System system;
 
     public bool slotSelected = false;
     public bool hasItem = false;
@@ -35,6 +35,6 @@ public class Slot : MonoBehaviour
 
     public void Move_Slot()
     {
-        system.Move_Slot_to_StaticSlotsSystem(currentItem, itemAmount);
+        system.Move_Slot_to_SlotsSystem(currentItem, itemAmount);
     }
 }

@@ -5,37 +5,29 @@ using UnityEngine;
 public class Static_Slots_System : MonoBehaviour
 {
     private Slots_DataBase dataBase;
-    public Slot[] slots;
+    public Static_Slot[] staticSlots;
 
     private void Awake()
     {
         dataBase = GameObject.FindGameObjectWithTag("GameController").GetComponent<Slots_DataBase>();
     }
-    private void Start()
-    {
-        Find_EmptySlots();
-    }
 
-    //
-    private void Find_EmptySlots()
+    // out 
+    public void Move_Slot_to_SlotsSystem(Item_Info itemInfo, int amount)
     {
-        for (int i = 0; i < slots.Length; i++)
+        dataBase.Move_StaticSlotsSystem_to_SlotsSystem(itemInfo, amount);
+    }
+    // in
+    public void Assign_to_EmptySlot(Item_Info itemInfo, int amount)
+    {
+        for (int i = 0; i < staticSlots.Length; i++)
         {
-            if (slots[i].currentItem == null)
+            // stack check
+
+            if (staticSlots[i] == null)
             {
-                slots[i].Empty_Slot();
+                staticSlots[i].Assign_Slot(itemInfo, amount);
             }
         }
     }
-
-    public void DeSelect_All_Slots()
-    {
-        for (int i = 0; i < slots.Length; i++)
-        {
-            slots[i].Slot_DeSelect();
-        }
-    }
-
-    //
-
 }
