@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8325050093804525139}
   - component: {fileID: 7191868133960063773}
   - component: {fileID: 7694323499138092181}
-  - component: {fileID: 3261652586995829178}
+  - component: {fileID: 4808167966635078219}
   m_Layer: 5
   m_Name: Bag
   m_TagString: Untagged
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Spacing: {x: 30, y: 30}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &3261652586995829178
+--- !u!114 &4808167966635078219
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,6 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d13cf821fcaca4b0ba35d1d0f499f6ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staticSystem: {fileID: 4808167966635078219}
+  normalSystem: {fileID: 0}
   slots:
   - {fileID: 324610698026336562}
   - {fileID: 7308151721102392204}
@@ -133,7 +135,7 @@ PrefabInstance:
     - target: {fileID: 327858027065700994, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: system
       value: 
-      objectReference: {fileID: 3261652586995829178}
+      objectReference: {fileID: 4808167966635078219}
     - target: {fileID: 1141028774232889869, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -250,7 +252,7 @@ PrefabInstance:
     - target: {fileID: 327858027065700994, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: system
       value: 
-      objectReference: {fileID: 3261652586995829178}
+      objectReference: {fileID: 4808167966635078219}
     - target: {fileID: 1141028774232889869, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -367,7 +369,7 @@ PrefabInstance:
     - target: {fileID: 327858027065700994, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: system
       value: 
-      objectReference: {fileID: 3261652586995829178}
+      objectReference: {fileID: 4808167966635078219}
     - target: {fileID: 1141028774232889869, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -484,7 +486,7 @@ PrefabInstance:
     - target: {fileID: 327858027065700994, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: system
       value: 
-      objectReference: {fileID: 3261652586995829178}
+      objectReference: {fileID: 4808167966635078219}
     - target: {fileID: 1141028774232889869, guid: 4392b24e50d6e4ec39187a4679c94774, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

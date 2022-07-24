@@ -11,61 +11,41 @@ public class Slot : MonoBehaviour
 
     public Slots_System system;
     public Item_Info currentItem;
-    public int slotAmount;
+    public int itemAmount;
 
     public GameObject slotSelectHighlighter;
     public Image itemSprite;
     public Text amountText;
 
     //
-    private bool Move_Check()
+    private void Slot_Select()
     {
-        if (Slots_Controller.saveSlot1 != null)
-        {
-            return true;
-        }
-        else return false;
-    }
-
-    public void Select_Slot()
-    {
+        system.DeSelect_All_Slots();
         slotSelected = true;
         slotSelectHighlighter.SetActive(true);
+        system.Save_Slot_DataBase(this);
     }
-    public void DeSelect_Slot()
+    public void Slot_DeSelect()
     {
         slotSelected = false;
         slotSelectHighlighter.SetActive(false);
     }
-
-    //
     public void Click_Slot()
     {
-        if (Move_Check())
+        if (!slotSelected)
         {
-            Empty_Slot();
-            Assign_Slot(Slots_Controller.saveSlot1.currentItem, Slots_Controller.saveSlot1.slotAmount);
-            Slots_Controller.Clear_SaveSlot1();
+            Slot_Select();
         }
-        else
+        else if (slotSelected)
         {
-            if (!slotSelected)
-            {
-                system.DeSelect_All_Slots();
-                Select_Slot();
-                Slots_Controller.Assign_SaveSlot(this);
-            }
-            else if (slotSelected)
-            {
-                DeSelect_Slot();
-                Slots_Controller.Clear_SaveSlot1();
-            }
+            Slot_DeSelect();
         }
     }
 
     //
     public void Empty_Slot()
     {
+        currentItem = null;
         itemSprite.sprite = null;
         itemSprite.color = Color.clear;
         amountText.text = "";
@@ -73,6 +53,7 @@ public class Slot : MonoBehaviour
     public void Assign_Slot(Item_Info itemInfo, int itemAmount)
     {
         currentItem = itemInfo;
+        this.itemAmount = itemAmount;
         itemSprite.sprite = itemInfo.itemSprite;
         itemSprite.color = Color.white;
         amountText.text = itemAmount.ToString();
