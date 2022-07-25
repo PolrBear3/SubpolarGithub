@@ -11,7 +11,22 @@ public class Static_Slots_System : MonoBehaviour
     {
         dataBase = GameObject.FindGameObjectWithTag("GameController").GetComponent<Slots_DataBase>();
     }
+    private void Start()
+    {
+        Search_Start_EmptySlots();
+    }
 
+    // start
+    private void Search_Start_EmptySlots()
+    {
+        for (int i = 0; i < staticSlots.Length; i++)
+        {
+            if (staticSlots[i] == null)
+            {
+                staticSlots[i].Empty_Slot();
+            }
+        }
+    }
     // out 
     public void Move_Slot_to_SlotsSystem(Item_Info itemInfo, int amount)
     {
@@ -28,6 +43,14 @@ public class Static_Slots_System : MonoBehaviour
             {
                 staticSlots[i].Assign_Slot(itemInfo, amount);
             }
+        }
+    }
+    // resest
+    public void DeSelect_All_Slots()
+    {
+        for (int i = 0; i < staticSlots.Length; i++)
+        {
+            staticSlots[i].DeSelect_Slot();
         }
     }
 }

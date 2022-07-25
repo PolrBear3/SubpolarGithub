@@ -167,10 +167,10 @@ GameObject:
   - component: {fileID: 1141028774232889869}
   - component: {fileID: 8400204663306912249}
   - component: {fileID: 3960491179134087071}
-  - component: {fileID: 327858027065700994}
   - component: {fileID: 7674592268726601934}
+  - component: {fileID: 7253520027367655918}
   m_Layer: 5
-  m_Name: Slot
+  m_Name: Static Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,27 +237,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &327858027065700994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3946733641218686045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29aed9e7aa51c6f4badb83a315ee0358, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  system: {fileID: 0}
-  slotSelected: 0
-  hasItem: 0
-  currentItem: {fileID: 0}
-  itemAmount: 0
-  slotSelectHighlighter: {fileID: 1396276710277664310}
-  moveButton: {fileID: 4659708105820169954}
-  itemSprite: {fileID: 1124846399645256865}
-  amountText: {fileID: 5172609545203116172}
 --- !u!114 &7674592268726601934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,8 +281,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 327858027065700994}
-        m_TargetAssemblyTypeName: Slot, Assembly-CSharp
+      - m_Target: {fileID: 7253520027367655918}
+        m_TargetAssemblyTypeName: Static_Slot, Assembly-CSharp
         m_MethodName: Click_Slot
         m_Mode: 1
         m_Arguments:
@@ -314,6 +293,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7253520027367655918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3946733641218686045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16017651be98721429553c823c4ee7ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  system: {fileID: 0}
+  slotSelected: 0
+  hasItem: 0
+  currentItem: {fileID: 0}
+  itemAmount: 0
+  slotSelectHighlighter: {fileID: 1396276710277664310}
+  moveButton: {fileID: 4659708105820169954}
+  itemSprite: {fileID: 1124846399645256865}
+  amountText: {fileID: 5172609545203116172}
 --- !u!1 &4659708105820169954
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,8 +436,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 327858027065700994}
-        m_TargetAssemblyTypeName: Slot, Assembly-CSharp
+      - m_Target: {fileID: 7253520027367655918}
+        m_TargetAssemblyTypeName: Static_Slot, Assembly-CSharp
         m_MethodName: Move_Slot
         m_Mode: 1
         m_Arguments:
