@@ -35,9 +35,10 @@ public class Static_Slots_System : MonoBehaviour
         {
             // stack check
 
-            if (staticSlots[i] == null)
+            if (!staticSlots[i].hasItem)
             {
                 staticSlots[i].Assign_Slot(itemInfo, amount);
+                break;
             }
         }
     }
@@ -48,5 +49,11 @@ public class Static_Slots_System : MonoBehaviour
         {
             staticSlots[i].DeSelect_Slot();
         }
+    }
+    
+    // test
+    public void Craft_Item(Item_Info item)
+    {
+        Assign_to_EmptySlot(item, 1);
     }
 }

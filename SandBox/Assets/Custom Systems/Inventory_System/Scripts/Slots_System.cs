@@ -40,9 +40,10 @@ public class Slots_System : MonoBehaviour
         {
             // stack check
 
-            if (slots[i].currentItem == null)
+            if (!slots[i].hasItem)
             {
                 slots[i].Assign_Slot(itemInfo, amount);
+                break;
             }
         }
     }
