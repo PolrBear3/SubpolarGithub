@@ -21,7 +21,7 @@ public class Static_Slots_System : MonoBehaviour
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
-            if (staticSlots[i] == null)
+            if (staticSlots[i].currentItem == null)
             {
                 staticSlots[i].Empty_Slot();
             }

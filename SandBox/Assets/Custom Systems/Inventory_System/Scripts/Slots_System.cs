@@ -26,7 +26,7 @@ public class Slots_System : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i] == null)
+            if (slots[i].currentItem == null)
             {
                 slots[i].Empty_Slot();
             }
@@ -44,7 +44,7 @@ public class Slots_System : MonoBehaviour
         {
             // stack check
 
-            if (slots[i] == null)
+            if (slots[i].currentItem == null)
             {
                 slots[i].Assign_Slot(itemInfo, amount);
             }
