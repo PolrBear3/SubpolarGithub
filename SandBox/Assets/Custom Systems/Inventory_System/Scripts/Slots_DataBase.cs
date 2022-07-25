@@ -7,9 +7,6 @@ public class Slots_DataBase : MonoBehaviour
     public Static_Slots_System staticSlotsSystem;
     public Slots_System slotsSystem;
 
-    public Item_Info itemInfo;
-    public int amount;
-
     public void Connect_Slots_System(Slots_System slotsSystem)
     {
         this.slotsSystem = slotsSystem;
@@ -19,18 +16,12 @@ public class Slots_DataBase : MonoBehaviour
         slotsSystem = null;
     }
 
-    public void Move_to_StaticSlotsSystem(Item_Info itemInfo, int amount)
+    public void MoveSlot_to_StaticSlotsSystem(Item_Info itemInfo, int amount)
     {
-        this.itemInfo = itemInfo;
-        this.amount = amount;
-
-        staticSlotsSystem.Assign_to_EmptySlot(this.itemInfo, this.amount);
+        staticSlotsSystem.Assign_to_EmptySlot(itemInfo, amount);
     }
-    public void Move_to_Slots_System(Item_Info itemInfo, int amount)
+    public void MoveSlot_to_Slots_System(Item_Info itemInfo, int amount)
     {
-        this.itemInfo = itemInfo;
-        this.amount = amount;
-
-        slotsSystem.Assign_to_EmptySlot(this.itemInfo, this.amount);
+        slotsSystem.Assign_to_EmptySlot(itemInfo, amount);
     }
 }

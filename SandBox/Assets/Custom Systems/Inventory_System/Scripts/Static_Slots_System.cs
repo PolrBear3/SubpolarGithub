@@ -28,6 +28,28 @@ public class Static_Slots_System : MonoBehaviour
             }
         }
     }
+
+    // check
+    public bool Slot_Available()
+    {
+        for (int i = 0; i < staticSlots.Length; i++)
+        {
+            if (!staticSlots[i].hasItem)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool Other_Slot_Available()
+    {
+        if (dataBase.slotsSystem.Slot_Available())
+        {
+            return true;
+        }
+        else return false;
+    }
+
     // in
     public void Assign_to_EmptySlot(Item_Info itemInfo, int amount)
     {
@@ -42,6 +64,7 @@ public class Static_Slots_System : MonoBehaviour
             }
         }
     }
+
     // resest
     public void DeSelect_All_Slots()
     {
@@ -49,11 +72,5 @@ public class Static_Slots_System : MonoBehaviour
         {
             staticSlots[i].DeSelect_Slot();
         }
-    }
-    
-    // test
-    public void Craft_Item(Item_Info item)
-    {
-        Assign_to_EmptySlot(item, 1);
     }
 }

@@ -41,7 +41,7 @@ public class Slot : MonoBehaviour
         slotSelected = true;
         slotSelectHighlighter.SetActive(true);
 
-        if (hasItem)
+        if (hasItem && system.Other_Slot_Available())
         {
             moveButton.SetActive(true);
         }
@@ -67,7 +67,8 @@ public class Slot : MonoBehaviour
     public void Move_Slot()
     {
         // assign to other
-        system.dataBase.Move_to_StaticSlotsSystem(currentItem, itemAmount);
+        system.dataBase.MoveSlot_to_StaticSlotsSystem(currentItem, itemAmount);
+        Empty_Slot();
         DeSelect_Slot();
     }
 }

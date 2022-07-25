@@ -8,6 +8,7 @@ public class Slots_System : MonoBehaviour
     public Slots_DataBase dataBase;
     public Slot[] slots;
 
+
     private void Awake()
     {
         dataBase = GameObject.FindGameObjectWithTag("GameController").GetComponent<Slots_DataBase>();
@@ -33,6 +34,28 @@ public class Slots_System : MonoBehaviour
             }
         }
     }
+
+    // check
+    public bool Slot_Available()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (!slots[i].hasItem)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool Other_Slot_Available()
+    {
+        if (dataBase.staticSlotsSystem.Slot_Available())
+        {
+            return true;
+        }
+        else return false;
+    }
+
     // in
     public void Assign_to_EmptySlot(Item_Info itemInfo, int amount)
     {
@@ -47,6 +70,7 @@ public class Slots_System : MonoBehaviour
             }
         }
     }
+
     // resest
     public void DeSelect_All_Slots()
     {
