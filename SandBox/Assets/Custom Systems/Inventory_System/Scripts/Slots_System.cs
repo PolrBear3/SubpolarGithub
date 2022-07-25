@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Slots_System : MonoBehaviour
 {
-    private Slots_DataBase dataBase;
+    [HideInInspector]
+    public Slots_DataBase dataBase;
     public Slot[] slots;
 
     private void Awake()
@@ -31,11 +32,6 @@ public class Slots_System : MonoBehaviour
                 slots[i].Empty_Slot();
             }
         }
-    }
-    // out
-    public void Move_Slot_to_StaticSlotsSystem(Item_Info itemInfo, int amount)
-    {
-        dataBase.Move_SlotsSystem_to_StaticSlotsSystem(itemInfo, amount);
     }
     // in
     public void Assign_to_EmptySlot(Item_Info itemInfo, int amount)

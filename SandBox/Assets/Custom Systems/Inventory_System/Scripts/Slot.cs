@@ -40,6 +40,11 @@ public class Slot : MonoBehaviour
         system.DeSelect_All_Slots();
         slotSelected = true;
         slotSelectHighlighter.SetActive(true);
+
+        if (hasItem)
+        {
+            moveButton.SetActive(true);
+        }
     }
     public void DeSelect_Slot()
     {
@@ -53,11 +58,6 @@ public class Slot : MonoBehaviour
         if (!slotSelected)
         {
             Select_Slot();
-
-            if (hasItem)
-            {
-                moveButton.SetActive(true);
-            }
         }
         else if (slotSelected)
         {
@@ -66,7 +66,8 @@ public class Slot : MonoBehaviour
     }
     public void Move_Slot()
     {
-        system.Move_Slot_to_StaticSlotsSystem(currentItem, itemAmount);
-        Empty_Slot();
+        // assign to other
+        system.dataBase.Move_to_StaticSlotsSystem(currentItem, itemAmount);
+        DeSelect_Slot();
     }
 }
