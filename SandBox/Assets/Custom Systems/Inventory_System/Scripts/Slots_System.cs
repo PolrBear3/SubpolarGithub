@@ -61,11 +61,27 @@ public class Slots_System : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (!slots[i].hasItem)
+            // search if there is same item
+            if (itemInfo == slots[i].currentItem)
             {
-                // stack check
+                // slot stack function
+                slots[i].Stack_Slot(amount);
 
+            }
+            // if it is the new item in the array
+            else
+            {
                 slots[i].Assign_Slot(itemInfo, amount);
+            }
+        }
+    }
+    private void Assign_to_Empty_for_LeftOver(Item_Info itemInfo, int leftOverAmount)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].currentItem == null)
+            {
+                slots[i].Assign_Slot(itemInfo, leftOverAmount);
                 break;
             }
         }

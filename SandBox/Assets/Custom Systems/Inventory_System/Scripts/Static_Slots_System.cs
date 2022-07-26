@@ -55,15 +55,31 @@ public class Static_Slots_System : MonoBehaviour
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
-            // stack check
-
-            if (!staticSlots[i].hasItem)
+            // search if there is same item
+            if (itemInfo == staticSlots[i].currentItem)
+            {
+                // slot stack function
+                staticSlots[i].Stack_Slot(amount);
+            }
+            // if it is the new item in the array
+            else
             {
                 staticSlots[i].Assign_Slot(itemInfo, amount);
+            }
+        }
+    }
+    private void Assign_to_Empty_for_LeftOver(Item_Info itemInfo, int leftOverAmount)
+    {
+        for (int i = 0; i < staticSlots.Length; i++)
+        {
+            if (staticSlots[i].currentItem == null)
+            {
+                staticSlots[i].Assign_Slot(itemInfo, leftOverAmount);
                 break;
             }
         }
     }
+
 
     // resest
     public void DeSelect_All_Slots()

@@ -34,6 +34,11 @@ public class Static_Slot : MonoBehaviour
         itemSprite.color = Color.white;
         amountText.text = itemAmount.ToString();
     }
+    public void Stack_Slot(int additionalAmount)
+    {
+        itemAmount += additionalAmount;
+        amountText.text = itemAmount.ToString();
+    }
 
     public void Select_Slot()
     {
