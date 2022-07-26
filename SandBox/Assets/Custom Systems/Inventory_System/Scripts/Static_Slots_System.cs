@@ -41,45 +41,69 @@ public class Static_Slots_System : MonoBehaviour
         }
         return false;
     }
-    public bool Other_Slot_Available()
-    {
-        if (dataBase.slotsSystem.Slot_Available())
-        {
-            return true;
-        }
-        else return false;
-    }
-
-    // in
-    public void Assign_to_EmptySlot(Item_Info itemInfo, int amount)
+    public bool Same_Item_Stack_Available(Item_Info itemInfo)
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
-            // search if there is same item
-            if (itemInfo == staticSlots[i].currentItem)
+            if (itemInfo == staticSlots[i].currentItem && staticSlots[i].itemAmount < itemInfo.itemMaxAmount)
             {
-                // slot stack function
-                staticSlots[i].Stack_Slot(amount);
-            }
-            // if it is the new item in the array
-            else
-            {
-                staticSlots[i].Assign_Slot(itemInfo, amount);
+                return true;
             }
         }
+        return false;
     }
-    private void Assign_to_Empty_for_LeftOver(Item_Info itemInfo, int leftOverAmount)
+    public void Over_MaxAmount_Devide(Static_Slot staticSlot)
+    {
+        if (staticSlot.itemAmount > staticSlot.currentItem.itemMaxAmount)
+        {
+            int leftOver = staticSlot.itemAmount - staticSlot.currentItem.itemMaxAmount;
+
+            if (Slot_Available())
+            {
+                Add_Item(staticSlot.currentItem, leftOver);
+            }
+            else if (!Slot_Available())
+            {
+                dataBase.MoveSlot_to_Slots_System(staticSlot.currentItem, leftOver);
+            }
+
+            staticSlot.itemAmount = staticSlot.currentItem.itemMaxAmount;
+            staticSlot.amountText.text = staticSlot.itemAmount.ToString();
+        }
+    }
+
+    // in
+    private void Add_Item(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
             if (staticSlots[i].currentItem == null)
             {
-                staticSlots[i].Assign_Slot(itemInfo, leftOverAmount);
+                staticSlots[i].Assign_Slot(itemInfo, amount);
                 break;
             }
         }
     }
-
+    public bool Check_Add_Item (Item_Info itemInfo, int amount)
+    {
+        for (int i = 0; i < staticSlots.Length; i++)
+        {
+            if (Same_Item_Stack_Available(itemInfo) && Slot_Available())
+            {
+                // empty other slot
+                staticSlots[i].Stack_Slot(amount);
+                Over_MaxAmount_Devide(staticSlots[i]);
+                return true;
+            }
+            else if (Slot_Available())
+            {
+                // empty other slot
+                Add_Item(itemInfo, amount);
+                return true;
+            }
+        }
+        return false;
+    }
 
     // resest
     public void DeSelect_All_Slots()

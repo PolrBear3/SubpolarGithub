@@ -47,44 +47,68 @@ public class Slots_System : MonoBehaviour
         }
         return false;
     }
-    public bool Other_Slot_Available()
-    {
-        if (dataBase.staticSlotsSystem.Slot_Available())
-        {
-            return true;
-        }
-        else return false;
-    }
-
-    // in
-    public void Assign_to_EmptySlot(Item_Info itemInfo, int amount)
+    public bool Same_Item_Stack_Available(Item_Info itemInfo)
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            // search if there is same item
-            if (itemInfo == slots[i].currentItem)
+            if (itemInfo == slots[i].currentItem && slots[i].itemAmount < itemInfo.itemMaxAmount)
             {
-                // slot stack function
-                slots[i].Stack_Slot(amount);
-
-            }
-            // if it is the new item in the array
-            else
-            {
-                slots[i].Assign_Slot(itemInfo, amount);
+                return true;
             }
         }
+        return false;
     }
-    private void Assign_to_Empty_for_LeftOver(Item_Info itemInfo, int leftOverAmount)
+    public void Over_MaxAmount_Devide(Slot slot)
+    {
+        if (slot.itemAmount > slot.currentItem.itemMaxAmount)
+        {
+            int leftOver = slot.itemAmount - slot.currentItem.itemMaxAmount;
+
+            if (Slot_Available())
+            {
+                Check_Add_Item(slot.currentItem, leftOver);
+            }
+            else if (!Slot_Available())
+            {
+                dataBase.MoveSlot_to_Slots_System(slot.currentItem, leftOver);
+            }
+
+            slot.itemAmount = slot.currentItem.itemMaxAmount;
+            slot.amountText.text = slot.itemAmount.ToString();
+        }
+    }
+
+    // in
+    private void Add_Item(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].currentItem == null)
             {
-                slots[i].Assign_Slot(itemInfo, leftOverAmount);
+                slots[i].Assign_Slot(itemInfo, amount);
                 break;
             }
         }
+    }
+    public bool Check_Add_Item(Item_Info itemInfo, int amount)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (Same_Item_Stack_Available(itemInfo))
+            {
+                // empty other slot
+                slots[i].Stack_Slot(amount);
+                Over_MaxAmount_Devide(slots[i]);
+                return true;
+            }
+            else if (Slot_Available())
+            {
+                // empty other slot
+                Add_Item(itemInfo, amount);
+                return true;
+            }
+        }
+        return false;
     }
 
     // resest
@@ -96,9 +120,9 @@ public class Slots_System : MonoBehaviour
         }
     }
 
-    // test
-    public void Craft_Item(Item_Info item)
+    // craft test
+    public void Craft_Item(Item_Info itemInfo)
     {
-        Assign_to_EmptySlot(item, 1);
+        Check_Add_Item(itemInfo, 1);
     }
 }
