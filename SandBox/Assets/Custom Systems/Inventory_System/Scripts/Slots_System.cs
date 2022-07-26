@@ -61,10 +61,10 @@ public class Slots_System : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            // stack check
-
             if (!slots[i].hasItem)
             {
+                // stack check
+
                 slots[i].Assign_Slot(itemInfo, amount);
                 break;
             }
