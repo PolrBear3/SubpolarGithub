@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d13cf821fcaca4b0ba35d1d0f499f6ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hostSystem: {fileID: 0}
   slots:
   - {fileID: 3603629394048176304}
 --- !u!1 &4659987216384196115
@@ -512,7 +513,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 831614392984602994}
         m_TargetAssemblyTypeName: Slots_System, Assembly-CSharp
-        m_MethodName: Connect_toDataBase
+        m_MethodName: Connect_to_HostSystem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -47,9 +47,9 @@ public class Slot : MonoBehaviour
         slotSelected = true;
         slotSelectHighlighter.SetActive(true);
 
-        var staticSlotsSystem = system.dataBase.staticSlotsSystem;
+        var hostSystem = system.hostSystem;
 
-        if (hasItem && staticSlotsSystem.Slot_Available() || staticSlotsSystem.Stack_Available(currentItem))
+        if (hasItem && hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
         {
             moveButton.SetActive(true);
         }
@@ -79,6 +79,6 @@ public class Slot : MonoBehaviour
         int itemAmount = this.itemAmount;
         Empty_Slot();
         DeSelect_Slot();
-        system.dataBase.Moveto_StaticSlotsSystem(currentItem, itemAmount);
+        system.hostSystem.Stack_Item(currentItem, itemAmount);
     }
 }

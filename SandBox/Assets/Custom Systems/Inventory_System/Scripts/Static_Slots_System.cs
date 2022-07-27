@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class Static_Slots_System : MonoBehaviour
 {
-    [HideInInspector]
-    public Slots_DataBase dataBase;
+    public Slots_System guestSystem;
     public Static_Slot[] staticSlots;
 
-    private void Awake()
-    {
-        dataBase = GameObject.FindGameObjectWithTag("GameController").GetComponent<Slots_DataBase>();
-    }
     private void Start()
     {
         Search_Start_EmptySlots();
     }
 
     // connection
-
+    public void Connect(Slots_System guestSystem)
+    {
+        this.guestSystem = guestSystem;
+    }
+    public void Reset_HostSystem()
+    {
+        this.guestSystem = null;
+    }
 
     // empty all the slots that are null at start
     private void Search_Start_EmptySlots()
@@ -76,7 +78,7 @@ public class Static_Slots_System : MonoBehaviour
             }
             else if (!Slot_Available())
             {
-                dataBase.slotsSystem.Stack_Item(itemInfo, leftOver);
+                guestSystem.Stack_Item(itemInfo, leftOver);
             }
 
             staticSlot.itemAmount = staticSlot.currentItem.itemMaxAmount;
