@@ -17,7 +17,10 @@ public class Static_Slots_System : MonoBehaviour
         Search_Start_EmptySlots();
     }
 
-    // start
+    // connection
+
+
+    // empty all the slots that are null at start
     private void Search_Start_EmptySlots()
     {
         for (int i = 0; i < staticSlots.Length; i++)
@@ -29,7 +32,16 @@ public class Static_Slots_System : MonoBehaviour
         }
     }
 
-    // check
+    // function for slots
+    public void DeSelect_All_Slots()
+    {
+        for (int i = 0; i < staticSlots.Length; i++)
+        {
+            staticSlots[i].DeSelect_Slot();
+        }
+    }
+
+    // check functions
     public bool Slot_Available()
     {
         for (int i = 0; i < staticSlots.Length; i++)
@@ -41,7 +53,7 @@ public class Static_Slots_System : MonoBehaviour
         }
         return false;
     }
-    public bool Same_Item_Stack_Available(Item_Info itemInfo)
+    public bool Stack_Available(Item_Info itemInfo)
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
@@ -64,15 +76,13 @@ public class Static_Slots_System : MonoBehaviour
             }
             else if (!Slot_Available())
             {
-                dataBase.slotsSystem.Check_Add_Item(itemInfo, leftOver);
+                dataBase.slotsSystem.Stack_Item(itemInfo, leftOver);
             }
 
             staticSlot.itemAmount = staticSlot.currentItem.itemMaxAmount;
             staticSlot.amountText.text = staticSlot.itemAmount.ToString();
         }
     }
-
-    // in
     private void Add_Item(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < staticSlots.Length; i++)
@@ -84,13 +94,15 @@ public class Static_Slots_System : MonoBehaviour
             }
         }
     }
-    public void Check_Add_Item (Item_Info itemInfo, int amount)
+
+    // in
+    public void Stack_Item(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
             if (staticSlots[i].itemAmount != itemInfo.itemMaxAmount)
             {
-                if (Same_Item_Stack_Available(itemInfo))
+                if (Stack_Available(itemInfo))
                 {
                     staticSlots[i].Stack_Slot(amount);
                     Over_MaxAmount_Devide(staticSlots[i], itemInfo);
@@ -102,15 +114,6 @@ public class Static_Slots_System : MonoBehaviour
                     break;
                 }
             }
-        }
-    }
-
-    // resest
-    public void DeSelect_All_Slots()
-    {
-        for (int i = 0; i < staticSlots.Length; i++)
-        {
-            staticSlots[i].DeSelect_Slot();
         }
     }
 }

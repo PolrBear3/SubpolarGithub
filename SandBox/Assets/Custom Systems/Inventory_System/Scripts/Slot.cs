@@ -41,13 +41,15 @@ public class Slot : MonoBehaviour
         amountText.text = itemAmount.ToString();
     }
 
-    public void Select_Slot()
+    private void Select_Slot()
     {
         system.DeSelect_All_Slots();
         slotSelected = true;
         slotSelectHighlighter.SetActive(true);
 
-        if (hasItem && system.dataBase.staticSlotsSystem.Slot_Available() || system.dataBase.staticSlotsSystem.Same_Item_Stack_Available(currentItem))
+        var staticSlotsSystem = system.dataBase.staticSlotsSystem;
+
+        if (hasItem && staticSlotsSystem.Slot_Available() || staticSlotsSystem.Stack_Available(currentItem))
         {
             moveButton.SetActive(true);
         }
@@ -72,10 +74,11 @@ public class Slot : MonoBehaviour
     }
     public void Move_Slot()
     {
+        // save current slot information > empty and deselect the slot > move the the saved slot information
         var currentItem = this.currentItem;
         int itemAmount = this.itemAmount;
         Empty_Slot();
         DeSelect_Slot();
-        system.dataBase.MoveSlot_to_StaticSlotsSystem(currentItem, itemAmount);
+        system.dataBase.Moveto_StaticSlotsSystem(currentItem, itemAmount);
     }
 }

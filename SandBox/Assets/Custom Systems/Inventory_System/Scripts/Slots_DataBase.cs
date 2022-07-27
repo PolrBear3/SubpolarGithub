@@ -16,12 +16,12 @@ public class Slots_DataBase : MonoBehaviour
         slotsSystem = null;
     }
 
-    public void MoveSlot_to_StaticSlotsSystem(Item_Info itemInfo, int amount)
+    public void Moveto_StaticSlotsSystem(Item_Info itemInfo, int amount)
     {
-        staticSlotsSystem.Check_Add_Item(itemInfo, amount);
+        staticSlotsSystem.Stack_Item(itemInfo, amount);
     }
-    public void MoveSlot_to_Slots_System(Item_Info itemInfo, int amount)
+    public void Moveto_SlotsSystem(Item_Info itemInfo, int amount)
     {
-        slotsSystem.Check_Add_Item(itemInfo, amount);
+        slotsSystem.Stack_Item(itemInfo, amount);
     }
 }
