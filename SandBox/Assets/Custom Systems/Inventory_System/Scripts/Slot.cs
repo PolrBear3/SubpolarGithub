@@ -19,6 +19,7 @@ public class Slot : MonoBehaviour
 
     public void Empty_Slot()
     {
+        itemAmount = 0;
         hasItem = false;
         currentItem = null;
         itemSprite.sprite = null;
@@ -46,7 +47,7 @@ public class Slot : MonoBehaviour
         slotSelected = true;
         slotSelectHighlighter.SetActive(true);
 
-        if (hasItem && system.dataBase.staticSlotsSystem.Slot_Available() || system.dataBase.slotsSystem.Same_Item_Stack_Available(currentItem))
+        if (hasItem && system.dataBase.staticSlotsSystem.Slot_Available() || system.dataBase.staticSlotsSystem.Same_Item_Stack_Available(currentItem))
         {
             moveButton.SetActive(true);
         }

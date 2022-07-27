@@ -94,18 +94,21 @@ public class Slots_System : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            if (Same_Item_Stack_Available(itemInfo))
+            if (slots[i].itemAmount != itemInfo.itemMaxAmount)
             {
-                // empty other slot
-                slots[i].Stack_Slot(amount);
-                Over_MaxAmount_Devide(slots[i]);
-                return true;
-            }
-            else if (Slot_Available())
-            {
-                // empty other slot
-                Add_Item(itemInfo, amount);
-                return true;
+                if (Same_Item_Stack_Available(itemInfo))
+                {
+                    // empty other slot
+                    slots[i].Stack_Slot(amount);
+                    Over_MaxAmount_Devide(slots[i]);
+                    return true;
+                }
+                else if (Slot_Available())
+                {
+                    // empty other slot
+                    Add_Item(itemInfo, amount);
+                    return true;
+                }
             }
         }
         return false;

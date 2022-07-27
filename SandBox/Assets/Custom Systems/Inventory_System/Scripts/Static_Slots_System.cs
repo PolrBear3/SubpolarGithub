@@ -88,18 +88,21 @@ public class Static_Slots_System : MonoBehaviour
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
-            if (Same_Item_Stack_Available(itemInfo) && Slot_Available())
+            if (staticSlots[i].itemAmount != itemInfo.itemMaxAmount)
             {
-                // empty other slot
-                staticSlots[i].Stack_Slot(amount);
-                Over_MaxAmount_Devide(staticSlots[i]);
-                return true;
-            }
-            else if (Slot_Available())
-            {
-                // empty other slot
-                Add_Item(itemInfo, amount);
-                return true;
+                if (Same_Item_Stack_Available(itemInfo))
+                {
+                    // empty other slot
+                    staticSlots[i].Stack_Slot(amount);
+                    Over_MaxAmount_Devide(staticSlots[i]);
+                    return true;
+                }
+                else if (Slot_Available())
+                {
+                    // empty other slot
+                    Add_Item(itemInfo, amount);
+                    return true;
+                }
             }
         }
         return false;

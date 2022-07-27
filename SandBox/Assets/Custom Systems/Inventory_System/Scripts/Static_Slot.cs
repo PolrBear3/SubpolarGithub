@@ -19,6 +19,7 @@ public class Static_Slot : MonoBehaviour
 
     public void Empty_Slot()
     {
+        itemAmount = 0;
         hasItem = false;
         currentItem = null;
         itemSprite.sprite = null;
