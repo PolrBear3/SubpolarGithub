@@ -52,7 +52,7 @@ public class Static_Slots_System : MonoBehaviour
         }
         return false;
     }
-    public void Over_MaxAmount_Devide(Static_Slot staticSlot)
+    public void Over_MaxAmount_Devide(Static_Slot staticSlot, Item_Info itemInfo)
     {
         if (staticSlot.itemAmount > staticSlot.currentItem.itemMaxAmount)
         {
@@ -64,7 +64,7 @@ public class Static_Slots_System : MonoBehaviour
             }
             else if (!Slot_Available())
             {
-                dataBase.MoveSlot_to_Slots_System(staticSlot.currentItem, leftOver);
+                dataBase.slotsSystem.Check_Add_Item(itemInfo, leftOver);
             }
 
             staticSlot.itemAmount = staticSlot.currentItem.itemMaxAmount;
@@ -84,7 +84,7 @@ public class Static_Slots_System : MonoBehaviour
             }
         }
     }
-    public bool Check_Add_Item (Item_Info itemInfo, int amount)
+    public void Check_Add_Item (Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
@@ -92,20 +92,17 @@ public class Static_Slots_System : MonoBehaviour
             {
                 if (Same_Item_Stack_Available(itemInfo))
                 {
-                    // empty other slot
                     staticSlots[i].Stack_Slot(amount);
-                    Over_MaxAmount_Devide(staticSlots[i]);
-                    return true;
+                    Over_MaxAmount_Devide(staticSlots[i], itemInfo);
+                    break;
                 }
                 else if (Slot_Available())
                 {
-                    // empty other slot
                     Add_Item(itemInfo, amount);
-                    return true;
+                    break;
                 }
             }
         }
-        return false;
     }
 
     // resest

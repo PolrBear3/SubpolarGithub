@@ -72,10 +72,10 @@ public class Static_Slot : MonoBehaviour
     }
     public void Move_Slot()
     {
-        if(system.dataBase.MoveSlot_to_Slots_System(currentItem, itemAmount))
-        {
-            Empty_Slot();
-            DeSelect_Slot();
-        }
+        var currentItem = this.currentItem;
+        int itemAmount = this.itemAmount;
+        Empty_Slot();
+        DeSelect_Slot();
+        system.dataBase.MoveSlot_to_Slots_System(currentItem, itemAmount);
     }
 }
