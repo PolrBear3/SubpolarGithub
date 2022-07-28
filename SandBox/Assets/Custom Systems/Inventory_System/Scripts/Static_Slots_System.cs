@@ -100,6 +100,8 @@ public class Static_Slots_System : MonoBehaviour
     // in
     public void Stack_Item(Item_Info itemInfo, int amount)
     {
+        DeSelect_All_Slots();
+
         for (int i = 0; i < staticSlots.Length; i++)
         {
             if (staticSlots[i].itemAmount != itemInfo.itemMaxAmount)

@@ -12,16 +12,19 @@ public class Static_Slot : MonoBehaviour
 
     public Item_Info currentItem;
     public int itemAmount;
+    public int moveAmount;
 
-    public GameObject slotSelectHighlighter, moveButton;
+    public GameObject slotSelectHighlighter, moveButton, amountScroller;
+    public Scrollbar scrollBar;
     public Image itemSprite;
     public Text amountText;
+    public Text moveAmountText;
 
     public void Empty_Slot()
     {
+        itemAmount = 0;
         hasItem = false;
         currentItem = null;
-        itemAmount = 0;
         itemSprite.sprite = null;
         itemSprite.color = Color.clear;
         amountText.text = "";
@@ -48,22 +51,24 @@ public class Static_Slot : MonoBehaviour
         slotSelectHighlighter.SetActive(true);
 
         var slots_System = system.guestSystem;
-
-        if (hasItem && slots_System.Slot_Available() || slots_System.Stack_Available(currentItem))
+        if (slots_System.Slot_Available() || slots_System.Stack_Available(currentItem))
         {
+            amountScroller.SetActive(true);
             moveButton.SetActive(true);
         }
+
+        Set_Scroll_System();
     }
     public void DeSelect_Slot()
     {
         slotSelected = false;
         slotSelectHighlighter.SetActive(false);
         moveButton.SetActive(false);
+        amountScroller.SetActive(false);
     }
-
     public void Click_Slot()
     {
-        if (!slotSelected)
+        if (!slotSelected && hasItem)
         {
             Select_Slot();
         }
@@ -72,13 +77,44 @@ public class Static_Slot : MonoBehaviour
             DeSelect_Slot();
         }
     }
+
+    private void Set_Scroll_System()
+    {
+        scrollBar.value = float.MaxValue;
+        moveAmount = itemAmount;
+        moveAmountText.text = moveAmount.ToString();
+    }
+    public void Scroll_System_Update()
+    {
+        var moveValue = scrollBar.value * itemAmount;
+        moveAmount = (int)moveValue;
+        moveAmountText.text = moveAmount.ToString();
+
+        if (moveAmount == 0)
+        {
+            moveButton.SetActive(false);
+        }
+        else
+        {
+            moveButton.SetActive(true);
+        }
+    }
     public void Move_Slot()
     {
-        // save current slot information > empty and deselect the slot > move the the saved slot information
         var currentItem = this.currentItem;
-        int itemAmount = this.itemAmount;
-        Empty_Slot();
+        int remainingAmount = itemAmount - moveAmount;
+
+        var slots_System = system.guestSystem;
+        if (moveAmount > 0 && slots_System.Slot_Available() || slots_System.Stack_Available(currentItem))
+        {
+            Empty_Slot();
+            if (remainingAmount > 0)
+            {
+                Assign_Slot(currentItem, remainingAmount);
+            }
+            system.guestSystem.Stack_Item(currentItem, moveAmount);
+        }
+
         DeSelect_Slot();
-        system.guestSystem.Stack_Item(currentItem, itemAmount);
     }
 }
