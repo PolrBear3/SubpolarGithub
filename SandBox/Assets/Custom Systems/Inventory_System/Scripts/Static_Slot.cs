@@ -47,6 +47,7 @@ public class Static_Slot : MonoBehaviour
     private void Select_Slot()
     {
         system.DeSelect_All_Slots();
+        system.guestSystem.DeSelect_All_Slots();
         slotSelected = true;
         slotSelectHighlighter.SetActive(true);
 
@@ -57,7 +58,7 @@ public class Static_Slot : MonoBehaviour
             moveButton.SetActive(true);
         }
 
-        Set_Scroll_System();
+        Set_MoveAmount_Max();
     }
     public void DeSelect_Slot()
     {
@@ -78,7 +79,7 @@ public class Static_Slot : MonoBehaviour
         }
     }
 
-    private void Set_Scroll_System()
+    private void Set_MoveAmount_Max()
     {
         scrollBar.value = float.MaxValue;
         moveAmount = itemAmount;
@@ -90,11 +91,12 @@ public class Static_Slot : MonoBehaviour
         moveAmount = (int)moveValue;
         moveAmountText.text = moveAmount.ToString();
 
+        var slots_System = system.guestSystem;
         if (moveAmount == 0)
         {
             moveButton.SetActive(false);
         }
-        else
+        else if(slots_System.Slot_Available() || slots_System.Stack_Available(currentItem))
         {
             moveButton.SetActive(true);
         }
