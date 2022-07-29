@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7694323499138092181}
   - component: {fileID: 5229334960716581317}
   m_Layer: 5
-  m_Name: Bag
+  m_Name: Host
   m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398ae5dddd7e9e448b33d4d5882c1688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataBase: {fileID: 0}
+  guestSystem: {fileID: 0}
   staticSlots:
   - {fileID: 6413686504119819156}
   - {fileID: 6962932241123936311}

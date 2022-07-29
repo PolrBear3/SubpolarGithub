@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 3960491179134087071}
   - component: {fileID: 7253520027367655918}
   m_Layer: 5
-  m_Name: Static Slot
+  m_Name: Host Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,14 +255,10 @@ MonoBehaviour:
   hasItem: 0
   currentItem: {fileID: 0}
   itemAmount: 0
-  moveAmount: 0
   slotSelectHighlighter: {fileID: 1396276710277664310}
   moveButton: {fileID: 4659708105820169954}
-  amountScroller: {fileID: 4220535908387851206}
-  scrollBar: {fileID: 1571175970168370884}
   itemSprite: {fileID: 1124846399645256865}
   amountText: {fileID: 5172609545203116172}
-  moveAmountText: {fileID: 204922868769214971}
 --- !u!1 &4220535908387851206
 GameObject:
   m_ObjectHideFlags: 0

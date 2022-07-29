@@ -14,11 +14,9 @@ public class Slot : MonoBehaviour
     public int itemAmount;
     public int moveAmount;
 
-    public GameObject slotSelectHighlighter, moveButton, amountScroller;
-    public Scrollbar scrollBar;
+    public GameObject slotSelectHighlighter, moveButton;
     public Image itemSprite;
     public Text amountText;
-    public Text moveAmountText;
 
     public void Empty_Slot()
     {
@@ -54,19 +52,16 @@ public class Slot : MonoBehaviour
         var hostSystem = system.hostSystem;
         if (hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
         {
-            amountScroller.SetActive(true);
             moveButton.SetActive(true);
         }
-
-        Set_MoveAmount_Max();
     }
     public void DeSelect_Slot()
     {
         slotSelected = false;
         slotSelectHighlighter.SetActive(false);
         moveButton.SetActive(false);
-        amountScroller.SetActive(false);
     }
+
     public void Click_Slot()
     {
         if (!slotSelected && hasItem)
@@ -78,45 +73,12 @@ public class Slot : MonoBehaviour
             DeSelect_Slot();
         }
     }
-
-    private void Set_MoveAmount_Max()
-    {
-        scrollBar.value = float.MaxValue;
-        moveAmount = itemAmount;
-        moveAmountText.text = moveAmount.ToString();
-    }
-    public void Scroll_System_Update()
-    {
-        var moveValue = scrollBar.value * itemAmount;
-        moveAmount = (int)moveValue;
-        moveAmountText.text = moveAmount.ToString();
-
-        var hostSystem = system.hostSystem;
-        if (moveAmount == 0)
-        {
-            moveButton.SetActive(false);
-        }
-        else if (hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
-        {
-            moveButton.SetActive(true);
-        }
-    }
     public void Move_Slot()
     {
         var currentItem = this.currentItem;
-        int remainingAmount = itemAmount - moveAmount;
-
-        var hostSystem = system.hostSystem;
-        if (moveAmount > 0 && hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
-        {
-            Empty_Slot();
-            if (remainingAmount > 0)
-            {
-                Assign_Slot(currentItem, remainingAmount);
-            }
-            system.hostSystem.Stack_Item(currentItem, moveAmount);
-        }
-
+        int itemAmount = this.itemAmount;
+        Empty_Slot();
+        system.hostSystem.Craft_Item(currentItem, itemAmount);
         DeSelect_Slot();
     }
 }

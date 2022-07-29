@@ -13,15 +13,24 @@ public class Static_Slots_System : MonoBehaviour
     }
 
     // connection
+    public bool guestSystem_Connected()
+    {
+        if (guestSystem != null) { return true; }
+        else return false;
+    }
+
     public void Connect(Slots_System guestSystem)
     {
         this.guestSystem = guestSystem;
+        DeSelect_All_Slots();
+        guestSystem.DeSelect_All_Slots();
     }
     public void Reset_HostSystem()
     {
-        this.guestSystem = null;
+        guestSystem = null;
+        DeSelect_All_Slots();
     }
-
+    
     // empty all the slots that are null at start
     private void Search_Start_EmptySlots()
     {
@@ -66,7 +75,9 @@ public class Static_Slots_System : MonoBehaviour
         }
         return false;
     }
-    public void Over_MaxAmount_Devide(Static_Slot staticSlot, Item_Info itemInfo)
+
+    // in
+    private void MaxSplit_Refund(Static_Slot staticSlot, Item_Info itemInfo)
     {
         if (staticSlot.itemAmount > staticSlot.currentItem.itemMaxAmount)
         {
@@ -74,18 +85,18 @@ public class Static_Slots_System : MonoBehaviour
 
             if (Slot_Available())
             {
-                Add_Item(staticSlot.currentItem, leftOver);
+                AddItem_to_NewSlot(staticSlot.currentItem, leftOver);
             }
             else if (!Slot_Available())
             {
-                guestSystem.Stack_Item(itemInfo, leftOver);
+                guestSystem.Craft_Item(itemInfo, leftOver);
             }
 
             staticSlot.itemAmount = staticSlot.currentItem.itemMaxAmount;
             staticSlot.amountText.text = staticSlot.itemAmount.ToString();
         }
     }
-    private void Add_Item(Item_Info itemInfo, int amount)
+    private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < staticSlots.Length; i++)
         {
@@ -96,27 +107,26 @@ public class Static_Slots_System : MonoBehaviour
             }
         }
     }
-
-    // in
-    public void Stack_Item(Item_Info itemInfo, int amount)
+    
+    public void Craft_Item(Item_Info itemInfo, int amount)
     {
-        DeSelect_All_Slots();
-
         for (int i = 0; i < staticSlots.Length; i++)
         {
-            if (staticSlots[i].itemAmount != itemInfo.itemMaxAmount)
+            DeSelect_All_Slots();
+            guestSystem.DeSelect_All_Slots();
+
+            // if the slot is empty
+            if (!staticSlots[i].hasItem)
             {
-                if (Stack_Available(itemInfo))
-                {
-                    staticSlots[i].Stack_Slot(amount);
-                    Over_MaxAmount_Devide(staticSlots[i], itemInfo);
-                    break;
-                }
-                else if (Slot_Available())
-                {
-                    Add_Item(itemInfo, amount);
-                    break;
-                }
+                AddItem_to_NewSlot(itemInfo, amount);
+                break;
+            }
+            // if the slot has the same item and the current amount is not the max amount
+            else if (staticSlots[i].currentItem == itemInfo && staticSlots[i].itemAmount < itemInfo.itemMaxAmount)
+            {
+                staticSlots[i].Stack_Slot(amount);
+                MaxSplit_Refund(staticSlots[i], itemInfo);
+                break;
             }
         }
     }
