@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class ItemCraftTable : MonoBehaviour
 {
     SpaceTycoon_Main_GameController controller;
-    // player inventory holder
+    private Guest_System guestSystem;
+
     Animator anim;
 
     bool playerDetection;
@@ -22,6 +23,7 @@ public class ItemCraftTable : MonoBehaviour
     private void Awake()
     {
         controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
+        guestSystem = GetComponent<Guest_System>();
         anim = GetComponent<Animator>();
     }
     private void Start()
@@ -52,6 +54,8 @@ public class ItemCraftTable : MonoBehaviour
             playerDetection = false;
             icon.Set_Icon_to_Default_Position();
             anim.SetBool("playerDetected", false);
+
+            guestSystem.Disconnect_HostSystem();
         }
     }
 
@@ -59,6 +63,7 @@ public class ItemCraftTable : MonoBehaviour
     public void Open_MainPanel()
     {
         controller.Icon_Pressed(panels[0]);
+        guestSystem.Connect_to_HostSystem();
     }
     public void Open_Item_OptionPanel(Item_Info itemInfo)
     {
@@ -72,6 +77,7 @@ public class ItemCraftTable : MonoBehaviour
     {
         controller.Manual_TurnOff_ObjectPanel(panels[0]);
         controller.TurnOff_Single_Options_inObjectPanel(panels[1]);
+        guestSystem.Disconnect_HostSystem();
     }
     public void Exit_OpitonPanel()
     {
@@ -102,4 +108,6 @@ public class ItemCraftTable : MonoBehaviour
         Reset_All_ItemLists();
         itemTypeLists[2].SetActive(true);
     }
+
+    // craft item
 }

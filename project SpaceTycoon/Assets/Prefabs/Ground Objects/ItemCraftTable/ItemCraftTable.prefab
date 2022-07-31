@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 3481820856499266770}
   - component: {fileID: 936642168565980186}
   - component: {fileID: 4291257368413707638}
+  - component: {fileID: 8937837562370738310}
   m_Layer: 0
   m_Name: ItemCraftTable
   m_TagString: Untagged
@@ -321,12 +322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c132af347af847b49958b66cea236d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guestSystem: {fileID: 8937837562370738310}
   objectInfo: {fileID: 11400000, guid: ab22bc9feb80062439834a7e1b0ae908, type: 2}
   icon: {fileID: 2422156129297629211}
   panels:
   - {fileID: 1842554552640583638}
   - {fileID: 6540032190298839056}
-  playerInventory: {fileID: 3640168751607393681, guid: 870a11272a28fda49a5e8145a345fa91, type: 3}
   itemTypeLists:
   - {fileID: 1270050214951567057}
   - {fileID: 8227909879325087742}
@@ -353,6 +354,20 @@ MonoBehaviour:
   - {fileID: 5594380676320462783}
   - {fileID: 3070412030760217174}
   - {fileID: 6407509512184823143}
+--- !u!114 &8937837562370738310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521100265747076577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d18721e4335dc649a69af114f1e9a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hostSystem: {fileID: 5832742290853912404, guid: 24943d19f3248664f98ab7148d42018e, type: 3}
+  guestSlots: []
 --- !u!1 &796588115770723237
 GameObject:
   m_ObjectHideFlags: 0
