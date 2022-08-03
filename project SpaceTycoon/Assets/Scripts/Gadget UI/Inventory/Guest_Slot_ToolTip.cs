@@ -9,8 +9,8 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
     public Guest_Slot thisGuestSlot;
 
     public GameObject toolTipPanel, interactableToolTip, moveButton;
-    public Image itemIcon;
-    public Text itemName, itemDescription;
+    public Image itemIcon, itemIcon2;
+    public Text itemName, itemName2, itemDescription, itemDescription2;
 
     private bool timerStart;
     private float timer = 0, onHoverTime = 0.5f;
@@ -23,7 +23,7 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (thisGuestSlot.hasItem && !thisGuestSlot.system.slotSelected)
+        if (thisGuestSlot.hasItem)
         {
             timerStart = true;
         }
@@ -41,6 +41,14 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
         itemName.text = x.itemName;
         itemDescription.text = x.itemDescription;
     }
+    public void Update_Interactive_ToolTip_Info()
+    {
+        var x = thisGuestSlot.currentItem;
+        itemIcon2.sprite = x.itemIcon;
+        itemName2.text = x.itemName;
+        itemDescription2.text = x.itemDescription;
+    }
+    
     private void ToolTip_Timer()
     {
         if (timerStart)
@@ -54,7 +62,7 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
     }
     private void Hover_Show_ToolTip()
     {
-        if (timer >= onHoverTime)
+        if (timer >= onHoverTime && !thisGuestSlot.system.slotSelected)
         {
             Update_ToolTip_Info();
             toolTipPanel.SetActive(true);

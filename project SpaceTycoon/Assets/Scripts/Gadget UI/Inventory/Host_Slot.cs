@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Host_Slot : MonoBehaviour
 {
     public Host_System system;
+    public RectTransform slotRT;
     public Host_Slot_ToolTip toolTip;
 
     public bool slotSelected = false;
@@ -52,7 +53,7 @@ public class Host_Slot : MonoBehaviour
         slotSelected = true;
         system.slotSelected = true;
         slotSelectHighlighter.SetActive(true);
-        toolTip.interactableToolTip.SetActive(true);
+        toolTip.Update_Interactive_ToolTip_Info();
 
         var guestSystem = system.guestSystem;
         if (system.guestSystem_Connected())
@@ -68,7 +69,7 @@ public class Host_Slot : MonoBehaviour
         slotSelected = false;
         system.slotSelected = false;
         slotSelectHighlighter.SetActive(false);
-        toolTip.interactableToolTip.SetActive(false);
+        toolTip.panels[1].SetActive(false);
         toolTip.moveButton.SetActive(false);
     }
 

@@ -7,10 +7,13 @@ using UnityEngine.EventSystems;
 public class Host_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Host_Slot thisHostSlot;
-    
-    public GameObject toolTipPanel, interactableToolTip, moveButton;
-    public Image itemIcon;
-    public Text itemName, itemDescription;
+
+    public GameObject[] panels;
+    public GameObject moveButton;
+    public RectTransform[] rectTransforms;
+    public Image[] itemIcons;
+    public Text[] itemNames;
+    public Text[] itemDescriptions;
 
     private bool timerStart;
     private float timer = 0, onHoverTime = 0.5f;
@@ -23,24 +26,36 @@ public class Host_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (thisHostSlot.hasItem && !thisHostSlot.system.slotSelected)
+        if (thisHostSlot.hasItem)
         {
             timerStart = true;
         }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        toolTipPanel.SetActive(false);
+        panels[0].SetActive(false);
         timerStart = false;
     }
 
     private void Update_ToolTip_Info()
     {
         var x = thisHostSlot.currentItem;
-        itemIcon.sprite = x.itemIcon;
-        itemName.text = x.itemName;
-        itemDescription.text = x.itemDescription;
+        itemIcons[0].sprite = x.itemIcon;
+        itemNames[0].text = x.itemName;
+        itemDescriptions[0].text = x.itemDescription;
     }
+    public void Update_Interactive_ToolTip_Info()
+    {
+        var x = thisHostSlot.currentItem;
+        itemIcons[1].sprite = x.itemIcon;
+        itemNames[1].text = x.itemName;
+        itemDescriptions[1].text = x.itemDescription;
+
+        panels[0].SetActive(false);
+        Check_InteractableToolTip_inScreen();
+        panels[1].SetActive(true);
+    }
+    
     private void ToolTip_Timer()
     {
         if (timerStart)
@@ -54,10 +69,33 @@ public class Host_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
     private void Hover_Show_ToolTip()
     {
-        if (timer >= onHoverTime)
+        if (timer >= onHoverTime && !thisHostSlot.system.slotSelected)
         {
             Update_ToolTip_Info();
-            toolTipPanel.SetActive(true);
+            Check_ToolTip_inScreen();
+            panels[0].SetActive(true);
+        }
+    }
+
+    // stay inside screen
+    private bool Is_Slot_RightSide()
+    {
+        var slotRT = thisHostSlot.slotRT.anchoredPosition.x;
+        if (slotRT == 177.3f) { return true; }
+        else return false;
+    }
+    private void Check_ToolTip_inScreen()
+    {
+        if (Is_Slot_RightSide())
+        {
+            rectTransforms[0].anchoredPosition = new Vector2(-40, 90);
+        }
+    }
+    private void Check_InteractableToolTip_inScreen()
+    {
+        if (Is_Slot_RightSide())
+        {
+            rectTransforms[1].anchoredPosition = new Vector2(-40, 105);
         }
     }
 }
