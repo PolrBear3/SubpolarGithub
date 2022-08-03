@@ -20,6 +20,7 @@ public class Item_Info : ScriptableObject
 
     public Sprite itemIcon;
     public string itemName;
+    [TextArea (2,5)]
     public string itemDescription;
 
     public int itemMaxAmount;

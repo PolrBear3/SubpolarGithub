@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Host_Slot : MonoBehaviour
 {
     public Host_System system;
+    public Host_Slot_ToolTip toolTip;
 
     public bool slotSelected = false;
     public bool hasItem = false;
@@ -13,7 +14,7 @@ public class Host_Slot : MonoBehaviour
     public Item_Info currentItem;
     public int currentAmount;
 
-    public GameObject slotSelectHighlighter, toolTipPanel, moveButton;
+    public GameObject slotSelectHighlighter;
     public Image itemSprite;
     public Text amountText;
 
@@ -49,24 +50,26 @@ public class Host_Slot : MonoBehaviour
         }
         system.DeSelect_All_Slots();
         slotSelected = true;
+        system.slotSelected = true;
         slotSelectHighlighter.SetActive(true);
-        toolTipPanel.SetActive(true);
+        toolTip.interactableToolTip.SetActive(true);
 
         var guestSystem = system.guestSystem;
         if (system.guestSystem_Connected())
         {
             if (guestSystem.Slot_Available() || guestSystem.Stack_Available(currentItem))
             {
-                moveButton.SetActive(true);
+                toolTip.moveButton.SetActive(true);
             }
         }
     }
     public void DeSelect_Slot()
     {
         slotSelected = false;
+        system.slotSelected = false;
         slotSelectHighlighter.SetActive(false);
-        toolTipPanel.SetActive(false);
-        moveButton.SetActive(false);
+        toolTip.interactableToolTip.SetActive(false);
+        toolTip.moveButton.SetActive(false);
     }
 
     public void Click_Slot()

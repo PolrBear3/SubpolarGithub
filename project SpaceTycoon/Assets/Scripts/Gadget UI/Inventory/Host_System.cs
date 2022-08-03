@@ -7,6 +7,9 @@ public class Host_System : MonoBehaviour
     public Guest_System guestSystem;
     public Host_Slot[] hostSlots;
 
+    [HideInInspector]
+    public bool slotSelected;
+
     private void Start()
     {
         Search_Start_EmptySlots();
@@ -18,14 +21,12 @@ public class Host_System : MonoBehaviour
         if (guestSystem != null) { return true; }
         else return false;
     }
-
     public void Connect(Guest_System guestSystem)
     {
         this.guestSystem = guestSystem;
         DeSelect_All_Slots();
         guestSystem.DeSelect_All_Slots();
     }
-
     public void Reset_GuestSystem()
     {
         guestSystem = null;
@@ -65,7 +66,6 @@ public class Host_System : MonoBehaviour
         }
         return false;
     }
-
     public bool Stack_Available(Item_Info itemInfo)
     {
         for (int i = 0; i < hostSlots.Length; i++)
@@ -98,7 +98,6 @@ public class Host_System : MonoBehaviour
             hostSlot.amountText.text = hostSlot.currentAmount.ToString();
         }
     }
-
     private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < hostSlots.Length; i++)
@@ -110,13 +109,12 @@ public class Host_System : MonoBehaviour
             }
         }
     }
-
     public void Craft_Item(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < hostSlots.Length; i++)
         {
             DeSelect_All_Slots();
-            guestSystem.DeSelect_All_Slots();
+            if (guestSystem_Connected()) { guestSystem.DeSelect_All_Slots(); }
 
             // if the slot is empty
             if (!hostSlots[i].hasItem)
@@ -132,5 +130,11 @@ public class Host_System : MonoBehaviour
                 break;
             }
         }
+    }
+
+    // test
+    public void Test_Spawn_Item(Item_Info item)
+    {
+        Craft_Item(item, 1);
     }
 }

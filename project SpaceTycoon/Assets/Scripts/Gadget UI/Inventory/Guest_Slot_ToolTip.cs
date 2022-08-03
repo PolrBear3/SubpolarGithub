@@ -4,39 +4,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public ItemCraftTable controller;
-    public Item_Info itemInfo;
+    public Guest_Slot thisGuestSlot;
 
-    public GameObject toolTipPanel;
+    public GameObject toolTipPanel, interactableToolTip, moveButton;
     public Image itemIcon;
     public Text itemName, itemDescription;
 
-    bool timerStart;
-    float timer = 0;
-    float onHoverTime = 0.5f;
+    private bool timerStart;
+    private float timer = 0, onHoverTime = 0.5f;
 
     private void Update()
     {
         ToolTip_Timer();
-        Show_ToolTip();
-    }
-
-    public void Open_OptionPanel_forThisItem()
-    {
-        controller.Open_Item_OptionPanel(itemInfo);
-    }
-    private void Update_ToolTip_Info()
-    {
-        itemIcon.sprite = itemInfo.itemIcon;
-        itemName.text = itemInfo.itemName;
-        itemDescription.text = itemInfo.itemDescription;
+        Hover_Show_ToolTip();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        timerStart = true;
+        if (thisGuestSlot.hasItem && !thisGuestSlot.system.slotSelected)
+        {
+            timerStart = true;
+        }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -44,6 +34,13 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
         timerStart = false;
     }
 
+    private void Update_ToolTip_Info()
+    {
+        var x = thisGuestSlot.currentItem;
+        itemIcon.sprite = x.itemIcon;
+        itemName.text = x.itemName;
+        itemDescription.text = x.itemDescription;
+    }
     private void ToolTip_Timer()
     {
         if (timerStart)
@@ -55,7 +52,7 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
             timer = 0;
         }
     }
-    private void Show_ToolTip()
+    private void Hover_Show_ToolTip()
     {
         if (timer >= onHoverTime)
         {

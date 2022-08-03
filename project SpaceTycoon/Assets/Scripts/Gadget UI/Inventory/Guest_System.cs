@@ -8,6 +8,9 @@ public class Guest_System : MonoBehaviour
     public Host_System hostSystem;
     public Guest_Slot[] guestSlots;
 
+    [HideInInspector]
+    public bool slotSelected;
+
     private void Awake()
     {
         hostSystem = GameObject.FindGameObjectWithTag("player_inventory").GetComponent<Host_System>();
@@ -18,11 +21,15 @@ public class Guest_System : MonoBehaviour
     }
 
     // connection
+    public bool hostSystem_Connected()
+    {
+        if (hostSystem != null) { return true; }
+        else return false;
+    }
     public void Connect_to_HostSystem()
     {
         hostSystem.Connect(this);
     }
-
     public void Disconnect_HostSystem()
     {
         hostSystem.Reset_GuestSystem();
@@ -74,7 +81,7 @@ public class Guest_System : MonoBehaviour
         return false;
     }
 
-    // in
+    // input to system
     private void MaxSplit_Refund(Guest_Slot guestSlot, Item_Info itemInfo)
     {
         if (guestSlot.currentAmount > guestSlot.currentItem.itemMaxAmount)
@@ -105,13 +112,12 @@ public class Guest_System : MonoBehaviour
             }
         }
     }
-
     public void Craft_Item(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < guestSlots.Length; i++)
         {
             DeSelect_All_Slots();
-            hostSystem.DeSelect_All_Slots();
+            if (hostSystem_Connected()) { hostSystem.DeSelect_All_Slots(); }
 
             // if the slot is empty
             if (!guestSlots[i].hasItem)

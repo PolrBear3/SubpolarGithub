@@ -19,5 +19,5 @@ public class Player_Inventory : MonoBehaviour
         gadgetController.Close_All_Gadget_Menus(openmenuButton);
     }
 
-    // inventory and bag host systems control
+    // currentItem and bag host systems control for equipping
 }
