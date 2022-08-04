@@ -49,6 +49,7 @@ public class Host_Slot : MonoBehaviour
         {
             system.guestSystem.DeSelect_All_Slots();
         }
+
         system.DeSelect_All_Slots();
         slotSelected = true;
         system.slotSelected = true;

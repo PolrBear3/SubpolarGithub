@@ -39,10 +39,13 @@ public class Host_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private void Update_ToolTip_Info()
     {
-        var x = thisHostSlot.currentItem;
-        itemIcons[0].sprite = x.itemIcon;
-        itemNames[0].text = x.itemName;
-        itemDescriptions[0].text = x.itemDescription;
+        if (thisHostSlot.hasItem)
+        {
+            var x = thisHostSlot.currentItem;
+            itemIcons[0].sprite = x.itemIcon;
+            itemNames[0].text = x.itemName;
+            itemDescriptions[0].text = x.itemDescription;
+        }
     }
     public void Update_Interactive_ToolTip_Info()
     {

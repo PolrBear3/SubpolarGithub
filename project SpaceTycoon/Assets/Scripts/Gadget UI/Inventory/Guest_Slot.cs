@@ -45,17 +45,24 @@ public class Guest_Slot : MonoBehaviour
 
     private void Select_Slot()
     {
+        if (system.hostSystem_Connected())
+        {
+            system.hostSystem.DeSelect_All_Slots();
+        }
+
         system.DeSelect_All_Slots();
-        system.hostSystem.DeSelect_All_Slots();
         slotSelected = true;
         system.slotSelected = true;
         slotSelectHighlighter.SetActive(true);
         toolTip.Update_Interactive_ToolTip_Info();
 
         var hostSystem = system.hostSystem;
-        if (hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
+        if (system.hostSystem.inventoryMenu.activeSelf)
         {
-            toolTip.moveButton.SetActive(true);
+            if (hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
+            {
+                toolTip.moveButton.SetActive(true);
+            }
         }
     }
     public void DeSelect_Slot()
@@ -63,7 +70,7 @@ public class Guest_Slot : MonoBehaviour
         slotSelected = false;
         system.slotSelected = false;
         slotSelectHighlighter.SetActive(false);
-        toolTip.interactableToolTip.SetActive(false);
+        toolTip.panels[1].SetActive(false);
         toolTip.moveButton.SetActive(false);
     }
 

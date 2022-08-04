@@ -2422,7 +2422,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4017389222527162135}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3064016625282053093}
+        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
+        m_MethodName: Move_Slot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8234058868508992552
 GameObject:
   m_ObjectHideFlags: 0
@@ -2501,7 +2513,7 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 1
+    m_LineSpacing: 0.8
   m_Text: Item descriptions are writen here
 --- !u!1 &8760035623371008458
 GameObject:

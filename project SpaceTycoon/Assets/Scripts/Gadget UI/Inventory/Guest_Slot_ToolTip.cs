@@ -8,9 +8,12 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
 {
     public Guest_Slot thisGuestSlot;
 
-    public GameObject toolTipPanel, interactableToolTip, moveButton;
-    public Image itemIcon, itemIcon2;
-    public Text itemName, itemName2, itemDescription, itemDescription2;
+    public GameObject[] panels;
+    public GameObject moveButton;
+    public RectTransform[] rectTransforms;
+    public Image[] itemIcons;
+    public Text[] itemNames;
+    public Text[] itemDescriptions;
 
     private bool timerStart;
     private float timer = 0, onHoverTime = 0.5f;
@@ -30,23 +33,29 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        toolTipPanel.SetActive(false);
+        panels[0].SetActive(false);
         timerStart = false;
     }
 
     private void Update_ToolTip_Info()
     {
-        var x = thisGuestSlot.currentItem;
-        itemIcon.sprite = x.itemIcon;
-        itemName.text = x.itemName;
-        itemDescription.text = x.itemDescription;
+        if (thisGuestSlot.hasItem)
+        {
+            var x = thisGuestSlot.currentItem;
+            itemIcons[0].sprite = x.itemIcon;
+            itemNames[0].text = x.itemName;
+            itemDescriptions[0].text = x.itemDescription;
+        }
     }
     public void Update_Interactive_ToolTip_Info()
     {
         var x = thisGuestSlot.currentItem;
-        itemIcon2.sprite = x.itemIcon;
-        itemName2.text = x.itemName;
-        itemDescription2.text = x.itemDescription;
+        itemIcons[1].sprite = x.itemIcon;
+        itemNames[1].text = x.itemName;
+        itemDescriptions[1].text = x.itemDescription;
+
+        panels[0].SetActive(false);
+        panels[1].SetActive(true);
     }
     
     private void ToolTip_Timer()
@@ -65,7 +74,7 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (timer >= onHoverTime && !thisGuestSlot.system.slotSelected)
         {
             Update_ToolTip_Info();
-            toolTipPanel.SetActive(true);
+            panels[0].SetActive(true);
         }
     }
 }

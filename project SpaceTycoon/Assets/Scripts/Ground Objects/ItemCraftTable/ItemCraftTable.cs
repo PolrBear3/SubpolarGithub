@@ -63,14 +63,13 @@ public class ItemCraftTable : MonoBehaviour
     public void Open_MainPanel()
     {
         controller.Icon_Pressed(panels[0]);
-        guestSystem.Connect_to_HostSystem();
     }
     public void Open_Item_OptionPanel(Item_Info itemInfo)
     {
         controller.TurnOn_Single_Options_inObjectPanel(panels[1]);
         currentlyOpenedItem = itemInfo;
-
-        currentlyOpenedItemSprite.sprite = currentlyOpenedItem.itemIcon;
+        
+        guestSystem.Connect_to_HostSystem();
         // connect item ingredients
     }
     public void Exit_Object()
@@ -82,6 +81,7 @@ public class ItemCraftTable : MonoBehaviour
     public void Exit_OpitonPanel()
     {
         controller.TurnOff_Single_Options_inObjectPanel(panels[1]);
+        guestSystem.Disconnect_HostSystem();
     }
 
     // Item Type Button Page Controller
@@ -110,4 +110,8 @@ public class ItemCraftTable : MonoBehaviour
     }
 
     // craft item
+    public void Craft_Item()
+    {
+        guestSystem.Craft_Item(currentlyOpenedItem, 1);
+    }
 }

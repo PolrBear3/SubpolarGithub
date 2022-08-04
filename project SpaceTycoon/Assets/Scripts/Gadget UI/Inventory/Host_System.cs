@@ -7,6 +7,8 @@ public class Host_System : MonoBehaviour
     public Guest_System guestSystem;
     public Host_Slot[] hostSlots;
 
+    public GameObject inventoryMenu;
+
     [HideInInspector]
     public bool slotSelected;
 

@@ -13,8 +13,13 @@ public class Player_Inventory : MonoBehaviour
     public void Open_Inventory_Menu()
     {
         gadgetController.Open_Gadget_Menu(inventoryMenu, openmenuButton);
-    }
 
+        // deselect all slots if guest system is connected and the slot is currently selected
+        if (hostSystems[1].guestSystem_Connected())
+        {
+            hostSystems[1].guestSystem.DeSelect_All_Slots();
+        }
+    }
     public void Close_Inventory_Menu()
     {
         gadgetController.Close_All_Gadget_Menus(openmenuButton);
@@ -23,6 +28,12 @@ public class Player_Inventory : MonoBehaviour
         for (int i = 0; i < hostSystems.Length; i++)
         {
             hostSystems[i].DeSelect_All_Slots();
+        }
+
+        // deselect all slots if guest system is connected and the slot is currently selected
+        if (hostSystems[1].guestSystem_Connected())
+        {
+            hostSystems[1].guestSystem.DeSelect_All_Slots();
         }
     }
 
