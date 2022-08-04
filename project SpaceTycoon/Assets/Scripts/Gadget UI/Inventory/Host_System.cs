@@ -5,9 +5,9 @@ using UnityEngine;
 public class Host_System : MonoBehaviour
 {
     public Guest_System guestSystem;
-    public Host_Slot[] hostSlots;
-
     public GameObject inventoryMenu;
+    
+    public Host_Slot[] hostSlots;
 
     [HideInInspector]
     public bool slotSelected;
