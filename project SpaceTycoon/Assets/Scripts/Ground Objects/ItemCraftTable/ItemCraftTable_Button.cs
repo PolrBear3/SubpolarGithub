@@ -10,6 +10,8 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
     public Item_Info itemInfo;
 
     public GameObject toolTipPanel;
+    public bool leftSideSlot = false;
+    public RectTransform toolTipPanelRT;
     public Image itemIcon;
     public Text itemName, itemDescription;
 
@@ -60,7 +62,17 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
         if (timer >= onHoverTime)
         {
             Update_ToolTip_Info();
+            Check_ToolTip_inScreen();
             toolTipPanel.SetActive(true);
+        }
+    }
+
+    // tooltip stay inside screen
+    private void Check_ToolTip_inScreen()
+    {
+        if (leftSideSlot)
+        {
+            toolTipPanelRT.anchoredPosition = new Vector2(50f, 85f);
         }
     }
 }
