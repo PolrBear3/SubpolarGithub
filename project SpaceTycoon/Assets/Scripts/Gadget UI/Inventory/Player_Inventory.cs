@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player_Inventory : MonoBehaviour
 {
     public Gadget_MainController gadgetController;
-    public Host_System[] hostSystems;
+    public Host_System bag;
     
     public Animator openmenuButton;
     public GameObject inventoryMenu;
@@ -15,30 +15,22 @@ public class Player_Inventory : MonoBehaviour
         gadgetController.Open_Gadget_Menu(inventoryMenu, openmenuButton);
 
         // deselect all slots if guest system is connected and the slot is currently selected
-        if (hostSystems[1].guestSystem_Connected())
+        if (bag.guestSystem_Connected())
         {
-            hostSystems[1].guestSystem.DeSelect_All_Slots();
+            bag.guestSystem.DeSelect_All_Slots();
         }
     }
     public void Close_Inventory_Menu()
     {
         gadgetController.Close_All_Gadget_Menus(openmenuButton);
-        
+
         // Deselect all slots when closing out of inventory
-        for (int i = 0; i < hostSystems.Length; i++)
-        {
-            hostSystems[i].DeSelect_All_Slots();
-        }
+        bag.DeSelect_All_Slots();
 
         // deselect all slots if guest system is connected and the slot is currently selected
-        if (hostSystems[1].guestSystem_Connected())
+        if (bag.guestSystem_Connected())
         {
-            hostSystems[1].guestSystem.DeSelect_All_Slots();
+            bag.guestSystem.DeSelect_All_Slots();
         }
     }
-
-    // currentItem and bag host systems control for equipping
-        // check if equip type slot is empty
-        // if empty, move to item quip type slot
-        // if it is not empty, swap the two slots
 }

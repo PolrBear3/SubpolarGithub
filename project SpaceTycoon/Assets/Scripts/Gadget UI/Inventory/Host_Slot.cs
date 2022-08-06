@@ -85,7 +85,6 @@ public class Host_Slot : MonoBehaviour
             DeSelect_Slot();
         }
     }
-
     public void Move_Slot()
     {
         var currentItem = this.currentItem;
@@ -93,13 +92,5 @@ public class Host_Slot : MonoBehaviour
         Empty_Slot();
         system.guestSystem.Craft_Item(currentItem, currentAmount);
         DeSelect_Slot();
-    }
-    public void Equip_Item()
-    {
-
-    }
-    public void UnEquip_Item()
-    {
-
     }
 }

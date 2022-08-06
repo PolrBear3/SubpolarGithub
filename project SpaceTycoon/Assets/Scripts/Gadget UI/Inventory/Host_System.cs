@@ -7,6 +7,7 @@ public class Host_System : MonoBehaviour
     public Guest_System guestSystem;
     public Player_Inventory inventorySystem;
     public GameObject inventoryMenu;
+    public Equip_System equipSystem;
     
     public Host_Slot[] hostSlots;
 
@@ -82,7 +83,7 @@ public class Host_System : MonoBehaviour
     }
 
     // input to system
-    private void MaxSplit_Refund(Host_Slot hostSlot, Item_Info itemInfo)
+    public void MaxSplit_Refund_toGuest(Host_Slot hostSlot, Item_Info itemInfo)
     {
         if (hostSlot.currentAmount > hostSlot.currentItem.itemMaxAmount)
         {
@@ -101,7 +102,7 @@ public class Host_System : MonoBehaviour
             hostSlot.amountText.text = hostSlot.currentAmount.ToString();
         }
     }
-    private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
+    public void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < hostSlots.Length; i++)
         {
@@ -129,7 +130,7 @@ public class Host_System : MonoBehaviour
             else if (hostSlots[i].currentItem == itemInfo && hostSlots[i].currentAmount < itemInfo.itemMaxAmount)
             {
                 hostSlots[i].Stack_Slot(amount);
-                MaxSplit_Refund(hostSlots[i], itemInfo);
+                MaxSplit_Refund_toGuest(hostSlots[i], itemInfo);
                 break;
             }
         }
