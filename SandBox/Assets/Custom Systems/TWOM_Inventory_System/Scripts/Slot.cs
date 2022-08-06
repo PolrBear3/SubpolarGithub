@@ -12,7 +12,6 @@ public class Slot : MonoBehaviour
 
     public Item_Info currentItem;
     public int itemAmount;
-    public int moveAmount;
 
     public GameObject slotSelectHighlighter, moveButton;
     public Image itemSprite;

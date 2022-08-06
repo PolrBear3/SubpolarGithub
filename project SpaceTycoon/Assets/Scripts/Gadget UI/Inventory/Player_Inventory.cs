@@ -38,4 +38,7 @@ public class Player_Inventory : MonoBehaviour
     }
 
     // currentItem and bag host systems control for equipping
+        // check if equip type slot is empty
+        // if empty, move to item quip type slot
+        // if it is not empty, swap the two slots
 }

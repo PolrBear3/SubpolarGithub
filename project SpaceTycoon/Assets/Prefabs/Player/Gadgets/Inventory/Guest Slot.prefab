@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 41175519376846796}
   - component: {fileID: 41175519376846387}
   - component: {fileID: 41175519376846386}
-  - component: {fileID: 3064016625282053093}
-  - component: {fileID: 4614601232456369475}
+  - component: {fileID: 3840178321821869969}
+  - component: {fileID: 4870905346853159581}
   m_Layer: 5
-  m_Name: Bag Slot
+  m_Name: Guest Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3064016625282053093
+--- !u!114 &3840178321821869969
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,12 +94,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 41175519376846799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933e07a3261032e488ad45800f246376, type: 3}
+  m_Script: {fileID: 11500000, guid: a8097f1ba6071b24f921854e50e30cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   system: {fileID: 0}
   slotRT: {fileID: 41175519376846796}
-  toolTip: {fileID: 4614601232456369475}
+  toolTip: {fileID: 4870905346853159581}
   slotSelected: 0
   hasItem: 0
   currentItem: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
   slotSelectHighlighter: {fileID: 2505736644561312477}
   itemSprite: {fileID: 41175519718308750}
   amountText: {fileID: 41175520170202895}
---- !u!114 &4614601232456369475
+--- !u!114 &4870905346853159581
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,10 +116,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 41175519376846799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1528e1e55b0284e4a97125fa67e4dbca, type: 3}
+  m_Script: {fileID: 11500000, guid: f7c5591360641ac4c8db99716f2b1ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisHostSlot: {fileID: 3064016625282053093}
+  thisGuestSlot: {fileID: 3840178321821869969}
   panels:
   - {fileID: 2377472874238099145}
   - {fileID: 3690645124169306162}
@@ -1685,7 +1685,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3064016625282053093}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
         m_MethodName: Click_Slot
         m_Mode: 1
@@ -1949,7 +1949,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3064016625282053093}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
         m_MethodName: DeSelect_Slot
         m_Mode: 1
@@ -2235,19 +2235,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 286431432721286252}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3064016625282053093}
-        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
-        m_MethodName: Equip_Item
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &6940582347823113917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2435,7 +2423,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3064016625282053093}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
         m_MethodName: Move_Slot
         m_Mode: 1

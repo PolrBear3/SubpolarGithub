@@ -5,6 +5,7 @@ using UnityEngine;
 public class Host_System : MonoBehaviour
 {
     public Guest_System guestSystem;
+    public Player_Inventory inventorySystem;
     public GameObject inventoryMenu;
     
     public Host_Slot[] hostSlots;
