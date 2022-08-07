@@ -5,9 +5,8 @@ using UnityEngine;
 public class Host_System : MonoBehaviour
 {
     public Guest_System guestSystem;
-    public Player_Inventory inventorySystem;
-    public GameObject inventoryMenu;
     public Equip_System equipSystem;
+    public GameObject inventoryMenu;
     
     public Host_Slot[] hostSlots;
 
@@ -28,12 +27,14 @@ public class Host_System : MonoBehaviour
     public void Connect(Guest_System guestSystem)
     {
         this.guestSystem = guestSystem;
+        equipSystem.guestSystem = guestSystem;
         DeSelect_All_Slots();
         guestSystem.DeSelect_All_Slots();
     }
     public void Reset_GuestSystem()
     {
         guestSystem = null;
+        equipSystem.guestSystem = null;
         DeSelect_All_Slots();
     }
 
@@ -83,26 +84,30 @@ public class Host_System : MonoBehaviour
     }
 
     // input to system
-    public void MaxSplit_Refund_toGuest(Host_Slot hostSlot, Item_Info itemInfo)
+    private void MaxSplit_Refund(int systemTypeNum, Host_Slot hostSlot, Item_Info itemInfo)
     {
         if (hostSlot.currentAmount > hostSlot.currentItem.itemMaxAmount)
         {
             int leftOver = hostSlot.currentAmount - hostSlot.currentItem.itemMaxAmount;
 
-            if (Slot_Available())
+            if (Slot_Available() && systemTypeNum == 1)
             {
                 AddItem_to_NewSlot(hostSlot.currentItem, leftOver);
             }
-            else if (!Slot_Available())
+            else if (!Slot_Available() && systemTypeNum == 2)
             {
-                guestSystem.Craft_Item(itemInfo, leftOver);
+                guestSystem.Craft_Item(2, itemInfo, leftOver);
+            }
+            else if (!Slot_Available() && systemTypeNum == 3)
+            {
+                equipSystem.Craft_Item(3, itemInfo, leftOver);
             }
 
             hostSlot.currentAmount = hostSlot.currentItem.itemMaxAmount;
             hostSlot.amountText.text = hostSlot.currentAmount.ToString();
         }
     }
-    public void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
+    private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < hostSlots.Length; i++)
         {
@@ -113,11 +118,12 @@ public class Host_System : MonoBehaviour
             }
         }
     }
-    public void Craft_Item(Item_Info itemInfo, int amount)
+    public void Craft_Item(int systemTypeNum, Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < hostSlots.Length; i++)
         {
             DeSelect_All_Slots();
+            equipSystem.DeSelect_All_Slots();
             if (guestSystem_Connected()) { guestSystem.DeSelect_All_Slots(); }
 
             // if the slot is empty
@@ -130,7 +136,7 @@ public class Host_System : MonoBehaviour
             else if (hostSlots[i].currentItem == itemInfo && hostSlots[i].currentAmount < itemInfo.itemMaxAmount)
             {
                 hostSlots[i].Stack_Slot(amount);
-                MaxSplit_Refund_toGuest(hostSlots[i], itemInfo);
+                MaxSplit_Refund(systemTypeNum, hostSlots[i], itemInfo);
                 break;
             }
         }
@@ -139,6 +145,6 @@ public class Host_System : MonoBehaviour
     // test
     public void Test_Spawn_Item(Item_Info item)
     {
-        Craft_Item(item, 1);
+        Craft_Item(1, item, 1);
     }
 }

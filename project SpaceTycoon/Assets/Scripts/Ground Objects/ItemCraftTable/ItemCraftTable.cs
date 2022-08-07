@@ -112,6 +112,6 @@ public class ItemCraftTable : MonoBehaviour
     // craft item
     public void Craft_Item()
     {
-        guestSystem.Craft_Item(currentlyOpenedItem, 1);
+        guestSystem.Craft_Item(2, currentlyOpenedItem, 1);
     }
 }

@@ -82,19 +82,23 @@ public class Guest_System : MonoBehaviour
     }
 
     // input to system
-    private void MaxSplit_Refund(Guest_Slot guestSlot, Item_Info itemInfo)
+    private void MaxSplit_Refund(int systemTypeNum, Guest_Slot guestSlot, Item_Info itemInfo)
     {
         if (guestSlot.currentAmount > guestSlot.currentItem.itemMaxAmount)
         {
             int leftOver = guestSlot.currentAmount - guestSlot.currentItem.itemMaxAmount;
 
-            if (Slot_Available())
+            if (Slot_Available() && systemTypeNum == 2)
             {
                 AddItem_to_NewSlot(guestSlot.currentItem, leftOver);
             }
-            else if (!Slot_Available())
+            else if (!Slot_Available() && systemTypeNum == 1)
             {
-                hostSystem.Craft_Item(itemInfo, leftOver);
+                hostSystem.Craft_Item(1, itemInfo, leftOver);
+            }
+            else if (!Slot_Available() && systemTypeNum == 3)
+            {
+                hostSystem.equipSystem.Craft_Item(3, itemInfo, leftOver);
             }
 
             guestSlot.currentAmount = guestSlot.currentItem.itemMaxAmount;
@@ -112,7 +116,7 @@ public class Guest_System : MonoBehaviour
             }
         }
     }
-    public void Craft_Item(Item_Info itemInfo, int amount)
+    public void Craft_Item(int systemTypeNum, Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < guestSlots.Length; i++)
         {
@@ -129,7 +133,7 @@ public class Guest_System : MonoBehaviour
             else if (guestSlots[i].currentItem == itemInfo && guestSlots[i].currentAmount < itemInfo.itemMaxAmount)
             {
                 guestSlots[i].Stack_Slot(amount);
-                MaxSplit_Refund(guestSlots[i], itemInfo);
+                MaxSplit_Refund(systemTypeNum, guestSlots[i], itemInfo);
                 break;
             }
         }

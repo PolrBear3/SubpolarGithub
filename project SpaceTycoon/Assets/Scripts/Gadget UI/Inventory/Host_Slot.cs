@@ -49,6 +49,7 @@ public class Host_Slot : MonoBehaviour
         {
             system.guestSystem.DeSelect_All_Slots();
         }
+        system.equipSystem.DeSelect_All_Slots();
 
         system.DeSelect_All_Slots();
         slotSelected = true;
@@ -73,7 +74,6 @@ public class Host_Slot : MonoBehaviour
         toolTip.panels[1].SetActive(false);
         toolTip.moveButton.SetActive(false);
     }
-
     public void Click_Slot()
     {
         if (!slotSelected && hasItem)
@@ -85,12 +85,22 @@ public class Host_Slot : MonoBehaviour
             DeSelect_Slot();
         }
     }
+
+    // interactive tooltip buttons
     public void Move_Slot()
     {
         var currentItem = this.currentItem;
         int currentAmount = this.currentAmount;
         Empty_Slot();
-        system.guestSystem.Craft_Item(currentItem, currentAmount);
+        system.guestSystem.Craft_Item(2, currentItem, currentAmount);
+        DeSelect_Slot();
+    }
+    public void Equip_Slot()
+    {
+        var currentItem = this.currentItem;
+        int currentAmount = this.currentAmount;
+        Empty_Slot();
+        system.equipSystem.Craft_Item(3, currentItem, currentAmount);
         DeSelect_Slot();
     }
 }

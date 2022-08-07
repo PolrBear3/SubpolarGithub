@@ -1685,8 +1685,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
+      - m_Target: {fileID: 3840178321821869969}
+        m_TargetAssemblyTypeName: Guest_Slot, Assembly-CSharp
         m_MethodName: Click_Slot
         m_Mode: 1
         m_Arguments:
@@ -1949,8 +1949,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
+      - m_Target: {fileID: 3840178321821869969}
+        m_TargetAssemblyTypeName: Guest_Slot, Assembly-CSharp
         m_MethodName: DeSelect_Slot
         m_Mode: 1
         m_Arguments:
@@ -2235,7 +2235,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 286431432721286252}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3840178321821869969}
+        m_TargetAssemblyTypeName: Guest_Slot, Assembly-CSharp
+        m_MethodName: Equip_Slot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6940582347823113917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2423,8 +2435,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
+      - m_Target: {fileID: 3840178321821869969}
+        m_TargetAssemblyTypeName: Guest_Slot, Assembly-CSharp
         m_MethodName: Move_Slot
         m_Mode: 1
         m_Arguments:

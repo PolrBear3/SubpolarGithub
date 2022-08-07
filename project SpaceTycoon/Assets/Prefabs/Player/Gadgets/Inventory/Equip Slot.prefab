@@ -923,8 +923,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1418074430512210652}
-        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
+      - m_Target: {fileID: 48577487495467730}
+        m_TargetAssemblyTypeName: Equip_Slot, Assembly-CSharp
         m_MethodName: Move_Slot
         m_Mode: 1
         m_Arguments:
@@ -1093,7 +1093,7 @@ GameObject:
   - component: {fileID: 6537896437755872423}
   - component: {fileID: 7513873336395748349}
   m_Layer: 5
-  m_Name: Equip Button
+  m_Name: UnEquip Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1201,7 +1201,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6537896437755872423}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 48577487495467730}
+        m_TargetAssemblyTypeName: Equip_Slot, Assembly-CSharp
+        m_MethodName: UnEquip_Slot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3897098414772938705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,7 +1367,7 @@ GameObject:
   - component: {fileID: 5806108732073468676}
   - component: {fileID: 3289417765053804620}
   m_Layer: 5
-  m_Name: Equip Text
+  m_Name: UnEquip Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1422,7 +1434,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Equip
+  m_Text: UnEquip
 --- !u!1 &4843824819511812870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1544,8 +1556,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1418074430512210652}
-        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
+      - m_Target: {fileID: 48577487495467730}
+        m_TargetAssemblyTypeName: Equip_Slot, Assembly-CSharp
         m_MethodName: Click_Slot
         m_Mode: 1
         m_Arguments:
@@ -1597,7 +1609,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 90}
-  m_SizeDelta: {x: 200, y: 95.0305}
+  m_SizeDelta: {x: 200, y: 92.593}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2909878258490962760
 CanvasRenderer:
@@ -2341,8 +2353,8 @@ GameObject:
   - component: {fileID: 8436339472484881557}
   - component: {fileID: 8436339472484881770}
   - component: {fileID: 8436339472484881771}
-  - component: {fileID: 1418074430512210652}
-  - component: {fileID: 7581617916745862064}
+  - component: {fileID: 48577487495467730}
+  - component: {fileID: 8064304460042707231}
   m_Layer: 5
   m_Name: Equip Slot
   m_TagString: Untagged
@@ -2416,7 +2428,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1418074430512210652
+--- !u!114 &48577487495467730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2425,12 +2437,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8436339472484881558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 933e07a3261032e488ad45800f246376, type: 3}
+  m_Script: {fileID: 11500000, guid: 117de24eb9e71fe478c5f9ee2f401965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  system: {fileID: 0}
+  system: {fileID: 3604985878680729390, guid: 24943d19f3248664f98ab7148d42018e, type: 3}
   slotRT: {fileID: 8436339472484881557}
-  toolTip: {fileID: 7581617916745862064}
+  toolTip: {fileID: 8064304460042707231}
+  itemType: 0
   slotSelected: 0
   hasItem: 0
   currentItem: {fileID: 0}
@@ -2438,7 +2451,7 @@ MonoBehaviour:
   slotSelectHighlighter: {fileID: 339753688660374209}
   itemSprite: {fileID: 8436339470935458007}
   amountText: {fileID: 8436339470618897494}
---- !u!114 &7581617916745862064
+--- !u!114 &8064304460042707231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2447,10 +2460,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8436339472484881558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1528e1e55b0284e4a97125fa67e4dbca, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cd15fdf919a9214f8986e33f0ff58a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisHostSlot: {fileID: 1418074430512210652}
+  thisEquipSlot: {fileID: 48577487495467730}
   panels:
   - {fileID: 5130263823780906314}
   - {fileID: 9209530309450891705}
@@ -2502,8 +2515,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103.5, y: -68.43675}
-  m_SizeDelta: {x: 177, y: 25.1875}
+  m_AnchoredPosition: {x: 103.5, y: -67.218}
+  m_SizeDelta: {x: 177, y: 22.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4617721926406008957
 CanvasRenderer:
@@ -2669,8 +2682,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1418074430512210652}
-        m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
+      - m_Target: {fileID: 48577487495467730}
+        m_TargetAssemblyTypeName: Equip_Slot, Assembly-CSharp
         m_MethodName: DeSelect_Slot
         m_Mode: 1
         m_Arguments:

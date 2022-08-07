@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3064016625282053093}
   - component: {fileID: 4614601232456369475}
   m_Layer: 5
-  m_Name: Bag Slot
+  m_Name: Host Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2238,7 +2238,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3064016625282053093}
         m_TargetAssemblyTypeName: Host_Slot, Assembly-CSharp
-        m_MethodName: Equip_Item
+        m_MethodName: Equip_Slot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
