@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Equip_System : MonoBehaviour
 {
+    // system type num > 3
+
     public Guest_System guestSystem;
     public Host_System hostSystem;
 
@@ -46,11 +48,11 @@ public class Equip_System : MonoBehaviour
     }
 
     // check functions
-    public bool Slot_Available()
+    public bool Slot_Available(ItemType itemType)
     {
         for (int i = 0; i < equipSlots.Length; i++)
         {
-            if (!equipSlots[i].hasItem)
+            if (itemType == equipSlots[i].itemType && !equipSlots[i].hasItem)
             {
                 return true;
             }
@@ -70,29 +72,6 @@ public class Equip_System : MonoBehaviour
     }
 
     // input to system
-    private void MaxSplit_Refund(int systemTypeNum, Equip_Slot equipSlot, Item_Info itemInfo)
-    {
-        if (equipSlot.currentAmount > equipSlot.currentItem.itemMaxAmount)
-        {
-            int leftOver = equipSlot.currentAmount - equipSlot.currentItem.itemMaxAmount;
-
-            if (Slot_Available() && systemTypeNum == 3) //?
-            {
-                AddItem_to_NewSlot(equipSlot.currentItem, leftOver);
-            }
-            else if (!Slot_Available() && systemTypeNum == 1)
-            {
-                hostSystem.Craft_Item(1, itemInfo, leftOver);
-            }
-            else if (!Slot_Available() && systemTypeNum == 2)
-            {
-                guestSystem.Craft_Item(2, itemInfo, leftOver);
-            }
-
-            equipSlot.currentAmount = equipSlot.currentItem.itemMaxAmount;
-            equipSlot.amountText.text = equipSlot.currentAmount.ToString();
-        }
-    }
     private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < equipSlots.Length; i++)
@@ -117,7 +96,7 @@ public class Equip_System : MonoBehaviour
             if (guestSystem_Connected()) { guestSystem.DeSelect_All_Slots(); }
 
             // item type check
-            if (equipSlots[i].itemType == itemInfo.itemType)
+            if (equipSlots[i].itemType == itemInfo.itemType && equipSlots[i].currentAmount != itemInfo.itemMaxAmount)
             {
                 // if the slot is empty
                 if (!equipSlots[i].hasItem)
@@ -129,7 +108,25 @@ public class Equip_System : MonoBehaviour
                 else if (equipSlots[i].currentItem == itemInfo && equipSlots[i].currentAmount < itemInfo.itemMaxAmount)
                 {
                     equipSlots[i].Stack_Slot(amount);
-                    MaxSplit_Refund(systemTypeNum, equipSlots[i], itemInfo);
+
+                    if (equipSlots[i].currentItem == itemInfo && equipSlots[i].currentAmount > itemInfo.itemMaxAmount)
+                    {
+                        int leftOver = equipSlots[i].currentAmount - itemInfo.itemMaxAmount;
+
+                        // host check
+                        if (leftOver > 0 && systemTypeNum == 1)
+                        {
+                            hostSystem.Craft_Item(1, itemInfo, leftOver);
+                        }
+                        // guest check
+                        else if (leftOver > 0 && systemTypeNum == 2)
+                        {
+                            guestSystem.Craft_Item(2, itemInfo, leftOver);
+                        }
+
+                        equipSlots[i].currentAmount = equipSlots[i].currentItem.itemMaxAmount;
+                        equipSlots[i].amountText.text = equipSlots[i].currentAmount.ToString();
+                    }
                     break;
                 }
             }

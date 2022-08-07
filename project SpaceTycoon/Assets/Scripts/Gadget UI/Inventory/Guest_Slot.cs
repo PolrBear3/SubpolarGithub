@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Guest_Slot : MonoBehaviour
 {
+    // system type num > 2
+
     public Guest_System system;
     public RectTransform slotRT;
     public Guest_Slot_ToolTip toolTip;
@@ -64,6 +66,12 @@ public class Guest_Slot : MonoBehaviour
                 toolTip.moveButton.SetActive(true);
             }
         }
+
+        var equipSystem = system.hostSystem.equipSystem;
+        if (equipSystem.Slot_Available(currentItem.itemType) || equipSystem.Stack_Available(currentItem))
+        {
+            toolTip.equipButton.SetActive(true);
+        }
     }
     public void DeSelect_Slot()
     {
@@ -72,6 +80,7 @@ public class Guest_Slot : MonoBehaviour
         slotSelectHighlighter.SetActive(false);
         toolTip.panels[1].SetActive(false);
         toolTip.moveButton.SetActive(false);
+        toolTip.equipButton.SetActive(false);
     }
     public void Click_Slot()
     {
@@ -91,7 +100,7 @@ public class Guest_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int itemAmount = currentAmount;
         Empty_Slot();
-        system.hostSystem.Craft_Item(1, currentItem, itemAmount);
+        system.hostSystem.Craft_Item(2, currentItem, itemAmount);
         DeSelect_Slot();
     }
     public void Equip_Slot()
@@ -99,7 +108,7 @@ public class Guest_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int itemAmount = currentAmount;
         Empty_Slot();
-        system.hostSystem.equipSystem.Craft_Item(3, currentItem, itemAmount);
+        system.hostSystem.equipSystem.Craft_Item(2, currentItem, itemAmount);
         DeSelect_Slot();
     }
 }

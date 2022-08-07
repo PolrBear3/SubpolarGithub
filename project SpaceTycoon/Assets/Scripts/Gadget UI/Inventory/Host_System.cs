@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Host_System : MonoBehaviour
 {
+    // system type num > 1
+
     public Guest_System guestSystem;
     public Equip_System equipSystem;
     public GameObject inventoryMenu;
@@ -84,29 +86,6 @@ public class Host_System : MonoBehaviour
     }
 
     // input to system
-    private void MaxSplit_Refund(int systemTypeNum, Host_Slot hostSlot, Item_Info itemInfo)
-    {
-        if (hostSlot.currentAmount > hostSlot.currentItem.itemMaxAmount)
-        {
-            int leftOver = hostSlot.currentAmount - hostSlot.currentItem.itemMaxAmount;
-
-            if (Slot_Available() && systemTypeNum == 1)
-            {
-                AddItem_to_NewSlot(hostSlot.currentItem, leftOver);
-            }
-            else if (!Slot_Available() && systemTypeNum == 2)
-            {
-                guestSystem.Craft_Item(2, itemInfo, leftOver);
-            }
-            else if (!Slot_Available() && systemTypeNum == 3)
-            {
-                equipSystem.Craft_Item(3, itemInfo, leftOver);
-            }
-
-            hostSlot.currentAmount = hostSlot.currentItem.itemMaxAmount;
-            hostSlot.amountText.text = hostSlot.currentAmount.ToString();
-        }
-    }
     private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
     {
         for (int i = 0; i < hostSlots.Length; i++)
@@ -136,7 +115,37 @@ public class Host_System : MonoBehaviour
             else if (hostSlots[i].currentItem == itemInfo && hostSlots[i].currentAmount < itemInfo.itemMaxAmount)
             {
                 hostSlots[i].Stack_Slot(amount);
-                MaxSplit_Refund(systemTypeNum, hostSlots[i], itemInfo);
+
+                if (hostSlots[i].currentItem == itemInfo && hostSlots[i].currentAmount > itemInfo.itemMaxAmount)
+                {
+                    int leftOver = hostSlots[i].currentAmount - itemInfo.itemMaxAmount;
+
+                    // this host check
+                    if (leftOver > 0 && systemTypeNum == 1)
+                    {
+                        Craft_Item(1, itemInfo, leftOver);
+                    }
+                    // guest check
+                    else if (leftOver > 0 && systemTypeNum == 2)
+                    {
+                        if (Slot_Available() || Stack_Available(itemInfo))
+                        {
+                            Craft_Item(1, itemInfo, leftOver);
+                        }
+                        else
+                        {
+                            guestSystem.Craft_Item(1, itemInfo, leftOver);
+                        }
+                    }
+                    // equip check
+                    else if (leftOver > 0 && systemTypeNum == 3)
+                    {
+                        equipSystem.Craft_Item(2, itemInfo, leftOver);
+                    }
+
+                    hostSlots[i].currentAmount = hostSlots[i].currentItem.itemMaxAmount;
+                    hostSlots[i].amountText.text = hostSlots[i].currentAmount.ToString();
+                }
                 break;
             }
         }

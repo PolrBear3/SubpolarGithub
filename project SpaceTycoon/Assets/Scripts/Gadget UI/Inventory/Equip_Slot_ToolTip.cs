@@ -9,7 +9,7 @@ public class Equip_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
     public Equip_Slot thisEquipSlot;
     
     public GameObject[] panels;
-    public GameObject moveButton;
+    public GameObject moveButton, unEquipButton;
     public RectTransform[] rectTransforms;
     public Image[] itemIcons;
     public Text[] itemNames;

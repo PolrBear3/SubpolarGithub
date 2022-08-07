@@ -9,7 +9,7 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
     public Guest_Slot thisGuestSlot;
 
     public GameObject[] panels;
-    public GameObject moveButton;
+    public GameObject moveButton, equipButton;
     public RectTransform[] rectTransforms;
     public Image[] itemIcons;
     public Text[] itemNames;

@@ -9,7 +9,7 @@ public class Host_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Host_Slot thisHostSlot;
 
     public GameObject[] panels;
-    public GameObject moveButton;
+    public GameObject moveButton, equipButton;
     public RectTransform[] rectTransforms;
     public Image[] itemIcons;
     public Text[] itemNames;

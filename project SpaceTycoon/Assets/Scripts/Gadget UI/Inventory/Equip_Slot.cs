@@ -67,6 +67,12 @@ public class Equip_Slot : MonoBehaviour
                 toolTip.moveButton.SetActive(true);
             }
         }
+
+        var hostSystem = system.hostSystem;
+        if (hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
+        {
+            toolTip.unEquipButton.SetActive(true);
+        }
     }
     public void DeSelect_Slot()
     {
@@ -75,6 +81,7 @@ public class Equip_Slot : MonoBehaviour
         slotSelectHighlighter.SetActive(false);
         toolTip.panels[1].SetActive(false);
         toolTip.moveButton.SetActive(false);
+        toolTip.unEquipButton.SetActive(false);
     }
     public void Click_Slot()
     {
@@ -94,7 +101,7 @@ public class Equip_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int currentAmount = this.currentAmount;
         Empty_Slot();
-        system.guestSystem.Craft_Item(2, currentItem, currentAmount);
+        system.guestSystem.Craft_Item(3, currentItem, currentAmount);
         DeSelect_Slot();
     }
     public void UnEquip_Slot()
@@ -102,7 +109,7 @@ public class Equip_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int currentAmount = this.currentAmount;
         Empty_Slot();
-        system.hostSystem.Craft_Item(1, currentItem, currentAmount);
+        system.hostSystem.Craft_Item(3, currentItem, currentAmount);
         DeSelect_Slot();
     }
 }
