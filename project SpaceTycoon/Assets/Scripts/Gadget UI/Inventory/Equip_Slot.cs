@@ -21,6 +21,7 @@ public class Equip_Slot : MonoBehaviour
     public Image itemSprite;
     public Text amountText;
 
+
     public void Empty_Slot()
     {
         currentAmount = 0;
@@ -29,6 +30,8 @@ public class Equip_Slot : MonoBehaviour
         itemSprite.sprite = null;
         itemSprite.color = Color.clear;
         amountText.text = "";
+
+        Slot_ItemEquip_Update();
     }
     public void Assign_Slot(Item_Info itemInfo, int itemAmount)
     {
@@ -38,11 +41,15 @@ public class Equip_Slot : MonoBehaviour
         itemSprite.sprite = itemInfo.itemIcon;
         itemSprite.color = Color.white;
         amountText.text = currentAmount.ToString();
+
+        Slot_ItemEquip_Update();
     }
     public void Stack_Slot(int additionalAmount)
     {
         currentAmount += additionalAmount;
         amountText.text = currentAmount.ToString();
+
+        Slot_ItemEquip_Update();
     }
 
     private void Select_Slot()
@@ -111,5 +118,23 @@ public class Equip_Slot : MonoBehaviour
         Empty_Slot();
         system.hostSystem.Craft_Item(3, currentItem, currentAmount);
         DeSelect_Slot();
+    }
+
+    // item equip check
+    private void Slot_ItemEquip_Update()
+    {
+        var x = system.allPlayerItemInfos;
+
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (x[i].itemInfo == currentItem)
+            {
+                x[i].Activate_Item();
+            }
+            else
+            {
+                x[i].DeActivate_Item();
+            }
+        }
     }
 }

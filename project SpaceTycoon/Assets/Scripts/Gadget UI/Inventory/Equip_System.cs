@@ -10,6 +10,7 @@ public class Equip_System : MonoBehaviour
     public Host_System hostSystem;
 
     public Equip_Slot[] equipSlots;
+    public GameObject_Item_Info[] allPlayerItemInfos;
 
     [HideInInspector]
     public bool slotSelected;
