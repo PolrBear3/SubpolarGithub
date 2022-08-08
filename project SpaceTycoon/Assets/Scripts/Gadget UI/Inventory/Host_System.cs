@@ -86,18 +86,31 @@ public class Host_System : MonoBehaviour
     }
 
     // input to system
-    private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
+    private void Transfer_Item_Durability(bool isNew, Host_Slot slot, float durability)
+    {
+        if (!isNew)
+        {
+            slot.currentDurability = durability;
+        }
+        else
+        {
+            slot.currentDurability = slot.currentItem.itemMaxDurability;
+        }
+    }
+    private void AddItem_to_NewSlot(bool isNew, Item_Info itemInfo, int amount, float durability)
     {
         for (int i = 0; i < hostSlots.Length; i++)
         {
             if (hostSlots[i].currentItem == null)
             {
                 hostSlots[i].Assign_Slot(itemInfo, amount);
+                Transfer_Item_Durability(isNew, hostSlots[i], durability);
                 break;
             }
         }
     }
-    public void Craft_Item(int systemTypeNum, Item_Info itemInfo, int amount)
+    
+    public void Craft_Item(bool isNew, int systemTypeNum, Item_Info itemInfo, int amount, float durability)
     {
         for (int i = 0; i < hostSlots.Length; i++)
         {
@@ -108,39 +121,41 @@ public class Host_System : MonoBehaviour
             // if the slot is empty
             if (!hostSlots[i].hasItem)
             {
-                AddItem_to_NewSlot(itemInfo, amount);
+                AddItem_to_NewSlot(isNew, itemInfo, amount, durability);
                 break;
             }
             // if the slot has the same item and the current amount is not the max amount
             else if (hostSlots[i].currentItem == itemInfo && hostSlots[i].currentAmount < itemInfo.itemMaxAmount)
             {
+                // stack the item
                 hostSlots[i].Stack_Slot(amount);
 
-                if (hostSlots[i].currentItem == itemInfo && hostSlots[i].currentAmount > itemInfo.itemMaxAmount)
+                // if the slot current amount is over max amount
+                if (hostSlots[i].currentAmount > itemInfo.itemMaxAmount)
                 {
                     int leftOver = hostSlots[i].currentAmount - itemInfo.itemMaxAmount;
 
                     // this host check
                     if (leftOver > 0 && systemTypeNum == 1)
                     {
-                        Craft_Item(1, itemInfo, leftOver);
+                        Craft_Item(true, 1, itemInfo, leftOver, 0);
                     }
                     // guest check
                     else if (leftOver > 0 && systemTypeNum == 2)
                     {
                         if (Slot_Available() || Stack_Available(itemInfo))
                         {
-                            Craft_Item(1, itemInfo, leftOver);
+                            Craft_Item(true, 1, itemInfo, leftOver, 0);
                         }
                         else
                         {
-                            guestSystem.Craft_Item(1, itemInfo, leftOver);
+                            guestSystem.Craft_Item(true, 1, itemInfo, leftOver, 0);
                         }
                     }
                     // equip check
                     else if (leftOver > 0 && systemTypeNum == 3)
                     {
-                        equipSystem.Craft_Item(2, itemInfo, leftOver);
+                        equipSystem.Craft_Item(true, 1, itemInfo, leftOver, 0);
                     }
 
                     hostSlots[i].currentAmount = hostSlots[i].currentItem.itemMaxAmount;
@@ -154,6 +169,6 @@ public class Host_System : MonoBehaviour
     // test
     public void Test_Spawn_Item(Item_Info item)
     {
-        Craft_Item(1, item, 1);
+        Craft_Item(true, 1, item, 1, item.itemMaxDurability);
     }
 }

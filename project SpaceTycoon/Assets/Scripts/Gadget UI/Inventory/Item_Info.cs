@@ -24,5 +24,5 @@ public class Item_Info : ScriptableObject
     public string itemDescription;
 
     public int itemMaxAmount;
-    public int itemDurability;
+    public int itemMaxDurability;
 }

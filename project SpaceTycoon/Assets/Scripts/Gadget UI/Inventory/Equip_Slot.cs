@@ -16,15 +16,16 @@ public class Equip_Slot : MonoBehaviour
 
     public Item_Info currentItem;
     public int currentAmount;
+    public float currentDurability;
 
     public GameObject slotSelectHighlighter;
     public Image itemSprite;
     public Text amountText;
 
-
     public void Empty_Slot()
     {
         currentAmount = 0;
+        currentDurability = 0;
         hasItem = false;
         currentItem = null;
         itemSprite.sprite = null;
@@ -108,7 +109,7 @@ public class Equip_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int currentAmount = this.currentAmount;
         Empty_Slot();
-        system.guestSystem.Craft_Item(3, currentItem, currentAmount);
+        system.guestSystem.Craft_Item(false, 3, currentItem, currentAmount, currentDurability);
         DeSelect_Slot();
     }
     public void UnEquip_Slot()
@@ -116,7 +117,7 @@ public class Equip_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int currentAmount = this.currentAmount;
         Empty_Slot();
-        system.hostSystem.Craft_Item(3, currentItem, currentAmount);
+        system.hostSystem.Craft_Item(false, 3, currentItem, currentAmount, currentDurability);
         DeSelect_Slot();
     }
 

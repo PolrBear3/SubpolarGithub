@@ -16,6 +16,7 @@ public class Guest_Slot : MonoBehaviour
 
     public Item_Info currentItem;
     public int currentAmount;
+    public float currentDurability;
 
     public GameObject slotSelectHighlighter;
     public Image itemSprite;
@@ -24,6 +25,7 @@ public class Guest_Slot : MonoBehaviour
     public void Empty_Slot()
     {
         currentAmount = 0;
+        currentDurability = 0;
         hasItem = false;
         currentItem = null;
         itemSprite.sprite = null;
@@ -68,9 +70,12 @@ public class Guest_Slot : MonoBehaviour
         }
 
         var equipSystem = system.hostSystem.equipSystem;
-        if (equipSystem.Slot_Available(currentItem.itemType) || equipSystem.Stack_Available(currentItem))
+        if (system.hostSystem.inventoryMenu.activeSelf)
         {
-            toolTip.equipButton.SetActive(true);
+            if (equipSystem.Slot_Available(currentItem.itemType) || equipSystem.Stack_Available(currentItem))
+            {
+                toolTip.equipButton.SetActive(true);
+            }
         }
     }
     public void DeSelect_Slot()
@@ -100,7 +105,7 @@ public class Guest_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int itemAmount = currentAmount;
         Empty_Slot();
-        system.hostSystem.Craft_Item(2, currentItem, itemAmount);
+        system.hostSystem.Craft_Item(false, 2, currentItem, itemAmount, currentDurability);
         DeSelect_Slot();
     }
     public void Equip_Slot()
@@ -108,7 +113,7 @@ public class Guest_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int itemAmount = currentAmount;
         Empty_Slot();
-        system.hostSystem.equipSystem.Craft_Item(2, currentItem, itemAmount);
+        system.hostSystem.equipSystem.Craft_Item(false, 2, currentItem, itemAmount, currentDurability);
         DeSelect_Slot();
     }
 }

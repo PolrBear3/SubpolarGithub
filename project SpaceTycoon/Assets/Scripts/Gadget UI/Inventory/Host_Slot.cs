@@ -14,6 +14,7 @@ public class Host_Slot : MonoBehaviour
 
     public Item_Info currentItem;
     public int currentAmount;
+    public float currentDurability;
 
     public GameObject slotSelectHighlighter;
     public Image itemSprite;
@@ -22,6 +23,7 @@ public class Host_Slot : MonoBehaviour
     public void Empty_Slot()
     {
         currentAmount = 0;
+        currentDurability = 0;
         hasItem = false;
         currentItem = null;
         itemSprite.sprite = null;
@@ -99,7 +101,7 @@ public class Host_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int currentAmount = this.currentAmount;
         Empty_Slot();
-        system.guestSystem.Craft_Item(1, currentItem, currentAmount);
+        system.guestSystem.Craft_Item(false, 1, currentItem, currentAmount, currentDurability);
         DeSelect_Slot();
     }
     public void Equip_Slot()
@@ -107,7 +109,7 @@ public class Host_Slot : MonoBehaviour
         var currentItem = this.currentItem;
         int currentAmount = this.currentAmount;
         Empty_Slot();
-        system.equipSystem.Craft_Item(1, currentItem, currentAmount);
+        system.equipSystem.Craft_Item(false, 1, currentItem, currentAmount, currentDurability);
         DeSelect_Slot();
     }
 }

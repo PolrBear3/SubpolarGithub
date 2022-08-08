@@ -20,9 +20,9 @@ public class Player_Movement : MonoBehaviour
     public float footRadius;
     public LayerMask groundLayer;
 
-    // ?? jetpack movement check
-    public GameObject JetPack;
-    public JetPack jetPack;
+    // movement and jump switch
+    public bool defaultMovementOn = true;
+    public bool defaultJumpOn = true;
 
     void Awake()
     {
@@ -76,24 +76,30 @@ public class Player_Movement : MonoBehaviour
     }
     private void Movement()
     {
-        rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
+        if (defaultMovementOn)
+        {
+            rb.velocity = new Vector2(horizontal * playerController.playerOutfit.currentOutfit.movementSpeed, rb.velocity.y);
+        }
     }
 
-    void Default_Jump()
+    private void Default_Jump()
     {
         var addSize = playerController.playerOutfit.currentOutfit.tirednessAddSize;
 
-        if (Input.GetKeyDown(KeyCode.W) && isGround)
+        if (defaultJumpOn)
         {
-            rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
-
-            // add tiredness if player jumps
-            playerController.playerState.Add_State_Size(1, addSize);
-
-            if (!playerController.playerState.State_CurrentlyNot_Max(1))
+            if (Input.GetKeyDown(KeyCode.W) && isGround)
             {
-                // if tiredness is max, subtract health
-                playerController.playerState.Subtract_State_Size(0, addSize);
+                rb.velocity = new Vector2(rb.velocity.x, playerController.playerOutfit.currentOutfit.jumpForce);
+
+                // add tiredness if player jumps
+                playerController.playerState.Add_State_Size(1, addSize);
+
+                if (!playerController.playerState.State_CurrentlyNot_Max(1))
+                {
+                    // if tiredness is max, subtract health
+                    playerController.playerState.Subtract_State_Size(0, addSize);
+                }
             }
         }
     }

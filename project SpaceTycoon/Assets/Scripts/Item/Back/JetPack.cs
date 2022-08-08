@@ -5,6 +5,7 @@ using UnityEngine;
 public class JetPack : MonoBehaviour
 {
     public Player_MainController playerController;
+    public GameObject_Item_Info gameObjectItemInfo;
     public Animator anim;
 
     public float flyForce;
@@ -21,7 +22,6 @@ public class JetPack : MonoBehaviour
     {
         Set_Current_Fuel();
     }
-
     private void Update()
     {
         Button_Press_Function();
@@ -29,6 +29,23 @@ public class JetPack : MonoBehaviour
         Outof_Fuel();
 
         JetPack_Active_Use();
+    }
+    private void OnEnable()
+    {
+        DeActivate_DefaultJump();
+    }
+    private void OnDisable()
+    {
+        Activate_DefaultJump();
+    }
+
+    private void Activate_DefaultJump()
+    {
+        playerController.playerMovement.defaultJumpOn = true;
+    }
+    private void DeActivate_DefaultJump()
+    {
+        playerController.playerMovement.defaultJumpOn = false;
     }
 
     private void JetPack_Active_Use()
@@ -45,7 +62,6 @@ public class JetPack : MonoBehaviour
             buttonPressed = false;
         }
     }
-
     private void Button_Press_Function()
     {
         if (buttonPressed)
@@ -58,10 +74,16 @@ public class JetPack : MonoBehaviour
             anim.SetBool("isPressed", false);
         }
     }
+    
+    private void Set_Max_Fuel()
+    {
+
+    }
     private void Set_Current_Fuel()
     {
         currentEnergyFuel = maxEnergyFuel;
     }
+
     private void Limit_Current_Fuel()
     {
         if (currentEnergyFuel > maxEnergyFuel)

@@ -82,18 +82,31 @@ public class Guest_System : MonoBehaviour
     }
 
     // input to system
-    private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
+    private void Transfer_Item_Durability(bool isNew, Guest_Slot slot, float durability)
+    {
+        if (!isNew)
+        {
+            slot.currentDurability = durability;
+        }
+        else
+        {
+            slot.currentDurability = slot.currentItem.itemMaxDurability;
+        }
+    }
+    private void AddItem_to_NewSlot(bool isNew, Item_Info itemInfo, int amount, float durability)
     {
         for (int i = 0; i < guestSlots.Length; i++)
         {
             if (guestSlots[i].currentItem == null)
             {
                 guestSlots[i].Assign_Slot(itemInfo, amount);
+                Transfer_Item_Durability(isNew, guestSlots[i], durability);
                 break;
             }
         }
     }
-    public void Craft_Item(int systemTypeNum, Item_Info itemInfo, int amount)
+
+    public void Craft_Item(bool isNew, int systemTypeNum, Item_Info itemInfo, int amount, float durability)
     {
         for (int i = 0; i < guestSlots.Length; i++)
         {
@@ -103,7 +116,7 @@ public class Guest_System : MonoBehaviour
             // if the slot is empty
             if (!guestSlots[i].hasItem)
             {
-                AddItem_to_NewSlot(itemInfo, amount);
+                AddItem_to_NewSlot(isNew, itemInfo, amount, durability);
                 break;
             }
             // if the slot has the same item and the current amount is not the max amount
@@ -111,31 +124,32 @@ public class Guest_System : MonoBehaviour
             {
                 guestSlots[i].Stack_Slot(amount);
 
-                if (guestSlots[i].currentItem == itemInfo && guestSlots[i].currentAmount > itemInfo.itemMaxAmount)
+                // if the slot current amount is over max amount
+                if (guestSlots[i].currentAmount > itemInfo.itemMaxAmount)
                 {
                     int leftOver = guestSlots[i].currentAmount - itemInfo.itemMaxAmount;
 
                     // this guest check
                     if (leftOver > 0 && systemTypeNum == 2)
                     {
-                        Craft_Item(2, itemInfo, leftOver);
+                        Craft_Item(true, 2, itemInfo, leftOver, 0);
                     }
                     // host check
                     else if (leftOver > 0 && systemTypeNum == 1)
                     {
                         if (Slot_Available() || Stack_Available(itemInfo))
                         {
-                            Craft_Item(1, itemInfo, leftOver);
+                            Craft_Item(true, 2, itemInfo, leftOver, 0);
                         }
                         else
                         {
-                            hostSystem.Craft_Item(1, itemInfo, leftOver);
+                            hostSystem.Craft_Item(true, 2, itemInfo, leftOver, 0);
                         }
                     }
                     // equip check
                     else if (leftOver > 0 && systemTypeNum == 3)
                     {
-                        hostSystem.equipSystem.Craft_Item(3, itemInfo, leftOver);
+                        hostSystem.equipSystem.Craft_Item(true, 3, itemInfo, leftOver, 0);
                     }
 
                     guestSlots[i].currentAmount = guestSlots[i].currentItem.itemMaxAmount;
