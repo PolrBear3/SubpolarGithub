@@ -13,15 +13,10 @@ public class JetPack : MonoBehaviour
     public bool buttonPressed;
 
     public float maxEnergyFuel;
-    [HideInInspector]
     public float currentEnergyFuel;
     [HideInInspector]
     public bool outOfFuel = false;
 
-    private void Start()
-    {
-        Set_Current_Fuel();
-    }
     private void Update()
     {
         Button_Press_Function();
@@ -33,6 +28,8 @@ public class JetPack : MonoBehaviour
     private void OnEnable()
     {
         DeActivate_DefaultJump();
+        Set_Max_Fuel();
+        Set_Current_Fuel();
     }
     private void OnDisable()
     {
@@ -77,11 +74,13 @@ public class JetPack : MonoBehaviour
     
     private void Set_Max_Fuel()
     {
-
+        var equipedJetPackMaxDurability = gameObjectItemInfo.equipSlot.currentItem.itemMaxDurability;
+        maxEnergyFuel = equipedJetPackMaxDurability;
     }
     private void Set_Current_Fuel()
     {
-        currentEnergyFuel = maxEnergyFuel;
+        var equipJetPackDurability = gameObjectItemInfo.equipSlot.currentDurability;
+        currentEnergyFuel = equipJetPackDurability;
     }
 
     private void Limit_Current_Fuel()
@@ -94,6 +93,7 @@ public class JetPack : MonoBehaviour
     private void Use_Fuel()
     {
         currentEnergyFuel -= 1 * Time.deltaTime;
+        gameObjectItemInfo.equipSlot.currentDurability = currentEnergyFuel;
     }
     private void Outof_Fuel()
     {

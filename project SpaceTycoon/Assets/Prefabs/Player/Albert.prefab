@@ -202,8 +202,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  JetPack: {fileID: 0}
-  jetPack: {fileID: 0}
+  defaultMovementOn: 1
+  defaultJumpOn: 1
 --- !u!114 &4223085231386287631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +442,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4057029235838386841, guid: 51f0c03438b5146a696e6a16e9b63e01, type: 3}
+      propertyPath: equipSlot
+      value: 
+      objectReference: {fileID: 8141442870610890981}
     - target: {fileID: 5481676897905866084, guid: 51f0c03438b5146a696e6a16e9b63e01, type: 3}
       propertyPath: playerController
       value: 
@@ -538,3 +542,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5214801288433145964, guid: 78a7eb1ce471aed48b20d385f1d75c00, type: 3}
   m_PrefabInstance: {fileID: 8483068800655205278}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8141442870610890981 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 379952764939580283, guid: 78a7eb1ce471aed48b20d385f1d75c00, type: 3}
+  m_PrefabInstance: {fileID: 8483068800655205278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117de24eb9e71fe478c5f9ee2f401965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
