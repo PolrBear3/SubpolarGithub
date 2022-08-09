@@ -12,24 +12,18 @@ public class JetPack : MonoBehaviour
     [HideInInspector]
     public bool buttonPressed;
 
-    public float maxEnergyFuel;
-    public float currentEnergyFuel;
     [HideInInspector]
     public bool outOfFuel = false;
 
     private void Update()
     {
         Button_Press_Function();
-        Limit_Current_Fuel();
-        Outof_Fuel();
-
         JetPack_Active_Use();
+        Outof_Fuel();
     }
     private void OnEnable()
     {
         DeActivate_DefaultJump();
-        Set_Max_Fuel();
-        Set_Current_Fuel();
     }
     private void OnDisable()
     {
@@ -71,36 +65,23 @@ public class JetPack : MonoBehaviour
             anim.SetBool("isPressed", false);
         }
     }
-    
-    private void Set_Max_Fuel()
-    {
-        var equipedJetPackMaxDurability = gameObjectItemInfo.equipSlot.currentItem.itemMaxDurability;
-        maxEnergyFuel = equipedJetPackMaxDurability;
-    }
-    private void Set_Current_Fuel()
-    {
-        var equipJetPackDurability = gameObjectItemInfo.equipSlot.currentDurability;
-        currentEnergyFuel = equipJetPackDurability;
-    }
 
-    private void Limit_Current_Fuel()
-    {
-        if (currentEnergyFuel > maxEnergyFuel)
-        {
-            currentEnergyFuel = maxEnergyFuel;
-        }
-    }
     private void Use_Fuel()
     {
-        currentEnergyFuel -= 1 * Time.deltaTime;
-        gameObjectItemInfo.equipSlot.currentDurability = currentEnergyFuel;
+        gameObjectItemInfo.equipSlot.currentDurability -= 1 * Time.deltaTime;
     }
     private void Outof_Fuel()
     {
-        if (currentEnergyFuel <= 0f)
+        if (gameObjectItemInfo.equipSlot.currentDurability <= 0f)
         {
-            currentEnergyFuel = 0f;
+            gameObjectItemInfo.equipSlot.currentDurability = 0f;
+            Activate_DefaultJump(); 
             outOfFuel = true;
+        }
+        else
+        {
+            DeActivate_DefaultJump();
+            outOfFuel = false;
         }
     }
 }

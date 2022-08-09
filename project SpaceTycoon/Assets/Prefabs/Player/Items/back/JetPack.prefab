@@ -279,8 +279,6 @@ MonoBehaviour:
   anim: {fileID: 6565600926855539750}
   flyForce: 0.25
   buttonPressed: 0
-  maxEnergyFuel: 50
-  currentEnergyFuel: 0
   outOfFuel: 0
 --- !u!1 &6664730444478963166
 GameObject:
@@ -327,5 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0cbdd01b374c41b1bd2e7dcaca23426, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipSlot: {fileID: 0}
   itemInfo: {fileID: 11400000, guid: 0e3d37b2e9fa14b38a229b6f59183af4, type: 2}
   systemGameObject: {fileID: 6565600927671691375}

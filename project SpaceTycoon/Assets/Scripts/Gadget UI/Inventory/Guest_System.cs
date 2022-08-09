@@ -82,7 +82,7 @@ public class Guest_System : MonoBehaviour
     }
 
     // input to system
-    private void Transfer_Item_Durability(bool isNew, Guest_Slot slot, float durability)
+    private void Transfer_Item_Durability(bool isNew, Guest_Slot slot, Item_Info itemInfo, float durability)
     {
         if (!isNew)
         {
@@ -90,7 +90,7 @@ public class Guest_System : MonoBehaviour
         }
         else
         {
-            slot.currentDurability = slot.currentItem.itemMaxDurability;
+            slot.currentDurability = itemInfo.itemMaxDurability;
         }
     }
     private void AddItem_to_NewSlot(bool isNew, Item_Info itemInfo, int amount, float durability)
@@ -99,8 +99,8 @@ public class Guest_System : MonoBehaviour
         {
             if (guestSlots[i].currentItem == null)
             {
+                Transfer_Item_Durability(isNew, guestSlots[i], itemInfo, durability);
                 guestSlots[i].Assign_Slot(itemInfo, amount);
-                Transfer_Item_Durability(isNew, guestSlots[i], durability);
                 break;
             }
         }

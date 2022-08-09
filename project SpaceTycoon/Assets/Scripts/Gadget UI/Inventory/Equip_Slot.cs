@@ -18,14 +18,19 @@ public class Equip_Slot : MonoBehaviour
     public int currentAmount;
     public float currentDurability;
 
+    public Slider durabilitySlider;
     public GameObject slotSelectHighlighter;
     public Image itemSprite;
     public Text amountText;
 
+    private void Update()
+    {
+        Durability_Slider_Update();
+    }
+
     public void Empty_Slot()
     {
         currentAmount = 0;
-        currentDurability = 0;
         hasItem = false;
         currentItem = null;
         itemSprite.sprite = null;
@@ -33,6 +38,7 @@ public class Equip_Slot : MonoBehaviour
         amountText.text = "";
 
         Slot_ItemEquip_Update();
+        Durability_Slider_Activation_Check();
     }
     public void Assign_Slot(Item_Info itemInfo, int itemAmount)
     {
@@ -44,6 +50,7 @@ public class Equip_Slot : MonoBehaviour
         amountText.text = currentAmount.ToString();
 
         Slot_ItemEquip_Update();
+        Durability_Slider_Activation_Check();
     }
     public void Stack_Slot(int additionalAmount)
     {
@@ -136,6 +143,27 @@ public class Equip_Slot : MonoBehaviour
             {
                 x[i].DeActivate_Item();
             }
+        }
+    }
+
+    // durability sliders
+    public void Durability_Slider_Activation_Check()
+    {
+        if (hasItem && currentItem.itemMaxAmount == 1)
+        {
+            durabilitySlider.gameObject.SetActive(true);
+            durabilitySlider.maxValue = currentItem.itemMaxDurability;
+        }
+        else
+        {
+            durabilitySlider.gameObject.SetActive(false);
+        }
+    }
+    private void Durability_Slider_Update()
+    {
+        if (hasItem && durabilitySlider.gameObject.activeSelf)
+        {
+            durabilitySlider.value = currentDurability;
         }
     }
 }

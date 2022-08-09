@@ -35,6 +35,7 @@ public class Equip_System : MonoBehaviour
             if (equipSlots[i].currentItem == null)
             {
                 equipSlots[i].Empty_Slot();
+                equipSlots[i].Durability_Slider_Activation_Check();
             }
         }
     }
@@ -95,6 +96,7 @@ public class Equip_System : MonoBehaviour
                 {
                     equipSlots[i].Assign_Slot(itemInfo, amount);
                     Transfer_Item_Durability(isNew, equipSlots[i], durability);
+                    equipSlots[i].Assign_Slot(itemInfo, amount);
                     break;
                 }
             }

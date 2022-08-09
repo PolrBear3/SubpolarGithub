@@ -16,6 +16,7 @@ public class Host_Slot : MonoBehaviour
     public int currentAmount;
     public float currentDurability;
 
+    public Slider durabilitySlider;
     public GameObject slotSelectHighlighter;
     public Image itemSprite;
     public Text amountText;
@@ -23,12 +24,13 @@ public class Host_Slot : MonoBehaviour
     public void Empty_Slot()
     {
         currentAmount = 0;
-        currentDurability = 0;
         hasItem = false;
         currentItem = null;
         itemSprite.sprite = null;
         itemSprite.color = Color.clear;
         amountText.text = "";
+
+        Durability_Slider_Activation_Check();
     }
     public void Assign_Slot(Item_Info itemInfo, int itemAmount)
     {
@@ -38,6 +40,8 @@ public class Host_Slot : MonoBehaviour
         itemSprite.sprite = itemInfo.itemIcon;
         itemSprite.color = Color.white;
         amountText.text = currentAmount.ToString();
+
+        Durability_Slider_Activation_Check();
     }
     public void Stack_Slot(int additionalAmount)
     {
@@ -111,5 +115,20 @@ public class Host_Slot : MonoBehaviour
         Empty_Slot();
         system.equipSystem.Craft_Item(false, 1, currentItem, currentAmount, currentDurability);
         DeSelect_Slot();
+    }
+
+    // durability sliders
+    public void Durability_Slider_Activation_Check()
+    {
+        if (hasItem && currentItem.itemMaxAmount == 1)
+        {
+            durabilitySlider.gameObject.SetActive(true);
+            durabilitySlider.maxValue = currentItem.itemMaxDurability;
+            durabilitySlider.value = currentDurability;
+        }
+        else
+        {
+            durabilitySlider.gameObject.SetActive(false);
+        }
     }
 }
