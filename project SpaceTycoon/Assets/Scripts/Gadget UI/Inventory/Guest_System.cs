@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Guest_System : MonoBehaviour
 {
+    // system type num > 2
+
     [HideInInspector]
     public Host_System hostSystem;
     public Guest_Slot[] guestSlots;

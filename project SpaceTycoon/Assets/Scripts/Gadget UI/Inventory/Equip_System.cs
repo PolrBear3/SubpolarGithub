@@ -6,6 +6,7 @@ public class Equip_System : MonoBehaviour
 {
     // system type num > 3
 
+    [HideInInspector]
     public Guest_System guestSystem;
     public Host_System hostSystem;
 

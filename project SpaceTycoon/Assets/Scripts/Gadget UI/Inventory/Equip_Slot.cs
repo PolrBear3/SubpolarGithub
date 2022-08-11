@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Equip_Slot : MonoBehaviour
 {
+    [HideInInspector]
     public Equip_System system;
     public RectTransform slotRT;
     public Equip_Slot_ToolTip toolTip;
@@ -14,6 +15,7 @@ public class Equip_Slot : MonoBehaviour
     public bool slotSelected = false;
     public bool hasItem = false;
 
+    [HideInInspector]
     public Item_Info currentItem;
     public int currentAmount;
     public float currentDurability;
@@ -57,6 +59,30 @@ public class Equip_Slot : MonoBehaviour
         currentAmount += additionalAmount;
         amountText.text = currentAmount.ToString();
 
+        Slot_ItemEquip_Update();
+    }
+    public void Trash_Item()
+    {
+        // subtract amount
+        currentAmount -= 1;
+
+        if (currentAmount >= 1)
+        {
+            amountText.text = currentAmount.ToString();
+        }
+        else if (currentAmount <= 0)
+        {
+            // empty the slot
+            Empty_Slot();
+            DeSelect_Slot();
+        }
+
+        Slot_ItemEquip_Update();
+    }
+    public void Trash_All_Item()
+    {
+        Empty_Slot();
+        DeSelect_Slot();
         Slot_ItemEquip_Update();
     }
 

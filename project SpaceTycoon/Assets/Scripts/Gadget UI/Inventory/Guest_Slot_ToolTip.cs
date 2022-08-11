@@ -7,11 +7,13 @@ using UnityEngine.EventSystems;
 public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Guest_Slot thisGuestSlot;
+    public ToolTip_ItemType_Icon itemTypeIconSystem;
 
     public GameObject[] panels;
     public GameObject moveButton, equipButton;
     public RectTransform[] rectTransforms;
     public Image[] itemIcons;
+    public Image[] itemTypeIcons;
     public Text[] itemNames;
     public Text[] itemDescriptions;
 
@@ -45,6 +47,8 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
             itemIcons[0].sprite = x.itemIcon;
             itemNames[0].text = x.itemName;
             itemDescriptions[0].text = x.itemDescription;
+            itemTypeIconSystem.Set_ItemType_Icon(thisGuestSlot.currentItem.itemType);
+            itemTypeIcons[0].sprite = itemTypeIconSystem.currentItemTypeIcon;
         }
     }
     public void Update_Interactive_ToolTip_Info()
@@ -53,6 +57,8 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
         itemIcons[1].sprite = x.itemIcon;
         itemNames[1].text = x.itemName;
         itemDescriptions[1].text = x.itemDescription;
+        itemTypeIconSystem.Set_ItemType_Icon(thisGuestSlot.currentItem.itemType);
+        itemTypeIcons[1].sprite = itemTypeIconSystem.currentItemTypeIcon;
 
         panels[0].SetActive(false);
         panels[1].SetActive(true);

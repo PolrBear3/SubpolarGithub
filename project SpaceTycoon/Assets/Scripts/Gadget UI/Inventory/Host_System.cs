@@ -6,6 +6,7 @@ public class Host_System : MonoBehaviour
 {
     // system type num > 1
 
+    [HideInInspector]
     public Guest_System guestSystem;
     public Equip_System equipSystem;
     public GameObject inventoryMenu;
