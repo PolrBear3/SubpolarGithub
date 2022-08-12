@@ -70,6 +70,12 @@ public class ItemCraftTable : MonoBehaviour
         currentlyOpenedItem = itemInfo;
         
         guestSystem.Connect_to_HostSystem();
+        // open inventory gadget
+        var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+        if (!inventoryGadget.inventoryMenuGameObject.activeSelf)
+        {
+            inventoryGadget.Open_Inventory_Menu();
+        }
         // connect item ingredients
     }
     public void Exit_Object()

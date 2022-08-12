@@ -9,7 +9,7 @@ public class Host_System : MonoBehaviour
     [HideInInspector]
     public Guest_System guestSystem;
     public Equip_System equipSystem;
-    public GameObject inventoryMenu;
+    public Player_Inventory inventoryMenu;
     
     public Host_Slot[] hostSlots;
 

@@ -86,16 +86,15 @@ public class Guest_Slot : MonoBehaviour
         toolTip.Update_Interactive_ToolTip_Info();
 
         var hostSystem = system.hostSystem;
-        if (system.hostSystem.inventoryMenu.activeSelf)
+        var equipSystem = system.hostSystem.equipSystem;
+        if (hostSystem.inventoryMenu.inventoryMenuGameObject.activeSelf)
         {
             if (hostSystem.Slot_Available() || hostSystem.Stack_Available(currentItem))
             {
                 toolTip.moveButton.SetActive(true);
             }
         }
-
-        var equipSystem = system.hostSystem.equipSystem;
-        if (system.hostSystem.inventoryMenu.activeSelf)
+        if (hostSystem.inventoryMenu.inventoryMenuGameObject.activeSelf)
         {
             if (equipSystem.Slot_Available(currentItem.itemType) || equipSystem.Stack_Available(currentItem))
             {

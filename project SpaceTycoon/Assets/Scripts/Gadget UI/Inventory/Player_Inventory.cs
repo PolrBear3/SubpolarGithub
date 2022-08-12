@@ -8,11 +8,11 @@ public class Player_Inventory : MonoBehaviour
     public Host_System bag;
     
     public Animator openmenuButton;
-    public GameObject inventoryMenu;
+    public GameObject inventoryMenuGameObject;
 
     public void Open_Inventory_Menu()
     {
-        gadgetController.Open_Gadget_Menu(inventoryMenu, openmenuButton);
+        gadgetController.Open_Gadget_Menu(inventoryMenuGameObject, openmenuButton);
 
         // deselect all slots if guest system is connected and the slot is currently selected
         if (bag.guestSystem_Connected())

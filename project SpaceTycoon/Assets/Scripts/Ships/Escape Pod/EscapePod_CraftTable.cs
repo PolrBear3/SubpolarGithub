@@ -169,8 +169,7 @@ public class EscapePod_CraftTable : MonoBehaviour
             controller.objectStorages[openedObjOptionID].leftAmount -= 1;
             Debug.Log("half of ingredients refund successful!");
         }
-
-        if (controller.objectStorages[openedObjOptionID].leftAmount == 0)
+        else if (controller.objectStorages[openedObjOptionID].leftAmount == 0)
         {
             controller.objectStorages[openedObjOptionID].leftAmount = 0;
             Debug.Log("current opened object has 0 storage. refund failed!");
