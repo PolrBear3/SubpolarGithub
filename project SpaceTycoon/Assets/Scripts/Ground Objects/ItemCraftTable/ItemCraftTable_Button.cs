@@ -12,13 +12,17 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
     public GameObject toolTipPanel;
     public bool leftSideSlot = false;
     public RectTransform toolTipPanelRT;
-    public Image itemIcon;
+    public Image itemIcon, buttonItemItcon;
     public Text itemName, itemDescription;
 
     bool timerStart;
     float timer = 0;
     float onHoverTime = 0.5f;
 
+    private void Start()
+    {
+        Update_ToolTip_Info();
+    }
     private void Update()
     {
         ToolTip_Timer();
@@ -31,7 +35,8 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
     }
     private void Update_ToolTip_Info()
     {
-        itemIcon.sprite = itemInfo.itemIcon;
+        buttonItemItcon.sprite = itemInfo.UIitemIcon;
+        itemIcon.sprite = itemInfo.UIitemIcon;
         itemName.text = itemInfo.itemName;
         itemDescription.text = itemInfo.itemDescription;
     }

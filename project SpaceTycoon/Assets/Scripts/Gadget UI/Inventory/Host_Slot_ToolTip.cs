@@ -44,7 +44,7 @@ public class Host_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (thisHostSlot.hasItem)
         {
             var x = thisHostSlot.currentItem;
-            itemIcons[0].sprite = x.itemIcon;
+            itemIcons[0].sprite = x.UIitemIcon;
             itemNames[0].text = x.itemName;
             itemDescriptions[0].text = x.itemDescription;
             itemTypeIconSystem.Set_ItemType_Icon(thisHostSlot.currentItem.itemType);
@@ -54,7 +54,7 @@ public class Host_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void Update_Interactive_ToolTip_Info()
     {
         var x = thisHostSlot.currentItem;
-        itemIcons[1].sprite = x.itemIcon;
+        itemIcons[1].sprite = x.UIitemIcon;
         itemNames[1].text = x.itemName;
         itemDescriptions[1].text = x.itemDescription;
         itemTypeIconSystem.Set_ItemType_Icon(thisHostSlot.currentItem.itemType);

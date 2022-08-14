@@ -19,6 +19,7 @@ public class Item_Info : ScriptableObject
     public ItemType2 itemType2;
 
     public Sprite itemIcon;
+    public Sprite UIitemIcon;
     public string itemName;
     [TextArea (2,5)]
     public string itemDescription;
