@@ -9,10 +9,11 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
     public ItemCraftTable controller;
     public Item_Info itemInfo;
 
+    public ToolTip_ItemType_Icon itemTypeIconSystem;
     public GameObject toolTipPanel;
     public bool leftSideSlot = false;
     public RectTransform toolTipPanelRT;
-    public Image itemIcon, buttonItemItcon;
+    public Image itemIcon, buttonItemItcon, itemTypeIcon;
     public Text itemName, itemDescription;
 
     bool timerStart;
@@ -39,6 +40,8 @@ public class ItemCraftTable_Button : MonoBehaviour, IPointerEnterHandler, IPoint
         itemIcon.sprite = itemInfo.UIitemIcon;
         itemName.text = itemInfo.itemName;
         itemDescription.text = itemInfo.itemDescription;
+        itemTypeIconSystem.Set_ItemType_Icon(itemInfo.itemType);
+        itemTypeIcon.sprite = itemTypeIconSystem.currentItemTypeIcon;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

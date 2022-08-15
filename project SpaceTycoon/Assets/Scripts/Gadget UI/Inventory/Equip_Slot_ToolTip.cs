@@ -28,10 +28,7 @@ public class Equip_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (thisEquipSlot.hasItem)
-        {
-            timerStart = true;
-        }
+        timerStart = true;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -78,7 +75,7 @@ public class Equip_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
     }
     private void Hover_Show_ToolTip()
     {
-        if (timer >= onHoverTime && !thisEquipSlot.system.slotSelected)
+        if (timer >= onHoverTime && !panels[1].activeSelf && thisEquipSlot.hasItem)
         {
             Update_ToolTip_Info();
             Check_ToolTip_inScreen();

@@ -115,9 +115,13 @@ public class ItemCraftTable : MonoBehaviour
         itemTypeLists[2].SetActive(true);
     }
 
-    // craft item
+    // craft item functions
     public void Craft_Item()
     {
         guestSystem.Craft_Item(true, 2, currentlyOpenedItem, 1, currentlyOpenedItem.itemMaxDurability);
+    }
+    public void Dismantle()
+    {
+        controller.Object_Dismantle(objectInfo, 1, icon, gameObject);
     }
 }

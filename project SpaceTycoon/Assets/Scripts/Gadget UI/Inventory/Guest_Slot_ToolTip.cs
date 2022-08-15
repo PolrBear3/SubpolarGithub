@@ -28,10 +28,7 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (thisGuestSlot.hasItem)
-        {
-            timerStart = true;
-        }
+        timerStart = true;
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -77,7 +74,7 @@ public class Guest_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
     }
     private void Hover_Show_ToolTip()
     {
-        if (timer >= onHoverTime && !thisGuestSlot.system.slotSelected)
+        if (timer >= onHoverTime && !panels[1].activeSelf && thisGuestSlot.hasItem)
         {
             Update_ToolTip_Info();
             panels[0].SetActive(true);
