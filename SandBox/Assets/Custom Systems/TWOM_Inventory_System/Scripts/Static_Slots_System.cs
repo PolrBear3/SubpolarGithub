@@ -7,6 +7,8 @@ public class Static_Slots_System : MonoBehaviour
     public Slots_System guestSystem;
     public Static_Slot[] staticSlots;
 
+    public Ingredients_Check_System ingredientsCheckSystem;
+
     private void Start()
     {
         Search_Start_EmptySlots();
@@ -94,6 +96,8 @@ public class Static_Slots_System : MonoBehaviour
 
             staticSlot.itemAmount = staticSlot.currentItem.itemMaxAmount;
             staticSlot.amountText.text = staticSlot.itemAmount.ToString();
+
+            ingredientsCheckSystem.CountSubtract_Ingredients(itemInfo, leftOver);
         }
     }
     private void AddItem_to_NewSlot(Item_Info itemInfo, int amount)
@@ -127,6 +131,42 @@ public class Static_Slots_System : MonoBehaviour
                 staticSlots[i].Stack_Slot(amount);
                 MaxSplit_Refund(staticSlots[i], itemInfo);
                 break;
+            }
+        }
+    }
+    public void Use_Item(Item_Info itemInfo, int useAmount)
+    {
+        ingredientsCheckSystem.CountSubtract_Ingredients(itemInfo, useAmount);
+
+        int useAmountTracking = useAmount;
+
+        for (int i = 0; i < staticSlots.Length; i++)
+        {
+            if (itemInfo == staticSlots[i].currentItem)
+            {
+                if (useAmountTracking <= staticSlots[i].itemAmount)
+                {
+                    staticSlots[i].itemAmount -= useAmountTracking;
+                    
+                    if (staticSlots[i].itemAmount == 0)
+                    {
+                        staticSlots[i].Empty_Slot();
+                    }
+
+                    break;
+                }
+
+                useAmountTracking -= staticSlots[i].itemAmount;
+
+                if (useAmountTracking <= 0) 
+                { 
+                    break; 
+                }
+                else if (useAmountTracking > 0)
+                {
+                    staticSlots[i].Empty_Slot();
+                    continue; 
+                }
             }
         }
     }

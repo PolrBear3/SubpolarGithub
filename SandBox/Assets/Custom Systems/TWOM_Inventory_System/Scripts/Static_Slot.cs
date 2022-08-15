@@ -34,11 +34,15 @@ public class Static_Slot : MonoBehaviour
         itemSprite.sprite = itemInfo.itemSprite;
         itemSprite.color = Color.white;
         amountText.text = itemAmount.ToString();
+
+        system.ingredientsCheckSystem.CountAdd_Ingredients(itemInfo, itemAmount);
     }
     public void Stack_Slot(int additionalAmount)
     {
         itemAmount += additionalAmount;
         amountText.text = itemAmount.ToString();
+
+        system.ingredientsCheckSystem.CountAdd_Ingredients(currentItem, additionalAmount);
     }
 
     private void Select_Slot()
@@ -84,6 +88,7 @@ public class Static_Slot : MonoBehaviour
         int itemAmount = this.itemAmount;
         Empty_Slot();
         system.guestSystem.Craft_Item(currentItem, itemAmount);
+        system.ingredientsCheckSystem.CountSubtract_Ingredients(currentItem, itemAmount);
         DeSelect_Slot();
     }
 }
