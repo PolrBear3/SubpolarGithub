@@ -53,7 +53,6 @@ public class Ingredients_Check_System : MonoBehaviour
             if (Current_Ingredients_Check(foodInfo.ingredients[i].itemInfo, foodInfo.ingredients[i].amount))
             {
                 currentCheckAmount += 1;
-                Debug.Log(currentCheckAmount);
 
                 if (currentCheckAmount == foodInfo.ingredients.Length)
                 {
