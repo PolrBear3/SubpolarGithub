@@ -8,6 +8,8 @@ public class Guest_System : MonoBehaviour
 
     [HideInInspector]
     public Host_System hostSystem;
+    public SlotItems_CheckSystem checkSystem;
+    
     public Guest_Slot[] guestSlots;
 
     [HideInInspector]
@@ -158,6 +160,43 @@ public class Guest_System : MonoBehaviour
                     guestSlots[i].amountText.text = guestSlots[i].currentAmount.ToString();
                 }
                 break;
+            }
+        }
+    }
+    public void Use_Items(Item_Info itemInfo, int useAmount)
+    {
+        checkSystem.SubtractCount_Ingredients(itemInfo, useAmount);
+
+        int useAmountTracking = useAmount;
+
+        for (int i = 0; i < guestSlots.Length; i++)
+        {
+            if (itemInfo == guestSlots[i].currentItem)
+            {
+                if (useAmountTracking <= guestSlots[i].currentAmount)
+                {
+                    guestSlots[i].currentAmount -= useAmountTracking;
+                    guestSlots[i].Update_Slot_UI();
+
+                    if (guestSlots[i].currentAmount == 0)
+                    {
+                        guestSlots[i].Empty_Slot();
+                    }
+
+                    break;
+                }
+
+                useAmountTracking -= guestSlots[i].currentAmount;
+
+                if (useAmountTracking <= 0)
+                {
+                    break;
+                }
+                else if (useAmountTracking > 0)
+                {
+                    guestSlots[i].Empty_Slot();
+                    continue;
+                }
             }
         }
     }

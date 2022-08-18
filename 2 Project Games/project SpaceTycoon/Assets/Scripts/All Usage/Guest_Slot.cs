@@ -23,6 +23,14 @@ public class Guest_Slot : MonoBehaviour
     public Image itemSprite;
     public Text amountText;
 
+    public void Update_Slot_UI()
+    {
+        if (hasItem)
+        {
+            itemSprite.sprite = currentItem.itemIcon;
+            amountText.text = currentAmount.ToString();
+        }
+    }
     public void Empty_Slot()
     {
         currentAmount = 0;
@@ -44,14 +52,30 @@ public class Guest_Slot : MonoBehaviour
         amountText.text = itemAmount.ToString();
 
         Durability_Slider_Activation_Check();
+        
+        if (system.checkSystem != null)
+        {
+            system.checkSystem.AddCount_Ingredients(itemInfo, itemAmount);
+        }
     }
     public void Stack_Slot(int additionalAmount)
     {
         currentAmount += additionalAmount;
         amountText.text = currentAmount.ToString();
+
+        if (system.checkSystem != null)
+        {
+            system.checkSystem.AddCount_Ingredients(currentItem, additionalAmount);
+        }
     }
     public void Trash_Item()
     {
+        // count system
+        if (system.checkSystem != null)
+        {
+            system.checkSystem.SubtractCount_Ingredients(currentItem, currentAmount);
+        }
+
         // subtract amount
         currentAmount -= 1;
 
@@ -68,6 +92,12 @@ public class Guest_Slot : MonoBehaviour
     }
     public void Trash_All_Item()
     {
+        // count system
+        if (system.checkSystem != null)
+        {
+            system.checkSystem.SubtractCount_Ingredients(currentItem, currentAmount);
+        }
+
         Empty_Slot();
         DeSelect_Slot();
     }
@@ -131,6 +161,12 @@ public class Guest_Slot : MonoBehaviour
         Empty_Slot();
         system.hostSystem.Craft_Item(false, 2, currentItem, itemAmount, currentDurability);
         DeSelect_Slot();
+
+        // count system
+        if (system.checkSystem != null)
+        {
+            system.checkSystem.SubtractCount_Ingredients(currentItem, itemAmount);
+        }
     }
     public void Equip_Slot()
     {
@@ -139,6 +175,12 @@ public class Guest_Slot : MonoBehaviour
         Empty_Slot();
         system.hostSystem.equipSystem.Craft_Item(false, 2, currentItem, itemAmount, currentDurability);
         DeSelect_Slot();
+
+        // count system
+        if (system.checkSystem != null)
+        {
+            system.checkSystem.SubtractCount_Ingredients(currentItem, itemAmount);
+        }
     }
 
     // durability sliders

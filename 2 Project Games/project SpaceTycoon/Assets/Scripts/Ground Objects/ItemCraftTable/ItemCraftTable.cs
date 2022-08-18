@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class ItemCraftTable : MonoBehaviour
 {
     SpaceTycoon_Main_GameController controller;
-    private Guest_System guestSystem;
+    public Guest_System guestSystem;
+    public Guest_System craftSlotSystem;
 
     Animator anim;
 
@@ -16,6 +17,7 @@ public class ItemCraftTable : MonoBehaviour
     public GameObject[] panels;
 
     public GameObject[] itemTypeLists;
+    [HideInInspector]
     public Item_Info currentlyOpenedItem;
     public Item_Info jetPack;
     public Image currentlyOpenedItemSprite;
@@ -68,15 +70,17 @@ public class ItemCraftTable : MonoBehaviour
     {
         controller.TurnOn_Single_Options_inObjectPanel(panels[1]);
         currentlyOpenedItem = itemInfo;
+        currentlyOpenedItemSprite.sprite = itemInfo.UIitemIcon;
         
         guestSystem.Connect_to_HostSystem();
+
         // open inventory gadget
         var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+
         if (!inventoryGadget.inventoryMenuGameObject.activeSelf)
         {
             inventoryGadget.Open_Inventory_Menu();
         }
-        // connect item ingredients
     }
     public void Exit_Object()
     {
@@ -118,7 +122,21 @@ public class ItemCraftTable : MonoBehaviour
     // craft item functions
     public void Craft_Item()
     {
-        guestSystem.Craft_Item(true, 2, currentlyOpenedItem, 1, currentlyOpenedItem.itemMaxDurability);
+        var openedItemIngredients = currentlyOpenedItem.ingredients;
+
+        if (guestSystem.checkSystem.Required_Ingredients_Check(currentlyOpenedItem))
+        {
+            for (int i = 0; i < currentlyOpenedItem.ingredients.Length; i++)
+            {
+                guestSystem.Use_Items(openedItemIngredients[i].itemInfo, openedItemIngredients[i].amount);
+            }
+            
+            craftSlotSystem.Craft_Item(true, 2, currentlyOpenedItem, 1, currentlyOpenedItem.itemMaxDurability);
+        }
+        else
+        {
+            Debug.Log("Not enough ingredients!");
+        }
     }
     public void Dismantle()
     {

@@ -23,13 +23,6 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     [SerializeField] private ObjectStorage[] _objectStorages;
     public ObjectStorage[] objectStorages => _objectStorages;
 
-    // All Player Item Informations
-    [SerializeField] private Item_Info[] _items;
-    public Item_Info[] items => _items;
-
-    [SerializeField] private Item_Info[] _ingredients;
-    public Item_Info[] ingredients => _ingredients;
-
     // Object Icon Constructors
     public void Icon_Popup_UpdateCheck(bool playerDetection, GameObject objectIcon)
     {
