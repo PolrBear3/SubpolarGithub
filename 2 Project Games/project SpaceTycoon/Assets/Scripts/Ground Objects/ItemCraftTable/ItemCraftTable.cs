@@ -25,7 +25,6 @@ public class ItemCraftTable : MonoBehaviour
     private void Awake()
     {
         controller = GameObject.FindGameObjectWithTag("SpaceTycoon Main GameController").GetComponent<SpaceTycoon_Main_GameController>();
-        guestSystem = GetComponent<Guest_System>();
         anim = GetComponent<Animator>();
     }
     private void Start()
@@ -71,7 +70,7 @@ public class ItemCraftTable : MonoBehaviour
         controller.TurnOn_Single_Options_inObjectPanel(panels[1]);
         currentlyOpenedItem = itemInfo;
         currentlyOpenedItemSprite.sprite = itemInfo.UIitemIcon;
-        
+
         guestSystem.Connect_to_HostSystem();
 
         // open inventory gadget
@@ -122,22 +121,27 @@ public class ItemCraftTable : MonoBehaviour
     // craft item functions
     public void Craft_Item()
     {
-        var openedItemIngredients = currentlyOpenedItem.ingredients;
-
-        if (guestSystem.checkSystem.Required_Ingredients_Check(currentlyOpenedItem))
+        if (!guestSystem.checkSystem.Required_Ingredients_Check(currentlyOpenedItem))
         {
+            Debug.Log("Not enough ingredients!");
+        }
+        else if (!craftSlotSystem.Slot_Available() && !craftSlotSystem.Stack_Available(currentlyOpenedItem))
+        {
+            Debug.Log("No space for item craft!");
+        }
+        else
+        {
+            var openedItemIngredients = currentlyOpenedItem.ingredients;
+
             for (int i = 0; i < currentlyOpenedItem.ingredients.Length; i++)
             {
                 guestSystem.Use_Items(openedItemIngredients[i].itemInfo, openedItemIngredients[i].amount);
             }
-            
+
             craftSlotSystem.Craft_Item(true, 2, currentlyOpenedItem, 1, currentlyOpenedItem.itemMaxDurability);
         }
-        else
-        {
-            Debug.Log("Not enough ingredients!");
-        }
     }
+
     public void Dismantle()
     {
         controller.Object_Dismantle(objectInfo, 1, icon, gameObject);

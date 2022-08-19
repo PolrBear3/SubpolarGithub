@@ -58,7 +58,6 @@ public class Equip_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
         itemTypeIcons[1].sprite = itemTypeIconSystem.currentItemTypeIcon;
 
         panels[0].SetActive(false);
-        Check_InteractableToolTip_inScreen();
         panels[1].SetActive(true);
     }
 
@@ -78,30 +77,7 @@ public class Equip_Slot_ToolTip : MonoBehaviour, IPointerEnterHandler, IPointerE
         if (timer >= onHoverTime && !panels[1].activeSelf && thisEquipSlot.hasItem)
         {
             Update_ToolTip_Info();
-            Check_ToolTip_inScreen();
             panels[0].SetActive(true);
-        }
-    }
-
-    // stay inside screen
-    private bool Is_Slot_RightSide()
-    {
-        var slotRT = thisEquipSlot.slotRT.anchoredPosition.x;
-        if (slotRT == 177.3f) { return true; }
-        else return false;
-    }
-    private void Check_ToolTip_inScreen()
-    {
-        if (Is_Slot_RightSide())
-        {
-            rectTransforms[0].anchoredPosition = new Vector2(-40, 90);
-        }
-    }
-    private void Check_InteractableToolTip_inScreen()
-    {
-        if (Is_Slot_RightSide())
-        {
-            rectTransforms[1].anchoredPosition = new Vector2(-40, 105);
         }
     }
 }

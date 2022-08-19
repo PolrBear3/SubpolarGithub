@@ -156,6 +156,11 @@ public class Guest_System : MonoBehaviour
                         hostSystem.equipSystem.Craft_Item(true, 3, itemInfo, leftOver, 0);
                     }
 
+                    if (checkSystem != null)
+                    {
+                        checkSystem.SubtractCount_Ingredients(itemInfo, leftOver);
+                    }
+
                     guestSlots[i].currentAmount = guestSlots[i].currentItem.itemMaxAmount;
                     guestSlots[i].amountText.text = guestSlots[i].currentAmount.ToString();
                 }

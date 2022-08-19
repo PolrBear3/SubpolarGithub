@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Guest_Slot : MonoBehaviour
 {
-    [HideInInspector]
     public Guest_System system;
     public RectTransform slotRT;
     public Guest_Slot_ToolTip toolTip;
