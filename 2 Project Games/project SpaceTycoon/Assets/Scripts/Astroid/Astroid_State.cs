@@ -38,23 +38,10 @@ public class Astroid_State : MonoBehaviour
     private void Update()
     {
         Astroid_Speed_Conditions();
+        Astroid_OutBound_Destory();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("astroid destroyer"))
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    void Astroid_Movement()
-    {
-        rb.velocity = new Vector2(-1 * currentSpeed, rb.velocity.y);
-        transform.rotation *= Quaternion.Euler(0, 0, currentRotationSpeed);
-    }
-
-    void Astroid_Start_Settings()
+    private void Astroid_Start_Settings()
     {
         if (controller.shipSectorLocation == 1)
         {
@@ -70,7 +57,12 @@ public class Astroid_State : MonoBehaviour
         sr.sprite = thisAstroid.astroidSprite;
     }
 
-    void Astroid_Speed_Conditions()
+    private void Astroid_Movement()
+    {
+        rb.velocity = new Vector2(-1 * currentSpeed, rb.velocity.y);
+        transform.rotation *= Quaternion.Euler(0, 0, currentRotationSpeed);
+    }
+    private void Astroid_Speed_Conditions()
     {
         // speed setting update
         if (currentEnginesOn < controller.EnginesOn)
@@ -103,6 +95,14 @@ public class Astroid_State : MonoBehaviour
         else if (currentRotationSpeed > SetRotationSpeed)
         {
             currentRotationSpeed = currentRotationSpeed - (thisAstroid.accelerationRate * Time.deltaTime);
+        }
+    }
+
+    private void Astroid_OutBound_Destory()
+    {
+        if (transform.position.x < -12.5f)
+        {
+            Destroy(gameObject);
         }
     }
 }

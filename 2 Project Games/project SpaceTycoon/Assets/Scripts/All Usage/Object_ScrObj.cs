@@ -9,7 +9,8 @@ public class Object_ScrObj : ScriptableObject
 {
     public GameObject gameObjectPrefab;
     public ObjectType objectType;
-    public int objectID;
     public Sprite objectSprite;
     public string objectDescription;
+
+    public Ingredient[] ingredients;
 }

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class EscapePod_CraftTable : MonoBehaviour
 {
     SpaceTycoon_Main_GameController controller;
+    public Guest_System guestSystem;
 
     Animator anim;
     [HideInInspector]
@@ -16,9 +17,9 @@ public class EscapePod_CraftTable : MonoBehaviour
     public snapPoint[] wallSnapPoints;
     public snapPoint_Buttons[] wallSnapPointButtons;
 
-    public int openedObjOptionID;
+    [HideInInspector]
+    public Object_ScrObj currentOpenedObject;
     public Button_Detector[] objectCraftOptionButtons;
-    public Object_ScrObj[] objectInfo;
 
     public GameObject mainPanel, optionPanel;
     public Image currentSelectedObjImage;
@@ -64,6 +65,9 @@ public class EscapePod_CraftTable : MonoBehaviour
             playerDetection = false;
             icon.Set_Icon_to_Default_Position();
             anim.SetBool("onMenu", false);
+
+            // system disconnect
+            guestSystem.Disconnect_HostSystem();
         }
     }
 
@@ -78,16 +82,13 @@ public class EscapePod_CraftTable : MonoBehaviour
         controller.TurnOff_Single_Options_inObjectPanel(optionPanel);
         GroundSnapPoints_Off();
         WallSnapPoints_Off();
-    }
-    public void Exit_Option()
-    {
-        controller.TurnOff_Single_Options_inObjectPanel(optionPanel);
-        GroundSnapPoints_Off();
-        WallSnapPoints_Off();
+
+        // system disconnect
+        guestSystem.Disconnect_HostSystem();
     }
 
     // Options SnapPoint ON and OFF
-    void SnapPoint_Button_Availability_Update()
+    private void SnapPoint_Button_Availability_Update()
     {
         // snappoint update
         for (int i = 0; i < groundSnapPoints.Length; i++)
@@ -105,8 +106,9 @@ public class EscapePod_CraftTable : MonoBehaviour
         }
     }
 
-    void Automatic_SnapPoint_Off()
+    private void Automatic_SnapPoint_Off()
     {
+        // guestSystem.checkSystem.Object_Required_Ingreients_Check()
         if (!playerDetection)
         {
             GroundSnapPoints_Off();
@@ -151,40 +153,59 @@ public class EscapePod_CraftTable : MonoBehaviour
     }
 
     // storage system
-    private void Storage_Extra_Amount_Check()
+    private void Storage_Text_Update(Object_ScrObj objectInfo)
     {
-        if (controller.objectStorages[openedObjOptionID].leftAmount != 0)
+        for (int i = 0; i < controller.objectStorages.Length; i++)
         {
-            controller.objectStorages[openedObjOptionID].leftAmount -= 1;
-        }
-        else if (controller.objectStorages[openedObjOptionID].leftAmount == 0)
-        {
-            // spend ingredients
+            if (objectInfo == controller.objectStorages[i].objectInfo)
+            {
+                currentSelectedObjStorageAmount.text = controller.objectStorages[i].leftAmount.ToString();
+                break;
+            }
         }
     }
-    public void Refund_Object_forIngredients()
+    private bool Storage_Extra_Amount_Check(Object_ScrObj currentOpenedObject)
     {
-        if (controller.objectStorages[openedObjOptionID].leftAmount > 0)
+        for (int i = 0; i < controller.objectStorages.Length; i++)
         {
-            controller.objectStorages[openedObjOptionID].leftAmount -= 1;
-            Debug.Log("half of ingredients refund successful!");
+            if (currentOpenedObject == controller.objectStorages[i].objectInfo)
+            {
+                if (controller.objectStorages[i].leftAmount > 0)
+                {
+                    return true;
+                }
+            }
         }
-        else if (controller.objectStorages[openedObjOptionID].leftAmount == 0)
+        return false;
+    }
+    private void Dispose_Object_inStorage(Object_ScrObj currentOpenedObject)
+    {
+        for (int i = 0; i < controller.objectStorages.Length; i++)
         {
-            controller.objectStorages[openedObjOptionID].leftAmount = 0;
-            Debug.Log("current opened object has 0 storage. refund failed!");
-            // does not give ingredients
+            if (currentOpenedObject == controller.objectStorages[i].objectInfo)
+            {
+                controller.objectStorages[i].leftAmount -= 1;
+            }
         }
 
-        currentSelectedObjStorageAmount.text = controller.objectStorages[openedObjOptionID].leftAmount.ToString();
+        Current_Object_Preview(currentOpenedObject);
     }
 
-    // Options and Craft Functions
+    // Option Open
+    public void Exit_Option()
+    {
+        controller.TurnOff_Single_Options_inObjectPanel(optionPanel);
+        GroundSnapPoints_Off();
+        WallSnapPoints_Off();
+
+        // system disconnect
+        guestSystem.Disconnect_HostSystem();
+    }
     private void Current_Object_Preview(Object_ScrObj objectInfo)
     {
         currentSelectedObjImage.sprite = objectInfo.objectSprite;
         currentSelectedObjDescription.text = objectInfo.objectDescription;
-        currentSelectedObjStorageAmount.text = controller.objectStorages[openedObjOptionID].leftAmount.ToString();
+        Storage_Text_Update(objectInfo);
 
         if (currentSelectedObjImage.sprite == null)
         {
@@ -193,38 +214,54 @@ public class EscapePod_CraftTable : MonoBehaviour
             currentSelectedObjStorageAmount.text = " ";
         }
     }
-    public void Object_ID_Set(Object_ScrObj objectButtonScrObj) 
+    public void Open_Option_for_Object(Object_ScrObj objectInfo) 
     {
         Exit_Option();
+        currentOpenedObject = objectInfo;
         SnapPoint_Button_Availability_Update();
 
-        for (int i = 0; i < objectInfo.Length; i++)
-        {
-            if (objectButtonScrObj.objectID == objectInfo[i].objectID)
-            {
-                openedObjOptionID = objectInfo[i].objectID;
-                controller.TurnOn_Single_Options_inObjectPanel(optionPanel);
+        controller.TurnOn_Single_Options_inObjectPanel(optionPanel);
 
-                if (objectInfo[i].objectType == ObjectType.ground)
-                {
-                    GroundSnapPoints_On();
-                }
-                else if (objectInfo[i].objectType == ObjectType.wall)
-                {
-                    WallSnapPoints_On();
-                }
-                break;
-            }
+        // system connection
+        guestSystem.Connect_to_HostSystem();
+
+        // open inventory gadget
+        var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+        if (!inventoryGadget.inventoryMenuGameObject.activeSelf)
+        {
+            inventoryGadget.Open_Inventory_Menu();
         }
-        Current_Object_Preview(objectButtonScrObj);
+
+        // in game snappoint on
+        if (currentOpenedObject.objectType == ObjectType.ground || currentOpenedObject.gameObjectPrefab == null)
+        {
+            GroundSnapPoints_On();
+        }
+        else if (currentOpenedObject.objectType == ObjectType.wall)
+        {
+            WallSnapPoints_On();
+        }
+
+        Current_Object_Preview(currentOpenedObject);
     }
-        // bool Player_has_Ingredients();
+
+    // Crafting 
+    private void Use_Items_inSlots_forCraft(Object_ScrObj objectInfo)
+    {
+        var openedObjectIngredients = objectInfo.ingredients;
+        
+        for (int i = 0; i < openedObjectIngredients.Length; i++)
+        {
+            guestSystem.Use_Items(openedObjectIngredients[i].itemInfo, openedObjectIngredients[i].amount);
+        }
+    }
+
     public void Ground_Object_Craft()
     {
         for (int i = 0; i < groundSnapPointButtons.Length; i++)
         {
             // change crafttable position
-            if (openedObjOptionID == 0)
+            if (currentOpenedObject.gameObjectPrefab == null)
             {
                 if (groundSnapPointButtons[i].buttonPressed)
                 {
@@ -239,11 +276,35 @@ public class EscapePod_CraftTable : MonoBehaviour
             {
                 if (groundSnapPointButtons[i].buttonPressed)
                 {
-                    Storage_Extra_Amount_Check();
-                    var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, groundSnapPoints[i].transform);
-                    craftedObject.transform.parent = groundSnapPoints[i].gameObject.transform;
-                    groundSnapPointButtons[i].Set_Backto_UnPressed();
-                    break;
+                    if (Storage_Extra_Amount_Check(currentOpenedObject))
+                    {
+                        // dont use ingredients in place slots and decrease the amount in storage
+                        Dispose_Object_inStorage(currentOpenedObject);
+                        Storage_Text_Update(currentOpenedObject);
+
+                        var craftedObject = Instantiate(currentOpenedObject.gameObjectPrefab, groundSnapPoints[i].transform);
+                        craftedObject.transform.parent = groundSnapPoints[i].gameObject.transform;
+                        groundSnapPointButtons[i].Set_Backto_UnPressed();
+
+                        break;
+                    }
+                    else if (guestSystem.checkSystem.Object_Required_Ingreients_Check(currentOpenedObject))
+                    {
+                        // use ingredients in place slots
+                        Use_Items_inSlots_forCraft(currentOpenedObject);
+
+                        var craftedObject = Instantiate(currentOpenedObject.gameObjectPrefab, groundSnapPoints[i].transform);
+                        craftedObject.transform.parent = groundSnapPoints[i].gameObject.transform;
+                        groundSnapPointButtons[i].Set_Backto_UnPressed();
+
+                        break;
+                    }
+                    else
+                    {
+                        Debug.Log("Not enough ingredients!");
+
+                        break;
+                    }
                 }
             }
         }
@@ -255,11 +316,35 @@ public class EscapePod_CraftTable : MonoBehaviour
         {
             if (wallSnapPointButtons[i].buttonPressed)
             {
-                Storage_Extra_Amount_Check();
-                var craftedObject = Instantiate(objectInfo[openedObjOptionID].gameObjectPrefab, wallSnapPoints[i].transform);
-                craftedObject.transform.parent = wallSnapPoints[i].gameObject.transform;
-                wallSnapPointButtons[i].Set_Backto_UnPressed();
-                break;
+                if (Storage_Extra_Amount_Check(currentOpenedObject))
+                {
+                    // dont use ingredients in place slots and decrease the amount in storage
+                    Dispose_Object_inStorage(currentOpenedObject);
+                    Storage_Text_Update(currentOpenedObject);
+
+                    var craftedObject = Instantiate(currentOpenedObject.gameObjectPrefab, wallSnapPoints[i].transform);
+                    craftedObject.transform.parent = wallSnapPoints[i].gameObject.transform;
+                    wallSnapPointButtons[i].Set_Backto_UnPressed();
+
+                    break;
+                }
+                else if (guestSystem.checkSystem.Object_Required_Ingreients_Check(currentOpenedObject))
+                {
+                    // use ingredients in place slots
+                    Use_Items_inSlots_forCraft(currentOpenedObject);
+
+                    var craftedObject = Instantiate(currentOpenedObject.gameObjectPrefab, wallSnapPoints[i].transform);
+                    craftedObject.transform.parent = wallSnapPoints[i].gameObject.transform;
+                    wallSnapPointButtons[i].Set_Backto_UnPressed();
+
+                    break;
+                }
+                else
+                {
+                    Debug.Log("Not enough ingredients!");
+
+                    break;
+                }
             }
         }
         SnapPoint_Button_Availability_Update();

@@ -121,7 +121,7 @@ public class ItemCraftTable : MonoBehaviour
     // craft item functions
     public void Craft_Item()
     {
-        if (!guestSystem.checkSystem.Required_Ingredients_Check(currentlyOpenedItem))
+        if (!guestSystem.checkSystem.Item_Required_Ingredients_Check(currentlyOpenedItem))
         {
             Debug.Log("Not enough ingredients!");
         }
@@ -133,7 +133,7 @@ public class ItemCraftTable : MonoBehaviour
         {
             var openedItemIngredients = currentlyOpenedItem.ingredients;
 
-            for (int i = 0; i < currentlyOpenedItem.ingredients.Length; i++)
+            for (int i = 0; i < openedItemIngredients.Length; i++)
             {
                 guestSystem.Use_Items(openedItemIngredients[i].itemInfo, openedItemIngredients[i].amount);
             }
