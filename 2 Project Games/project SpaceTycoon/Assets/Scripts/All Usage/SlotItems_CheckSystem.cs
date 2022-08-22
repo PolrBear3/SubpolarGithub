@@ -52,6 +52,12 @@ public class SlotItems_CheckSystem : MonoBehaviour
     {
         int currentCheckAmount = 0;
 
+        // free ingredient item check
+        if (itemInfo.ingredients.Length == 0)
+        {
+            return true;
+        }
+
         for (int i = 0; i < itemInfo.ingredients.Length; i++)
         {
             if (Current_Ingredients_Check(itemInfo.ingredients[i].itemInfo, itemInfo.ingredients[i].amount))
@@ -72,6 +78,12 @@ public class SlotItems_CheckSystem : MonoBehaviour
     public bool Object_Required_Ingreients_Check(Object_ScrObj objectInfo)
     {
         int currentCheckAmount = 0;
+
+        // free ingredient object check
+        if (objectInfo.ingredients.Length == 0)
+        {
+            return true;
+        }
 
         for (int i = 0; i < objectInfo.ingredients.Length; i++)
         {

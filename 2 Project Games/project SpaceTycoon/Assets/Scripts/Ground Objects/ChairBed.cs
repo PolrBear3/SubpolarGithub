@@ -40,7 +40,7 @@ public class ChairBed : MonoBehaviour
 
     private void Update()
     {
-        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
+        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject, 1);
         controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
         Check_SitSleep_for_TirednessDecrease();
     }
@@ -133,7 +133,7 @@ public class ChairBed : MonoBehaviour
             player.playerAnimation.Set_Sit_Animation();
             playerDetection = false;
             Exit_MainPanel();
-            controller.multitaskAvailable -= 1;
+            controller.multitaskPoints -= 1;
             usingSit = true;
         }
         else if (playerActionButtons[1].activeSelf)
@@ -141,7 +141,7 @@ public class ChairBed : MonoBehaviour
             player.transform.position = sitSleepTransforms[1].position;
             player.playerAnimation.Set_Sleep_Animation();
             Exit_MainPanel();
-            controller.multitaskAvailable -= 2;
+            controller.multitaskPoints -= 2;
             usingSleep = true;
         }
 
@@ -157,8 +157,8 @@ public class ChairBed : MonoBehaviour
         // deactivate leave button
         playerActionButtons[2].SetActive(false);
         // add multitasking state  
-        if (usingSit) { controller.multitaskAvailable += 1; }
-        else if (usingSleep) { controller.multitaskAvailable += 2; }
+        if (usingSit) { controller.multitaskPoints += 1; }
+        else if (usingSleep) { controller.multitaskPoints += 2; }
         // player does not get bonus tiredness decrease
         usingSit = false;
         usingSleep = false;

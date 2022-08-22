@@ -43,7 +43,7 @@ public class EscapePod_CraftTable : MonoBehaviour
 
     private void Update()
     {
-        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
+        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject, 1);
         controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
         controller.Automatic_TurnOff_Single_Options_inObjectPanel(playerDetection, optionPanel);
         Automatic_SnapPoint_Off();
@@ -68,6 +68,14 @@ public class EscapePod_CraftTable : MonoBehaviour
 
             // system disconnect
             guestSystem.Disconnect_HostSystem();
+
+            // exit inventory gadget
+            var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+
+            if (inventoryGadget.inventoryMenuGameObject.activeSelf)
+            {
+                inventoryGadget.Close_Inventory_Menu();
+            }
         }
     }
 
@@ -85,6 +93,14 @@ public class EscapePod_CraftTable : MonoBehaviour
 
         // system disconnect
         guestSystem.Disconnect_HostSystem();
+
+        // exit inventory gadget
+        var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+
+        if (inventoryGadget.inventoryMenuGameObject.activeSelf)
+        {
+            inventoryGadget.Close_Inventory_Menu();
+        }
     }
 
     // Options SnapPoint ON and OFF
@@ -200,6 +216,14 @@ public class EscapePod_CraftTable : MonoBehaviour
 
         // system disconnect
         guestSystem.Disconnect_HostSystem();
+
+        // exit inventory gadget
+        var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+
+        if (inventoryGadget.inventoryMenuGameObject.activeSelf)
+        {
+            inventoryGadget.Close_Inventory_Menu();
+        }
     }
     private void Current_Object_Preview(Object_ScrObj objectInfo)
     {

@@ -57,7 +57,7 @@ public class EscapePod_Engine_Controller : MonoBehaviour
 
     private void Update()
     {
-        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
+        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject, 1);
         controller.Automatic_TurnOff_ObjectPanel(playerDetection, mainPanel);
 
         Ship_Speed_Condition();

@@ -34,7 +34,7 @@ public class ItemCraftTable : MonoBehaviour
     }
     private void Update()
     {
-        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject);
+        controller.Icon_Popup_UpdateCheck(playerDetection, icon.gameObject, 1);
         controller.Automatic_TurnOff_ObjectPanel(playerDetection, panels[0]);
         controller.Automatic_TurnOff_Single_Options_inObjectPanel(playerDetection, panels[1]);
     }
@@ -57,6 +57,14 @@ public class ItemCraftTable : MonoBehaviour
             anim.SetBool("playerDetected", false);
 
             guestSystem.Disconnect_HostSystem();
+
+            // exit inventory gadget
+            var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+
+            if (inventoryGadget.inventoryMenuGameObject.activeSelf)
+            {
+                inventoryGadget.Close_Inventory_Menu();
+            }
         }
     }
 
@@ -86,11 +94,27 @@ public class ItemCraftTable : MonoBehaviour
         controller.Manual_TurnOff_ObjectPanel(panels[0]);
         controller.TurnOff_Single_Options_inObjectPanel(panels[1]);
         guestSystem.Disconnect_HostSystem();
+        
+        // exit inventory gadget
+        var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+
+        if (inventoryGadget.inventoryMenuGameObject.activeSelf)
+        {
+            inventoryGadget.Close_Inventory_Menu();
+        }
     }
     public void Exit_OpitonPanel()
     {
         controller.TurnOff_Single_Options_inObjectPanel(panels[1]);
         guestSystem.Disconnect_HostSystem();
+
+        // exit inventory gadget
+        var inventoryGadget = guestSystem.hostSystem.inventoryMenu;
+
+        if (inventoryGadget.inventoryMenuGameObject.activeSelf)
+        {
+            inventoryGadget.Close_Inventory_Menu();
+        }
     }
 
     // Item Type Button Page Controller

@@ -13,7 +13,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
 {
     // Main Menu UI Control
     public bool isPanelMenuOn = false;
-    public int multitaskAvailable = 2;
+    public int multitaskPoints = 2;
 
     // In Game Conditions
     public int EnginesOn = 0;
@@ -24,10 +24,10 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     public ObjectStorage[] objectStorages => _objectStorages;
 
     // Object Icon Constructors
-    public void Icon_Popup_UpdateCheck(bool playerDetection, GameObject objectIcon)
+    public void Icon_Popup_UpdateCheck(bool playerDetection, GameObject objectIcon, int requiredMultitaskPoints)
     {
         // icon on condition
-        if (playerDetection && !isPanelMenuOn && multitaskAvailable > 0)
+        if (playerDetection && !isPanelMenuOn && multitaskPoints >= requiredMultitaskPoints)
         {
             objectIcon.SetActive(true);
         }
@@ -41,7 +41,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     {
         objectMenu.SetActive(true);
         isPanelMenuOn = true;
-        multitaskAvailable -= 1;
+        multitaskPoints -= 1;
     }
 
     // Object Main Panel Constructors
@@ -49,7 +49,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
     {
         objectMenu.SetActive(false);
         isPanelMenuOn = false;
-        multitaskAvailable += 1;
+        multitaskPoints += 1;
     }
     public void Automatic_TurnOff_ObjectPanel(bool playerDetection, GameObject objectMenu)
     {
@@ -57,7 +57,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
         {
             objectMenu.SetActive(false);
             isPanelMenuOn = false;
-            multitaskAvailable += 1;
+            multitaskPoints += 1;
         }
     }
 
@@ -107,7 +107,7 @@ public class SpaceTycoon_Main_GameController : MonoBehaviour
                 icon.iconBoxCollider.SetActive(false);
                 Destroy(thisGameObject);
                 isPanelMenuOn = false;
-                multitaskAvailable += 1;
+                multitaskPoints += 1;
                 break;
             }
         }

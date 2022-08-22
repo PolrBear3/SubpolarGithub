@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53c6b8e73ffb0004d9a21bd9143ff932, type: 3}
-  m_Name: ItemCraftTable
+  m_Name: AirlockDoor
   m_EditorClassIdentifier: 
-  gameObjectPrefab: {fileID: 521100265747076577, guid: 2d3dc51bbf90fce4b8da3f24aa783911, type: 3}
+  gameObjectPrefab: {fileID: 4784576124396558884, guid: 1b30501506bfb5e4398602febee2a5f4, type: 3}
   objectType: 0
-  objectSprite: {fileID: 1856631271, guid: 00be9739a8c43c248ba0efd0e6b8d8b2, type: 3}
-  objectDescription: a utility table that gives access to all item crafting recipes
+  objectSprite: {fileID: -857367412, guid: a1113bcc3a82e744f8449ab2579ce3a0, type: 3}
+  objectDescription: The Air Locks generate an invisible field that holds in the
+    oxygen when a door is open. Player can explore outside the ship.
   ingredients: []
