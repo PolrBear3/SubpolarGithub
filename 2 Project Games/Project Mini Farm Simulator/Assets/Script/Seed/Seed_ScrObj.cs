@@ -8,9 +8,14 @@ public class Seed_ScrObj : ScriptableObject
 {
     public int seedID;
     public Sprite[] sprites;
+
+    public int seedHealth;
+    public int waterHealth;
+
     // set min and max range around 5
     public int minFinishDays, maxFinishDays;
     public int seedBuyPrice, harvestSellPrice;
+
     // seed detail for tooltip
     public string seedName;
     [TextArea(5, 10)]

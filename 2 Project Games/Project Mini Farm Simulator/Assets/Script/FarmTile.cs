@@ -6,8 +6,11 @@ using UnityEngine.UI;
 [System.Serializable]
 public struct AfterSeedStatus
 {
+    public int health;
+    
     public int dayPassed;
     public int fullGrownDay;
+
     public int watered;
     public int daysWithoutWater;
     public bool currentDayWatered;
@@ -86,6 +89,7 @@ public class FarmTile : MonoBehaviour
     // seed plant start system 
     private void Default_Seed_Planted_Start_Set()
     {
+        tileSeedStatus.health = plantedSeed.seedHealth;
         tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
         tileSeedStatus.dayPassed = 0;
     }
@@ -112,6 +116,7 @@ public class FarmTile : MonoBehaviour
     // seed plant update system
     private void Watering_Check()
     {
+        // watering check
         if (!tileSeedStatus.currentDayWatered)
         {
             tileSeedStatus.daysWithoutWater += 1;
@@ -121,14 +126,8 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.daysWithoutWater = 0;
         }
 
-        // 2 days without water
-        if (tileSeedStatus.daysWithoutWater >= 3)
-        {
-            tileSeedStatus.dayPassed -= 1;
-        }
-
-        // 3 days without water
-        if (tileSeedStatus.daysWithoutWater >= 4)
+        // watering fail die
+        if (tileSeedStatus.daysWithoutWater >= plantedSeed.waterHealth)
         {
             image.sprite = defaultTileSprites[1];
             plantedSeed = null;
