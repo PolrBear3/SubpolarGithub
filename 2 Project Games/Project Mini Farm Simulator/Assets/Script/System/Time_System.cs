@@ -8,19 +8,27 @@ public class Time_System : MonoBehaviour
     public MainGame_Controller controller;
 
     public Season_ScrObj[] allSeasons;
-    [HideInInspector]
+
     public Season_ScrObj currentSeason;
 
-    private int _currentInGameDay = 1;
+    private int _currentInGameDay = 363;
     public int currentInGameDay => _currentInGameDay;
 
     private int maxInGameDay = 365;
 
+    private void Start()
+    {
+        Next_Day();
+    }
+
     public void Next_Day()
     {
         _currentInGameDay += 1;
-        Check_Season();
+
         Check_End0f_Year();
+        Check_Season();
+
+        controller.eventSystem.Set_Today_Weather();
         controller.defaultMenu.Update_UI();
 
         for (int i = 0; i < controller.farmTiles.Length; i++)
@@ -31,7 +39,7 @@ public class Time_System : MonoBehaviour
     private void Check_Season()
     {
         // spring
-        if (currentInGameDay <= 93) { currentSeason = allSeasons[0]; }
+        if (currentInGameDay >= 1 && currentInGameDay <= 93) { currentSeason = allSeasons[0]; }
         // summer
         else if (currentInGameDay >= 94 && currentInGameDay <= 186) { currentSeason = allSeasons[1]; }
         // fall

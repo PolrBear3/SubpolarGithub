@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public class Default_Menu : MonoBehaviour
 {
+    private Animator anim;
+    
     public MainGame_Controller controller;
+
+    public Image currentBackground;
 
     public GameObject nextDayFade;
     public Text currentInGameDayText, moneyText;
@@ -18,15 +22,24 @@ public class Default_Menu : MonoBehaviour
 
     public LeanTweenType moneyTweenType;
 
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
     private void Start()
     {
         Money_Text_Update();
+    }
+    private void Update()
+    {
+        Weather_ThemeUI_Update();
     }
 
     public void Update_UI()
     {
         Current_InGameDay_Text_Update();
         Next_Day_AlphaValueFade_Tween();
+        Weather_Background_Color_Set();
     }
 
     // time system ui
@@ -42,6 +55,29 @@ public class Default_Menu : MonoBehaviour
         LeanTween.alpha(rectTranform, 1f, 1f);
         LeanTween.alpha(rectTranform, 0f, 1f).setDelay(1f);
         LeanTween.move(rectTranform, new Vector2(0, 640f), 0).setDelay(2f);
+    }
+
+    // season weather ui theme
+    private void Weather_Background_Color_Set()
+    {
+        var x = controller.eventSystem.currentWeather.weatherID;
+        var y = controller.timeSystem.currentSeason.backgroundThemeColors;
+
+        if (x == 0) { currentBackground.sprite = y[0]; }
+        else if (x == 1) { currentBackground.sprite = y[1]; }
+        else if (x == 1) { currentBackground.sprite = y[2]; }
+        else if (x == 1) { currentBackground.sprite = y[3]; }
+    }
+    private void Weather_ThemeUI_Update()
+    {
+        anim.runtimeAnimatorController = controller.timeSystem.currentSeason.defaultMenuAnimation;
+
+        var x = controller.eventSystem.currentWeather.weatherID;
+
+        if (x == 0) { anim.SetTrigger("sunny"); }
+        else if (x == 1) { anim.SetTrigger("cloudy"); }
+        else if (x == 2) { anim.SetTrigger("rainy"); }
+        else if (x == 3) { anim.SetTrigger("stormy"); }
     }
 
     // money system ui

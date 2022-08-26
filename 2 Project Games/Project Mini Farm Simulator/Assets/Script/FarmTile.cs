@@ -92,12 +92,14 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.health = plantedSeed.seedHealth;
         tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
         tileSeedStatus.dayPassed = 0;
+        tileSeedStatus.health = plantedSeed.seedHealth;
     }
     private void Start_Buff_Event_Check()
     {
         tileSeedStatus.dayPassed += selectedBuff.startAdvantageDayPoint;
         tileSeedStatus.watered += selectedBuff.startAdvantageDayPoint;
     }
+
     public void Seed_Planted_Start_Set()
     {
         // seed plant start without buff
@@ -126,8 +128,15 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.daysWithoutWater = 0;
         }
 
-        // watering fail die
+        // watering fail health 0
         if (tileSeedStatus.daysWithoutWater >= plantedSeed.waterHealth)
+        {
+            tileSeedStatus.health = 0;
+        }
+    }
+    private void Health_Check()
+    {
+        if (tileSeedStatus.health <= 0)
         {
             image.sprite = defaultTileSprites[1];
             plantedSeed = null;
@@ -139,11 +148,13 @@ public class FarmTile : MonoBehaviour
             controller.Reset_All_Tile_Highlights();
         }
     }
+
     private void Default_Seed_Planted_Update()
     {
         if (seedPlanted)
         {
             Watering_Check();
+            Health_Check();
 
             // reset next day
             tileSeedStatus.dayPassed += 1;
@@ -171,6 +182,7 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.currentDayWatered = true;
         }
     }
+
     public void Seed_Planted_Status_Update()
     {
         // seed plant update without buff
@@ -193,6 +205,7 @@ public class FarmTile : MonoBehaviour
         plantedSeed = null;
         selectedBuff = null;
         seedPlanted = false;
+        tileSeedStatus.health = 0;
         tileSeedStatus.dayPassed = 0;
         tileSeedStatus.watered = 0;
         tileSeedStatus.daysWithoutWater = 0;

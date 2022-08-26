@@ -895,7 +895,6 @@ GameObject:
   - component: {fileID: 119009680}
   - component: {fileID: 119009683}
   - component: {fileID: 119009682}
-  - component: {fileID: 119009681}
   m_Layer: 5
   m_Name: Tile Price
   m_TagString: Untagged
@@ -924,62 +923,6 @@ RectTransform:
   m_AnchoredPosition: {x: 154.01001, y: -60.081985}
   m_SizeDelta: {x: 164.7447, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &119009681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 119009679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 119009682}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 770605921}
-        m_TargetAssemblyTypeName: Locked_Menu, Assembly-CSharp
-        m_MethodName: Buy_Tile
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &119009682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1106,7 +1049,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189423765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -144.49527, y: 276.63885, z: -0.88073033}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1145,11 +1088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 189423766}
-  weathers:
-  - {fileID: 11400000, guid: 69377bcd1b75d45ea882f2673248056e, type: 2}
-  - {fileID: 11400000, guid: a26ea723a7f7442198b419beca9ed7b4, type: 2}
-  - {fileID: 11400000, guid: 2e8b6e378c38a4b80b003322c24e7c35, type: 2}
-  - {fileID: 11400000, guid: 27ca61fe24ad74ddf8d82500e40bb99d, type: 2}
+  currentWeather: {fileID: 0}
 --- !u!1001 &199133430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4485,7 +4424,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770605920}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5688,7 +5627,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 999$
+  m_Text: 999 $
 --- !u!222 &913161441
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13390,6 +13329,7 @@ GameObject:
   - component: {fileID: 2087049026}
   - component: {fileID: 2087049025}
   - component: {fileID: 2087049027}
+  - component: {fileID: 2087049028}
   m_Layer: 5
   m_Name: Default Menu
   m_TagString: Untagged
@@ -13471,6 +13411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 189423766}
+  currentBackground: {fileID: 1454860019}
   nextDayFade: {fileID: 1653186401}
   currentInGameDayText: {fileID: 1796412041}
   moneyText: {fileID: 1115629667}
@@ -13479,6 +13420,26 @@ MonoBehaviour:
   bonusFadeTextTransform: {fileID: 913868147}
   bonusFadeText: {fileID: 913868148}
   moneyTweenType: 14
+--- !u!95 &2087049028
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087049023}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 81380d4bc3d6342469cc5f6c0275119b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &2102829721
 PrefabInstance:
   m_ObjectHideFlags: 0

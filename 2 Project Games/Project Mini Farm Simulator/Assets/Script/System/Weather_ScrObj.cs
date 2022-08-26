@@ -6,4 +6,5 @@ using UnityEngine;
 public class Weather_ScrObj : ScriptableObject
 {
     public int weatherID;
+    public string weatherName;
 }
