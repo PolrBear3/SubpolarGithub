@@ -1126,6 +1126,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 189423766}
+  allSeasons:
+  - {fileID: 11400000, guid: 20b29d1bec76f1a46bff209c12d4bae0, type: 2}
+  - {fileID: 11400000, guid: 129370a16976a064da19fce6b5df10e6, type: 2}
+  - {fileID: 11400000, guid: 861130b41fc73994b88bf10cdde0fba7, type: 2}
+  - {fileID: 11400000, guid: 53d3c1273557f234081e369111101fbc, type: 2}
+  currentSeason: {fileID: 0}
 --- !u!114 &189423769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1139,6 +1145,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 189423766}
+  weathers:
+  - {fileID: 11400000, guid: 69377bcd1b75d45ea882f2673248056e, type: 2}
+  - {fileID: 11400000, guid: a26ea723a7f7442198b419beca9ed7b4, type: 2}
+  - {fileID: 11400000, guid: 2e8b6e378c38a4b80b003322c24e7c35, type: 2}
+  - {fileID: 11400000, guid: 27ca61fe24ad74ddf8d82500e40bb99d, type: 2}
 --- !u!1001 &199133430
 PrefabInstance:
   m_ObjectHideFlags: 0

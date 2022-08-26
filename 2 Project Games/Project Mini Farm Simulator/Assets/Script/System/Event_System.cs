@@ -5,4 +5,6 @@ using UnityEngine;
 public class Event_System : MonoBehaviour
 {
     public MainGame_Controller controller;
+
+    public Weather_ScrObj[] weathers;
 }
