@@ -11,7 +11,7 @@ public class Time_System : MonoBehaviour
 
     public Season_ScrObj currentSeason;
 
-    private int _currentInGameDay = 363;
+    private int _currentInGameDay = 0;
     public int currentInGameDay => _currentInGameDay;
 
     private int maxInGameDay = 365;
