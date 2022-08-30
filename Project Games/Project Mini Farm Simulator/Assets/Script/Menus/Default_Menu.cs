@@ -3,13 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class Default_Menu_ThemeUI
+{
+    public Image
+    backGround,
+    nextDayButton,
+    currentDayCountBox;
+}
+
 public class Default_Menu : MonoBehaviour
 {
     private Animator anim;
+
+    public Default_Menu_ThemeUI themeUI;
     
     public MainGame_Controller controller;
-
-    public Image currentBackground;
 
     public GameObject nextDayFade;
     public Text currentInGameDayText, moneyText;
@@ -32,14 +41,14 @@ public class Default_Menu : MonoBehaviour
     }
     private void Update()
     {
-        Weather_ThemeUI_Update();
+        Weather_ThemeUI_AnimOverrideControl();
     }
 
     public void Update_UI()
     {
         Current_InGameDay_Text_Update();
         Next_Day_AlphaValueFade_Tween();
-        Weather_Background_Color_Set();
+        Weather_ThemeUI_SpriteUpdate();
     }
 
     // time system ui
@@ -58,26 +67,25 @@ public class Default_Menu : MonoBehaviour
     }
 
     // season weather ui theme
-    private void Weather_Background_Color_Set()
+    private void Weather_ThemeUI_AnimOverrideControl()
     {
-        var x = controller.eventSystem.currentWeather.weatherID;
-        var y = controller.timeSystem.currentSeason.backgroundThemeColors;
+        anim.runtimeAnimatorController = controller.timeSystem.currentSeason.animatorOverrideController;
 
-        if (x == 0) { currentBackground.sprite = y[0]; }
-        else if (x == 1) { currentBackground.sprite = y[1]; }
-        else if (x == 1) { currentBackground.sprite = y[2]; }
-        else if (x == 1) { currentBackground.sprite = y[3]; }
+        var x = controller.eventSystem.currentWeather.weatherName;
+        anim.SetTrigger(x);
     }
-    private void Weather_ThemeUI_Update()
+    private void Weather_ThemeUI_SpriteUpdate()
     {
-        anim.runtimeAnimatorController = controller.timeSystem.currentSeason.defaultMenuAnimation;
-
-        var x = controller.eventSystem.currentWeather.weatherID;
-
-        if (x == 0) { anim.SetTrigger("sunny"); }
-        else if (x == 1) { anim.SetTrigger("cloudy"); }
-        else if (x == 2) { anim.SetTrigger("rainy"); }
-        else if (x == 3) { anim.SetTrigger("stormy"); }
+        var x = controller.timeSystem.currentSeason.uiThemes;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (x[i].weatherNum == controller.eventSystem.currentWeather.weatherID)
+            {
+                themeUI.backGround.sprite = x[i].backGround;
+                themeUI.nextDayButton.sprite = x[i].nextDayButton;
+                themeUI.currentDayCountBox.sprite = x[i].currentDayCountBox;
+            }
+        }
     }
 
     // money system ui

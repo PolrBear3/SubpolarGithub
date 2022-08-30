@@ -10144,7 +10144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.42745098, g: 0.91764706, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13288,8 +13288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5346092622413ce4bb8cd86967f4f140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  themeUI:
+    backGround: {fileID: 1454860019}
+    nextDayButton: {fileID: 1623676535}
+    currentDayCountBox: {fileID: 2133341401}
   controller: {fileID: 189423766}
-  currentBackground: {fileID: 1454860019}
   nextDayFade: {fileID: 1653186401}
   currentInGameDayText: {fileID: 1796412041}
   moneyText: {fileID: 1115629667}
@@ -13571,7 +13574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.42745098, g: 0.91764706, b: 0.922, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

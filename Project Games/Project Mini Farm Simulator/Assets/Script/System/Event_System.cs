@@ -14,32 +14,7 @@ public class Event_System : MonoBehaviour
         
         int randomWeatherNum = Random.Range(0, 9);
         currentWeather = x.weatherPercentages[randomWeatherNum];
-
-        Weather_Events();
     }
 
     // all events for weathers
-    private void Weather_Events()
-    {
-        // sunny
-        if (currentWeather.weatherID == 0)
-        {
-            
-        }
-        // cloudy
-        else if (currentWeather.weatherID == 1)
-        {
-            
-        }
-        // rainy
-        else if (currentWeather.weatherID == 2)
-        {
-            
-        }
-        // stormy
-        else if (currentWeather.weatherID == 3)
-        {
-           
-        }
-    }
 }

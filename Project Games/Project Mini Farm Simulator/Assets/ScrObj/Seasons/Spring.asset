@@ -12,17 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e380e01423f5df4f9cc2f38768b2576, type: 3}
   m_Name: Spring
   m_EditorClassIdentifier: 
-  defaultMenuAnimation: {fileID: 22100000, guid: bb4f8319b818dbe49b8d586a08cff58e, type: 2}
-  weatherIcons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  backgroundThemeColors:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   weatherPercentages:
   - {fileID: 11400000, guid: 77c7856aa6c6e504ab79bdf1d41b13ce, type: 2}
   - {fileID: 11400000, guid: 77c7856aa6c6e504ab79bdf1d41b13ce, type: 2}
@@ -34,3 +23,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2e8b6e378c38a4b80b003322c24e7c35, type: 2}
   - {fileID: 11400000, guid: 2e8b6e378c38a4b80b003322c24e7c35, type: 2}
   - {fileID: 11400000, guid: 2e8b6e378c38a4b80b003322c24e7c35, type: 2}
+  animatorOverrideController: {fileID: 22100000, guid: bb4f8319b818dbe49b8d586a08cff58e, type: 2}
+  uiThemes:
+  - weatherNum: 0
+    backGround: {fileID: 661895259, guid: 01b316677e39edf448ac9200c34302f4, type: 3}
+    nextDayButton: {fileID: 661895259, guid: 01b316677e39edf448ac9200c34302f4, type: 3}
+    currentDayCountBox: {fileID: 661895259, guid: 01b316677e39edf448ac9200c34302f4, type: 3}
+  - weatherNum: 1
+    backGround: {fileID: 0}
+    nextDayButton: {fileID: 0}
+    currentDayCountBox: {fileID: 0}
+  - weatherNum: 2
+    backGround: {fileID: 0}
+    nextDayButton: {fileID: 0}
+    currentDayCountBox: {fileID: 0}
+  - weatherNum: 3
+    backGround: {fileID: 0}
+    nextDayButton: {fileID: 0}
+    currentDayCountBox: {fileID: 0}
