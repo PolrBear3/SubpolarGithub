@@ -7,9 +7,14 @@ using UnityEngine.UI;
 public class Default_Menu_ThemeUI
 {
     public Image
+    topMenuBox,
+    moneyBox,
     backGround,
     nextDayButton,
     currentDayCountBox;
+
+    // button pressed sprite
+    public SpriteState spriteState;
 }
 
 public class Default_Menu : MonoBehaviour
@@ -81,6 +86,8 @@ public class Default_Menu : MonoBehaviour
         {
             if (x[i].weatherNum == controller.eventSystem.currentWeather.weatherID)
             {
+                themeUI.moneyBox.sprite = x[i].moneyBox;
+                themeUI.topMenuBox.sprite = x[i].topMenuBox;
                 themeUI.backGround.sprite = x[i].backGround;
                 themeUI.nextDayButton.sprite = x[i].nextDayButton;
                 themeUI.currentDayCountBox.sprite = x[i].currentDayCountBox;

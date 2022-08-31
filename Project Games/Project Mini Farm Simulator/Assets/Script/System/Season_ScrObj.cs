@@ -8,10 +8,15 @@ public class UITheme
 {
     public int weatherNum;
 
-    public Sprite 
+    public Sprite
+    topMenuBox,
+    moneyBox,
     backGround, 
     nextDayButton,
-    currentDayCountBox;     
+    currentDayCountBox;
+
+    // button pressed sprite
+    public SpriteState spriteState;
 }
 
 [CreateAssetMenu(menuName = "New Season")]
