@@ -53,11 +53,11 @@ public class FarmTile : MonoBehaviour
 
     public void Highlight_Tile()
     {
-        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        gameObject.transform.GetChild(1).gameObject.SetActive(true);
     }
     public void UnHighlight_Tile()
     {
-        gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        gameObject.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public void Open_Menu(FarmTile farmTile)

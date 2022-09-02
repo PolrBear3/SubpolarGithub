@@ -4,29 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class Default_Menu_ThemeUI
+public class LeftMenuUI
 {
-    public Image
-    topMenuBox,
-    moneyBox,
-    backGround,
-    nextDayButton,
-    currentDayCountBox;
+    public Image seasonUIBox;
+    public Text seasonUIText;
 
-    // button pressed sprite
-    public SpriteState spriteState;
+    public Image weatherUIBox;
+    public Text weatherUIText;
+
+    public Text currentInGameDayText;
 }
 
 public class Default_Menu : MonoBehaviour
 {
-    private Animator anim;
-
-    public Default_Menu_ThemeUI themeUI;
-    
     public MainGame_Controller controller;
 
+    public LeftMenuUI leftMenu;
+
     public GameObject nextDayFade;
-    public Text currentInGameDayText, moneyText;
+    public Text moneyText;
 
     public RectTransform moneyFadeTextTransform;
     public Text moneyFadeText;
@@ -36,30 +32,22 @@ public class Default_Menu : MonoBehaviour
 
     public LeanTweenType moneyTweenType;
 
-    private void Awake()
-    {
-        anim = GetComponent<Animator>();
-    }
     private void Start()
     {
         Money_Text_Update();
-    }
-    private void Update()
-    {
-        Weather_ThemeUI_AnimOverrideControl();
     }
 
     public void Update_UI()
     {
         Current_InGameDay_Text_Update();
         Next_Day_AlphaValueFade_Tween();
-        Weather_ThemeUI_SpriteUpdate();
+        Season_Weather_UI_Update();
     }
 
     // time system ui
     private void Current_InGameDay_Text_Update()
     {
-        currentInGameDayText.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
+        leftMenu.currentInGameDayText.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
     }
     private void Next_Day_AlphaValueFade_Tween()
     {
@@ -71,28 +59,14 @@ public class Default_Menu : MonoBehaviour
         LeanTween.move(rectTranform, new Vector2(0, 640f), 0).setDelay(2f);
     }
 
-    // season weather ui theme
-    private void Weather_ThemeUI_AnimOverrideControl()
+    // season and weather ui
+    private void Season_Weather_UI_Update()
     {
-        anim.runtimeAnimatorController = controller.timeSystem.currentSeason.animatorOverrideController;
+        leftMenu.seasonUIBox.sprite = controller.timeSystem.currentSeason.seasonUI;
+        leftMenu.seasonUIText.text = controller.timeSystem.currentSeason.seasonName;
 
-        var x = controller.eventSystem.currentWeather.weatherName;
-        anim.SetTrigger(x);
-    }
-    private void Weather_ThemeUI_SpriteUpdate()
-    {
-        var x = controller.timeSystem.currentSeason.uiThemes;
-        for (int i = 0; i < x.Length; i++)
-        {
-            if (x[i].weatherNum == controller.eventSystem.currentWeather.weatherID)
-            {
-                themeUI.moneyBox.sprite = x[i].moneyBox;
-                themeUI.topMenuBox.sprite = x[i].topMenuBox;
-                themeUI.backGround.sprite = x[i].backGround;
-                themeUI.nextDayButton.sprite = x[i].nextDayButton;
-                themeUI.currentDayCountBox.sprite = x[i].currentDayCountBox;
-            }
-        }
+        leftMenu.weatherUIBox.sprite = controller.eventSystem.currentWeather.weatherUI;
+        leftMenu.weatherUIText.text = controller.eventSystem.currentWeather.weatherName;
     }
 
     // money system ui
