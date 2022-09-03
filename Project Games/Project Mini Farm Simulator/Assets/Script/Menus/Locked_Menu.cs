@@ -52,7 +52,7 @@ public class Locked_Menu : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enough money!");
+            controller.defaultMenu.NotEnoughMoney_Blink_Tween();
         }
     }
 }

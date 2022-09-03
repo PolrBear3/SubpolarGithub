@@ -16,6 +16,14 @@ public struct AfterSeedStatus
     public bool currentDayWatered;
 }
 
+[System.Serializable]
+public class FarmTile_Default_Sprite
+{
+    public Sprite lockedTile;
+    public Sprite unplantedTile;
+    public GameObject wateredIcon;
+}
+
 public class FarmTile : MonoBehaviour
 {
     MainGame_Controller controller;
@@ -25,10 +33,11 @@ public class FarmTile : MonoBehaviour
 
     public int tileNum, tilePrice;
     public bool tileLocked = false, seedPlanted = false;
-    public Sprite[] defaultTileSprites;
 
     public Seed_ScrObj plantedSeed = null;
     public Buff_ScrObj selectedBuff = null;
+
+    public FarmTile_Default_Sprite farmTileDefaultSprite;
     public AfterSeedStatus tileSeedStatus;
 
     public void Awake()
@@ -42,13 +51,13 @@ public class FarmTile : MonoBehaviour
         tileLocked = true;
 
         // locked tile image
-        image.sprite = defaultTileSprites[0];
+        image.sprite = farmTileDefaultSprite.lockedTile;
     }
     public void Unlock_Tile()
     {
         tileLocked = false;
 
-        image.sprite = defaultTileSprites[1];
+        image.sprite = farmTileDefaultSprite.unplantedTile;
     }
 
     public void Highlight_Tile()
@@ -68,10 +77,10 @@ public class FarmTile : MonoBehaviour
         // reset 
         controller.Reset_All_Menu();
         controller.Reset_All_Tile_Highlights();
-        
+
         // highlight pressed tile
         Highlight_Tile();
-        
+
         if (tileLocked)
         {
             controller.lockedMenu.Open();
@@ -114,7 +123,7 @@ public class FarmTile : MonoBehaviour
             Start_Buff_Event_Check();
         }
     }
-    
+
     // seed plant update system
     private void Watering_Check()
     {
@@ -134,11 +143,23 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.health = 0;
         }
     }
+    public void Watering_Check_forIcon()
+    {
+        if (!tileSeedStatus.currentDayWatered)
+        {
+            farmTileDefaultSprite.wateredIcon.SetActive(false);
+        }
+        else
+        {
+            farmTileDefaultSprite.wateredIcon.SetActive(true);
+        }
+    }
+
     private void Health_Check()
     {
         if (tileSeedStatus.health <= 0)
         {
-            image.sprite = defaultTileSprites[1];
+            image.sprite = farmTileDefaultSprite.unplantedTile;
             plantedSeed = null;
             seedPlanted = false;
             tileSeedStatus.dayPassed = 0;
@@ -196,12 +217,14 @@ public class FarmTile : MonoBehaviour
             Buff_Event_Check();
             Default_Seed_Planted_Update();
         }
+
+        Watering_Check_forIcon();
     }
 
     // pulbic system
     public void Reset_Tile()
     {
-        image.sprite = defaultTileSprites[1];
+        image.sprite = farmTileDefaultSprite.unplantedTile;
         plantedSeed = null;
         selectedBuff = null;
         seedPlanted = false;

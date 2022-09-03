@@ -22,6 +22,13 @@ public class MainGame_Controller : MonoBehaviour
     {
         Lock_All_Tiles();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Add_Money_withBonus(2, 3);
+        }
+    }
 
     // tile functions
     public void Set_OpenTileNum(FarmTile farmTile)
@@ -54,22 +61,24 @@ public class MainGame_Controller : MonoBehaviour
     // money functions
     public void Add_Money(int amount)
     {
-        // from default menu, tween animation +cash moving fade 
         _money += amount;
         defaultMenu.Money_Update_Fade_Tween(true, amount);
         defaultMenu.Money_Text_Update();
+        defaultMenu.AddMoney_Blink();
     }
     public void Add_Money_withBonus(int originalAmount, int bonusAmount)
     {
         _money += originalAmount; 
-        _money += bonusAmount; //? single or double line
+        _money += bonusAmount;
         defaultMenu.Money_withBonus_Update_Fade_Tween(originalAmount, bonusAmount);
         defaultMenu.Money_Text_Update();
+        defaultMenu.AddMoney_Blink();
     }
     public void Subtract_Money(int amount)
     {
         _money -= amount;
         defaultMenu.Money_Update_Fade_Tween(false, amount);
         defaultMenu.Money_Text_Update();
+        defaultMenu.SubtractMoney_RedBlink();
     }
 }

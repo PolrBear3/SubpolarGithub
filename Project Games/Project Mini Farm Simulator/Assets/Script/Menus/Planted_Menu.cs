@@ -66,8 +66,8 @@ public class Planted_Menu : MonoBehaviour
 
         if (!currentFarmTile.tileSeedStatus.currentDayWatered)
         {
-            currentFarmTile.tileSeedStatus.watered += 1;
             currentFarmTile.tileSeedStatus.currentDayWatered = true;
+            currentFarmTile.tileSeedStatus.watered += 1;
 
             // if the seed is fully grown to crop, watering doesn't count
             if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
@@ -75,6 +75,8 @@ public class Planted_Menu : MonoBehaviour
                 currentFarmTile.tileSeedStatus.watered -= 1;
             }
         }
+
+        currentFarmTile.Watering_Check_forIcon();
     }
 
     private int Harvest_Bonus_Check()

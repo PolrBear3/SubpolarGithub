@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.1254902, b: 0.24705882, a: 0}
+  m_Color: {r: 0.11764706, g: 0.24705882, b: 0.1764706, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5506,7 +5506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.1254902, b: 0.24705882, a: 0}
+  m_Color: {r: 0.11764706, g: 0.24705882, b: 0.1764706, a: 0.003921569}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6679,7 +6679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.1254902, b: 0.24705882, a: 1}
+  m_Color: {r: 0.117033705, g: 0.248, b: 0.17555057, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9285,8 +9285,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -63.885662, y: 0.0227}
-  m_SizeDelta: {x: 164.7447, y: 39.6517}
+  m_AnchoredPosition: {x: -60, y: -0.0000039861}
+  m_SizeDelta: {x: 164, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1545606804
 MonoBehaviour:
@@ -9308,7 +9308,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 6b06179ca88a34b4fa4541d0353af5d7, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9900,7 +9900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.1263275, y: 650.0388}
+  m_AnchoredPosition: {x: 0, y: 700}
   m_SizeDelta: {x: 345, y: 607}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1671295080
@@ -12812,6 +12812,7 @@ MonoBehaviour:
     weatherUIText: {fileID: 997326135}
     currentInGameDayText: {fileID: 1796412041}
   nextDayFade: {fileID: 1653186401}
+  moneyTextRT: {fileID: 1115629666}
   moneyText: {fileID: 1115629667}
   moneyFadeTextTransform: {fileID: 8980547}
   moneyFadeText: {fileID: 8980548}

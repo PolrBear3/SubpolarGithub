@@ -103,7 +103,7 @@ public class UnPlanted_Menu : MonoBehaviour
         Check_Selections_Complete();
     }
 
-    private void Only_Seed_Price_Calculation()
+    private void Seed_Price_Calculation()
     {
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
@@ -123,12 +123,12 @@ public class UnPlanted_Menu : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Not Enough Money!");
+                    controller.defaultMenu.NotEnoughMoney_Blink_Tween();
                 }
             }
         }
     }
-    private void Full_Seed_Price_Calculation()
+    private void SeedBuff_Price_Calculation()
     {
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
@@ -149,7 +149,7 @@ public class UnPlanted_Menu : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Not Enough Money!");
+                    controller.defaultMenu.NotEnoughMoney_Blink_Tween();
                 }
             }
         }
@@ -160,11 +160,11 @@ public class UnPlanted_Menu : MonoBehaviour
         {
             if (currentBuffInfo == null)
             {
-                Only_Seed_Price_Calculation();
+                Seed_Price_Calculation();
             }
             else
             {
-                Full_Seed_Price_Calculation();
+                SeedBuff_Price_Calculation();
             }
         }
     }
