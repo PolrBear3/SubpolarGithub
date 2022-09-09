@@ -42,6 +42,17 @@ public class Planted_Menu : MonoBehaviour
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
 
+    private void HarvestButton_Available()
+    {
+        harvestButtons[1].SetActive(true);
+        harvestButtons[0].SetActive(false);
+    }
+    private void HarvestButton_UnAvailable()
+    {
+        harvestButtons[1].SetActive(false);
+        harvestButtons[0].SetActive(true);
+    }
+
     private void Seed_Information_Update()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
@@ -50,13 +61,11 @@ public class Planted_Menu : MonoBehaviour
 
         if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
         {
-            harvestButtons[1].SetActive(true);
-            harvestButtons[0].SetActive(false);
+            HarvestButton_Available();
         }
         else
         {
-            harvestButtons[1].SetActive(false);
-            harvestButtons[0].SetActive(true);
+            HarvestButton_UnAvailable();
         }
     }
 
