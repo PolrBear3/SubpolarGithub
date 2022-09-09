@@ -72,11 +72,11 @@ public class Planted_Menu : MonoBehaviour
     public void Water_Seed()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-
         if (!currentFarmTile.tileSeedStatus.currentDayWatered)
         {
             currentFarmTile.tileSeedStatus.currentDayWatered = true;
             currentFarmTile.tileSeedStatus.watered += 1;
+            currentFarmTile.statusIconIndicator.Assign_Status(StatusType.watered);
 
             // if the seed is fully grown to crop, watering doesn't count
             if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
@@ -84,8 +84,6 @@ public class Planted_Menu : MonoBehaviour
                 currentFarmTile.tileSeedStatus.watered -= 1;
             }
         }
-
-        currentFarmTile.Watering_Check_forIcon();
     }
 
     private int Harvest_Bonus_Check()

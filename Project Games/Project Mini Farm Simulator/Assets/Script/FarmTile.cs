@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,12 +19,13 @@ public class FarmTile_Default_Sprite
 {
     public Sprite lockedTile;
     public Sprite unplantedTile;
-    public GameObject wateredIcon;
 }
 
 public class FarmTile : MonoBehaviour
 {
     MainGame_Controller controller;
+
+    public Status_Icon_Indicator statusIconIndicator;
 
     [HideInInspector]
     public Image image;
@@ -143,18 +142,6 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.health = 0;
         }
     }
-    public void Watering_Check_forIcon()
-    {
-        if (!tileSeedStatus.currentDayWatered)
-        {
-            farmTileDefaultSprite.wateredIcon.SetActive(false);
-        }
-        else
-        {
-            farmTileDefaultSprite.wateredIcon.SetActive(true);
-        }
-    }
-
     private void Health_Check()
     {
         if (tileSeedStatus.health <= 0)
@@ -180,6 +167,7 @@ public class FarmTile : MonoBehaviour
             // reset next day
             tileSeedStatus.dayPassed += 1;
             tileSeedStatus.currentDayWatered = false;
+            statusIconIndicator.UnAssign_Status(StatusType.watered);
 
             // half grown complete check
             if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
@@ -217,13 +205,13 @@ public class FarmTile : MonoBehaviour
             Buff_Event_Check();
             Default_Seed_Planted_Update();
         }
-
-        Watering_Check_forIcon();
     }
 
-    // pulbic system
+    // pulbic systems
     public void Reset_Tile()
     {
+        statusIconIndicator.Reset_All_Icons();
+
         image.sprite = farmTileDefaultSprite.unplantedTile;
         plantedSeed = null;
         selectedBuff = null;
