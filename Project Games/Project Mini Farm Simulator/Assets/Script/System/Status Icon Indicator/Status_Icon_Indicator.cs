@@ -30,11 +30,6 @@ public class Status_Icon_Indicator : MonoBehaviour
         }
     }
 
-    private void Re_Position_All_Icons()
-    {
-
-    }
-
     public void Assign_Status(StatusType statusType)
     {
         for (int i = 0; i < allStatus.Length; i++)
@@ -62,7 +57,6 @@ public class Status_Icon_Indicator : MonoBehaviour
                 if (statusType == statusIcons[i].currentStatus.statusType)
                 {
                     statusIcons[i].Empty_Icon();
-                    // re position function
                     break;
                 }
             }

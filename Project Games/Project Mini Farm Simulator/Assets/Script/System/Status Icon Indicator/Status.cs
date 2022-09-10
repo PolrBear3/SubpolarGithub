@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum StatusType
 {
-    watered
+    watered,
+    damaged
 }
 
 [CreateAssetMenu(menuName = "New Status")]

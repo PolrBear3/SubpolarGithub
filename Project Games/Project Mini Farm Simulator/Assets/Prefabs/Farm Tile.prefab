@@ -186,7 +186,7 @@ RectTransform:
   m_Children:
   - {fileID: 5339268255909349564}
   - {fileID: 6541618631263626661}
-  - {fileID: 792494295295844048}
+  - {fileID: 9119737161278438374}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628c3c482a9db4040bc1b9bf39d3693d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusIconIndicator: {fileID: 0}
+  statusIconIndicator: {fileID: 1085077442416054105}
   image: {fileID: 0}
   tileNum: 0
   tilePrice: 0
@@ -319,7 +319,7 @@ MonoBehaviour:
     watered: 0
     daysWithoutWater: 0
     currentDayWatered: 0
---- !u!1001 &6845979223202243842
+--- !u!1001 &3130454916206903348
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -396,11 +396,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6196474284962839506, guid: e049271ea0b671f48b840992d12729d3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: 6196474284962839506, guid: e049271ea0b671f48b840992d12729d3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6196474284962839506, guid: e049271ea0b671f48b840992d12729d3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -416,8 +416,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e049271ea0b671f48b840992d12729d3, type: 3}
---- !u!224 &792494295295844048 stripped
+--- !u!114 &1085077442416054105 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2629930685499756397, guid: e049271ea0b671f48b840992d12729d3, type: 3}
+  m_PrefabInstance: {fileID: 3130454916206903348}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b795468807d344b93cf6f213b7bd31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &9119737161278438374 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6196474284962839506, guid: e049271ea0b671f48b840992d12729d3, type: 3}
-  m_PrefabInstance: {fileID: 6845979223202243842}
+  m_PrefabInstance: {fileID: 3130454916206903348}
   m_PrefabAsset: {fileID: 0}
