@@ -7,6 +7,8 @@ public class Status_Icon_Indicator : MonoBehaviour
     public Status[] allStatus;
     public Status_Icon[] statusIcons;
 
+    private Status_Icon[] tmpStatusIcons = new Status_Icon[6];
+
     private void Start()
     {
         Empy_All_NonStatus_Icons();
@@ -19,6 +21,7 @@ public class Status_Icon_Indicator : MonoBehaviour
             statusIcons[i].Empty_Icon();
         }
     }
+
     private void Empy_All_NonStatus_Icons()
     {
         for (int i = 0; i < statusIcons.Length; i++)
@@ -48,6 +51,30 @@ public class Status_Icon_Indicator : MonoBehaviour
             }
         }
     }
+
+    private void Re_Arrange_Icons()
+    {
+        for (int i = 0; i < tmpStatusIcons.Length; i++)
+        {
+            if (statusIcons[i].hasStatus)
+            {
+                tmpStatusIcons[i].Assign_Icon(statusIcons[i].currentStatus); //??
+            }
+        }
+
+        Reset_All_Icons();
+        Debug.Log(tmpStatusIcons[0].hasStatus);
+
+        int arrayNum = 0;
+        for (int i = 0; i < tmpStatusIcons.Length; i++)
+        {
+            if (tmpStatusIcons[i].hasStatus)
+            {
+                statusIcons[arrayNum].Assign_Icon(tmpStatusIcons[i].currentStatus);
+                arrayNum++;
+            }
+        }
+    }
     public void UnAssign_Status(StatusType statusType)
     {
         for (int i = 0; i < statusIcons.Length; i++)
@@ -57,6 +84,7 @@ public class Status_Icon_Indicator : MonoBehaviour
                 if (statusType == statusIcons[i].currentStatus.statusType)
                 {
                     statusIcons[i].Empty_Icon();
+                    Re_Arrange_Icons();
                     break;
                 }
             }
