@@ -7,7 +7,7 @@ public class Status_Icon_Indicator : MonoBehaviour
     public Status[] allStatus;
     public Status_Icon[] statusIcons;
 
-    private Status_Icon[] tmpStatusIcons = new Status_Icon[6];
+    private Status[] tmpStatus = new Status[6];
 
     private void Start()
     {
@@ -35,42 +35,45 @@ public class Status_Icon_Indicator : MonoBehaviour
 
     public void Assign_Status(StatusType statusType)
     {
-        for (int i = 0; i < allStatus.Length; i++)
+        for (int i = 0; i < statusIcons.Length; i++)
         {
-            // scan status type
-            if (statusType == allStatus[i].statusType)
+            if (!statusIcons[i].hasStatus)
             {
-                for (int j = 0; j < statusIcons.Length; j++)
+                for (int j = 0; j < allStatus.Length; j++)
                 {
-                    // assigning scanned icon to empty slot
-                    if (!statusIcons[i].hasStatus)
+                    if (statusType == allStatus[j].statusType)
                     {
-                        statusIcons[i].Assign_Icon(allStatus[i]);
+                        statusIcons[i].Assign_Icon(allStatus[j]);
+                        break;
                     }
                 }
+                break;
             }
         }
     }
 
     private void Re_Arrange_Icons()
     {
-        for (int i = 0; i < tmpStatusIcons.Length; i++)
+        for (int i = 0; i < tmpStatus.Length; i++)
         {
             if (statusIcons[i].hasStatus)
             {
-                tmpStatusIcons[i].Assign_Icon(statusIcons[i].currentStatus); //??
+                tmpStatus[i] = statusIcons[i].currentStatus;
+            }
+            else if (!statusIcons[i].hasStatus)
+            {
+                tmpStatus[i] = null;
             }
         }
 
         Reset_All_Icons();
-        Debug.Log(tmpStatusIcons[0].hasStatus);
 
         int arrayNum = 0;
-        for (int i = 0; i < tmpStatusIcons.Length; i++)
+        for (int i = 0; i < tmpStatus.Length; i++)
         {
-            if (tmpStatusIcons[i].hasStatus)
+            if (tmpStatus[i] != null)
             {
-                statusIcons[arrayNum].Assign_Icon(tmpStatusIcons[i].currentStatus);
+                statusIcons[arrayNum].Assign_Icon(tmpStatus[i]);
                 arrayNum++;
             }
         }

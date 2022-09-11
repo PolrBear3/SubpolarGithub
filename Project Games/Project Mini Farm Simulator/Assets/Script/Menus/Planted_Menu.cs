@@ -56,7 +56,7 @@ public class Planted_Menu : MonoBehaviour
     private void Seed_Information_Update()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        plantedDayPassed.text = currentFarmTile.tileSeedStatus.dayPassed.ToString();
+        plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
         plantedSeedImage.sprite = currentFarmTile.plantedSeed.sprites[3];
 
         if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
@@ -77,7 +77,6 @@ public class Planted_Menu : MonoBehaviour
             currentFarmTile.tileSeedStatus.currentDayWatered = true;
             currentFarmTile.tileSeedStatus.watered += 1;
             currentFarmTile.statusIconIndicator.Assign_Status(StatusType.watered);
-            currentFarmTile.statusIconIndicator.Assign_Status(StatusType.damaged);
 
             // if the seed is fully grown to crop, watering doesn't count
             if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
