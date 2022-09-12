@@ -56,6 +56,7 @@ public class FarmTile : MonoBehaviour
     {
         tileLocked = false;
 
+        // unlocked tile image
         image.sprite = farmTileDefaultSprite.unplantedTile;
     }
 

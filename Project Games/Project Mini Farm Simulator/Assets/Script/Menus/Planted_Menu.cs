@@ -10,7 +10,9 @@ public class Planted_Menu : MonoBehaviour
     public LeanTweenType tweenType;
 
     public Image plantedSeedImage;
-    public Text plantedDayPassed;
+    public Text plantedDayPassed,
+                currentSeedHealth,
+                currentWaterHealth;
 
     public GameObject[] harvestButtons;
     public Button[] allAvailableButtons;
@@ -29,6 +31,27 @@ public class Planted_Menu : MonoBehaviour
         }
     }
 
+    private void Seed_Information_Update()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
+        currentSeedHealth.text = currentFarmTile.tileSeedStatus.health.ToString();
+        plantedSeedImage.sprite = currentFarmTile.plantedSeed.sprites[3];
+
+        var waterHealthCalculation = 
+            currentFarmTile.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
+        currentWaterHealth.text = waterHealthCalculation.ToString();
+
+        if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
+        {
+            HarvestButton_Available();
+        }
+        else
+        {
+            HarvestButton_UnAvailable();
+        }
+    }
+    
     public void Open()
     {
         Button_Shield(false);
@@ -42,31 +65,10 @@ public class Planted_Menu : MonoBehaviour
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
 
-    private void HarvestButton_Available()
-    {
-        harvestButtons[1].SetActive(true);
-        harvestButtons[0].SetActive(false);
-    }
-    private void HarvestButton_UnAvailable()
-    {
-        harvestButtons[1].SetActive(false);
-        harvestButtons[0].SetActive(true);
-    }
-
-    private void Seed_Information_Update()
+    public void Remove_Seed()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
-        plantedSeedImage.sprite = currentFarmTile.plantedSeed.sprites[3];
-
-        if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
-        {
-            HarvestButton_Available();
-        }
-        else
-        {
-            HarvestButton_UnAvailable();
-        }
+        currentFarmTile.Reset_Tile();
     }
 
     public void Water_Seed()
@@ -86,6 +88,16 @@ public class Planted_Menu : MonoBehaviour
         }
     }
 
+    private void HarvestButton_Available()
+    {
+        harvestButtons[1].SetActive(true);
+        harvestButtons[0].SetActive(false);
+    }
+    private void HarvestButton_UnAvailable()
+    {
+        harvestButtons[1].SetActive(false);
+        harvestButtons[0].SetActive(true);
+    }
     private int Harvest_Bonus_Check()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum].tileSeedStatus;
