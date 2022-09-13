@@ -49,15 +49,17 @@ public class FarmTile : MonoBehaviour
     {
         tileLocked = true;
 
-        // locked tile image
+        // locked tile image and status indicator
         image.sprite = farmTileDefaultSprite.lockedTile;
+        statusIconIndicator.gameObject.SetActive(false);
     }
     public void Unlock_Tile()
     {
         tileLocked = false;
 
-        // unlocked tile image
+        // unlocked tile image and status indicator
         image.sprite = farmTileDefaultSprite.unplantedTile;
+        statusIconIndicator.gameObject.SetActive(true);
     }
 
     public void Highlight_Tile()
@@ -125,7 +127,7 @@ public class FarmTile : MonoBehaviour
     }
 
     // seed plant update system
-    private void Watering_Check()
+    public void Watering_Check()
     {
         // watering check
         if (!tileSeedStatus.currentDayWatered)
@@ -160,6 +162,9 @@ public class FarmTile : MonoBehaviour
 
     private void Default_Seed_Planted_Update()
     {
+        tileSeedStatus.currentDayWatered = false;
+        statusIconIndicator.UnAssign_Status(StatusType.watered);
+
         if (seedPlanted)
         {
             Watering_Check();
@@ -167,8 +172,6 @@ public class FarmTile : MonoBehaviour
 
             // reset next day
             tileSeedStatus.dayPassed += 1;
-            tileSeedStatus.currentDayWatered = false;
-            statusIconIndicator.UnAssign_Status(StatusType.watered);
 
             // half grown complete check
             if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)

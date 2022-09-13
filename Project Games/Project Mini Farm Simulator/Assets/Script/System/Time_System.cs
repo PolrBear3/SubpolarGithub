@@ -29,12 +29,14 @@ public class Time_System : MonoBehaviour
         Check_Season();
 
         controller.eventSystem.Set_Today_Weather();
-        controller.defaultMenu.Update_UI();
 
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
             controller.farmTiles[i].Seed_Planted_Status_Update();
         }
+
+        controller.eventSystem.All_Events_Check();
+        controller.defaultMenu.Update_UI();
     }
     private void Check_Season()
     {
