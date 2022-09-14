@@ -48,7 +48,7 @@ public class Locked_Menu : MonoBehaviour
         {
             controller.Subtract_Money(selectedTile.tilePrice);
             selectedTile.Unlock_Tile();
-            controller.eventSystem.All_Events_Check();
+            controller.eventSystem.All_Events_Update_Check();
             Close();
         }
         else

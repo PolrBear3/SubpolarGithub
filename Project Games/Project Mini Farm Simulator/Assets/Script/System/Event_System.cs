@@ -16,7 +16,11 @@ public class Event_System : MonoBehaviour
         currentWeather = x.weatherPercentages[randomWeatherNum];
     }
 
-    public void All_Events_Check()
+    public void All_Events_Single_Check()
+    {
+        GoldenSunny_HealthBuff();
+    }
+    public void All_Events_Update_Check()
     {
         Rainy_AllTileSeed_Watering();
     }
@@ -46,6 +50,30 @@ public class Event_System : MonoBehaviour
                     if (allTiles[i].seedPlanted)
                     {
                         allTiles[i].Watering_Check();
+                    }
+                }
+            }
+        }
+    }
+    private void GoldenSunny_HealthBuff()
+    {
+        if (currentWeather.weatherID == 0)
+        {
+            var allTiles = controller.farmTiles;
+
+            // 40% chance buff
+            if (Random.value > 0.6)
+            {
+                for (int i = 0; i < allTiles.Length; i++)
+                {
+                    if (allTiles[i].seedPlanted)
+                    {
+                        allTiles[i].statusIconIndicator.Assign_Status(StatusType.sunnyBuffed);
+
+                        if (allTiles[i].tileSeedStatus.health < allTiles[i].plantedSeed.seedHealth)
+                        {
+                            allTiles[i].tileSeedStatus.health += 1;
+                        }
                     }
                 }
             }
