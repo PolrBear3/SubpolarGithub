@@ -87,6 +87,11 @@ public class Planted_Menu : MonoBehaviour
                 currentFarmTile.tileSeedStatus.watered -= 1;
             }
         }
+
+        // water health text update
+        var waterHealthCalculation =
+            currentFarmTile.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
+        currentWaterHealth.text = waterHealthCalculation.ToString();
     }
 
     private void HarvestButton_Available()
