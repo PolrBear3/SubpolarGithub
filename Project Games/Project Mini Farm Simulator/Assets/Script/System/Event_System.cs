@@ -69,11 +69,15 @@ public class Event_System : MonoBehaviour
                     if (allTiles[i].seedPlanted)
                     {
                         allTiles[i].statusIconIndicator.Assign_Status(StatusType.sunnyBuffed);
+                        allTiles[i].tileSeedStatus.watered += 1;
+                        allTiles[i].tileSeedStatus.dayPassed += 1;
 
                         if (allTiles[i].tileSeedStatus.health < allTiles[i].plantedSeed.seedHealth)
                         {
                             allTiles[i].tileSeedStatus.health += 1;
                         }
+
+                        controller.plantedMenu.Seed_Information_Update();
                     }
                 }
             }

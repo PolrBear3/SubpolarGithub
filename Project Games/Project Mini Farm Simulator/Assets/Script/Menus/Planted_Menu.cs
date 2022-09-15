@@ -31,7 +31,7 @@ public class Planted_Menu : MonoBehaviour
         }
     }
 
-    private void Seed_Information_Update()
+    public void Seed_Information_Update()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();

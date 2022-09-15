@@ -101,9 +101,11 @@ public class FarmTile : MonoBehaviour
     private void Default_Seed_Planted_Start_Set()
     {
         tileSeedStatus.health = plantedSeed.seedHealth;
-        tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
+        tileSeedStatus.watered = 0;
+        tileSeedStatus.daysWithoutWater = 0;
         tileSeedStatus.dayPassed = 0;
-        tileSeedStatus.health = plantedSeed.seedHealth;
+
+        tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
     }
     private void Start_Buff_Event_Check()
     {
@@ -163,7 +165,7 @@ public class FarmTile : MonoBehaviour
     private void Default_Seed_Planted_Update()
     {
         tileSeedStatus.currentDayWatered = false;
-        statusIconIndicator.UnAssign_Status(StatusType.watered);
+        statusIconIndicator.Reset_All_Icons();
 
         if (seedPlanted)
         {
