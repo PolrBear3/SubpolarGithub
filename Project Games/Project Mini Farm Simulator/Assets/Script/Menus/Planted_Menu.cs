@@ -69,6 +69,7 @@ public class Planted_Menu : MonoBehaviour
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         currentFarmTile.Reset_Tile();
+        controller.eventSystem.All_Events_Update_Check();
     }
 
     public void Water_Seed()
@@ -140,5 +141,7 @@ public class Planted_Menu : MonoBehaviour
             controller.Add_Money(currentFarmTile.plantedSeed.harvestSellPrice);
         }
         currentFarmTile.Reset_Tile();
+
+        controller.eventSystem.All_Events_Update_Check();
     }
 }

@@ -98,36 +98,18 @@ public class FarmTile : MonoBehaviour
     }
 
     // seed plant start system 
-    private void Default_Seed_Planted_Start_Set()
+    public void Seed_Planted_Start_Set()
     {
         tileSeedStatus.health = plantedSeed.seedHealth;
         tileSeedStatus.watered = 0;
         tileSeedStatus.daysWithoutWater = 0;
         tileSeedStatus.dayPassed = 0;
-
+        tileSeedStatus.currentDayWatered = false;
         tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
-    }
-    private void Start_Buff_Event_Check()
-    {
-        tileSeedStatus.dayPassed += selectedBuff.startAdvantageDayPoint;
-        tileSeedStatus.watered += selectedBuff.startAdvantageDayPoint;
-    }
 
-    public void Seed_Planted_Start_Set()
-    {
-        // seed plant start without buff
-        if (selectedBuff == null)
-        {
-            Default_Seed_Planted_Start_Set();
-        }
-        // seed plant start with buff calculation
-        else if (selectedBuff)
-        {
-            Default_Seed_Planted_Start_Set();
-            Start_Buff_Event_Check();
-        }
+        controller.eventSystem.All_Events_Update_Check();
     }
-
+    
     // seed plant update system
     public void Watering_Check()
     {
@@ -162,7 +144,7 @@ public class FarmTile : MonoBehaviour
         }
     }
 
-    private void Default_Seed_Planted_Update()
+    public void NextDay_Seed_Status_Update()
     {
         tileSeedStatus.currentDayWatered = false;
         statusIconIndicator.Reset_All_Icons();
@@ -188,32 +170,22 @@ public class FarmTile : MonoBehaviour
             }
         }
     }
-    private void Buff_Event_Check()
-    {
-        if (Random.value > selectedBuff.updateAdvantagePercentage * 0.01f)
-        {
-            tileSeedStatus.dayPassed += selectedBuff.updateAdvantageDayPoint;
-            tileSeedStatus.watered += selectedBuff.updateAdvantageDayPoint;
-            tileSeedStatus.currentDayWatered = true;
-        }
-    }
-
-    public void Seed_Planted_Status_Update()
-    {
-        // seed plant update without buff
-        if (selectedBuff == null)
-        {
-            Default_Seed_Planted_Update();
-        }
-        // seed plant update with buff calculation
-        else
-        {
-            Buff_Event_Check();
-            Default_Seed_Planted_Update();
-        }
-    }
 
     // pulbic systems
+    public void TileSprite_Update_Check()
+    {
+        // half grown complete check
+        if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
+        {
+            image.sprite = plantedSeed.sprites[1];
+        }
+
+        // full grown complete check
+        if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
+        {
+            image.sprite = plantedSeed.sprites[2];
+        }
+    }
     public void Reset_Tile()
     {
         statusIconIndicator.Reset_All_Icons();
@@ -226,6 +198,7 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.dayPassed = 0;
         tileSeedStatus.watered = 0;
         tileSeedStatus.daysWithoutWater = 0;
+        tileSeedStatus.currentDayWatered = false;
         controller.Reset_All_Menu();
         controller.unPlantedMenu.Open();
         Highlight_Tile();

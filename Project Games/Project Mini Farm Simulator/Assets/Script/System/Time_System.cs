@@ -21,24 +21,6 @@ public class Time_System : MonoBehaviour
         Next_Day();
     }
 
-    public void Next_Day()
-    {
-        _currentInGameDay += 1;
-
-        Check_End0f_Year();
-        Check_Season();
-
-        controller.eventSystem.Set_Today_Weather();
-
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].Seed_Planted_Status_Update();
-        }
-
-        controller.eventSystem.All_Events_Update_Check();
-        controller.eventSystem.All_Events_Single_Check();
-        controller.defaultMenu.Update_UI();
-    }
     private void Check_Season()
     {
         // spring
@@ -56,5 +38,24 @@ public class Time_System : MonoBehaviour
         {
             _currentInGameDay = 1;
         }
+    }
+
+    public void Next_Day()
+    {
+        _currentInGameDay += 1;
+
+        Check_End0f_Year();
+        Check_Season();
+
+        controller.eventSystem.Set_Today_Weather();
+
+        for (int i = 0; i < controller.farmTiles.Length; i++)
+        {
+            controller.farmTiles[i].NextDay_Seed_Status_Update();
+        }
+
+        controller.eventSystem.All_Events_Update_Check();
+        controller.eventSystem.All_Events_Single_Check();
+        controller.defaultMenu.Update_UI();
     }
 }

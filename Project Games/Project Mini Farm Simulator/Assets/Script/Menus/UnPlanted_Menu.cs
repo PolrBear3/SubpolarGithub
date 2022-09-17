@@ -166,8 +166,6 @@ public class UnPlanted_Menu : MonoBehaviour
             {
                 SeedBuff_Price_Calculation();
             }
-
-            controller.eventSystem.All_Events_Update_Check();
         }
     }
 

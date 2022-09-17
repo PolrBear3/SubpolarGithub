@@ -25,7 +25,7 @@ public class Event_System : MonoBehaviour
         Rainy_AllTileSeed_Watering();
     }
 
-    // all events for weathers
+    // update check events
     private void Rainy_AllTileSeed_Watering()
     {
         if (currentWeather.weatherID == 2)
@@ -40,6 +40,9 @@ public class Event_System : MonoBehaviour
                     // if the seed is not currently watered
                     if (!allTiles[i].tileSeedStatus.currentDayWatered)
                     {
+                        // refresh status icon
+                        allTiles[i].statusIconIndicator.UnAssign_Status(StatusType.watered);
+
                         // water the seeded tile
                         allTiles[i].tileSeedStatus.currentDayWatered = true;
                         allTiles[i].tileSeedStatus.watered += 1;
@@ -55,6 +58,8 @@ public class Event_System : MonoBehaviour
             }
         }
     }
+
+    // single check events
     private void GoldenSunny_HealthBuff()
     {
         if (currentWeather.weatherID == 0)
@@ -76,6 +81,8 @@ public class Event_System : MonoBehaviour
                         {
                             allTiles[i].tileSeedStatus.health += 1;
                         }
+
+                        allTiles[i].TileSprite_Update_Check();
 
                         controller.plantedMenu.Seed_Information_Update();
                     }
