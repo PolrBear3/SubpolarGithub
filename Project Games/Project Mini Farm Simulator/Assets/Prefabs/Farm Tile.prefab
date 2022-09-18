@@ -112,7 +112,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 68.65, y: 68.65}
+  m_SizeDelta: {x: 56.5, y: 56.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6189063639209638824
 CanvasRenderer:
@@ -143,7 +143,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 983166936, guid: c9e57ed3878c9034fa0c639e7d9a3046, type: 3}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -303,13 +303,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusIconIndicator: {fileID: 1085077442416054105}
   image: {fileID: 0}
-  tileNum: 0
-  tilePrice: 0
-  tileLocked: 0
-  seedPlanted: 0
-  plantedSeed: {fileID: 0}
-  selectedBuff: {fileID: 0}
-  farmTileDefaultSprite:
+  data:
+    plantedSeed: {fileID: 0}
+    tileNum: 0
+    tilePrice: 0
+    tileLocked: 0
+    seedPlanted: 0
     lockedTile: {fileID: -1541799582, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}
     unplantedTile: {fileID: 21300000, guid: def7443a443d74d45bb19ac343840659, type: 3}
   tileSeedStatus:
@@ -319,6 +318,8 @@ MonoBehaviour:
     watered: 0
     daysWithoutWater: 0
     currentDayWatered: 0
+    harvestReady: 0
+    bonusPoints: 0
 --- !u!1001 &3130454916206903348
 PrefabInstance:
   m_ObjectHideFlags: 0

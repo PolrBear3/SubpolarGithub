@@ -6,7 +6,8 @@ public enum StatusType
 {
     watered,
     damaged,
-    sunnyBuffed
+    sunnyBuffed,
+    cloudyStunned
 }
 
 [CreateAssetMenu(menuName = "New Status")]

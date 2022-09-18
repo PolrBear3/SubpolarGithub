@@ -12,11 +12,18 @@ public struct AfterSeedStatus
     public int watered;
     public int daysWithoutWater;
     public bool currentDayWatered;
+    public bool harvestReady;
+
+    public int bonusPoints;
 }
 
 [System.Serializable]
-public class FarmTile_Default_Sprite
+public class FarmTile_Basic_Data
 {
+    public Seed_ScrObj plantedSeed = null;
+    public int tileNum, tilePrice;
+    public bool tileLocked = false, seedPlanted = false;
+
     public Sprite lockedTile;
     public Sprite unplantedTile;
 }
@@ -24,19 +31,13 @@ public class FarmTile_Default_Sprite
 public class FarmTile : MonoBehaviour
 {
     MainGame_Controller controller;
-
+    
     public Status_Icon_Indicator statusIconIndicator;
-
+    
     [HideInInspector]
     public Image image;
 
-    public int tileNum, tilePrice;
-    public bool tileLocked = false, seedPlanted = false;
-
-    public Seed_ScrObj plantedSeed = null;
-    public Buff_ScrObj selectedBuff = null;
-
-    public FarmTile_Default_Sprite farmTileDefaultSprite;
+    public FarmTile_Basic_Data data;
     public AfterSeedStatus tileSeedStatus;
 
     public void Awake()
@@ -47,18 +48,18 @@ public class FarmTile : MonoBehaviour
 
     public void Lock_Tile()
     {
-        tileLocked = true;
+        data.tileLocked = true;
 
         // locked tile image and status indicator
-        image.sprite = farmTileDefaultSprite.lockedTile;
+        image.sprite = data.lockedTile;
         statusIconIndicator.gameObject.SetActive(false);
     }
     public void Unlock_Tile()
     {
-        tileLocked = false;
+        data.tileLocked = false;
 
         // unlocked tile image and status indicator
-        image.sprite = farmTileDefaultSprite.unplantedTile;
+        image.sprite = data.unplantedTile;
         statusIconIndicator.gameObject.SetActive(true);
     }
 
@@ -83,15 +84,15 @@ public class FarmTile : MonoBehaviour
         // highlight pressed tile
         Highlight_Tile();
 
-        if (tileLocked)
+        if (data.tileLocked)
         {
             controller.lockedMenu.Open();
         }
-        else if (!seedPlanted)
+        else if (!data.seedPlanted)
         {
             controller.unPlantedMenu.Open();
         }
-        else if (seedPlanted)
+        else if (data.seedPlanted)
         {
             controller.plantedMenu.Open();
         }
@@ -100,12 +101,14 @@ public class FarmTile : MonoBehaviour
     // seed plant start system 
     public void Seed_Planted_Start_Set()
     {
-        tileSeedStatus.health = plantedSeed.seedHealth;
+        tileSeedStatus.health = data.plantedSeed.seedHealth;
         tileSeedStatus.watered = 0;
         tileSeedStatus.daysWithoutWater = 0;
         tileSeedStatus.dayPassed = 0;
         tileSeedStatus.currentDayWatered = false;
-        tileSeedStatus.fullGrownDay = Random.Range(plantedSeed.minFinishDays, plantedSeed.maxFinishDays);
+        tileSeedStatus.harvestReady = false;
+        tileSeedStatus.bonusPoints = 0;
+        tileSeedStatus.fullGrownDay = Random.Range(data.plantedSeed.minFinishDays, data.plantedSeed.maxFinishDays);
 
         controller.eventSystem.All_Events_Update_Check();
     }
@@ -124,7 +127,7 @@ public class FarmTile : MonoBehaviour
         }
 
         // watering fail health 0
-        if (tileSeedStatus.daysWithoutWater >= plantedSeed.waterHealth)
+        if (tileSeedStatus.daysWithoutWater >= data.plantedSeed.waterHealth)
         {
             tileSeedStatus.health = 0;
         }
@@ -133,9 +136,9 @@ public class FarmTile : MonoBehaviour
     {
         if (tileSeedStatus.health <= 0)
         {
-            image.sprite = farmTileDefaultSprite.unplantedTile;
-            plantedSeed = null;
-            seedPlanted = false;
+            image.sprite = data.unplantedTile;
+            data.plantedSeed = null;
+            data.seedPlanted = false;
             tileSeedStatus.dayPassed = 0;
             tileSeedStatus.watered = 0;
             tileSeedStatus.daysWithoutWater = 0;
@@ -149,7 +152,7 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.currentDayWatered = false;
         statusIconIndicator.Reset_All_Icons();
 
-        if (seedPlanted)
+        if (data.seedPlanted)
         {
             Watering_Check();
             Health_Check();
@@ -160,13 +163,13 @@ public class FarmTile : MonoBehaviour
             // half grown complete check
             if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
             {
-                image.sprite = plantedSeed.sprites[1];
+                image.sprite = data.plantedSeed.sprites[1];
             }
 
             // full grown complete check
             if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
             {
-                image.sprite = plantedSeed.sprites[2];
+                image.sprite = data.plantedSeed.sprites[2];
             }
         }
     }
@@ -177,28 +180,30 @@ public class FarmTile : MonoBehaviour
         // half grown complete check
         if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
         {
-            image.sprite = plantedSeed.sprites[1];
+            image.sprite = data.plantedSeed.sprites[1];
         }
 
         // full grown complete check
         if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
         {
-            image.sprite = plantedSeed.sprites[2];
+            image.sprite = data.plantedSeed.sprites[2];
+            tileSeedStatus.harvestReady = true;
         }
     }
     public void Reset_Tile()
     {
         statusIconIndicator.Reset_All_Icons();
 
-        image.sprite = farmTileDefaultSprite.unplantedTile;
-        plantedSeed = null;
-        selectedBuff = null;
-        seedPlanted = false;
+        image.sprite = data.unplantedTile;
+        data.plantedSeed = null;
+        data.seedPlanted = false;
         tileSeedStatus.health = 0;
         tileSeedStatus.dayPassed = 0;
         tileSeedStatus.watered = 0;
         tileSeedStatus.daysWithoutWater = 0;
         tileSeedStatus.currentDayWatered = false;
+        tileSeedStatus.harvestReady = true;
+        tileSeedStatus.bonusPoints = 0;
         controller.Reset_All_Menu();
         controller.unPlantedMenu.Open();
         Highlight_Tile();

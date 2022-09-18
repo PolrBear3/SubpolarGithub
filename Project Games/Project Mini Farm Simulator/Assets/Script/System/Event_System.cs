@@ -19,10 +19,21 @@ public class Event_System : MonoBehaviour
     public void All_Events_Single_Check()
     {
         GoldenSunny_HealthBuff();
+        CloudyStunned();
     }
     public void All_Events_Update_Check()
     {
         Rainy_AllTileSeed_Watering();
+    }
+    
+    private bool Event_Percentage_Setter(float percentage)
+    {
+        var value = (100 - percentage) * 0.01f;
+        if (Random.value > value)
+        {
+            return true;
+        }
+        else return false;
     }
 
     // update check events
@@ -35,7 +46,7 @@ public class Event_System : MonoBehaviour
             for (int i = 0; i < allTiles.Length; i++)
             {
                 // if the tile is unlocked
-                if (!allTiles[i].tileLocked)
+                if (!allTiles[i].data.tileLocked)
                 {
                     // if the seed is not currently watered
                     if (!allTiles[i].tileSeedStatus.currentDayWatered)
@@ -50,7 +61,7 @@ public class Event_System : MonoBehaviour
                     }
 
                     // check water condition for seeded tile 
-                    if (allTiles[i].seedPlanted)
+                    if (allTiles[i].data.seedPlanted)
                     {
                         allTiles[i].Watering_Check();
                     }
@@ -67,17 +78,27 @@ public class Event_System : MonoBehaviour
             var allTiles = controller.farmTiles;
 
             // 40% chance buff
-            if (Random.value > 0.6)
+            if (Event_Percentage_Setter(40f))
             {
                 for (int i = 0; i < allTiles.Length; i++)
                 {
-                    if (allTiles[i].seedPlanted)
+                    if (allTiles[i].data.seedPlanted)
                     {
+                        // add sunnyBuffed icon
                         allTiles[i].statusIconIndicator.Assign_Status(StatusType.sunnyBuffed);
+                        
+                        // give +1 extra watered and dayPassed int
                         allTiles[i].tileSeedStatus.watered += 1;
                         allTiles[i].tileSeedStatus.dayPassed += 1;
 
-                        if (allTiles[i].tileSeedStatus.health < allTiles[i].plantedSeed.seedHealth)
+                        // if the tile is not full grown, addup +n bonus int
+                        if (allTiles[i].tileSeedStatus.dayPassed < allTiles[i].tileSeedStatus.fullGrownDay)
+                        {
+                            allTiles[i].tileSeedStatus.bonusPoints += 5;
+                        }
+
+                        // if the seed's health is less than it's max health, give +n health int
+                        if (allTiles[i].tileSeedStatus.health < allTiles[i].data.plantedSeed.seedHealth)
                         {
                             allTiles[i].tileSeedStatus.health += 1;
                         }
@@ -86,6 +107,28 @@ public class Event_System : MonoBehaviour
 
                         controller.plantedMenu.Seed_Information_Update();
                     }
+                }
+            }
+        }
+    }
+    private void CloudyStunned()
+    {
+        if (currentWeather.weatherID == 1 && Event_Percentage_Setter(20f))
+        {
+            var allTiles = controller.farmTiles;
+            for (int i = 0; i < allTiles.Length; i++)
+            {
+                if (allTiles[i].data.seedPlanted && !allTiles[i].tileSeedStatus.harvestReady)
+                {
+                    // add sunnyBuffed icon
+                    allTiles[i].statusIconIndicator.Assign_Status(StatusType.cloudyStunned);
+
+                    // reduce 1 dayPassed int
+                    allTiles[i].tileSeedStatus.dayPassed -= 1;
+
+                    // update tile
+                    allTiles[i].TileSprite_Update_Check();
+                    controller.plantedMenu.Seed_Information_Update();
                 }
             }
         }

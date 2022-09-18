@@ -36,10 +36,10 @@ public class Planted_Menu : MonoBehaviour
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
         currentSeedHealth.text = currentFarmTile.tileSeedStatus.health.ToString();
-        plantedSeedImage.sprite = currentFarmTile.plantedSeed.sprites[3];
+        plantedSeedImage.sprite = currentFarmTile.data.plantedSeed.sprites[3];
 
         var waterHealthCalculation = 
-            currentFarmTile.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
+            currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
         currentWaterHealth.text = waterHealthCalculation.ToString();
 
         if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
@@ -91,7 +91,7 @@ public class Planted_Menu : MonoBehaviour
 
         // water health text update
         var waterHealthCalculation =
-            currentFarmTile.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
+            currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
         currentWaterHealth.text = waterHealthCalculation.ToString();
     }
 
@@ -105,7 +105,9 @@ public class Planted_Menu : MonoBehaviour
         harvestButtons[1].SetActive(false);
         harvestButtons[0].SetActive(true);
     }
-    private int Harvest_Bonus_Check()
+    
+    // all the individual bonus infos
+    private int Watering_Bonus()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum].tileSeedStatus;
 
@@ -127,18 +129,31 @@ public class Planted_Menu : MonoBehaviour
         // tier 4
         else return 0;
     }
+    private int Tile_Point_Bonus()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        return currentFarmTile.tileSeedStatus.bonusPoints;
+    }
+    
+    // all bonus infos add to one sum
+    private int All_Bonus_Sum()
+    {
+        return Watering_Bonus() + Tile_Point_Bonus();
+    }
+    
+    // calculate bonus points, give player money, reset the tile
     public void Harvest_Sell()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
 
         // calculate total
-        if (Harvest_Bonus_Check() > 0)
+        if (All_Bonus_Sum() > 0)
         {
-            controller.Add_Money_withBonus(currentFarmTile.plantedSeed.harvestSellPrice, Harvest_Bonus_Check());
+            controller.Add_Money_withBonus(currentFarmTile.data.plantedSeed.harvestSellPrice, All_Bonus_Sum());
         }
-        else if (Harvest_Bonus_Check() == 0)
+        else if (All_Bonus_Sum() == 0)
         {
-            controller.Add_Money(currentFarmTile.plantedSeed.harvestSellPrice);
+            controller.Add_Money(currentFarmTile.data.plantedSeed.harvestSellPrice);
         }
         currentFarmTile.Reset_Tile();
 

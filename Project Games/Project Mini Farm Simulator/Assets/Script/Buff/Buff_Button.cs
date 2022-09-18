@@ -34,7 +34,7 @@ public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void Select_This_Buff()
     {
-        menu.Select_Buff(buffInfo);
+        //menu.Select_Buff(buffInfo);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -44,7 +44,7 @@ public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         onPress = false;
-        menu.Hide_Buff_ToolTip();
+        //menu.Hide_Buff_ToolTip();
     }
 
     private void Timer()
@@ -62,7 +62,7 @@ public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (timer >= onPressTime)
         {
-            menu.Show_Buff_ToolTip(buffInfo);
+            //menu.Show_Buff_ToolTip(buffInfo);
         }
     }
 }

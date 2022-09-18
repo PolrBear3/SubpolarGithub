@@ -3,32 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class Unplanted_Menu_Seed_ToolTip
+{
+    public GameObject toolTipPanel;
+    public Image previewSeedSprite;
+    public Text seedName, seedDescription, seedPrice, sellPrice, harvestLength;
+}
+
 public class UnPlanted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
     RectTransform rectTransform;
     public LeanTweenType tweenType;
     public Button[] allAvailableButtons;
-    public GameObject[] buttonPages;
 
-    public GameObject[] toolTipPanels;
-    public Image[] toolTipSprites;
-    public Text[] seedToolTipTexts;
-    public Text[] buffToolTipTexts;
-
-    public Image currentCropImage, currentBuffImage;
-    public Sprite nullCropSprite, nullBuffSprite;
+    public Unplanted_Menu_Seed_ToolTip seedToolTipUIconnection;
+    public Image currentCropImage;
     public Seed_ScrObj currentSeedInfo;
-    public Buff_ScrObj currentBuffInfo;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-    }
-    private void Start()
-    {
-        buttonPages[1].SetActive(false);
-        buttonPages[3].SetActive(false);
     }
 
     private void Button_Shield(bool activate)
@@ -42,7 +38,6 @@ public class UnPlanted_Menu : MonoBehaviour
 
     public void Open()
     {
-        Goto_Seed_Selection();
         Button_Shield(false);
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
     }
@@ -59,33 +54,14 @@ public class UnPlanted_Menu : MonoBehaviour
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
 
-    public void Goto_Seed_Selection()
-    {
-        buttonPages[0].SetActive(true);
-        buttonPages[1].SetActive(false);
-
-        buttonPages[2].SetActive(true);
-        buttonPages[3].SetActive(false);
-    }
-    public void Goto_Buff_Selection()
-    {
-        buttonPages[0].SetActive(false);
-        buttonPages[1].SetActive(true);
-
-        buttonPages[2].SetActive(false);
-        buttonPages[3].SetActive(true);
-    }
-
     private void Reset_Selections()
     {
         currentSeedInfo = null;
-        currentCropImage.sprite = nullCropSprite;
-        currentBuffInfo = null;
-        currentBuffImage.sprite = nullBuffSprite;
+        currentCropImage.color = Color.clear;
     }
     private void Check_Selections_Complete()
     {
-        if (currentSeedInfo != null && currentBuffInfo != null)
+        if (currentSeedInfo != null)
         {
             allAvailableButtons[0].enabled = true;
         }
@@ -94,12 +70,7 @@ public class UnPlanted_Menu : MonoBehaviour
     {
         currentSeedInfo = seedInfo;
         currentCropImage.sprite = seedInfo.sprites[3];
-        Check_Selections_Complete();
-    }
-    public void Select_Buff(Buff_ScrObj buffInfo)
-    {
-        currentBuffInfo = buffInfo;
-        currentBuffInfo.sprite = buffInfo.sprite;
+        currentCropImage.color = Color.white;
         Check_Selections_Complete();
     }
 
@@ -107,41 +78,15 @@ public class UnPlanted_Menu : MonoBehaviour
     {
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
-            if (controller.openedTileNum == controller.farmTiles[i].tileNum)
+            if (controller.openedTileNum == controller.farmTiles[i].data.tileNum)
             {
                 if (controller.money >= currentSeedInfo.seedBuyPrice)
                 {
                     PlantSeed_Close();
                     controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
                     controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
-                    controller.farmTiles[i].seedPlanted = true;
-                    controller.farmTiles[i].plantedSeed = currentSeedInfo;
-                    controller.farmTiles[i].Seed_Planted_Start_Set();
-                    controller.plantedMenu.Open();
-                    Reset_Selections();
-                    break;
-                }
-                else
-                {
-                    controller.defaultMenu.NotEnoughMoney_Blink_Tween();
-                }
-            }
-        }
-    }
-    private void SeedBuff_Price_Calculation()
-    {
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            if (controller.openedTileNum == controller.farmTiles[i].tileNum)
-            {
-                if (controller.money >= currentSeedInfo.seedBuyPrice + currentBuffInfo.buffPrice)
-                {
-                    PlantSeed_Close();
-                    controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
-                    controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
-                    controller.farmTiles[i].seedPlanted = true;
-                    controller.farmTiles[i].plantedSeed = currentSeedInfo;
-                    controller.farmTiles[i].selectedBuff = currentBuffInfo;
+                    controller.farmTiles[i].data.seedPlanted = true;
+                    controller.farmTiles[i].data.plantedSeed = currentSeedInfo;
                     controller.farmTiles[i].Seed_Planted_Start_Set();
                     controller.plantedMenu.Open();
                     Reset_Selections();
@@ -158,46 +103,25 @@ public class UnPlanted_Menu : MonoBehaviour
     {
         if (currentSeedInfo != null)
         {
-            if (currentBuffInfo == null)
-            {
-                Seed_Price_Calculation();
-            }
-            else
-            {
-                SeedBuff_Price_Calculation();
-            }
+            Seed_Price_Calculation();
         }
     }
 
-    // tool tip information order > sprite, name, description, price, sellPrice, average grow day
     public void Show_Seed_ToolTip(Seed_ScrObj currentHoveringSeed)
     {
-        toolTipSprites[0].sprite = currentHoveringSeed.sprites[3];
-        seedToolTipTexts[0].text = currentHoveringSeed.seedName;
-        seedToolTipTexts[1].text = currentHoveringSeed.seedDescription;
-        seedToolTipTexts[2].text = "seed price: $ " + currentHoveringSeed.seedBuyPrice.ToString();
-        seedToolTipTexts[3].text = "sell price: $ " + currentHoveringSeed.harvestSellPrice.ToString();
-        seedToolTipTexts[4].text = "harvest: " + 
+        var x = seedToolTipUIconnection;
+        x.previewSeedSprite.sprite = currentHoveringSeed.sprites[3];
+        x.seedName.text = currentHoveringSeed.seedName;
+        x.seedDescription.text = currentHoveringSeed.seedDescription;
+        x.seedPrice.text = "seed price: $ " + currentHoveringSeed.seedBuyPrice.ToString();
+        x.sellPrice.text = "sell price: $ " + currentHoveringSeed.harvestSellPrice.ToString();
+        x.harvestLength.text = "harvest: " +
         currentHoveringSeed.minFinishDays + "~" + currentHoveringSeed.maxFinishDays + " days".ToString();
 
-        toolTipPanels[0].SetActive(true);
+        x.toolTipPanel.SetActive(true);
     }
     public void hide_Seed_ToolTip()
     {
-        toolTipPanels[0].SetActive(false);
-    }
-
-    public void Show_Buff_ToolTip(Buff_ScrObj currenthoveringBuff)
-    {
-        toolTipSprites[1].sprite = currenthoveringBuff.sprite;
-        buffToolTipTexts[0].text = currenthoveringBuff.buffName;
-        buffToolTipTexts[1].text = currenthoveringBuff.description;
-        buffToolTipTexts[2].text = "buff price: $ " + currenthoveringBuff.buffPrice.ToString();
-
-        toolTipPanels[1].SetActive(true);
-    }
-    public void Hide_Buff_ToolTip()
-    {
-        toolTipPanels[1].SetActive(false);
+        seedToolTipUIconnection.toolTipPanel.SetActive(false);
     }
 }

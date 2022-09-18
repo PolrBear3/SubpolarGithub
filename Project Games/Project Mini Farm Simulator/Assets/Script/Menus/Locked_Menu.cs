@@ -30,7 +30,7 @@ public class Locked_Menu : MonoBehaviour
     public void Open()
     {
         Button_Shield(false);
-        tilePrice.text = controller.farmTiles[controller.openedTileNum].tilePrice + " $".ToString();
+        tilePrice.text = controller.farmTiles[controller.openedTileNum].data.tilePrice + " $".ToString();
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
     }
     public void Close()
@@ -44,9 +44,9 @@ public class Locked_Menu : MonoBehaviour
     {
         var selectedTile = controller.farmTiles[controller.openedTileNum];
 
-        if (controller.money >= selectedTile.tilePrice)
+        if (controller.money >= selectedTile.data.tilePrice)
         {
-            controller.Subtract_Money(selectedTile.tilePrice);
+            controller.Subtract_Money(selectedTile.data.tilePrice);
             selectedTile.Unlock_Tile();
             controller.eventSystem.All_Events_Update_Check();
             Close();

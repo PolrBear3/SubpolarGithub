@@ -33,7 +33,7 @@ public class MainGame_Controller : MonoBehaviour
     // tile functions
     public void Set_OpenTileNum(FarmTile farmTile)
     {
-        openedTileNum = farmTile.tileNum;
+        openedTileNum = farmTile.data.tileNum;
     }
     private void Lock_All_Tiles()
     {
