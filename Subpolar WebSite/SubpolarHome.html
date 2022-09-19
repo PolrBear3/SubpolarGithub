@@ -4,11 +4,11 @@
 
 <body>
 
-<h1>
+<h1 id="title">
     Welcome to Subpolar
 </h1>
 
-<p style= "color:royalblue;">
+<p id="paragraph" style="color:royalblue;">
     First ever 
     <br>
     Subpolar website
@@ -24,12 +24,17 @@
     Click to see the trailer of Christmas Night Run!
 </a>
 
-<p id = "changableP">
-    Bear
-</p>
+<br>
+<br>
 
-<button type = "button" onclick='document.getElementById("changableP").innerHTML = "Human"'>
-    Click here to change the bear to Human
+<script>
+    function Change_Title(){
+        document.getElementById("paragraph").innerHTML = "--------";
+    }
+</script>
+
+<button type = "button" onclick = "Change_Title()">
+    Click to change title
 </button>
 
 </body>
