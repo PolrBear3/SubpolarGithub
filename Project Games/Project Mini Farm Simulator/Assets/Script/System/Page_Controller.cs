@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Page_Controller : MonoBehaviour
 {
     public GameObject[] pages;
-    public Text currentPageNumText;
 
     private int _currentPageNum;
     public int currentPageNum => _currentPageNum;
@@ -16,7 +15,6 @@ public class Page_Controller : MonoBehaviour
         Restart_Deactivate_AllPages();
         _currentPageNum = 1;
         Activate_Page();
-        PageNum_Text_Update();
     }
 
     // private functions
@@ -56,11 +54,6 @@ public class Page_Controller : MonoBehaviour
         }
     }
 
-    private void PageNum_Text_Update()
-    {
-        currentPageNumText.text = currentPageNum + " / " + pages.Length.ToString();
-    }
-
     // public functions
     public void NextPage()
     {
@@ -68,7 +61,6 @@ public class Page_Controller : MonoBehaviour
         Restart_Deactivate_AllPages();
         Check_PageNum_StartEnd();
         Activate_Page();
-        PageNum_Text_Update();
     }
 
     public void BackPage()
@@ -77,6 +69,5 @@ public class Page_Controller : MonoBehaviour
         Restart_Deactivate_AllPages();
         Check_PageNum_StartEnd();
         Activate_Page();
-        PageNum_Text_Update();
     }
 }

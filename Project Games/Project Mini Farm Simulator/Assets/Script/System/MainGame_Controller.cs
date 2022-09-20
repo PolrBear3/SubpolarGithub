@@ -21,6 +21,7 @@ public class MainGame_Controller : MonoBehaviour
     private void Start()
     {
         Lock_All_Tiles();
+        Set_TileNum_forAll_Tiles();
     }
     private void Update()
     {
@@ -31,6 +32,15 @@ public class MainGame_Controller : MonoBehaviour
     }
 
     // tile functions
+    private void Set_TileNum_forAll_Tiles()
+    {
+        int tileNum = 0;
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].data.tileNum = tileNum;
+            tileNum++;
+        }
+    }
     public void Set_OpenTileNum(FarmTile farmTile)
     {
         openedTileNum = farmTile.data.tileNum;
