@@ -9,4 +9,5 @@ public class Weather_ScrObj : ScriptableObject
     public string weatherName;
 
     public Sprite weatherUI;
+    public Sprite fadeBackgroundUI;
 }

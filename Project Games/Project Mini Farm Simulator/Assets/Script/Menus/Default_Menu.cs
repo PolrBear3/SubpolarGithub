@@ -22,6 +22,7 @@ public class Default_Menu : MonoBehaviour
     public LeftMenuUI leftMenu;
 
     public GameObject nextDayFade;
+    public Image nextDayFadeImage;
 
     public RectTransform moneyTextRT;
     public Text moneyText;
@@ -53,12 +54,14 @@ public class Default_Menu : MonoBehaviour
     }
     private void Next_Day_AlphaValueFade_Tween()
     {
-        var rectTranform = nextDayFade.GetComponent<RectTransform>();
+        var rectTransform = nextDayFade.GetComponent<RectTransform>();
+        var image = nextDayFade.GetComponent<Image>();
 
-        LeanTween.move(rectTranform, new Vector2(0, 0), 0);
-        LeanTween.alpha(rectTranform, 1f, 1f);
-        LeanTween.alpha(rectTranform, 0f, 1f).setDelay(1f);
-        LeanTween.move(rectTranform, new Vector2(0, 640f), 0).setDelay(2f);
+        image.sprite = controller.eventSystem.currentWeather.fadeBackgroundUI;
+        LeanTween.move(rectTransform, new Vector2(0, 0), 0);
+        LeanTween.alpha(rectTransform, 1f, 1f);
+        LeanTween.alpha(rectTransform, 0f, 1f).setDelay(1f);
+        LeanTween.move(rectTransform, new Vector2(0, 640f), 0).setDelay(2f);
     }
 
     // season and weather ui
