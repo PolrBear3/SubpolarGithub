@@ -22,7 +22,7 @@ public class Planted_Menu : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-    private void Button_Shield(bool activate)
+    public void Button_Shield(bool activate)
     {
         for (int i = 0; i < allAvailableButtons.Length; i++)
         {
@@ -63,6 +63,11 @@ public class Planted_Menu : MonoBehaviour
         Button_Shield(true);
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
+    }
+    public void Open_BuffMenu()
+    {
+        Button_Shield(true);
+        controller.buffMenu.Open();
     }
 
     public void Remove_Seed()

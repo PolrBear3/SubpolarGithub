@@ -9,6 +9,7 @@ public class MainGame_Controller : MonoBehaviour
     public Locked_Menu lockedMenu;
     public UnPlanted_Menu unPlantedMenu;
     public Planted_Menu plantedMenu;
+    public Buff_Menu buffMenu;
     public Time_System timeSystem;
     public Event_System eventSystem;
 

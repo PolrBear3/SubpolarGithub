@@ -94,7 +94,7 @@ public class Event_System : MonoBehaviour
                         // if the tile is not full grown, addup +n bonus int
                         if (allTiles[i].tileSeedStatus.dayPassed < allTiles[i].tileSeedStatus.fullGrownDay)
                         {
-                            allTiles[i].tileSeedStatus.bonusPoints += 5;
+                            allTiles[i].tileSeedStatus.bonusPoints += 1;
                         }
 
                         // if the seed's health is less than it's max health, give +n health int

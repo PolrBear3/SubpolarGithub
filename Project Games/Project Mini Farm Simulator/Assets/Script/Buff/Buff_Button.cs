@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public UnPlanted_Menu menu;
+    public Buff_Menu menu;
     public Buff_ScrObj buffInfo;
 
     public Image buffImage;
