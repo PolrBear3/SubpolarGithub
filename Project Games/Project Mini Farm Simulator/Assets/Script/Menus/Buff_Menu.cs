@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class Buff_Menu_UI
+{
+    public Image buffPreview;
+}
+
 public class Buff_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
     RectTransform rectTransform;
     public LeanTweenType tweenType;
 
+    public Buff_Menu_UI ui;
     public Button[] allAvailableButtons;
 
     private void Awake()
@@ -37,4 +44,11 @@ public class Buff_Menu : MonoBehaviour
 
         controller.plantedMenu.Button_Shield(false);
     }
+
+    /* 
+    1. select buff (preview)
+    2. add buff to farmtile list
+    3. close this menu
+    4. activate current buff after next day
+    */
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 [System.Serializable]
 public struct AfterSeedStatus
@@ -39,6 +40,8 @@ public class FarmTile : MonoBehaviour
 
     public FarmTile_Basic_Data data;
     public AfterSeedStatus tileSeedStatus;
+
+    public List<Buff_ScrObj> currentBuffs = new List<Buff_ScrObj>();
 
     public void Awake()
     {
