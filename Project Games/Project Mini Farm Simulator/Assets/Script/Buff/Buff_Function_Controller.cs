@@ -6,8 +6,32 @@ public class Buff_Function_Controller : MonoBehaviour
 {
     public MainGame_Controller controller;
 
-    /*
-     * for all the tiles, if the tile has a seed planted
-     * for all the buffs in the buff list, activate buff ??
-    */
+    // activate function
+    public void Activate_All_Buffs_Seeds()
+    {
+        var x = controller.farmTiles;
+        for (int i = 0; i < x.Length; i++)
+        {
+            // is the seed is planted
+            if (x[i].data.seedPlanted)
+            {
+                GoThrough_All_Buffs(x[i]);
+            }
+        }
+    }
+    // activate buffs in single farm tile 
+    private void GoThrough_All_Buffs(FarmTile farmtile)
+    {
+        var x = farmtile.currentBuffs;
+        for (int i = 0; i < x.Count; i++)
+        {
+
+        }
+    }
+
+    // buffs
+    private void Cloudy_Stun_Shield()
+    {
+
+    }
 }
