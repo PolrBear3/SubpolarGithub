@@ -34,7 +34,7 @@ public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void Select_This_Buff()
     {
-        //menu.Select_Buff(buffInfo);
+        menu.Select_Buff(buffInfo);
     }
 
     public void OnPointerDown(PointerEventData eventData)

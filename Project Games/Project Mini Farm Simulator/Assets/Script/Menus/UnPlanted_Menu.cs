@@ -59,19 +59,11 @@ public class UnPlanted_Menu : MonoBehaviour
         currentSeedInfo = null;
         currentCropImage.color = Color.clear;
     }
-    private void Check_Selections_Complete()
-    {
-        if (currentSeedInfo != null)
-        {
-            allAvailableButtons[0].enabled = true;
-        }
-    }
     public void Select_Seed(Seed_ScrObj seedInfo)
     {
         currentSeedInfo = seedInfo;
         currentCropImage.sprite = seedInfo.sprites[3];
         currentCropImage.color = Color.white;
-        Check_Selections_Complete();
     }
 
     private void Seed_Price_Calculation()
