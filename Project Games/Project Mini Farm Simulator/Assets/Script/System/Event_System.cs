@@ -111,7 +111,7 @@ public class Event_System : MonoBehaviour
             }
         }
     }
-    private void CloudyStunned()
+    public void CloudyStunned()
     {
         if (currentWeather.weatherID == 1 && Event_Percentage_Setter(20f))
         {

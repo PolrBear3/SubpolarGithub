@@ -4,37 +4,36 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Current_Buff_Icon_UI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public Buff_Menu menu;
-    public Buff_ScrObj buffInfo;
-
-    public Image buffImage;
-    public Text buffPriceText;
+    
+    public bool hasBuff;
+    public Buff_ScrObj currentBuff;
+    public Image buffIcon;
 
     bool onPress;
     float timer = 0;
     float onPressTime = 0.25f;
 
-    private void Awake()
-    {
-        Set_Buff_Info();
-    }
     private void Update()
     {
         Timer();
         Show_ToolTip();
     }
 
-    private void Set_Buff_Info()
+    public void Empty_Icon()
     {
-        buffImage.sprite = buffInfo.sprite;
-        buffPriceText.text = "$ " + buffInfo.buffPrice.ToString();
+        hasBuff = false;
+        currentBuff = null;
+        buffIcon.color = Color.clear;
     }
-
-    public void Select_This_Buff()
+    public void Assign_Icon(Buff_ScrObj buff)
     {
-        menu.Select_Buff(buffInfo);
+        hasBuff = true;
+        currentBuff = buff;
+        buffIcon.color = Color.white;
+        buffIcon.sprite = currentBuff.sprite;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -46,7 +45,6 @@ public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         onPress = false;
         menu.Hide_Buff_ToolTip();
     }
-
     private void Timer()
     {
         if (onPress)
@@ -62,7 +60,7 @@ public class Buff_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (timer >= onPressTime)
         {
-            menu.Show_Buff_ToolTip(buffInfo);
+            menu.Show_Buff_ToolTip(currentBuff);
         }
     }
 }

@@ -9,6 +9,14 @@ public class Buff_Menu_UI
     public Image buffPreview;
 }
 
+[System.Serializable]
+public class Buff_Menu_Buff_ToolTip
+{
+    public GameObject toolTipPanel;
+    public Image previewBuffSprite;
+    public Text buffName, buffDescription, buffPrice;
+}
+
 public class Buff_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
@@ -17,6 +25,7 @@ public class Buff_Menu : MonoBehaviour
 
     public Buff_ScrObj currentSelectedBuff;
     public Buff_Menu_UI ui;
+    public Buff_Menu_Buff_ToolTip tooltipUI;
     public Button[] allAvailableButtons;
 
     private void Awake()
@@ -77,6 +86,7 @@ public class Buff_Menu : MonoBehaviour
                     controller.Subtract_Money(currentSelectedBuff.buffPrice);
                     controller.farmTiles[i].currentBuffs.Add(currentSelectedBuff);
                     Reset_Selections();
+                    controller.plantedMenu.CurrentBuffs_Button_Check();
                     break;
                 }
                 else
@@ -92,5 +102,21 @@ public class Buff_Menu : MonoBehaviour
         {
             Buff_Price_Calculation();
         }
+    }
+
+    public void Show_Buff_ToolTip(Buff_ScrObj currentHoveringBuff)
+    {
+        var x = tooltipUI;
+
+        x.previewBuffSprite.sprite = currentHoveringBuff.sprite;
+        x.buffName.text = currentHoveringBuff.buffName;
+        x.buffDescription.text = currentHoveringBuff.description;
+        x.buffPrice.text = "seed price: $ " + currentHoveringBuff.buffPrice.ToString();
+        x.toolTipPanel.SetActive(true);
+    }
+    public void Hide_Buff_ToolTip()
+    {
+        var x = tooltipUI;
+        x.toolTipPanel.SetActive(false);
     }
 }

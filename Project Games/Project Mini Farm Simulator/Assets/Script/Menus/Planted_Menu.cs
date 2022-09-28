@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class Current_Buffs_Panel_UI
+{
+    [HideInInspector]
+    public bool cbON = false;
+    public RectTransform cbRT;
+    public GameObject cbButton, cbPanel;
+    public Current_Buff_Icon_UI[] icons;
+}
+
 public class Planted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
@@ -15,6 +25,7 @@ public class Planted_Menu : MonoBehaviour
                 currentWaterHealth;
 
     public GameObject[] harvestButtons;
+    public Current_Buffs_Panel_UI currentBuffsPanel;
     public Button[] allAvailableButtons;
 
     private void Awake()
@@ -33,6 +44,9 @@ public class Planted_Menu : MonoBehaviour
 
     public void Seed_Information_Update()
     {
+        CurrentBuffs_Button_Check();
+        Close_CurrentBuffs_Panel();
+
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
         currentSeedHealth.text = currentFarmTile.tileSeedStatus.health.ToString();
@@ -63,6 +77,7 @@ public class Planted_Menu : MonoBehaviour
         Button_Shield(true);
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
+        Close_CurrentBuffs_Panel();
     }
     public void Open_BuffMenu()
     {
@@ -163,5 +178,73 @@ public class Planted_Menu : MonoBehaviour
         currentFarmTile.Reset_Tile();
 
         controller.eventSystem.All_Events_Update_Check();
+    }
+
+    // current buffs for planted seed panel functions
+    public void CurrentBuffs_Button_Check()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        if (currentFarmTile.currentBuffs.Count > 0)
+        {
+            currentBuffsPanel.cbButton.SetActive(true);
+        }
+        else
+        {
+            currentBuffsPanel.cbButton.SetActive(false);
+        }
+    }
+    
+    private void CheckSpace_Assign(Buff_ScrObj buff)
+    {
+        var x = currentBuffsPanel.icons;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (!x[i].hasBuff)
+            {
+                x[i].Assign_Icon(buff);
+                break;
+            }
+        }
+    }
+    private void CurrentBuffs_Assign_Icon()
+    {
+        // reset all icons for re order 
+        for (int i = 0; i < currentBuffsPanel.icons.Length; i++)
+        {
+            currentBuffsPanel.icons[i].Empty_Icon();
+        }
+        
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        var buffAmount = currentFarmTile.currentBuffs.Count;
+
+        // assign icon indications in farmtile buff list if it has at least 1 buff
+        if (buffAmount > 0)
+        {
+            for (int i = 0; i < currentFarmTile.currentBuffs.Count; i++)
+            {
+                CheckSpace_Assign(currentFarmTile.currentBuffs[i]);
+            }
+        }
+    }
+    
+    public void Open_Close_CurrentBuffs_Panel()
+    {
+        if (!currentBuffsPanel.cbON)
+        {
+            currentBuffsPanel.cbON = true;
+            CurrentBuffs_Assign_Icon();
+            currentBuffsPanel.cbPanel.SetActive(true);
+        }
+        else
+        {
+            currentBuffsPanel.cbON = false;
+            currentBuffsPanel.cbPanel.SetActive(false);
+        }
+    }
+    public void Close_CurrentBuffs_Panel()
+    {
+        currentBuffsPanel.cbON = false;
+        currentBuffsPanel.cbPanel.SetActive(false);
     }
 }

@@ -10,27 +10,33 @@ public class Buff_Functions : MonoBehaviour
     {
         int removeAtNum = 0;
 
-        // if the weather is cloudy
-        if (functionController.controller.eventSystem.currentWeather.weatherID == 1)
+        var x = farmtile.statusIconIndicator.statusIcons;
+        for (int i = 0; i < x.Length; i++)
         {
-            // give back 1 day passed points
-            farmtile.tileSeedStatus.dayPassed += 1;
-            // get rid of cloudy stun icon
-            farmtile.statusIconIndicator.UnAssign_Status(StatusType.cloudyStunned);
-            // remove from buff list
-            for (int i = 0; i < farmtile.currentBuffs.Count; i++)
+            // if the farmtile is cloudy stunned
+            if (x[i].hasStatus && x[i].currentStatus.statusType == StatusType.cloudyStunned)
             {
-                if (farmtile.currentBuffs[i].buffID == 0)
+                // give back 1 day passed points
+                farmtile.tileSeedStatus.dayPassed += 1;
+                // get rid of cloudy stun icon
+                farmtile.statusIconIndicator.UnAssign_Status(StatusType.cloudyStunned);
+                // remove from buff list
+                for (int j = 0; j < farmtile.currentBuffs.Count; j++)
                 {
-                    farmtile.currentBuffs.RemoveAt(removeAtNum);
-                    break;
-                }
+                    if (farmtile.currentBuffs[j].buffID == 0)
+                    {
+                        farmtile.currentBuffs.RemoveAt(removeAtNum);
+                        break;
+                    }
 
-                removeAtNum ++;
+                    removeAtNum++;
+                }
+                // update tile
+                farmtile.TileSprite_Update_Check();
+                functionController.controller.plantedMenu.Seed_Information_Update();
+
+                break;
             }
-            // update tile
-            farmtile.TileSprite_Update_Check();
-            functionController.controller.plantedMenu.Seed_Information_Update();
         }
     }
 }
