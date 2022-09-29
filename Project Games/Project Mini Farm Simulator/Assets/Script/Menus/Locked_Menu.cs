@@ -17,6 +17,11 @@ public class Locked_Menu : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
     }
+    private void Start()
+    {
+        // set to position at the center
+        rectTransform.anchoredPosition = new Vector2(0f, -125f);
+    }
 
     private void Button_Shield(bool activate)
     {

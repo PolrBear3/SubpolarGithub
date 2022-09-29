@@ -32,6 +32,11 @@ public class Planted_Menu : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
     }
+    private void Start()
+    {
+        // set to position at the center
+        rectTransform.anchoredPosition = new Vector2(0f, -125f);
+    }
 
     public void Button_Shield(bool activate)
     {
@@ -88,6 +93,7 @@ public class Planted_Menu : MonoBehaviour
     public void Remove_Seed()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        controller.Add_Money(currentFarmTile.data.plantedSeed.seedBuyPrice);
         currentFarmTile.Reset_Tile();
         controller.eventSystem.All_Events_Update_Check();
     }

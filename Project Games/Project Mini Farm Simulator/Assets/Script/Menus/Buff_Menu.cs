@@ -24,6 +24,8 @@ public class Buff_Menu : MonoBehaviour
     public LeanTweenType tweenType;
 
     public Buff_ScrObj currentSelectedBuff;
+
+    public GameObject[] confirmButtons;
     public Buff_Menu_UI ui;
     public Buff_Menu_Buff_ToolTip tooltipUI;
     public Button[] allAvailableButtons;
@@ -31,6 +33,11 @@ public class Buff_Menu : MonoBehaviour
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+    }
+    private void Start()
+    {
+        // set to position at the center
+        rectTransform.anchoredPosition = new Vector2(0f, -125f);
     }
 
     public void Button_Shield(bool activate)
@@ -62,16 +69,31 @@ public class Buff_Menu : MonoBehaviour
         controller.plantedMenu.Button_Shield(false);
     }
 
+    private void ConfirmButton_Availability()
+    {
+        if (currentSelectedBuff != null && controller.money >= currentSelectedBuff.buffPrice)
+        {
+            confirmButtons[0].SetActive(false);
+            confirmButtons[1].SetActive(true);
+        }
+        else
+        {
+            confirmButtons[0].SetActive(true);
+            confirmButtons[1].SetActive(false);
+        }
+    }
     private void Reset_Selections()
     {
         currentSelectedBuff = null;
         ui.buffPreview.color = Color.clear;
+        ConfirmButton_Availability();
     }
     public void Select_Buff(Buff_ScrObj buffInfo)
     {
         currentSelectedBuff = buffInfo;
         ui.buffPreview.sprite = buffInfo.sprite;
         ui.buffPreview.color = Color.white;
+        ConfirmButton_Availability();
     }
 
     private void Buff_Price_Calculation()
@@ -80,28 +102,18 @@ public class Buff_Menu : MonoBehaviour
         {
             if (controller.openedTileNum == controller.farmTiles[i].data.tileNum)
             {
-                if (controller.money >= currentSelectedBuff.buffPrice)
-                {
-                    Confirm_Close();
-                    controller.Subtract_Money(currentSelectedBuff.buffPrice);
-                    controller.farmTiles[i].currentBuffs.Add(currentSelectedBuff);
-                    Reset_Selections();
-                    controller.plantedMenu.CurrentBuffs_Button_Check();
-                    break;
-                }
-                else
-                {
-                    controller.defaultMenu.NotEnoughMoney_Blink_Tween();
-                }
+                Confirm_Close();
+                controller.Subtract_Money(currentSelectedBuff.buffPrice);
+                controller.farmTiles[i].currentBuffs.Add(currentSelectedBuff);
+                Reset_Selections();
+                controller.plantedMenu.CurrentBuffs_Button_Check();
+                break;
             }
         }
     }
     public void Confirm_Buff()
     {
-        if (currentSelectedBuff != null)
-        {
-            Buff_Price_Calculation();
-        }
+        Buff_Price_Calculation();
     }
 
     public void Show_Buff_ToolTip(Buff_ScrObj currentHoveringBuff)

@@ -16,6 +16,9 @@ public class UnPlanted_Menu : MonoBehaviour
     public MainGame_Controller controller;
     RectTransform rectTransform;
     public LeanTweenType tweenType;
+
+    public GameObject[] confirmButtons;
+
     public Button[] allAvailableButtons;
 
     public Unplanted_Menu_Seed_ToolTip seedToolTipUIconnection;
@@ -25,6 +28,11 @@ public class UnPlanted_Menu : MonoBehaviour
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+    }
+    private void Start()
+    {
+        // set to position at the center
+        rectTransform.anchoredPosition = new Vector2(0f, -125f);
     }
 
     private void Button_Shield(bool activate)
@@ -54,16 +62,31 @@ public class UnPlanted_Menu : MonoBehaviour
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
 
+    private void ConfirmButton_Availability()
+    {
+        if (currentSeedInfo != null && controller.money >= currentSeedInfo.seedBuyPrice)
+        {
+            confirmButtons[0].SetActive(false);
+            confirmButtons[1].SetActive(true);
+        }
+        else
+        {
+            confirmButtons[0].SetActive(true);
+            confirmButtons[1].SetActive(false);
+        }
+    }
     private void Reset_Selections()
     {
         currentSeedInfo = null;
         currentCropImage.color = Color.clear;
+        ConfirmButton_Availability();
     }
     public void Select_Seed(Seed_ScrObj seedInfo)
     {
         currentSeedInfo = seedInfo;
         currentCropImage.sprite = seedInfo.sprites[3];
         currentCropImage.color = Color.white;
+        ConfirmButton_Availability();
     }
 
     private void Seed_Price_Calculation()
@@ -72,31 +95,21 @@ public class UnPlanted_Menu : MonoBehaviour
         {
             if (controller.openedTileNum == controller.farmTiles[i].data.tileNum)
             {
-                if (controller.money >= currentSeedInfo.seedBuyPrice)
-                {
-                    PlantSeed_Close();
-                    controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
-                    controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
-                    controller.farmTiles[i].data.seedPlanted = true;
-                    controller.farmTiles[i].data.plantedSeed = currentSeedInfo;
-                    controller.farmTiles[i].Seed_Planted_Start_Set();
-                    controller.plantedMenu.Open();
-                    Reset_Selections();
-                    break;
-                }
-                else
-                {
-                    controller.defaultMenu.NotEnoughMoney_Blink_Tween();
-                }
+                PlantSeed_Close();
+                controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
+                controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
+                controller.farmTiles[i].data.seedPlanted = true;
+                controller.farmTiles[i].data.plantedSeed = currentSeedInfo;
+                controller.farmTiles[i].Seed_Planted_Start_Set();
+                controller.plantedMenu.Open();
+                Reset_Selections();
+                break;
             }
         }
     }
     public void Plant_Seed()
     {
-        if (currentSeedInfo != null)
-        {
-            Seed_Price_Calculation();
-        }
+        Seed_Price_Calculation();
     }
 
     public void Show_Seed_ToolTip(Seed_ScrObj currentHoveringSeed)

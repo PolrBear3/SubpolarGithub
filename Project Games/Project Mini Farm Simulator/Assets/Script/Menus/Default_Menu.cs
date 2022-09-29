@@ -22,7 +22,6 @@ public class Default_Menu : MonoBehaviour
     public LeftMenuUI leftMenu;
 
     public GameObject nextDayFade;
-    public Image nextDayFadeImage;
 
     public RectTransform moneyTextRT;
     public Text moneyText;
