@@ -25,13 +25,6 @@ public class MainGame_Controller : MonoBehaviour
         Lock_All_Tiles();
         Set_TileNum_forAll_Tiles();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Add_Money_withBonus(2, 3);
-        }
-    }
 
     // tile functions
     private void Set_TileNum_forAll_Tiles()
@@ -61,6 +54,7 @@ public class MainGame_Controller : MonoBehaviour
         unPlantedMenu.Close();
         plantedMenu.Close();
         lockedMenu.Close();
+        buffMenu.Close();
     }
     public void Reset_All_Tile_Highlights()
     {

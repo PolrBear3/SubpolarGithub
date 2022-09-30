@@ -5,12 +5,13 @@ using UnityEngine;
 public class Buff_Functions : MonoBehaviour
 {
     public Buff_Function_Controller functionController;
-    
+    public Buff_ScrObj[] allBuffs;
+
+    // all buff functions (goes through at function controller)
     public void Cloudy_Stun_Shield(FarmTile farmtile)
     {
-        int removeAtNum = 0;
-
         var x = farmtile.statusIconIndicator.statusIcons;
+        
         for (int i = 0; i < x.Length; i++)
         {
             // if the farmtile is cloudy stunned
@@ -20,16 +21,13 @@ public class Buff_Functions : MonoBehaviour
                 farmtile.tileSeedStatus.dayPassed += 1;
                 // get rid of cloudy stun icon
                 farmtile.statusIconIndicator.UnAssign_Status(StatusType.cloudyStunned);
-                // remove from buff list
-                for (int j = 0; j < farmtile.currentBuffs.Count; j++)
+                // remove from farmtile buff list
+                for (int j = 0; j < allBuffs.Length; j++)
                 {
-                    if (farmtile.currentBuffs[j].buffID == 0)
+                    if (allBuffs[j].buffID == 0)
                     {
-                        farmtile.currentBuffs.RemoveAt(removeAtNum);
-                        break;
+                        farmtile.Remove_Buff(allBuffs[j]);
                     }
-
-                    removeAtNum++;
                 }
                 // update tile
                 farmtile.TileSprite_Update_Check();

@@ -2,12 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class All_Event_Percentage
+{
+    public float
+        goldenSunnyHealthBuff,
+        cloudyStunned;
+}
+
 public class Event_System : MonoBehaviour
 {
     public MainGame_Controller controller;
 
     public Weather_ScrObj currentWeather;
+    public All_Event_Percentage eventPercentage;
 
+    private bool Event_Percentage_Setter(float percentage)
+    {
+        var value = (100 - percentage) * 0.01f;
+        if (Random.value > value)
+        {
+            return true;
+        }
+        else return false;
+    }
+    
+    // overall check update
     public void Set_Today_Weather()
     {
         var x = controller.timeSystem.currentSeason;
@@ -25,50 +45,6 @@ public class Event_System : MonoBehaviour
     {
         Rainy_AllTileSeed_Watering();
     }
-    
-    private bool Event_Percentage_Setter(float percentage)
-    {
-        var value = (100 - percentage) * 0.01f;
-        if (Random.value > value)
-        {
-            return true;
-        }
-        else return false;
-    }
-
-    // update check events
-    private void Rainy_AllTileSeed_Watering()
-    {
-        if (currentWeather.weatherID == 2)
-        {
-            var allTiles = controller.farmTiles;
-
-            for (int i = 0; i < allTiles.Length; i++)
-            {
-                // if the tile is unlocked
-                if (!allTiles[i].data.tileLocked)
-                {
-                    // if the seed is not currently watered
-                    if (!allTiles[i].tileSeedStatus.currentDayWatered)
-                    {
-                        // refresh status icon
-                        allTiles[i].statusIconIndicator.UnAssign_Status(StatusType.watered);
-
-                        // water the seeded tile
-                        allTiles[i].tileSeedStatus.currentDayWatered = true;
-                        allTiles[i].tileSeedStatus.watered += 1;
-                        allTiles[i].statusIconIndicator.Assign_Status(StatusType.watered);
-                    }
-
-                    // check water condition for seeded tile 
-                    if (allTiles[i].data.seedPlanted)
-                    {
-                        allTiles[i].Watering_Check();
-                    }
-                }
-            }
-        }
-    }
 
     // single check events
     private void GoldenSunny_HealthBuff()
@@ -78,7 +54,7 @@ public class Event_System : MonoBehaviour
             var allTiles = controller.farmTiles;
 
             // 40% chance buff
-            if (Event_Percentage_Setter(40f))
+            if (Event_Percentage_Setter(eventPercentage.goldenSunnyHealthBuff))
             {
                 for (int i = 0; i < allTiles.Length; i++)
                 {
@@ -113,7 +89,7 @@ public class Event_System : MonoBehaviour
     }
     public void CloudyStunned()
     {
-        if (currentWeather.weatherID == 1 && Event_Percentage_Setter(20f))
+        if (currentWeather.weatherID == 1 && Event_Percentage_Setter(eventPercentage.cloudyStunned))
         {
             var allTiles = controller.farmTiles;
             for (int i = 0; i < allTiles.Length; i++)
@@ -129,6 +105,40 @@ public class Event_System : MonoBehaviour
                     // update tile
                     allTiles[i].TileSprite_Update_Check();
                     controller.plantedMenu.Seed_Information_Update();
+                }
+            }
+        }
+    }
+
+    // update check events
+    private void Rainy_AllTileSeed_Watering()
+    {
+        if (currentWeather.weatherID == 2)
+        {
+            var allTiles = controller.farmTiles;
+
+            for (int i = 0; i < allTiles.Length; i++)
+            {
+                // if the tile is unlocked
+                if (!allTiles[i].data.tileLocked)
+                {
+                    // if the seed is not currently watered
+                    if (!allTiles[i].tileSeedStatus.currentDayWatered)
+                    {
+                        // refresh status icon
+                        allTiles[i].statusIconIndicator.UnAssign_Status(StatusType.watered);
+
+                        // water the seeded tile
+                        allTiles[i].tileSeedStatus.currentDayWatered = true;
+                        allTiles[i].tileSeedStatus.watered += 1;
+                        allTiles[i].statusIconIndicator.Assign_Status(StatusType.watered);
+                    }
+
+                    // check water condition for seeded tile 
+                    if (allTiles[i].data.seedPlanted)
+                    {
+                        allTiles[i].Watering_Check();
+                    }
                 }
             }
         }

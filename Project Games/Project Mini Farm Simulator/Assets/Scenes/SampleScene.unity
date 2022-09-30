@@ -3376,6 +3376,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 189423766}
   currentWeather: {fileID: 0}
+  eventPercentage:
+    goldenSunnyHealthBuff: 40
+    cloudyStunned: 40
 --- !u!1001 &192435075
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12362,8 +12365,8 @@ RectTransform:
   - {fileID: 1047010733}
   - {fileID: 2087049024}
   - {fileID: 770605924}
-  - {fileID: 952733068}
   - {fileID: 1408622004}
+  - {fileID: 952733068}
   - {fileID: 1993638981}
   - {fileID: 1517631271}
   - {fileID: 158658491}
@@ -16600,7 +16603,7 @@ RectTransform:
   - {fileID: 553950227}
   - {fileID: 1281576210}
   m_Father: {fileID: 621894826}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -22671,7 +22674,7 @@ RectTransform:
   - {fileID: 1545240840}
   - {fileID: 338506375}
   m_Father: {fileID: 621894826}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -35522,6 +35525,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   functionController: {fileID: 1993638983}
+  allBuffs:
+  - {fileID: 11400000, guid: a4a65b38f8c065b41909f9a353aecc70, type: 2}
 --- !u!224 &2007749548 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4586990693471152198, guid: 9bcf321565a1a4686b31457ca76b32f9, type: 3}

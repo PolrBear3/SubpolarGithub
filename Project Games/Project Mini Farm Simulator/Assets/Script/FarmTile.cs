@@ -211,4 +211,20 @@ public class FarmTile : MonoBehaviour
         controller.unPlantedMenu.Open();
         Highlight_Tile();
     }
+
+    public void Add_Buff(Buff_ScrObj buff)
+    {
+        currentBuffs.Add(buff);
+    }
+    public void Remove_Buff(Buff_ScrObj buff)
+    {
+        for (int i = 0; i < currentBuffs.Count; i++)
+        {
+            if (buff == currentBuffs[i])
+            {
+                currentBuffs.Remove(currentBuffs[i]);
+                break;
+            }
+        }
+    }
 }
