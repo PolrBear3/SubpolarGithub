@@ -96,7 +96,7 @@ public class Event_System : MonoBehaviour
             {
                 if (allTiles[i].data.seedPlanted && !allTiles[i].tileSeedStatus.harvestReady)
                 {
-                    // add sunnyBuffed icon
+                    // add cloudyStunned icon
                     allTiles[i].statusIconIndicator.Assign_Status(StatusType.cloudyStunned);
 
                     // reduce 1 dayPassed int
