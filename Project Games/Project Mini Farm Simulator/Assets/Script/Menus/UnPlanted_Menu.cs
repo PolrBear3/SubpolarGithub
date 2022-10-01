@@ -102,6 +102,7 @@ public class UnPlanted_Menu : MonoBehaviour
                 controller.farmTiles[i].data.plantedSeed = currentSeedInfo;
                 controller.farmTiles[i].Seed_Planted_Start_Set();
                 controller.plantedMenu.Open();
+                controller.timeSystem.Add_MyTime(currentSeedInfo.waitTime);
                 Reset_Selections();
                 break;
             }

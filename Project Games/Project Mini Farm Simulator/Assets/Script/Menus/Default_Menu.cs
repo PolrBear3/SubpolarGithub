@@ -13,6 +13,9 @@ public class LeftMenuUI
     public Text weatherUIText;
 
     public Text currentInGameDayText;
+
+    public Text remainingTimeText;
+    public GameObject[] nextDayButtons;
 }
 
 public class Default_Menu : MonoBehaviour

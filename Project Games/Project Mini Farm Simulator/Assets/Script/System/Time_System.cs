@@ -8,19 +8,34 @@ public class Time_System : MonoBehaviour
     public MainGame_Controller controller;
 
     public Season_ScrObj[] allSeasons;
-
     public Season_ScrObj currentSeason;
 
     private int _currentInGameDay = 0;
     public int currentInGameDay => _currentInGameDay;
-
     private int maxInGameDay = 365;
+
+    private float pastSec, futureSec, mySec;
 
     private void Start()
     {
         Next_Day();
+        Load_MyTime();
+        Set_FutureTime();
+        SubtractTime_SinceExit();
+    }
+    private void Update()
+    {
+        Run_Time();
+        MyTime_Text_Update();
+        NextDay_Button_Availability();
+    }
+    private void OnApplicationQuit()
+    {
+        Save_MyTime();
+        Set_PastTime();
     }
 
+    // in game system
     private void Check_Season()
     {
         // spring
@@ -54,10 +69,99 @@ public class Time_System : MonoBehaviour
             controller.farmTiles[i].NextDay_Seed_Status_Update();
         }
 
+        ReCalculate_AllSeed_WaitTime();
+
         controller.eventSystem.All_Events_Update_Check();
         controller.eventSystem.All_Events_Single_Check();
         controller.defaultMenu.Update_UI();
 
         controller.buffFunction.Activate_All_Buffs_forSeeds();
+    }
+
+    // real time system
+    private void Save_MyTime()
+    {
+        ES3.Save("mySec", mySec);
+    }
+    private void Load_MyTime()
+    {
+        mySec = ES3.Load<float>("mySec");
+    }
+
+    private void Set_PastTime()
+    {
+        float hour = System.DateTime.Now.Hour * 3600f;
+        float min = System.DateTime.Now.Minute * 60f;
+        float sec = System.DateTime.Now.Second;
+
+        pastSec = hour + min + sec;
+        // save time
+        ES3.Save("pastSec", pastSec);
+    }
+    private void Set_FutureTime()
+    {
+        float hour = System.DateTime.Now.Hour * 3600f;
+        float min = System.DateTime.Now.Minute * 60f;
+        float sec = System.DateTime.Now.Second;
+
+        futureSec = hour + min + sec;
+        // save time
+        ES3.Save("futureSec", futureSec);
+    }
+    private void SubtractTime_SinceExit()
+    {
+        float pastSec = ES3.Load<float>("pastSec");
+        float futureSec = ES3.Load<float>("futureSec");
+        float subtractTime = futureSec - pastSec;
+        mySec -= subtractTime;
+    }
+
+    private void Run_Time()
+    {
+        if (mySec > 0)
+        {
+            mySec -= Time.deltaTime; // make this work on exit run
+        }
+    }
+    private void MyTime_Text_Update()
+    {
+        var x = controller.defaultMenu.leftMenu.remainingTimeText;
+
+        x.text = mySec.ToString("f0");
+    }
+    private void NextDay_Button_Availability()
+    {
+        var x = controller.defaultMenu.leftMenu.nextDayButtons;
+        
+        if (mySec <= 0)
+        {
+            // set mySec to not ever go bellow 0
+            mySec = 0;
+
+            x[0].SetActive(false);
+            x[1].SetActive(true);
+        }
+        else
+        {
+            x[0].SetActive(true);
+            x[1].SetActive(false);
+        }
+    }
+    private void ReCalculate_AllSeed_WaitTime()
+    {
+        var x = controller.farmTiles;
+
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (x[i].data.seedPlanted)
+            {
+                Add_MyTime(x[i].data.plantedSeed.waitTime);
+            }
+        }
+    }
+
+    public void Add_MyTime(float time)
+    {
+        mySec += time;
     }
 }

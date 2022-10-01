@@ -15,6 +15,7 @@ public class Seed_ScrObj : ScriptableObject
     // set min and max range around 5
     public int minFinishDays, maxFinishDays;
     public int seedBuyPrice, harvestSellPrice;
+    public float waitTime;
 
     // seed detail for tooltip
     public string seedName;
