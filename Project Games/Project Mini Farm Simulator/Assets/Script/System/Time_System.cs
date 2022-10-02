@@ -19,6 +19,7 @@ public class Time_System : MonoBehaviour
     private void Start()
     {
         Next_Day();
+
         Load_MyTime();
         Set_FutureTime();
         SubtractTime_SinceExit();
@@ -28,6 +29,20 @@ public class Time_System : MonoBehaviour
         Run_Time();
         MyTime_Text_Update();
         NextDay_Button_Availability();
+    }
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Save_MyTime();
+            Set_PastTime();
+        }
+        else if (!pause)
+        {
+            Load_MyTime();
+            Set_FutureTime();
+            SubtractTime_SinceExit();
+        }
     }
     private void OnApplicationQuit()
     {
@@ -85,7 +100,16 @@ public class Time_System : MonoBehaviour
     }
     private void Load_MyTime()
     {
-        mySec = ES3.Load<float>("mySec");
+        // load game
+        if (ES3.KeyExists("mySec"))
+        {
+            mySec = ES3.Load<float>("mySec");
+        }
+        // new game
+        else
+        {
+            mySec = ES3.Load<float>("mySec", 0f);
+        }
     }
 
     private void Set_PastTime()
@@ -110,10 +134,24 @@ public class Time_System : MonoBehaviour
     }
     private void SubtractTime_SinceExit()
     {
-        float pastSec = ES3.Load<float>("pastSec");
-        float futureSec = ES3.Load<float>("futureSec");
-        float subtractTime = futureSec - pastSec;
-        mySec -= subtractTime;
+        if (ES3.KeyExists("pastSec") && ES3.KeyExists("futureSec"))
+        {
+            float pastSec = ES3.Load<float>("pastSec");
+            float futureSec = ES3.Load<float>("futureSec");
+            float subtractTime;
+
+            // if the game was opened and exit between pm and am time
+            if (futureSec < pastSec)
+            {
+                subtractTime = (futureSec + 86400f) - pastSec;
+            }
+            else
+            {
+                subtractTime = futureSec - pastSec;
+            }
+
+            mySec -= subtractTime;
+        }
     }
 
     private void Run_Time()

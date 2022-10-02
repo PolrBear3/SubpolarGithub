@@ -11,6 +11,7 @@ public class MainGame_Controller : MonoBehaviour
     public Planted_Menu plantedMenu;
     public Buff_Menu buffMenu;
     public Buff_Function_Controller buffFunction;
+    public Save_System saveSystem;
     public Time_System timeSystem;
     public Event_System eventSystem;
 

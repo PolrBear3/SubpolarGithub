@@ -14,32 +14,17 @@ namespace ES3Internal
 
         public static void Log(string msg, Object context = null, int indent=0)
         {
-            if (!ES3Settings.defaultSettingsScriptableObject.logDebugInfo)
-                return;
-            else if (context != null)
-                Debug.LogFormat(context, Indent(indent) + msg + disableInfoMsg);
-            else
-                Debug.LogFormat(context, Indent(indent) + msg);
+
         }
 
         public static void LogWarning(string msg, Object context=null, int indent = 0)
         {
-            if (!ES3Settings.defaultSettingsScriptableObject.logWarnings)
-                return;
-            else if (context != null)
-                Debug.LogWarningFormat(context, Indent(indent) + msg + disableWarningMsg);
-            else
-                Debug.LogWarningFormat(context, Indent(indent) + msg + disableWarningMsg);
+
         }
 
         public static void LogError(string msg, Object context = null, int indent = 0)
         {
-            if (!ES3Settings.defaultSettingsScriptableObject.logErrors)
-                return;
-            else if (context != null)
-                Debug.LogErrorFormat(context, Indent(indent) + msg + disableErrorMsg);
-            else
-                Debug.LogErrorFormat(context, Indent(indent) + msg + disableErrorMsg);
+
         }
 
         private static string Indent(int size)

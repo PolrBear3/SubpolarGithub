@@ -38,6 +38,7 @@ public class FarmTile : MonoBehaviour
     [HideInInspector]
     public Image image;
 
+    public string saveName;
     public FarmTile_Basic_Data data;
     public AfterSeedStatus tileSeedStatus;
 
