@@ -23,7 +23,6 @@ public class MainGame_Controller : MonoBehaviour
 
     private void Start()
     {
-        Lock_All_Tiles();
         Set_TileNum_forAll_Tiles();
     }
 
@@ -40,13 +39,6 @@ public class MainGame_Controller : MonoBehaviour
     public void Set_OpenTileNum(FarmTile farmTile)
     {
         openedTileNum = farmTile.data.tileNum;
-    }
-    private void Lock_All_Tiles()
-    {
-        for (int i = 0; i < farmTiles.Length; i++)
-        {
-            farmTiles[i].Lock_Tile();
-        }
     }
 
     // ui functions
@@ -87,5 +79,9 @@ public class MainGame_Controller : MonoBehaviour
         defaultMenu.Money_Update_Fade_Tween(false, amount);
         defaultMenu.Money_Text_Update();
         defaultMenu.SubtractMoney_RedBlink();
+    }
+    public void Load_Money(int amount)
+    {
+        _money = amount;
     }
 }

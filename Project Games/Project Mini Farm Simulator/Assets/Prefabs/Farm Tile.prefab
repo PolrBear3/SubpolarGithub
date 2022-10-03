@@ -223,7 +223,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: def7443a443d74d45bb19ac343840659, type: 3}
+  m_Sprite: {fileID: -1541799582, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -303,11 +303,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   statusIconIndicator: {fileID: 1085077442416054105}
   image: {fileID: 0}
+  saveName: 
   data:
     plantedSeed: {fileID: 0}
     tileNum: 0
     tilePrice: 0
-    tileLocked: 0
+    tileLocked: 1
     seedPlanted: 0
     lockedTile: {fileID: -1541799582, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}
     unplantedTile: {fileID: 21300000, guid: def7443a443d74d45bb19ac343840659, type: 3}

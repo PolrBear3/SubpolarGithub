@@ -50,6 +50,7 @@ public class FarmTile : MonoBehaviour
         image = GetComponent<Image>();
     }
 
+    // tile lock status
     public void Lock_Tile()
     {
         data.tileLocked = true;
@@ -66,7 +67,19 @@ public class FarmTile : MonoBehaviour
         image.sprite = data.unplantedTile;
         statusIconIndicator.gameObject.SetActive(true);
     }
+    private void Unlock_Check()
+    {
+        if (!data.tileLocked)
+        {
+            Unlock_Tile();
+        }
+        else
+        {
+            Lock_Tile();
+        }
+    }
 
+    // tile selecting
     public void Highlight_Tile()
     {
         gameObject.transform.GetChild(1).gameObject.SetActive(true);
@@ -227,5 +240,11 @@ public class FarmTile : MonoBehaviour
                 break;
             }
         }
+    }
+
+    // save systems
+    public void Load_Update_Tile()
+    {
+        Unlock_Check();
     }
 }
