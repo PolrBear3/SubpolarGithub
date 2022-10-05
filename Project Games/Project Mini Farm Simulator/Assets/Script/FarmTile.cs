@@ -177,34 +177,31 @@ public class FarmTile : MonoBehaviour
             // reset next day
             tileSeedStatus.dayPassed += 1;
 
-            // half grown complete check
-            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
-            {
-                image.sprite = data.plantedSeed.sprites[1];
-            }
-
-            // full grown complete check
-            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
-            {
-                image.sprite = data.plantedSeed.sprites[2];
-            }
+            TileSprite_Update_Check();
         }
     }
 
     // pulbic systems
     public void TileSprite_Update_Check()
     {
-        // half grown complete check
-        if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
+        if (data.seedPlanted)
         {
-            image.sprite = data.plantedSeed.sprites[1];
-        }
-
-        // full grown complete check
-        if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
-        {
-            image.sprite = data.plantedSeed.sprites[2];
-            tileSeedStatus.harvestReady = true;
+            // early stage of grow
+            if (tileSeedStatus.dayPassed < tileSeedStatus.fullGrownDay / 2)
+            {
+                image.sprite = data.plantedSeed.sprites[0];
+            }
+            // half grown complete check
+            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
+            {
+                image.sprite = data.plantedSeed.sprites[1];
+            }
+            // full grown complete check
+            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
+            {
+                image.sprite = data.plantedSeed.sprites[2];
+                tileSeedStatus.harvestReady = true;
+            }
         }
     }
     public void Reset_Tile()
@@ -242,9 +239,20 @@ public class FarmTile : MonoBehaviour
         }
     }
 
-    // save systems
+    // save load systems
     public void Load_Update_Tile()
     {
         Unlock_Check();
+
+        // seed grow image load 
+        if (data.seedPlanted)
+        {
+            TileSprite_Update_Check();
+        }
+        // get rid of this later when status icon indicator save is functional ???
+        if (tileSeedStatus.currentDayWatered)
+        {
+            statusIconIndicator.Assign_Status(StatusType.watered);
+        }
     }
 }

@@ -53,9 +53,12 @@ public class Planted_Menu : MonoBehaviour
         Close_CurrentBuffs_Panel();
 
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
-        currentSeedHealth.text = currentFarmTile.tileSeedStatus.health.ToString();
-        plantedSeedImage.sprite = currentFarmTile.data.plantedSeed.sprites[3];
+        if (currentFarmTile.data.seedPlanted)
+        {
+            plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
+            currentSeedHealth.text = currentFarmTile.tileSeedStatus.health.ToString();
+            plantedSeedImage.sprite = currentFarmTile.data.plantedSeed.sprites[3];
+        }
 
         var waterHealthCalculation = 
             currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;

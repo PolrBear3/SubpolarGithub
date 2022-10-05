@@ -15,6 +15,9 @@ public class MainGame_Controller : MonoBehaviour
     public Time_System timeSystem;
     public Event_System eventSystem;
 
+    public Seed_ScrObj[] allSeeds;
+    public Buff_ScrObj[] allBuffs;
+
     public FarmTile[] farmTiles;
     public int openedTileNum = 0;
     
