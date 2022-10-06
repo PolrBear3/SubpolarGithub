@@ -31,7 +31,7 @@ public class FarmTile_Basic_Data
 
 public class FarmTile : MonoBehaviour
 {
-    MainGame_Controller controller;
+    public MainGame_Controller controller;
     
     public Status_Icon_Indicator statusIconIndicator;
     
@@ -46,7 +46,6 @@ public class FarmTile : MonoBehaviour
 
     public void Awake()
     {
-        controller = GameObject.FindGameObjectWithTag("GameController").GetComponent<MainGame_Controller>();
         image = GetComponent<Image>();
     }
 
@@ -248,11 +247,6 @@ public class FarmTile : MonoBehaviour
         if (data.seedPlanted)
         {
             TileSprite_Update_Check();
-        }
-        // get rid of this later when status icon indicator save is functional ???
-        if (tileSeedStatus.currentDayWatered)
-        {
-            statusIconIndicator.Assign_Status(StatusType.watered);
         }
     }
 }

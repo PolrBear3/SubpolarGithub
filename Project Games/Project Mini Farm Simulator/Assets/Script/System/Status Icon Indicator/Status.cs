@@ -14,5 +14,6 @@ public enum StatusType
 public class Status : ScriptableObject
 {
     public StatusType statusType;
+    public int statusID;
     public Sprite statusIcon;
 }

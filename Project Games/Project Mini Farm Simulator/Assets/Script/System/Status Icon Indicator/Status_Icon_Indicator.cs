@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Status_Icon_Indicator : MonoBehaviour
 {
-    public Status[] allStatus;
-    public Status_Icon[] statusIcons;
+    public FarmTile farmTile;
 
+    public Status_Icon[] statusIcons;
     private Status[] tmpStatus = new Status[6];
 
     private void Start()
@@ -35,6 +35,7 @@ public class Status_Icon_Indicator : MonoBehaviour
 
     public void Assign_Status(StatusType statusType)
     {
+        var allStatus = farmTile.controller.allStatus;
         for (int i = 0; i < statusIcons.Length; i++)
         {
             if (!statusIcons[i].hasStatus)

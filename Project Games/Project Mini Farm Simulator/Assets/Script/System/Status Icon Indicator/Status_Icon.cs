@@ -24,4 +24,17 @@ public class Status_Icon : MonoBehaviour
         currentStatusIcon.color = Color.white;
         currentStatusIcon.sprite = currentStatus.statusIcon;
     }
+
+    public void Load_Icon()
+    {
+        if (hasStatus)
+        {
+            currentStatusIcon.color = Color.white;
+            currentStatusIcon.sprite = currentStatus.statusIcon;
+        }
+        else
+        {
+            currentStatusIcon.color = Color.clear;
+        }
+    }
 }

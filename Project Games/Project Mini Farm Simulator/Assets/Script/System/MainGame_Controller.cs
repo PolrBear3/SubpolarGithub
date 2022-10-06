@@ -17,6 +17,7 @@ public class MainGame_Controller : MonoBehaviour
 
     public Seed_ScrObj[] allSeeds;
     public Buff_ScrObj[] allBuffs;
+    public Status[] allStatus;
 
     public FarmTile[] farmTiles;
     public int openedTileNum = 0;

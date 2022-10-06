@@ -26,10 +26,12 @@ public class Save_System : MonoBehaviour
             Save_FarmTile(controller.farmTiles[i]);
         }
     }
+
     private void Save_FarmTile(FarmTile farmTile)
     {
         ES3.Save("farmTile" + farmTile.saveName + " tileLocked", farmTile.data.tileLocked);
         ES3.Save("farmTile" + farmTile.saveName + " seedPlanted", farmTile.data.seedPlanted);
+
         if (farmTile.data.seedPlanted)
         {
             ES3.Save("farmTile" + farmTile.saveName + " plantedSeedID", farmTile.data.plantedSeed.seedID);
@@ -41,6 +43,12 @@ public class Save_System : MonoBehaviour
             ES3.Save("farmTile" + farmTile.saveName + " currentDayWatered", farmTile.tileSeedStatus.currentDayWatered);
             ES3.Save("farmTile" + farmTile.saveName + " watered", farmTile.tileSeedStatus.watered);
         }
+
+        Save_FarmTile_Status(farmTile);
+    }
+    private void Save_FarmTile_Status(FarmTile farmTile)
+    {
+        ES3.Save("farmTile" + farmTile.saveName + " status", farmTile.statusIconIndicator.statusIcons);
     }
 
     private void LoadAll_Tiles()
@@ -51,6 +59,7 @@ public class Save_System : MonoBehaviour
             controller.farmTiles[i].Load_Update_Tile();
         }
     }
+
     private void Load_FarmTile(FarmTile farmTile)
     {
         if (ES3.KeyExists("farmTile" + farmTile.saveName + " tileLocked"))
@@ -88,6 +97,23 @@ public class Save_System : MonoBehaviour
                     // overall watering amount
                     farmTile.tileSeedStatus.watered = ES3.Load<int>("farmTile" + farmTile.saveName + " watered");
                 }
+            }
+
+            // farmtile status icons
+            Load_FarmTile_Status(farmTile);
+        }
+    }
+    private void Load_FarmTile_Status(FarmTile farmTile)
+    {
+        farmTile.statusIconIndicator.Reset_All_Icons();
+
+        if (ES3.KeyExists("farmTile" + farmTile.saveName + " status"))
+        {
+            farmTile.statusIconIndicator.statusIcons = ES3.Load("farmTile" + farmTile.saveName + " status", farmTile.statusIconIndicator.statusIcons);
+
+            for (int i = 0; i < farmTile.statusIconIndicator.statusIcons.Length; i++)
+            {
+                farmTile.statusIconIndicator.statusIcons[i].Load_Icon();
             }
         }
     }
