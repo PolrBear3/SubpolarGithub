@@ -9,6 +9,6 @@ public class Season_ScrObj : ScriptableObject
     public Weather_ScrObj[] weatherPercentages;
 
     public string seasonName;
-
+    public int seasonID;
     public Sprite seasonUI;
 }

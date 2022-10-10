@@ -9,13 +9,24 @@ public class Save_System : MonoBehaviour
 
     private void Start()
     {
-        LoadAll_Tiles();
-        Load_Money();
+        Load_All();
     }
     private void OnApplicationQuit()
     {
+        Save_All();
+    }
+
+    private void Save_All()
+    {
         SaveAll_Tiles();
         Save_Money();
+        Save_CurrentSeason();
+    }
+    private void Load_All()
+    {
+        LoadAll_Tiles();
+        Load_Money();
+        Load_CurrentSeason();
     }
 
     // farm tiles
@@ -131,5 +142,17 @@ public class Save_System : MonoBehaviour
         }
     }
 
-    // season, weather, day
+    // day
+    private void Save_CurrentSeason()
+    {
+        ES3.Save("currentInGameDay", controller.timeSystem.currentInGameDay);
+    }
+    private void Load_CurrentSeason()
+    {
+        if (ES3.KeyExists("currentInGameDay"))
+        {
+            controller.timeSystem.currentInGameDay = ES3.Load<int>("currentInGameDay");
+            controller.timeSystem.Load_Day();
+        }
+    }
 }
