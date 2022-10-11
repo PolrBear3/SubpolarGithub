@@ -179,6 +179,13 @@ public class FarmTile : MonoBehaviour
             TileSprite_Update_Check();
         }
     }
+    public void LoadDay_Seed_Status_Update()
+    {
+        if (data.seedPlanted)
+        {
+            TileSprite_Update_Check();
+        }
+    }
 
     // pulbic systems
     public void TileSprite_Update_Check()

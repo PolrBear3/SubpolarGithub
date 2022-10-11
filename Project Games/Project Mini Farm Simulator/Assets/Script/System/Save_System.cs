@@ -20,13 +20,16 @@ public class Save_System : MonoBehaviour
     {
         SaveAll_Tiles();
         Save_Money();
-        Save_CurrentSeason();
+        Save_CurrentWeather();
+        Save_CurrentInGameDay();
     }
     private void Load_All()
     {
         LoadAll_Tiles();
         Load_Money();
-        Load_CurrentSeason();
+        Load_CurrentInGameDay();
+        Load_CurrentWeather();
+        controller.timeSystem.Load_Day();
     }
 
     // farm tiles
@@ -56,10 +59,15 @@ public class Save_System : MonoBehaviour
         }
 
         Save_FarmTile_Status(farmTile);
+        Save_FarmTile_Buffs(farmTile);
     }
     private void Save_FarmTile_Status(FarmTile farmTile)
     {
         ES3.Save("farmTile" + farmTile.saveName + " status", farmTile.statusIconIndicator.statusIcons);
+    }
+    private void Save_FarmTile_Buffs(FarmTile farmTile)
+    {
+        ES3.Save("farmTile" + farmTile.saveName + " buffs", farmTile.currentBuffs);
     }
 
     private void LoadAll_Tiles()
@@ -112,20 +120,29 @@ public class Save_System : MonoBehaviour
 
             // farmtile status icons
             Load_FarmTile_Status(farmTile);
+            // farmtile current buffs
+            Load_FarmTile_Buffs(farmTile);
         }
     }
     private void Load_FarmTile_Status(FarmTile farmTile)
     {
-        farmTile.statusIconIndicator.Reset_All_Icons();
-
         if (ES3.KeyExists("farmTile" + farmTile.saveName + " status"))
         {
-            farmTile.statusIconIndicator.statusIcons = ES3.Load("farmTile" + farmTile.saveName + " status", farmTile.statusIconIndicator.statusIcons);
+            var savedStatusArray = ES3.Load("farmTile" + farmTile.saveName + " status", farmTile.statusIconIndicator.statusIcons);
+            farmTile.statusIconIndicator.statusIcons = savedStatusArray;
 
             for (int i = 0; i < farmTile.statusIconIndicator.statusIcons.Length; i++)
             {
                 farmTile.statusIconIndicator.statusIcons[i].Load_Icon();
             }
+        }
+    }
+    private void Load_FarmTile_Buffs(FarmTile farmTile)
+    {
+        if (ES3.KeyExists("farmTile" + farmTile.saveName + " buffs"))
+        {
+            var savedBuffList = ES3.Load("farmTile" + farmTile.saveName + " buffs", farmTile.currentBuffs);
+            farmTile.currentBuffs = savedBuffList;
         }
     }
 
@@ -143,16 +160,35 @@ public class Save_System : MonoBehaviour
     }
 
     // day
-    private void Save_CurrentSeason()
+    private void Save_CurrentInGameDay()
     {
         ES3.Save("currentInGameDay", controller.timeSystem.currentInGameDay);
     }
-    private void Load_CurrentSeason()
+    private void Load_CurrentInGameDay()
     {
         if (ES3.KeyExists("currentInGameDay"))
         {
             controller.timeSystem.currentInGameDay = ES3.Load<int>("currentInGameDay");
-            controller.timeSystem.Load_Day();
+        }
+    }
+
+    // weather
+    private void Save_CurrentWeather()
+    {
+        ES3.Save("currentWeather", controller.eventSystem.currentWeather.weatherID);
+    }
+    private void Load_CurrentWeather()
+    {
+        if (ES3.KeyExists("currentWeather"))
+        {
+            int savedNum = ES3.Load<int>("currentWeather");
+            for (int i = 0; i < controller.allWeathers.Length; i++)
+            {
+                if (savedNum == controller.allWeathers[i].weatherID)
+                {
+                    controller.eventSystem.currentWeather = controller.allWeathers[i];
+                }
+            }
         }
     }
 }

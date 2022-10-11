@@ -97,19 +97,14 @@ public class Time_System : MonoBehaviour
         Check_End0f_Year();
         Check_Season();
 
-        controller.eventSystem.Set_Today_Weather();
-
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
-            controller.farmTiles[i].NextDay_Seed_Status_Update();
+            controller.farmTiles[i].LoadDay_Seed_Status_Update();
         }
 
         ReCalculate_AllSeed_WaitTime();
 
-        controller.eventSystem.All_Events_Update_Check();
-        controller.eventSystem.All_Events_Single_Check();
         controller.defaultMenu.Update_UI();
-
         controller.buffFunction.Activate_All_Buffs_forSeeds();
     }
 

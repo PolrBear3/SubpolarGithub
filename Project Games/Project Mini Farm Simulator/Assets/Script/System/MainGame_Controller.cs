@@ -16,6 +16,7 @@ public class MainGame_Controller : MonoBehaviour
     public Event_System eventSystem;
 
     public Season_ScrObj[] allSeasons;
+    public Weather_ScrObj[] allWeathers;
     public Seed_ScrObj[] allSeeds;
     public Buff_ScrObj[] allBuffs;
     public Status[] allStatus;
