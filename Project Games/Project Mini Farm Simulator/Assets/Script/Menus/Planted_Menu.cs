@@ -97,6 +97,7 @@ public class Planted_Menu : MonoBehaviour
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         controller.Add_Money(currentFarmTile.data.plantedSeed.seedBuyPrice);
+        controller.timeSystem.Subtract_MyTime(currentFarmTile.data.plantedSeed.waitTime);
         currentFarmTile.Reset_Tile();
         controller.eventSystem.All_Events_Update_Check();
     }

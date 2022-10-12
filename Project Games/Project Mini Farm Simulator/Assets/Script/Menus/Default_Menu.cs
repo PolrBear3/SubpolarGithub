@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class LeftMenuUI
+public class Default_Menu_UI
 {
     public Image seasonUIBox;
     public Text seasonUIText;
@@ -22,7 +22,7 @@ public class Default_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
 
-    public LeftMenuUI leftMenu;
+    public Default_Menu_UI menuUI;
 
     public GameObject nextDayFade;
 
@@ -52,7 +52,7 @@ public class Default_Menu : MonoBehaviour
     // time system ui
     private void Current_InGameDay_Text_Update()
     {
-        leftMenu.currentInGameDayText.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
+        menuUI.currentInGameDayText.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
     }
     private void Next_Day_AlphaValueFade_Tween()
     {
@@ -69,11 +69,11 @@ public class Default_Menu : MonoBehaviour
     // season and weather ui
     private void Season_Weather_UI_Update()
     {
-        leftMenu.seasonUIBox.sprite = controller.timeSystem.currentSeason.seasonUI;
-        leftMenu.seasonUIText.text = controller.timeSystem.currentSeason.seasonName;
+        menuUI.seasonUIBox.sprite = controller.timeSystem.currentSeason.seasonUI;
+        menuUI.seasonUIText.text = controller.timeSystem.currentSeason.seasonName;
 
-        leftMenu.weatherUIBox.sprite = controller.eventSystem.currentWeather.weatherUI;
-        leftMenu.weatherUIText.text = controller.eventSystem.currentWeather.weatherName;
+        menuUI.weatherUIBox.sprite = controller.eventSystem.currentWeather.weatherUI;
+        menuUI.weatherUIText.text = controller.eventSystem.currentWeather.weatherName;
     }
 
     // money system ui

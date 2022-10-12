@@ -102,8 +102,6 @@ public class Time_System : MonoBehaviour
             controller.farmTiles[i].LoadDay_Seed_Status_Update();
         }
 
-        ReCalculate_AllSeed_WaitTime();
-
         controller.defaultMenu.Update_UI();
         controller.buffFunction.Activate_All_Buffs_forSeeds();
     }
@@ -119,11 +117,6 @@ public class Time_System : MonoBehaviour
         if (ES3.KeyExists("mySec"))
         {
             mySec = ES3.Load<float>("mySec");
-        }
-        // new game
-        else
-        {
-            mySec = ES3.Load<float>("mySec", 0f);
         }
     }
 
@@ -178,13 +171,13 @@ public class Time_System : MonoBehaviour
     }
     private void MyTime_Text_Update()
     {
-        var x = controller.defaultMenu.leftMenu.remainingTimeText;
+        var x = controller.defaultMenu.menuUI.remainingTimeText;
 
         x.text = mySec.ToString("f0");
     }
     private void NextDay_Button_Availability()
     {
-        var x = controller.defaultMenu.leftMenu.nextDayButtons;
+        var x = controller.defaultMenu.menuUI.nextDayButtons;
         
         if (mySec <= 0)
         {
@@ -216,5 +209,9 @@ public class Time_System : MonoBehaviour
     public void Add_MyTime(float time)
     {
         mySec += time;
+    }
+    public void Subtract_MyTime(float time)
+    {
+        mySec -= time;
     }
 }
