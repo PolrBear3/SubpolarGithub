@@ -32,7 +32,7 @@ public class FarmTile_Basic_Data
 public class FarmTile : MonoBehaviour
 {
     public MainGame_Controller controller;
-    
+    public Button button;
     public Status_Icon_Indicator statusIconIndicator;
     
     [HideInInspector]

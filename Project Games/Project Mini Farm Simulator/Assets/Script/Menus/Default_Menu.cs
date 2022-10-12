@@ -16,6 +16,7 @@ public class Default_Menu_UI
 
     public Text remainingTimeText;
     public GameObject[] nextDayButtons;
+    public Button nextDayButton;
 }
 
 public class Default_Menu : MonoBehaviour

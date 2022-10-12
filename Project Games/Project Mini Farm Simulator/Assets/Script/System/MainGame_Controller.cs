@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainGame_Controller : MonoBehaviour
 {
     public Default_Menu defaultMenu;
+    public CollectableRoom_Menu collectableRoomMenu;
     public Locked_Menu lockedMenu;
     public UnPlanted_Menu unPlantedMenu;
     public Planted_Menu plantedMenu;
