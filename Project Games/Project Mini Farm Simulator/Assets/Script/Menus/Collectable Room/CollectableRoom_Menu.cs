@@ -11,6 +11,13 @@ public class CollectableRoom_Menu_UI
     public RectTransform collectableFramesPanel, collectableRoomMenu;
 }
 
+[System.Serializable]
+public class CollectableRoom_Menu_Data
+{
+    public bool placeMode = false;
+    // public current selected collectable SrcObj
+}
+
 public class CollectableRoom_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
@@ -18,6 +25,7 @@ public class CollectableRoom_Menu : MonoBehaviour
     public Button[] allAvailableButtons;
 
     public CollectableRoom_Menu_UI ui;
+    public CollectableRoom_Menu_Data data;
     public Collectable_Frame[] frames;
 
     private void Start()
@@ -25,6 +33,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         Center_Position();
     }
 
+    // basic functions
     private void Button_Shield(bool activate)
     {
         for (int i = 0; i < allAvailableButtons.Length; i++)
@@ -83,4 +92,6 @@ public class CollectableRoom_Menu : MonoBehaviour
         if (!ui.menuOn) { Open(); }
         else { Close(); }
     }
+
+    // distinctive functions
 }
