@@ -7,13 +7,12 @@ public class Page_Controller : MonoBehaviour
 {
     public GameObject[] pages;
 
-    private int _currentPageNum;
-    public int currentPageNum => _currentPageNum;
+    public int currentPageNum;
 
     private void Start()
     {
         Restart_Deactivate_AllPages();
-        _currentPageNum = 1;
+        currentPageNum = 1;
         Activate_Page();
     }
 
@@ -45,19 +44,19 @@ public class Page_Controller : MonoBehaviour
         // check start
         if (currentPageNum < 1)
         {
-            _currentPageNum = pages.Length;
+            currentPageNum = pages.Length;
         }
         // check end
         else if (currentPageNum > pages.Length)
         {
-            _currentPageNum = 1;
+            currentPageNum = 1;
         }
     }
 
     // public functions
     public void NextPage()
     {
-        _currentPageNum++;
+        currentPageNum++;
         Restart_Deactivate_AllPages();
         Check_PageNum_StartEnd();
         Activate_Page();
@@ -65,7 +64,7 @@ public class Page_Controller : MonoBehaviour
 
     public void BackPage()
     {
-        _currentPageNum--;
+        currentPageNum--;
         Restart_Deactivate_AllPages();
         Check_PageNum_StartEnd();
         Activate_Page();
