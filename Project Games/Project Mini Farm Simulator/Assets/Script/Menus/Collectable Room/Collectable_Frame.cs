@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Collectable_Frame_UI
 {
-    public Sprite defaultFrame, placeableFrame, unPlaceableFrame;
+    public Sprite defaultFrame, placeModeFrame;
 }
 
 [System.Serializable]
@@ -31,7 +31,7 @@ public class Collectable_Frame : MonoBehaviour
     {
         if (!data.collectablePlaced)
         {
-            image.sprite = ui.placeableFrame;
+            image.sprite = ui.placeModeFrame;
         }
     }
     public void PlaceMode_Off()

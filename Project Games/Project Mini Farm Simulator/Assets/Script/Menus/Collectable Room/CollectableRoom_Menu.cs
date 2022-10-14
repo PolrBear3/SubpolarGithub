@@ -15,7 +15,15 @@ public class CollectableRoom_Menu_UI
 public class CollectableRoom_Menu_Data
 {
     public bool placeMode = false;
-    // public current selected collectable SrcObj
+    public Collectable_ScrObj selectedCollectable;
+}
+
+[System.Serializable]
+public class Collectable
+{
+    public Collectable_ScrObj collectable;
+    public bool unLocked = false;
+    public int currentAmount;
 }
 
 [System.Serializable]
@@ -24,10 +32,16 @@ public class CollectableRoom_Menu_FramePage
     public List<Collectable_Frame> framePage;
 }
 
+[System.Serializable]
+public class CollectableRoom_Menu_ButtonPage
+{
+    public List<Collectable_Button> buttonPage;
+}
+
 public class CollectableRoom_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
-    public Page_Controller framePageController;
+    public Page_Controller framePageController, buttonPageController;
     public LeanTweenType tweenType;
     public Button[] allAvailableButtons;
 
@@ -37,10 +51,16 @@ public class CollectableRoom_Menu : MonoBehaviour
     public CollectableRoom_Menu_FramePage[] allFramePages;
     private List<Collectable_Frame> currentFramePage;
 
+    public CollectableRoom_Menu_ButtonPage[] allButtonPages;
+    private List<Collectable_Button> currentButtonPage;
+
+    public Collectable[] allCollectables;
+
     private void Start()
     {
         Center_Position();
         Set_Start_CurrentFramePage();
+        Set_Start_CurrentButtonPage();
     }
 
     // basic functions
@@ -76,6 +96,8 @@ public class CollectableRoom_Menu : MonoBehaviour
             controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(false);
             controller.farmTiles[i].button.enabled = false;
         }
+        // collectables unlock check
+        UnlockCheck_CurrentButtonPage();
     }
     public void Close()
     {
@@ -111,8 +133,22 @@ public class CollectableRoom_Menu : MonoBehaviour
     }
     public void Set_New_CurrentFramePage()
     {
-        int newPageNum = framePageController.currentPageNum -1;
+        int newPageNum = framePageController.currentPageNum - 1;
         currentFramePage = allFramePages[newPageNum].framePage;
+    }
+
+    private void Set_Start_CurrentButtonPage()
+    {
+        currentButtonPage = allButtonPages[0].buttonPage;
+    }
+    public void Set_New_CurrentButtonPage()
+    {
+        Reset_Collectable_Selection();
+
+        int newPageNum = buttonPageController.currentPageNum - 1;
+        currentButtonPage = allButtonPages[newPageNum].buttonPage;
+
+        UnlockCheck_CurrentButtonPage();
     }
 
     public void AllFrame_PlaceMode_On()
@@ -132,5 +168,22 @@ public class CollectableRoom_Menu : MonoBehaviour
         }
 
         data.placeMode = false;
+    }
+
+    public void Reset_Collectable_Selection()
+    {
+        data.selectedCollectable = null;
+
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].UnSelect_Collectable();
+        }
+    }
+    public void UnlockCheck_CurrentButtonPage()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Unlock_Check();
+        }
     }
 }

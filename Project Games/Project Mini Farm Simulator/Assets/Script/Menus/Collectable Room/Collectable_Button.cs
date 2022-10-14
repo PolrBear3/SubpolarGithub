@@ -1,19 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Collectable_Button : MonoBehaviour
 {
     public CollectableRoom_Menu menu;
-    // public collectable ScrObj
-    // public collectable image connection
-    // public text collectable current amount connection
+    public Collectable_ScrObj collectable;
+    public Image image;
+    public Button button;
+    public Image currentButtonImage;
+    public Text amountText;
+    public Sprite lockedImage;
+    public Sprite[] buttonImages;
+
+    private void Awake()
+    {
+        UI_Set();
+    }
+
+    private void UI_Set()
+    {
+        image.sprite = collectable.sprite;
+    }
+    public void Unlock_Check()
+    {
+        var x = menu.allCollectables;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (collectable == x[i].collectable)
+            {
+                if (!x[i].unLocked)
+                {
+                    image.sprite = lockedImage;
+                    button.enabled = false;
+                }
+                else
+                {
+                    UI_Set();
+                    button.enabled = true;
+                }
+            }
+        }
+    }
 
     public void Select_Collectable()
     {
         menu.AllFrame_PlaceMode_On();
-        // keep this button pressed
-        // reset menu currently selected collectable
-        // menu current selected collectable to this ScrObj
+        menu.Reset_Collectable_Selection();
+        currentButtonImage.sprite = buttonImages[1];
+        menu.data.selectedCollectable = collectable;
+    }
+    public void UnSelect_Collectable()
+    {
+        currentButtonImage.sprite = buttonImages[0];
     }
 }
