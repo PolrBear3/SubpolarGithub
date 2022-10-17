@@ -96,8 +96,12 @@ public class CollectableRoom_Menu : MonoBehaviour
             controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(false);
             controller.farmTiles[i].button.enabled = false;
         }
+        // reset frame button availability
+        AllFrame_PlaceMode_Off();
         // collectables unlock check
         UnlockCheck_CurrentButtonPage();
+        // update amount text
+        AllFrame_Amount_Text_Update();
     }
     public void Close()
     {
@@ -116,7 +120,9 @@ public class CollectableRoom_Menu : MonoBehaviour
             controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(true);
             controller.farmTiles[i].button.enabled = true;
         }
-        // turn off place mode
+        // all buttons set to unpressed
+        Reset_Collectable_Selection();
+        // reset frame button availability
         AllFrame_PlaceMode_Off();
     }
     public void Open_Close()
@@ -148,7 +154,10 @@ public class CollectableRoom_Menu : MonoBehaviour
         int newPageNum = buttonPageController.currentPageNum - 1;
         currentButtonPage = allButtonPages[newPageNum].buttonPage;
 
+        // collectables unlock check
         UnlockCheck_CurrentButtonPage();
+        // update amount text
+        AllFrame_Amount_Text_Update();
     }
 
     public void AllFrame_PlaceMode_On()
@@ -168,6 +177,21 @@ public class CollectableRoom_Menu : MonoBehaviour
         }
 
         data.placeMode = false;
+    }
+    public void AllFrame_Amount_Text_Update()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Amount_Text_Update();
+        }
+    }
+
+    public void AllButton_Select_Available_Check()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Select_Available_Check();
+        }
     }
 
     public void Reset_Collectable_Selection()

@@ -13,11 +13,14 @@ public class Collectable_Frame_UI
 public class Collectable_Frame_Data
 {
     public bool collectablePlaced = false;
+    public Collectable_ScrObj currentCollectable;
 }
 
 public class Collectable_Frame : MonoBehaviour
 {
+    public CollectableRoom_Menu menu;
     private Image image;
+    private Button button;
     
     public Collectable_Frame_UI ui;
     public Collectable_Frame_Data data;
@@ -25,6 +28,7 @@ public class Collectable_Frame : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
+        button = GetComponent<Button>();
     }
 
     public void PlaceMode_On()
@@ -33,9 +37,60 @@ public class Collectable_Frame : MonoBehaviour
         {
             image.sprite = ui.placeModeFrame;
         }
+        button.enabled = true;
     }
     public void PlaceMode_Off()
     {
-        image.sprite = ui.defaultFrame;
+        if (!data.collectablePlaced)
+        {
+            image.sprite = ui.defaultFrame;
+        }
+        button.enabled = false;
+    }
+
+    public void Place_Selected_Collectable()
+    {
+        // replacing collectable
+        if (data.collectablePlaced)
+        {
+            for (int i = 0; i < menu.allCollectables.Length; i++)
+            {
+                if (data.currentCollectable == menu.allCollectables[i].collectable)
+                {
+                    menu.allCollectables[i].currentAmount += 1;
+                }
+            }
+        }
+
+        // place selected collectable
+        data.collectablePlaced = true;
+        data.currentCollectable = menu.data.selectedCollectable;
+        image.sprite = data.currentCollectable.sprite;
+
+        // -1 selected collectable amount from all collectables
+        for (int i = 0; i < menu.allCollectables.Length; i++)
+        {
+            if (data.currentCollectable == menu.allCollectables[i].collectable)
+            {
+                menu.allCollectables[i].currentAmount -= 1;
+                menu.AllFrame_Amount_Text_Update();
+                
+                // if selected collectable amount is 0, placemode off
+                if (menu.allCollectables[i].currentAmount <= 0)
+                {
+                    menu.AllFrame_PlaceMode_Off();
+                    menu.Reset_Collectable_Selection();
+                }
+                // if selected collectable amount is still left, stay placemode on
+                else
+                {
+                    menu.AllFrame_PlaceMode_On();
+                }
+                break;
+            }
+        }
+
+        // collectable select button available check from amount remain
+        menu.AllButton_Select_Available_Check();
     }
 }

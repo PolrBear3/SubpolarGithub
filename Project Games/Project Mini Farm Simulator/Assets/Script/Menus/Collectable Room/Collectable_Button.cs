@@ -19,6 +19,34 @@ public class Collectable_Button : MonoBehaviour
         UI_Set();
     }
 
+    public void Amount_Text_Update()
+    {
+        for (int i = 0; i < menu.allCollectables.Length; i++)
+        {
+            if (collectable == menu.allCollectables[i].collectable)
+            {
+                amountText.text = menu.allCollectables[i].currentAmount.ToString();
+            }
+        }
+    }
+    public void Select_Available_Check()
+    {
+        for (int i = 0; i < menu.allCollectables.Length; i++)
+        {
+            if (collectable == menu.allCollectables[i].collectable)
+            {
+                if (menu.allCollectables[i].currentAmount <= 0)
+                {
+                    button.enabled = false;
+                }
+                else
+                {
+                    button.enabled = true;
+                }
+            }
+        }
+    }
+
     private void UI_Set()
     {
         image.sprite = collectable.sprite;
