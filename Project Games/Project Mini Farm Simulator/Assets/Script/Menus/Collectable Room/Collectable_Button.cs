@@ -3,18 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Collectable_Button : MonoBehaviour
+[System.Serializable]
+public class Collectable_Button_UI
 {
-    public CollectableRoom_Menu menu;
-    public Collectable_ScrObj collectable;
-    public Image image;
-    public Image frameImage;
-    public Button button;
-    public Image currentButtonImage;
+    public Image collectableImage, frameImage, selectButton;
     public Text amountText;
     public Sprite lockedImage;
     public Sprite[] buttonImages;
-    private bool buttonPressed = false;
+}
+
+[System.Serializable]
+public class Collectable_Button_Data
+{
+    public Collectable_ScrObj thisCollectable;
+    public bool buttonPressed = false;
+}
+
+public class Collectable_Button : MonoBehaviour
+{
+    public CollectableRoom_Menu menu;
+    public Button button;
+
+    public Collectable_Button_UI ui;
+    public Collectable_Button_Data data;
 
     private void Awake()
     {
@@ -31,9 +42,9 @@ public class Collectable_Button : MonoBehaviour
     {
         for (int i = 0; i < menu.allCollectables.Length; i++)
         {
-            if (collectable == menu.allCollectables[i].collectable)
+            if (data.thisCollectable == menu.allCollectables[i].collectable)
             {
-                amountText.text = menu.allCollectables[i].currentAmount.ToString();
+                ui.amountText.text = menu.allCollectables[i].currentAmount.ToString();
             }
         }
     }
@@ -42,9 +53,9 @@ public class Collectable_Button : MonoBehaviour
         var x = menu.allCollectableTierButtonFrames;
         for (int i = 0; i < x.Length; i++)
         {
-            if (collectable.colorLevel == x[i].colorLevel)
+            if (data.thisCollectable.colorLevel == x[i].colorLevel)
             {
-                frameImage.sprite = x[i].colorButtonFrameSprite;
+                ui.frameImage.sprite = x[i].colorButtonFrameSprite;
                 break;
             }
         }
@@ -53,7 +64,7 @@ public class Collectable_Button : MonoBehaviour
     {
         for (int i = 0; i < menu.allCollectables.Length; i++)
         {
-            if (collectable == menu.allCollectables[i].collectable)
+            if (data.thisCollectable == menu.allCollectables[i].collectable)
             {
                 if (menu.allCollectables[i].currentAmount <= 0)
                 {
@@ -69,18 +80,18 @@ public class Collectable_Button : MonoBehaviour
 
     private void UI_Set()
     {
-        image.sprite = collectable.sprite;
+        ui.collectableImage.sprite = data.thisCollectable.sprite;
     }
     public void Unlock_Check()
     {
         var x = menu.allCollectables;
         for (int i = 0; i < x.Length; i++)
         {
-            if (collectable == x[i].collectable)
+            if (data.thisCollectable == x[i].collectable)
             {
                 if (!x[i].unLocked)
                 {
-                    image.sprite = lockedImage;
+                    ui.collectableImage.sprite = ui.lockedImage;
                     button.enabled = false;
                 }
                 else
@@ -92,23 +103,23 @@ public class Collectable_Button : MonoBehaviour
         }
     }
 
-    public void Select_Collectable()
+    private void Select_Collectable()
     {
-        buttonPressed = true;
+        data.buttonPressed = true;
         menu.AllFrame_PlaceMode_On();
-        currentButtonImage.sprite = buttonImages[1];
-        menu.data.selectedCollectable = collectable;
+        ui.selectButton.sprite = ui.buttonImages[1];
+        menu.data.selectedCollectable = data.thisCollectable;
     }
     public void UnSelect_Collectable()
     {
-        buttonPressed = false;
+        data.buttonPressed = false;
         menu.AllFrame_PlaceMode_Off();
-        currentButtonImage.sprite = buttonImages[0];
+        ui.selectButton.sprite = ui.buttonImages[0];
         menu.data.selectedCollectable = null;
     }
     public void Select_This_Collectable()
     {
-        if (!buttonPressed)
+        if (!data.buttonPressed)
         {
             menu.Reset_Collectable_Selection();
             Select_Collectable();

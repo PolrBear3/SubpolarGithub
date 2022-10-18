@@ -196,6 +196,8 @@ public class CollectableRoom_Menu : MonoBehaviour
 
         // collectables unlock check
         UnlockCheck_CurrentButtonPage();
+        // amount check
+        AllButton_Select_Available_Check();
         // update amount text
         AllFrame_Amount_Text_Update();
         // button frame tier color set
