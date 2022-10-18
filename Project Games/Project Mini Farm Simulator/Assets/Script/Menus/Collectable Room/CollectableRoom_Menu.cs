@@ -27,6 +27,14 @@ public class Collectable
 }
 
 [System.Serializable]
+public class Collectable_Tier_UI
+{
+    public Collectable_Rare_level colorLevel;
+    public Sprite colorButtonFrameSprite;
+    public Sprite colorFrameFrameSprite;
+}
+
+[System.Serializable]
 public class CollectableRoom_Menu_FramePage
 {
     public List<Collectable_Frame> framePage;
@@ -54,6 +62,7 @@ public class CollectableRoom_Menu : MonoBehaviour
     public CollectableRoom_Menu_ButtonPage[] allButtonPages;
     private List<Collectable_Button> currentButtonPage;
 
+    public Collectable_Tier_UI[] allCollectableTierButtonFrames;
     public Collectable[] allCollectables;
 
     private void Start()
@@ -76,6 +85,29 @@ public class CollectableRoom_Menu : MonoBehaviour
     {
         ui.collectableRoomMenu.anchoredPosition = new Vector2(0f, -125f);
     }
+    
+    private void AllFrameButton_ButtonShield_On()
+    {
+        for (int i = 0; i < currentFramePage.Count; i++)
+        {
+            currentFramePage[i].Button_Shield(true);
+        }
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Button_Shield(true);
+        }
+    }
+    private void AllFrameButton_ButtonShield_Off()
+    {
+        for (int i = 0; i < currentFramePage.Count; i++)
+        {
+            currentFramePage[i].Button_Shield(false);
+        }
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Button_Shield(false);
+        }
+    }
 
     private void Open()
     {
@@ -84,6 +116,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         controller.Reset_All_Menu();
         // buttons available
         Button_Shield(false);
+        AllFrameButton_ButtonShield_Off();
         // lean tween collectableFramesPanel
         LeanTween.move(ui.collectableFramesPanel, new Vector2(0f, 62.50972f), 0.75f).setEase(tweenType);
         // lean tween collectableRoomMenu
@@ -102,12 +135,17 @@ public class CollectableRoom_Menu : MonoBehaviour
         UnlockCheck_CurrentButtonPage();
         // update amount text
         AllFrame_Amount_Text_Update();
+        // button frame tier color set
+        AllButton_Frame_Tier_Update();
+        // frame tier color set
+        AllFrame_Frame_Tier_Update();
     }
     public void Close()
     {
         ui.menuOn = false;
         // buttons unavailable
         Button_Shield(true);
+        AllFrameButton_ButtonShield_On();
         // lean tween collectableFramesPanel
         LeanTween.move(ui.collectableFramesPanel, new Vector2(360.04f, 62.50972f), 0.75f).setEase(tweenType);
         // lean tween collectableRoomMenu
@@ -141,6 +179,8 @@ public class CollectableRoom_Menu : MonoBehaviour
     {
         int newPageNum = framePageController.currentPageNum - 1;
         currentFramePage = allFramePages[newPageNum].framePage;
+
+        AllFrame_Frame_Tier_Update();
     }
 
     private void Set_Start_CurrentButtonPage()
@@ -158,6 +198,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         UnlockCheck_CurrentButtonPage();
         // update amount text
         AllFrame_Amount_Text_Update();
+        // button frame tier color set
+        AllButton_Frame_Tier_Update();
     }
 
     public void AllFrame_PlaceMode_On()
@@ -185,12 +227,26 @@ public class CollectableRoom_Menu : MonoBehaviour
             currentButtonPage[i].Amount_Text_Update();
         }
     }
+    public void AllFrame_Frame_Tier_Update()
+    {
+        for (int i = 0; i < currentFramePage.Count; i++)
+        {
+            currentFramePage[i].Frame_Tier_Update();
+        }
+    }
 
     public void AllButton_Select_Available_Check()
     {
         for (int i = 0; i < currentButtonPage.Count; i++)
         {
             currentButtonPage[i].Select_Available_Check();
+        }
+    }
+    public void AllButton_Frame_Tier_Update()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Frame_Tier_Update();
         }
     }
 

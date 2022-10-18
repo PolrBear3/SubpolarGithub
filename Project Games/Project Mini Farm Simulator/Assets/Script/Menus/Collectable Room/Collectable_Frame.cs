@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Collectable_Frame_UI
 {
     public Sprite defaultFrame, placeModeFrame;
+    public Image frameImage, collectableImage;
 }
 
 [System.Serializable]
@@ -19,28 +20,50 @@ public class Collectable_Frame_Data
 public class Collectable_Frame : MonoBehaviour
 {
     public CollectableRoom_Menu menu;
-    private Image image;
+    public Button button;
     
     public Collectable_Frame_UI ui;
     public Collectable_Frame_Data data;
 
-    private void Awake()
+    public void Button_Shield(bool activate)
     {
-        image = GetComponent<Image>();
+        if (activate) { button.enabled = false; }
+        else if (!activate) { button.enabled = true; }
+    }
+
+    public void Frame_Tier_Update()
+    {
+        var x = menu.allCollectableTierButtonFrames;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (data.collectablePlaced)
+            {
+                if (data.currentCollectable.colorLevel == x[i].colorLevel)
+                {
+                    ui.frameImage.sprite = x[i].colorFrameFrameSprite;
+                    break;
+                }
+            }
+            else
+            {
+                ui.collectableImage.color = Color.clear;
+                break;
+            }
+        }
     }
 
     public void PlaceMode_On()
     {
         if (!data.collectablePlaced)
         {
-            image.sprite = ui.placeModeFrame;
+            ui.frameImage.sprite = ui.placeModeFrame;
         }
     }
     public void PlaceMode_Off()
     {
         if (!data.collectablePlaced)
         {
-            image.sprite = ui.defaultFrame;
+            ui.frameImage.sprite = ui.defaultFrame;
         }
     }
 
@@ -61,7 +84,9 @@ public class Collectable_Frame : MonoBehaviour
         // place selected collectable
         data.collectablePlaced = true;
         data.currentCollectable = menu.data.selectedCollectable;
-        image.sprite = data.currentCollectable.sprite;
+        Frame_Tier_Update();
+        ui.collectableImage.sprite = data.currentCollectable.sprite;
+        ui.collectableImage.color = Color.white;
 
         // -1 selected collectable amount from all collectables
         for (int i = 0; i < menu.allCollectables.Length; i++)
@@ -103,7 +128,8 @@ public class Collectable_Frame : MonoBehaviour
         }
         data.collectablePlaced = false;
         data.currentCollectable = null;
-        image.sprite = ui.defaultFrame;
+        ui.frameImage.sprite = ui.defaultFrame;
+        ui.collectableImage.color = Color.clear;
     }
     public void Press_Frame()
     {
@@ -116,4 +142,5 @@ public class Collectable_Frame : MonoBehaviour
             Remove_Collectable();
         }
     }
+
 }

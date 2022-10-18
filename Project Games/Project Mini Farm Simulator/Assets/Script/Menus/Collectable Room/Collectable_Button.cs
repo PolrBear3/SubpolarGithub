@@ -8,6 +8,7 @@ public class Collectable_Button : MonoBehaviour
     public CollectableRoom_Menu menu;
     public Collectable_ScrObj collectable;
     public Image image;
+    public Image frameImage;
     public Button button;
     public Image currentButtonImage;
     public Text amountText;
@@ -20,6 +21,12 @@ public class Collectable_Button : MonoBehaviour
         UI_Set();
     }
 
+    public void Button_Shield(bool activate)
+    {
+        if (activate) { button.enabled = false; }
+        else if (!activate) { button.enabled = true; }
+    }
+
     public void Amount_Text_Update()
     {
         for (int i = 0; i < menu.allCollectables.Length; i++)
@@ -27,6 +34,18 @@ public class Collectable_Button : MonoBehaviour
             if (collectable == menu.allCollectables[i].collectable)
             {
                 amountText.text = menu.allCollectables[i].currentAmount.ToString();
+            }
+        }
+    }
+    public void Frame_Tier_Update()
+    {
+        var x = menu.allCollectableTierButtonFrames;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (collectable.colorLevel == x[i].colorLevel)
+            {
+                frameImage.sprite = x[i].colorButtonFrameSprite;
+                break;
             }
         }
     }
