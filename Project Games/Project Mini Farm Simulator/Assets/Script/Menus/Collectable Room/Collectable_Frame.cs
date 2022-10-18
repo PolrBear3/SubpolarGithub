@@ -20,7 +20,6 @@ public class Collectable_Frame : MonoBehaviour
 {
     public CollectableRoom_Menu menu;
     private Image image;
-    private Button button;
     
     public Collectable_Frame_UI ui;
     public Collectable_Frame_Data data;
@@ -28,7 +27,6 @@ public class Collectable_Frame : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
-        button = GetComponent<Button>();
     }
 
     public void PlaceMode_On()
@@ -37,7 +35,6 @@ public class Collectable_Frame : MonoBehaviour
         {
             image.sprite = ui.placeModeFrame;
         }
-        button.enabled = true;
     }
     public void PlaceMode_Off()
     {
@@ -45,10 +42,9 @@ public class Collectable_Frame : MonoBehaviour
         {
             image.sprite = ui.defaultFrame;
         }
-        button.enabled = false;
     }
 
-    public void Place_Selected_Collectable()
+    private void Place_Selected_Collectable()
     {
         // replacing collectable
         if (data.collectablePlaced)
@@ -92,5 +88,32 @@ public class Collectable_Frame : MonoBehaviour
 
         // collectable select button available check from amount remain
         menu.AllButton_Select_Available_Check();
+    }
+    private void Remove_Collectable()
+    {
+        for (int i = 0; i < menu.allCollectables.Length; i++)
+        {
+            if (data.currentCollectable == menu.allCollectables[i].collectable)
+            {
+                menu.allCollectables[i].currentAmount += 1;
+                menu.AllFrame_Amount_Text_Update();
+                menu.AllButton_Select_Available_Check();
+                break;
+            }
+        }
+        data.collectablePlaced = false;
+        data.currentCollectable = null;
+        image.sprite = ui.defaultFrame;
+    }
+    public void Press_Frame()
+    {
+        if (menu.data.placeMode)
+        {
+            Place_Selected_Collectable();
+        }
+        else
+        {
+            Remove_Collectable();
+        }
     }
 }
