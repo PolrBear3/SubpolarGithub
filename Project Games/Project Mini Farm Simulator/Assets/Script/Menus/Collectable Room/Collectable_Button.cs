@@ -13,6 +13,7 @@ public class Collectable_Button : MonoBehaviour
     public Text amountText;
     public Sprite lockedImage;
     public Sprite[] buttonImages;
+    private bool buttonPressed = false;
 
     private void Awake()
     {
@@ -74,13 +75,28 @@ public class Collectable_Button : MonoBehaviour
 
     public void Select_Collectable()
     {
+        buttonPressed = true;
         menu.AllFrame_PlaceMode_On();
-        menu.Reset_Collectable_Selection();
         currentButtonImage.sprite = buttonImages[1];
         menu.data.selectedCollectable = collectable;
     }
     public void UnSelect_Collectable()
     {
+        buttonPressed = false;
+        menu.AllFrame_PlaceMode_Off();
         currentButtonImage.sprite = buttonImages[0];
+        menu.data.selectedCollectable = null;
+    }
+    public void Select_This_Collectable()
+    {
+        if (!buttonPressed)
+        {
+            menu.Reset_Collectable_Selection();
+            Select_Collectable();
+        }
+        else
+        {
+            UnSelect_Collectable();
+        }
     }
 }

@@ -196,8 +196,6 @@ public class CollectableRoom_Menu : MonoBehaviour
 
     public void Reset_Collectable_Selection()
     {
-        data.selectedCollectable = null;
-
         for (int i = 0; i < currentButtonPage.Count; i++)
         {
             currentButtonPage[i].UnSelect_Collectable();

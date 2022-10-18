@@ -91,13 +91,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73316a4e42136489f8be3e11cab2f5ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 0}
+  menu: {fileID: 9098876859336021917, guid: c9d35d55aab1a3e49b604c6eb5d2337f, type: 3}
   ui:
     defaultFrame: {fileID: 207020279, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
     placeModeFrame: {fileID: 586694031, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
-    collectableImage: {fileID: 4818429933986638307}
   data:
     collectablePlaced: 0
+    currentCollectable: {fileID: 0}
 --- !u!114 &6678923562537629717
 MonoBehaviour:
   m_ObjectHideFlags: 0
