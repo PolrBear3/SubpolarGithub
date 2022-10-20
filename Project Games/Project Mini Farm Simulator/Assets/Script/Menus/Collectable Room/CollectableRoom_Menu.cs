@@ -126,7 +126,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         // collectables unlock check
         UnlockCheck_CurrentButtonPage();
         // update amount text
-        AllFrame_Amount_Text_Update();
+        AllButton_Amount_Text_Update();
         // button frame tier color set
         AllButton_Frame_Tier_Update();
         // frame tier color set
@@ -179,7 +179,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         // amount check
         AllButton_Select_Available_Check();
         // update amount text
-        AllFrame_Amount_Text_Update();
+        AllButton_Amount_Text_Update();
         // button frame tier color set
         AllButton_Frame_Tier_Update();
     }
@@ -202,13 +202,6 @@ public class CollectableRoom_Menu : MonoBehaviour
 
         data.placeMode = false;
     }
-    public void AllFrame_Amount_Text_Update()
-    {
-        for (int i = 0; i < currentButtonPage.Count; i++)
-        {
-            currentButtonPage[i].Amount_Text_Update();
-        }
-    }
     public void AllFrame_Frame_Tier_Update()
     {
         for (int i = 0; i < allFrames.Length; i++)
@@ -222,6 +215,13 @@ public class CollectableRoom_Menu : MonoBehaviour
         for (int i = 0; i < currentButtonPage.Count; i++)
         {
             currentButtonPage[i].Select_Available_Check();
+        }
+    }
+    public void AllButton_Amount_Text_Update()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Amount_Text_Update();
         }
     }
     public void AllButton_Frame_Tier_Update()

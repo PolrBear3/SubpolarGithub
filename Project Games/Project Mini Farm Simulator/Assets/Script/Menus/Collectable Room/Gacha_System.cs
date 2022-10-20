@@ -42,6 +42,7 @@ public class Gacha_System : MonoBehaviour
             {
                 passed = true;
                 menu.allCollectables[collectableNum].currentAmount += 1;
+                menu.AllButton_Amount_Text_Update();
             }
         }
     }

@@ -94,7 +94,7 @@ public class Collectable_Frame : MonoBehaviour
             if (data.currentCollectable == menu.allCollectables[i].collectable)
             {
                 menu.allCollectables[i].currentAmount -= 1;
-                menu.AllFrame_Amount_Text_Update();
+                menu.AllButton_Amount_Text_Update();
                 
                 // if selected collectable amount is 0, placemode off
                 if (menu.allCollectables[i].currentAmount <= 0)
@@ -121,7 +121,7 @@ public class Collectable_Frame : MonoBehaviour
             if (data.currentCollectable == menu.allCollectables[i].collectable)
             {
                 menu.allCollectables[i].currentAmount += 1;
-                menu.AllFrame_Amount_Text_Update();
+                menu.AllButton_Amount_Text_Update();
                 menu.AllButton_Select_Available_Check();
                 break;
             }
