@@ -30,7 +30,7 @@ public class Collectable
 public class Collectable_Tier_Data
 {
     public Collectable_Rare_level colorLevel;
-    public float rarePercentage;
+    public float tierPercentage;
     public Sprite colorButtonFrameSprite;
     public Sprite colorFrameFrameSprite;
 }
