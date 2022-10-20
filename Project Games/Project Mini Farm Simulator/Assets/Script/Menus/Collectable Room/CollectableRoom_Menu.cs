@@ -27,17 +27,12 @@ public class Collectable
 }
 
 [System.Serializable]
-public class Collectable_Tier_UI
+public class Collectable_Tier_Data
 {
     public Collectable_Rare_level colorLevel;
+    public float rarePercentage;
     public Sprite colorButtonFrameSprite;
     public Sprite colorFrameFrameSprite;
-}
-
-[System.Serializable]
-public class CollectableRoom_Menu_FramePage
-{
-    public List<Collectable_Frame> framePage;
 }
 
 [System.Serializable]
@@ -49,26 +44,23 @@ public class CollectableRoom_Menu_ButtonPage
 public class CollectableRoom_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
-    public Page_Controller framePageController, buttonPageController;
+    public Page_Controller buttonPageController;
     public LeanTweenType tweenType;
     public Button[] allAvailableButtons;
 
     public CollectableRoom_Menu_UI ui;
     public CollectableRoom_Menu_Data data;
 
-    public CollectableRoom_Menu_FramePage[] allFramePages;
-    private List<Collectable_Frame> currentFramePage;
-
+    public Collectable_Frame[] allFrames;
     public CollectableRoom_Menu_ButtonPage[] allButtonPages;
     private List<Collectable_Button> currentButtonPage;
 
-    public Collectable_Tier_UI[] allCollectableTierButtonFrames;
+    public Collectable_Tier_Data[] allCollectableTierData;
     public Collectable[] allCollectables;
 
     private void Start()
     {
         Center_Position();
-        Set_Start_CurrentFramePage();
         Set_Start_CurrentButtonPage();
     }
 
@@ -88,9 +80,9 @@ public class CollectableRoom_Menu : MonoBehaviour
     
     private void AllFrameButton_ButtonShield_On()
     {
-        for (int i = 0; i < currentFramePage.Count; i++)
+        for (int i = 0; i < allFrames.Length; i++)
         {
-            currentFramePage[i].Button_Shield(true);
+            allFrames[i].Button_Shield(true);
         }
         for (int i = 0; i < currentButtonPage.Count; i++)
         {
@@ -99,9 +91,9 @@ public class CollectableRoom_Menu : MonoBehaviour
     }
     private void AllFrameButton_ButtonShield_Off()
     {
-        for (int i = 0; i < currentFramePage.Count; i++)
+        for (int i = 0; i < allFrames.Length; i++)
         {
-            currentFramePage[i].Button_Shield(false);
+            allFrames[i].Button_Shield(false);
         }
         for (int i = 0; i < currentButtonPage.Count; i++)
         {
@@ -171,18 +163,6 @@ public class CollectableRoom_Menu : MonoBehaviour
     }
 
     // distinctive functions
-    private void Set_Start_CurrentFramePage()
-    {
-        currentFramePage = allFramePages[0].framePage;
-    }
-    public void Set_New_CurrentFramePage()
-    {
-        int newPageNum = framePageController.currentPageNum - 1;
-        currentFramePage = allFramePages[newPageNum].framePage;
-
-        AllFrame_Frame_Tier_Update();
-    }
-
     private void Set_Start_CurrentButtonPage()
     {
         currentButtonPage = allButtonPages[0].buttonPage;
@@ -206,18 +186,18 @@ public class CollectableRoom_Menu : MonoBehaviour
 
     public void AllFrame_PlaceMode_On()
     {
-        for (int i = 0; i < currentFramePage.Count; i++)
+        for (int i = 0; i < allFrames.Length; i++)
         {
-            currentFramePage[i].PlaceMode_On();
+            allFrames[i].PlaceMode_On();
         }
 
         data.placeMode = true;
     }
     public void AllFrame_PlaceMode_Off()
     {
-        for (int i = 0; i < currentFramePage.Count; i++)
+        for (int i = 0; i < allFrames.Length; i++)
         {
-            currentFramePage[i].PlaceMode_Off();
+            allFrames[i].PlaceMode_Off();
         }
 
         data.placeMode = false;
@@ -231,9 +211,9 @@ public class CollectableRoom_Menu : MonoBehaviour
     }
     public void AllFrame_Frame_Tier_Update()
     {
-        for (int i = 0; i < currentFramePage.Count; i++)
+        for (int i = 0; i < allFrames.Length; i++)
         {
-            currentFramePage[i].Frame_Tier_Update();
+            allFrames[i].Frame_Tier_Update();
         }
     }
 

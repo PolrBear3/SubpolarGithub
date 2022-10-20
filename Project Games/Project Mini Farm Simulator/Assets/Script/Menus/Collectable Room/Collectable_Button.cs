@@ -50,7 +50,7 @@ public class Collectable_Button : MonoBehaviour
     }
     public void Frame_Tier_Update()
     {
-        var x = menu.allCollectableTierButtonFrames;
+        var x = menu.allCollectableTierData;
         for (int i = 0; i < x.Length; i++)
         {
             if (data.thisCollectable.colorLevel == x[i].colorLevel)

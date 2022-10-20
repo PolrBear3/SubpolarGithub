@@ -33,7 +33,7 @@ public class Collectable_Frame : MonoBehaviour
 
     public void Frame_Tier_Update()
     {
-        var x = menu.allCollectableTierButtonFrames;
+        var x = menu.allCollectableTierData;
         for (int i = 0; i < x.Length; i++)
         {
             if (data.collectablePlaced)
@@ -142,5 +142,4 @@ public class Collectable_Frame : MonoBehaviour
             Remove_Collectable();
         }
     }
-
 }
