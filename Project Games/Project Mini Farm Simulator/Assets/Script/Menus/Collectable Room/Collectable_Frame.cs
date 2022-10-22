@@ -31,6 +31,13 @@ public class Collectable_Frame : MonoBehaviour
         else if (!activate) { button.enabled = true; }
     }
 
+    public void Load_FrameSprite()
+    {
+        if (data.collectablePlaced)
+        {
+            ui.collectableImage.sprite = data.currentCollectable.sprite;
+        }
+    }
     public void Frame_Tier_Update()
     {
         var x = menu.allCollectableTierData;

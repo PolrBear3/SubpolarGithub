@@ -125,6 +125,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllFrame_PlaceMode_Off();
         // collectables unlock check
         UnlockCheck_CurrentButtonPage();
+        // button available check from amount
+        AllButton_Select_Available_Check();
         // update amount text
         AllButton_Amount_Text_Update();
         // button frame tier color set
@@ -201,6 +203,13 @@ public class CollectableRoom_Menu : MonoBehaviour
         }
 
         data.placeMode = false;
+    }
+    public void AllFrame_Load_FrameSprite()
+    {
+        for (int i = 0; i < allFrames.Length; i++)
+        {
+            allFrames[i].Load_FrameSprite();
+        }
     }
     public void AllFrame_Frame_Tier_Update()
     {

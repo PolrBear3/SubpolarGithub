@@ -22,6 +22,8 @@ public class Save_System : MonoBehaviour
         Save_Money();
         Save_CurrentWeather();
         Save_CurrentInGameDay();
+        Save_Collectable_Amount();
+        Save_Collectable_Frames();
     }
     private void Load_All()
     {
@@ -30,6 +32,8 @@ public class Save_System : MonoBehaviour
         Load_CurrentInGameDay();
         Load_CurrentWeather();
         controller.timeSystem.Load_Day();
+        Load_Collectable_Amount();
+        Load_Collectable_Frames();
     }
 
     // farm tiles
@@ -189,6 +193,35 @@ public class Save_System : MonoBehaviour
                     controller.eventSystem.currentWeather = controller.allWeathers[i];
                 }
             }
+        }
+    }
+
+    // collectables
+    private void Save_Collectable_Amount()
+    {
+        ES3.Save("collectableAmount", controller.collectableRoomMenu.allCollectables);
+    }
+    private void Load_Collectable_Amount()
+    {
+        if (ES3.KeyExists("collectableAmount"))
+        {
+            var savedAmounts = ES3.Load("collectableAmount", controller.collectableRoomMenu.allCollectables);
+            controller.collectableRoomMenu.allCollectables = savedAmounts;
+        }
+    }
+
+    private void Save_Collectable_Frames()
+    {
+        ES3.Save("collectableFrames", controller.collectableRoomMenu.allFrames);
+    }
+    private void Load_Collectable_Frames()
+    {
+        if (ES3.KeyExists("collectableFrames"))
+        {
+            var savedFrames = ES3.Load("collectableFrames", controller.collectableRoomMenu.allFrames);
+            controller.collectableRoomMenu.allFrames = savedFrames;
+
+            controller.collectableRoomMenu.AllFrame_Load_FrameSprite();
         }
     }
 }

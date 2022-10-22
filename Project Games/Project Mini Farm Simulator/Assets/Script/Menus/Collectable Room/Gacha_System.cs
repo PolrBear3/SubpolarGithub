@@ -5,6 +5,7 @@ using UnityEngine;
 public class Gacha_System : MonoBehaviour
 {
     public CollectableRoom_Menu menu;
+    public int gachaPrice;
 
     private bool Percentage_Setter(float percentage)
     {
@@ -31,7 +32,21 @@ public class Gacha_System : MonoBehaviour
 
         return false;
     }
-    public void Gacha_Random_Collectable()
+    private void Unlock_Collectable(Collectable_ScrObj collectable)
+    {
+        for (int i = 0; i < menu.allCollectables.Length; i++)
+        {
+            if (collectable == menu.allCollectables[i].collectable)
+            {
+                if (menu.allCollectables[i].currentAmount > 0)
+                {
+                    menu.allCollectables[i].unLocked = true;
+                    break;
+                }
+            }
+        }
+    }
+    private void Gacha_Collectable_Calculation()
     {
         bool passed = false;
         while (!passed)
@@ -41,9 +56,34 @@ public class Gacha_System : MonoBehaviour
             if (Check_Selected_Collectable(menu.allCollectables[collectableNum].collectable))
             {
                 passed = true;
+
+                // adding collectable amount
                 menu.allCollectables[collectableNum].currentAmount += 1;
                 menu.AllButton_Amount_Text_Update();
+
+                // unlocking collectable
+                Unlock_Collectable(menu.allCollectables[collectableNum].collectable);
+                menu.UnlockCheck_CurrentButtonPage();
+
+                // calculating money
+                menu.controller.Subtract_Money(gachaPrice);
+                menu.controller.defaultMenu.Money_Text_Update();
+                menu.controller.defaultMenu.Money_Update_Fade_Tween(false, gachaPrice);
             }
+        }
+    }
+
+    public void Gacha_Collectable()
+    {
+        // player has enough money
+        if (menu.controller.money >= gachaPrice)
+        {
+            Gacha_Collectable_Calculation();
+        }
+        // player does not have enough money
+        else
+        {
+            menu.controller.defaultMenu.NotEnoughMoney_Blink_Tween();
         }
     }
 }
