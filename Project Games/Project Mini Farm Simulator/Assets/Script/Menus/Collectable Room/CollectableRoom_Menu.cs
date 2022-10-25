@@ -44,7 +44,6 @@ public class CollectableRoom_Menu_ButtonPage
 public class CollectableRoom_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
-    public Page_Controller buttonPageController;
     public LeanTweenType tweenType;
     public Button[] allAvailableButtons;
 
@@ -172,9 +171,6 @@ public class CollectableRoom_Menu : MonoBehaviour
     public void Set_New_CurrentButtonPage()
     {
         Reset_Collectable_Selection();
-
-        int newPageNum = buttonPageController.currentPageNum - 1;
-        currentButtonPage = allButtonPages[newPageNum].buttonPage;
 
         // collectables unlock check
         UnlockCheck_CurrentButtonPage();
