@@ -11,10 +11,12 @@ public class MainGame_Controller : MonoBehaviour
     public UnPlanted_Menu unPlantedMenu;
     public Planted_Menu plantedMenu;
     public Buff_Menu buffMenu;
+    public Shop_Menu shopMenu;
     public Buff_Function_Controller buffFunction;
     public Save_System saveSystem;
     public Time_System timeSystem;
     public Event_System eventSystem;
+    public Gacha_System gachaSystem;
 
     public Season_ScrObj[] allSeasons;
     public Weather_ScrObj[] allWeathers;

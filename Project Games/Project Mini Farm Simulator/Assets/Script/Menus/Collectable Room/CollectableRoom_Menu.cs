@@ -44,8 +44,8 @@ public class CollectableRoom_Menu_ButtonPage
 public class CollectableRoom_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
-    public Page_Controller buttonPageController;
     public LeanTweenType tweenType;
+    public Page_Controller pageController;
     public Button[] allAvailableButtons;
 
     public CollectableRoom_Menu_UI ui;
@@ -142,6 +142,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllFrameButton_ButtonShield_On();
         // lean tween collectableFramesPanel
         LeanTween.move(ui.collectableFramesPanel, new Vector2(360.04f, 62.50972f), 0.75f).setEase(tweenType);
+        // close shop menu
+        controller.shopMenu.Close();
         // lean tween collectableRoomMenu
         LeanTween.move(ui.collectableRoomMenu, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
         // button shield off for nextday button
@@ -173,9 +175,8 @@ public class CollectableRoom_Menu : MonoBehaviour
     {
         Reset_Collectable_Selection();
 
-        int newPageNum = buttonPageController.currentPageNum - 1;
-        currentButtonPage = allButtonPages[newPageNum].buttonPage;
-
+        // set new current button page
+        currentButtonPage = allButtonPages[pageController.currentPageNum - 1].buttonPage;
         // collectables unlock check
         UnlockCheck_CurrentButtonPage();
         // amount check
