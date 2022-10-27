@@ -7,12 +7,14 @@ using UnityEngine.UI;
 public class Shop_Menu_Data
 {
     public bool menuOn;
+    public Animator anim;
 }
 
 [System.Serializable]
 public class Shop_Menu_UI
 {
     public RectTransform shopMenuPanel;
+    public GameObject rollAnimFrame, stopAnimFrame;
     public Text gachaPriceText;
 }
 
@@ -73,5 +75,26 @@ public class Shop_Menu : MonoBehaviour
     {
         var x = controller.gachaSystem.gachaPrice;
         ui.gachaPriceText.text = "$ " + x.ToString();
+    }
+
+    // distinctive functions
+    public void Roll_Frame()
+    {
+        // buy gacha button enabled true
+        ui.rollAnimFrame.SetActive(true);
+        ui.stopAnimFrame.SetActive(false);
+    }
+    public void Stop_Roll_Frame()
+    {
+        // buy gacha button enabled false
+        ui.rollAnimFrame.SetActive(false);
+        ui.stopAnimFrame.SetActive(true);
+
+        // firework anim
+        // +1 text lean tween effect
+    }
+    public void Gacha_Animation_EventFunction()
+    {
+        data.anim.SetBool("gachaPressed", true);
     }
 }

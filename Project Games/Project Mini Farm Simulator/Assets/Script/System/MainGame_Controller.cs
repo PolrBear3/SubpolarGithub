@@ -34,6 +34,13 @@ public class MainGame_Controller : MonoBehaviour
     {
         Set_TileNum_forAll_Tiles();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Add_Money(10);
+        }
+    }
 
     // tile functions
     private void Set_TileNum_forAll_Tiles()
