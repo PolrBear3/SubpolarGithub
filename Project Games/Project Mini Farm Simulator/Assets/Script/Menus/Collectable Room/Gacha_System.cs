@@ -79,7 +79,8 @@ public class Gacha_System : MonoBehaviour
         if (menu.controller.money >= gachaPrice)
         {
             Gacha_Collectable_Calculation();
-            menu.controller.shopMenu.Gacha_Animation_EventFunction();
+            // roll stop win anim, gacha buy button unavailable, go back to roll after x time
+            menu.controller.shopMenu.ui.anim.SetBool("gachaPressed", true);
         }
         // player does not have enough money
         else
