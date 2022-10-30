@@ -7,14 +7,17 @@ using UnityEngine.UI;
 public class Shop_Menu_Data
 {
     public bool menuOn;
+    public Collectable_ScrObj lastWinCollectable;
 }
 
 [System.Serializable]
 public class Shop_Menu_UI
 {
     public RectTransform shopMenuPanel;
-    public Animator anim;
-    public GameObject rollAnimFrame, stopAnimFrame;
+    public Animator anim, fireWorkAnim;
+    public GameObject rollAnimFrame, stopAnimFrame, fireWork;
+    public Image stopFrame, stopCollectableImage;
+    public Button gachaButton;
     public Text gachaPriceText;
 }
 
@@ -83,15 +86,37 @@ public class Shop_Menu : MonoBehaviour
         ui.anim.SetBool("gachaPressed", false);
         ui.rollAnimFrame.SetActive(true);
         ui.stopAnimFrame.SetActive(false);
-        // buy gacha button enabled true
+        ui.gachaButton.enabled = true;
+
+        // firework anim reset
+        ui.fireWork.SetActive(false);
+        ui.fireWorkAnim.SetBool("activate", false);
+    }
+
+    private void Stop_Roll_Collectable_Set()
+    {
+        var x = controller.collectableRoomMenu.allCollectableTierData;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (data.lastWinCollectable.colorLevel == x[i].colorLevel)
+            {
+                ui.stopFrame.sprite = x[i].colorButtonFrameSprite;
+                ui.stopCollectableImage.sprite = data.lastWinCollectable.sprite;
+            }
+        }
     }
     public void Stop_Roll_Frame()
     {
         ui.rollAnimFrame.SetActive(false);
         ui.stopAnimFrame.SetActive(true);
-        // buy gacha button enabled false
+        ui.gachaButton.enabled = false;
 
-        // firework anim
+        Stop_Roll_Collectable_Set();
+
+        // firework anim activate
+        ui.fireWork.SetActive(true);
+        ui.fireWorkAnim.SetBool("activate", true);
+
         // +1 text lean tween effect
     }
 }

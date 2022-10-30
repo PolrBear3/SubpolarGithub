@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Collectable_Rare_level { red, orange, yellow, green, blue, purple }
+public enum Collectable_Rare_level { normal, rare, special, epic }
 
 [CreateAssetMenu(menuName = "New Collectable")]
 public class Collectable_ScrObj : ScriptableObject

@@ -61,6 +61,9 @@ public class Gacha_System : MonoBehaviour
                 menu.allCollectables[collectableNum].currentAmount += 1;
                 menu.AllButton_Amount_Text_Update();
 
+                // send collectable information to shop menu for animation
+                menu.controller.shopMenu.data.lastWinCollectable = menu.allCollectables[collectableNum].collectable;
+
                 // unlocking collectable
                 Unlock_Collectable(menu.allCollectables[collectableNum].collectable);
                 menu.UnlockCheck_CurrentButtonPage();
