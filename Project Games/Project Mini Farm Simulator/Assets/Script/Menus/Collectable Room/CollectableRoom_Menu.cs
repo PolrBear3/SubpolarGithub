@@ -33,6 +33,7 @@ public class Collectable_Tier_Data
     public float tierPercentage;
     public Sprite colorButtonFrameSprite;
     public Sprite colorFrameFrameSprite;
+    public AnimatorOverrideController fireworks;
 }
 
 [System.Serializable]

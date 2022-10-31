@@ -80,17 +80,14 @@ public class Shop_Menu : MonoBehaviour
         ui.gachaPriceText.text = "$ " + x.ToString();
     }
 
-    // distinctive functions
-    public void Roll_Frame()
+    // stop and activate casino roll frame 
+    public void Activate_Roll_Frame()
     {
         ui.anim.SetBool("gachaPressed", false);
         ui.rollAnimFrame.SetActive(true);
         ui.stopAnimFrame.SetActive(false);
         ui.gachaButton.enabled = true;
-
-        // firework anim reset
-        ui.fireWork.SetActive(false);
-        ui.fireWorkAnim.SetBool("activate", false);
+        Reset_Fireworks();
     }
 
     private void Stop_Roll_Collectable_Set()
@@ -102,6 +99,7 @@ public class Shop_Menu : MonoBehaviour
             {
                 ui.stopFrame.sprite = x[i].colorButtonFrameSprite;
                 ui.stopCollectableImage.sprite = data.lastWinCollectable.sprite;
+                break;
             }
         }
     }
@@ -112,11 +110,28 @@ public class Shop_Menu : MonoBehaviour
         ui.gachaButton.enabled = false;
 
         Stop_Roll_Collectable_Set();
+        Activate_Fireworks();
+    }
 
-        // firework anim activate
+    // fireworks
+    private void Activate_Fireworks()
+    {
+        var x = controller.collectableRoomMenu.allCollectableTierData;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (data.lastWinCollectable.colorLevel == x[i].colorLevel)
+            {
+                ui.fireWorkAnim.runtimeAnimatorController = x[i].fireworks;
+                break;
+            }
+        }
+
         ui.fireWork.SetActive(true);
         ui.fireWorkAnim.SetBool("activate", true);
-
-        // +1 text lean tween effect
+    }
+    private void Reset_Fireworks()
+    {
+        ui.fireWork.SetActive(false);
+        ui.fireWorkAnim.SetBool("activate", false);
     }
 }
