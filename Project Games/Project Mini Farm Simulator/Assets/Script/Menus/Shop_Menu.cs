@@ -55,6 +55,13 @@ public class Shop_Menu : MonoBehaviour
         data.menuOn = true;
         Button_Shield(false);
         LeanTween.move(ui.shopMenuPanel, new Vector2(-107.44f, 300f), 0.75f).setEase(tweenType);
+
+        // deactivate placemode if it is on and unselect all collectable buttons
+        if (controller.collectableRoomMenu.data.placeMode)
+        {
+            controller.collectableRoomMenu.AllFrame_PlaceMode_Off();
+            controller.collectableRoomMenu.AllButton_UnSelect();
+        }
     }
     public void Close()
     {

@@ -196,6 +196,12 @@ public class CollectableRoom_Menu : MonoBehaviour
         }
 
         data.placeMode = true;
+
+        // close shop menu if it is open
+        if (controller.shopMenu.data.menuOn)
+        {
+            controller.shopMenu.Close();
+        }
     }
     public void AllFrame_PlaceMode_Off()
     {
@@ -221,6 +227,16 @@ public class CollectableRoom_Menu : MonoBehaviour
         }
     }
 
+    public void AllButton_UnSelect()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            if (currentButtonPage[i].data.buttonPressed)
+            {
+                currentButtonPage[i].UnSelect_Collectable();
+            }
+        }
+    }
     public void AllButton_Select_Available_Check()
     {
         for (int i = 0; i < currentButtonPage.Count; i++)
