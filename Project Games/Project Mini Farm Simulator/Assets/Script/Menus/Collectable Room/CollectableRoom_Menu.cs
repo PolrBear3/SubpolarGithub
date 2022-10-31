@@ -23,7 +23,7 @@ public class Collectable
 {
     public Collectable_ScrObj collectable;
     public bool unLocked = false;
-    public int currentAmount;
+    public int currentAmount, maxAmount;
 }
 
 [System.Serializable]
@@ -125,7 +125,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         // reset frame button availability
         AllFrame_PlaceMode_Off();
         // collectables unlock check
-        UnlockCheck_CurrentButtonPage();
+        AllButton_UnlockCheck();
         // button available check from amount
         AllButton_Select_Available_Check();
         // update amount text
@@ -156,7 +156,7 @@ public class CollectableRoom_Menu : MonoBehaviour
             controller.farmTiles[i].button.enabled = true;
         }
         // all buttons set to unpressed
-        Reset_Collectable_Selection();
+        AllButton_UnSelect();
         // reset frame button availability
         AllFrame_PlaceMode_Off();
     }
@@ -174,12 +174,12 @@ public class CollectableRoom_Menu : MonoBehaviour
     }
     public void Set_New_CurrentButtonPage()
     {
-        Reset_Collectable_Selection();
+        AllButton_UnSelect();
 
         // set new current button page
         currentButtonPage = allButtonPages[pageController.currentPageNum - 1].buttonPage;
         // collectables unlock check
-        UnlockCheck_CurrentButtonPage();
+        AllButton_UnlockCheck();
         // amount check
         AllButton_Select_Available_Check();
         // update amount text
@@ -188,6 +188,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllButton_Frame_Tier_Update();
     }
 
+    // all frame functions
     public void AllFrame_PlaceMode_On()
     {
         for (int i = 0; i < allFrames.Length; i++)
@@ -227,6 +228,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         }
     }
 
+    // all button functions
     public void AllButton_UnSelect()
     {
         for (int i = 0; i < currentButtonPage.Count; i++)
@@ -244,6 +246,20 @@ public class CollectableRoom_Menu : MonoBehaviour
             currentButtonPage[i].Select_Available_Check();
         }
     }
+    public void AllButton_UnlockCheck()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].Unlock_Check();
+        }
+    }
+    public void AllButton_New_Check()
+    {
+        for (int i = 0; i < currentButtonPage.Count; i++)
+        {
+            currentButtonPage[i].New_Check();
+        }
+    }
     public void AllButton_Amount_Text_Update()
     {
         for (int i = 0; i < currentButtonPage.Count; i++)
@@ -256,21 +272,6 @@ public class CollectableRoom_Menu : MonoBehaviour
         for (int i = 0; i < currentButtonPage.Count; i++)
         {
             currentButtonPage[i].Frame_Tier_Update();
-        }
-    }
-
-    public void Reset_Collectable_Selection()
-    {
-        for (int i = 0; i < currentButtonPage.Count; i++)
-        {
-            currentButtonPage[i].UnSelect_Collectable();
-        }
-    }
-    public void UnlockCheck_CurrentButtonPage()
-    {
-        for (int i = 0; i < currentButtonPage.Count; i++)
-        {
-            currentButtonPage[i].Unlock_Check();
         }
     }
 }

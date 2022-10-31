@@ -107,7 +107,7 @@ public class Collectable_Frame : MonoBehaviour
                 if (menu.allCollectables[i].currentAmount <= 0)
                 {
                     menu.AllFrame_PlaceMode_Off();
-                    menu.Reset_Collectable_Selection();
+                    menu.AllButton_UnSelect();
                 }
                 // if selected collectable amount is still left, stay placemode on
                 else

@@ -8,5 +8,6 @@ public enum Collectable_Rare_level { normal, rare, special, epic }
 public class Collectable_ScrObj : ScriptableObject
 {
     public Sprite sprite;
+    public Sprite lockedSprite;
     public Collectable_Rare_level colorLevel;
 }

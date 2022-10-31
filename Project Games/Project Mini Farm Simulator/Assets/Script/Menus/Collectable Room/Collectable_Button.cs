@@ -8,8 +8,8 @@ public class Collectable_Button_UI
 {
     public Image collectableImage, frameImage, selectButton;
     public Text amountText;
-    public Sprite lockedImage;
     public Sprite[] buttonImages;
+    public GameObject lockIcon, newIcon;
 }
 
 [System.Serializable]
@@ -89,15 +89,39 @@ public class Collectable_Button : MonoBehaviour
         {
             if (data.thisCollectable == x[i].collectable)
             {
+                // if it is locked
                 if (!x[i].unLocked)
                 {
-                    ui.collectableImage.sprite = ui.lockedImage;
+                    ui.lockIcon.SetActive(true);
+                    ui.amountText.enabled = false;
+                    ui.collectableImage.sprite = data.thisCollectable.lockedSprite;
                     button.enabled = false;
+                }
+                // if it is unlocked
+                else
+                {
+                    ui.lockIcon.SetActive(false);
+                    ui.amountText.enabled = true;
+                    UI_Set();
+                    button.enabled = true;
+                }
+            }
+        }
+    }
+    public void New_Check()
+    {
+        var x = menu.allCollectables;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (data.thisCollectable == x[i].collectable)
+            {
+                if (!x[i].unLocked && x[i].maxAmount == 1)
+                {
+                    ui.newIcon.SetActive(true);
                 }
                 else
                 {
-                    UI_Set();
-                    button.enabled = true;
+                    ui.newIcon.SetActive(false);
                 }
             }
         }
@@ -109,6 +133,7 @@ public class Collectable_Button : MonoBehaviour
         menu.AllFrame_PlaceMode_On();
         ui.selectButton.sprite = ui.buttonImages[1];
         menu.data.selectedCollectable = data.thisCollectable;
+        ui.newIcon.SetActive(false);
     }
     public void UnSelect_Collectable()
     {
@@ -121,7 +146,7 @@ public class Collectable_Button : MonoBehaviour
     {
         if (!data.buttonPressed)
         {
-            menu.Reset_Collectable_Selection();
+            menu.AllButton_UnSelect();
             Select_Collectable();
         }
         else

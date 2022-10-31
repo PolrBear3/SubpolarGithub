@@ -59,14 +59,16 @@ public class Gacha_System : MonoBehaviour
 
                 // adding collectable amount
                 menu.allCollectables[collectableNum].currentAmount += 1;
-                menu.AllButton_Amount_Text_Update();
+                menu.allCollectables[collectableNum].maxAmount += 1;
 
                 // send collectable information to shop menu for animation
                 menu.controller.shopMenu.data.lastWinCollectable = menu.allCollectables[collectableNum].collectable;
 
-                // unlocking collectable
+                // unlocking and update collectables
+                menu.AllButton_New_Check();
                 Unlock_Collectable(menu.allCollectables[collectableNum].collectable);
-                menu.UnlockCheck_CurrentButtonPage();
+                menu.AllButton_UnlockCheck();
+                menu.AllButton_Amount_Text_Update();
 
                 // calculating money
                 menu.controller.Subtract_Money(gachaPrice);
