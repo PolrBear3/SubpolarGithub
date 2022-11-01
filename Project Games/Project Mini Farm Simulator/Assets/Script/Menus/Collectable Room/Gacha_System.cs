@@ -68,6 +68,7 @@ public class Gacha_System : MonoBehaviour
                 menu.AllButton_New_Check();
                 Unlock_Collectable(menu.allCollectables[collectableNum].collectable);
                 menu.AllButton_UnlockCheck();
+                menu.AllButton_New_Check();
                 menu.AllButton_Amount_Text_Update();
 
                 // calculating money

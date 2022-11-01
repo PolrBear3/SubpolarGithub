@@ -22,7 +22,7 @@ public class Save_System : MonoBehaviour
         Save_Money();
         Save_CurrentWeather();
         Save_CurrentInGameDay();
-        Save_Collectable_Amount();
+        Save_Collectable_Data();
         Save_Collectable_Frames();
     }
     private void Load_All()
@@ -32,7 +32,7 @@ public class Save_System : MonoBehaviour
         Load_CurrentInGameDay();
         Load_CurrentWeather();
         controller.timeSystem.Load_Day();
-        Load_Collectable_Amount();
+        Load_Collectable_Data();
         Load_Collectable_Frames();
     }
 
@@ -197,11 +197,11 @@ public class Save_System : MonoBehaviour
     }
 
     // collectables
-    private void Save_Collectable_Amount()
+    private void Save_Collectable_Data()
     {
         ES3.Save("collectableAmount", controller.collectableRoomMenu.allCollectables);
     }
-    private void Load_Collectable_Amount()
+    private void Load_Collectable_Data()
     {
         if (ES3.KeyExists("collectableAmount"))
         {

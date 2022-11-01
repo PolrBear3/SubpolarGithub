@@ -8,6 +8,7 @@ public class Collectable_Button_UI
 {
     public Image collectableImage, frameImage, selectButton;
     public Text amountText;
+    public RectTransform amountTextPositon;
     public Sprite[] buttonImages;
     public GameObject lockIcon, newIcon;
 }
@@ -89,6 +90,12 @@ public class Collectable_Button : MonoBehaviour
         {
             if (data.thisCollectable == x[i].collectable)
             {
+                // set isNew true for locked collectables
+                if (!x[i].unLocked)
+                {
+                    x[i].isNew = true;
+                }
+                
                 // if it is locked
                 if (!x[i].unLocked)
                 {
@@ -115,7 +122,7 @@ public class Collectable_Button : MonoBehaviour
         {
             if (data.thisCollectable == x[i].collectable)
             {
-                if (!x[i].unLocked && x[i].maxAmount == 1)
+                if (x[i].isNew && x[i].unLocked)
                 {
                     ui.newIcon.SetActive(true);
                 }
@@ -123,6 +130,7 @@ public class Collectable_Button : MonoBehaviour
                 {
                     ui.newIcon.SetActive(false);
                 }
+                break;
             }
         }
     }
@@ -132,14 +140,26 @@ public class Collectable_Button : MonoBehaviour
         data.buttonPressed = true;
         menu.AllFrame_PlaceMode_On();
         ui.selectButton.sprite = ui.buttonImages[1];
+        ui.amountTextPositon.anchoredPosition = new Vector2(0f, -2.65f);
         menu.data.selectedCollectable = data.thisCollectable;
-        ui.newIcon.SetActive(false);
+
+        var x = menu.allCollectables;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (data.thisCollectable == x[i].collectable)
+            {
+                x[i].isNew = false;
+                break;
+            }
+        }
+        menu.AllButton_New_Check();
     }
     public void UnSelect_Collectable()
     {
         data.buttonPressed = false;
         menu.AllFrame_PlaceMode_Off();
         ui.selectButton.sprite = ui.buttonImages[0];
+        ui.amountTextPositon.anchoredPosition = new Vector2(0f, 3.58f);
         menu.data.selectedCollectable = null;
     }
     public void Select_This_Collectable()

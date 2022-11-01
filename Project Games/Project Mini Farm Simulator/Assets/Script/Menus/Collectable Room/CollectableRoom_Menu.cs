@@ -22,7 +22,7 @@ public class CollectableRoom_Menu_Data
 public class Collectable
 {
     public Collectable_ScrObj collectable;
-    public bool unLocked = false;
+    public bool unLocked = false, isNew = false;
     public int currentAmount, maxAmount;
 }
 
@@ -126,6 +126,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllFrame_PlaceMode_Off();
         // collectables unlock check
         AllButton_UnlockCheck();
+        // all collectables isNew check
+        AllButton_New_Check();
         // button available check from amount
         AllButton_Select_Available_Check();
         // update amount text
@@ -180,6 +182,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         currentButtonPage = allButtonPages[pageController.currentPageNum - 1].buttonPage;
         // collectables unlock check
         AllButton_UnlockCheck();
+        // all collectables isNew check
+        AllButton_New_Check();
         // amount check
         AllButton_Select_Available_Check();
         // update amount text
