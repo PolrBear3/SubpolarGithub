@@ -9,6 +9,7 @@ public class CollectableRoom_Menu_UI
     [HideInInspector]
     public bool menuOn = false;
     public RectTransform collectableFramesPanel, collectableRoomMenu;
+    public Image findIcon;
 }
 
 [System.Serializable]
@@ -16,6 +17,9 @@ public class CollectableRoom_Menu_Data
 {
     public bool placeMode = false;
     public Collectable_ScrObj selectedCollectable;
+
+    public int sortNum;
+    public Collectable_Rare_level sortMode;
 }
 
 [System.Serializable]
@@ -34,6 +38,7 @@ public class Collectable_Tier_Data
     public Sprite colorButtonFrameSprite;
     public Sprite colorFrameFrameSprite;
     public AnimatorOverrideController fireworks;
+    public Sprite findIcon;
 }
 
 [System.Serializable]
@@ -136,6 +141,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllButton_Frame_Tier_Update();
         // frame tier color set
         AllFrame_Frame_Tier_Update();
+        // reset find data
+        Reset_Find();
     }
     public void Close()
     {
@@ -276,6 +283,46 @@ public class CollectableRoom_Menu : MonoBehaviour
         for (int i = 0; i < currentButtonPage.Count; i++)
         {
             currentButtonPage[i].Frame_Tier_Update();
+        }
+    }
+
+    // Find collectables by tier functions
+    public void Reset_Find()
+    {
+        data.sortNum = 0;
+        data.sortMode = Collectable_Rare_level.all;
+        ui.findIcon.sprite = allCollectableTierData[data.sortNum].findIcon;
+    }
+    public void Find()
+    {
+        // settings
+        data.sortNum++;
+        if (data.sortNum > 4) { Reset_Find(); }
+        data.sortMode = allCollectableTierData[data.sortNum].colorLevel;
+        ui.findIcon.sprite = allCollectableTierData[data.sortNum].findIcon;
+
+        // find function
+        bool tierFound = false;
+        while (!tierFound)
+        {
+            pageController.NextPage();
+            Set_New_CurrentButtonPage();
+
+            // search
+            for (int i = 0; i < currentButtonPage.Count; i++)
+            {
+                if (currentButtonPage[i].data.thisCollectable.colorLevel == data.sortMode)
+                {
+                    tierFound = true;
+                    break;
+                }
+            }
+
+            // if search is complete or cant find
+            if (tierFound || pageController.currentPageNum == pageController.pages.Length)
+            {
+                break;
+            }
         }
     }
 }
