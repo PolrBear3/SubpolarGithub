@@ -21,8 +21,9 @@ public class Unplanted_Menu_ButtonPage
 public class UnPlanted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
-    RectTransform rectTransform;
+    private RectTransform rectTransform;
     public LeanTweenType tweenType;
+    public Page_Controller pageController;
 
     public GameObject[] confirmButtons;
 
@@ -43,6 +44,8 @@ public class UnPlanted_Menu : MonoBehaviour
     {
         // set to position at the center
         rectTransform.anchoredPosition = new Vector2(0f, -125f);
+        // seed button page set
+        Set_Start_CurrentButtonPage();
     }
 
     private void Button_Shield(bool activate)
@@ -62,15 +65,20 @@ public class UnPlanted_Menu : MonoBehaviour
         }
     }
 
+    // basic functions
     public void Open()
     {
         Button_Shield(false);
+        SeedButtons_Shield(false);
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
+        Set_New_CurrentButtonPage();
     }
     public void Close()
     {
+        hide_Seed_ToolTip();
         Reset_Selections();
         Button_Shield(true);
+        SeedButtons_Shield(true);
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
@@ -80,7 +88,33 @@ public class UnPlanted_Menu : MonoBehaviour
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
 
-    private void ConfirmButton_Availability()
+    // current button loop functions
+    private void Set_Start_CurrentButtonPage()
+    {
+        currentButtons = allButtonPages[0].buttons;
+    }
+    public void Set_New_CurrentButtonPage()
+    {
+        // set new current button page
+        currentButtons = allButtonPages[pageController.currentPageNum - 1].buttons;
+        
+        // update button ui information
+        for (int i = 0; i < currentButtons.Count; i++)
+        {
+            currentButtons[i].Set_Seed_Info();
+        }
+    }
+
+    // distinctive functions
+    private void Reset_Selections()
+    {
+        currentSeedInfo = null;
+        currentCropImage.color = Color.clear;
+        PlantSeed_Button_Availability();
+        hide_Seed_ToolTip();
+    }
+    
+    private void PlantSeed_Button_Availability()
     {
         if (currentSeedInfo != null && controller.money >= currentSeedInfo.seedBuyPrice)
         {
@@ -93,21 +127,14 @@ public class UnPlanted_Menu : MonoBehaviour
             confirmButtons[1].SetActive(false);
         }
     }
-    private void Reset_Selections()
-    {
-        currentSeedInfo = null;
-        currentCropImage.color = Color.clear;
-        ConfirmButton_Availability();
-    }
     public void Select_Seed(Seed_ScrObj seedInfo)
     {
         currentSeedInfo = seedInfo;
         currentCropImage.sprite = seedInfo.sprites[3];
         currentCropImage.color = Color.white;
-        ConfirmButton_Availability();
+        PlantSeed_Button_Availability();
     }
-
-    private void Seed_Price_Calculation()
+    public void Plant_Seed()
     {
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
@@ -126,25 +153,25 @@ public class UnPlanted_Menu : MonoBehaviour
             }
         }
     }
-    public void Plant_Seed()
-    {
-        Seed_Price_Calculation();
-    }
 
-    public void Show_Seed_ToolTip(Seed_ScrObj currentHoveringSeed)
+    // tool tips
+    public void Show_Seed_ToolTip()
     {
-        var x = seedToolTipUIconnection;
-        x.previewSeedSprite.sprite = currentHoveringSeed.sprites[3];
-        x.seedName.text = currentHoveringSeed.seedName;
-        x.seedDescription.text = currentHoveringSeed.seedDescription;
-        x.seedPrice.text = "seed price: $ " + currentHoveringSeed.seedBuyPrice.ToString();
-        x.sellPrice.text = "sell price: $ " + currentHoveringSeed.harvestSellPrice.ToString();
-        x.harvestLength.text = "harvest: " +
-        currentHoveringSeed.minFinishDays + "~" + currentHoveringSeed.maxFinishDays + " days".ToString();
-        x.seedMaxHealth.text = currentHoveringSeed.seedHealth.ToString();
-        x.seedMaxWaterHealth.text = currentHoveringSeed.waterHealth.ToString();
+        if (currentSeedInfo != null)
+        {
+            var x = seedToolTipUIconnection;
+            x.previewSeedSprite.sprite = currentSeedInfo.sprites[3];
+            x.seedName.text = currentSeedInfo.seedName;
+            x.seedDescription.text = currentSeedInfo.seedDescription;
+            x.seedPrice.text = "seed price: $ " + currentSeedInfo.seedBuyPrice.ToString();
+            x.sellPrice.text = "sell price: $ " + currentSeedInfo.harvestSellPrice.ToString();
+            x.harvestLength.text = "harvest: " +
+            currentSeedInfo.minFinishDays + "~" + currentSeedInfo.maxFinishDays + " days".ToString();
+            x.seedMaxHealth.text = currentSeedInfo.seedHealth.ToString();
+            x.seedMaxWaterHealth.text = currentSeedInfo.waterHealth.ToString();
 
-        x.toolTipPanel.SetActive(true);
+            x.toolTipPanel.SetActive(true);
+        }
     }
     public void hide_Seed_ToolTip()
     {

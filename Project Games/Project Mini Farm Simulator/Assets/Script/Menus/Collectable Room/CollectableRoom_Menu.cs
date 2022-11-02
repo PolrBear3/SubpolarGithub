@@ -179,7 +179,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         else { Close(); }
     }
 
-    // distinctive functions
+    // current button loop functions
     private void Set_Start_CurrentButtonPage()
     {
         currentButtons = allButtonPages[0].buttons;

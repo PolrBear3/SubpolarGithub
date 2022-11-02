@@ -123,7 +123,7 @@ public class Buff_Menu : MonoBehaviour
         x.previewBuffSprite.sprite = currentHoveringBuff.sprite;
         x.buffName.text = currentHoveringBuff.buffName;
         x.buffDescription.text = currentHoveringBuff.description;
-        x.buffPrice.text = "seed price: $ " + currentHoveringBuff.buffPrice.ToString();
+        x.buffPrice.text = "buff price: $ " + currentHoveringBuff.buffPrice.ToString();
         x.toolTipPanel.SetActive(true);
     }
     public void Hide_Buff_ToolTip()
