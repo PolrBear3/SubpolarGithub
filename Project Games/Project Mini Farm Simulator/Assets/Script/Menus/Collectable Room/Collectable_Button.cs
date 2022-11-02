@@ -23,7 +23,7 @@ public class Collectable_Button_Data
 public class Collectable_Button : MonoBehaviour
 {
     public CollectableRoom_Menu menu;
-    public Button button;
+    public Button button, frameButton;
 
     public Collectable_Button_UI ui;
     public Collectable_Button_Data data;
@@ -35,8 +35,8 @@ public class Collectable_Button : MonoBehaviour
 
     public void Button_Shield(bool activate)
     {
-        if (activate) { button.enabled = false; }
-        else if (!activate) { button.enabled = true; }
+        if (activate) { button.enabled = false; frameButton.enabled = false; }
+        else if (!activate) { button.enabled = true; frameButton.enabled = true; }
     }
 
     public void Amount_Text_Update()
@@ -103,6 +103,7 @@ public class Collectable_Button : MonoBehaviour
                     ui.amountText.enabled = false;
                     ui.collectableImage.sprite = data.thisCollectable.lockedSprite;
                     button.enabled = false;
+                    frameButton.enabled = false;
                 }
                 // if it is unlocked
                 else
@@ -111,6 +112,7 @@ public class Collectable_Button : MonoBehaviour
                     ui.amountText.enabled = true;
                     UI_Set();
                     button.enabled = true;
+                    frameButton.enabled = true;
                 }
             }
         }

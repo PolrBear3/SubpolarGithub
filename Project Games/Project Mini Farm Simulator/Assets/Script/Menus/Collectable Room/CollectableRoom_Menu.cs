@@ -44,7 +44,8 @@ public class Collectable_Tier_Data
 [System.Serializable]
 public class CollectableRoom_Menu_ButtonPage
 {
-    public List<Collectable_Button> buttonPage;
+    public int pageNum;
+    public List<Collectable_Button> buttons;
 }
 
 public class CollectableRoom_Menu : MonoBehaviour
@@ -59,7 +60,7 @@ public class CollectableRoom_Menu : MonoBehaviour
 
     public Collectable_Frame[] allFrames;
     public CollectableRoom_Menu_ButtonPage[] allButtonPages;
-    private List<Collectable_Button> currentButtonPage;
+    private List<Collectable_Button> currentButtons;
 
     public Collectable_Tier_Data[] allCollectableTierData;
     public Collectable[] allCollectables;
@@ -79,32 +80,34 @@ public class CollectableRoom_Menu : MonoBehaviour
             else if (!activate) { allAvailableButtons[i].enabled = true; }
         }
     }
+    private void Frames_CurrentButtons_Button_Shield(bool activate)
+    {
+        if (activate)
+        {
+            for (int i = 0; i < allFrames.Length; i++)
+            {
+                allFrames[i].Button_Shield(true);
+            }
+            for (int i = 0; i < currentButtons.Count; i++)
+            {
+                currentButtons[i].Button_Shield(true);
+            }
+        }
+        else if (!activate)
+        {
+            for (int i = 0; i < allFrames.Length; i++)
+            {
+                allFrames[i].Button_Shield(false);
+            }
+            for (int i = 0; i < currentButtons.Count; i++)
+            {
+                currentButtons[i].Button_Shield(false);
+            }
+        }
+    }
     private void Center_Position()
     {
         ui.collectableRoomMenu.anchoredPosition = new Vector2(0f, -125f);
-    }
-    
-    private void AllFrameButton_ButtonShield_On()
-    {
-        for (int i = 0; i < allFrames.Length; i++)
-        {
-            allFrames[i].Button_Shield(true);
-        }
-        for (int i = 0; i < currentButtonPage.Count; i++)
-        {
-            currentButtonPage[i].Button_Shield(true);
-        }
-    }
-    private void AllFrameButton_ButtonShield_Off()
-    {
-        for (int i = 0; i < allFrames.Length; i++)
-        {
-            allFrames[i].Button_Shield(false);
-        }
-        for (int i = 0; i < currentButtonPage.Count; i++)
-        {
-            currentButtonPage[i].Button_Shield(false);
-        }
     }
 
     private void Open()
@@ -114,7 +117,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         controller.Reset_All_Menu();
         // buttons available
         Button_Shield(false);
-        AllFrameButton_ButtonShield_Off();
+        Frames_CurrentButtons_Button_Shield(false);
         // lean tween collectableFramesPanel
         LeanTween.move(ui.collectableFramesPanel, new Vector2(0f, 62.50972f), 0.75f).setEase(tweenType);
         // lean tween collectableRoomMenu
@@ -149,7 +152,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         ui.menuOn = false;
         // buttons unavailable
         Button_Shield(true);
-        AllFrameButton_ButtonShield_On();
+        Frames_CurrentButtons_Button_Shield(true);
         // lean tween collectableFramesPanel
         LeanTween.move(ui.collectableFramesPanel, new Vector2(360.04f, 62.50972f), 0.75f).setEase(tweenType);
         // close shop menu
@@ -179,14 +182,14 @@ public class CollectableRoom_Menu : MonoBehaviour
     // distinctive functions
     private void Set_Start_CurrentButtonPage()
     {
-        currentButtonPage = allButtonPages[0].buttonPage;
+        currentButtons = allButtonPages[0].buttons;
     }
     public void Set_New_CurrentButtonPage()
     {
         AllButton_UnSelect();
 
         // set new current button page
-        currentButtonPage = allButtonPages[pageController.currentPageNum - 1].buttonPage;
+        currentButtons = allButtonPages[pageController.currentPageNum - 1].buttons;
         // collectables unlock check
         AllButton_UnlockCheck();
         // all collectables isNew check
@@ -242,47 +245,47 @@ public class CollectableRoom_Menu : MonoBehaviour
     // all button functions
     public void AllButton_UnSelect()
     {
-        for (int i = 0; i < currentButtonPage.Count; i++)
+        for (int i = 0; i < currentButtons.Count; i++)
         {
-            if (currentButtonPage[i].data.buttonPressed)
+            if (currentButtons[i].data.buttonPressed)
             {
-                currentButtonPage[i].UnSelect_Collectable();
+                currentButtons[i].UnSelect_Collectable();
             }
         }
     }
     public void AllButton_Select_Available_Check()
     {
-        for (int i = 0; i < currentButtonPage.Count; i++)
+        for (int i = 0; i < currentButtons.Count; i++)
         {
-            currentButtonPage[i].Select_Available_Check();
+            currentButtons[i].Select_Available_Check();
         }
     }
     public void AllButton_UnlockCheck()
     {
-        for (int i = 0; i < currentButtonPage.Count; i++)
+        for (int i = 0; i < currentButtons.Count; i++)
         {
-            currentButtonPage[i].Unlock_Check();
+            currentButtons[i].Unlock_Check();
         }
     }
     public void AllButton_New_Check()
     {
-        for (int i = 0; i < currentButtonPage.Count; i++)
+        for (int i = 0; i < currentButtons.Count; i++)
         {
-            currentButtonPage[i].New_Check();
+            currentButtons[i].New_Check();
         }
     }
     public void AllButton_Amount_Text_Update()
     {
-        for (int i = 0; i < currentButtonPage.Count; i++)
+        for (int i = 0; i < currentButtons.Count; i++)
         {
-            currentButtonPage[i].Amount_Text_Update();
+            currentButtons[i].Amount_Text_Update();
         }
     }
     public void AllButton_Frame_Tier_Update()
     {
-        for (int i = 0; i < currentButtonPage.Count; i++)
+        for (int i = 0; i < currentButtons.Count; i++)
         {
-            currentButtonPage[i].Frame_Tier_Update();
+            currentButtons[i].Frame_Tier_Update();
         }
     }
 
@@ -309,9 +312,9 @@ public class CollectableRoom_Menu : MonoBehaviour
             Set_New_CurrentButtonPage();
 
             // search
-            for (int i = 0; i < currentButtonPage.Count; i++)
+            for (int i = 0; i < currentButtons.Count; i++)
             {
-                if (currentButtonPage[i].data.thisCollectable.colorLevel == data.sortMode)
+                if (currentButtons[i].data.thisCollectable.colorLevel == data.sortMode)
                 {
                     tierFound = true;
                     break;

@@ -11,6 +11,13 @@ public class Unplanted_Menu_Seed_ToolTip
     public Text seedName, seedDescription, seedPrice, sellPrice, harvestLength, seedMaxHealth, seedMaxWaterHealth;
 }
 
+[System.Serializable]
+public class Unplanted_Menu_ButtonPage
+{
+    public int pageNum;
+    public List<Seed_Button> buttons;
+}
+
 public class UnPlanted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
@@ -20,6 +27,9 @@ public class UnPlanted_Menu : MonoBehaviour
     public GameObject[] confirmButtons;
 
     public Button[] allAvailableButtons;
+    public Unplanted_Menu_ButtonPage[] allButtonPages;
+
+    private List<Seed_Button> currentButtons;
 
     public Unplanted_Menu_Seed_ToolTip seedToolTipUIconnection;
     public Image currentCropImage;
@@ -41,6 +51,14 @@ public class UnPlanted_Menu : MonoBehaviour
         {
             if (activate) { allAvailableButtons[i].enabled = false; }
             else if (!activate) { allAvailableButtons[i].enabled = true; }
+        }
+    }
+    private void SeedButtons_Shield(bool activate)
+    {
+        for (int i = 0; i < currentButtons.Count; i++)
+        {
+            if (activate) { currentButtons[i].Button_Shield(true); }
+            else if (!activate) { currentButtons[i].Button_Shield(false); }
         }
     }
 

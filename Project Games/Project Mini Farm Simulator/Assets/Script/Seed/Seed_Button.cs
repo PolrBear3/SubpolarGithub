@@ -10,6 +10,7 @@ public class Seed_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public Seed_ScrObj seedInfo;
 
     public Image seedImage;
+    public Button button, frameButton;
     public Text seedPriceText;
 
     bool onPress;
@@ -26,12 +27,17 @@ public class Seed_Button : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         Show_ToolTip();
     }
 
+    public void Button_Shield(bool activate)
+    {
+        if (activate) { button.enabled = false; frameButton.enabled = false; }
+        else if (!activate) { button.enabled = true; frameButton.enabled = true; }
+    }
+
     private void Set_Seed_Info()
     {
         seedImage.sprite = seedInfo.sprites[3];
         seedPriceText.text = "$ " + seedInfo.seedBuyPrice.ToString();
     }
-
     public void Select_This_Seed()
     {
         menu.Select_Seed(seedInfo);
