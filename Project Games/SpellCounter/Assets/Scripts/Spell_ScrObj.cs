@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Spell_ScrObj : ScriptableObject
 {
     public Sprite sprite;
+    public Sprite usedSprite;
 
     public float defaultCoolTime;
     public float bootsCoolTime;
