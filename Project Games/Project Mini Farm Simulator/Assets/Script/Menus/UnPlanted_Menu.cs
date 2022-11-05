@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Unplanted_Menu_Seed_ToolTip
 {
+    public bool toolTipOn = false;
+
     public GameObject toolTipPanel;
     public Image previewSeedSprite;
     public Text seedName, seedDescription, seedPrice, sellPrice, harvestLength, seedMaxHealth, seedMaxWaterHealth;
@@ -155,11 +157,13 @@ public class UnPlanted_Menu : MonoBehaviour
     }
 
     // tool tips
-    public void Show_Seed_ToolTip()
+    private void Show_Seed_ToolTip()
     {
+        var x = seedToolTipUIconnection;
+
         if (currentSeedInfo != null)
         {
-            var x = seedToolTipUIconnection;
+            x.toolTipOn = true;
             x.previewSeedSprite.sprite = currentSeedInfo.sprites[3];
             x.seedName.text = currentSeedInfo.seedName;
             x.seedDescription.text = currentSeedInfo.seedDescription;
@@ -173,8 +177,38 @@ public class UnPlanted_Menu : MonoBehaviour
             x.toolTipPanel.SetActive(true);
         }
     }
+    public void Show_PlanedSeed_ToolTip(Seed_ScrObj planedSeed)
+    {
+        var x = seedToolTipUIconnection;
+
+        x.toolTipOn = true;
+        x.previewSeedSprite.sprite = planedSeed.sprites[3];
+        x.seedName.text = planedSeed.seedName;
+        x.seedDescription.text = planedSeed.seedDescription;
+        x.seedPrice.text = "seed price: $ " + planedSeed.seedBuyPrice.ToString();
+        x.sellPrice.text = "sell price: $ " + planedSeed.harvestSellPrice.ToString();
+        x.harvestLength.text = "harvest: " +
+        planedSeed.minFinishDays + "~" + planedSeed.maxFinishDays + " days".ToString();
+        x.seedMaxHealth.text = planedSeed.seedHealth.ToString();
+        x.seedMaxWaterHealth.text = planedSeed.waterHealth.ToString();
+
+        x.toolTipPanel.SetActive(true);
+    }
     public void hide_Seed_ToolTip()
     {
+        seedToolTipUIconnection.toolTipOn = false;
         seedToolTipUIconnection.toolTipPanel.SetActive(false);
+    }
+
+    public void Show_Hide_ToolTip()
+    {
+        if (!seedToolTipUIconnection.toolTipOn)
+        {
+            Show_Seed_ToolTip();
+        }
+        else
+        {
+            hide_Seed_ToolTip();
+        }
     }
 }

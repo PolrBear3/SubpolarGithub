@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MainGame_Controller : MonoBehaviour
 {
@@ -25,22 +24,16 @@ public class MainGame_Controller : MonoBehaviour
     public Status[] allStatus;
 
     public FarmTile[] farmTiles;
+    [HideInInspector]
     public int openedTileNum = 0;
     
     private int _money = 0;
     public int money => _money;
+    public int addMoneyAmount;
 
     private void Start()
     {
         Set_TileNum_forAll_Tiles();
-    }
-    private void Update()
-    {
-        // press space for money add !!
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Add_Money(50);
-        }
     }
 
     // tile functions

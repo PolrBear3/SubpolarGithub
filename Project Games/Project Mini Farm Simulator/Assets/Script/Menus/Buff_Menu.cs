@@ -12,6 +12,7 @@ public class Buff_Menu_UI
 [System.Serializable]
 public class Buff_Menu_Buff_ToolTip
 {
+    public bool toolTipOn = false;
     public GameObject toolTipPanel;
     public Image previewBuffSprite;
     public Text buffName, buffDescription, buffPrice;
@@ -57,6 +58,7 @@ public class Buff_Menu : MonoBehaviour
     }
     public void Close()
     {
+        Hide_Buff_ToolTip();
         Reset_Selections();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
         Button_Shield(true);
@@ -116,19 +118,38 @@ public class Buff_Menu : MonoBehaviour
         Buff_Price_Calculation();
     }
 
-    public void Show_Buff_ToolTip(Buff_ScrObj currentHoveringBuff)
+    // tooltip functions
+    private void Show_Buff_ToolTip()
     {
         var x = tooltipUI;
 
-        x.previewBuffSprite.sprite = currentHoveringBuff.sprite;
-        x.buffName.text = currentHoveringBuff.buffName;
-        x.buffDescription.text = currentHoveringBuff.description;
-        x.buffPrice.text = "buff price: $ " + currentHoveringBuff.buffPrice.ToString();
+        if (currentSelectedBuff != null)
+        {
+            x.toolTipOn = true;
+            x.previewBuffSprite.sprite = currentSelectedBuff.sprite;
+            x.buffName.text = currentSelectedBuff.buffName;
+            x.buffDescription.text = currentSelectedBuff.description;
+            x.buffPrice.text = "buff price: $ " + currentSelectedBuff.buffPrice.ToString();
+        }
         x.toolTipPanel.SetActive(true);
     }
     public void Hide_Buff_ToolTip()
     {
         var x = tooltipUI;
+
+        x.toolTipOn = false;
         x.toolTipPanel.SetActive(false);
+    }
+
+    public void Show_Hide_ToolTip()
+    {
+        if (!tooltipUI.toolTipOn)
+        {
+            Show_Buff_ToolTip();
+        }
+        else
+        {
+            Hide_Buff_ToolTip();
+        }
     }
 }

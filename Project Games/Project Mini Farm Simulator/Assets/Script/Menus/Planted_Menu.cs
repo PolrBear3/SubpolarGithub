@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [System.Serializable]
+public class Planted_Menu_Data
+{
+    public bool menuOn = false;
+}
+
+[System.Serializable]
 public class Current_Buffs_Panel_UI
 {
     [HideInInspector]
@@ -18,6 +24,9 @@ public class Planted_Menu : MonoBehaviour
     public MainGame_Controller controller;
     RectTransform rectTransform;
     public LeanTweenType tweenType;
+    public Button[] allAvailableButtons;
+
+    public Planted_Menu_Data data;
 
     public Image plantedSeedImage;
     public Text plantedDayPassed,
@@ -26,7 +35,6 @@ public class Planted_Menu : MonoBehaviour
 
     public GameObject[] harvestButtons;
     public Current_Buffs_Panel_UI currentBuffsPanel;
-    public Button[] allAvailableButtons;
 
     private void Awake()
     {
@@ -76,12 +84,15 @@ public class Planted_Menu : MonoBehaviour
     
     public void Open()
     {
+        data.menuOn = true;
         Button_Shield(false);
         Seed_Information_Update();
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
     }
     public void Close()
     {
+        data.menuOn = false;
+        controller.unPlantedMenu.hide_Seed_ToolTip();
         Button_Shield(true);
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
@@ -256,5 +267,23 @@ public class Planted_Menu : MonoBehaviour
     {
         currentBuffsPanel.cbON = false;
         currentBuffsPanel.cbPanel.SetActive(false);
+    }
+
+    // planted seed tooltip function
+    public void Show_Hide_ToolTip()
+    {
+        var x = controller.unPlantedMenu.seedToolTipUIconnection;
+
+        if (data.menuOn)
+        {
+            if (!x.toolTipOn)
+            {
+                controller.unPlantedMenu.Show_PlanedSeed_ToolTip(controller.farmTiles[controller.openedTileNum].data.plantedSeed);
+            }
+            else
+            {
+                controller.unPlantedMenu.hide_Seed_ToolTip();
+            }
+        }
     }
 }
