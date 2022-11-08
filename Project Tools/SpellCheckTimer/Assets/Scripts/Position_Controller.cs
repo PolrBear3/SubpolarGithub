@@ -6,18 +6,24 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Position_Controller_Data
 {
-    public bool hasRune;
-    public bool hasBoots;
+    public bool hasRune = false;
+    public bool hasBoots = false;
 }
 
 [System.Serializable]
 public class Position_Controller_UI
 {
-    public Image runeFrame;
-    public Image bootsFrame;
+    public Image runeImage, runeFrame;
+    public Image bootsImage, bootsFrame;
 
     public Sprite defaultFrame;
     public Sprite selectFrame;
+
+    public Sprite UnSelectedRune;
+    public Sprite SelectedRune;
+
+    public Sprite UnSelectedBoots;
+    public Sprite SelectedBoots;
 }
 
 
@@ -36,11 +42,13 @@ public class Position_Controller : MonoBehaviour
         {
             data.hasRune = true;
             ui.runeFrame.sprite = ui.selectFrame;
+            ui.runeImage.sprite = ui.SelectedRune;
         }
         else
         {
             data.hasRune = false;
             ui.runeFrame.sprite = ui.defaultFrame;
+            ui.runeImage.sprite = ui.UnSelectedRune;
         }
     }
     public void Boots_On_Off()
@@ -49,11 +57,14 @@ public class Position_Controller : MonoBehaviour
         {
             data.hasBoots = true;
             ui.bootsFrame.sprite = ui.selectFrame;
+            ui.bootsImage.sprite = ui.SelectedBoots;
         }
         else
         {
             data.hasBoots = false;
             ui.bootsFrame.sprite = ui.defaultFrame;
+            ui.bootsImage.sprite = ui.UnSelectedBoots;
+
         }
     }
 }
