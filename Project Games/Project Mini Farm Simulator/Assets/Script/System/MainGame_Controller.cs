@@ -29,11 +29,17 @@ public class MainGame_Controller : MonoBehaviour
     
     private int _money = 0;
     public int money => _money;
-    public int addMoneyAmount;
 
     private void Start()
     {
         Set_TileNum_forAll_Tiles();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Add_Money(100);
+        }
     }
 
     // tile functions
