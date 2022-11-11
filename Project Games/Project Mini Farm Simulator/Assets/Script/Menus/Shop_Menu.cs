@@ -48,7 +48,7 @@ public class Shop_Menu : MonoBehaviour
 
     private void Center_Position()
     {
-        ui.shopMenuPanel.anchoredPosition = new Vector2(-252.6f, 300f);
+        ui.shopMenuPanel.anchoredPosition = new Vector2(-392.56f, 300f);
     }
     private void Open()
     {
@@ -67,7 +67,7 @@ public class Shop_Menu : MonoBehaviour
     {
         data.menuOn = false;
         Button_Shield(true);
-        LeanTween.move(ui.shopMenuPanel, new Vector2(-252.6f, 300f), 0.75f).setEase(tweenType);
+        LeanTween.move(ui.shopMenuPanel, new Vector2(-392.56f, 300f), 0.75f).setEase(tweenType);
     }
     public void Open_Close()
     {

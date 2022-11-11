@@ -155,7 +155,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         Button_Shield(true);
         Frames_CurrentButtons_Button_Shield(true);
         // lean tween collectableFramesPanel
-        LeanTween.move(ui.collectableFramesPanel, new Vector2(360.04f, 62.50972f), 0.75f).setEase(tweenType);
+        LeanTween.move(ui.collectableFramesPanel, new Vector2(500f, 62.50972f), 0.75f).setEase(tweenType);
         // close shop menu
         controller.shopMenu.Close();
         // lean tween collectableRoomMenu

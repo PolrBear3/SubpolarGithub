@@ -33,7 +33,7 @@ public class Resolution_Controller : MonoBehaviour
 
     private void Start()
     {
-        Change_Resolution(0);
+        Change_Resolution(1);
     }
 
     private void Update_Current_Resolution_Text(int arrayNum)

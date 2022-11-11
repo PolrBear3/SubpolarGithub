@@ -50,7 +50,7 @@ public class Options_Menu : MonoBehaviour
         Button_Shield(true);
 
         data.menuOn = false;
-        LeanTween.move(ui.optionsPanel, new Vector2(-360.04f, 62.50972f), 0.75f).setEase(tweenType);
+        LeanTween.move(ui.optionsPanel, new Vector2(-500f, 62.50972f), 0.75f).setEase(tweenType);
         ui.menuButtonIcons[0].SetActive(true);
         ui.menuButtonIcons[1].SetActive(false);
     }
