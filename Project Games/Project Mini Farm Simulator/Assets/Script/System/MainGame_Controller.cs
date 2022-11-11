@@ -11,6 +11,7 @@ public class MainGame_Controller : MonoBehaviour
     public Planted_Menu plantedMenu;
     public Buff_Menu buffMenu;
     public Shop_Menu shopMenu;
+    public Options_Menu optionsMenu;
     public Buff_Function_Controller buffFunction;
     public Save_System saveSystem;
     public Time_System timeSystem;
@@ -64,6 +65,9 @@ public class MainGame_Controller : MonoBehaviour
         plantedMenu.Close();
         lockedMenu.Close();
         buffMenu.Close();
+        shopMenu.Close();
+        collectableRoomMenu.Close();
+        optionsMenu.Close();
     }
     public void Reset_All_Tile_Highlights()
     {

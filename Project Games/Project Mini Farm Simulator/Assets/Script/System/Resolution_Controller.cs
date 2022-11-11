@@ -13,13 +13,15 @@ public struct Available_Resolution
 [System.Serializable]
 public class Resolution_Controller_Data
 {
-    public bool isFullScreen;
+    public bool isFullScreen = false;
+    public int currentWidth, currentHeight;
 }
 
 [System.Serializable]
 public class Resolution_Controller_UI
 {
     public Text currentResolution;
+    public Text currentScreenMode;
 }
 
 public class Resolution_Controller : MonoBehaviour
@@ -31,7 +33,7 @@ public class Resolution_Controller : MonoBehaviour
 
     private void Start()
     {
-        Update_Current_Resolution_Text(0);
+        Change_Resolution(0);
     }
 
     private void Update_Current_Resolution_Text(int arrayNum)
@@ -39,17 +41,20 @@ public class Resolution_Controller : MonoBehaviour
         ui.currentResolution.text = resolutions[arrayNum].width + " * " + resolutions[arrayNum].height.ToString();
     }
 
-    public void FullScreen_OnOff()
+    public void Change_ScreenMode(bool on)
     {
-        if (!data.isFullScreen)
+        if (on == true)
         {
             data.isFullScreen = true;
-            Screen.fullScreen = data.isFullScreen;
+            Screen.SetResolution(data.currentWidth, data.currentHeight, true);
+            ui.currentScreenMode.text = "Full".ToString();
         }
-        else
+        
+        if (on == false)
         {
             data.isFullScreen = false;
-            Screen.fullScreen = data.isFullScreen;
+            Screen.SetResolution(data.currentWidth, data.currentHeight, false);
+            ui.currentScreenMode.text = "Window".ToString();
         }
     }
     public void Change_Resolution(int arrayNum)
@@ -57,10 +62,14 @@ public class Resolution_Controller : MonoBehaviour
         if (data.isFullScreen)
         {
             Screen.SetResolution(resolutions[arrayNum].width, resolutions[arrayNum].height, true);
+            data.currentWidth = resolutions[arrayNum].width;
+            data.currentHeight = resolutions[arrayNum].height;
         }
         else
         {
             Screen.SetResolution(resolutions[arrayNum].width, resolutions[arrayNum].height, false);
+            data.currentWidth = resolutions[arrayNum].width;
+            data.currentHeight = resolutions[arrayNum].height;
         }
 
         Update_Current_Resolution_Text(arrayNum);

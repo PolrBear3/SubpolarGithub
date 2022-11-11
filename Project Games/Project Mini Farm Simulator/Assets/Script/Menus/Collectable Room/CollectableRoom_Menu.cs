@@ -112,9 +112,10 @@ public class CollectableRoom_Menu : MonoBehaviour
 
     private void Open()
     {
-        ui.menuOn = true;
         // close all menus that are opened
         controller.Reset_All_Menu();
+        
+        ui.menuOn = true;
         // buttons available
         Button_Shield(false);
         Frames_CurrentButtons_Button_Shield(false);
