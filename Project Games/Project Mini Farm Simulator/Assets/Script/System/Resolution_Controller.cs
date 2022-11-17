@@ -81,36 +81,43 @@ public class Resolution_Controller : MonoBehaviour
     
     public void Change_ScreenMode(bool on)
     {
-        Resolution_Panel_Popup();
-
-        if (on == true)
+        if (on != data.isFullScreen)
         {
-            data.isFullScreen = true;
-            Screen.SetResolution(data.currentResArrayNum, data.currentResArrayNum, true);
-        }
-        else
-        {
-            data.isFullScreen = false;
-            Screen.SetResolution(data.currentResArrayNum, data.currentResArrayNum, false);
-        }
+            Resolution_Panel_Popup();
 
-        Update_Current_ScreenMode_Text(on);
+            var x = data.currentResArrayNum;
+            if (on == true)
+            {
+                data.isFullScreen = true;
+                Screen.SetResolution(resolutions[x].width, resolutions[x].height, true);
+            }
+            else
+            {
+                data.isFullScreen = false;
+                Screen.SetResolution(resolutions[x].width, resolutions[x].height, false);
+            }
+
+            Update_Current_ScreenMode_Text(on);
+        }
     }
     public void Change_Resolution(int arrayNum)
     {
-        Resolution_Panel_Popup();
-
-        if (data.isFullScreen)
+        if (arrayNum != data.currentResArrayNum)
         {
-            Screen.SetResolution(resolutions[arrayNum].width, resolutions[arrayNum].height, true);
-        }
-        else
-        {
-            Screen.SetResolution(resolutions[arrayNum].width, resolutions[arrayNum].height, false);
-        }
-        data.currentResArrayNum = arrayNum;
+            Resolution_Panel_Popup();
 
-        Update_Current_Resolution_Text(arrayNum);
+            if (data.isFullScreen)
+            {
+                Screen.SetResolution(resolutions[arrayNum].width, resolutions[arrayNum].height, true);
+            }
+            else
+            {
+                Screen.SetResolution(resolutions[arrayNum].width, resolutions[arrayNum].height, false);
+            }
+            data.currentResArrayNum = arrayNum;
+
+            Update_Current_Resolution_Text(arrayNum);
+        }
     }
 
     private void Resolution_Panel_Timer()
