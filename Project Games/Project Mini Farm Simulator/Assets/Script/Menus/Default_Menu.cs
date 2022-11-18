@@ -22,6 +22,7 @@ public class Default_Menu_UI
 public class Default_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
+    public Button[] allAvailableButtons;
 
     public Default_Menu_UI menuUI;
 
@@ -43,6 +44,16 @@ public class Default_Menu : MonoBehaviour
         Money_Text_Update();
     }
 
+    public void Button_Shield(bool activate)
+    {
+        for (int i = 0; i < allAvailableButtons.Length; i++)
+        {
+            if (activate) { allAvailableButtons[i].enabled = false; }
+            else if (!activate) { allAvailableButtons[i].enabled = true; }
+        }
+    }
+    
+    // ui ingame update
     public void Update_UI()
     {
         Current_InGameDay_Text_Update();

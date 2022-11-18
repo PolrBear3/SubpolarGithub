@@ -39,6 +39,8 @@ public class Resolution_Controller_UI
 
 public class Resolution_Controller : MonoBehaviour
 {
+    public Options_Menu optionsMenu;
+    
     public Resolution_Controller_Data data;
     public Resolution_Controller_UI ui;
 
@@ -150,6 +152,8 @@ public class Resolution_Controller : MonoBehaviour
         // start timer
         data.countApplyResTime = true;
         // all the buttons on the back, unfunctional while it is showing
+        optionsMenu.Button_Shield(true);
+        optionsMenu.controller.defaultMenu.Button_Shield(true);
     }
     
     public void Apply_Resolution()
@@ -159,6 +163,8 @@ public class Resolution_Controller : MonoBehaviour
         // stop timer
         data.countApplyResTime = false;
         // all the buttons on the back, functional
+        optionsMenu.Button_Shield(false);
+        optionsMenu.controller.defaultMenu.Button_Shield(false);
     }
     public void Reset_Back_Resolution()
     {
@@ -174,5 +180,7 @@ public class Resolution_Controller : MonoBehaviour
         Update_Current_Resolution_Text(x);
         Update_Current_ScreenMode_Text(data.isFullScreen);
         // all the buttons on the back, functional
+        optionsMenu.Button_Shield(false);
+        optionsMenu.controller.defaultMenu.Button_Shield(false);
     }
 }
