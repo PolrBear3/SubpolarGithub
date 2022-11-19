@@ -9,6 +9,7 @@ public class Unplanted_Menu_Seed_ToolTip
     public bool toolTipOn = false;
 
     public GameObject toolTipPanel;
+    public Animator toolTipAnimator;
     public Image previewSeedSprite;
     public Text seedName, seedDescription, seedPrice, sellPrice, harvestLength, seedMaxHealth, seedMaxWaterHealth;
 }
@@ -70,6 +71,7 @@ public class UnPlanted_Menu : MonoBehaviour
     // basic functions
     public void Open()
     {
+        Reset_Selections();
         Button_Shield(false);
         SeedButtons_Shield(false);
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
@@ -112,6 +114,7 @@ public class UnPlanted_Menu : MonoBehaviour
     {
         currentSeedInfo = null;
         currentCropImage.color = Color.clear;
+        seedToolTipUIconnection.toolTipAnimator.SetBool("seedSelected", false);
         PlantSeed_Button_Availability();
         hide_Seed_ToolTip();
     }
@@ -134,6 +137,7 @@ public class UnPlanted_Menu : MonoBehaviour
         currentSeedInfo = seedInfo;
         currentCropImage.sprite = seedInfo.sprites[3];
         currentCropImage.color = Color.white;
+        seedToolTipUIconnection.toolTipAnimator.SetBool("seedSelected", true);
         PlantSeed_Button_Availability();
     }
     public void Plant_Seed()

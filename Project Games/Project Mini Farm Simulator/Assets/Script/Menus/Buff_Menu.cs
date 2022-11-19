@@ -14,6 +14,7 @@ public class Buff_Menu_Buff_ToolTip
 {
     public bool toolTipOn = false;
     public GameObject toolTipPanel;
+    public Animator toolTipAnimator;
     public Image previewBuffSprite;
     public Text buffName, buffDescription, buffPrice;
 }
@@ -88,6 +89,7 @@ public class Buff_Menu : MonoBehaviour
     {
         currentSelectedBuff = null;
         ui.buffPreview.color = Color.clear;
+        tooltipUI.toolTipAnimator.SetBool("buffSelected", false);
         ConfirmButton_Availability();
     }
     public void Select_Buff(Buff_ScrObj buffInfo)
@@ -95,6 +97,7 @@ public class Buff_Menu : MonoBehaviour
         currentSelectedBuff = buffInfo;
         ui.buffPreview.sprite = buffInfo.sprite;
         ui.buffPreview.color = Color.white;
+        tooltipUI.toolTipAnimator.SetBool("buffSelected", true);
         ConfirmButton_Availability();
     }
 
