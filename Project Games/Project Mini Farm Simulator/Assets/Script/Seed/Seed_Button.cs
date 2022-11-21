@@ -8,8 +8,13 @@ public class Seed_Button : MonoBehaviour
     public UnPlanted_Menu menu;
     public Seed_ScrObj seedInfo;
 
-    public Image seedImage;
+    private bool buttonPressed;
+
+    public Image buttonImage;
     public Button button, frameButton;
+    public Sprite[] buttonSprites;
+
+    public Image seedImage;
     public Text seedPriceText;
 
     public void Button_Shield(bool activate)
@@ -25,7 +30,26 @@ public class Seed_Button : MonoBehaviour
     }
     public void Select_This_Seed()
     {
-        menu.hide_Seed_ToolTip();
-        menu.Select_Seed(seedInfo);
+        if (!buttonPressed)
+        {
+            menu.Unpress_All_Buttons();
+            buttonPressed = true;
+
+            buttonImage.sprite = buttonSprites[1];
+
+            menu.hide_Seed_ToolTip();
+            menu.Select_Seed(seedInfo);
+        }
+        else
+        {
+            UnPress_This_Button();
+        }
+    }
+    public void UnPress_This_Button()
+    {
+        buttonPressed = false;
+        buttonImage.sprite = buttonSprites[0];
+
+        menu.Reset_Selections();
     }
 }

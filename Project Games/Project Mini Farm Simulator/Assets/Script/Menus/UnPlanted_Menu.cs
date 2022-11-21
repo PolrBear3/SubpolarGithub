@@ -89,6 +89,7 @@ public class UnPlanted_Menu : MonoBehaviour
     public void PlantSeed_Close()
     {
         Button_Shield(true);
+        SeedButtons_Shield(true);
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
     }
 
@@ -99,6 +100,9 @@ public class UnPlanted_Menu : MonoBehaviour
     }
     public void Set_New_CurrentButtonPage()
     {
+        // unselect all buttons for pressed sprite change
+        Unpress_All_Buttons();
+
         // set new current button page
         currentButtons = allButtonPages[pageController.currentPageNum - 1].buttons;
         
@@ -109,14 +113,22 @@ public class UnPlanted_Menu : MonoBehaviour
         }
     }
 
+    // button pressed unpressed functions
+    public void Unpress_All_Buttons()
+    {
+        for (int i = 0; i < currentButtons.Count; i++)
+        {
+            currentButtons[i].UnPress_This_Button();
+        }
+    }
+
     // distinctive functions
-    private void Reset_Selections()
+    public void Reset_Selections()
     {
         currentSeedInfo = null;
         currentCropImage.color = Color.clear;
         seedToolTipUIconnection.toolTipAnimator.SetBool("seedSelected", false);
         PlantSeed_Button_Availability();
-        hide_Seed_ToolTip();
     }
     
     private void PlantSeed_Button_Availability()
