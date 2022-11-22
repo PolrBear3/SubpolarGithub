@@ -65,10 +65,9 @@ public class Gacha_System : MonoBehaviour
                 menu.controller.shopMenu.data.lastWinCollectable = menu.allCollectables[collectableNum].collectable;
 
                 // unlocking and update collectables
-                menu.AllButton_New_Check();
                 Unlock_Collectable(menu.allCollectables[collectableNum].collectable);
                 menu.AllButton_UnlockCheck();
-                menu.AllButton_New_Check();
+                menu.AllButton_NewIcon_Check();
                 menu.AllButton_Amount_Text_Update();
 
                 // calculating money

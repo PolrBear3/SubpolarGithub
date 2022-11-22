@@ -90,15 +90,10 @@ public class Collectable_Button : MonoBehaviour
         {
             if (data.thisCollectable == x[i].collectable)
             {
-                // set isNew true for locked collectables
-                if (!x[i].unLocked)
-                {
-                    x[i].isNew = true;
-                }
-                
                 // if it is locked
                 if (!x[i].unLocked)
                 {
+                    x[i].isNew = true;
                     ui.lockIcon.SetActive(true);
                     ui.amountText.enabled = false;
                     ui.collectableImage.sprite = data.thisCollectable.lockedSprite;
@@ -117,7 +112,7 @@ public class Collectable_Button : MonoBehaviour
             }
         }
     }
-    public void New_Check()
+    public void NewIcon_Check()
     {
         var x = menu.allCollectables;
         for (int i = 0; i < x.Length; i++)
@@ -154,7 +149,7 @@ public class Collectable_Button : MonoBehaviour
                 break;
             }
         }
-        menu.AllButton_New_Check();
+        menu.AllButton_NewIcon_Check();
     }
     public void UnSelect_Collectable()
     {

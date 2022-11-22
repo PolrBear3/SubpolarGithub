@@ -6,8 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class CollectableRoom_Menu_UI
 {
-    [HideInInspector]
-    public bool menuOn = false;
+    public GameObject[] menuButtonIcons;
     public RectTransform collectableFramesPanel, collectableRoomMenu;
     public Image findIcon;
 }
@@ -15,6 +14,8 @@ public class CollectableRoom_Menu_UI
 [System.Serializable]
 public class CollectableRoom_Menu_Data
 {
+    public bool menuOn = false;
+
     public bool placeMode = false;
     public Collectable_ScrObj selectedCollectable;
 
@@ -114,8 +115,13 @@ public class CollectableRoom_Menu : MonoBehaviour
     {
         // close all menus that are opened
         controller.Reset_All_Menu();
-        
-        ui.menuOn = true;
+
+        data.menuOn = true;
+
+        // default menu button icon
+        ui.menuButtonIcons[0].SetActive(false);
+        ui.menuButtonIcons[1].SetActive(true);
+
         // buttons available
         Button_Shield(false);
         Frames_CurrentButtons_Button_Shield(false);
@@ -136,7 +142,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         // collectables unlock check
         AllButton_UnlockCheck();
         // all collectables isNew check
-        AllButton_New_Check();
+        All_Collectable_New_Check();
+        AllButton_NewIcon_Check();
         // button available check from amount
         AllButton_Select_Available_Check();
         // update amount text
@@ -150,7 +157,12 @@ public class CollectableRoom_Menu : MonoBehaviour
     }
     public void Close()
     {
-        ui.menuOn = false;
+        data.menuOn = false;
+
+        // default menu button icon
+        ui.menuButtonIcons[0].SetActive(true);
+        ui.menuButtonIcons[1].SetActive(false);
+
         // buttons unavailable
         Button_Shield(true);
         Frames_CurrentButtons_Button_Shield(true);
@@ -176,7 +188,7 @@ public class CollectableRoom_Menu : MonoBehaviour
     public void Open_Close()
     {
         // close if menu is open, open if menu is closed
-        if (!ui.menuOn) { Open(); }
+        if (!data.menuOn) { Open(); }
         else { Close(); }
     }
 
@@ -194,13 +206,25 @@ public class CollectableRoom_Menu : MonoBehaviour
         // collectables unlock check
         AllButton_UnlockCheck();
         // all collectables isNew check
-        AllButton_New_Check();
+        AllButton_NewIcon_Check();
         // amount check
         AllButton_Select_Available_Check();
         // update amount text
         AllButton_Amount_Text_Update();
         // button frame tier color set
         AllButton_Frame_Tier_Update();
+    }
+
+    // all collectable functions
+    private void All_Collectable_New_Check()
+    {
+        for (int i = 0; i < allCollectables.Length; i++)
+        {
+            if (!allCollectables[i].unLocked)
+            {
+                allCollectables[i].isNew = true;
+            }
+        }
     }
 
     // all frame functions
@@ -243,7 +267,7 @@ public class CollectableRoom_Menu : MonoBehaviour
         }
     }
 
-    // all button functions
+    // current buttons functions
     public void AllButton_UnSelect()
     {
         for (int i = 0; i < currentButtons.Count; i++)
@@ -268,11 +292,11 @@ public class CollectableRoom_Menu : MonoBehaviour
             currentButtons[i].Unlock_Check();
         }
     }
-    public void AllButton_New_Check()
+    public void AllButton_NewIcon_Check()
     {
         for (int i = 0; i < currentButtons.Count; i++)
         {
-            currentButtons[i].New_Check();
+            currentButtons[i].NewIcon_Check();
         }
     }
     public void AllButton_Amount_Text_Update()
