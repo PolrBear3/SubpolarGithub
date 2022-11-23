@@ -93,7 +93,6 @@ public class Collectable_Button : MonoBehaviour
                 // if it is locked
                 if (!x[i].unLocked)
                 {
-                    x[i].isNew = true;
                     ui.lockIcon.SetActive(true);
                     ui.amountText.enabled = false;
                     ui.collectableImage.sprite = data.thisCollectable.lockedSprite;

@@ -33,6 +33,7 @@ public class Options_Menu_TopButton
 public class Options_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
+    public Resolution_Controller resController;
     public LeanTweenType tweenType;
     public Button[] allAvailableButtons;
 

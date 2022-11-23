@@ -2,10 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+[System.Serializable]
+public class Save_System_UI
+{
+    public GameObject resetGamePanel;
+}
 
 public class Save_System : MonoBehaviour
 {
     public MainGame_Controller controller;
+
+    public Save_System_UI ui;
 
     private void Start()
     {
@@ -24,6 +33,7 @@ public class Save_System : MonoBehaviour
         Save_CurrentInGameDay();
         Save_Collectable_Data();
         Save_Collectable_Frames();
+        Save_Resolution_ScreenMode();
     }
     private void Load_All()
     {
@@ -34,6 +44,30 @@ public class Save_System : MonoBehaviour
         controller.timeSystem.Load_Day();
         Load_Collectable_Data();
         Load_Collectable_Frames();
+        Load_Resolution_ScreenMode();
+    }
+
+    // game reset system
+    public void Open_Reset_Game_Panel()
+    {
+        controller.optionsMenu.Button_Shield(true);
+        controller.defaultMenu.Button_Shield(true);
+
+        ui.resetGamePanel.SetActive(true);
+    }
+    public void Close_Reset_Game_Panel()
+    {
+        controller.optionsMenu.Button_Shield(false);
+        controller.defaultMenu.Button_Shield(false);
+
+        ui.resetGamePanel.SetActive(false);
+    }
+    public void Reset_Game()
+    {
+        // delete all saved data
+        ES3.DeleteFile("SaveFile.es3");
+        // relaunch scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     // farm tiles
@@ -222,6 +256,28 @@ public class Save_System : MonoBehaviour
             controller.collectableRoomMenu.allFrames = savedFrames;
 
             controller.collectableRoomMenu.AllFrame_Load_FrameSprite();
+        }
+    }
+
+    // options
+    private void Save_Resolution_ScreenMode()
+    {
+        ES3.Save("currentResArrayNum", controller.optionsMenu.resController.data.currentResArrayNum);
+        ES3.Save("isFullScreen", controller.optionsMenu.resController.data.isFullScreen);
+    }
+    private void Load_Resolution_ScreenMode()
+    {
+        if (ES3.KeyExists("currentResArrayNum"))
+        {
+            var resNum = ES3.Load<int>("currentResArrayNum");
+            var screenMode = ES3.Load<bool>("isFullScreen");
+
+            controller.optionsMenu.resController.Load_Resolution_and_ScreenMode(resNum, screenMode);
+        }
+        else
+        {
+            // set default res
+            controller.optionsMenu.resController.Load_Resolution_and_ScreenMode(2, false);
         }
     }
 }

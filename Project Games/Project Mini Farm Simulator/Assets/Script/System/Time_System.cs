@@ -19,10 +19,12 @@ public class Time_System : MonoBehaviour
         {
             Next_Day();
         }
-
-        Load_MyTime();
-        Set_FutureTime();
-        SubtractTime_SinceExit();
+        else
+        {
+            Load_MyTime();
+            Set_FutureTime();
+            SubtractTime_SinceExit();
+        }
     }
     private void Update()
     {

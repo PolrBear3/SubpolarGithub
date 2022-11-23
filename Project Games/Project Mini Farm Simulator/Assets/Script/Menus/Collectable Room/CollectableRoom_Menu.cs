@@ -27,7 +27,7 @@ public class CollectableRoom_Menu_Data
 public class Collectable
 {
     public Collectable_ScrObj collectable;
-    public bool unLocked = false, isNew = false;
+    public bool unLocked = false, isNew = true;
     public int currentAmount, maxAmount;
 }
 
@@ -142,7 +142,6 @@ public class CollectableRoom_Menu : MonoBehaviour
         // collectables unlock check
         AllButton_UnlockCheck();
         // all collectables isNew check
-        All_Collectable_New_Check();
         AllButton_NewIcon_Check();
         // button available check from amount
         AllButton_Select_Available_Check();
@@ -213,18 +212,6 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllButton_Amount_Text_Update();
         // button frame tier color set
         AllButton_Frame_Tier_Update();
-    }
-
-    // all collectable functions
-    private void All_Collectable_New_Check()
-    {
-        for (int i = 0; i < allCollectables.Length; i++)
-        {
-            if (!allCollectables[i].unLocked)
-            {
-                allCollectables[i].isNew = true;
-            }
-        }
     }
 
     // all frame functions

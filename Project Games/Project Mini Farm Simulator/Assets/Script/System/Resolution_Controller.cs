@@ -13,8 +13,8 @@ public struct Available_Resolution
 [System.Serializable]
 public class Resolution_Controller_Data
 {
-    public bool isFullScreen = false;
     public int currentResArrayNum;
+    public bool isFullScreen = false;
 
     [HideInInspector]
     public int preResArrayNum;
@@ -24,6 +24,7 @@ public class Resolution_Controller_Data
     public bool countApplyResTime = false;
     [HideInInspector]
     public float currentApplyResTime;
+
     public float maxApplyResTime;
 }
 
@@ -46,10 +47,6 @@ public class Resolution_Controller : MonoBehaviour
 
     public Available_Resolution[] resolutions;
 
-    private void Start()
-    {
-        Load_Resolution_and_ScreenMode();
-    }
     private void Update()
     {
         Resolution_Panel_Timer();
@@ -71,14 +68,16 @@ public class Resolution_Controller : MonoBehaviour
         }
     }
 
-    private void Load_Resolution_and_ScreenMode()
+    public void Load_Resolution_and_ScreenMode(int currentResArrayNum, bool isFullScreen)
     {
-        // default resolution for test (function not complete)
-        data.currentResArrayNum = 2;
+        data.currentResArrayNum = currentResArrayNum;
+        data.isFullScreen = isFullScreen;
+
         var x = data.currentResArrayNum;
         Screen.SetResolution(resolutions[x].width, resolutions[x].height, data.isFullScreen);
 
         Update_Current_Resolution_Text(x);
+        Update_Current_ScreenMode_Text(data.isFullScreen);
     }
     
     public void Change_ScreenMode(bool on)
