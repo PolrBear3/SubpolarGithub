@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class Save_System_UI
 {
     public GameObject resetGamePanel;
+    public Animator warningBox;
 }
 
 public class Save_System : MonoBehaviour
@@ -54,9 +55,13 @@ public class Save_System : MonoBehaviour
         controller.defaultMenu.Button_Shield(true);
 
         ui.resetGamePanel.SetActive(true);
+
+        ui.warningBox.SetBool("panelOn", true);
     }
     public void Close_Reset_Game_Panel()
     {
+        ui.warningBox.SetBool("panelOn", false);
+
         controller.optionsMenu.Button_Shield(false);
         controller.defaultMenu.Button_Shield(false);
 
