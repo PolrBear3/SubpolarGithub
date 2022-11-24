@@ -38,10 +38,24 @@ public class Gacha_System : MonoBehaviour
         {
             if (collectable == menu.allCollectables[i].collectable)
             {
-                if (menu.allCollectables[i].currentAmount > 0)
+                if (menu.allCollectables[i].currentAmount > 0 && !menu.allCollectables[i].unLocked)
                 {
                     menu.allCollectables[i].unLocked = true;
                     break;
+                }
+            }
+        }
+    }
+    private void GoldMode_Collectable_Check(Collectable_ScrObj collectable)
+    {
+        for (int i = 0; i < menu.allCollectables.Length; i++)
+        {
+            if (collectable == menu.allCollectables[i].collectable)
+            {
+                if (menu.allCollectables[i].maxAmount >= 100)
+                {
+                    menu.allCollectables[i].goldModeAvailable = true;
+                    menu.allCollectables[i].currentAmount = 100;
                 }
             }
         }
@@ -66,8 +80,10 @@ public class Gacha_System : MonoBehaviour
 
                 // unlocking and update collectables
                 Unlock_Collectable(menu.allCollectables[collectableNum].collectable);
+                GoldMode_Collectable_Check(menu.allCollectables[collectableNum].collectable);
                 menu.AllButton_UnlockCheck();
                 menu.AllButton_NewIcon_Check();
+                menu.AllButton_GoldMode_Check();
                 menu.AllButton_Amount_Text_Update();
 
                 // calculating money

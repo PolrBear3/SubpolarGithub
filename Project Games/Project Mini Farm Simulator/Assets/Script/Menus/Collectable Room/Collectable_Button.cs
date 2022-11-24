@@ -11,7 +11,7 @@ public class Collectable_Button_UI
     public RectTransform amountTextPositon;
     public Sprite[] buttonImages;
     public Sprite[] goldButtonSprites;
-    public GameObject lockIcon, newIcon;
+    public GameObject lockIcon, newIcon, goldModeButtonGameObject;
 }
 
 [System.Serializable]
@@ -99,18 +99,26 @@ public class Collectable_Button : MonoBehaviour
                 {
                     ui.lockIcon.SetActive(true);
                     ui.amountText.enabled = false;
-                    ui.collectableImage.sprite = data.thisCollectable.lockedSprite;
                     button.enabled = false;
                     frameButton.enabled = false;
+                    ui.collectableImage.sprite = data.thisCollectable.lockedSprite;
                 }
                 // if it is unlocked
                 else
                 {
                     ui.lockIcon.SetActive(false);
                     ui.amountText.enabled = true;
-                    UI_Set();
                     button.enabled = true;
                     frameButton.enabled = true;
+                    
+                    if (!data.goldMode)
+                    {
+                        UI_Set();
+                    }
+                    else
+                    {
+                        ui.collectableImage.sprite = data.thisCollectable.goldSprite;
+                    }
                 }
             }
         }
@@ -142,6 +150,7 @@ public class Collectable_Button : MonoBehaviour
         ui.selectButton.sprite = ui.buttonImages[1];
         ui.amountTextPositon.anchoredPosition = new Vector2(0f, -2.65f);
         menu.data.selectedCollectable = data.thisCollectable;
+        menu.data.selectedCollectableButton = this;
 
         var x = menu.allCollectables;
         for (int i = 0; i < x.Length; i++)
@@ -161,6 +170,7 @@ public class Collectable_Button : MonoBehaviour
         ui.selectButton.sprite = ui.buttonImages[0];
         ui.amountTextPositon.anchoredPosition = new Vector2(0f, 3.58f);
         menu.data.selectedCollectable = null;
+        menu.data.selectedCollectableButton = null;
     }
     public void Select_This_Collectable()
     {
@@ -168,6 +178,7 @@ public class Collectable_Button : MonoBehaviour
         {
             menu.AllButton_UnSelect();
             Select_Collectable();
+
         }
         else
         {
@@ -175,6 +186,24 @@ public class Collectable_Button : MonoBehaviour
         }
     }
 
+    public void GoldMode_Check()
+    {
+        var x = menu.allCollectables;
+        for (int i = 0; i < x.Length; i++)
+        {
+            if (data.thisCollectable == x[i].collectable)
+            {
+                if (x[i].goldModeAvailable)
+                {
+                    ui.goldModeButtonGameObject.SetActive(true);
+                }
+                else
+                {
+                    ui.goldModeButtonGameObject.SetActive(false);
+                }
+            }
+        }
+    }
     public void GoldMode_OnOff()
     {
         if (!data.goldMode)

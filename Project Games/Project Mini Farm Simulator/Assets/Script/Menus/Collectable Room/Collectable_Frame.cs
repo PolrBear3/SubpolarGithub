@@ -92,7 +92,19 @@ public class Collectable_Frame : MonoBehaviour
         data.collectablePlaced = true;
         data.currentCollectable = menu.data.selectedCollectable;
         Frame_Tier_Update();
-        ui.collectableImage.sprite = data.currentCollectable.sprite;
+
+        // gold mode place check
+        if (!menu.data.selectedCollectableButton.data.goldMode)
+        {
+            // normal
+            ui.collectableImage.sprite = data.currentCollectable.sprite;
+        }
+        else
+        {
+            // gold
+            ui.collectableImage.sprite = data.currentCollectable.goldSprite;
+        }
+
         ui.collectableImage.color = Color.white;
 
         // -1 selected collectable amount from all collectables

@@ -18,6 +18,8 @@ public class CollectableRoom_Menu_Data
 
     public bool placeMode = false;
     public Collectable_ScrObj selectedCollectable;
+    [HideInInspector]
+    public Collectable_Button selectedCollectableButton;
 
     public int sortNum;
     public Collectable_Rare_level sortMode;
@@ -143,6 +145,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllButton_UnlockCheck();
         // all collectables isNew check
         AllButton_NewIcon_Check();
+        // all collectables gold mode toggle button available check
+        AllButton_GoldMode_Check();
         // button available check from amount
         AllButton_Select_Available_Check();
         // update amount text
@@ -206,6 +210,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         AllButton_UnlockCheck();
         // all collectables isNew check
         AllButton_NewIcon_Check();
+        // all collectables gold mode toggle button available check
+        AllButton_GoldMode_Check();
         // amount check
         AllButton_Select_Available_Check();
         // update amount text
@@ -284,6 +290,13 @@ public class CollectableRoom_Menu : MonoBehaviour
         for (int i = 0; i < currentButtons.Count; i++)
         {
             currentButtons[i].NewIcon_Check();
+        }
+    }
+    public void AllButton_GoldMode_Check()
+    {
+        for (int i = 0; i < currentButtons.Count; i++)
+        {
+            currentButtons[i].GoldMode_Check();
         }
     }
     public void AllButton_Amount_Text_Update()
