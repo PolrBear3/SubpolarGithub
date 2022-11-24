@@ -27,7 +27,7 @@ public class CollectableRoom_Menu_Data
 public class Collectable
 {
     public Collectable_ScrObj collectable;
-    public bool unLocked = false, isNew = true;
+    public bool unLocked = false, isNew = true, goldModeAvailable = false;
     public int currentAmount, maxAmount;
 }
 

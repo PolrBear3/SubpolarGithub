@@ -16,6 +16,7 @@ public class Buff_Button : MonoBehaviour
 
     public Image buffImage;
     public Text buffPriceText;
+    public RectTransform buffPriceTextRT;
 
     public void Button_Shield(bool activate)
     {
@@ -36,6 +37,7 @@ public class Buff_Button : MonoBehaviour
             buttonPressed = true;
 
             buttonImage.sprite = buttonSprites[1];
+            buffPriceTextRT.anchoredPosition = new Vector2(0f, -2.65f);
 
             menu.Hide_Buff_ToolTip();
             menu.Select_Buff(buffInfo);
@@ -48,7 +50,9 @@ public class Buff_Button : MonoBehaviour
     public void UnPress_This_Button()
     {
         buttonPressed = false;
+
         buttonImage.sprite = buttonSprites[0];
+        buffPriceTextRT.anchoredPosition = new Vector2(0f, 3.58f);
 
         menu.Reset_Selections();
     }

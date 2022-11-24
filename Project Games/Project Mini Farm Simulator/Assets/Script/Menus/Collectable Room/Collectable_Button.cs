@@ -6,10 +6,11 @@ using UnityEngine.UI;
 [System.Serializable]
 public class Collectable_Button_UI
 {
-    public Image collectableImage, frameImage, selectButton;
+    public Image collectableImage, frameImage, selectButton, goldModeButton;
     public Text amountText;
     public RectTransform amountTextPositon;
     public Sprite[] buttonImages;
+    public Sprite[] goldButtonSprites;
     public GameObject lockIcon, newIcon;
 }
 
@@ -18,6 +19,7 @@ public class Collectable_Button_Data
 {
     public Collectable_ScrObj thisCollectable;
     public bool buttonPressed = false;
+    public bool goldMode = false;
 }
 
 public class Collectable_Button : MonoBehaviour
@@ -70,10 +72,12 @@ public class Collectable_Button : MonoBehaviour
                 if (menu.allCollectables[i].currentAmount <= 0)
                 {
                     button.enabled = false;
+                    frameButton.enabled = false;
                 }
                 else
                 {
                     button.enabled = true;
+                    frameButton.enabled = true;
                 }
             }
         }
@@ -168,6 +172,22 @@ public class Collectable_Button : MonoBehaviour
         else
         {
             UnSelect_Collectable();
+        }
+    }
+
+    public void GoldMode_OnOff()
+    {
+        if (!data.goldMode)
+        {
+            data.goldMode = true;
+            ui.goldModeButton.sprite = ui.goldButtonSprites[1];
+            ui.collectableImage.sprite = data.thisCollectable.goldSprite;
+        }
+        else
+        {
+            data.goldMode = false;
+            ui.goldModeButton.sprite = ui.goldButtonSprites[0];
+            UI_Set();
         }
     }
 }

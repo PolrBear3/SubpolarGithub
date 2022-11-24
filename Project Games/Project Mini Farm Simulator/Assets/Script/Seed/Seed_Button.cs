@@ -16,6 +16,7 @@ public class Seed_Button : MonoBehaviour
 
     public Image seedImage;
     public Text seedPriceText;
+    public RectTransform seedPriceTextRT;
 
     public void Button_Shield(bool activate)
     {
@@ -36,6 +37,7 @@ public class Seed_Button : MonoBehaviour
             buttonPressed = true;
 
             buttonImage.sprite = buttonSprites[1];
+            seedPriceTextRT.anchoredPosition = new Vector2(0f, -2.65f);
 
             menu.hide_Seed_ToolTip();
             menu.Select_Seed(seedInfo);
@@ -48,7 +50,9 @@ public class Seed_Button : MonoBehaviour
     public void UnPress_This_Button()
     {
         buttonPressed = false;
+
         buttonImage.sprite = buttonSprites[0];
+        seedPriceTextRT.anchoredPosition = new Vector2(0f, 3.58f);
 
         menu.Reset_Selections();
     }
