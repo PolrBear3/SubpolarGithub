@@ -10,7 +10,6 @@ public class Collectable_Button_UI
     public Text amountText;
     public RectTransform amountTextPositon;
     public Sprite[] buttonImages;
-    public Sprite[] goldButtonSprites;
     public GameObject lockIcon, newIcon, goldModeButtonGameObject;
 }
 
@@ -209,13 +208,11 @@ public class Collectable_Button : MonoBehaviour
         if (!data.goldMode)
         {
             data.goldMode = true;
-            ui.goldModeButton.sprite = ui.goldButtonSprites[1];
             ui.collectableImage.sprite = data.thisCollectable.goldSprite;
         }
         else
         {
             data.goldMode = false;
-            ui.goldModeButton.sprite = ui.goldButtonSprites[0];
             UI_Set();
         }
     }

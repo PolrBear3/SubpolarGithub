@@ -153,9 +153,6 @@ MonoBehaviour:
     buttonImages:
     - {fileID: -862825025, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
     - {fileID: 364941353, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
-    goldButtonSprites:
-    - {fileID: -2117404705, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
-    - {fileID: 1589995353, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
     lockIcon: {fileID: 2809010607713505005}
     newIcon: {fileID: 9178166620292858877}
     goldModeButtonGameObject: {fileID: 5112904237996013872}
@@ -275,8 +272,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.8, y: 69}
-  m_SizeDelta: {x: 30, y: 30}
+  m_AnchoredPosition: {x: 1.17, y: 68.25}
+  m_SizeDelta: {x: 30, y: 17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &581251533301642235
 CanvasRenderer:
@@ -306,8 +303,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2117404705, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: -256695280, guid: e794b36839e98f54ebbdc969dad27e88, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -346,7 +343,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 1589995353, guid: 2a89e6f87115944e6a1ec2c2704115f7, type: 3}
+    m_PressedSprite: {fileID: -720082946, guid: e794b36839e98f54ebbdc969dad27e88, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
