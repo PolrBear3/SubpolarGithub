@@ -224,7 +224,8 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.currentDayWatered = false;
         tileSeedStatus.harvestReady = true;
         tileSeedStatus.bonusPoints = 0;
-        controller.Reset_All_Menu();
+        
+        controller.plantedMenu.Close();
         controller.unPlantedMenu.Open();
         Highlight_Tile();
     }

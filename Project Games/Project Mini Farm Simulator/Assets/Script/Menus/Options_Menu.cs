@@ -62,6 +62,16 @@ public class Options_Menu : MonoBehaviour
         LeanTween.move(ui.optionsPanel, new Vector2(0f, 62.50972f), 0.75f).setEase(tweenType);
         ui.menuButtonIcons[0].SetActive(false);
         ui.menuButtonIcons[1].SetActive(true);
+
+        // button shield on for nextday button
+        controller.defaultMenu.menuUI.nextDayButton.enabled = false;
+
+        // turn off all farmtile status icons, button shield on for all farmtiles
+        for (int i = 0; i < controller.farmTiles.Length; i++)
+        {
+            controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(false);
+            controller.farmTiles[i].button.enabled = false;
+        }
     }
     public void Close()
     {
@@ -71,6 +81,16 @@ public class Options_Menu : MonoBehaviour
         LeanTween.move(ui.optionsPanel, new Vector2(-500f, 62.50972f), 0.75f).setEase(tweenType);
         ui.menuButtonIcons[0].SetActive(true);
         ui.menuButtonIcons[1].SetActive(false);
+
+        // button shield on for nextday button
+        controller.defaultMenu.menuUI.nextDayButton.enabled = true;
+
+        // turn on all farmtile status icons, button shield off for all farmtiles
+        for (int i = 0; i < controller.farmTiles.Length; i++)
+        {
+            controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(true);
+            controller.farmTiles[i].button.enabled = true;
+        }
     }
     public void Open_Close()
     {

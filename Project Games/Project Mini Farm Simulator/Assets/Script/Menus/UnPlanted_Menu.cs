@@ -11,7 +11,8 @@ public class Unplanted_Menu_Seed_ToolTip
     public GameObject toolTipPanel;
     public Animator toolTipAnimator;
     public Image previewSeedSprite;
-    public Text seedName, seedDescription, seedPrice, sellPrice, harvestLength, seedMaxHealth, seedMaxWaterHealth;
+    public Text seedName, seedDescription, seedPrice, sellPrice, harvestLength, waitTime,
+        seedMaxHealth, seedMaxWaterHealth;
 }
 
 [System.Serializable]
@@ -187,6 +188,7 @@ public class UnPlanted_Menu : MonoBehaviour
             x.sellPrice.text = "sell price: $ " + currentSeedInfo.harvestSellPrice.ToString();
             x.harvestLength.text = "harvest: " +
             currentSeedInfo.minFinishDays + "~" + currentSeedInfo.maxFinishDays + " days".ToString();
+            x.waitTime.text = "wait time: + " + currentSeedInfo.waitTime + " seconds".ToString();
             x.seedMaxHealth.text = currentSeedInfo.seedHealth.ToString();
             x.seedMaxWaterHealth.text = currentSeedInfo.waterHealth.ToString();
 

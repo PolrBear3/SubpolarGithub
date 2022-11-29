@@ -201,7 +201,7 @@ public class Time_System : MonoBehaviour
 
         for (int i = 0; i < x.Length; i++)
         {
-            if (x[i].data.seedPlanted)
+            if (x[i].data.seedPlanted && !x[i].tileSeedStatus.harvestReady)
             {
                 Add_MyTime(x[i].data.plantedSeed.waitTime);
             }

@@ -61,8 +61,8 @@ public class MainGame_Controller : MonoBehaviour
     // ui functions
     public void Reset_All_Menu()
     {
-        unPlantedMenu.Close();
         plantedMenu.Close();
+        unPlantedMenu.Close();
         lockedMenu.Close();
         buffMenu.Close();
         shopMenu.Close();
