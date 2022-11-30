@@ -179,20 +179,16 @@ public class Time_System : MonoBehaviour
     }
     private void NextDay_Button_Availability()
     {
-        var x = controller.defaultMenu.menuUI.nextDayButtons;
-        
         if (mySec <= 0)
         {
             // set mySec to not ever go bellow 0
             mySec = 0;
 
-            x[0].SetActive(false);
-            x[1].SetActive(true);
+            controller.defaultMenu.Activate_NextDay_Button(true);
         }
         else
         {
-            x[0].SetActive(true);
-            x[1].SetActive(false);
+            controller.defaultMenu.Activate_NextDay_Button(false);
         }
     }
     private void ReCalculate_AllSeed_WaitTime()

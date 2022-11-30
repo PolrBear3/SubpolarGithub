@@ -60,6 +60,19 @@ public class Default_Menu : MonoBehaviour
         Next_Day_AlphaValueFade_Tween();
         Season_Weather_UI_Update();
     }
+    public void Activate_NextDay_Button(bool activation)
+    {
+        if (activation)
+        {
+            menuUI.nextDayButtons[0].SetActive(false);
+            menuUI.nextDayButtons[1].SetActive(true);
+        }
+        else
+        {
+            menuUI.nextDayButtons[0].SetActive(true);
+            menuUI.nextDayButtons[1].SetActive(false);
+        }
+    }
 
     // time system ui
     private void Current_InGameDay_Text_Update()

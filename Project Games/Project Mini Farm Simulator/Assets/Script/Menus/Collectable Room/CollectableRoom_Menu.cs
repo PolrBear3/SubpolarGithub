@@ -133,12 +133,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         LeanTween.move(ui.collectableRoomMenu, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
         // button shield on for nextday button
         controller.defaultMenu.menuUI.nextDayButton.enabled = false;
-        // turn off all farmtile status icons, button shield on for all farmtiles
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(false);
-            controller.farmTiles[i].button.enabled = false;
-        }
+        // hide and activate button shield for all farmtiles
+        controller.Hide_All_Tiles(true);
         // reset frame button availability
         AllFrame_PlaceMode_Off();
         // collectables unlock check
@@ -177,12 +173,8 @@ public class CollectableRoom_Menu : MonoBehaviour
         LeanTween.move(ui.collectableRoomMenu, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
         // button shield off for nextday button
         controller.defaultMenu.menuUI.nextDayButton.enabled = true;
-        // turn on all farmtile status icons, button shield off for all farmtiles
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(true);
-            controller.farmTiles[i].button.enabled = true;
-        }
+        // show and disactivate button shield for all farmtiles
+        controller.Hide_All_Tiles(false);
         // all buttons set to unpressed
         AllButton_UnSelect();
         // reset frame button availability

@@ -23,7 +23,7 @@ public class FarmTile_Basic_Data
 {
     public Seed_ScrObj plantedSeed = null;
     public int tileNum, tilePrice;
-    public bool tileLocked = false, seedPlanted = false;
+    public bool tileSelected = false, tileLocked = false, seedPlanted = false;
 
     public Sprite lockedTile;
     public Sprite unplantedTile;
@@ -81,36 +81,49 @@ public class FarmTile : MonoBehaviour
     // tile selecting
     public void Highlight_Tile()
     {
+        data.tileSelected = true;
         gameObject.transform.GetChild(1).gameObject.SetActive(true);
     }
     public void UnHighlight_Tile()
     {
+        data.tileSelected = false;
         gameObject.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public void Open_Menu(FarmTile farmTile)
     {
-        // detecting which tile was pressed
-        controller.Set_OpenTileNum(farmTile);
-
-        // reset 
-        controller.Reset_All_Menu();
-        controller.Reset_All_Tile_Highlights();
-
-        // highlight pressed tile
-        Highlight_Tile();
-
-        if (data.tileLocked)
+        // if the tile is already selected
+        if (data.tileSelected)
         {
-            controller.lockedMenu.Open();
+            UnHighlight_Tile();
+
+            // close opened menu
+            controller.Reset_All_Menu();
         }
-        else if (!data.seedPlanted)
+        // if the tile is not selected
+        else
         {
-            controller.unPlantedMenu.Open();
-        }
-        else if (data.seedPlanted)
-        {
-            controller.plantedMenu.Open();
+            // detecting which tile was pressed
+            controller.Set_OpenTileNum(farmTile);
+
+            // reset 
+            controller.Reset_All_Menu();
+            controller.Reset_All_Tile_Highlights();
+
+            Highlight_Tile();
+
+            if (data.tileLocked)
+            {
+                controller.lockedMenu.Open();
+            }
+            else if (!data.seedPlanted)
+            {
+                controller.unPlantedMenu.Open();
+            }
+            else if (data.seedPlanted)
+            {
+                controller.plantedMenu.Open();
+            }
         }
     }
 

@@ -57,6 +57,32 @@ public class MainGame_Controller : MonoBehaviour
     {
         openedTileNum = farmTile.data.tileNum;
     }
+    public void Reset_All_Tile_Highlights()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].UnHighlight_Tile();
+        }
+    }
+    public void Hide_All_Tiles(bool activation)
+    {
+        bool x;
+        
+        if (activation)
+        {
+            x = false;
+        }
+        else
+        {
+            x = true;
+        }
+
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].statusIconIndicator.gameObject.SetActive(x);
+            farmTiles[i].button.enabled = x;
+        }
+    }
 
     // ui functions
     public void Reset_All_Menu()
@@ -68,13 +94,6 @@ public class MainGame_Controller : MonoBehaviour
         shopMenu.Close();
         collectableRoomMenu.Close();
         optionsMenu.Close();
-    }
-    public void Reset_All_Tile_Highlights()
-    {
-        for (int i = 0; i < farmTiles.Length; i++)
-        {
-            farmTiles[i].UnHighlight_Tile();
-        }
     }
 
     // money functions

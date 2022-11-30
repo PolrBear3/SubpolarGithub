@@ -163,8 +163,8 @@ GameObject:
   - component: {fileID: 2099662356543446033}
   - component: {fileID: 1962912714657643696}
   - component: {fileID: 6112180647220001237}
-  - component: {fileID: 1962912714657643702}
   - component: {fileID: 1962912714657643697}
+  - component: {fileID: 1962912714657643702}
   m_Layer: 5
   m_Name: Farm Tile
   m_TagString: Untagged
@@ -233,6 +233,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1962912714657643697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962472615654180662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628c3c482a9db4040bc1b9bf39d3693d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  button: {fileID: 1962912714657643702}
+  statusIconIndicator: {fileID: 1085077442416054105}
+  image: {fileID: 0}
+  saveName: 
+  data:
+    plantedSeed: {fileID: 0}
+    tileNum: 0
+    tilePrice: 0
+    tileLocked: 1
+    seedPlanted: 0
+    lockedTile: {fileID: -1541799582, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}
+    unplantedTile: {fileID: 21300000, guid: def7443a443d74d45bb19ac343840659, type: 3}
+  tileSeedStatus:
+    health: 0
+    dayPassed: 0
+    fullGrownDay: 0
+    watered: 0
+    daysWithoutWater: 0
+    currentDayWatered: 0
+    harvestReady: 0
+    bonusPoints: 0
+  currentBuffs: []
 --- !u!114 &1962912714657643702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,41 +324,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1962912714657643697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7962472615654180662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 628c3c482a9db4040bc1b9bf39d3693d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  button: {fileID: 1962912714657643702}
-  statusIconIndicator: {fileID: 1085077442416054105}
-  image: {fileID: 0}
-  saveName: 
-  data:
-    plantedSeed: {fileID: 0}
-    tileNum: 0
-    tilePrice: 0
-    tileLocked: 1
-    seedPlanted: 0
-    lockedTile: {fileID: -1541799582, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}
-    unplantedTile: {fileID: 21300000, guid: def7443a443d74d45bb19ac343840659, type: 3}
-  tileSeedStatus:
-    health: 0
-    dayPassed: 0
-    fullGrownDay: 0
-    watered: 0
-    daysWithoutWater: 0
-    currentDayWatered: 0
-    harvestReady: 0
-    bonusPoints: 0
-  currentBuffs: []
 --- !u!1001 &3130454916206903348
 PrefabInstance:
   m_ObjectHideFlags: 0

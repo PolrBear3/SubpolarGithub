@@ -66,12 +66,8 @@ public class Options_Menu : MonoBehaviour
         // button shield on for nextday button
         controller.defaultMenu.menuUI.nextDayButton.enabled = false;
 
-        // turn off all farmtile status icons, button shield on for all farmtiles
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(false);
-            controller.farmTiles[i].button.enabled = false;
-        }
+        // hide and activate button shield for all farmtiles
+        controller.Hide_All_Tiles(true);
     }
     public void Close()
     {
@@ -85,12 +81,8 @@ public class Options_Menu : MonoBehaviour
         // button shield on for nextday button
         controller.defaultMenu.menuUI.nextDayButton.enabled = true;
 
-        // turn on all farmtile status icons, button shield off for all farmtiles
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].statusIconIndicator.gameObject.SetActive(true);
-            controller.farmTiles[i].button.enabled = true;
-        }
+        // show and disactivate button shield for all farmtiles
+        controller.Hide_All_Tiles(false);
     }
     public void Open_Close()
     {

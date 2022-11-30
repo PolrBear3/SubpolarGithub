@@ -67,9 +67,12 @@ public class Gacha_System : MonoBehaviour
             {
                 gachaCheckComplete = true;
 
+                // show sprite
                 ui.cropImage.sprite = randomItem.item.itemSprite;
-                // counting amount
+                // +1 item amount
+                randomItem.currentAmount += 1;
                 // update amount ui
+                Update_Item_UI();
             }
         }
     }
