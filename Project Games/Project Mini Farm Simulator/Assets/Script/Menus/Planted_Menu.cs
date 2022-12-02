@@ -19,6 +19,15 @@ public class Current_Buffs_Panel_UI
     public Current_Buff_Icon_UI[] icons;
 }
 
+[System.Serializable]
+public class More_Current_Buffs_ToolTip
+{
+    [HideInInspector]
+    public bool toolTipOn;
+    public GameObject moreBuffsButton;
+    public GameObject moreBuffsToolTipPanel;
+}
+
 public class Planted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
@@ -35,6 +44,7 @@ public class Planted_Menu : MonoBehaviour
 
     public GameObject[] harvestButtons;
     public Current_Buffs_Panel_UI currentBuffsPanel;
+    public More_Current_Buffs_ToolTip moreBuffs;
 
     private void Awake()
     {
@@ -262,6 +272,17 @@ public class Planted_Menu : MonoBehaviour
             currentBuffsPanel.cbON = false;
             currentBuffsPanel.cbPanel.SetActive(false);
         }
+
+        // more active buffs button available check
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        if (currentFarmTile.currentBuffs.Count > 5)
+        {
+            moreBuffs.moreBuffsButton.SetActive(true);
+        }
+        else
+        {
+            moreBuffs.moreBuffsButton.SetActive(false);
+        }
     }
     public void Close_CurrentBuffs_Panel()
     {
@@ -284,6 +305,30 @@ public class Planted_Menu : MonoBehaviour
             {
                 controller.unPlantedMenu.hide_Seed_ToolTip();
             }
+        }
+    }
+
+    // more active buffs panel functions
+    private void Update_MoreActiveBuffs_UI()
+    {
+        // instantiate active buff frame prefab and update info from tile current buff list
+    }
+    public void Open_Close_MoreActiveBuffs()
+    {
+        // open
+        if (!moreBuffs.toolTipOn)
+        {
+            moreBuffs.toolTipOn = true;
+
+            Update_MoreActiveBuffs_UI();
+            moreBuffs.moreBuffsToolTipPanel.SetActive(true);
+        }
+        // close
+        else
+        {
+            moreBuffs.toolTipOn = false;
+
+            moreBuffs.moreBuffsToolTipPanel.SetActive(false);
         }
     }
 }
