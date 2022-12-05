@@ -10,6 +10,17 @@ public class Planted_Menu_Data
 }
 
 [System.Serializable]
+public class Planted_Menu_UI
+{
+    public Image plantedSeedImage;
+    public Text plantedDayPassed,
+                currentSeedHealth,
+                currentWaterHealth;
+    public GameObject[] harvestButtons;
+    public GameObject[] BuffButtons;
+}
+
+[System.Serializable]
 public class Current_Buffs_Panel_UI
 {
     [HideInInspector]
@@ -17,15 +28,6 @@ public class Current_Buffs_Panel_UI
     public RectTransform cbRT;
     public GameObject cbButton, cbPanel;
     public Current_Buff_Icon_UI[] icons;
-}
-
-[System.Serializable]
-public class More_Current_Buffs_ToolTip
-{
-    [HideInInspector]
-    public bool toolTipOn;
-    public GameObject moreBuffsButton;
-    public GameObject moreBuffsToolTipPanel;
 }
 
 public class Planted_Menu : MonoBehaviour
@@ -36,15 +38,8 @@ public class Planted_Menu : MonoBehaviour
     public Button[] allAvailableButtons;
 
     public Planted_Menu_Data data;
-
-    public Image plantedSeedImage;
-    public Text plantedDayPassed,
-                currentSeedHealth,
-                currentWaterHealth;
-
-    public GameObject[] harvestButtons;
+    public Planted_Menu_UI ui;
     public Current_Buffs_Panel_UI currentBuffsPanel;
-    public More_Current_Buffs_ToolTip moreBuffs;
 
     private void Awake()
     {
@@ -73,14 +68,14 @@ public class Planted_Menu : MonoBehaviour
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         if (currentFarmTile.data.seedPlanted)
         {
-            plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
-            currentSeedHealth.text = currentFarmTile.tileSeedStatus.health.ToString();
-            plantedSeedImage.sprite = currentFarmTile.data.plantedSeed.sprites[3];
+            ui.plantedDayPassed.text = "day " + currentFarmTile.tileSeedStatus.dayPassed.ToString();
+            ui.currentSeedHealth.text = currentFarmTile.tileSeedStatus.health.ToString();
+            ui.plantedSeedImage.sprite = currentFarmTile.data.plantedSeed.sprites[3];
         }
 
         var waterHealthCalculation = 
             currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
-        currentWaterHealth.text = waterHealthCalculation.ToString();
+        ui.currentWaterHealth.text = waterHealthCalculation.ToString();
 
         if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
         {
@@ -97,6 +92,7 @@ public class Planted_Menu : MonoBehaviour
         data.menuOn = true;
         Button_Shield(false);
         Seed_Information_Update();
+        BuffButton_Available_Check();
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
     }
     public void Close()
@@ -143,18 +139,18 @@ public class Planted_Menu : MonoBehaviour
         // water health text update
         var waterHealthCalculation =
             currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
-        currentWaterHealth.text = waterHealthCalculation.ToString();
+        ui.currentWaterHealth.text = waterHealthCalculation.ToString();
     }
 
     private void HarvestButton_Available()
     {
-        harvestButtons[1].SetActive(true);
-        harvestButtons[0].SetActive(false);
+        ui.harvestButtons[1].SetActive(true);
+        ui.harvestButtons[0].SetActive(false);
     }
     private void HarvestButton_UnAvailable()
     {
-        harvestButtons[1].SetActive(false);
-        harvestButtons[0].SetActive(true);
+        ui.harvestButtons[1].SetActive(false);
+        ui.harvestButtons[0].SetActive(true);
     }
     
     // all the individual bonus infos
@@ -272,22 +268,28 @@ public class Planted_Menu : MonoBehaviour
             currentBuffsPanel.cbON = false;
             currentBuffsPanel.cbPanel.SetActive(false);
         }
-
-        // more active buffs button available check
-        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        if (currentFarmTile.currentBuffs.Count > 5)
-        {
-            moreBuffs.moreBuffsButton.SetActive(true);
-        }
-        else
-        {
-            moreBuffs.moreBuffsButton.SetActive(false);
-        }
     }
     public void Close_CurrentBuffs_Panel()
     {
         currentBuffsPanel.cbON = false;
         currentBuffsPanel.cbPanel.SetActive(false);
+    }
+
+    public void BuffButton_Available_Check()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        // if buff amount is max
+        if (currentFarmTile.currentBuffs.Count >= 5)
+        {
+            ui.BuffButtons[0].SetActive(true);
+            ui.BuffButtons[1].SetActive(false);
+        }
+        else
+        {
+            ui.BuffButtons[0].SetActive(false);
+            ui.BuffButtons[1].SetActive(true);
+        }
     }
 
     // planted seed tooltip function
@@ -305,30 +307,6 @@ public class Planted_Menu : MonoBehaviour
             {
                 controller.unPlantedMenu.hide_Seed_ToolTip();
             }
-        }
-    }
-
-    // more active buffs panel functions
-    private void Update_MoreActiveBuffs_UI()
-    {
-        // instantiate active buff frame prefab and update info from tile current buff list
-    }
-    public void Open_Close_MoreActiveBuffs()
-    {
-        // open
-        if (!moreBuffs.toolTipOn)
-        {
-            moreBuffs.toolTipOn = true;
-
-            Update_MoreActiveBuffs_UI();
-            moreBuffs.moreBuffsToolTipPanel.SetActive(true);
-        }
-        // close
-        else
-        {
-            moreBuffs.toolTipOn = false;
-
-            moreBuffs.moreBuffsToolTipPanel.SetActive(false);
         }
     }
 }

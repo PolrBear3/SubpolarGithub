@@ -170,6 +170,7 @@ public class Buff_Menu : MonoBehaviour
                 controller.farmTiles[i].Add_Buff(currentSelectedBuff);
                 Reset_Selections();
                 controller.plantedMenu.CurrentBuffs_Button_Check();
+                controller.plantedMenu.BuffButton_Available_Check();
                 break;
             }
         }
