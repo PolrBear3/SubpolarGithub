@@ -6,7 +6,7 @@ public class MainGame_Controller : MonoBehaviour
 {
     public Default_Menu defaultMenu;
     public CollectableRoom_Menu collectableRoomMenu;
-    public Locked_Menu lockedMenu;
+    public TileBuy_Button tileBuyButton;
     public UnPlanted_Menu unPlantedMenu;
     public Planted_Menu plantedMenu;
     public Buff_Menu buffMenu;
@@ -89,7 +89,7 @@ public class MainGame_Controller : MonoBehaviour
     {
         plantedMenu.Close();
         unPlantedMenu.Close();
-        lockedMenu.Close();
+        tileBuyButton.Close();
         buffMenu.Close();
         shopMenu.Close();
         collectableRoomMenu.Close();

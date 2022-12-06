@@ -114,7 +114,7 @@ public class FarmTile : MonoBehaviour
 
             if (data.tileLocked)
             {
-                controller.lockedMenu.Open();
+                controller.tileBuyButton.Open();
             }
             else if (!data.seedPlanted)
             {
@@ -226,6 +226,7 @@ public class FarmTile : MonoBehaviour
     public void Reset_Tile()
     {
         statusIconIndicator.Reset_All_Icons();
+        currentBuffs.Clear();
 
         image.sprite = data.unplantedTile;
         data.plantedSeed = null;
