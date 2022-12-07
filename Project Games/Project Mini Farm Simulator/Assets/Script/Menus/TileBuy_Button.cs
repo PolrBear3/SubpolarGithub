@@ -12,7 +12,7 @@ public class TileBuy_Button : MonoBehaviour
     public void Open()
     {
         gameObject.SetActive(true);
-        tilePrice.text = controller.farmTiles[controller.openedTileNum].data.tilePrice + " $".ToString();
+        tilePrice.text = "$ " + controller.farmTiles[controller.openedTileNum].data.tilePrice.ToString();
     }
     public void Close()
     {

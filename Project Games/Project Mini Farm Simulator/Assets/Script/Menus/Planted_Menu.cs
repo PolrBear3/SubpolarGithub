@@ -273,6 +273,32 @@ public class Planted_Menu : MonoBehaviour
     {
         currentBuffsPanel.cbON = false;
         currentBuffsPanel.cbPanel.SetActive(false);
+        controller.buffMenu.Hide_Buff_ToolTip();
+    }
+
+    private bool Active_Buff_Frame_EmptyCheck(int frameNum)
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        if (frameNum + 1 == currentFarmTile.currentBuffs.Count)
+        {
+            return true;
+        }
+        else return false;
+    }
+    public void Show_Hide_Buff_ToolTip(int frameNum)
+    {
+        var x = controller.buffMenu;
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        if (!x.tooltipUI.toolTipOn && Active_Buff_Frame_EmptyCheck(frameNum))
+        {
+            x.Show_ActiveBuff_ToolTip(currentFarmTile.currentBuffs[frameNum]);
+        }
+        else
+        {
+            x.Hide_Buff_ToolTip();
+        }
     }
 
     public void BuffButton_Available_Check()
@@ -293,20 +319,17 @@ public class Planted_Menu : MonoBehaviour
     }
 
     // planted seed tooltip function
-    public void Show_Hide_ToolTip()
+    public void Show_Hide_Seed_ToolTip()
     {
         var x = controller.unPlantedMenu.seedToolTipUIconnection;
 
-        if (data.menuOn)
+        if (!x.toolTipOn)
         {
-            if (!x.toolTipOn)
-            {
-                controller.unPlantedMenu.Show_PlanedSeed_ToolTip(controller.farmTiles[controller.openedTileNum].data.plantedSeed);
-            }
-            else
-            {
-                controller.unPlantedMenu.hide_Seed_ToolTip();
-            }
+            controller.unPlantedMenu.Show_PlanedSeed_ToolTip(controller.farmTiles[controller.openedTileNum].data.plantedSeed);
+        }
+        else
+        {
+            controller.unPlantedMenu.hide_Seed_ToolTip();
         }
     }
 }

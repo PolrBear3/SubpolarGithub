@@ -207,6 +207,7 @@ public class UnPlanted_Menu : MonoBehaviour
         x.sellPrice.text = "sell price: $ " + planedSeed.harvestSellPrice.ToString();
         x.harvestLength.text = "harvest: " +
         planedSeed.minFinishDays + "~" + planedSeed.maxFinishDays + " days".ToString();
+        x.waitTime.text = "wait time: + " + planedSeed.waitTime + " seconds".ToString();
         x.seedMaxHealth.text = planedSeed.seedHealth.ToString();
         x.seedMaxWaterHealth.text = planedSeed.waterHealth.ToString();
 

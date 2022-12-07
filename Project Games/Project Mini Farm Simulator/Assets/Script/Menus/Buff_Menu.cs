@@ -195,6 +195,18 @@ public class Buff_Menu : MonoBehaviour
         }
         x.toolTipPanel.SetActive(true);
     }
+    public void Show_ActiveBuff_ToolTip(Buff_ScrObj buff)
+    {
+        var x = tooltipUI;
+
+        x.toolTipOn = true;
+        x.previewBuffSprite.sprite = buff.sprite;
+        x.buffName.text = buff.buffName;
+        x.buffDescription.text = buff.description;
+        x.buffPrice.text = "buff price: $ " + buff.buffPrice.ToString();
+
+        x.toolTipPanel.SetActive(true);
+    }
     public void Hide_Buff_ToolTip()
     {
         var x = tooltipUI;
