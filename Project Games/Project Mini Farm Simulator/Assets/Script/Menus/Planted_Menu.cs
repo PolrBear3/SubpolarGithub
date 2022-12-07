@@ -266,6 +266,7 @@ public class Planted_Menu : MonoBehaviour
         else
         {
             currentBuffsPanel.cbON = false;
+            controller.buffMenu.Hide_Buff_ToolTip();
             currentBuffsPanel.cbPanel.SetActive(false);
         }
     }
