@@ -32,6 +32,9 @@ public class Buff_Function_Controller : MonoBehaviour
                 case 0:
                     functions.Cloudy_Stun_Shield(farmtile);
                     break;
+                case 1:
+                    functions.Wait_Time_Decreaser(farmtile);
+                    break;
                 default:
                     break;
             }

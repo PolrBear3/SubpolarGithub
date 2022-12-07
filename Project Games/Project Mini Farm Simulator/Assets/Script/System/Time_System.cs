@@ -11,7 +11,9 @@ public class Time_System : MonoBehaviour
     public int currentInGameDay = 0;
     private int maxInGameDay = 365;
 
-    private float pastSec, futureSec, mySec;
+    private float pastSec, futureSec;
+    [HideInInspector]
+    public float mySec;
 
     private void Start()
     {

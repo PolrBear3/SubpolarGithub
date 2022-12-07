@@ -33,6 +33,7 @@ public class FarmTile : MonoBehaviour
 {
     public MainGame_Controller controller;
     public Button button;
+    public Animator greenBorder;
     public Status_Icon_Indicator statusIconIndicator;
     
     [HideInInspector]
@@ -171,6 +172,7 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.dayPassed = 0;
             tileSeedStatus.watered = 0;
             tileSeedStatus.daysWithoutWater = 0;
+            greenBorder.SetBool("harvestReady", false);
             controller.Reset_All_Menu();
             controller.Reset_All_Tile_Highlights();
         }
@@ -220,6 +222,7 @@ public class FarmTile : MonoBehaviour
             {
                 image.sprite = data.plantedSeed.sprites[2];
                 tileSeedStatus.harvestReady = true;
+                greenBorder.SetBool("harvestReady", true);
             }
         }
     }
@@ -236,7 +239,8 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.watered = 0;
         tileSeedStatus.daysWithoutWater = 0;
         tileSeedStatus.currentDayWatered = false;
-        tileSeedStatus.harvestReady = true;
+        tileSeedStatus.harvestReady = false;
+        greenBorder.SetBool("harvestReady", false);
         tileSeedStatus.bonusPoints = 0;
         
         controller.plantedMenu.Close();

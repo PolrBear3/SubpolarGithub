@@ -127,7 +127,7 @@ public class Planted_Menu : MonoBehaviour
             currentFarmTile.tileSeedStatus.currentDayWatered = true;
             currentFarmTile.tileSeedStatus.watered += 1;
             currentFarmTile.tileSeedStatus.daysWithoutWater = 0;
-            currentFarmTile.statusIconIndicator.Assign_Status(StatusType.watered);
+            currentFarmTile.statusIconIndicator.Assign_Status(0);
 
             // if the seed is fully grown to crop, watering doesn't count
             if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)

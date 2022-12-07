@@ -76,6 +76,7 @@ public class Buff_Menu : MonoBehaviour
     // basic functions
     public void Open()
     {
+        controller.unPlantedMenu.hide_Seed_ToolTip();
         Reset_Selections();
         Button_Shield(false);
         BuffButtons_Shield(false);
@@ -93,6 +94,7 @@ public class Buff_Menu : MonoBehaviour
     }
     private void Confirm_Close()
     {
+        Hide_Buff_ToolTip();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
         Button_Shield(true);
         BuffButtons_Shield(true);
@@ -106,6 +108,8 @@ public class Buff_Menu : MonoBehaviour
     }
     public void Set_New_CurrentButtonPage()
     {
+        Hide_Buff_ToolTip();
+
         // unselect all buttons for pressed sprite change
         Unpress_All_Buttons();
 
@@ -193,6 +197,8 @@ public class Buff_Menu : MonoBehaviour
             x.buffDescription.text = currentSelectedBuff.description;
             x.buffPrice.text = "buff price: $ " + currentSelectedBuff.buffPrice.ToString();
         }
+
+        controller.unPlantedMenu.hide_Seed_ToolTip();
         x.toolTipPanel.SetActive(true);
     }
     public void Show_ActiveBuff_ToolTip(Buff_ScrObj buff)
@@ -205,6 +211,7 @@ public class Buff_Menu : MonoBehaviour
         x.buffDescription.text = buff.description;
         x.buffPrice.text = "buff price: $ " + buff.buffPrice.ToString();
 
+        controller.unPlantedMenu.hide_Seed_ToolTip();
         x.toolTipPanel.SetActive(true);
     }
     public void Hide_Buff_ToolTip()
@@ -217,7 +224,7 @@ public class Buff_Menu : MonoBehaviour
 
     public void Show_Hide_ToolTip()
     {
-        if (!tooltipUI.toolTipOn)
+        if (!tooltipUI.toolTipOn && currentSelectedBuff != null)
         {
             Show_Buff_ToolTip();
         }

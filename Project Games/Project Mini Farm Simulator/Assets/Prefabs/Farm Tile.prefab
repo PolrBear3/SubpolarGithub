@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5339268255909349564}
   - component: {fileID: 7746337407331463945}
   - component: {fileID: 1151723124410084799}
+  - component: {fileID: 3697019787156151050}
   m_Layer: 5
   m_Name: Green Border
   m_TagString: Untagged
@@ -76,6 +77,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &3697019787156151050
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3989833525888144625}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f8764fcd38d52eb41aaa07ba2b63bd04, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7140556406713402614
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,6 +268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   button: {fileID: 1962912714657643702}
+  greenBorder: {fileID: 3697019787156151050}
   statusIconIndicator: {fileID: 1085077442416054105}
   image: {fileID: 0}
   saveName: 
@@ -254,6 +276,7 @@ MonoBehaviour:
     plantedSeed: {fileID: 0}
     tileNum: 0
     tilePrice: 0
+    tileSelected: 0
     tileLocked: 1
     seedPlanted: 0
     lockedTile: {fileID: -1541799582, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}

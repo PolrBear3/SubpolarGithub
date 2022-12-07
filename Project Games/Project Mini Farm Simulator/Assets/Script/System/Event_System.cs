@@ -2,20 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class All_Event_Percentage
-{
-    public float
-        goldenSunnyHealthBuff,
-        cloudyStunned;
-}
-
 public class Event_System : MonoBehaviour
 {
     public MainGame_Controller controller;
 
     public Weather_ScrObj currentWeather;
-    public All_Event_Percentage eventPercentage;
 
     private bool Event_Percentage_Setter(float percentage)
     {
@@ -38,7 +29,7 @@ public class Event_System : MonoBehaviour
 
     public void All_Events_Single_Check()
     {
-        GoldenSunny_HealthBuff();
+        SunnyBuffed();
         CloudyStunned();
     }
     public void All_Events_Update_Check()
@@ -47,21 +38,21 @@ public class Event_System : MonoBehaviour
     }
 
     // single check events
-    private void GoldenSunny_HealthBuff()
+    private void SunnyBuffed()
     {
         if (currentWeather.weatherID == 0)
         {
             var allTiles = controller.farmTiles;
 
             // 40% chance buff
-            if (Event_Percentage_Setter(eventPercentage.goldenSunnyHealthBuff))
+            if (Event_Percentage_Setter(controller.ID_Status_Search(1).eventPercentage))
             {
                 for (int i = 0; i < allTiles.Length; i++)
                 {
                     if (allTiles[i].data.seedPlanted)
                     {
                         // add sunnyBuffed icon
-                        allTiles[i].statusIconIndicator.Assign_Status(StatusType.sunnyBuffed);
+                        allTiles[i].statusIconIndicator.Assign_Status(1);
                         
                         // give +1 extra watered and dayPassed int
                         allTiles[i].tileSeedStatus.watered += 1;
@@ -89,7 +80,7 @@ public class Event_System : MonoBehaviour
     }
     public void CloudyStunned()
     {
-        if (currentWeather.weatherID == 1 && Event_Percentage_Setter(eventPercentage.cloudyStunned))
+        if (currentWeather.weatherID == 1 && Event_Percentage_Setter(controller.ID_Status_Search(2).eventPercentage))
         {
             var allTiles = controller.farmTiles;
             for (int i = 0; i < allTiles.Length; i++)
@@ -97,7 +88,7 @@ public class Event_System : MonoBehaviour
                 if (allTiles[i].data.seedPlanted && !allTiles[i].tileSeedStatus.harvestReady)
                 {
                     // add cloudyStunned icon
-                    allTiles[i].statusIconIndicator.Assign_Status(StatusType.cloudyStunned);
+                    allTiles[i].statusIconIndicator.Assign_Status(2);
 
                     // reduce 1 dayPassed int
                     allTiles[i].tileSeedStatus.dayPassed -= 1;
@@ -126,12 +117,12 @@ public class Event_System : MonoBehaviour
                     if (!allTiles[i].tileSeedStatus.currentDayWatered)
                     {
                         // refresh status icon
-                        allTiles[i].statusIconIndicator.UnAssign_Status(StatusType.watered);
+                        allTiles[i].statusIconIndicator.UnAssign_Status(0);
 
                         // water the seeded tile
                         allTiles[i].tileSeedStatus.currentDayWatered = true;
                         allTiles[i].tileSeedStatus.watered += 1;
-                        allTiles[i].statusIconIndicator.Assign_Status(StatusType.watered);
+                        allTiles[i].statusIconIndicator.Assign_Status(0);
                     }
 
                     // check water condition for seeded tile 

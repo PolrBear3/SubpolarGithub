@@ -11,4 +11,5 @@ public class Buff_ScrObj : ScriptableObject
     [TextArea(5, 10)]
     public string description;
     public int buffPrice;
+    public float eventPercentage;
 }

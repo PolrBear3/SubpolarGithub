@@ -33,21 +33,14 @@ public class Status_Icon_Indicator : MonoBehaviour
         }
     }
 
-    public void Assign_Status(StatusType statusType)
+    public void Assign_Status(int statusID)
     {
         var allStatus = farmTile.controller.allStatus;
         for (int i = 0; i < statusIcons.Length; i++)
         {
             if (!statusIcons[i].hasStatus)
             {
-                for (int j = 0; j < allStatus.Length; j++)
-                {
-                    if (statusType == allStatus[j].statusType)
-                    {
-                        statusIcons[i].Assign_Icon(allStatus[j]);
-                        break;
-                    }
-                }
+                statusIcons[i].Assign_Icon(farmTile.controller.ID_Status_Search(statusID));
                 break;
             }
         }
@@ -79,13 +72,13 @@ public class Status_Icon_Indicator : MonoBehaviour
             }
         }
     }
-    public void UnAssign_Status(StatusType statusType)
+    public void UnAssign_Status(int statusID)
     {
         for (int i = 0; i < statusIcons.Length; i++)
         {
             if (statusIcons[i].hasStatus)
             {
-                if (statusType == statusIcons[i].currentStatus.statusType)
+                if (statusID == statusIcons[i].currentStatus.statusID)
                 {
                     statusIcons[i].Empty_Icon();
                     Re_Arrange_Icons();

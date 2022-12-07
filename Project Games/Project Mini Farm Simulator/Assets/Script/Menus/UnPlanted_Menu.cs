@@ -89,6 +89,7 @@ public class UnPlanted_Menu : MonoBehaviour
     }
     public void PlantSeed_Close()
     {
+        hide_Seed_ToolTip();
         Button_Shield(true);
         SeedButtons_Shield(true);
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
@@ -101,6 +102,8 @@ public class UnPlanted_Menu : MonoBehaviour
     }
     public void Set_New_CurrentButtonPage()
     {
+        hide_Seed_ToolTip();
+
         // unselect all buttons for pressed sprite change
         Unpress_All_Buttons();
 
@@ -192,6 +195,7 @@ public class UnPlanted_Menu : MonoBehaviour
             x.seedMaxHealth.text = currentSeedInfo.seedHealth.ToString();
             x.seedMaxWaterHealth.text = currentSeedInfo.waterHealth.ToString();
 
+            controller.buffMenu.Hide_Buff_ToolTip();
             x.toolTipPanel.SetActive(true);
         }
     }
@@ -211,6 +215,7 @@ public class UnPlanted_Menu : MonoBehaviour
         x.seedMaxHealth.text = planedSeed.seedHealth.ToString();
         x.seedMaxWaterHealth.text = planedSeed.waterHealth.ToString();
 
+        controller.buffMenu.Hide_Buff_ToolTip();
         x.toolTipPanel.SetActive(true);
     }
     public void hide_Seed_ToolTip()
@@ -221,7 +226,7 @@ public class UnPlanted_Menu : MonoBehaviour
 
     public void Show_Hide_ToolTip()
     {
-        if (!seedToolTipUIconnection.toolTipOn)
+        if (!seedToolTipUIconnection.toolTipOn && currentSeedInfo != null)
         {
             Show_Seed_ToolTip();
         }

@@ -18,18 +18,18 @@ public class MainGame_Controller : MonoBehaviour
     public Event_System eventSystem;
     public Gacha_System gachaSystem;
 
+    public FarmTile[] farmTiles;
+    [HideInInspector]
+    public int openedTileNum = 0;
+
+    private int _money = 0;
+    public int money => _money;
+
     public Season_ScrObj[] allSeasons;
     public Weather_ScrObj[] allWeathers;
     public Seed_ScrObj[] allSeeds;
     public Buff_ScrObj[] allBuffs;
     public Status[] allStatus;
-
-    public FarmTile[] farmTiles;
-    [HideInInspector]
-    public int openedTileNum = 0;
-    
-    private int _money = 0;
-    public int money => _money;
 
     private void Start()
     {
@@ -82,6 +82,30 @@ public class MainGame_Controller : MonoBehaviour
             farmTiles[i].statusIconIndicator.gameObject.SetActive(x);
             farmTiles[i].button.enabled = x;
         }
+    }
+
+    // ID Search
+    public Buff_ScrObj ID_Buff_Search(int buffID)
+    {
+        for (int i = 0; i < allBuffs.Length; i++)
+        {
+            if (buffID == allBuffs[i].buffID)
+            {
+                return allBuffs[i];
+            }
+        }
+        return null;
+    }
+    public Status ID_Status_Search(int statusID)
+    {
+        for (int i = 0; i < allStatus.Length; i++)
+        {
+            if (statusID == allStatus[i].statusID)
+            {
+                return allStatus[i];
+            }
+        }
+        return null;
     }
 
     // ui functions
