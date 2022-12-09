@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public struct AfterSeedStatus
@@ -45,7 +46,7 @@ public class FarmTile : MonoBehaviour
 
     public List<Buff_ScrObj> currentBuffs = new List<Buff_ScrObj>();
 
-    public void Awake()
+    private void Awake()
     {
         image = GetComponent<Image>();
     }
