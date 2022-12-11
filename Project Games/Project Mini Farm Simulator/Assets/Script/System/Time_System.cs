@@ -107,7 +107,6 @@ public class Time_System : MonoBehaviour
         }
 
         controller.defaultMenu.Update_UI();
-        controller.buffFunction.Activate_All_Buffs_forSeeds();
     }
 
     // real time system

@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 7302526647453591488}
   - component: {fileID: 6938935330938422465}
   - component: {fileID: 340166791322947860}
-  - component: {fileID: 6254959704525307624}
+  - component: {fileID: 2659091255411934036}
   - component: {fileID: 919738229670353898}
   - component: {fileID: 4918217354584285880}
   m_Layer: 0
@@ -258,7 +258,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7891899027497736618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 4.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -343,11 +343,11 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: PC
-  m_DefaultActionMap: Player Actions
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player Controls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!50 &6254959704525307624
+--- !u!50 &2659091255411934036
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -362,12 +362,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &919738229670353898
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -406,5 +406,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d289b6b0238334f15b9734b4ee032430, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
-  jumpForce: 5
+  moveSpeed: 10
+  jumpForce: 50

@@ -31,7 +31,7 @@ public class NewInputSystem_Player : MonoBehaviour
     }
     private void Move()
     {
-        rb.AddForce(moveDirection * (moveSpeed * 100) * Time.deltaTime);
+        rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
     }
 
     public void OnJump()
@@ -40,6 +40,6 @@ public class NewInputSystem_Player : MonoBehaviour
     }
     private void Jump()
     {
-        rb.AddForce(Vector2.up * (jumpForce * 100));
-    }
+        rb.AddForce(Vector2.up * (jumpForce * 10));
+    } 
 }
