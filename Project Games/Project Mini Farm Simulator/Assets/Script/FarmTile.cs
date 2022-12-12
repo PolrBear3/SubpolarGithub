@@ -34,7 +34,7 @@ public class FarmTile : MonoBehaviour
 {
     public MainGame_Controller controller;
     public Button button;
-    public Animator greenBorder;
+    public Animator greenBorder, harvestCoins;
     public Status_Icon_Indicator statusIconIndicator;
     
     [HideInInspector]
@@ -140,6 +140,7 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.harvestReady = false;
         tileSeedStatus.bonusPoints = 0;
         tileSeedStatus.fullGrownDay = Random.Range(data.plantedSeed.minFinishDays, data.plantedSeed.maxFinishDays);
+        harvestCoins.SetBool("harvest", false);
 
         controller.eventSystem.All_Events_Update_Check();
     }

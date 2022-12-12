@@ -35,6 +35,9 @@ public class Buff_Function_Controller : MonoBehaviour
                 case 1:
                     functions.Wait_Time_Decreaser(farmtile);
                     break;
+                case 2:
+                    functions.Golden_Sunny(farmtile);
+                    break;
                 default:
                     break;
             }
