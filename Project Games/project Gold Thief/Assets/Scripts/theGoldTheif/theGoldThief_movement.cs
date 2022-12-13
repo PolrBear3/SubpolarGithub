@@ -4,53 +4,93 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [System.Serializable]
-public struct theGoldThief_movements_data
+public struct TheGoldThief_Movements_Data
 {
     public float moveSpeed;
     public float jumpPower;
 
     public Vector2 moveDirection;
-
-    [HideInInspector]
-    public bool isGround;
-    [HideInInspector]
-    public bool isMoving;
+    public bool facingLeft;
 }
 
-public class theGoldThief_movement : MonoBehaviour
+public class TheGoldThief_Movement : MonoBehaviour
 {
-    public theGoldThief_mainController controller;
-    public theGoldThief_movements_data data;
+    public TheGoldThief_MainController controller;
+    public TheGoldThief_Movements_Data data;
 
     private void FixedUpdate()
     {
-        run();
+        Run();
     }
     private void Update()
     {
-        movement_animation();
+        Movement_Animation();
+        Flip_Check();
     }
 
-    private void movement_animation()
+    // character state check functions
+    private bool IsMoving()
+    {
+        if (controller.connection.mainRB.velocity.magnitude != 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+    private bool IsOnGround()
+    {
+        if (controller.connection.mainRB.velocity.y == 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    // animation updates
+    private void Movement_Animation()
     {
         controller.connection.mainAnim.SetFloat("movement", Mathf.Abs(data.moveDirection.x));
     }
 
+    // character facing side
+    private void Flip()
+    {
+        Vector3 x = controller.connection.mainTransform.localScale;
+        x.x *= -1;
+        controller.connection.mainTransform.localScale = x;
+
+        data.facingLeft = !data.facingLeft;
+    }
+    private void Flip_Check()
+    {
+        // running left
+        if (controller.connection.mainRB.velocity.x < 0 && !data.facingLeft)
+        {
+            Flip();
+        }
+        if (controller.connection.mainRB.velocity.x > 0 && data.facingLeft)
+        {
+            Flip();
+        }
+    }
+
+    // Running
     public void OnRun(InputValue value)
     {
         data.moveDirection = value.Get<Vector2>();
     }
-    private void run()
+    private void Run()
     {
         controller.connection.mainRB.velocity = new Vector2(data.moveDirection.x * data.moveSpeed, controller.connection.mainRB.velocity.y);
     }
 
+    // Jumping
     public void OnJump()
     {
-        jump();
+        Jump();
     }
-    private void jump()
+    private void Jump()
     {
-        controller.connection.mainRB.AddForce(Vector2.up * data.jumpPower);
+        controller.connection.mainRB.AddForce(Vector2.up * (data.jumpPower * 100));
     }
 }

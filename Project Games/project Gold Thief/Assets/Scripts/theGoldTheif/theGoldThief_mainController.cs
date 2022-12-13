@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [System.Serializable]
-public class theGoldThief_mainController_script
+public class TheGoldThief_MainController_Script
 {
-    public theGoldThief_movement movement;
+    public TheGoldThief_Movement movement;
 }
 
 [System.Serializable]
-public class theGoldThief_mainController_connection
+public class TheGoldThief_MainController_Connection
 {
     public Transform mainTransform;
     public SpriteRenderer mainSR;
@@ -19,8 +19,8 @@ public class theGoldThief_mainController_connection
     public Animator mainAnim;
 }
 
-public class theGoldThief_mainController : MonoBehaviour
+public class TheGoldThief_MainController : MonoBehaviour
 {
-    public theGoldThief_mainController_script script;
-    public theGoldThief_mainController_connection connection;
+    public TheGoldThief_MainController_Script script;
+    public TheGoldThief_MainController_Connection connection;
 }
