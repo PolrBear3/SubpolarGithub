@@ -9,6 +9,9 @@ public struct TheGoldThief_Movements_Data
     public float moveSpeed;
     public float jumpPower;
 
+    public float footRadius;
+    public float fallThreshold;
+
     public Vector2 moveDirection;
     public bool facingLeft;
 }
@@ -25,10 +28,19 @@ public class TheGoldThief_Movement : MonoBehaviour
     private void Update()
     {
         Movement_Animation();
+        Jump_Animation();
         Flip_Check();
     }
 
     // character state check functions
+    private bool IsOnGround()
+    {
+        if (Physics2D.OverlapCircle(controller.connection.footTransform.position, data.footRadius, controller.connection.groundMask))
+        {
+            return true;
+        }
+        else return false;
+    }
     private bool IsMoving()
     {
         if (controller.connection.mainRB.velocity.magnitude != 0)
@@ -37,9 +49,9 @@ public class TheGoldThief_Movement : MonoBehaviour
         }
         else return false;
     }
-    private bool IsOnGround()
+    private bool IsFalling()
     {
-        if (controller.connection.mainRB.velocity.y == 0)
+        if (controller.connection.mainRB.velocity.y < data.fallThreshold)
         {
             return true;
         }
@@ -50,6 +62,17 @@ public class TheGoldThief_Movement : MonoBehaviour
     private void Movement_Animation()
     {
         controller.connection.mainAnim.SetFloat("movement", Mathf.Abs(data.moveDirection.x));
+    }
+    private void Jump_Animation()
+    {
+        if (!IsOnGround())
+        {
+            controller.connection.mainAnim.SetBool("jump", true);
+        }
+        else
+        {
+            controller.connection.mainAnim.SetBool("jump", false);
+        }
     }
 
     // character facing side
@@ -91,6 +114,9 @@ public class TheGoldThief_Movement : MonoBehaviour
     }
     private void Jump()
     {
-        controller.connection.mainRB.AddForce(Vector2.up * (data.jumpPower * 100));
+        if (IsOnGround())
+        {
+            controller.connection.mainRB.AddForce(Vector2.up * (data.jumpPower * 100));
+        }
     }
 }

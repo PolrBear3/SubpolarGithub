@@ -12,7 +12,9 @@ public class TheGoldThief_MainController_Script
 [System.Serializable]
 public class TheGoldThief_MainController_Connection
 {
+    public LayerMask groundMask;
     public Transform mainTransform;
+    public Transform footTransform;
     public SpriteRenderer mainSR;
     public BoxCollider2D mainBC;
     public Rigidbody2D mainRB;
