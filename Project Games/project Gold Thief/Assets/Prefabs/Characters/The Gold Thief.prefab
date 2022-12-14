@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 340823233506382907}
   - component: {fileID: 8412302308641006989}
   - component: {fileID: 6806299104438909243}
-  - component: {fileID: 2221268146573456627}
-  - component: {fileID: 6613211010097872037}
+  - component: {fileID: 6194304190707756552}
+  - component: {fileID: 1484183498783015022}
   m_Layer: 0
   m_Name: The Gold Thief
   m_TagString: Untagged
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_DefaultActionMap: In Game Controls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &2221268146573456627
+--- !u!114 &6194304190707756552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,14 +200,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   script:
-    movement: {fileID: 6613211010097872037}
+    movement: {fileID: 1484183498783015022}
   connection:
     mainTransform: {fileID: 6187580682092225455}
     mainSR: {fileID: 7450246693875852052}
     mainBC: {fileID: 7763478729068393457}
     mainRB: {fileID: 340823233506382907}
     mainAnim: {fileID: 8412302308641006989}
---- !u!114 &6613211010097872037
+--- !u!114 &1484183498783015022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,10 +219,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5454b3b63d742fb8ec9f489366e8d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 2221268146573456627}
+  controller: {fileID: 6194304190707756552}
   data:
     moveSpeed: 5
     jumpPower: 2
     moveDirection: {x: 0, y: 0}
-    isGround: 0
-    isMoving: 0
+    facingLeft: 0
