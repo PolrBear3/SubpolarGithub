@@ -83,6 +83,13 @@ public class MainGame_Controller : MonoBehaviour
             farmTiles[i].button.enabled = x;
         }
     }
+    public void BorderUI_Update_All_Tiles(Season_ScrObj season)
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].BorderUI_Update(season);
+        }
+    }
 
     // ID Search
     public Buff_ScrObj ID_Buff_Search(int buffID)

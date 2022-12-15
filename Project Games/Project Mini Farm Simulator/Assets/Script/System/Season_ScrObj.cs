@@ -11,4 +11,6 @@ public class Season_ScrObj : ScriptableObject
     public string seasonName;
     public int seasonID;
     public Sprite seasonUI;
+    public Sprite backGroundUI;
+    public Sprite tileBorder;
 }

@@ -34,11 +34,13 @@ public class FarmTile : MonoBehaviour
 {
     public MainGame_Controller controller;
     public Button button;
-    public Animator greenBorder, harvestCoins;
+    public Animator harvestBorderAnim, harvestCoinsAnim;
     public Status_Icon_Indicator statusIconIndicator;
     
     [HideInInspector]
     public Image image;
+    public Image tileBorder;
+    public GameObject tileHighlighter;
 
     public string saveName;
     public FarmTile_Basic_Data data;
@@ -84,12 +86,12 @@ public class FarmTile : MonoBehaviour
     public void Highlight_Tile()
     {
         data.tileSelected = true;
-        gameObject.transform.GetChild(1).gameObject.SetActive(true);
+        tileHighlighter.SetActive(true);
     }
     public void UnHighlight_Tile()
     {
         data.tileSelected = false;
-        gameObject.transform.GetChild(1).gameObject.SetActive(false);
+        tileHighlighter.SetActive(false);
     }
 
     public void Open_Menu(FarmTile farmTile)
@@ -140,7 +142,7 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.harvestReady = false;
         tileSeedStatus.bonusPoints = 0;
         tileSeedStatus.fullGrownDay = Random.Range(data.plantedSeed.minFinishDays, data.plantedSeed.maxFinishDays);
-        harvestCoins.SetBool("harvest", false);
+        harvestCoinsAnim.SetBool("harvest", false);
 
         controller.eventSystem.All_Events_Update_Check();
     }
@@ -174,7 +176,7 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.dayPassed = 0;
             tileSeedStatus.watered = 0;
             tileSeedStatus.daysWithoutWater = 0;
-            greenBorder.SetBool("harvestReady", false);
+            harvestBorderAnim.SetBool("harvestReady", false);
             controller.Reset_All_Menu();
             controller.Reset_All_Tile_Highlights();
         }
@@ -224,7 +226,7 @@ public class FarmTile : MonoBehaviour
             {
                 image.sprite = data.plantedSeed.sprites[2];
                 tileSeedStatus.harvestReady = true;
-                greenBorder.SetBool("harvestReady", true);
+                harvestBorderAnim.SetBool("harvestReady", true);
             }
         }
     }
@@ -242,7 +244,7 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.daysWithoutWater = 0;
         tileSeedStatus.currentDayWatered = false;
         tileSeedStatus.harvestReady = false;
-        greenBorder.SetBool("harvestReady", false);
+        harvestBorderAnim.SetBool("harvestReady", false);
         tileSeedStatus.bonusPoints = 0;
         
         controller.plantedMenu.Close();
@@ -264,6 +266,11 @@ public class FarmTile : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void BorderUI_Update(Season_ScrObj season)
+    {
+        tileBorder.sprite = season.tileBorder;
     }
 
     // save load systems

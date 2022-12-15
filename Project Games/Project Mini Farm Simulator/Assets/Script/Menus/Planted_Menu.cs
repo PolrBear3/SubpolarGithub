@@ -203,7 +203,7 @@ public class Planted_Menu : MonoBehaviour
             controller.Add_Money(currentFarmTile.data.plantedSeed.harvestSellPrice);
         }
         currentFarmTile.Reset_Tile();
-        currentFarmTile.harvestCoins.SetBool("harvest", true);
+        currentFarmTile.harvestCoinsAnim.SetBool("harvest", true);
 
         controller.eventSystem.All_Events_Update_Check();
     }
