@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class Default_Menu_UI
 {
     public Image seasonUIBox;
-    public Image seasonBackground;
     public Text seasonUIText;
 
     public Image weatherUIBox;
@@ -96,7 +95,6 @@ public class Default_Menu : MonoBehaviour
     private void Season_Weather_UI_Update()
     {
         menuUI.seasonUIBox.sprite = controller.timeSystem.currentSeason.seasonUI;
-        menuUI.seasonBackground.sprite = controller.timeSystem.currentSeason.backGroundUI;
         menuUI.seasonUIText.text = controller.timeSystem.currentSeason.seasonName;
 
         menuUI.weatherUIBox.sprite = controller.eventSystem.currentWeather.weatherUI;

@@ -268,11 +268,6 @@ public class FarmTile : MonoBehaviour
         }
     }
 
-    public void BorderUI_Update(Season_ScrObj season)
-    {
-        tileBorder.sprite = season.tileBorder;
-    }
-
     // save load systems
     public void Load_Update_Tile()
     {

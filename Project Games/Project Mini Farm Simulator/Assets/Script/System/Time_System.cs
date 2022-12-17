@@ -93,7 +93,6 @@ public class Time_System : MonoBehaviour
         controller.eventSystem.All_Events_Update_Check();
         controller.eventSystem.All_Events_Single_Check();
         controller.defaultMenu.Update_UI();
-        controller.BorderUI_Update_All_Tiles(currentSeason);
 
         controller.buffFunction.Activate_All_Buffs_forSeeds();
     }
@@ -108,7 +107,6 @@ public class Time_System : MonoBehaviour
         }
 
         controller.defaultMenu.Update_UI();
-        controller.BorderUI_Update_All_Tiles(currentSeason);
     }
 
     // real time system
