@@ -20,6 +20,22 @@ public struct AfterSeedStatus
 }
 
 [System.Serializable]
+public struct LastSeedStatus
+{
+    public int health;
+
+    public int dayPassed;
+    public int fullGrownDay;
+
+    public int watered;
+    public int daysWithoutWater;
+    public bool currentDayWatered;
+    public bool harvestReady;
+
+    public int bonusPoints;
+}
+
+[System.Serializable]
 public class FarmTile_Basic_Data
 {
     public Seed_ScrObj plantedSeed = null;
@@ -45,6 +61,7 @@ public class FarmTile : MonoBehaviour
     public string saveName;
     public FarmTile_Basic_Data data;
     public AfterSeedStatus tileSeedStatus;
+    public LastSeedStatus lastSeedStatus;
 
     public List<Buff_ScrObj> currentBuffs = new List<Buff_ScrObj>();
 
@@ -166,10 +183,13 @@ public class FarmTile : MonoBehaviour
             tileSeedStatus.health = 0;
         }
     }
-    private void Health_Check()
+    public void Health_Check()
     {
-        if (tileSeedStatus.health <= 0)
+        if (data.seedPlanted && tileSeedStatus.health <= 0)
         {
+            statusIconIndicator.Reset_All_Icons();
+            currentBuffs.Clear();
+
             image.sprite = data.unplantedTile;
             data.plantedSeed = null;
             data.seedPlanted = false;
@@ -182,10 +202,23 @@ public class FarmTile : MonoBehaviour
         }
     }
 
+    private void Save_Last_Seed_Status()
+    {
+        lastSeedStatus.health = tileSeedStatus.health;
+        lastSeedStatus.dayPassed = tileSeedStatus.dayPassed;
+        lastSeedStatus.fullGrownDay = tileSeedStatus.fullGrownDay;
+        lastSeedStatus.watered = tileSeedStatus.watered;
+        lastSeedStatus.daysWithoutWater = tileSeedStatus.daysWithoutWater;
+        lastSeedStatus.currentDayWatered = tileSeedStatus.currentDayWatered;
+        lastSeedStatus.harvestReady = tileSeedStatus.harvestReady;
+        lastSeedStatus.bonusPoints = tileSeedStatus.bonusPoints;
+    }
+
     public void NextDay_Seed_Status_Update()
     {
+        Save_Last_Seed_Status();
+
         tileSeedStatus.currentDayWatered = false;
-        statusIconIndicator.Reset_All_Icons();
 
         if (data.seedPlanted)
         {
@@ -194,8 +227,6 @@ public class FarmTile : MonoBehaviour
 
             // reset next day
             tileSeedStatus.dayPassed += 1;
-
-            TileSprite_Update_Check();
         }
     }
     public void LoadDay_Seed_Status_Update()
@@ -209,24 +240,33 @@ public class FarmTile : MonoBehaviour
     // pulbic systems
     public void TileSprite_Update_Check()
     {
-        if (data.seedPlanted)
+        if (!data.tileLocked && data.seedPlanted)
         {
-            // early stage of grow
-            if (tileSeedStatus.dayPassed < tileSeedStatus.fullGrownDay / 2)
+            if (tileSeedStatus.dayPassed <= 0)
             {
-                image.sprite = data.plantedSeed.sprites[0];
+                tileSeedStatus.dayPassed = 0;
             }
-            // half grown complete check
-            if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
-            {
-                image.sprite = data.plantedSeed.sprites[1];
-            }
+
             // full grown complete check
             if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay)
             {
                 image.sprite = data.plantedSeed.sprites[2];
                 tileSeedStatus.harvestReady = true;
                 harvestBorderAnim.SetBool("harvestReady", true);
+            }
+            // half grown complete check
+            else if (tileSeedStatus.dayPassed >= tileSeedStatus.fullGrownDay / 2)
+            {
+                image.sprite = data.plantedSeed.sprites[1];
+                tileSeedStatus.harvestReady = false;
+                harvestBorderAnim.SetBool("harvestReady", false);
+            }
+            // early stage of grow
+            else if (tileSeedStatus.dayPassed < tileSeedStatus.fullGrownDay / 2)
+            {
+                image.sprite = data.plantedSeed.sprites[0];
+                tileSeedStatus.harvestReady = false;
+                harvestBorderAnim.SetBool("harvestReady", false);
             }
         }
     }

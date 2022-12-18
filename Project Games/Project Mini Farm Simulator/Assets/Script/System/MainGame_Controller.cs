@@ -21,6 +21,8 @@ public class MainGame_Controller : MonoBehaviour
     public FarmTile[] farmTiles;
     [HideInInspector]
     public int openedTileNum = 0;
+    [HideInInspector]
+    public List<FarmTile> crossSurroundingFarmTiles = new List<FarmTile>();
 
     private int _money = 0;
     public int money => _money;
@@ -40,6 +42,20 @@ public class MainGame_Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Add_Money(100);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            for (int i = 0; i < farmTiles.Length; i++)
+            {
+                if (farmTiles[i].data.seedPlanted && !farmTiles[i].tileSeedStatus.currentDayWatered)
+                {
+                    // water the seeded tile
+                    farmTiles[i].tileSeedStatus.currentDayWatered = true;
+                    farmTiles[i].tileSeedStatus.watered += 1;
+                    farmTiles[i].statusIconIndicator.Assign_Status(0);
+                    farmTiles[i].Watering_Check();
+                }
+            }
         }
     }
 
@@ -81,6 +97,32 @@ public class MainGame_Controller : MonoBehaviour
         {
             farmTiles[i].statusIconIndicator.gameObject.SetActive(x);
             farmTiles[i].button.enabled = x;
+        }
+    }
+
+    public void Set_Cross_Surrounding_FarmTiles(int tileNum)
+    {
+        crossSurroundingFarmTiles.Clear();
+
+        // top tile
+        if (tileNum - 5 >= 0)
+        {
+            crossSurroundingFarmTiles.Add(farmTiles[tileNum - 5]);
+        }
+        // bottom tile
+        if (tileNum + 5 <= 24)
+        {
+            crossSurroundingFarmTiles.Add(farmTiles[tileNum + 5]);
+        }
+        // left tile
+        if (tileNum - 1 >= 0)
+        {
+            crossSurroundingFarmTiles.Add(farmTiles[tileNum - 1]);
+        }
+        // right tile
+        if (tileNum + 1 <= 24)
+        {
+            crossSurroundingFarmTiles.Add(farmTiles[tileNum + 1]);
         }
     }
 

@@ -38,6 +38,9 @@ public class Buff_Function_Controller : MonoBehaviour
                 case 2:
                     functions.Golden_Sunny(farmtile);
                     break;
+                case 3:
+                    functions.Scarecrow(farmtile);
+                    break;
                 default:
                     break;
             }
