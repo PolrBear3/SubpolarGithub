@@ -80,27 +80,24 @@ public class Time_System : MonoBehaviour
 
         Check_End0f_Year();
         Check_Season();
-
         controller.eventSystem.Set_Today_Weather();
+
         controller.defaultMenu.Update_UI();
 
-        // farm tile update
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].statusIconIndicator.Reset_All_Icons();
-            controller.farmTiles[i].NextDay_Seed_Status_Update();
-        }
-
-        controller.eventSystem.All_Events_Update_Check();
-        controller.eventSystem.All_Events_Single_Check();
-
-        controller.buffFunction.Activate_All_Buffs_forSeeds();
-
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].Health_Check();
-            controller.farmTiles[i].TileSprite_Update_Check();
-        }
+        // +1 day, watered false
+        controller.All_FarmTile_NextDay_Update();
+        // reset all status
+        controller.All_FarmTile_Reset_Status();
+        // activate all buffs
+        controller.buffSystem.Activate_All_Buffs();
+        // activate all events
+        controller.eventSystem.Activate_All_Events();
+        // health check
+        controller.All_FarmTile_HealthCheck();
+        // watering check
+        controller.All_FarmTile_WateringCheck();
+        // update sprite
+        controller.All_FarmTile_Sprite_Update();
 
         ReCalculate_AllSeed_WaitTime();
     }
@@ -109,13 +106,14 @@ public class Time_System : MonoBehaviour
         Check_End0f_Year();
         Check_Season();
 
+        controller.defaultMenu.Update_UI();
+
         for (int i = 0; i < controller.farmTiles.Length; i++)
         {
-            controller.farmTiles[i].LoadDay_Seed_Status_Update();
-            controller.farmTiles[i].TileSprite_Update_Check();
+            controller.farmTiles[i].Load_Update_Tile();
         }
-
-        controller.defaultMenu.Update_UI();
+        // update sprite
+        controller.All_FarmTile_Sprite_Update();
     }
 
     // real time system

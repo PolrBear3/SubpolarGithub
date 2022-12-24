@@ -39,7 +39,7 @@ public class Seed_Button : MonoBehaviour
             buttonImage.sprite = buttonSprites[1];
             seedPriceTextRT.anchoredPosition = new Vector2(0f, -2.65f);
 
-            menu.hide_Seed_ToolTip();
+            menu.Hide_Seed_ToolTip();
             menu.Select_Seed(seedInfo);
         }
         else

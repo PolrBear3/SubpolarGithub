@@ -80,7 +80,7 @@ public class UnPlanted_Menu : MonoBehaviour
     }
     public void Close()
     {
-        hide_Seed_ToolTip();
+        Hide_Seed_ToolTip();
         Reset_Selections();
         Button_Shield(true);
         SeedButtons_Shield(true);
@@ -89,7 +89,7 @@ public class UnPlanted_Menu : MonoBehaviour
     }
     public void PlantSeed_Close()
     {
-        hide_Seed_ToolTip();
+        Hide_Seed_ToolTip();
         Button_Shield(true);
         SeedButtons_Shield(true);
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
@@ -102,7 +102,7 @@ public class UnPlanted_Menu : MonoBehaviour
     }
     public void Set_New_CurrentButtonPage()
     {
-        hide_Seed_ToolTip();
+        Hide_Seed_ToolTip();
 
         // unselect all buttons for pressed sprite change
         Unpress_All_Buttons();
@@ -168,6 +168,7 @@ public class UnPlanted_Menu : MonoBehaviour
                 controller.farmTiles[i].data.seedPlanted = true;
                 controller.farmTiles[i].data.plantedSeed = currentSeedInfo;
                 controller.farmTiles[i].Seed_Planted_Start_Set();
+                controller.eventSystem.Activate_All_Events();
                 controller.plantedMenu.Open();
                 controller.timeSystem.Add_MyTime(currentSeedInfo.waitTime);
                 Reset_Selections();
@@ -218,7 +219,7 @@ public class UnPlanted_Menu : MonoBehaviour
         controller.buffMenu.Hide_Buff_ToolTip();
         x.toolTipPanel.SetActive(true);
     }
-    public void hide_Seed_ToolTip()
+    public void Hide_Seed_ToolTip()
     {
         seedToolTipUIconnection.toolTipOn = false;
         seedToolTipUIconnection.toolTipPanel.SetActive(false);
@@ -232,7 +233,7 @@ public class UnPlanted_Menu : MonoBehaviour
         }
         else
         {
-            hide_Seed_ToolTip();
+            Hide_Seed_ToolTip();
         }
     }
 }

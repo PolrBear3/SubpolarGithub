@@ -98,7 +98,7 @@ public class Planted_Menu : MonoBehaviour
     public void Close()
     {
         data.menuOn = false;
-        controller.unPlantedMenu.hide_Seed_ToolTip();
+        controller.unPlantedMenu.Hide_Seed_ToolTip();
         Button_Shield(true);
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
@@ -116,7 +116,8 @@ public class Planted_Menu : MonoBehaviour
         controller.Add_Money(currentFarmTile.data.plantedSeed.seedBuyPrice);
         controller.timeSystem.Subtract_MyTime(currentFarmTile.data.plantedSeed.waitTime);
         currentFarmTile.Reset_Tile();
-        controller.eventSystem.All_Events_Update_Check();
+        controller.eventSystem.Activate_All_Events();
+        controller.plantedMenu.Close();
     }
 
     public void Water_Seed()
@@ -203,9 +204,10 @@ public class Planted_Menu : MonoBehaviour
             controller.Add_Money(currentFarmTile.data.plantedSeed.harvestSellPrice);
         }
         currentFarmTile.Reset_Tile();
-        currentFarmTile.harvestCoinsAnim.SetBool("harvest", true);
+        controller.eventSystem.Activate_All_Events();
+        currentFarmTile.harvestCoinsAnim.SetBool("harvest", false);
 
-        controller.eventSystem.All_Events_Update_Check();
+        Close();
     }
 
     // current buffs for planted seed panel functions
@@ -331,7 +333,7 @@ public class Planted_Menu : MonoBehaviour
         }
         else
         {
-            controller.unPlantedMenu.hide_Seed_ToolTip();
+            controller.unPlantedMenu.Hide_Seed_ToolTip();
         }
     }
 }

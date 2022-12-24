@@ -14,14 +14,6 @@ public class Status_Icon_Indicator : MonoBehaviour
         Empy_All_NonStatus_Icons();
     }
 
-    public void Reset_All_Icons()
-    {
-        for (int i = 0; i < statusIcons.Length; i++)
-        {
-            statusIcons[i].Empty_Icon();
-        }
-    }
-
     private void Empy_All_NonStatus_Icons()
     {
         for (int i = 0; i < statusIcons.Length; i++)
@@ -33,17 +25,25 @@ public class Status_Icon_Indicator : MonoBehaviour
         }
     }
 
-    public void Assign_Status(int statusID)
+    public void Reset_All_Icons()
     {
-        var allStatus = farmTile.controller.allStatus;
         for (int i = 0; i < statusIcons.Length; i++)
         {
-            if (!statusIcons[i].hasStatus)
-            {
-                statusIcons[i].Assign_Icon(farmTile.controller.ID_Status_Search(statusID));
-                break;
-            }
+            statusIcons[i].Empty_Icon();
         }
+    }
+    public bool Find_Status(int StatusNum)
+    {
+        for (int i = 0; i < statusIcons.Length; i++)
+        {
+            // if the status icon is not empty
+            if (statusIcons[i].currentStatus == null) break;
+            // if it finds the wanting status
+            if (statusIcons[i].currentStatus.statusID != StatusNum) continue;
+
+            return true;
+        }
+        return false;
     }
 
     private void Re_Arrange_Icons()
@@ -72,6 +72,19 @@ public class Status_Icon_Indicator : MonoBehaviour
             }
         }
     }
+    
+    public void Assign_Status(int statusID)
+    {
+        var allStatus = farmTile.controller.allStatus;
+        for (int i = 0; i < statusIcons.Length; i++)
+        {
+            if (!statusIcons[i].hasStatus)
+            {
+                statusIcons[i].Assign_Icon(farmTile.controller.ID_Status_Search(statusID));
+                break;
+            }
+        }
+    }
     public void UnAssign_Status(int statusID)
     {
         for (int i = 0; i < statusIcons.Length; i++)
@@ -86,5 +99,20 @@ public class Status_Icon_Indicator : MonoBehaviour
                 }
             }
         }
+    }
+    public void UnAssign_Status_NonBreak(int statusID)
+    {
+        for (int i = 0; i < statusIcons.Length; i++)
+        {
+            if (statusIcons[i].hasStatus)
+            {
+                if (statusID == statusIcons[i].currentStatus.statusID)
+                {
+                    statusIcons[i].Empty_Icon();
+                }
+            }
+        }
+
+        Re_Arrange_Icons();
     }
 }

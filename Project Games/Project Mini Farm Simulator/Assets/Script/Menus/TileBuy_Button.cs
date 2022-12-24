@@ -28,12 +28,13 @@ public class TileBuy_Button : MonoBehaviour
         {
             controller.Subtract_Money(selectedTile.data.tilePrice);
             selectedTile.Unlock_Tile();
-            controller.eventSystem.All_Events_Update_Check();
             Close();
         }
         else
         {
             controller.defaultMenu.NotEnoughMoney_Blink_Tween();
         }
+
+        controller.eventSystem.Activate_All_Events();
     }
 }

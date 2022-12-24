@@ -20,22 +20,6 @@ public struct AfterSeedStatus
 }
 
 [System.Serializable]
-public struct LastSeedStatus
-{
-    public int health;
-
-    public int dayPassed;
-    public int fullGrownDay;
-
-    public int watered;
-    public int daysWithoutWater;
-    public bool currentDayWatered;
-    public bool harvestReady;
-
-    public int bonusPoints;
-}
-
-[System.Serializable]
 public class FarmTile_Basic_Data
 {
     public Seed_ScrObj plantedSeed = null;
@@ -61,7 +45,6 @@ public class FarmTile : MonoBehaviour
     public string saveName;
     public FarmTile_Basic_Data data;
     public AfterSeedStatus tileSeedStatus;
-    public LastSeedStatus lastSeedStatus;
 
     public List<Buff_ScrObj> currentBuffs = new List<Buff_ScrObj>();
 
@@ -151,6 +134,8 @@ public class FarmTile : MonoBehaviour
     // seed plant start system 
     public void Seed_Planted_Start_Set()
     {
+        statusIconIndicator.Reset_All_Icons();
+
         tileSeedStatus.health = data.plantedSeed.seedHealth;
         tileSeedStatus.watered = 0;
         tileSeedStatus.daysWithoutWater = 0;
@@ -160,13 +145,17 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.bonusPoints = 0;
         tileSeedStatus.fullGrownDay = Random.Range(data.plantedSeed.minFinishDays, data.plantedSeed.maxFinishDays);
         harvestCoinsAnim.SetBool("harvest", false);
-
-        controller.eventSystem.All_Events_Update_Check();
     }
     
     // seed plant update system
     public void Watering_Check()
     {
+        // watering min limit
+        if (tileSeedStatus.watered < 0)
+        {
+            tileSeedStatus.watered = 0;
+        }
+
         // watering check
         if (!tileSeedStatus.currentDayWatered)
         {
@@ -185,6 +174,7 @@ public class FarmTile : MonoBehaviour
     }
     public void Health_Check()
     {
+        // if the tile has no health, reset
         if (data.seedPlanted && tileSeedStatus.health <= 0)
         {
             statusIconIndicator.Reset_All_Icons();
@@ -193,52 +183,37 @@ public class FarmTile : MonoBehaviour
             image.sprite = data.unplantedTile;
             data.plantedSeed = null;
             data.seedPlanted = false;
+            tileSeedStatus.health = 0;
             tileSeedStatus.dayPassed = 0;
             tileSeedStatus.watered = 0;
             tileSeedStatus.daysWithoutWater = 0;
+            tileSeedStatus.currentDayWatered = false;
+            tileSeedStatus.harvestReady = false;
             harvestBorderAnim.SetBool("harvestReady", false);
-            controller.Reset_All_Menu();
-            controller.Reset_All_Tile_Highlights();
+            tileSeedStatus.bonusPoints = 0;
         }
-    }
-
-    private void Save_Last_Seed_Status()
-    {
-        lastSeedStatus.health = tileSeedStatus.health;
-        lastSeedStatus.dayPassed = tileSeedStatus.dayPassed;
-        lastSeedStatus.fullGrownDay = tileSeedStatus.fullGrownDay;
-        lastSeedStatus.watered = tileSeedStatus.watered;
-        lastSeedStatus.daysWithoutWater = tileSeedStatus.daysWithoutWater;
-        lastSeedStatus.currentDayWatered = tileSeedStatus.currentDayWatered;
-        lastSeedStatus.harvestReady = tileSeedStatus.harvestReady;
-        lastSeedStatus.bonusPoints = tileSeedStatus.bonusPoints;
     }
 
     public void NextDay_Seed_Status_Update()
     {
-        Save_Last_Seed_Status();
-
         tileSeedStatus.currentDayWatered = false;
 
-        if (data.seedPlanted)
+        // if the tile has a seed planted
+        if (!data.seedPlanted)
         {
-            Watering_Check();
-            Health_Check();
+            return;
+        }
+        // if the tile is not ready to be harvested
+        if (tileSeedStatus.harvestReady)
+        {
+            return;
+        }
 
-            // reset next day
-            tileSeedStatus.dayPassed += 1;
-        }
-    }
-    public void LoadDay_Seed_Status_Update()
-    {
-        if (data.seedPlanted)
-        {
-            TileSprite_Update_Check();
-        }
+        tileSeedStatus.dayPassed += 1;
     }
 
     // pulbic systems
-    public void TileSprite_Update_Check()
+    public void TileSprite_Update()
     {
         if (!data.tileLocked && data.seedPlanted)
         {
@@ -259,14 +234,12 @@ public class FarmTile : MonoBehaviour
             {
                 image.sprite = data.plantedSeed.sprites[1];
                 tileSeedStatus.harvestReady = false;
-                harvestBorderAnim.SetBool("harvestReady", false);
             }
             // early stage of grow
             else if (tileSeedStatus.dayPassed < tileSeedStatus.fullGrownDay / 2)
             {
                 image.sprite = data.plantedSeed.sprites[0];
                 tileSeedStatus.harvestReady = false;
-                harvestBorderAnim.SetBool("harvestReady", false);
             }
         }
     }
@@ -286,12 +259,19 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.harvestReady = false;
         harvestBorderAnim.SetBool("harvestReady", false);
         tileSeedStatus.bonusPoints = 0;
-        
-        controller.plantedMenu.Close();
-        controller.unPlantedMenu.Open();
-        Highlight_Tile();
     }
 
+    public bool Find_Buff(int buffID)
+    {
+        for (int i = 0; i < currentBuffs.Count; i++)
+        {
+            if (currentBuffs[i] == null) break;
+            if (currentBuffs[i].buffID != buffID) continue;
+
+            return true;
+        }
+        return false;
+    }
     public void Add_Buff(Buff_ScrObj buff)
     {
         currentBuffs.Add(buff);
@@ -307,6 +287,16 @@ public class FarmTile : MonoBehaviour
             }
         }
     }
+    public void Remove_Buff_NonBreak(Buff_ScrObj buff)
+    {
+        for (int i = 0; i < currentBuffs.Count; i++)
+        {
+            if (buff == currentBuffs[i])
+            {
+                currentBuffs.Remove(currentBuffs[i]);
+            }
+        }
+    }
 
     // save load systems
     public void Load_Update_Tile()
@@ -316,7 +306,7 @@ public class FarmTile : MonoBehaviour
         // seed grow image load 
         if (data.seedPlanted)
         {
-            TileSprite_Update_Check();
+            TileSprite_Update();
         }
     }
 }

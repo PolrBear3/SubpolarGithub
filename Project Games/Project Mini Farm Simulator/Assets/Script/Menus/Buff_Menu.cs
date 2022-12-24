@@ -76,7 +76,7 @@ public class Buff_Menu : MonoBehaviour
     // basic functions
     public void Open()
     {
-        controller.unPlantedMenu.hide_Seed_ToolTip();
+        controller.unPlantedMenu.Hide_Seed_ToolTip();
         Reset_Selections();
         Button_Shield(false);
         BuffButtons_Shield(false);
@@ -198,7 +198,7 @@ public class Buff_Menu : MonoBehaviour
             x.buffPrice.text = "buff price: $ " + currentSelectedBuff.buffPrice.ToString();
         }
 
-        controller.unPlantedMenu.hide_Seed_ToolTip();
+        controller.unPlantedMenu.Hide_Seed_ToolTip();
         x.toolTipPanel.SetActive(true);
     }
     public void Show_ActiveBuff_ToolTip(Buff_ScrObj buff)
@@ -211,7 +211,7 @@ public class Buff_Menu : MonoBehaviour
         x.buffDescription.text = buff.description;
         x.buffPrice.text = "buff price: $ " + buff.buffPrice.ToString();
 
-        controller.unPlantedMenu.hide_Seed_ToolTip();
+        controller.unPlantedMenu.Hide_Seed_ToolTip();
         x.toolTipPanel.SetActive(true);
     }
     public void Hide_Buff_ToolTip()

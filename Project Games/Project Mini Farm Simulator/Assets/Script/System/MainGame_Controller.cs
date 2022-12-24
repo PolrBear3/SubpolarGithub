@@ -12,17 +12,15 @@ public class MainGame_Controller : MonoBehaviour
     public Buff_Menu buffMenu;
     public Shop_Menu shopMenu;
     public Options_Menu optionsMenu;
-    public Buff_Function_Controller buffFunction;
     public Save_System saveSystem;
     public Time_System timeSystem;
     public Event_System eventSystem;
+    public Buff_System buffSystem;
     public Gacha_System gachaSystem;
 
     public FarmTile[] farmTiles;
     [HideInInspector]
     public int openedTileNum = 0;
-    [HideInInspector]
-    public List<FarmTile> crossSurroundingFarmTiles = new List<FarmTile>();
 
     private int _money = 0;
     public int money => _money;
@@ -100,29 +98,46 @@ public class MainGame_Controller : MonoBehaviour
         }
     }
 
-    public void Set_Cross_Surrounding_FarmTiles(int tileNum)
+    public void All_FarmTile_HealthCheck()
     {
-        crossSurroundingFarmTiles.Clear();
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            if (farmTiles[i].data.seedPlanted)
+            {
+                farmTiles[i].Health_Check();
+            }
+        }
+    }
+    public void All_FarmTile_WateringCheck()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            if (farmTiles[i].data.seedPlanted)
+            {
+                farmTiles[i].Watering_Check();
+            }
+        }
+    }
+    public void All_FarmTile_NextDay_Update()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].NextDay_Seed_Status_Update();
+        }
+    }
+    public void All_FarmTile_Sprite_Update()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
 
-        // top tile
-        if (tileNum - 5 >= 0)
-        {
-            crossSurroundingFarmTiles.Add(farmTiles[tileNum - 5]);
+            farmTiles[i].TileSprite_Update();
         }
-        // bottom tile
-        if (tileNum + 5 <= 24)
+    }
+    public void All_FarmTile_Reset_Status()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
         {
-            crossSurroundingFarmTiles.Add(farmTiles[tileNum + 5]);
-        }
-        // left tile
-        if (tileNum - 1 >= 0)
-        {
-            crossSurroundingFarmTiles.Add(farmTiles[tileNum - 1]);
-        }
-        // right tile
-        if (tileNum + 1 <= 24)
-        {
-            crossSurroundingFarmTiles.Add(farmTiles[tileNum + 1]);
+            farmTiles[i].statusIconIndicator.Reset_All_Icons();
         }
     }
 

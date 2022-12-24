@@ -7,5 +7,6 @@ public class Status : ScriptableObject
 {
     public int statusID;
     public Sprite statusIcon;
-    public float eventPercentage;
+    [TextArea (5, 5)]
+    public string statusDescription;
 }
