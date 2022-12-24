@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cloudy_Stunned : MonoBehaviour, IEvent
+public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
 {
     private Event_System e;
 
-    public Event_Amount amount;
+    public Event_Data data;
 
+    private void Start()
+    {
+        data.activated = true;
+    }
     private void Awake()
     {
         e = gameObject.transform.parent.GetComponent<Event_System>();
@@ -15,6 +19,10 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent
     public void Activate_Event()
     {
         Activate_Cloudy_Stunned();
+    }
+    public void Reset_Event()
+    {
+        data.activated = false;
     }
 
     private bool Is_Weather_Cloudy()
@@ -33,12 +41,9 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent
         // if the tile is not ready to be harvested
         if (farmTile.tileSeedStatus.harvestReady) return false;
 
-        // if the seed is not cloudy stunned
-        if (farmTile.statusIconIndicator.Find_Status(2)) return false;
-
         return true;
     }
-    private bool FarmTile_Has_CloudyStunShield(FarmTile farmTile) // bug ??
+    private bool FarmTile_Has_CloudyStunShield(FarmTile farmTile)
     {
         // if the seeded tile has a cloudy buff
         if (farmTile.Find_Buff(0))
@@ -53,11 +58,16 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent
 
     private void Activate_Cloudy_Stunned()
     {
+        // if event is not activated
+        if (data.activated) return;
+        // activate event
+        data.activated = true;
+
         // if the weather is cloudy
         if (!Is_Weather_Cloudy()) return;
 
         // if the percentage activates
-        if (!e.Percentage_Setter(amount.percentage)) return;
+        if (!e.Percentage_Setter(data.percentage)) return;
 
         var farmTiles = e.controller.farmTiles;
         for (int i = 0; i < farmTiles.Length; i++)
@@ -72,7 +82,8 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent
             farmTiles[i].statusIconIndicator.Assign_Status(2);
 
             // cloudy stunned events
-            farmTiles[i].tileSeedStatus.dayPassed -= amount.dayPassed;
+            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
+            farmTiles[i].tileSeedStatus.watered -= data.watered;
         }
     }
 }

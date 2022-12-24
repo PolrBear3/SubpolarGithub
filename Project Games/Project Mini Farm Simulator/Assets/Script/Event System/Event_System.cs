@@ -6,9 +6,13 @@ public interface IEvent
 {
     void Activate_Event();
 }
+public interface IEventResetable
+{
+    void Reset_Event();
+}
 
 [System.Serializable]
-public struct Event_Amount
+public struct Event_Data
 {
     public float percentage;
     public int health;
@@ -16,6 +20,9 @@ public struct Event_Amount
     public int fullGrownDay;
     public int watered;
     public int bonusPoints;
+
+    [HideInInspector]
+    public bool activated;
 }
 
 public class Event_System : MonoBehaviour
@@ -59,6 +66,7 @@ public class Event_System : MonoBehaviour
             allEvents.Add(events.transform.GetChild(i).gameObject);
         }
     }
+
     public void Activate_All_Events()
     {
         for (int i = 0; i < allEvents.Count; i++)
@@ -66,6 +74,16 @@ public class Event_System : MonoBehaviour
             if (allEvents[i].TryGetComponent(out IEvent e))
             {
                 e.Activate_Event();
+            }
+        }
+    }
+    public void Reset_All_Events()
+    {
+        for (int i = 0; i < allEvents.Count; i++)
+        {
+            if (allEvents[i].TryGetComponent(out IEventResetable e))
+            {
+                e.Reset_Event();
             }
         }
     }

@@ -6,7 +6,7 @@ public class Sunny_Buffed : MonoBehaviour, IEvent
 {
     private Event_System e;
 
-    public Event_Amount amount;
+    public Event_Data data;
 
     private void Awake()
     {
@@ -42,7 +42,7 @@ public class Sunny_Buffed : MonoBehaviour, IEvent
         if (!Is_Weather_Sunny()) return;
 
         // if sunny buff percentage event activates
-        if (!e.Percentage_Setter(amount.percentage)) return;
+        if (!e.Percentage_Setter(data.percentage)) return;
 
         var farmTile = e.controller.farmTiles;
 
@@ -54,10 +54,10 @@ public class Sunny_Buffed : MonoBehaviour, IEvent
             farmTile[i].statusIconIndicator.Assign_Status(1);
 
             // activate event
-            farmTile[i].tileSeedStatus.health += amount.health;
-            farmTile[i].tileSeedStatus.watered += amount.watered;
-            farmTile[i].tileSeedStatus.dayPassed += amount.dayPassed;
-            farmTile[i].tileSeedStatus.bonusPoints += amount.bonusPoints;
+            farmTile[i].tileSeedStatus.health += data.health;
+            farmTile[i].tileSeedStatus.watered += data.watered;
+            farmTile[i].tileSeedStatus.dayPassed += data.dayPassed;
+            farmTile[i].tileSeedStatus.bonusPoints += data.bonusPoints;
         }
     }
 }

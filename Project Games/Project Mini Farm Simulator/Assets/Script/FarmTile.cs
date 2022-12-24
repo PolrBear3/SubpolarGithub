@@ -177,7 +177,6 @@ public class FarmTile : MonoBehaviour
         // if the tile has no health, reset
         if (data.seedPlanted && tileSeedStatus.health <= 0)
         {
-            statusIconIndicator.Reset_All_Icons();
             currentBuffs.Clear();
 
             image.sprite = data.unplantedTile;
@@ -234,12 +233,14 @@ public class FarmTile : MonoBehaviour
             {
                 image.sprite = data.plantedSeed.sprites[1];
                 tileSeedStatus.harvestReady = false;
+                harvestBorderAnim.SetBool("harvestReady", false);
             }
             // early stage of grow
             else if (tileSeedStatus.dayPassed < tileSeedStatus.fullGrownDay / 2)
             {
                 image.sprite = data.plantedSeed.sprites[0];
                 tileSeedStatus.harvestReady = false;
+                harvestBorderAnim.SetBool("harvestReady", false);
             }
         }
     }

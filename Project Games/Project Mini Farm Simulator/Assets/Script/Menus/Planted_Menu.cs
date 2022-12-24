@@ -205,7 +205,7 @@ public class Planted_Menu : MonoBehaviour
         }
         currentFarmTile.Reset_Tile();
         controller.eventSystem.Activate_All_Events();
-        currentFarmTile.harvestCoinsAnim.SetBool("harvest", false);
+        currentFarmTile.harvestCoinsAnim.SetBool("harvest", true);
 
         Close();
     }
