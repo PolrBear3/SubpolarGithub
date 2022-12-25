@@ -25,6 +25,8 @@ public class Current_Buffs_Panel_UI
 {
     [HideInInspector]
     public bool cbON = false;
+    [HideInInspector]
+    public int openedActiveFrameNum;
     public RectTransform cbRT;
     public GameObject cbButton, cbPanel;
     public Current_Buff_Icon_UI[] icons;
@@ -49,6 +51,9 @@ public class Planted_Menu : MonoBehaviour
     {
         // set to position at the center
         rectTransform.anchoredPosition = new Vector2(0f, -125f);
+
+        // active buff panel frame number set to null
+        Buff_ToolTip_Reset_FrameNum();
     }
 
     public void Button_Shield(bool activate)
@@ -268,41 +273,40 @@ public class Planted_Menu : MonoBehaviour
         }
         else
         {
-            currentBuffsPanel.cbON = false;
-            controller.buffMenu.Hide_Buff_ToolTip();
-            currentBuffsPanel.cbPanel.SetActive(false);
+            Close_CurrentBuffs_Panel();
         }
     }
     public void Close_CurrentBuffs_Panel()
     {
         currentBuffsPanel.cbON = false;
         currentBuffsPanel.cbPanel.SetActive(false);
+        Buff_ToolTip_Reset_FrameNum();
         controller.buffMenu.Hide_Buff_ToolTip();
     }
 
-    private bool Active_Buff_Frame_EmptyCheck(int frameNum)
+    public void Buff_ToolTip_Reset_FrameNum()
     {
-        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-
-        if (frameNum + 1 == currentFarmTile.currentBuffs.Count)
-        {
-            return true;
-        }
-        else return false;
+        currentBuffsPanel.openedActiveFrameNum = -1;
     }
     public void Show_Hide_Buff_ToolTip(int frameNum)
     {
-        var x = controller.buffMenu;
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        var x = controller.buffMenu;
 
-        if (!x.tooltipUI.toolTipOn && Active_Buff_Frame_EmptyCheck(frameNum))
-        {
-            x.Show_ActiveBuff_ToolTip(currentFarmTile.currentBuffs[frameNum]);
-        }
-        else
+        // if active buff is not empty
+        if (currentFarmTile.currentBuffs[frameNum] == null) return;
+
+        // if currently opened buff is pressed again, close the tooltip
+        if (frameNum == currentBuffsPanel.openedActiveFrameNum)
         {
             x.Hide_Buff_ToolTip();
+            Buff_ToolTip_Reset_FrameNum();
+            return;
         }
+
+        // open active buff tooltip
+        x.Show_ActiveBuff_ToolTip(currentFarmTile.currentBuffs[frameNum]);
+        currentBuffsPanel.openedActiveFrameNum = frameNum;
     }
 
     public void BuffButton_Available_Check()

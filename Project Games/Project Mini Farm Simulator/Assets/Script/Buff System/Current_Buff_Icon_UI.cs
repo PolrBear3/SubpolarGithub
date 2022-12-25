@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Current_Buff_Icon_UI : MonoBehaviour
 {
-    public Buff_Menu menu;
-    
     public bool hasBuff;
     public Buff_ScrObj currentBuff;
     public Image buffIcon;
