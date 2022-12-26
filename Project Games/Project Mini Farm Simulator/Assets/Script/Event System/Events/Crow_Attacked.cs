@@ -7,6 +7,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
     private Event_System e;
 
     public Event_Data data;
+    public Event_Data subData;
 
     private void Start()
     {
@@ -39,22 +40,25 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
     {
         if (farmTile.Find_Buff(3))
         {
-            farmTile.Remove_Buff(e.controller.ID_Buff_Search(3));
             return true;
         }
         return false;
     }
+    
     private bool Current_FarmTile_Condition_Check(FarmTile farmTile)
     {
         // if the tile has a seed planted
         if (!farmTile.data.seedPlanted) return false;
 
-        // if the seed is grown more than day passed subtraction amount
-        if (farmTile.tileSeedStatus.dayPassed < data.dayPassed) return false;
+        return true;
+    }
+    private bool Surrounding_FarmTile_Condition_Check(FarmTile farmTile)
+    {
+        // if the tile has a seed planted
+        if (!farmTile.data.seedPlanted) return false;
 
         return true;
     }
-    // cross surrounding farmtile condition check(FarmTile farmTile)
 
     private void Activate_Crow_Attack()
     {
@@ -75,15 +79,19 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             // if the farmTile is in condition for event
             if (!Current_FarmTile_Condition_Check(farmTiles[i])) continue;
 
+            // assign crow attacked icon
+            farmTiles[i].statusIconIndicator.Assign_Status(4);
+
             // if the farmTile does not have a scarecrow buff
             if (FarmTile_Has_Scarecrow(farmTiles[i])) continue;
 
-            // assign crow attacked icon
-            farmTiles[i].statusIconIndicator.Assign_Status(4);
             // attack value
             farmTiles[i].tileSeedStatus.health -= data.health;
             farmTiles[i].tileSeedStatus.watered -= data.watered;
-            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
+            if (farmTiles[i].tileSeedStatus.dayPassed >= data.dayPassed)
+            {
+                farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
+            }
             farmTiles[i].tileSeedStatus.bonusPoints -= data.bonusPoints;
 
             // additional crow attack
@@ -92,15 +100,51 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
     }
     private void Activate_Additional_Crow_Attack(FarmTile farmTile)
     {
-        // for the tiles that are cross surrounding this farmTile
-
-        // if the tile has a seed planted
+        var farmTiles = e.controller.farmTiles;
         
-        // if the tile does not have a scarecrow buff (id 3)
+        List<int> surroundingNums = new List<int>();
+        
+        // find top tile
+        surroundingNums.Add(farmTile.data.tileNum - 5);
+        // find bottom tile
+        surroundingNums.Add(farmTile.data.tileNum + 5);
+        // find left tile
+        surroundingNums.Add(farmTile.data.tileNum - 1);
+        // find right tile
+        surroundingNums.Add(farmTile.data.tileNum + 1);
 
-        // if additional crow attack percentage activates
+        // for the top, bottom, left, right tiles
+        for (int i = 0; i < surroundingNums.Count; i++)
+        {
+            // if there is a tile
+            if (surroundingNums[i] < 0 || surroundingNums[i] > 24) continue;
+            
+            var surroundingFarmTile = farmTiles[surroundingNums[i]];
 
-        // assign additional crow attacked icon
-        // attack value
+            // if there is a tile on left or right side
+            if (farmTile.data.tileNum - surroundingNums[i] == 1 || surroundingNums[i] - farmTile.data.tileNum == 1)
+            {
+                // if the tile is on the same row
+                if (farmTile.data.tileRow != surroundingFarmTile.data.tileRow) continue;
+            }
+
+            // if the tile has a seed planted
+            if (!Surrounding_FarmTile_Condition_Check(surroundingFarmTile)) continue;
+
+            // if additional crow attack of sub data percentage activates
+            if (!e.Percentage_Setter(subData.percentage)) continue;
+
+            // assign additional crow attacked icon
+            surroundingFarmTile.statusIconIndicator.Assign_Status(5);
+
+            // if the tile does not have a scarecrow buff
+            if (FarmTile_Has_Scarecrow(surroundingFarmTile)) continue;
+
+            // attack value
+            surroundingFarmTile.tileSeedStatus.health -= subData.health;
+            surroundingFarmTile.tileSeedStatus.watered -= subData.watered;
+            surroundingFarmTile.tileSeedStatus.dayPassed -= subData.dayPassed;
+            surroundingFarmTile.tileSeedStatus.bonusPoints -= subData.bonusPoints;
+        }
     }
 }

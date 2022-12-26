@@ -61,10 +61,18 @@ public class MainGame_Controller : MonoBehaviour
     private void Set_TileNum_forAll_Tiles()
     {
         int tileNum = 0;
+        int tileRow = 0;
+
         for (int i = 0; i < farmTiles.Length; i++)
         {
             farmTiles[i].data.tileNum = tileNum;
             tileNum++;
+
+            if (farmTiles[i].data.tileNum % 5 == 0)
+            {
+                tileRow++;
+            }
+            farmTiles[i].data.tileRow = tileRow;
         }
     }
     public void Set_OpenTileNum(FarmTile farmTile)

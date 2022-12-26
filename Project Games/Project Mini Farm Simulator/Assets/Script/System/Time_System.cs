@@ -88,12 +88,12 @@ public class Time_System : MonoBehaviour
         controller.All_FarmTile_NextDay_Update();
         // reset all status
         controller.All_FarmTile_Reset_Status();
-        // activate all buffs
-        controller.buffSystem.Activate_All_Buffs();
         // reset all events
         controller.eventSystem.Reset_All_Events();
         // activate all events
         controller.eventSystem.Activate_All_Events();
+        // activate all buffs
+        controller.buffSystem.Activate_All_Buffs();
         // health check
         controller.All_FarmTile_HealthCheck();
         // watering check

@@ -23,7 +23,7 @@ public struct AfterSeedStatus
 public class FarmTile_Basic_Data
 {
     public Seed_ScrObj plantedSeed = null;
-    public int tileNum, tilePrice;
+    public int tileNum, tileRow, tilePrice;
     public bool tileSelected = false, tileLocked = false, seedPlanted = false;
 
     public Sprite lockedTile;
