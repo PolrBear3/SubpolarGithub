@@ -9,13 +9,13 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
     public Event_Data data;
     public Event_Data subData;
 
-    private void Start()
-    {
-        data.activated = true;
-    }
     private void Awake()
     {
         e = gameObject.transform.parent.GetComponent<Event_System>();
+    }
+    private void Start()
+    {
+        data.activated = true;
     }
     public void Activate_Event()
     {
@@ -88,10 +88,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             // attack value
             farmTiles[i].tileSeedStatus.health -= data.health;
             farmTiles[i].tileSeedStatus.watered -= data.watered;
-            if (farmTiles[i].tileSeedStatus.dayPassed >= data.dayPassed)
-            {
-                farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
-            }
+            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
             farmTiles[i].tileSeedStatus.bonusPoints -= data.bonusPoints;
 
             // additional crow attack

@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scarecrow : MonoBehaviour, IBuff
+public class Scarecrow : MonoBehaviour, IBuff, IBuffResetable
 {
     private Buff_System b;
+
+    public Event_Data data;
 
     private void Awake()
     {
         b = gameObject.transform.parent.GetComponent<Buff_System>();
     }
+    private void Start()
+    {
+        data.activated = true;
+    }
     public void Activate_Buff()
     {
         Activate_Scarecrow();
+    }
+    public void Reset_Buff()
+    {
+        data.activated = false;
     }
 
     private bool FarmTile_Condition_Check(FarmTile farmTile)
@@ -31,6 +41,11 @@ public class Scarecrow : MonoBehaviour, IBuff
 
     private void Activate_Scarecrow()
     {
+        // if buff is not activated
+        if (data.activated) return;
+        // activate buff
+        data.activated = true;
+
         var farmTiles = b.controller.farmTiles;
         
         for (int i = 0; i < farmTiles.Length; i++)

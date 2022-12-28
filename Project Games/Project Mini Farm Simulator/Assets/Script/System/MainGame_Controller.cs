@@ -133,12 +133,12 @@ public class MainGame_Controller : MonoBehaviour
             farmTiles[i].NextDay_Seed_Status_Update();
         }
     }
-    public void All_FarmTile_Sprite_Update()
+    public void All_FarmTile_Progress_Update()
     {
         for (int i = 0; i < farmTiles.Length; i++)
         {
 
-            farmTiles[i].TileSprite_Update();
+            farmTiles[i].Tile_Progress_Update();
         }
     }
     public void All_FarmTile_Reset_Status()
@@ -147,30 +147,6 @@ public class MainGame_Controller : MonoBehaviour
         {
             farmTiles[i].statusIconIndicator.Reset_All_Icons();
         }
-    }
-
-    // ID Search
-    public Buff_ScrObj ID_Buff_Search(int buffID)
-    {
-        for (int i = 0; i < allBuffs.Length; i++)
-        {
-            if (buffID == allBuffs[i].buffID)
-            {
-                return allBuffs[i];
-            }
-        }
-        return null;
-    }
-    public Status ID_Status_Search(int statusID)
-    {
-        for (int i = 0; i < allStatus.Length; i++)
-        {
-            if (statusID == allStatus[i].statusID)
-            {
-                return allStatus[i];
-            }
-        }
-        return null;
     }
 
     // ui functions
@@ -211,5 +187,29 @@ public class MainGame_Controller : MonoBehaviour
     public void Load_Money(int amount)
     {
         _money = amount;
+    }
+    
+    // ID Search
+    public Buff_ScrObj ID_Buff_Search(int buffID)
+    {
+        for (int i = 0; i < allBuffs.Length; i++)
+        {
+            if (buffID == allBuffs[i].buffID)
+            {
+                return allBuffs[i];
+            }
+        }
+        return null;
+    }
+    public Status ID_Status_Search(int statusID)
+    {
+        for (int i = 0; i < allStatus.Length; i++)
+        {
+            if (statusID == allStatus[i].statusID)
+            {
+                return allStatus[i];
+            }
+        }
+        return null;
     }
 }

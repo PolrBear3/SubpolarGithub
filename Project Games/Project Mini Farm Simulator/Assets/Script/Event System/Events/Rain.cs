@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rain : MonoBehaviour, IEvent
+public class Rain : MonoBehaviour, IEvent, IEventResetable
 {
     private Event_System es;
+
+    public Event_Data data;
 
     private void Awake()
     {
         es = gameObject.transform.parent.GetComponent<Event_System>();
     }
+    private void Start()
+    {
+        data.activated = true;
+    }
     public void Activate_Event()
     {
         Activate_Rain();
+    }
+    public void Reset_Event()
+    {
+        data.activated = false;
     }
 
     private bool Is_Raining()
@@ -39,6 +49,11 @@ public class Rain : MonoBehaviour, IEvent
     private void Activate_Rain()
     {
         if (!Is_Raining()) return;
+
+        // if event is not activated
+        if (data.activated) return;
+        // activate event
+        data.activated = true;
 
         var farmTiles = es.controller.farmTiles;
 

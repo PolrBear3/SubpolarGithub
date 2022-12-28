@@ -92,6 +92,8 @@ public class Time_System : MonoBehaviour
         controller.eventSystem.Reset_All_Events();
         // activate all events
         controller.eventSystem.Activate_All_Events();
+        // reset all buffs
+        controller.buffSystem.Reset_All_Buffs();
         // activate all buffs
         controller.buffSystem.Activate_All_Buffs();
         // health check
@@ -99,7 +101,7 @@ public class Time_System : MonoBehaviour
         // watering check
         controller.All_FarmTile_WateringCheck();
         // update sprite
-        controller.All_FarmTile_Sprite_Update();
+        controller.All_FarmTile_Progress_Update();
 
         ReCalculate_AllSeed_WaitTime();
     }
@@ -115,7 +117,7 @@ public class Time_System : MonoBehaviour
             controller.farmTiles[i].Load_Update_Tile();
         }
         // update sprite
-        controller.All_FarmTile_Sprite_Update();
+        controller.All_FarmTile_Progress_Update();
     }
 
     // real time system

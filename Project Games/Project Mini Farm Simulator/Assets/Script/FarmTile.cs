@@ -212,13 +212,19 @@ public class FarmTile : MonoBehaviour
     }
 
     // pulbic systems
-    public void TileSprite_Update()
+    public void Tile_Progress_Update()
     {
         if (!data.tileLocked && data.seedPlanted)
         {
+            // day passed limit
             if (tileSeedStatus.dayPassed <= 0)
             {
                 tileSeedStatus.dayPassed = 0;
+            }
+            // bonus point limit
+            if (tileSeedStatus.bonusPoints <= 0)
+            {
+                tileSeedStatus.bonusPoints = 0;
             }
 
             // full grown complete check
@@ -307,7 +313,7 @@ public class FarmTile : MonoBehaviour
         // seed grow image load 
         if (data.seedPlanted)
         {
-            TileSprite_Update();
+            Tile_Progress_Update();
         }
     }
 }

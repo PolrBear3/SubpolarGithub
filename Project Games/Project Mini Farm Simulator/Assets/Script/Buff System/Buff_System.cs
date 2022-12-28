@@ -6,6 +6,10 @@ public interface IBuff
 {
     void Activate_Buff();
 }
+public interface IBuffResetable
+{
+    void Reset_Buff();
+}
 
 public class Buff_System : MonoBehaviour
 {
@@ -33,6 +37,16 @@ public class Buff_System : MonoBehaviour
             if (allBuffs[i].TryGetComponent(out IBuff b))
             {
                 b.Activate_Buff();
+            }
+        }
+    }
+    public void Reset_All_Buffs()
+    {
+        for (int i = 0; i < allBuffs.Count; i++)
+        {
+            if (allBuffs[i].TryGetComponent(out IBuffResetable b))
+            {
+                b.Reset_Buff();
             }
         }
     }

@@ -30,7 +30,7 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
         if (e.currentWeather.weatherID == 1) return true;
         else return false;
     }
-    private bool FarmTile_Event_Available(FarmTile farmTile)
+    private bool FarmTile_Condition_Check(FarmTile farmTile)
     {
         // if the tile has a seed planted
         if (!farmTile.data.seedPlanted) return false;
@@ -46,14 +46,8 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
     private bool FarmTile_Has_CloudyStunShield(FarmTile farmTile)
     {
         // if the seeded tile has a cloudy buff
-        if (farmTile.Find_Buff(0))
-        {
-            // get rid of cloudy stun shield buff 
-            farmTile.Remove_Buff(e.controller.ID_Buff_Search(0));
-            
-            return true;
-        }
-        return false;
+        if (farmTile.Find_Buff(0)) return true;
+        else return false;
     }
 
     private void Activate_Cloudy_Stunned()
@@ -73,13 +67,13 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
         for (int i = 0; i < farmTiles.Length; i++)
         {
             // check if farmtile is ready for event
-            if (!FarmTile_Event_Available(farmTiles[i])) continue;
-
-            // check if the farmtile has a cloudy stun shield buff
-            if (FarmTile_Has_CloudyStunShield(farmTiles[i])) continue;
+            if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
             // assign icon
             farmTiles[i].statusIconIndicator.Assign_Status(2);
+
+            // check if the farmtile has a cloudy stun shield buff
+            if (FarmTile_Has_CloudyStunShield(farmTiles[i])) continue;
 
             // cloudy stunned events
             farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
