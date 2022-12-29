@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sunny_Buffed : MonoBehaviour, IEvent
+public class Sunny_Buffed : MonoBehaviour, IEvent, IEventResetable
 {
     private Event_System e;
 
@@ -12,9 +12,17 @@ public class Sunny_Buffed : MonoBehaviour, IEvent
     {
         e = gameObject.transform.parent.GetComponent<Event_System>();
     }
+    private void Start()
+    {
+        data.activated = true;
+    }
     public void Activate_Event()
     {
         Activate_Sunny_Buffed();
+    }
+    public void Reset_Event()
+    {
+        data.activated = false;
     }
 
     private bool Is_Weather_Sunny()
@@ -22,22 +30,28 @@ public class Sunny_Buffed : MonoBehaviour, IEvent
         if (e.currentWeather.weatherID == 0) return true;
         else return false;
     }
+    private bool Golden_Sunny_Buff_Detected(FarmTile farmTile)
+    {
+        if (farmTile.Find_Buff(2)) return true;
+        else return false;
+    }
     private bool Sunny_Buffed_Available(FarmTile farmTile)
     {
-        // if the farm tile does not have a sunny buff
-        if (farmTile.statusIconIndicator.Find_Status(1)) return false;
         // if the farm tile has a seed planted
         if (!farmTile.data.seedPlanted) return false;
+
         // if the farm tile is not ready to be harvested
         if (farmTile.tileSeedStatus.harvestReady) return false;
-        // if the tile was seed planted for more than 1 day
-        if (farmTile.tileSeedStatus.dayPassed < 1) return false;
 
         return true;
     }
 
     private void Activate_Sunny_Buffed()
     {
+        // activation 
+        if (data.activated) return;
+        data.activated = true;
+
         // if the weather is sunny
         if (!Is_Weather_Sunny()) return;
 
@@ -52,6 +66,9 @@ public class Sunny_Buffed : MonoBehaviour, IEvent
 
             // assign status icon
             farmTile[i].statusIconIndicator.Assign_Status(1);
+
+            // if the farmtile has a golden sunny buff
+            if (Golden_Sunny_Buff_Detected(farmTile[i])) continue;
 
             // activate event
             farmTile[i].tileSeedStatus.health += data.health;

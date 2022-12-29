@@ -27,17 +27,52 @@ public class Golden_Sunny : MonoBehaviour, IBuff, IBuffResetable
 
     private bool Is_Weather_Sunny()
     {
-        return true;
+        if (b.controller.eventSystem.currentWeather.weatherID == 0) return true;
+        else return false;
     }
-    private bool FarmTile_Condition_Check()
+    private bool FarmTile_Condition_Check(FarmTile farmTile)
     {
+        // check if the tile has a seed planted
+        if (!farmTile.data.seedPlanted) return false;
+
         // check if the farmtile is sunny buffed
+        if (!farmTile.statusIconIndicator.Find_Status(1)) return false;
+
+        // check if the farmtile has golden sunny buff
+        if (!farmTile.Find_Buff(2)) return false;
 
         return true;
     }
 
     private void Activate_Golden_Sunny()
     {
+        // activation 
+        if (data.activated) return;
+        data.activated = true;
 
+        if (!Is_Weather_Sunny()) return;
+
+        var farmTiles = b.controller.farmTiles;
+
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            // condition check
+            if (!FarmTile_Condition_Check(farmTiles[i])) continue;
+
+            // remove sunny buffed status
+            farmTiles[i].statusIconIndicator.UnAssign_Status(1);
+
+            // assign golden sunny buffed status
+            farmTiles[i].statusIconIndicator.Assign_Status(6);
+
+            // remove golden sunny buff from current buffs
+            farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(2));
+
+            // golden sunny buffed amount
+            farmTiles[i].tileSeedStatus.health += data.health;
+            farmTiles[i].tileSeedStatus.watered += data.watered;
+            farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
+            farmTiles[i].tileSeedStatus.bonusPoints += data.bonusPoints;
+        }
     }
 }
