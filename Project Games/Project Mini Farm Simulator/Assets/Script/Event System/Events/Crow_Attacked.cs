@@ -80,7 +80,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             if (!Current_FarmTile_Condition_Check(farmTiles[i])) continue;
 
             // assign crow attacked icon
-            farmTiles[i].statusIconIndicator.Assign_Status(4);
+            farmTiles[i].Add_Status(4);
 
             // if the farmTile does not have a scarecrow buff
             if (FarmTile_Has_Scarecrow(farmTiles[i])) continue;
@@ -132,7 +132,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             if (!e.Percentage_Setter(subData.percentage)) continue;
 
             // assign additional crow attacked icon
-            surroundingFarmTile.statusIconIndicator.Assign_Status(5);
+            surroundingFarmTile.Add_Status(5);
 
             // if the tile does not have a scarecrow buff
             if (FarmTile_Has_Scarecrow(surroundingFarmTile)) continue;

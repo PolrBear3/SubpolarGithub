@@ -101,12 +101,12 @@ public class Save_System : MonoBehaviour
             ES3.Save("farmTile" + farmTile.saveName + " watered", farmTile.tileSeedStatus.watered);
         }
 
-        Save_FarmTile_Status(farmTile);
+        Save_FarmTile_Statuses(farmTile);
         Save_FarmTile_Buffs(farmTile);
     }
-    private void Save_FarmTile_Status(FarmTile farmTile)
+    private void Save_FarmTile_Statuses(FarmTile farmTile)
     {
-        ES3.Save("farmTile" + farmTile.saveName + " status", farmTile.statusIconIndicator.statusIcons);
+        ES3.Save("farmTile" + farmTile.saveName + " statuses", farmTile.currentStatuses);
     }
     private void Save_FarmTile_Buffs(FarmTile farmTile)
     {
@@ -169,15 +169,10 @@ public class Save_System : MonoBehaviour
     }
     private void Load_FarmTile_Status(FarmTile farmTile)
     {
-        if (ES3.KeyExists("farmTile" + farmTile.saveName + " status"))
+        if (ES3.KeyExists("farmTile" + farmTile.saveName + " statuses"))
         {
-            var savedStatusArray = ES3.Load("farmTile" + farmTile.saveName + " status", farmTile.statusIconIndicator.statusIcons);
-            farmTile.statusIconIndicator.statusIcons = savedStatusArray;
-
-            for (int i = 0; i < farmTile.statusIconIndicator.statusIcons.Length; i++)
-            {
-                farmTile.statusIconIndicator.statusIcons[i].Load_Icon();
-            }
+            var savedStatusList = ES3.Load("farmTile" + farmTile.saveName + " statuses", farmTile.currentStatuses);
+            farmTile.currentStatuses = savedStatusList;
         }
     }
     private void Load_FarmTile_Buffs(FarmTile farmTile)

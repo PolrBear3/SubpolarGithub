@@ -32,6 +32,16 @@ public class Current_Buffs_Panel_UI
     public Current_Buff_Icon_UI[] icons;
 }
 
+[System.Serializable]
+public class Current_Status_Panel_UI
+{
+    [HideInInspector]
+    public bool panelOn = false;
+    public GameObject panel;
+    public GameObject button;
+    public Status_Icon_Indicator statusIconController;
+}
+
 public class Planted_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
@@ -42,6 +52,7 @@ public class Planted_Menu : MonoBehaviour
     public Planted_Menu_Data data;
     public Planted_Menu_UI ui;
     public Current_Buffs_Panel_UI currentBuffsPanel;
+    [SerializeField] private Current_Status_Panel_UI currentStatusPanel;
 
     private void Awake()
     {
@@ -68,7 +79,7 @@ public class Planted_Menu : MonoBehaviour
     public void Seed_Information_Update()
     {
         CurrentBuffs_Button_Check();
-        Close_CurrentBuffs_Panel();
+        StatusButton_Available_Check();
 
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         if (currentFarmTile.data.seedPlanted)
@@ -97,7 +108,6 @@ public class Planted_Menu : MonoBehaviour
         data.menuOn = true;
         Button_Shield(false);
         Seed_Information_Update();
-        BuffButton_Available_Check();
         LeanTween.move(rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(tweenType);
     }
     public void Close()
@@ -108,6 +118,7 @@ public class Planted_Menu : MonoBehaviour
         controller.Reset_All_Tile_Highlights();
         LeanTween.move(rectTransform, new Vector2(0f, -125f), 0.75f).setEase(tweenType);
         Close_CurrentBuffs_Panel();
+        Close_CurrentStatus_Panel();
     }
     public void Open_BuffMenu()
     {
@@ -133,7 +144,7 @@ public class Planted_Menu : MonoBehaviour
             currentFarmTile.tileSeedStatus.currentDayWatered = true;
             currentFarmTile.tileSeedStatus.watered += 1;
             currentFarmTile.tileSeedStatus.daysWithoutWater = 0;
-            currentFarmTile.statusIconIndicator.Assign_Status(0);
+            currentFarmTile.Add_Status(0);
 
             // if the seed is fully grown to crop, watering doesn't count
             if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
@@ -146,6 +157,8 @@ public class Planted_Menu : MonoBehaviour
         var waterHealthCalculation =
             currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
         ui.currentWaterHealth.text = waterHealthCalculation.ToString();
+
+        StatusButton_Available_Check();
     }
 
     private void HarvestButton_Available()
@@ -270,6 +283,10 @@ public class Planted_Menu : MonoBehaviour
             currentBuffsPanel.cbON = true;
             CurrentBuffs_Assign_Icon();
             currentBuffsPanel.cbPanel.SetActive(true);
+
+            // close current status panel if it is on
+            if (!currentStatusPanel.panelOn) return;
+            Close_CurrentStatus_Panel();
         }
         else
         {
@@ -309,21 +326,47 @@ public class Planted_Menu : MonoBehaviour
         currentBuffsPanel.openedActiveFrameNum = frameNum;
     }
 
-    public void BuffButton_Available_Check()
+    // current seed status panel functions
+    public void StatusButton_Available_Check()
     {
-        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        var openedTile = controller.farmTiles[controller.openedTileNum];
 
-        // if buff amount is max
-        if (currentFarmTile.currentBuffs.Count >= 5)
+        // if the farmTile has at least 1 or more status
+        if (openedTile.currentStatuses.Count > 0)
         {
-            ui.BuffButtons[0].SetActive(true);
-            ui.BuffButtons[1].SetActive(false);
+            currentStatusPanel.button.SetActive(true);
         }
         else
         {
-            ui.BuffButtons[0].SetActive(false);
-            ui.BuffButtons[1].SetActive(true);
+            currentStatusPanel.button.SetActive(false);
         }
+    }
+
+    public void Open_Close_CurrentStatus_Panel()
+    {
+        // on
+        if (!currentStatusPanel.panelOn)
+        {
+            currentStatusPanel.panelOn = true;
+            currentStatusPanel.panel.SetActive(true);
+            currentStatusPanel.statusIconController.Reset_Status_Icons();
+            currentStatusPanel.statusIconController.Update_CurrentFarmTile_Status();
+
+            // close current buffs panel if it is on
+            if (!currentBuffsPanel.cbON) return;
+            Close_CurrentBuffs_Panel();
+        }
+        // off
+        else
+        {
+            currentStatusPanel.panelOn = false;
+            currentStatusPanel.panel.SetActive(false);
+        }
+    }
+    public void Close_CurrentStatus_Panel()
+    {
+        currentStatusPanel.panelOn = false;
+        currentStatusPanel.panel.SetActive(false);
     }
 
     // planted seed tooltip function

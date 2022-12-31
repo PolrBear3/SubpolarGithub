@@ -36,7 +36,7 @@ public class Golden_Sunny : MonoBehaviour, IBuff, IBuffResetable
         if (!farmTile.data.seedPlanted) return false;
 
         // check if the farmtile is sunny buffed
-        if (!farmTile.statusIconIndicator.Find_Status(1)) return false;
+        if (!farmTile.Find_Status(1)) return false;
 
         // check if the farmtile has golden sunny buff
         if (!farmTile.Find_Buff(2)) return false;
@@ -60,10 +60,10 @@ public class Golden_Sunny : MonoBehaviour, IBuff, IBuffResetable
             if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
             // remove sunny buffed status
-            farmTiles[i].statusIconIndicator.UnAssign_Status(1);
+            farmTiles[i].Remove_Status(1, false);
 
             // assign golden sunny buffed status
-            farmTiles[i].statusIconIndicator.Assign_Status(6);
+            farmTiles[i].Add_Status(6);
 
             // remove golden sunny buff from current buffs
             farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(2));

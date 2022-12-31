@@ -70,7 +70,7 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
             if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
             // assign icon
-            farmTiles[i].statusIconIndicator.Assign_Status(2);
+            farmTiles[i].Add_Status(2);
 
             // check if the farmtile has a cloudy stun shield buff
             if (FarmTile_Has_CloudyStunShield(farmTiles[i])) continue;

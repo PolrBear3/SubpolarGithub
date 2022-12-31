@@ -35,7 +35,6 @@ public class FarmTile : MonoBehaviour
     public MainGame_Controller controller;
     public Button button;
     public Animator harvestBorderAnim, harvestCoinsAnim;
-    public Status_Icon_Indicator statusIconIndicator;
     
     [HideInInspector]
     public Image image;
@@ -46,6 +45,7 @@ public class FarmTile : MonoBehaviour
     public FarmTile_Basic_Data data;
     public AfterSeedStatus tileSeedStatus;
 
+    public List<Status> currentStatuses = new List<Status>();
     public List<Buff_ScrObj> currentBuffs = new List<Buff_ScrObj>();
 
     private void Awake()
@@ -60,7 +60,6 @@ public class FarmTile : MonoBehaviour
 
         // locked tile image and status indicator
         image.sprite = data.lockedTile;
-        statusIconIndicator.gameObject.SetActive(false);
     }
     public void Unlock_Tile()
     {
@@ -68,7 +67,6 @@ public class FarmTile : MonoBehaviour
 
         // unlocked tile image and status indicator
         image.sprite = data.unplantedTile;
-        statusIconIndicator.gameObject.SetActive(true);
     }
     private void Unlock_Check()
     {
@@ -134,7 +132,7 @@ public class FarmTile : MonoBehaviour
     // seed plant start system 
     public void Seed_Planted_Start_Set()
     {
-        statusIconIndicator.Reset_All_Icons();
+        currentStatuses.Clear();
 
         tileSeedStatus.health = data.plantedSeed.seedHealth;
         tileSeedStatus.watered = 0;
@@ -252,7 +250,7 @@ public class FarmTile : MonoBehaviour
     }
     public void Reset_Tile()
     {
-        statusIconIndicator.Reset_All_Icons();
+        currentStatuses.Clear();
         currentBuffs.Clear();
 
         image.sprite = data.unplantedTile;
@@ -268,6 +266,39 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.bonusPoints = 0;
     }
 
+    // status sysem
+    public bool Find_Status(int statusID)
+    {
+        for (int i = 0; i < currentStatuses.Count; i++)
+        {
+            if (currentStatuses[i] == null) break;
+            if (currentStatuses[i].statusID != statusID) continue;
+
+            return true;
+        }
+        return false;
+    }
+    public void Add_Status(int statusID)
+    {
+        Status statusToAdd = controller.ID_Status_Search(statusID);
+        currentStatuses.Add(statusToAdd);
+    }
+    public void Remove_Status(int statusID, bool nonBreak)
+    {
+        Status statusToRemove = controller.ID_Status_Search(statusID);
+
+        for (int i = 0; i < currentStatuses.Count; i++)
+        {
+            if (currentStatuses[i] == null) break;
+            if (currentStatuses[i] != statusToRemove) continue;
+
+            currentStatuses.Remove(currentStatuses[i]);
+
+            if (!nonBreak) break;
+        }
+    }
+
+    // buff system
     public bool Find_Buff(int buffID)
     {
         for (int i = 0; i < currentBuffs.Count; i++)

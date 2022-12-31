@@ -69,7 +69,7 @@ public class Rain : MonoBehaviour, IEvent, IEventResetable
                 }
 
                 farmTiles[i].tileSeedStatus.daysWithoutWater = 0;
-                farmTiles[i].statusIconIndicator.Assign_Status(0);
+                farmTiles[i].Add_Status(0);
             }
         }
     }

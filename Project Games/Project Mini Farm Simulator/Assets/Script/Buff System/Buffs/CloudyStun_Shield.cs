@@ -36,7 +36,7 @@ public class CloudyStun_Shield : MonoBehaviour, IBuff, IBuffResetable
         if (!farmTile.data.seedPlanted) return false;
 
         // if the farmtile is cloudy stunned
-        if (!farmTile.statusIconIndicator.Find_Status(2)) return false;
+        if (!farmTile.Find_Status(2)) return false;
 
         // if the farmtile has cloudy stun shield buff
         if (!farmTile.Find_Buff(0)) return false;
@@ -64,7 +64,7 @@ public class CloudyStun_Shield : MonoBehaviour, IBuff, IBuffResetable
             farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(0));
 
             // remove cloudy stun status
-            farmTiles[i].statusIconIndicator.UnAssign_Status(2);
+            farmTiles[i].Remove_Status(2, false);
         }
     }
 }

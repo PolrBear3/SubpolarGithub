@@ -65,7 +65,7 @@ public class Sunny_Buffed : MonoBehaviour, IEvent, IEventResetable
             if (!Sunny_Buffed_Available(farmTile[i])) continue;
 
             // assign status icon
-            farmTile[i].statusIconIndicator.Assign_Status(1);
+            farmTile[i].Add_Status(1);
 
             // if the farmtile has a golden sunny buff
             if (Golden_Sunny_Buff_Detected(farmTile[i])) continue;

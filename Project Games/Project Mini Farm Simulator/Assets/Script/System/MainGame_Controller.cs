@@ -50,7 +50,7 @@ public class MainGame_Controller : MonoBehaviour
                     // water the seeded tile
                     farmTiles[i].tileSeedStatus.currentDayWatered = true;
                     farmTiles[i].tileSeedStatus.watered += 1;
-                    farmTiles[i].statusIconIndicator.Assign_Status(0);
+                    farmTiles[i].Add_Status(0);
                     farmTiles[i].Watering_Check();
                 }
             }
@@ -101,7 +101,6 @@ public class MainGame_Controller : MonoBehaviour
 
         for (int i = 0; i < farmTiles.Length; i++)
         {
-            farmTiles[i].statusIconIndicator.gameObject.SetActive(x);
             farmTiles[i].button.enabled = x;
         }
     }
@@ -145,7 +144,7 @@ public class MainGame_Controller : MonoBehaviour
     {
         for (int i = 0; i < farmTiles.Length; i++)
         {
-            farmTiles[i].statusIconIndicator.Reset_All_Icons();
+            farmTiles[i].currentStatuses.Clear();
         }
     }
 

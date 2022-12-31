@@ -143,11 +143,13 @@ public class Buff_Menu : MonoBehaviour
 
     private void ConfirmButton_Availability()
     {
+        // button available
         if (currentSelectedBuff != null && controller.money >= currentSelectedBuff.buffPrice)
         {
             confirmButtons[0].SetActive(false);
             confirmButtons[1].SetActive(true);
         }
+        // button unavailable
         else
         {
             confirmButtons[0].SetActive(true);
@@ -174,7 +176,6 @@ public class Buff_Menu : MonoBehaviour
                 controller.farmTiles[i].Add_Buff(currentSelectedBuff);
                 Reset_Selections();
                 controller.plantedMenu.CurrentBuffs_Button_Check();
-                controller.plantedMenu.BuffButton_Available_Check();
                 break;
             }
         }

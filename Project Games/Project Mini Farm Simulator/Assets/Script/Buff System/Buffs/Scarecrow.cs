@@ -34,7 +34,7 @@ public class Scarecrow : MonoBehaviour, IBuff, IBuffResetable
         if (!farmTile.Find_Buff(3)) return false;
 
         // if the farmtile has a crow attacked status or additional crow attacked status
-        if (!farmTile.statusIconIndicator.Find_Status(4) || !farmTile.statusIconIndicator.Find_Status(5)) return false;
+        if (!farmTile.Find_Status(4) || !farmTile.Find_Status(5)) return false;
 
         return true;
     }
@@ -54,15 +54,15 @@ public class Scarecrow : MonoBehaviour, IBuff, IBuffResetable
             if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
             // if it was crow attacked
-            if (farmTiles[i].statusIconIndicator.Find_Status(4))
+            if (farmTiles[i].Find_Status(4))
             {
                 // use scarecrow buff from current buffs
                 farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(3));
             }
             // remove crow attacked status
-            farmTiles[i].statusIconIndicator.UnAssign_Status(4);
+            farmTiles[i].Remove_Status(4, false);
             // remove all additional crow attacked statuses
-            farmTiles[i].statusIconIndicator.UnAssign_Status_NonBreak(5);
+            farmTiles[i].Remove_Status(5, true);
         }
     }
 }
