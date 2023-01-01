@@ -183,6 +183,7 @@ public class Buff_Menu : MonoBehaviour
     public void Confirm_Buff()
     {
         Buff_Price_Calculation();
+        controller.plantedMenu.BuffMenuButton_Available_Check();
     }
 
     // tooltip functions

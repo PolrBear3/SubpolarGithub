@@ -35,9 +35,6 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
         // if the tile has a seed planted
         if (!farmTile.data.seedPlanted) return false;
 
-        // if the seed is grown more than 1 day
-        if (farmTile.tileSeedStatus.dayPassed < 1) return false;
-
         // if the tile is not ready to be harvested
         if (farmTile.tileSeedStatus.harvestReady) return false;
 

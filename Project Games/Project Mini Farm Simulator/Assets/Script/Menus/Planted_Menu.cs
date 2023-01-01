@@ -78,6 +78,8 @@ public class Planted_Menu : MonoBehaviour
 
     public void Seed_Information_Update()
     {
+        BuffMenuButton_Available_Check();
+
         CurrentBuffs_Button_Check();
         StatusButton_Available_Check();
 
@@ -120,12 +122,30 @@ public class Planted_Menu : MonoBehaviour
         Close_CurrentBuffs_Panel();
         Close_CurrentStatus_Panel();
     }
+
+    // buff menu open close 
+    public void BuffMenuButton_Available_Check()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        if (currentFarmTile.currentBuffs.Count < 5)
+        {
+            ui.BuffButtons[0].SetActive(false);
+            ui.BuffButtons[1].SetActive(true);
+        }
+        else
+        {
+            ui.BuffButtons[0].SetActive(true);
+            ui.BuffButtons[1].SetActive(false);
+        }
+    }
     public void Open_BuffMenu()
     {
         Button_Shield(true);
         controller.buffMenu.Open();
     }
 
+    // planted menu functions
     public void Remove_Seed()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
@@ -135,10 +155,10 @@ public class Planted_Menu : MonoBehaviour
         controller.eventSystem.Activate_All_Events();
         controller.plantedMenu.Close();
     }
-
     public void Water_Seed()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
         if (!currentFarmTile.tileSeedStatus.currentDayWatered)
         {
             currentFarmTile.tileSeedStatus.currentDayWatered = true;
@@ -157,6 +177,9 @@ public class Planted_Menu : MonoBehaviour
         var waterHealthCalculation =
             currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
         ui.currentWaterHealth.text = waterHealthCalculation.ToString();
+
+        // watered animation
+        currentFarmTile.farmTileAnim.SetTrigger("watered");
 
         StatusButton_Available_Check();
     }
@@ -223,7 +246,7 @@ public class Planted_Menu : MonoBehaviour
         }
         currentFarmTile.Reset_Tile();
         controller.eventSystem.Activate_All_Events();
-        currentFarmTile.harvestCoinsAnim.SetBool("harvest", true);
+        currentFarmTile.farmTileAnim.SetTrigger("harvest");
 
         Close();
     }
