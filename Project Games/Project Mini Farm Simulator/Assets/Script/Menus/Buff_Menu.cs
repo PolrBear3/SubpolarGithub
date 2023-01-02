@@ -173,7 +173,7 @@ public class Buff_Menu : MonoBehaviour
             {
                 Confirm_Close();
                 controller.Subtract_Money(currentSelectedBuff.buffPrice);
-                controller.farmTiles[i].Add_Buff(currentSelectedBuff);
+                controller.farmTiles[i].Add_Buff(currentSelectedBuff.buffID);
                 Reset_Selections();
                 controller.plantedMenu.CurrentBuffs_Button_Check();
                 break;

@@ -57,7 +57,7 @@ public class Scarecrow : MonoBehaviour, IBuff, IBuffResetable
             if (farmTiles[i].Find_Status(4))
             {
                 // use scarecrow buff from current buffs
-                farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(3));
+                farmTiles[i].Remove_Buff(3, false);
             }
             // remove crow attacked status
             farmTiles[i].Remove_Status(4, false);

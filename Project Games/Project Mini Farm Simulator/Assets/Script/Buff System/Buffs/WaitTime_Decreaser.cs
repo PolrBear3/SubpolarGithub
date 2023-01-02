@@ -55,7 +55,7 @@ public class WaitTime_Decreaser : MonoBehaviour, IBuff, IBuffResetable
             b.controller.timeSystem.Subtract_MyTime(subtractTime);
 
             // remove time decreaser buff
-            farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(1));
+            farmTiles[i].Remove_Buff(1, false);
 
             // check for more time decreaser buffs
             i -= 1;

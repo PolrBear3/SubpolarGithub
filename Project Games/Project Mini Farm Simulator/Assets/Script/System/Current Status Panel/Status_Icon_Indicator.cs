@@ -22,12 +22,15 @@ public class Status_Icon_Indicator : MonoBehaviour
         var currentFarmTile = plantedMenu.controller.farmTiles[currentFarmTileNum];
         int statusAmount = currentFarmTile.currentStatuses.Count;
 
-        if (statusAmount != 0)
+        // if there is at least 1 current status amount
+        if (statusAmount == 0) return;
+
+        for (int i = 0; i < statusAmount; i++)
         {
-            for (int i = 0; i < statusAmount; i++)
-            {
-                statusIcons[i].Assign_Icon(currentFarmTile.currentStatuses[i]);
-            }
+            // if status icons are not full
+            if (statusAmount == statusIcons.Length) break;
+
+            statusIcons[i].Assign_Icon(currentFarmTile.currentStatuses[i]);
         }
     }
 }

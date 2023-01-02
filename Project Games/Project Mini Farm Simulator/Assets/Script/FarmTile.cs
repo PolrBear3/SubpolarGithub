@@ -309,29 +309,23 @@ public class FarmTile : MonoBehaviour
         }
         return false;
     }
-    public void Add_Buff(Buff_ScrObj buff)
+    public void Add_Buff(int buffID)
     {
-        currentBuffs.Add(buff);
+        Buff_ScrObj buffToAdd = controller.ID_Buff_Search(buffID);
+        currentBuffs.Add(buffToAdd);
     }
-    public void Remove_Buff(Buff_ScrObj buff)
+    public void Remove_Buff(int buffID, bool nonBreak)
     {
+        Buff_ScrObj buffToAdd = controller.ID_Buff_Search(buffID);
+
         for (int i = 0; i < currentBuffs.Count; i++)
         {
-            if (buff == currentBuffs[i])
-            {
-                currentBuffs.Remove(currentBuffs[i]);
-                break;
-            }
-        }
-    }
-    public void Remove_Buff_NonBreak(Buff_ScrObj buff)
-    {
-        for (int i = 0; i < currentBuffs.Count; i++)
-        {
-            if (buff == currentBuffs[i])
-            {
-                currentBuffs.Remove(currentBuffs[i]);
-            }
+            if (currentBuffs[i] == null) break;
+            if (currentBuffs[i] != buffToAdd) continue;
+
+            currentBuffs.Remove(currentBuffs[i]);
+
+            if (!nonBreak) break;
         }
     }
 

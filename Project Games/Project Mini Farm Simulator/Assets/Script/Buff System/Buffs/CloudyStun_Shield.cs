@@ -60,11 +60,11 @@ public class CloudyStun_Shield : MonoBehaviour, IBuff, IBuffResetable
         {
             if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
-            // use cloudy stun shield buff from current buffs
-            farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(0));
-
             // remove cloudy stun status
             farmTiles[i].Remove_Status(2, false);
+            
+            // use cloudy stun shield buff from current buffs
+            farmTiles[i].Remove_Buff(0, false);
         }
     }
 }

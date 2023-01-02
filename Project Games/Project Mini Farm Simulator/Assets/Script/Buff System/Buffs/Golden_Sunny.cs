@@ -66,7 +66,7 @@ public class Golden_Sunny : MonoBehaviour, IBuff, IBuffResetable
             farmTiles[i].Add_Status(6);
 
             // remove golden sunny buff from current buffs
-            farmTiles[i].Remove_Buff(b.controller.ID_Buff_Search(2));
+            farmTiles[i].Remove_Buff(2, false);
 
             // golden sunny buffed amount
             farmTiles[i].tileSeedStatus.health += data.health;
