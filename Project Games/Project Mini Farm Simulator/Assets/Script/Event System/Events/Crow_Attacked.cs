@@ -28,11 +28,11 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
 
     private bool Season_Check()
     {
-        // if the current season is spring, return false
-        if (e.controller.timeSystem.currentSeason.seasonID == 0) return false;
+        // if the current season is fall, return false
+        if (e.controller.timeSystem.currentSeason.seasonID == 2) return false;
 
-        // if the current season is summer, return false
-        if (e.controller.timeSystem.currentSeason.seasonID == 1) return false;
+        // if the current season is winter, return false
+        if (e.controller.timeSystem.currentSeason.seasonID == 3) return false;
 
         return true;
     }
@@ -45,14 +45,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
         return false;
     }
     
-    private bool Current_FarmTile_Condition_Check(FarmTile farmTile)
-    {
-        // if the tile has a seed planted
-        if (!farmTile.data.seedPlanted) return false;
-
-        return true;
-    }
-    private bool Surrounding_FarmTile_Condition_Check(FarmTile farmTile)
+    private bool FarmTile_Condition_Check(FarmTile farmTile)
     {
         // if the tile has a seed planted
         if (!farmTile.data.seedPlanted) return false;
@@ -77,7 +70,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             if (!e.Percentage_Setter(data.percentage)) continue;
 
             // if the farmTile is in condition for event
-            if (!Current_FarmTile_Condition_Check(farmTiles[i])) continue;
+            if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
             // assign crow attacked icon
             farmTiles[i].Add_Status(4);
@@ -126,7 +119,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             }
 
             // if the tile has a seed planted
-            if (!Surrounding_FarmTile_Condition_Check(surroundingFarmTile)) continue;
+            if (!FarmTile_Condition_Check(surroundingFarmTile)) continue;
 
             // if additional crow attack of sub data percentage activates
             if (!e.Percentage_Setter(subData.percentage)) continue;
