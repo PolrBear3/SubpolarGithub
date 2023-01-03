@@ -277,6 +277,22 @@ public class FarmTile : MonoBehaviour
         }
         return false;
     }
+    public int Amount_Status(int statusID)
+    {
+        int statusAmount = 0;
+
+        for (int i = 0; i < currentBuffs.Count; i++)
+        {
+            if (currentStatuses[i] == null) break;
+
+            if (currentStatuses[i].statusID == statusID)
+            {
+                statusAmount++;
+            }
+        }
+
+        return statusAmount;
+    }
     public void Add_Status(int statusID)
     {
         Status statusToAdd = controller.ID_Status_Search(statusID);
@@ -308,6 +324,22 @@ public class FarmTile : MonoBehaviour
             return true;
         }
         return false;
+    }
+    public int Amount_Buff(int buffID)
+    {
+        int buffAmount = 0;
+
+        for (int i = 0; i < currentBuffs.Count; i++)
+        {
+            if (currentBuffs[i] == null) break;
+
+            if (currentBuffs[i].buffID == buffID)
+            {
+                buffAmount++;
+            }
+        }
+
+        return buffAmount;
     }
     public void Add_Buff(int buffID)
     {
