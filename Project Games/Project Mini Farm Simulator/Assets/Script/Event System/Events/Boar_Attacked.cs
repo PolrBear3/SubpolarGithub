@@ -36,12 +36,6 @@ public class Boar_Attacked : MonoBehaviour, IEvent, IEventResetable
 
         return true;
     }
-
-    private bool FarmTile_Has_Buff(FarmTile farmTile)
-    {
-        if (farmTile.Find_Buff(5)) return true;
-        else return false;
-    }
     private bool FarmTile_Condition_Check(FarmTile farmTile)
     {
         // if the tile has a seed planted
@@ -52,82 +46,104 @@ public class Boar_Attacked : MonoBehaviour, IEvent, IEventResetable
 
     private void Activate_Boar_Attack()
     {
-        // event activation
+        // event activation check
         if (data.activated) return;
         data.activated = true;
 
-        // if the current season is fall or winter
+        // check if season is fall or winter
         if (!Season_Check()) return;
 
         var farmTiles = e.controller.farmTiles;
-
         for (int i = 0; i < farmTiles.Length; i++)
         {
-            // condition check
+            // basic farmtile condition check
             if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
-            // percentage activation check
+            // percentage activation
             if (!e.Percentage_Setter(data.percentage)) continue;
 
-            // assign boar attacked status
             farmTiles[i].Add_Status(7);
 
-            // buff check
-            if (FarmTile_Has_Buff(farmTiles[i])) continue;
+            if (farmTiles[i].Find_Buff(5)) continue;
 
             // data activation
-            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
             farmTiles[i].tileSeedStatus.health -= data.health;
+            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
             farmTiles[i].tileSeedStatus.watered -= data.watered;
-            farmTiles[i].tileSeedStatus.bonusPoints -= data.bonusPoints;
+            farmTiles[i].tileSeedStatus.bonusPoints -= data.watered;
 
-            // additional baor attack activation
-            Activate_Additional_Boar_Attack(farmTiles[i]);
+            Activate_Additional_Boar_Attacks(farmTiles[i]);
         }
+
+        Additional_Boar_Attacks_Data_Activation();
     }
-    private void Activate_Additional_Boar_Attack(FarmTile farmTile)
+    private void Activate_Additional_Boar_Attacks(FarmTile farmTile)
     {
         var farmTiles = e.controller.farmTiles;
 
         List<int> cornerTileNums = new List<int>();
-
-        // left top corner tile
+        
+        // left top 
         cornerTileNums.Add(farmTile.data.tileNum - 6);
-        // right top corner tile
-        cornerTileNums.Add(farmTile.data.tileNum + 4);
-        // left bottom corner tile
+        // right top
         cornerTileNums.Add(farmTile.data.tileNum - 4);
-        // right bottom corner tile
+        // left bottom
         cornerTileNums.Add(farmTile.data.tileNum + 6);
+        // right bottom
+        cornerTileNums.Add(farmTile.data.tileNum + 4);
 
         for (int i = 0; i < cornerTileNums.Count; i++)
         {
-            // check for out of range tiles
-            if (cornerTileNums[i] > 24 || cornerTileNums[i] < 0) continue;
+            // if there is a tile
+            if (cornerTileNums[i] < 0 || cornerTileNums[i] > 24) continue;
+
+            // if there is a tile on bottom corners
+            if (farmTiles[cornerTileNums[i]].data.tileRow - farmTile.data.tileRow >= 2) continue;
+
+            // if there is a tile on bottom corners
+            if (farmTile.data.tileRow - farmTiles[cornerTileNums[i]].data.tileRow >= 2) continue;
+
+
+            // percentage activation
+            if (!e.Percentage_Setter(subData.percentage)) continue;
 
             var cornerTiles = farmTiles[cornerTileNums[i]];
 
-            // check if there is a tile in the top corners
-            if (farmTile.data.tileRow - cornerTiles.data.tileRow >= 2) continue;
-
-            // check if there is a tile in the bottom corners
-            if (cornerTiles.data.tileRow - farmTile.data.tileRow >= 2) continue;
-
-
-            // corner tile condition check
-            if (!FarmTile_Condition_Check(cornerTiles)) continue;
-
-            // percentage activation check
-            if (!e.Percentage_Setter(data.percentage)) continue;
-
-
-            // assign additional attack status icon
             cornerTiles.Add_Status(8);
         }
     }
-
-    private void Additional_Boar_Attack_Data_Calculation() //??
+    
+    private void Additional_Boar_Attacks_Data_Activation()
     {
+        var farmTiles = e.controller.farmTiles;
 
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            // basic farmtile condition check
+            if (!FarmTile_Condition_Check(farmTiles[i])) continue;
+
+            if (!farmTiles[i].Find_Status(8)) continue;
+
+            Data_Calculation(farmTiles[i]);
+        }
+    }
+    private void Data_Calculation(FarmTile farmTile)
+    {
+        int repeatAmount = 0;
+
+        if (farmTile.Amount_Status(8) > farmTile.Amount_Buff(5))
+        {
+            repeatAmount += farmTile.Amount_Status(8) - farmTile.Amount_Buff(5);
+        }
+        else return;
+
+        for (int i = 0; i < repeatAmount; i++)
+        {
+            // data activation
+            farmTile.tileSeedStatus.health -= subData.health;
+            farmTile.tileSeedStatus.dayPassed -= subData.dayPassed;
+            farmTile.tileSeedStatus.watered -= subData.watered;
+            farmTile.tileSeedStatus.bonusPoints -= subData.watered;
+        }
     }
 }

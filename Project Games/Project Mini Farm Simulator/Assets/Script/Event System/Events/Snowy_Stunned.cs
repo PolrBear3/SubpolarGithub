@@ -68,6 +68,9 @@ public class Snowy_Stunned : MonoBehaviour, IEvent, IEventResetable
             // farmtile condition check
             if (!FarmTile_Condition_Check(farmTiles[i])) continue;
 
+            // percentage activation
+            if (!e.Percentage_Setter(data.percentage)) continue;
+
             // assign snowy stun status
             farmTiles[i].Add_Status(3);
 

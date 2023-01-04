@@ -281,13 +281,12 @@ public class FarmTile : MonoBehaviour
     {
         int statusAmount = 0;
 
-        for (int i = 0; i < currentBuffs.Count; i++)
+        for (int i = 0; i < currentStatuses.Count; i++)
         {
             if (currentStatuses[i] == null) break;
-
-            if (currentStatuses[i].statusID == statusID)
+            if (Find_Status(statusID))
             {
-                statusAmount++;
+                statusAmount ++;
             }
         }
 
@@ -332,8 +331,7 @@ public class FarmTile : MonoBehaviour
         for (int i = 0; i < currentBuffs.Count; i++)
         {
             if (currentBuffs[i] == null) break;
-
-            if (currentBuffs[i].buffID == buffID)
+            if (Find_Buff(buffID))
             {
                 buffAmount++;
             }
