@@ -24,7 +24,7 @@ public class FarmTile_Basic_Data
 {
     public Seed_ScrObj plantedSeed = null;
     public int tileNum, tileRow, tilePrice;
-    public bool tileSelected = false, tileLocked = false, seedPlanted = false;
+    public bool tileSelected = false, tileLocked = false, seedPlanted = false, died = false;
 
     public Sprite lockedTile;
     public Sprite unplantedTile;
@@ -118,6 +118,10 @@ public class FarmTile : MonoBehaviour
             {
                 controller.tileBuyButton.Open();
             }
+            else if (data.died)
+            {
+                controller.deathMenu.Open();
+            }
             else if (!data.seedPlanted)
             {
                 controller.unPlantedMenu.Open();
@@ -133,6 +137,7 @@ public class FarmTile : MonoBehaviour
     public void Seed_Planted_Start_Set()
     {
         currentStatuses.Clear();
+        currentBuffs.Clear();
 
         tileSeedStatus.health = data.plantedSeed.seedHealth;
         tileSeedStatus.watered = 0;
@@ -174,7 +179,8 @@ public class FarmTile : MonoBehaviour
         // if the tile has no health, reset
         if (data.seedPlanted && tileSeedStatus.health <= 0)
         {
-            currentBuffs.Clear();
+            data.died = true;
+            // death icon ON
 
             image.sprite = data.unplantedTile;
             data.plantedSeed = null;
