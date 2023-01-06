@@ -48,7 +48,7 @@ public class Death_Menu : MonoBehaviour
 
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         currentFarmTile.data.died = false;
-        // death icon OFF
+        currentFarmTile.deathIcon.SetActive(false);
     }
     public void Close()
     {

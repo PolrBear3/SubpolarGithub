@@ -40,6 +40,7 @@ public class FarmTile : MonoBehaviour
     public Image image;
     public Image tileBorder;
     public GameObject tileHighlighter;
+    public GameObject deathIcon;
 
     public string saveName;
     public FarmTile_Basic_Data data;
@@ -180,7 +181,7 @@ public class FarmTile : MonoBehaviour
         if (data.seedPlanted && tileSeedStatus.health <= 0)
         {
             data.died = true;
-            // death icon ON
+            deathIcon.SetActive(true);
 
             image.sprite = data.unplantedTile;
             data.plantedSeed = null;
@@ -364,6 +365,9 @@ public class FarmTile : MonoBehaviour
             if (!nonBreak) break;
         }
     }
+
+    // death system
+
 
     // save load systems
     public void Load_Update_Tile()
