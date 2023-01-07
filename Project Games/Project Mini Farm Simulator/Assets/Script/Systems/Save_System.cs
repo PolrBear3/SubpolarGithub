@@ -88,6 +88,7 @@ public class Save_System : MonoBehaviour
     {
         ES3.Save("farmTile" + farmTile.saveName + " tileLocked", farmTile.data.tileLocked);
         ES3.Save("farmTile" + farmTile.saveName + " seedPlanted", farmTile.data.seedPlanted);
+        ES3.Save("farmTile" + farmTile.saveName + " died", farmTile.data.died);
 
         if (farmTile.data.seedPlanted)
         {
@@ -124,6 +125,11 @@ public class Save_System : MonoBehaviour
 
     private void Load_FarmTile(FarmTile farmTile)
     {
+        if (ES3.KeyExists("farmTile" + farmTile.saveName + " died"))
+        {
+            farmTile.data.died = ES3.Load<bool>("farmTile" + farmTile.saveName + " died");
+        }
+
         if (ES3.KeyExists("farmTile" + farmTile.saveName + " tileLocked"))
         {
             // tile unlock status load

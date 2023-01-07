@@ -367,12 +367,23 @@ public class FarmTile : MonoBehaviour
     }
 
     // death system
-
+    private void Death_Data_Update()
+    {
+        if (data.died)
+        {
+            deathIcon.SetActive(true);
+        }
+        else
+        {
+            deathIcon.SetActive(false);
+        }
+    }
 
     // save load systems
     public void Load_Update_Tile()
     {
         Unlock_Check();
+        Death_Data_Update();
 
         // seed grow image load 
         if (data.seedPlanted)
