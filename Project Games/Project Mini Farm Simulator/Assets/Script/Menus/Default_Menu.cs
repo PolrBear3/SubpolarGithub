@@ -58,7 +58,8 @@ public class Default_Menu : MonoBehaviour
     {
         Current_InGameDay_Text_Update();
         Next_Day_AlphaValueFade_Tween();
-        Season_Weather_UI_Update();
+        Season_UI_Update();
+        Weather_UI_Update();
     }
     public void Activate_NextDay_Button(bool activation)
     {
@@ -75,7 +76,7 @@ public class Default_Menu : MonoBehaviour
     }
 
     // time system ui
-    private void Current_InGameDay_Text_Update()
+    public void Current_InGameDay_Text_Update()
     {
         menuUI.currentInGameDayText.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
     }
@@ -84,7 +85,7 @@ public class Default_Menu : MonoBehaviour
         var rectTransform = nextDayFade.GetComponent<RectTransform>();
         var image = nextDayFade.GetComponent<Image>();
 
-        image.sprite = controller.eventSystem.currentWeather.fadeBackgroundUI;
+        image.sprite = controller.eventSystem.data.currentWeather.fadeBackgroundUI;
         LeanTween.move(rectTransform, new Vector2(0, 0), 0);
         LeanTween.alpha(rectTransform, 1f, 1f);
         LeanTween.alpha(rectTransform, 0f, 1f).setDelay(1f);
@@ -92,13 +93,15 @@ public class Default_Menu : MonoBehaviour
     }
 
     // season and weather ui
-    private void Season_Weather_UI_Update()
+    public void Season_UI_Update()
     {
         menuUI.seasonUIBox.sprite = controller.timeSystem.currentSeason.seasonUI;
         menuUI.seasonUIText.text = controller.timeSystem.currentSeason.seasonName;
-
-        menuUI.weatherUIBox.sprite = controller.eventSystem.currentWeather.weatherUI;
-        menuUI.weatherUIText.text = controller.eventSystem.currentWeather.weatherName;
+    }
+    public void Weather_UI_Update()
+    {
+        menuUI.weatherUIBox.sprite = controller.eventSystem.data.currentWeather.weatherUI;
+        menuUI.weatherUIText.text = controller.eventSystem.data.currentWeather.weatherName;
     }
 
     // money system ui

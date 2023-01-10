@@ -17,9 +17,10 @@ public class Time_System : MonoBehaviour
 
     private void Start()
     {
-        if (!ES3.KeyExists("currentInGameDay"))
+        if (!ES3.KeyExists("gameSaved"))
         {
             Next_Day();
+            Debug.Log("New Game");
         }
         else
         {
@@ -55,7 +56,14 @@ public class Time_System : MonoBehaviour
     }
 
     // in game system
-    private void Check_Season()
+    public void Check_End0f_Year()
+    {
+        if (currentInGameDay == maxInGameDay + 1)
+        {
+            currentInGameDay = 1;
+        }
+    }
+    public void Check_Season()
     {
         // spring
         if (currentInGameDay >= 1 && currentInGameDay <= 93) { currentSeason = controller.allSeasons[0]; }
@@ -65,13 +73,6 @@ public class Time_System : MonoBehaviour
         else if (currentInGameDay >= 187 && currentInGameDay <= 279) { currentSeason = controller.allSeasons[2]; }
         // winter
         else if (currentInGameDay >= 280 && currentInGameDay <= 365) { currentSeason = controller.allSeasons[3]; }
-    }
-    private void Check_End0f_Year()
-    {
-        if (currentInGameDay == maxInGameDay + 1)
-        {
-            currentInGameDay = 1;
-        }
     }
 
     public void Next_Day()
@@ -104,20 +105,6 @@ public class Time_System : MonoBehaviour
         controller.All_FarmTile_Progress_Update();
 
         ReCalculate_AllSeed_WaitTime();
-    }
-    public void Load_Day()
-    {
-        Check_End0f_Year();
-        Check_Season();
-
-        controller.defaultMenu.Update_UI();
-
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            controller.farmTiles[i].Load_Update_Tile();
-        }
-        // update sprite
-        controller.All_FarmTile_Progress_Update();
     }
 
     // real time system

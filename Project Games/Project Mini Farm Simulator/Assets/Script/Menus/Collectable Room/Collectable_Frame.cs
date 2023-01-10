@@ -20,16 +20,9 @@ public class Collectable_Frame_Data
 public class Collectable_Frame : MonoBehaviour
 {
     public CollectableRoom_Menu menu;
-    public Button button;
     
     public Collectable_Frame_UI ui;
     public Collectable_Frame_Data data;
-
-    public void Button_Shield(bool activate)
-    {
-        if (activate) { button.enabled = false; }
-        else if (!activate) { button.enabled = true; }
-    }
 
     public void Load_FrameSprite()
     {

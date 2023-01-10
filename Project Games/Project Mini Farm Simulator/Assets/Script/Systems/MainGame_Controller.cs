@@ -185,12 +185,30 @@ public class MainGame_Controller : MonoBehaviour
         defaultMenu.Money_Text_Update();
         defaultMenu.SubtractMoney_RedBlink();
     }
-    public void Load_Money(int amount)
-    {
-        _money = amount;
-    }
     
     // ID Search
+    public Weather_ScrObj ID_Weather_Search(int weatherID)
+    {
+        for (int i = 0; i < allWeathers.Length; i++)
+        {
+            if (weatherID == allWeathers[i].weatherID)
+            {
+                return allWeathers[i];
+            }
+        }
+        return null;
+    }
+    public Seed_ScrObj ID_Seed_Search(int seedID)
+    {
+        for (int i = 0; i < allSeeds.Length; i++)
+        {
+            if (seedID == allSeeds[i].seedID)
+            {
+                return allSeeds[i];
+            }
+        }
+        return null;
+    }
     public Buff_ScrObj ID_Buff_Search(int buffID)
     {
         for (int i = 0; i < allBuffs.Length; i++)

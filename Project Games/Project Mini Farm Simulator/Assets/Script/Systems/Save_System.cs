@@ -5,6 +5,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
+public struct Save_System_Data
+{
+    public bool gameSaved;
+}
+
+[System.Serializable]
 public class Save_System_UI
 {
     public GameObject resetGamePanel;
@@ -15,7 +21,8 @@ public class Save_System : MonoBehaviour
 {
     public MainGame_Controller controller;
 
-    public Save_System_UI ui;
+    [SerializeField] private Save_System_Data data;
+    [SerializeField] private Save_System_UI ui;
 
     private void Start()
     {
@@ -28,24 +35,25 @@ public class Save_System : MonoBehaviour
 
     private void Save_All()
     {
-        SaveAll_Tiles();
-        Save_Money();
-        Save_CurrentWeather();
-        Save_CurrentInGameDay();
-        Save_Collectable_Data();
-        Save_Collectable_Frames();
-        Save_Resolution_ScreenMode();
+        Save_New_Game();
+
+        Save_Current_Day();
+        Save_Current_Weather();
+        Save_All_FarmTiles();
+        Save_Money_Amount();
+        Save_All_Collectable_Datas();
+        Save_All_CollectableFrames();
     }
     private void Load_All()
     {
-        LoadAll_Tiles();
-        Load_Money();
-        Load_CurrentInGameDay();
-        Load_CurrentWeather();
-        controller.timeSystem.Load_Day();
-        Load_Collectable_Data();
-        Load_Collectable_Frames();
-        Load_Resolution_ScreenMode();
+        Load_Game();
+
+        Load_Current_Day();
+        Load_Current_Weather();
+        Load_All_FarmTiles();
+        Load_Money_Amount();
+        Load_All_Collectable_Datas();
+        Load_All_CollectableFrames();
     }
 
     // game reset system
@@ -75,215 +83,226 @@ public class Save_System : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+
+    // check systems
+    public bool Game_Saved()
+    {
+        if (data.gameSaved) return true;
+        else return false;
+    }
+
+    // Game
+    private void Save_New_Game()
+    {
+        data.gameSaved = true;
+        ES3.Save("gameSaved", data.gameSaved);
+    }
+    private void Load_Game()
+    {
+        if (!ES3.KeyExists("gameSaved")) return;
+
+        data.gameSaved = ES3.Load("gameSaved", data.gameSaved);
+    }
+
     // farm tiles
-    private void SaveAll_Tiles()
+    private void Save_All_FarmTiles()
     {
-        for (int i = 0; i < controller.farmTiles.Length; i++)
+        var farmTiles = controller.farmTiles;
+
+        for (int i = 0; i < farmTiles.Length; i++)
         {
-            Save_FarmTile(controller.farmTiles[i]);
+            Save_FarmTile_Data(farmTiles[i], i);
+            Save_FarmTile_Status(farmTiles[i], i);
+            Save_FarmTile_DeathData(farmTiles[i], i);
+            Save_FarmTile_EventStatus(farmTiles[i], i);
+            Save_FarmTile_Buff(farmTiles[i], i);
         }
     }
-
-    private void Save_FarmTile(FarmTile farmTile)
+    private void Save_FarmTile_Data(FarmTile farmTile, int farmTileNum)
     {
-        ES3.Save("farmTile" + farmTile.saveName + " tileLocked", farmTile.data.tileLocked);
-        ES3.Save("farmTile" + farmTile.saveName + " seedPlanted", farmTile.data.seedPlanted);
-        ES3.Save("farmTile" + farmTile.saveName + " died", farmTile.data.died);
-
-        if (farmTile.data.seedPlanted)
-        {
-            ES3.Save("farmTile" + farmTile.saveName + " plantedSeedID", farmTile.data.plantedSeed.seedID);
-
-            ES3.Save("farmTile" + farmTile.saveName + " fullGrownDay", farmTile.tileSeedStatus.fullGrownDay);
-            ES3.Save("farmTile" + farmTile.saveName + " dayPassed", farmTile.tileSeedStatus.dayPassed);
-            ES3.Save("farmTile" + farmTile.saveName + " health", farmTile.tileSeedStatus.health);
-            ES3.Save("farmTile" + farmTile.saveName + " daysWithoutWater", farmTile.tileSeedStatus.daysWithoutWater);
-            ES3.Save("farmTile" + farmTile.saveName + " currentDayWatered", farmTile.tileSeedStatus.currentDayWatered);
-            ES3.Save("farmTile" + farmTile.saveName + " watered", farmTile.tileSeedStatus.watered);
-        }
-
-        Save_FarmTile_Statuses(farmTile);
-        Save_FarmTile_Buffs(farmTile);
+        ES3.Save("tileLocked" + farmTileNum.ToString(), farmTile.data.tileLocked);
+        ES3.Save("seedPlanted" + farmTileNum.ToString(), farmTile.data.seedPlanted);
+        ES3.Save("plantedSeed" + farmTileNum.ToString(), farmTile.data.plantedSeed);
     }
-    private void Save_FarmTile_Statuses(FarmTile farmTile)
+    private void Save_FarmTile_Status(FarmTile farmTile, int farmTileNum)
     {
-        ES3.Save("farmTile" + farmTile.saveName + " statuses", farmTile.currentStatuses);
+        ES3.Save("health" + farmTileNum.ToString(), farmTile.tileSeedStatus.health);
+        ES3.Save("dayPassed" + farmTileNum.ToString(), farmTile.tileSeedStatus.dayPassed);
+        ES3.Save("fullGrownDay" + farmTileNum.ToString(), farmTile.tileSeedStatus.fullGrownDay);
+        ES3.Save("watered" + farmTileNum.ToString(), farmTile.tileSeedStatus.watered);
+        ES3.Save("daysWithoutWater" + farmTileNum.ToString(), farmTile.tileSeedStatus.daysWithoutWater);
+        ES3.Save("currentDayWatered" + farmTileNum.ToString(), farmTile.tileSeedStatus.currentDayWatered);
+        ES3.Save("harvestReady" + farmTileNum.ToString(), farmTile.tileSeedStatus.harvestReady);
+        ES3.Save("bonusPoints" + farmTileNum.ToString(), farmTile.tileSeedStatus.bonusPoints);
     }
-    private void Save_FarmTile_Buffs(FarmTile farmTile)
+    private void Save_FarmTile_DeathData(FarmTile farmTile, int farmTileNum)
     {
-        ES3.Save("farmTile" + farmTile.saveName + " buffs", farmTile.currentBuffs);
+        ES3.Save("died" + farmTileNum.ToString(), farmTile.deathData.died);
+        ES3.Save("previousSeed" + farmTileNum.ToString(), farmTile.deathData.previousSeed);
+        ES3.Save("previousHealth" + farmTileNum.ToString(), farmTile.deathData.previousHealth);
     }
-
-    private void LoadAll_Tiles()
+    private void Save_FarmTile_EventStatus(FarmTile farmTile, int farmTileNum)
     {
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            Load_FarmTile(controller.farmTiles[i]);
-            controller.farmTiles[i].Load_Update_Tile();
-        }
+        ES3.Save("currentStatuses" + farmTileNum.ToString(), farmTile.currentStatuses);
+    }
+    private void Save_FarmTile_Buff(FarmTile farmTile, int farmTileNum)
+    {
+        ES3.Save("currentBuffs" + farmTileNum.ToString(), farmTile.currentBuffs);
     }
 
-    private void Load_FarmTile(FarmTile farmTile)
+    public void Load_All_FarmTiles()
     {
-        if (ES3.KeyExists("farmTile" + farmTile.saveName + " died"))
+        if (!Game_Saved()) return;
+
+        var farmTiles = controller.farmTiles;
+
+        for (int i = 0; i < farmTiles.Length; i++)
         {
-            farmTile.data.died = ES3.Load<bool>("farmTile" + farmTile.saveName + " died");
+            Load_FarmTile_Data(farmTiles[i], i);
+            Load_FarmTile_Status(farmTiles[i], i);
+            Load_FarmTile_DeatData(farmTiles[i], i);
+            Load_FarmTile_EventStatus(farmTiles[i], i);
+            Load_FarmTile_Buff(farmTiles[i], i);
         }
+    } // activates at time system
+    private void Load_FarmTile_Data(FarmTile farmTile, int farmTileNum)
+    {
+        farmTile.data.tileLocked = ES3.Load("tileLocked" + farmTileNum.ToString(), farmTile.data.tileLocked);
+        farmTile.data.seedPlanted = ES3.Load("seedPlanted" + farmTileNum.ToString(), farmTile.data.seedPlanted);
+        farmTile.data.plantedSeed = ES3.Load("plantedSeed" + farmTileNum.ToString(), farmTile.data.plantedSeed);
 
-        if (ES3.KeyExists("farmTile" + farmTile.saveName + " tileLocked"))
-        {
-            // tile unlock status load
-            farmTile.data.tileLocked = ES3.Load<bool>("farmTile" + farmTile.saveName + " tileLocked");
-
-            if (ES3.KeyExists("farmTile" + farmTile.saveName + " seedPlanted"))
-            {
-                // farmtile anything planted status load
-                farmTile.data.seedPlanted = ES3.Load<bool>("farmTile" + farmTile.saveName + " seedPlanted");
-
-                if (farmTile.data.seedPlanted)
-                {
-                    var seedSearchID = ES3.Load<int>("farmTile" + farmTile.saveName + " plantedSeedID");
-                    for (int i = 0; i < controller.allSeeds.Length; i++)
-                    {
-                        if (seedSearchID == controller.allSeeds[i].seedID)
-                        {
-                            // planted seed ScrObj load
-                            farmTile.data.plantedSeed = controller.allSeeds[i];
-                        }
-                    }
-
-                    // full grown day
-                    farmTile.tileSeedStatus.fullGrownDay = ES3.Load<int>("farmTile" + farmTile.saveName + " fullGrownDay");
-                    // day passed
-                    farmTile.tileSeedStatus.dayPassed = ES3.Load<int>("farmTile" + farmTile.saveName + " dayPassed");
-                    // health
-                    farmTile.tileSeedStatus.health = ES3.Load<int>("farmTile" + farmTile.saveName + " health");
-                    // days without water
-                    farmTile.tileSeedStatus.daysWithoutWater = ES3.Load<int>("farmTile" + farmTile.saveName + " daysWithoutWater");
-                    // current day watered
-                    farmTile.tileSeedStatus.currentDayWatered = ES3.Load<bool>("farmTile" + farmTile.saveName + " currentDayWatered");
-                    // overall watering amount
-                    farmTile.tileSeedStatus.watered = ES3.Load<int>("farmTile" + farmTile.saveName + " watered");
-                }
-            }
-
-            // farmtile status icons
-            Load_FarmTile_Status(farmTile);
-            // farmtile current buffs
-            Load_FarmTile_Buffs(farmTile);
-        }
+        farmTile.Unlock_Check();
     }
-    private void Load_FarmTile_Status(FarmTile farmTile)
+    private void Load_FarmTile_Status(FarmTile farmTile, int farmTileNum)
     {
-        if (ES3.KeyExists("farmTile" + farmTile.saveName + " statuses"))
-        {
-            var savedStatusList = ES3.Load("farmTile" + farmTile.saveName + " statuses", farmTile.currentStatuses);
-            farmTile.currentStatuses = savedStatusList;
-        }
+        farmTile.tileSeedStatus.health = ES3.Load("health" + farmTileNum.ToString(), farmTile.tileSeedStatus.health);
+        farmTile.tileSeedStatus.dayPassed = ES3.Load("dayPassed" + farmTileNum.ToString(), farmTile.tileSeedStatus.dayPassed);
+        farmTile.tileSeedStatus.fullGrownDay = ES3.Load("fullGrownDay" + farmTileNum.ToString(), farmTile.tileSeedStatus.fullGrownDay);
+        farmTile.tileSeedStatus.watered = ES3.Load("watered" + farmTileNum.ToString(), farmTile.tileSeedStatus.watered);
+        farmTile.tileSeedStatus.daysWithoutWater = ES3.Load("daysWithoutWater" + farmTileNum.ToString(), farmTile.tileSeedStatus.daysWithoutWater);
+        farmTile.tileSeedStatus.currentDayWatered = ES3.Load("currentDayWatered" + farmTileNum.ToString(), farmTile.tileSeedStatus.currentDayWatered);
+        farmTile.tileSeedStatus.harvestReady = ES3.Load("harvestReady" + farmTileNum.ToString(), farmTile.tileSeedStatus.harvestReady);
+        farmTile.tileSeedStatus.bonusPoints = ES3.Load("bonusPoints" + farmTileNum.ToString(), farmTile.tileSeedStatus.bonusPoints);
+
+        farmTile.Tile_Progress_Update();
     }
-    private void Load_FarmTile_Buffs(FarmTile farmTile)
+    private void Load_FarmTile_DeatData(FarmTile farmTile, int farmTileNum)
     {
-        if (ES3.KeyExists("farmTile" + farmTile.saveName + " buffs"))
-        {
-            var savedBuffList = ES3.Load("farmTile" + farmTile.saveName + " buffs", farmTile.currentBuffs);
-            farmTile.currentBuffs = savedBuffList;
-        }
+        farmTile.deathData.died = ES3.Load("died" + farmTileNum.ToString(), farmTile.deathData.died);
+        farmTile.deathData.previousSeed = ES3.Load("previousSeed" + farmTileNum.ToString(), farmTile.deathData.previousSeed);
+        farmTile.deathData.previousHealth = ES3.Load("previousHealth" + farmTileNum.ToString(), farmTile.deathData.previousHealth);
+
+        farmTile.Death_Data_Update();
+    }
+    private void Load_FarmTile_EventStatus(FarmTile farmTile, int farmTileNum)
+    {
+        farmTile.currentStatuses = ES3.Load("currentStatuses" + farmTileNum.ToString(), farmTile.currentStatuses);
+    }
+    private void Load_FarmTile_Buff(FarmTile farmTile, int farmTileNum)
+    {
+        farmTile.currentBuffs = ES3.Load("currentBuffs" + farmTileNum.ToString(), farmTile.currentBuffs);
     }
 
     // money
-    private void Save_Money()
+    private void Save_Money_Amount()
     {
         ES3.Save("money", controller.money);
     }
-    private void Load_Money()
+    private void Load_Money_Amount()
     {
-        if (ES3.KeyExists("money"))
-        {
-            controller.Load_Money(ES3.Load<int>("money"));
-        }
+        if (!Game_Saved()) return;
+
+        controller.Add_Money(ES3.Load("money", controller.money));
     }
 
-    // day
-    private void Save_CurrentInGameDay()
+    // current day
+    private void Save_Current_Day()
     {
         ES3.Save("currentInGameDay", controller.timeSystem.currentInGameDay);
     }
-    private void Load_CurrentInGameDay()
+    private void Load_Current_Day()
     {
-        if (ES3.KeyExists("currentInGameDay"))
-        {
-            controller.timeSystem.currentInGameDay = ES3.Load<int>("currentInGameDay");
-        }
+        if (!Game_Saved()) return;
+
+        controller.timeSystem.currentInGameDay = ES3.Load("currentInGameDay", controller.timeSystem.currentInGameDay);
+
+        controller.timeSystem.Check_End0f_Year();
+        controller.timeSystem.Check_Season();
+
+        controller.defaultMenu.Current_InGameDay_Text_Update();
+        controller.defaultMenu.Season_UI_Update();
     }
 
     // weather
-    private void Save_CurrentWeather()
+    private void Save_Current_Weather()
     {
-        ES3.Save("currentWeather", controller.eventSystem.currentWeather.weatherID);
+        ES3.Save("currentWeatherID", controller.eventSystem.data.currentWeather.weatherID);
     }
-    private void Load_CurrentWeather()
+    private void Load_Current_Weather()
     {
-        if (ES3.KeyExists("currentWeather"))
-        {
-            int savedNum = ES3.Load<int>("currentWeather");
-            for (int i = 0; i < controller.allWeathers.Length; i++)
-            {
-                if (savedNum == controller.allWeathers[i].weatherID)
-                {
-                    controller.eventSystem.currentWeather = controller.allWeathers[i];
-                }
-            }
-        }
+        if (!Game_Saved()) return;
+
+        int currentWeatherID = ES3.Load<int>("currentWeatherID");
+        var currentWeather = controller.ID_Weather_Search(currentWeatherID);
+        controller.eventSystem.data.currentWeather = currentWeather;
+
+        controller.defaultMenu.Weather_UI_Update();
+        // fade lean tween
     }
 
     // collectables
-    private void Save_Collectable_Data()
+    private void Save_All_Collectable_Datas()
     {
-        ES3.Save("collectableAmount", controller.collectableRoomMenu.allCollectables);
-    }
-    private void Load_Collectable_Data()
-    {
-        if (ES3.KeyExists("collectableAmount"))
+        var collectableDatas = controller.collectableRoomMenu.allCollectables;
+
+        for (int i = 0; i < collectableDatas.Length; i++)
         {
-            var savedAmounts = ES3.Load("collectableAmount", controller.collectableRoomMenu.allCollectables);
-            controller.collectableRoomMenu.allCollectables = savedAmounts;
+            ES3.Save("unlocked" + i.ToString(), collectableDatas[i].unLocked);
+            ES3.Save("isNew" + i.ToString(), collectableDatas[i].isNew);
+            ES3.Save("goldMode" + i.ToString(), collectableDatas[i].goldModeAvailable);
+            ES3.Save("currentAmount" + i.ToString(), collectableDatas[i].currentAmount);
+            ES3.Save("maxAmount" + i.ToString(), collectableDatas[i].maxAmount);
+        }
+    }
+    private void Load_All_Collectable_Datas()
+    {
+        if (!Game_Saved()) return;
+
+        var collectableDatas = controller.collectableRoomMenu.allCollectables;
+
+        for (int i = 0; i < collectableDatas.Length; i++)
+        {
+            collectableDatas[i].unLocked = ES3.Load("unlocked" + i.ToString(), collectableDatas[i].unLocked);
+            collectableDatas[i].isNew = ES3.Load("isNew" + i.ToString(), collectableDatas[i].isNew);
+            collectableDatas[i].goldModeAvailable = ES3.Load("goldMode" + i.ToString(), collectableDatas[i].goldModeAvailable);
+            collectableDatas[i].currentAmount = ES3.Load("currentAmount" + i.ToString(), collectableDatas[i].currentAmount);
+            collectableDatas[i].maxAmount = ES3.Load("maxAmount" + i.ToString(), collectableDatas[i].maxAmount);
         }
     }
 
-    private void Save_Collectable_Frames()
+    // collectable frame statuses
+    private void Save_All_CollectableFrames()
     {
-        ES3.Save("collectableFrames", controller.collectableRoomMenu.allFrames);
-    }
-    private void Load_Collectable_Frames()
-    {
-        if (ES3.KeyExists("collectableFrames"))
-        {
-            var savedFrames = ES3.Load("collectableFrames", controller.collectableRoomMenu.allFrames);
-            controller.collectableRoomMenu.allFrames = savedFrames;
+        var allFrames = controller.collectableRoomMenu.allFrames;
 
-            controller.collectableRoomMenu.AllFrame_Load_FrameSprite();
+        for (int i = 0; i < allFrames.Length; i++)
+        {
+            ES3.Save("collectablePlaced" + i.ToString(), allFrames[i].data.collectablePlaced);
+            ES3.Save("currentCollectable" + i.ToString(), allFrames[i].data.currentCollectable);
         }
     }
-
-    // options
-    private void Save_Resolution_ScreenMode()
+    private void Load_All_CollectableFrames()
     {
-        ES3.Save("currentResArrayNum", controller.optionsMenu.resController.data.currentResArrayNum);
-        ES3.Save("isFullScreen", controller.optionsMenu.resController.data.isFullScreen);
-    }
-    private void Load_Resolution_ScreenMode()
-    {
-        if (ES3.KeyExists("currentResArrayNum"))
-        {
-            var resNum = ES3.Load<int>("currentResArrayNum");
-            var screenMode = ES3.Load<bool>("isFullScreen");
+        if (!Game_Saved()) return;
 
-            controller.optionsMenu.resController.Load_Resolution_and_ScreenMode(resNum, screenMode);
-        }
-        else
+        var allFrames = controller.collectableRoomMenu.allFrames;
+
+        for (int i = 0; i < allFrames.Length; i++)
         {
-            // set default res
-            controller.optionsMenu.resController.Load_Resolution_and_ScreenMode(2, false);
+            allFrames[i].data.collectablePlaced = ES3.Load("collectablePlaced" + i.ToString(), allFrames[i].data.collectablePlaced);
+            allFrames[i].data.currentCollectable = ES3.Load("currentCollectable" + i.ToString(), allFrames[i].data.currentCollectable);
+
+            allFrames[i].Load_FrameSprite();
         }
     }
 }

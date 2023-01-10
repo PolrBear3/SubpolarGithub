@@ -83,31 +83,6 @@ public class CollectableRoom_Menu : MonoBehaviour
             else if (!activate) { allAvailableButtons[i].enabled = true; }
         }
     }
-    private void Frames_CurrentButtons_Button_Shield(bool activate)
-    {
-        if (activate)
-        {
-            for (int i = 0; i < allFrames.Length; i++)
-            {
-                allFrames[i].Button_Shield(true);
-            }
-            for (int i = 0; i < currentButtons.Count; i++)
-            {
-                currentButtons[i].Button_Shield(true);
-            }
-        }
-        else if (!activate)
-        {
-            for (int i = 0; i < allFrames.Length; i++)
-            {
-                allFrames[i].Button_Shield(false);
-            }
-            for (int i = 0; i < currentButtons.Count; i++)
-            {
-                currentButtons[i].Button_Shield(false);
-            }
-        }
-    }
     private void Center_Position()
     {
         ui.collectableRoomMenu.anchoredPosition = new Vector2(0f, -125f);
@@ -126,7 +101,6 @@ public class CollectableRoom_Menu : MonoBehaviour
 
         // buttons available
         Button_Shield(false);
-        Frames_CurrentButtons_Button_Shield(false);
         // lean tween collectableFramesPanel
         LeanTween.move(ui.collectableFramesPanel, new Vector2(0f, 62.50972f), 0.75f).setEase(tweenType);
         // lean tween collectableRoomMenu
@@ -164,7 +138,6 @@ public class CollectableRoom_Menu : MonoBehaviour
 
         // buttons unavailable
         Button_Shield(true);
-        Frames_CurrentButtons_Button_Shield(true);
         // lean tween collectableFramesPanel
         LeanTween.move(ui.collectableFramesPanel, new Vector2(500f, 62.50972f), 0.75f).setEase(tweenType);
         // close shop menu

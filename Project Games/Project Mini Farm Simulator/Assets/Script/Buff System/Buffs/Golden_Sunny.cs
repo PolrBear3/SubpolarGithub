@@ -27,7 +27,7 @@ public class Golden_Sunny : MonoBehaviour, IBuff, IBuffResetable
 
     private bool Is_Weather_Sunny()
     {
-        if (b.controller.eventSystem.currentWeather.weatherID == 0) return true;
+        if (b.controller.eventSystem.data.currentWeather.weatherID == 0) return true;
         else return false;
     }
     private bool FarmTile_Condition_Check(FarmTile farmTile)

@@ -27,7 +27,7 @@ public class Rain : MonoBehaviour, IEvent, IEventResetable
 
     private bool Is_Raining()
     {
-        if (es.currentWeather.weatherID == 2) return true;
+        if (es.data.currentWeather.weatherID == 2) return true;
         else return false;
     }
     private bool FarmTile_Event_Check(FarmTile farmTile)

@@ -27,7 +27,7 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
 
     private bool Is_Weather_Cloudy()
     {
-        if (e.currentWeather.weatherID == 1) return true;
+        if (e.data.currentWeather.weatherID == 1) return true;
         else return false;
     }
     private bool FarmTile_Condition_Check(FarmTile farmTile)

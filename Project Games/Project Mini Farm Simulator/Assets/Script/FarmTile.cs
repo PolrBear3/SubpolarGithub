@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
 
 [System.Serializable]
 public struct AfterSeedStatus
@@ -24,10 +23,19 @@ public class FarmTile_Basic_Data
 {
     public Seed_ScrObj plantedSeed = null;
     public int tileNum, tileRow, tilePrice;
-    public bool tileSelected = false, tileLocked = false, seedPlanted = false, died = false;
+    public bool tileSelected = false, tileLocked = false, seedPlanted = false;
 
     public Sprite lockedTile;
     public Sprite unplantedTile;
+}
+
+[System.Serializable]
+public class FarmTile_Death_Data
+{
+    public bool died = false;
+
+    public Seed_ScrObj previousSeed;
+    public int previousHealth;
 }
 
 public class FarmTile : MonoBehaviour
@@ -42,8 +50,8 @@ public class FarmTile : MonoBehaviour
     public GameObject tileHighlighter;
     public GameObject deathIcon;
 
-    public string saveName;
     public FarmTile_Basic_Data data;
+    public FarmTile_Death_Data deathData;
     public AfterSeedStatus tileSeedStatus;
 
     public List<Status> currentStatuses = new List<Status>();
@@ -69,7 +77,7 @@ public class FarmTile : MonoBehaviour
         // unlocked tile image and status indicator
         image.sprite = data.unplantedTile;
     }
-    private void Unlock_Check()
+    public void Unlock_Check()
     {
         if (!data.tileLocked)
         {
@@ -119,7 +127,7 @@ public class FarmTile : MonoBehaviour
             {
                 controller.tileBuyButton.Open();
             }
-            else if (data.died)
+            else if (deathData.died)
             {
                 controller.deathMenu.Open();
             }
@@ -173,6 +181,7 @@ public class FarmTile : MonoBehaviour
         if (tileSeedStatus.daysWithoutWater >= data.plantedSeed.waterHealth)
         {
             tileSeedStatus.health = 0;
+            // add dry out status
         }
     }
     public void Health_Check()
@@ -180,7 +189,7 @@ public class FarmTile : MonoBehaviour
         // if the tile has no health, reset
         if (data.seedPlanted && tileSeedStatus.health <= 0)
         {
-            data.died = true;
+            deathData.died = true;
             deathIcon.SetActive(true);
 
             image.sprite = data.unplantedTile;
@@ -206,6 +215,9 @@ public class FarmTile : MonoBehaviour
         {
             return;
         }
+
+        Get_Previous_Data();
+
         // if the tile is not ready to be harvested
         if (tileSeedStatus.harvestReady)
         {
@@ -367,28 +379,20 @@ public class FarmTile : MonoBehaviour
     }
 
     // death system
-    private void Death_Data_Update()
+    private void Get_Previous_Data()
     {
-        if (data.died)
+        deathData.previousSeed = data.plantedSeed;
+        deathData.previousHealth = tileSeedStatus.health;
+    }
+    public void Death_Data_Update()
+    {
+        if (deathData.died)
         {
             deathIcon.SetActive(true);
         }
         else
         {
             deathIcon.SetActive(false);
-        }
-    }
-
-    // save load systems
-    public void Load_Update_Tile()
-    {
-        Unlock_Check();
-        Death_Data_Update();
-
-        // seed grow image load 
-        if (data.seedPlanted)
-        {
-            Tile_Progress_Update();
         }
     }
 }

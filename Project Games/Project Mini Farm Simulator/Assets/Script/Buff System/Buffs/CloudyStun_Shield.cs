@@ -27,7 +27,7 @@ public class CloudyStun_Shield : MonoBehaviour, IBuff, IBuffResetable
 
     private bool Is_Weather_Cloudy()
     {
-        if (b.controller.eventSystem.currentWeather.weatherID == 1) return true;
+        if (b.controller.eventSystem.data.currentWeather.weatherID == 1) return true;
         else return false;
     }
     private bool FarmTile_Condition_Check(FarmTile farmTile)

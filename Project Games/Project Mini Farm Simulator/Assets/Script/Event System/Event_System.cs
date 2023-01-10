@@ -25,14 +25,19 @@ public struct Event_Data
     public bool activated;
 }
 
+[System.Serializable]
+public class Event_System_Data
+{
+    public Weather_ScrObj currentWeather;
+}
+
 public class Event_System : MonoBehaviour
 {
     public MainGame_Controller controller;
-
     public GameObject events;
-    private List<GameObject> allEvents = new List<GameObject>();
 
-    public Weather_ScrObj currentWeather;
+    public Event_System_Data data;
+    private List<GameObject> allEvents = new List<GameObject>();
 
     private void Start()
     {
@@ -56,7 +61,7 @@ public class Event_System : MonoBehaviour
         var x = controller.timeSystem.currentSeason;
 
         int randomWeatherNum = Random.Range(0, 9);
-        currentWeather = x.weatherPercentages[randomWeatherNum];
+        data.currentWeather = x.weatherPercentages[randomWeatherNum];
     }
 
     private void Set_All_Events()

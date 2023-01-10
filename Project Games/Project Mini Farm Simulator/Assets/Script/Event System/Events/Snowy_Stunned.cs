@@ -32,7 +32,7 @@ public class Snowy_Stunned : MonoBehaviour, IEvent, IEventResetable
     }
     private bool Is_Weather_Snowy()
     {
-        if (e.currentWeather.weatherID == 4) return true;
+        if (e.data.currentWeather.weatherID == 4) return true;
         else return false;
     }
     private bool FarmTile_Condition_Check(FarmTile farmTile)

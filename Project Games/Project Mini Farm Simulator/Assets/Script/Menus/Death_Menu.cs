@@ -6,15 +6,16 @@ using UnityEngine.UI;
 [System.Serializable]
 public struct Death_Menu_Data
 {
-
+    public LeanTweenType tweenType;
 }
 
 [System.Serializable]
 public class Death_Menu_UI
 {
     public RectTransform rectTransform;
-    public LeanTweenType tweenType;
     public Button[] allAvailableButtons;
+
+    public Image previousSeedImage;
 }
 
 public class Death_Menu : MonoBehaviour
@@ -44,16 +45,32 @@ public class Death_Menu : MonoBehaviour
     public void Open()
     {
         Button_Shield(false);
-        LeanTween.move(ui.rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(ui.tweenType);
+        LeanTween.move(ui.rectTransform, new Vector2(0f, 104.85f), 0.75f).setEase(data.tweenType);
 
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        currentFarmTile.data.died = false;
+        currentFarmTile.deathData.died = false;
         currentFarmTile.deathIcon.SetActive(false);
+
+        Update_Death_Info();
     }
     public void Close()
     {
         controller.Reset_All_Tile_Highlights();
         Button_Shield(true);
-        LeanTween.move(ui.rectTransform, new Vector2(0f, -125f), 0.75f).setEase(ui.tweenType);
+        LeanTween.move(ui.rectTransform, new Vector2(0f, -125f), 0.75f).setEase(data.tweenType);
+    }
+
+    private void Update_Death_Info()
+    {
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        // previous planted seed image
+        ui.previousSeedImage.sprite = currentFarmTile.deathData.previousSeed.sprites[3];
+
+        // health
+
+
+        // current statuses
+        statusPanel.Assign_All(currentFarmTile);
     }
 }

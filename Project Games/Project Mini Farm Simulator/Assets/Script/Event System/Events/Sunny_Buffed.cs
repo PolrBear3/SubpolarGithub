@@ -27,7 +27,7 @@ public class Sunny_Buffed : MonoBehaviour, IEvent, IEventResetable
 
     private bool Is_Weather_Sunny()
     {
-        if (e.currentWeather.weatherID == 0) return true;
+        if (e.data.currentWeather.weatherID == 0) return true;
         else return false;
     }
     private bool Golden_Sunny_Buff_Detected(FarmTile farmTile)
