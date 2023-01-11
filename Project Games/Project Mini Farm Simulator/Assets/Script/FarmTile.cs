@@ -181,7 +181,7 @@ public class FarmTile : MonoBehaviour
         if (tileSeedStatus.daysWithoutWater >= data.plantedSeed.waterHealth)
         {
             tileSeedStatus.health = 0;
-            // add dry out status
+            Add_Status(10);
         }
     }
     public void Health_Check()

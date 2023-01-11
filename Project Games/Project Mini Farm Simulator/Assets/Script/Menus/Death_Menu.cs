@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public struct Death_Menu_Data
 {
     public LeanTweenType tweenType;
+    public bool buffPanelOn;
 }
 
 [System.Serializable]
@@ -24,6 +25,7 @@ public class Death_Menu : MonoBehaviour
 {
     [SerializeField] private MainGame_Controller controller;
     [SerializeField] private History_Status_Panel statusPanel;
+    [SerializeField] private History_Buff_Panel buffPanel;
 
     [SerializeField] private Death_Menu_Data data;
     [SerializeField] private Death_Menu_UI ui;
@@ -62,6 +64,17 @@ public class Death_Menu : MonoBehaviour
         LeanTween.move(ui.rectTransform, new Vector2(0f, -125f), 0.75f).setEase(data.tweenType);
     }
 
+    public void Open_Buff_History_Panel()
+    {
+        data.buffPanelOn = true;
+        buffPanel.gameObject.SetActive(true);
+    }
+    private void Close_Buff_History_Panel()
+    {
+        data.buffPanelOn = false;
+        buffPanel.gameObject.SetActive(false);
+    }
+
     private int Damage_Amount(FarmTile farmTile)
     {
         var statuses = farmTile.currentStatuses;
@@ -71,12 +84,23 @@ public class Death_Menu : MonoBehaviour
         {
             if (statuses[i] == null) break;
 
-            damageAmount += statuses[i].healthValue;
+            // if it died from drying out 
+            if (statuses[i].statusID == 10)
+            {
+                damageAmount += farmTile.deathData.previousHealth;
+            }
+            else if (statuses[i].healthValue > 0)
+            {
+                damageAmount += statuses[i].healthValue;
+            }
+            else if (statuses[i].healthValue < 0)
+            {
+                damageAmount -= statuses[i].healthValue;
+            }
         }
 
         return damageAmount;
     }
-
     private void Update_Death_Info()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
@@ -87,6 +111,7 @@ public class Death_Menu : MonoBehaviour
         // health
         ui.previouHealthText.text = currentFarmTile.deathData.previousHealth.ToString();
         int deathHealthAmount = currentFarmTile.deathData.previousHealth - Damage_Amount(currentFarmTile);
+        ui.deathHealthText.text = deathHealthAmount.ToString();
 
         // current statuses
         statusPanel.Assign_All(currentFarmTile);
