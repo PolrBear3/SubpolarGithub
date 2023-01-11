@@ -78,14 +78,14 @@ public class Snowy_Stunned : MonoBehaviour, IEvent, IEventResetable
             if (FarmTile_Has_SnowyStunShield(farmTiles[i])) continue;
 
             // data activation 1
-            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
+            farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
 
             // percentage activation
             if (!e.Percentage_Setter(data.percentage)) continue;
 
             // data activation 2
-            farmTiles[i].tileSeedStatus.health -= data.health;
-            farmTiles[i].tileSeedStatus.bonusPoints -= data.bonusPoints;
+            farmTiles[i].tileSeedStatus.health += data.health;
+            farmTiles[i].tileSeedStatus.bonusPoints += data.bonusPoints;
         }
     }
 }

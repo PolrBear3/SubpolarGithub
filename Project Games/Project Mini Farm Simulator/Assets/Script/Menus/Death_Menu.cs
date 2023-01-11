@@ -16,6 +16,8 @@ public class Death_Menu_UI
     public Button[] allAvailableButtons;
 
     public Image previousSeedImage;
+    public Text previouHealthText;
+    public Text deathHealthText;
 }
 
 public class Death_Menu : MonoBehaviour
@@ -60,6 +62,21 @@ public class Death_Menu : MonoBehaviour
         LeanTween.move(ui.rectTransform, new Vector2(0f, -125f), 0.75f).setEase(data.tweenType);
     }
 
+    private int Damage_Amount(FarmTile farmTile)
+    {
+        var statuses = farmTile.currentStatuses;
+        int damageAmount = 0;
+
+        for (int i = 0; i < statuses.Count; i++)
+        {
+            if (statuses[i] == null) break;
+
+            damageAmount += statuses[i].healthValue;
+        }
+
+        return damageAmount;
+    }
+
     private void Update_Death_Info()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
@@ -68,7 +85,8 @@ public class Death_Menu : MonoBehaviour
         ui.previousSeedImage.sprite = currentFarmTile.deathData.previousSeed.sprites[3];
 
         // health
-
+        ui.previouHealthText.text = currentFarmTile.deathData.previousHealth.ToString();
+        int deathHealthAmount = currentFarmTile.deathData.previousHealth - Damage_Amount(currentFarmTile);
 
         // current statuses
         statusPanel.Assign_All(currentFarmTile);

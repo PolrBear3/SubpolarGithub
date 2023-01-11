@@ -73,8 +73,8 @@ public class Cloudy_Stunned : MonoBehaviour, IEvent, IEventResetable
             if (FarmTile_Has_CloudyStunShield(farmTiles[i])) continue;
 
             // cloudy stunned events
-            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
-            farmTiles[i].tileSeedStatus.watered -= data.watered;
+            farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
+            farmTiles[i].tileSeedStatus.watered += data.watered;
         }
     }
 }

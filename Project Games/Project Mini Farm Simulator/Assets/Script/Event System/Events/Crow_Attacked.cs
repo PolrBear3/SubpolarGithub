@@ -79,10 +79,10 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             if (FarmTile_Has_Scarecrow(farmTiles[i])) continue;
 
             // attack value
-            farmTiles[i].tileSeedStatus.health -= data.health;
-            farmTiles[i].tileSeedStatus.watered -= data.watered;
-            farmTiles[i].tileSeedStatus.dayPassed -= data.dayPassed;
-            farmTiles[i].tileSeedStatus.bonusPoints -= data.bonusPoints;
+            farmTiles[i].tileSeedStatus.health += data.health;
+            farmTiles[i].tileSeedStatus.watered += data.watered;
+            farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
+            farmTiles[i].tileSeedStatus.bonusPoints += data.bonusPoints;
 
             // additional crow attack
             Activate_Additional_Crow_Attack(farmTiles[i]);
@@ -131,10 +131,10 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
             if (FarmTile_Has_Scarecrow(surroundingFarmTile)) continue;
 
             // attack value
-            surroundingFarmTile.tileSeedStatus.health -= subData.health;
-            surroundingFarmTile.tileSeedStatus.watered -= subData.watered;
-            surroundingFarmTile.tileSeedStatus.dayPassed -= subData.dayPassed;
-            surroundingFarmTile.tileSeedStatus.bonusPoints -= subData.bonusPoints;
+            surroundingFarmTile.tileSeedStatus.health += subData.health;
+            surroundingFarmTile.tileSeedStatus.watered += subData.watered;
+            surroundingFarmTile.tileSeedStatus.dayPassed += subData.dayPassed;
+            surroundingFarmTile.tileSeedStatus.bonusPoints += subData.bonusPoints;
         }
     }
 }
