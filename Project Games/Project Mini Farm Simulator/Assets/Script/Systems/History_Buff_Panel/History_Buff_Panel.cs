@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class History_Buff_Panel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private History_Buff_Icon[] icons;
 
-    // Update is called once per frame
-    void Update()
+    private void Clear_All()
     {
-        
+        for (int i = 0; i < icons.Length; i++)
+        {
+            icons[i].Clear_Icon();
+        }
+    }
+    public void Assign_All(FarmTile farmTile)
+    {
+        Clear_All();
+
+        var allBuffs = farmTile.currentBuffs;
+
+        for (int i = 0; i < allBuffs.Count; i++)
+        {
+            if (allBuffs[i] == null) break;
+
+            icons[i].Assign_Status(allBuffs[i]);
+        }
     }
 }

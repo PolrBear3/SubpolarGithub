@@ -143,6 +143,7 @@ public class Default_Menu : MonoBehaviour
 
         // bonus amount text
         bonusFadeText.text = "+$ " + bonusAmount.ToString();
+        if (bonusAmount < 0) bonusFadeText.color = Color.red; 
         // fade bonus amount
         LeanTween.move(bonusFadeTextTransform, new Vector2(-4.899982f, -18.7f), 0.5f).setEase(moneyTweenType).setDelay(0.6f);
         LeanTween.alphaText(bonusFadeTextTransform, 0.7f, 0.5f).setDelay(0.6f);

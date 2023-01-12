@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class History_Status_Panel : MonoBehaviour
 {
-    public History_Status_Icon[] statusIcons;
+    [SerializeField] private History_Status_Icon[] statusIcons;
 
     private void Clear_All()
     {

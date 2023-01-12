@@ -28,6 +28,21 @@ public class Save_System : MonoBehaviour
     {
         Load_All();
     }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Save_All();
+        }    
+    }
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            Save_All();
+        }
+    }
     private void OnApplicationQuit()
     {
         Save_All();
@@ -43,6 +58,8 @@ public class Save_System : MonoBehaviour
         Save_Money_Amount();
         Save_All_Collectable_Datas();
         Save_All_CollectableFrames();
+
+        Debug.Log("Game Saved");
     }
     private void Load_All()
     {
@@ -54,6 +71,8 @@ public class Save_System : MonoBehaviour
         Load_Money_Amount();
         Load_All_Collectable_Datas();
         Load_All_CollectableFrames();
+
+        Debug.Log("Game Loaded");
     }
 
     // game reset system
