@@ -28,8 +28,12 @@ public class Save_System : MonoBehaviour
     {
         Load_All();
     }
-
-    private void OnApplicationPause(bool pause)
+    private void OnApplicationQuit()
+    {
+        Save_All();
+    }
+    
+    /*private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
@@ -42,11 +46,7 @@ public class Save_System : MonoBehaviour
         {
             Save_All();
         }
-    }
-    private void OnApplicationQuit()
-    {
-        Save_All();
-    }
+    }*/
 
     private void Save_All()
     {
@@ -231,7 +231,7 @@ public class Save_System : MonoBehaviour
     {
         if (!Game_Saved()) return;
 
-        controller.Add_Money(ES3.Load("money", controller.money));
+        controller.Add_Money(ES3.Load("money", controller.money), 0);
     }
 
     // current day

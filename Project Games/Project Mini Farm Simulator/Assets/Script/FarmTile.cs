@@ -154,7 +154,7 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.dayPassed = 0;
         tileSeedStatus.currentDayWatered = false;
         tileSeedStatus.harvestReady = false;
-        tileSeedStatus.bonusPoints = 0;
+        tileSeedStatus.bonusPoints = data.plantedSeed.startBonusPoints;
         tileSeedStatus.fullGrownDay = Random.Range(data.plantedSeed.minFinishDays, data.plantedSeed.maxFinishDays);
     }
     
@@ -175,6 +175,12 @@ public class FarmTile : MonoBehaviour
         else if (tileSeedStatus.currentDayWatered)
         {
             tileSeedStatus.daysWithoutWater = 0;
+        }
+
+        // watering bonus point
+        if (tileSeedStatus.daysWithoutWater >= 2)
+        {
+            tileSeedStatus.bonusPoints--;
         }
 
         // watering fail health 0

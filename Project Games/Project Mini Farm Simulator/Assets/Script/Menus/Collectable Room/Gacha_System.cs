@@ -89,7 +89,7 @@ public class Gacha_System : MonoBehaviour
                 // calculating money
                 menu.controller.Subtract_Money(gachaPrice);
                 menu.controller.defaultMenu.Money_Text_Update();
-                menu.controller.defaultMenu.Money_Update_Fade_Tween(false, gachaPrice);
+                menu.controller.defaultMenu.Money_Update_Fade_Tween(false, gachaPrice, 0);
             }
         }
     }

@@ -40,7 +40,7 @@ public class MainGame_Controller : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Add_Money(100);
+            Add_Money(100, 0);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -163,25 +163,18 @@ public class MainGame_Controller : MonoBehaviour
     }
 
     // money functions
-    public void Add_Money(int amount)
-    {
-        _money += amount;
-        defaultMenu.Money_Update_Fade_Tween(true, amount);
-        defaultMenu.Money_Text_Update();
-        defaultMenu.AddMoney_Blink();
-    }
-    public void Add_Money_withBonus(int originalAmount, int bonusAmount)
+    public void Add_Money(int originalAmount, int bonusAmount)
     {
         _money += originalAmount; 
         _money += bonusAmount;
-        defaultMenu.Money_withBonus_Update_Fade_Tween(originalAmount, bonusAmount);
+        defaultMenu.Money_Update_Fade_Tween(true, originalAmount, bonusAmount);
         defaultMenu.Money_Text_Update();
         defaultMenu.AddMoney_Blink();
     }
     public void Subtract_Money(int amount)
     {
         _money -= amount;
-        defaultMenu.Money_Update_Fade_Tween(false, amount);
+        defaultMenu.Money_Update_Fade_Tween(false, amount, 0);
         defaultMenu.Money_Text_Update();
         defaultMenu.SubtractMoney_RedBlink();
     }

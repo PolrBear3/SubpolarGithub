@@ -97,7 +97,7 @@ public class Boar_Trap : MonoBehaviour, IBuff, IBuffResetable
         if (data.bonusPoints <= 0) return;
 
         // sell all boars caught
-        b.controller.Add_Money(data.bonusPoints);
+        b.controller.Add_Money(data.bonusPoints, 0);
     }
     private void Use_Trap_for_AdditionalBoars(FarmTile farmTile)
     {

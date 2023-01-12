@@ -149,7 +149,7 @@ public class Planted_Menu : MonoBehaviour
     public void Remove_Seed()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        controller.Add_Money(currentFarmTile.data.plantedSeed.seedBuyPrice);
+        controller.Add_Money(currentFarmTile.data.plantedSeed.seedBuyPrice, 0);
         controller.timeSystem.Subtract_MyTime(currentFarmTile.data.plantedSeed.waitTime);
         currentFarmTile.Reset_Tile();
         controller.eventSystem.Activate_All_Events();
@@ -195,26 +195,15 @@ public class Planted_Menu : MonoBehaviour
         ui.harvestButtons[0].SetActive(true);
     }
 
-    
     // calculate bonus points, give player money, reset the tile
-    private int Tile_Point_Bonus()
-    {
-        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        return currentFarmTile.tileSeedStatus.bonusPoints;
-    }
     public void Harvest_Sell()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+        int bonusAmount = currentFarmTile.tileSeedStatus.bonusPoints;
 
         // calculate total
-        if (Tile_Point_Bonus() > 0)
-        {
-            controller.Add_Money_withBonus(currentFarmTile.data.plantedSeed.harvestSellPrice, Tile_Point_Bonus());
-        }
-        else if (Tile_Point_Bonus() == 0)
-        {
-            controller.Add_Money(currentFarmTile.data.plantedSeed.harvestSellPrice);
-        }
+        controller.Add_Money(currentFarmTile.data.plantedSeed.harvestSellPrice, bonusAmount);
+
         currentFarmTile.Reset_Tile();
         controller.eventSystem.Activate_All_Events();
         currentFarmTile.farmTileAnim.SetTrigger("harvest");

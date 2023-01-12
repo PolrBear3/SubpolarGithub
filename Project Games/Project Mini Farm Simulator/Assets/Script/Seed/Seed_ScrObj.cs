@@ -11,6 +11,7 @@ public class Seed_ScrObj : ScriptableObject
 
     public int seedHealth;
     public int waterHealth;
+    public int startBonusPoints;
 
     // set min and max range around 5
     public int minFinishDays, maxFinishDays;

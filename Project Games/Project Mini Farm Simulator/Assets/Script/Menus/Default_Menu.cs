@@ -109,31 +109,8 @@ public class Default_Menu : MonoBehaviour
     {
         moneyText.text = "$ " + controller.money.ToString();
     }
-    public void Money_Update_Fade_Tween(bool isAdd, int amount)
+    public void Money_Update_Fade_Tween(bool isAdd, int amount, int bonusAmount)
     {
-        // fade 
-        LeanTween.move(moneyFadeTextTransform, new Vector2(-4.899982f, -18.7f), 0.5f).setEase(moneyTweenType);
-        LeanTween.alphaText(moneyFadeTextTransform, 0.7f, 0.5f);
-
-        // original 
-        LeanTween.alphaText(moneyFadeTextTransform, 0f, 0.25f).setDelay(0.5f);
-        LeanTween.move(moneyFadeTextTransform, new Vector2(-4.899982f, -8.8f), 0f).setDelay(0.75f);
-
-        if (isAdd)
-        {
-            moneyFadeText.text = "+$ " + amount.ToString();
-        }
-        else if (!isAdd)
-        {
-            moneyFadeText.text = "-$ " + amount.ToString();
-            LeanTween.textColor(moneyFadeTextTransform, Color.red, 0);
-            LeanTween.textColor(moneyFadeTextTransform, new Color32(30, 63, 45, 255), 0.2f).setDelay(0.31f);
-        }
-    }
-    public void Money_withBonus_Update_Fade_Tween(int originalAmount, int bonusAmount)
-    {
-        // original amount text
-        moneyFadeText.text = "+$ " + originalAmount.ToString();
         // fade original amount
         LeanTween.move(moneyFadeTextTransform, new Vector2(-4.899982f, -18.7f), 0.5f).setEase(moneyTweenType);
         LeanTween.alphaText(moneyFadeTextTransform, 0.7f, 0.5f);
@@ -141,18 +118,31 @@ public class Default_Menu : MonoBehaviour
         LeanTween.move(moneyFadeTextTransform, new Vector2(-4.899982f, -8.8f), 0f).setDelay(0.75f);
         LeanTween.alphaText(moneyFadeTextTransform, 0f, 0.25f).setDelay(0.5f);
 
-        // bonus amount text
-        bonusFadeText.text = "+$ " + bonusAmount.ToString();
-        if (bonusAmount < 0) bonusFadeText.color = Color.red; 
-        // fade bonus amount
-        LeanTween.move(bonusFadeTextTransform, new Vector2(-4.899982f, -18.7f), 0.5f).setEase(moneyTweenType).setDelay(0.6f);
-        LeanTween.alphaText(bonusFadeTextTransform, 0.7f, 0.5f).setDelay(0.6f);
-        // money text double bounce
-        LeanTween.move(moneyTextRT, new(-4.9f, -2f), 0.2f).setEase(moneyTweenType).setDelay(0.6f);
-        LeanTween.move(moneyTextRT, new(-4.9f, -4f), 0.2f).setEase(moneyTweenType).setDelay(0.9f);
-        // return
-        LeanTween.move(bonusFadeTextTransform, new Vector2(-4.899982f, -8.8f), 0f).setDelay(0.75f).setDelay(1.35f);
-        LeanTween.alphaText(bonusFadeTextTransform, 0f, 0.25f).setDelay(1.1f);
+        if (isAdd)
+        {
+            // original amount text
+            moneyFadeText.text = "+$ " + amount.ToString();
+
+            if (bonusAmount <= 0) return;
+
+            // bonus amount text
+            bonusFadeText.text = "+$ " + bonusAmount.ToString();
+            // fade bonus amount
+            LeanTween.move(bonusFadeTextTransform, new Vector2(-4.899982f, -18.7f), 0.5f).setEase(moneyTweenType).setDelay(0.6f);
+            LeanTween.alphaText(bonusFadeTextTransform, 0.7f, 0.5f).setDelay(0.6f);
+            // money text double bounce
+            LeanTween.move(moneyTextRT, new(-4.9f, -2f), 0.2f).setEase(moneyTweenType).setDelay(0.6f);
+            LeanTween.move(moneyTextRT, new(-4.9f, -4f), 0.2f).setEase(moneyTweenType).setDelay(0.9f);
+            // return
+            LeanTween.move(bonusFadeTextTransform, new Vector2(-4.899982f, -8.8f), 0f).setDelay(0.75f).setDelay(1.35f);
+            LeanTween.alphaText(bonusFadeTextTransform, 0f, 0.25f).setDelay(1.1f);
+        }
+        else
+        {
+            moneyFadeText.text = "-$ " + amount.ToString();
+            LeanTween.textColor(moneyFadeTextTransform, Color.red, 0);
+            LeanTween.textColor(moneyFadeTextTransform, new Color32(30, 63, 45, 255), 0.2f).setDelay(0.31f);
+        }
     }
 
     public void NotEnoughMoney_Blink_Tween()
