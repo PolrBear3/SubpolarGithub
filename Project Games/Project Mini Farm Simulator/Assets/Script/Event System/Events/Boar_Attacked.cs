@@ -69,7 +69,6 @@ public class Boar_Attacked : MonoBehaviour, IEvent, IEventResetable
             // data activation
             farmTiles[i].tileSeedStatus.health += data.health;
             farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
-            farmTiles[i].tileSeedStatus.watered += data.watered;
             farmTiles[i].tileSeedStatus.bonusPoints += data.watered;
 
             Activate_Additional_Boar_Attacks(farmTiles[i]);
@@ -142,7 +141,6 @@ public class Boar_Attacked : MonoBehaviour, IEvent, IEventResetable
             // data activation
             farmTile.tileSeedStatus.health += subData.health;
             farmTile.tileSeedStatus.dayPassed += subData.dayPassed;
-            farmTile.tileSeedStatus.watered += subData.watered;
             farmTile.tileSeedStatus.bonusPoints += subData.watered;
         }
     }

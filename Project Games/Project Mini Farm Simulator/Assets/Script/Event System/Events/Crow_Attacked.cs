@@ -55,9 +55,8 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
 
     private void Activate_Crow_Attack()
     {
-        // if event is not activated
+        // activation check
         if (data.activated) return;
-        // activate event
         data.activated = true;
 
         // if the season is fall or winter
@@ -80,7 +79,6 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
 
             // attack value
             farmTiles[i].tileSeedStatus.health += data.health;
-            farmTiles[i].tileSeedStatus.watered += data.watered;
             farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
             farmTiles[i].tileSeedStatus.bonusPoints += data.bonusPoints;
 
@@ -132,7 +130,6 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
 
             // attack value
             surroundingFarmTile.tileSeedStatus.health += subData.health;
-            surroundingFarmTile.tileSeedStatus.watered += subData.watered;
             surroundingFarmTile.tileSeedStatus.dayPassed += subData.dayPassed;
             surroundingFarmTile.tileSeedStatus.bonusPoints += subData.bonusPoints;
         }

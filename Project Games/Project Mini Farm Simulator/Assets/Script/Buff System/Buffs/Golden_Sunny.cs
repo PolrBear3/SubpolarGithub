@@ -70,7 +70,6 @@ public class Golden_Sunny : MonoBehaviour, IBuff, IBuffResetable
 
             // golden sunny buffed amount
             farmTiles[i].tileSeedStatus.health += data.health;
-            farmTiles[i].tileSeedStatus.watered += data.watered;
             farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
             farmTiles[i].tileSeedStatus.bonusPoints += data.bonusPoints;
         }

@@ -72,7 +72,6 @@ public class Sunny_Buffed : MonoBehaviour, IEvent, IEventResetable
 
             // activate event
             farmTile[i].tileSeedStatus.health += data.health;
-            farmTile[i].tileSeedStatus.watered += data.watered;
             farmTile[i].tileSeedStatus.dayPassed += data.dayPassed;
             farmTile[i].tileSeedStatus.bonusPoints += data.bonusPoints;
         }

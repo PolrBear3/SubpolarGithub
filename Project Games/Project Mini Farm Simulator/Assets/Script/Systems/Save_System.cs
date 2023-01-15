@@ -148,7 +148,6 @@ public class Save_System : MonoBehaviour
         ES3.Save("health" + farmTileNum.ToString(), farmTile.tileSeedStatus.health);
         ES3.Save("dayPassed" + farmTileNum.ToString(), farmTile.tileSeedStatus.dayPassed);
         ES3.Save("fullGrownDay" + farmTileNum.ToString(), farmTile.tileSeedStatus.fullGrownDay);
-        ES3.Save("watered" + farmTileNum.ToString(), farmTile.tileSeedStatus.watered);
         ES3.Save("daysWithoutWater" + farmTileNum.ToString(), farmTile.tileSeedStatus.daysWithoutWater);
         ES3.Save("currentDayWatered" + farmTileNum.ToString(), farmTile.tileSeedStatus.currentDayWatered);
         ES3.Save("harvestReady" + farmTileNum.ToString(), farmTile.tileSeedStatus.harvestReady);
@@ -197,7 +196,6 @@ public class Save_System : MonoBehaviour
         farmTile.tileSeedStatus.health = ES3.Load("health" + farmTileNum.ToString(), farmTile.tileSeedStatus.health);
         farmTile.tileSeedStatus.dayPassed = ES3.Load("dayPassed" + farmTileNum.ToString(), farmTile.tileSeedStatus.dayPassed);
         farmTile.tileSeedStatus.fullGrownDay = ES3.Load("fullGrownDay" + farmTileNum.ToString(), farmTile.tileSeedStatus.fullGrownDay);
-        farmTile.tileSeedStatus.watered = ES3.Load("watered" + farmTileNum.ToString(), farmTile.tileSeedStatus.watered);
         farmTile.tileSeedStatus.daysWithoutWater = ES3.Load("daysWithoutWater" + farmTileNum.ToString(), farmTile.tileSeedStatus.daysWithoutWater);
         farmTile.tileSeedStatus.currentDayWatered = ES3.Load("currentDayWatered" + farmTileNum.ToString(), farmTile.tileSeedStatus.currentDayWatered);
         farmTile.tileSeedStatus.harvestReady = ES3.Load("harvestReady" + farmTileNum.ToString(), farmTile.tileSeedStatus.harvestReady);

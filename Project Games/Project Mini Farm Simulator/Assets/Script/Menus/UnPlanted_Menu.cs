@@ -158,23 +158,18 @@ public class UnPlanted_Menu : MonoBehaviour
     }
     public void Plant_Seed()
     {
-        for (int i = 0; i < controller.farmTiles.Length; i++)
-        {
-            if (controller.openedTileNum == controller.farmTiles[i].data.tileNum)
-            {
-                PlantSeed_Close();
-                controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
-                controller.farmTiles[i].image.sprite = currentSeedInfo.sprites[0];
-                controller.farmTiles[i].data.seedPlanted = true;
-                controller.farmTiles[i].data.plantedSeed = currentSeedInfo;
-                controller.farmTiles[i].Seed_Planted_Start_Set();
-                controller.eventSystem.Activate_All_Events();
-                controller.plantedMenu.Open();
-                controller.timeSystem.Add_MyTime(currentSeedInfo.waitTime);
-                Reset_Selections();
-                break;
-            }
-        }
+        var currentFarmTile = controller.farmTiles[controller.openedTileNum];
+
+        PlantSeed_Close();
+        controller.Subtract_Money(currentSeedInfo.seedBuyPrice);
+        currentFarmTile.image.sprite = currentSeedInfo.sprites[0];
+        currentFarmTile.data.seedPlanted = true;
+        currentFarmTile.data.plantedSeed = currentSeedInfo;
+        currentFarmTile.Seed_Planted_Start_Set();
+        controller.eventSystem.Activate_All_Events();
+        controller.plantedMenu.Open();
+        controller.timeSystem.Add_MyTime(currentSeedInfo.waitTime);
+        Reset_Selections();
     }
 
     // tool tips
@@ -189,7 +184,7 @@ public class UnPlanted_Menu : MonoBehaviour
             x.seedName.text = currentSeedInfo.seedName;
             x.seedDescription.text = currentSeedInfo.seedDescription;
             x.seedPrice.text = "seed price: $ " + currentSeedInfo.seedBuyPrice.ToString();
-            x.sellPrice.text = "sell price: $ " + currentSeedInfo.harvestSellPrice.ToString();
+            x.sellPrice.text = "minimum sell price: $ " + currentSeedInfo.minSellPrice.ToString();
             x.harvestLength.text = "harvest: " +
             currentSeedInfo.minFinishDays + "~" + currentSeedInfo.maxFinishDays + " days".ToString();
             x.waitTime.text = "wait time: + " + currentSeedInfo.waitTime + " seconds".ToString();
@@ -209,7 +204,7 @@ public class UnPlanted_Menu : MonoBehaviour
         x.seedName.text = planedSeed.seedName;
         x.seedDescription.text = planedSeed.seedDescription;
         x.seedPrice.text = "seed price: $ " + planedSeed.seedBuyPrice.ToString();
-        x.sellPrice.text = "sell price: $ " + planedSeed.harvestSellPrice.ToString();
+        x.sellPrice.text = "minimum sell price: $ " + planedSeed.minSellPrice.ToString();
         x.harvestLength.text = "harvest: " +
         planedSeed.minFinishDays + "~" + planedSeed.maxFinishDays + " days".ToString();
         x.waitTime.text = "wait time: + " + planedSeed.waitTime + " seconds".ToString();

@@ -567,6 +567,7 @@ GameObject:
   - component: {fileID: 1962912714657643696}
   - component: {fileID: 6112180647220001237}
   - component: {fileID: 1962912714657643697}
+  - component: {fileID: 5747593393089857841}
   m_Layer: 5
   m_Name: Farm Tile
   m_TagString: Untagged
@@ -658,7 +659,6 @@ MonoBehaviour:
   tileBorder: {fileID: 5904925580992857943}
   tileHighlighter: {fileID: 7140556406713402614}
   deathIcon: {fileID: 7600129228778929876}
-  saveName: 
   data:
     plantedSeed: {fileID: 0}
     tileNum: 0
@@ -667,17 +667,35 @@ MonoBehaviour:
     tileSelected: 0
     tileLocked: 1
     seedPlanted: 0
-    died: 0
     lockedTile: {fileID: -1541799582, guid: f8a9da7611a90aa43a4aaced10e3332d, type: 3}
     unplantedTile: {fileID: 1038044205, guid: def7443a443d74d45bb19ac343840659, type: 3}
+  deathData:
+    died: 0
+    previousSeed: {fileID: 0}
+    previousHealth: 0
   tileSeedStatus:
     health: 0
     dayPassed: 0
     fullGrownDay: 0
-    watered: 0
     daysWithoutWater: 0
     currentDayWatered: 0
     harvestReady: 0
     bonusPoints: 0
   currentStatuses: []
   currentBuffs: []
+--- !u!114 &5747593393089857841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962472615654180662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b27adde7b9e946d8ab616eace9c131c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tweenType: 13
+  startPosition: 0
+  setPosition: 0
+  delayTime: 0

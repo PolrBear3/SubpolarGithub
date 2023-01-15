@@ -50,7 +50,6 @@ public class MainGame_Controller : MonoBehaviour
                 {
                     // water the seeded tile
                     farmTiles[i].tileSeedStatus.currentDayWatered = true;
-                    farmTiles[i].tileSeedStatus.watered += 1;
                     farmTiles[i].Add_Status(0);
                     farmTiles[i].Watering_Check();
                 }

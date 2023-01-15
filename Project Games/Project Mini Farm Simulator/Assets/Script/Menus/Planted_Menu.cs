@@ -152,34 +152,26 @@ public class Planted_Menu : MonoBehaviour
         controller.Add_Money(currentFarmTile.data.plantedSeed.seedBuyPrice, 0);
         controller.timeSystem.Subtract_MyTime(currentFarmTile.data.plantedSeed.waitTime);
         currentFarmTile.Reset_Tile();
-        controller.eventSystem.Activate_All_Events();
         controller.plantedMenu.Close();
     }
     public void Water_Seed()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
 
-        if (!currentFarmTile.tileSeedStatus.currentDayWatered)
-        {
-            currentFarmTile.tileSeedStatus.currentDayWatered = true;
-            currentFarmTile.tileSeedStatus.watered += 1;
-            currentFarmTile.tileSeedStatus.daysWithoutWater = 0;
-            currentFarmTile.Add_Status(0);
+        // watered animation
+        currentFarmTile.farmTileAnim.SetTrigger("watered");
 
-            // if the seed is fully grown to crop, watering doesn't count
-            if (currentFarmTile.tileSeedStatus.dayPassed >= currentFarmTile.tileSeedStatus.fullGrownDay)
-            {
-                currentFarmTile.tileSeedStatus.watered -= 1;
-            }
-        }
+        if (currentFarmTile.tileSeedStatus.currentDayWatered) return;
+
+        // give water
+        currentFarmTile.tileSeedStatus.currentDayWatered = true;
+        currentFarmTile.tileSeedStatus.daysWithoutWater = 0;
+        currentFarmTile.Add_Status(0);
 
         // water health text update
         var waterHealthCalculation =
             currentFarmTile.data.plantedSeed.waterHealth - currentFarmTile.tileSeedStatus.daysWithoutWater;
         ui.currentWaterHealth.text = waterHealthCalculation.ToString();
-
-        // watered animation
-        currentFarmTile.farmTileAnim.SetTrigger("watered");
 
         StatusButton_Available_Check();
     }
@@ -199,13 +191,18 @@ public class Planted_Menu : MonoBehaviour
     public void Harvest_Sell()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
-        int bonusAmount = currentFarmTile.tileSeedStatus.bonusPoints;
+        int bonusPrice = currentFarmTile.tileSeedStatus.bonusPoints;
+
+        // set bonus amount to minimum 0
+        if (bonusPrice <= 0)
+        {
+            bonusPrice = 0;
+        }
 
         // calculate total
-        controller.Add_Money(currentFarmTile.data.plantedSeed.harvestSellPrice, bonusAmount);
+        controller.Add_Money(currentFarmTile.data.plantedSeed.minSellPrice, bonusPrice);
 
         currentFarmTile.Reset_Tile();
-        controller.eventSystem.Activate_All_Events();
         currentFarmTile.farmTileAnim.SetTrigger("harvest");
 
         Close();
