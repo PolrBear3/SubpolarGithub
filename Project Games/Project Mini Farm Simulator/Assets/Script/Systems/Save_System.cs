@@ -72,6 +72,8 @@ public class Save_System : MonoBehaviour
         Load_All_Collectable_Datas();
         Load_All_CollectableFrames();
 
+        controller.defaultMenu.Load_Day_Animation();
+
         Debug.Log("Game Loaded");
     }
 
@@ -245,9 +247,6 @@ public class Save_System : MonoBehaviour
 
         controller.timeSystem.Check_End0f_Year();
         controller.timeSystem.Check_Season();
-
-        controller.defaultMenu.Current_InGameDay_Text_Update();
-        controller.defaultMenu.Season_UI_Update();
     }
 
     // weather

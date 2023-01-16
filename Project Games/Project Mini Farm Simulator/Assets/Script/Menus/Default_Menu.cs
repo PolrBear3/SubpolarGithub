@@ -26,7 +26,8 @@ public class Default_Menu : MonoBehaviour
 
     public Default_Menu_UI menuUI;
 
-    public GameObject nextDayFade;
+    public RectTransform nextDayFade;
+    [SerializeField] private RectTransform fadeInGameDayText;
 
     public RectTransform moneyTextRT;
     public Text moneyText;
@@ -57,7 +58,7 @@ public class Default_Menu : MonoBehaviour
     public void Update_UI()
     {
         Current_InGameDay_Text_Update();
-        Next_Day_AlphaValueFade_Tween();
+        Next_Day_Animation();
         Season_UI_Update();
         Weather_UI_Update();
     }
@@ -80,16 +81,49 @@ public class Default_Menu : MonoBehaviour
     {
         menuUI.currentInGameDayText.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
     }
-    private void Next_Day_AlphaValueFade_Tween()
+    private void Next_Day_Animation()
     {
         var rectTransform = nextDayFade.GetComponent<RectTransform>();
+        var text = fadeInGameDayText.GetComponent<Text>();
         var image = nextDayFade.GetComponent<Image>();
 
+        // fade screen
         image.sprite = controller.eventSystem.data.currentWeather.fadeBackgroundUI;
         LeanTween.move(rectTransform, new Vector2(0, 0), 0);
         LeanTween.alpha(rectTransform, 1f, 1f);
-        LeanTween.alpha(rectTransform, 0f, 1f).setDelay(1f);
-        LeanTween.move(rectTransform, new Vector2(0, 640f), 0).setDelay(2f);
+        LeanTween.alpha(rectTransform, 0f, 1f).setDelay(3f);
+        LeanTween.move(rectTransform, new Vector2(0, 640f), 0).setDelay(4f);
+
+        // fade screen ingame day text
+        text.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
+        LeanTween.alphaText(fadeInGameDayText, 1f, 1f);
+        LeanTween.alphaText(fadeInGameDayText, 0f, 1f).setDelay(3f);
+
+        // farmtile movement
+        var movementController = controller.movementsController;
+        
+        movementController.All_LeanTween_Start_Position(0f);
+        movementController.All_LeanTween_Set_Position(2.7f);
+    }
+    public void Load_Day_Animation()
+    {
+        var image = nextDayFade.GetComponent<Image>();
+        var text = fadeInGameDayText.GetComponent<Text>();
+        var movementController = controller.movementsController;
+
+        // fade screen
+        image.sprite = controller.eventSystem.data.currentWeather.fadeBackgroundUI;
+        LeanTween.move(nextDayFade, new Vector2(0, 0), 0);
+        LeanTween.alpha(nextDayFade, 0f, 1f).setDelay(2f);
+        LeanTween.move(nextDayFade, new Vector2(0, 640f), 0).setDelay(3f);
+        
+        // fade screen ingame day text
+        text.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
+        LeanTween.alphaText(fadeInGameDayText, 0f, 1f).setDelay(2f);
+
+        // farmtile movement
+        movementController.All_Start_Position();
+        movementController.All_LeanTween_Set_Position(1.7f);
     }
 
     // season and weather ui

@@ -19,6 +19,7 @@ public class MainGame_Controller : MonoBehaviour
     public Buff_System buffSystem;
     public Gacha_System gachaSystem;
 
+    public FarmTile_Movements_Controller movementsController;
     public FarmTile[] farmTiles;
     [HideInInspector]
     public int openedTileNum = 0;

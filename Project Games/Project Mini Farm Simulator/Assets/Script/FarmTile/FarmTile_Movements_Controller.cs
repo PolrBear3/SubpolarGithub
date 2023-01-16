@@ -6,12 +6,7 @@ public class FarmTile_Movements_Controller : MonoBehaviour
 {
     [SerializeField] private FarmTile_Movement[] farmTiles;
 
-    private void Start()
-    {
-        All_Start_Position();
-    }
-
-    private void All_Start_Position()
+    public void All_Start_Position()
     {
         for (int i = 0; i < farmTiles.Length; i++)
         {
@@ -19,18 +14,18 @@ public class FarmTile_Movements_Controller : MonoBehaviour
         }
     }
 
-    private void All_LeanTween_Start_Position()
+    public void All_LeanTween_Start_Position(float delayTime)
     {
         for (int i = 0; i < farmTiles.Length; i++)
         {
-            farmTiles[i].LeanTween_Start_Position(0);
+            farmTiles[i].LeanTween_Start_Position(delayTime);
         }
     }
-    private void All_LeanTween_Set_Position()
+    public void All_LeanTween_Set_Position(float delayTime)
     {
         for (int i = 0; i < farmTiles.Length; i++)
         {
-            farmTiles[i].LeanTween_Set_Position(0);
+            farmTiles[i].LeanTween_Set_Position(delayTime);
         }
     }
 }
