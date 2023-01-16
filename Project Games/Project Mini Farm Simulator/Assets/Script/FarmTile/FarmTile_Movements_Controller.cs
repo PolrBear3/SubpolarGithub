@@ -18,4 +18,19 @@ public class FarmTile_Movements_Controller : MonoBehaviour
             farmTiles[i].Start_Position();
         }
     }
+
+    private void All_LeanTween_Start_Position()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].LeanTween_Start_Position(0);
+        }
+    }
+    private void All_LeanTween_Set_Position()
+    {
+        for (int i = 0; i < farmTiles.Length; i++)
+        {
+            farmTiles[i].LeanTween_Set_Position(0);
+        }
+    }
 }

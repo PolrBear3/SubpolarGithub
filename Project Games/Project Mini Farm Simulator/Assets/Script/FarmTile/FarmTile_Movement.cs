@@ -9,8 +9,12 @@ public class FarmTile_Movement : MonoBehaviour
 
     [SerializeField] private float startPosition;
     [SerializeField] private float setPosition;
+
     [SerializeField] private float speed;
-    [SerializeField] private float delayTime;
+    [SerializeField] private float fadeDelayTime;
+
+    [SerializeField] private float startDelaytime;
+    [SerializeField] private float setDelayTime;
 
     private void Awake()
     {
@@ -26,12 +30,12 @@ public class FarmTile_Movement : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(setPosition, rectTransform.anchoredPosition.y);
     }
 
-    public void LeanTween_Start_Position()
+    public void LeanTween_Start_Position(float delayTime)
     {
-
+        LeanTween.move(rectTransform, new Vector2(startPosition, rectTransform.anchoredPosition.y), speed).setEase(tweenType).setDelay(startDelaytime + delayTime);
     }
-    public void LeanTween_Set_Position()
+    public void LeanTween_Set_Position(float delayTime)
     {
-
+        LeanTween.move(rectTransform, new Vector2(setPosition, rectTransform.anchoredPosition.y), speed).setEase(tweenType).setDelay(setDelayTime + delayTime);
     }
 }
