@@ -16,4 +16,22 @@ public class FarmTile_Movement : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
     }
+
+    public void Start_Position()
+    {
+        rectTransform.anchoredPosition = new Vector2(startPosition, rectTransform.anchoredPosition.y); 
+    }
+    public void Set_Position()
+    {
+        rectTransform.anchoredPosition = new Vector2(setPosition, rectTransform.anchoredPosition.y);
+    }
+
+    public void LeanTween_Start_Position()
+    {
+
+    }
+    public void LeanTween_Set_Position()
+    {
+
+    }
 }
