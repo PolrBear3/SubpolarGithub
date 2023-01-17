@@ -21,6 +21,9 @@ public struct AfterSeedStatus
 public class FarmTile_Basic_Data
 {
     public Seed_ScrObj plantedSeed = null;
+    [HideInInspector]
+    public int plantedSeedID;
+
     public int tileNum, tileRow, tilePrice;
     public bool tileSelected = false, tileLocked = false, seedPlanted = false;
 
@@ -32,7 +35,6 @@ public class FarmTile_Basic_Data
 public class FarmTile_Death_Data
 {
     public bool died = false;
-
     public Seed_ScrObj previousSeed;
     public int previousHealth;
 }
@@ -170,7 +172,7 @@ public class FarmTile : MonoBehaviour
         }
 
         // watering bonus point
-        if (tileSeedStatus.daysWithoutWater >= 2)
+        if (!tileSeedStatus.harvestReady && tileSeedStatus.daysWithoutWater >= 2)
         {
             tileSeedStatus.bonusPoints--;
         }
@@ -208,18 +210,12 @@ public class FarmTile : MonoBehaviour
         tileSeedStatus.currentDayWatered = false;
 
         // if the tile has a seed planted
-        if (!data.seedPlanted)
-        {
-            return;
-        }
+        if (!data.seedPlanted) return;
 
         Get_Previous_Data();
 
         // if the tile is not ready to be harvested
-        if (tileSeedStatus.harvestReady)
-        {
-            return;
-        }
+        if (tileSeedStatus.harvestReady) return;
 
         tileSeedStatus.dayPassed += 1;
     }
@@ -380,7 +376,7 @@ public class FarmTile : MonoBehaviour
         deathData.previousSeed = data.plantedSeed;
         deathData.previousHealth = tileSeedStatus.health;
     }
-    public void Death_Data_Update()
+    public void DeathIcon_Update()
     {
         if (deathData.died)
         {

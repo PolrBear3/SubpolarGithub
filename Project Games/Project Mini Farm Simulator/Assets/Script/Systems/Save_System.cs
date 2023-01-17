@@ -72,6 +72,7 @@ public class Save_System : MonoBehaviour
         Load_All_Collectable_Datas();
         Load_All_CollectableFrames();
 
+        controller.defaultMenu.Update_UI();
         controller.defaultMenu.Load_Day_Animation();
 
         Debug.Log("Game Loaded");
@@ -132,6 +133,8 @@ public class Save_System : MonoBehaviour
 
         for (int i = 0; i < farmTiles.Length; i++)
         {
+            if (farmTiles[i].data.tileLocked) continue;
+            
             Save_FarmTile_Data(farmTiles[i], i);
             Save_FarmTile_Status(farmTiles[i], i);
             Save_FarmTile_DeathData(farmTiles[i], i);
@@ -139,14 +142,18 @@ public class Save_System : MonoBehaviour
             Save_FarmTile_Buff(farmTiles[i], i);
         }
     }
+    
     private void Save_FarmTile_Data(FarmTile farmTile, int farmTileNum)
     {
         ES3.Save("tileLocked" + farmTileNum.ToString(), farmTile.data.tileLocked);
         ES3.Save("seedPlanted" + farmTileNum.ToString(), farmTile.data.seedPlanted);
-        ES3.Save("plantedSeed" + farmTileNum.ToString(), farmTile.data.plantedSeed);
+
+        if (!farmTile.data.seedPlanted) return;
+        ES3.Save("plantedSeedID" + farmTileNum.ToString(), farmTile.data.plantedSeedID);
     }
     private void Save_FarmTile_Status(FarmTile farmTile, int farmTileNum)
     {
+        if (!farmTile.data.seedPlanted) return;
         ES3.Save("health" + farmTileNum.ToString(), farmTile.tileSeedStatus.health);
         ES3.Save("dayPassed" + farmTileNum.ToString(), farmTile.tileSeedStatus.dayPassed);
         ES3.Save("fullGrownDay" + farmTileNum.ToString(), farmTile.tileSeedStatus.fullGrownDay);
@@ -163,11 +170,25 @@ public class Save_System : MonoBehaviour
     }
     private void Save_FarmTile_EventStatus(FarmTile farmTile, int farmTileNum)
     {
-        ES3.Save("currentStatuses" + farmTileNum.ToString(), farmTile.currentStatuses);
+        List<int> currentStatusIDs = new List<int>();
+
+        for (int i = 0; i < farmTile.currentStatuses.Count; i++)
+        {
+            currentStatusIDs.Add(farmTile.currentStatuses[i].statusID);
+        }
+        
+        ES3.Save("currentStatusIDs" + farmTileNum.ToString(), currentStatusIDs);
     }
     private void Save_FarmTile_Buff(FarmTile farmTile, int farmTileNum)
     {
-        ES3.Save("currentBuffs" + farmTileNum.ToString(), farmTile.currentBuffs);
+        List<int> currentBuffIDs = new List<int>();
+
+        for (int i = 0; i < farmTile.currentBuffs.Count; i++)
+        {
+            currentBuffIDs.Add(farmTile.currentBuffs[i].buffID);
+        }
+
+        ES3.Save("currentBuffIDs" + farmTileNum.ToString(), currentBuffIDs);
     }
 
     public void Load_All_FarmTiles()
@@ -179,22 +200,31 @@ public class Save_System : MonoBehaviour
         for (int i = 0; i < farmTiles.Length; i++)
         {
             Load_FarmTile_Data(farmTiles[i], i);
+
+            if (farmTiles[i].data.tileLocked) continue;
+
             Load_FarmTile_Status(farmTiles[i], i);
             Load_FarmTile_DeatData(farmTiles[i], i);
             Load_FarmTile_EventStatus(farmTiles[i], i);
             Load_FarmTile_Buff(farmTiles[i], i);
         }
     } // activates at time system
+
     private void Load_FarmTile_Data(FarmTile farmTile, int farmTileNum)
     {
         farmTile.data.tileLocked = ES3.Load("tileLocked" + farmTileNum.ToString(), farmTile.data.tileLocked);
-        farmTile.data.seedPlanted = ES3.Load("seedPlanted" + farmTileNum.ToString(), farmTile.data.seedPlanted);
-        farmTile.data.plantedSeed = ES3.Load("plantedSeed" + farmTileNum.ToString(), farmTile.data.plantedSeed);
-
         farmTile.Unlock_Check();
+        
+        farmTile.data.seedPlanted = ES3.Load("seedPlanted" + farmTileNum.ToString(), farmTile.data.seedPlanted);
+        
+        if (!farmTile.data.seedPlanted) return;
+        int plantedSeedID = ES3.Load("plantedSeedID" + farmTileNum.ToString(), farmTile.data.plantedSeedID);
+        farmTile.data.plantedSeed = controller.ID_Seed_Search(plantedSeedID);
+        farmTile.data.plantedSeedID = plantedSeedID;
     }
     private void Load_FarmTile_Status(FarmTile farmTile, int farmTileNum)
     {
+        if (!farmTile.data.seedPlanted) return;
         farmTile.tileSeedStatus.health = ES3.Load("health" + farmTileNum.ToString(), farmTile.tileSeedStatus.health);
         farmTile.tileSeedStatus.dayPassed = ES3.Load("dayPassed" + farmTileNum.ToString(), farmTile.tileSeedStatus.dayPassed);
         farmTile.tileSeedStatus.fullGrownDay = ES3.Load("fullGrownDay" + farmTileNum.ToString(), farmTile.tileSeedStatus.fullGrownDay);
@@ -211,15 +241,27 @@ public class Save_System : MonoBehaviour
         farmTile.deathData.previousSeed = ES3.Load("previousSeed" + farmTileNum.ToString(), farmTile.deathData.previousSeed);
         farmTile.deathData.previousHealth = ES3.Load("previousHealth" + farmTileNum.ToString(), farmTile.deathData.previousHealth);
 
-        farmTile.Death_Data_Update();
+        farmTile.DeathIcon_Update();
     }
     private void Load_FarmTile_EventStatus(FarmTile farmTile, int farmTileNum)
     {
-        farmTile.currentStatuses = ES3.Load("currentStatuses" + farmTileNum.ToString(), farmTile.currentStatuses);
+        List<int> savedCurrentStatusIDs = new List<int>();
+        savedCurrentStatusIDs = ES3.Load("currentStatusIDs" + farmTileNum.ToString(), savedCurrentStatusIDs);
+
+        for (int i = 0; i < savedCurrentStatusIDs.Count; i++)
+        {
+            farmTile.Add_Status(savedCurrentStatusIDs[i]);
+        }
     }
     private void Load_FarmTile_Buff(FarmTile farmTile, int farmTileNum)
     {
-        farmTile.currentBuffs = ES3.Load("currentBuffs" + farmTileNum.ToString(), farmTile.currentBuffs);
+        List<int> savedCurrentBuffIDs = new List<int>();
+        savedCurrentBuffIDs = ES3.Load("currentBuffIDs" + farmTileNum.ToString(), savedCurrentBuffIDs);
+
+        for (int i = 0; i < savedCurrentBuffIDs.Count; i++)
+        {
+            farmTile.Add_Buff(savedCurrentBuffIDs[i]);
+        }
     }
 
     // money
@@ -304,7 +346,10 @@ public class Save_System : MonoBehaviour
         for (int i = 0; i < allFrames.Length; i++)
         {
             ES3.Save("collectablePlaced" + i.ToString(), allFrames[i].data.collectablePlaced);
-            ES3.Save("currentCollectable" + i.ToString(), allFrames[i].data.currentCollectable);
+
+            if (!allFrames[i].data.collectablePlaced) continue;
+
+            ES3.Save("currentCollectableID" + i.ToString(), allFrames[i].data.currentCollectableID);
         }
     }
     private void Load_All_CollectableFrames()
@@ -316,7 +361,12 @@ public class Save_System : MonoBehaviour
         for (int i = 0; i < allFrames.Length; i++)
         {
             allFrames[i].data.collectablePlaced = ES3.Load("collectablePlaced" + i.ToString(), allFrames[i].data.collectablePlaced);
-            allFrames[i].data.currentCollectable = ES3.Load("currentCollectable" + i.ToString(), allFrames[i].data.currentCollectable);
+
+            if (!allFrames[i].data.collectablePlaced) continue;
+
+            int savedID = ES3.Load("currentCollectableID" + i.ToString(), allFrames[i].data.currentCollectableID);
+            allFrames[i].data.currentCollectable = controller.collectableRoomMenu.ID_Collectable_Search(savedID);
+            allFrames[i].data.currentCollectableID = savedID;
 
             allFrames[i].Load_FrameSprite();
         }

@@ -318,4 +318,17 @@ public class CollectableRoom_Menu : MonoBehaviour
             }
         }
     }
+    
+    // ID Search
+    public Collectable_ScrObj ID_Collectable_Search(int id)
+    {
+        for (int i = 0; i < allCollectables.Length; i++)
+        {
+            if (id == allCollectables[i].collectable.id)
+            {
+                return allCollectables[i].collectable;
+            }
+        }
+        return null;
+    }
 }

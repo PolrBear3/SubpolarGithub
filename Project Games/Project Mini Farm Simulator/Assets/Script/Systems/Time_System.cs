@@ -19,7 +19,7 @@ public class Time_System : MonoBehaviour
     {
         if (!ES3.KeyExists("gameSaved"))
         {
-            Next_Day();
+            New_Game();
             Debug.Log("New Game");
         }
         else
@@ -75,7 +75,7 @@ public class Time_System : MonoBehaviour
         else if (currentInGameDay >= 280 && currentInGameDay <= 365) { currentSeason = controller.allSeasons[3]; }
     }
 
-    public void Next_Day()
+    private void New_Game()
     {
         currentInGameDay += 1;
 
@@ -84,6 +84,41 @@ public class Time_System : MonoBehaviour
         controller.eventSystem.Set_Today_Weather();
 
         controller.defaultMenu.Update_UI();
+        controller.defaultMenu.Next_Day_Animation();
+
+        // +1 day, watered false
+        controller.All_FarmTile_NextDay_Update();
+        // reset all status
+        controller.All_FarmTile_Reset_Status();
+        // reset all events
+        controller.eventSystem.Reset_All_Events();
+        // activate all events
+        controller.eventSystem.Activate_All_Events();
+        // reset all buffs
+        controller.buffSystem.Reset_All_Buffs();
+        // activate all buffs
+        controller.buffSystem.Activate_All_Buffs();
+        // watering check
+        controller.All_FarmTile_WateringCheck();
+        // health check
+        controller.All_FarmTile_HealthCheck();
+        // update sprite
+        controller.All_FarmTile_Progress_Update();
+
+        ReCalculate_AllSeed_WaitTime();
+    }
+    public void Next_Day()
+    {
+        controller.defaultMenu.Next_Day_FadeIn_Previous_Data();
+
+        currentInGameDay += 1;
+
+        Check_End0f_Year();
+        Check_Season();
+        controller.eventSystem.Set_Today_Weather();
+
+        controller.defaultMenu.Update_UI();
+        controller.defaultMenu.Next_Day_Animation();
 
         // +1 day, watered false
         controller.All_FarmTile_NextDay_Update();

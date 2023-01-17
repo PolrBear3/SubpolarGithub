@@ -11,7 +11,7 @@ public class Unplanted_Menu_Seed_ToolTip
     public GameObject toolTipPanel;
     public Animator toolTipAnimator;
     public Image previewSeedSprite;
-    public Text seedName, seedDescription, seedPrice, sellPrice, harvestLength, waitTime,
+    public Text seedName, seedDescription, seedPrice, sellPrice, maxSellPrice, harvestLength, waitTime,
         seedMaxHealth, seedMaxWaterHealth;
 }
 
@@ -165,6 +165,7 @@ public class UnPlanted_Menu : MonoBehaviour
         currentFarmTile.image.sprite = currentSeedInfo.sprites[0];
         currentFarmTile.data.seedPlanted = true;
         currentFarmTile.data.plantedSeed = currentSeedInfo;
+        currentFarmTile.data.plantedSeedID = currentSeedInfo.seedID;
         currentFarmTile.Seed_Planted_Start_Set();
         controller.eventSystem.Activate_All_Events();
         controller.plantedMenu.Open();
@@ -185,6 +186,8 @@ public class UnPlanted_Menu : MonoBehaviour
             x.seedDescription.text = currentSeedInfo.seedDescription;
             x.seedPrice.text = "seed price: $ " + currentSeedInfo.seedBuyPrice.ToString();
             x.sellPrice.text = "minimum sell price: $ " + currentSeedInfo.minSellPrice.ToString();
+            int maxPrice = currentSeedInfo.minSellPrice + currentSeedInfo.startingBonusPrice;
+            x.maxSellPrice.text = "maximum sell price: $ " + maxPrice.ToString();
             x.harvestLength.text = "harvest: " +
             currentSeedInfo.minFinishDays + "~" + currentSeedInfo.maxFinishDays + " days".ToString();
             x.waitTime.text = "wait time: + " + currentSeedInfo.waitTime + " seconds".ToString();
@@ -205,6 +208,8 @@ public class UnPlanted_Menu : MonoBehaviour
         x.seedDescription.text = planedSeed.seedDescription;
         x.seedPrice.text = "seed price: $ " + planedSeed.seedBuyPrice.ToString();
         x.sellPrice.text = "minimum sell price: $ " + planedSeed.minSellPrice.ToString();
+        int maxPrice = planedSeed.minSellPrice + planedSeed.startingBonusPrice;
+        x.maxSellPrice.text = "maximum sell price: $ " + maxPrice.ToString();
         x.harvestLength.text = "harvest: " +
         planedSeed.minFinishDays + "~" + planedSeed.maxFinishDays + " days".ToString();
         x.waitTime.text = "wait time: + " + planedSeed.waitTime + " seconds".ToString();

@@ -19,6 +19,19 @@ public class Default_Menu_UI
     public Button nextDayButton;
 }
 
+[System.Serializable]
+public class Default_Menu_UI_Previous_Data
+{
+    public RectTransform seasonBox;
+    public RectTransform seasonText;
+
+    public RectTransform dayBox;
+    public RectTransform dayText;
+
+    public RectTransform weatherBox;
+    public RectTransform weatherText;
+}
+
 public class Default_Menu : MonoBehaviour
 {
     public MainGame_Controller controller;
@@ -26,7 +39,8 @@ public class Default_Menu : MonoBehaviour
 
     public Default_Menu_UI menuUI;
 
-    public RectTransform nextDayFade;
+    [SerializeField] private Default_Menu_UI_Previous_Data previousFadeData;
+    [SerializeField] private RectTransform nextDayFade;
     [SerializeField] private RectTransform fadeInGameDayText;
 
     public RectTransform moneyTextRT;
@@ -58,7 +72,6 @@ public class Default_Menu : MonoBehaviour
     public void Update_UI()
     {
         Current_InGameDay_Text_Update();
-        Next_Day_Animation();
         Season_UI_Update();
         Weather_UI_Update();
     }
@@ -81,21 +94,53 @@ public class Default_Menu : MonoBehaviour
     {
         menuUI.currentInGameDayText.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
     }
-    private void Next_Day_Animation()
+    public void Next_Day_FadeIn_Previous_Data()
+    {
+        var seasonBox = previousFadeData.seasonBox.GetComponent<Image>();
+        seasonBox.sprite = menuUI.seasonUIBox.sprite;
+        var seasonText = previousFadeData.seasonText.GetComponent<Text>();
+        seasonText.text = menuUI.seasonUIText.text;
+
+        var dayText = previousFadeData.dayText.GetComponent<Text>();
+        dayText.text = menuUI.currentInGameDayText.text;
+
+        var weatherBox = previousFadeData.weatherBox.GetComponent<Image>();
+        weatherBox.sprite = menuUI.weatherUIBox.sprite;
+        var weatherText = previousFadeData.weatherText.GetComponent<Text>();
+        weatherText.text = menuUI.weatherUIText.text;
+
+        // fade in default menu data
+        LeanTween.alpha(previousFadeData.seasonBox, 1f, 0f);
+        LeanTween.alpha(previousFadeData.seasonText, 1f, 0f);
+        LeanTween.alpha(previousFadeData.dayBox, 1f, 0f);
+        LeanTween.alpha(previousFadeData.dayText, 1f, 0f);
+        LeanTween.alpha(previousFadeData.weatherBox, 1f, 0f);
+        LeanTween.alpha(previousFadeData.weatherText, 1f, 0f);
+
+        // fade out default menu data
+        LeanTween.alpha(previousFadeData.seasonBox, 0f, 0f).setDelay(3f);
+        LeanTween.alpha(previousFadeData.seasonText, 0f, 0f).setDelay(3f);
+        LeanTween.alpha(previousFadeData.dayBox, 0f, 0f).setDelay(3f);
+        LeanTween.alpha(previousFadeData.dayText, 0f, 0f).setDelay(3f);
+        LeanTween.alpha(previousFadeData.weatherBox, 0f, 0f).setDelay(3f);
+        LeanTween.alpha(previousFadeData.weatherText, 0f, 0f).setDelay(3f);
+    }
+    public void Next_Day_Animation()
     {
         var rectTransform = nextDayFade.GetComponent<RectTransform>();
         var text = fadeInGameDayText.GetComponent<Text>();
         var image = nextDayFade.GetComponent<Image>();
 
-        // fade screen
+        // fade in screen
         image.sprite = controller.eventSystem.data.currentWeather.fadeBackgroundUI;
         LeanTween.move(rectTransform, new Vector2(0, 0), 0);
         LeanTween.alpha(rectTransform, 1f, 1f);
         LeanTween.alpha(rectTransform, 0f, 1f).setDelay(3f);
         LeanTween.move(rectTransform, new Vector2(0, 640f), 0).setDelay(4f);
 
-        // fade screen ingame day text
+        // fade in screen game day text
         text.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
+        text.color = controller.eventSystem.data.currentWeather.fadeInGameDayText;
         LeanTween.alphaText(fadeInGameDayText, 1f, 1f);
         LeanTween.alphaText(fadeInGameDayText, 0f, 1f).setDelay(3f);
 
@@ -117,8 +162,9 @@ public class Default_Menu : MonoBehaviour
         LeanTween.alpha(nextDayFade, 0f, 1f).setDelay(2f);
         LeanTween.move(nextDayFade, new Vector2(0, 640f), 0).setDelay(3f);
         
-        // fade screen ingame day text
+        // fade screen in game day text
         text.text = "Day " + controller.timeSystem.currentInGameDay.ToString();
+        text.color = controller.eventSystem.data.currentWeather.fadeInGameDayText;
         LeanTween.alphaText(fadeInGameDayText, 0f, 1f).setDelay(2f);
 
         // farmtile movement

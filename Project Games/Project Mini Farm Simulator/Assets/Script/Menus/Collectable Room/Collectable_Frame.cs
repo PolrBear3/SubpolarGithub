@@ -15,6 +15,8 @@ public class Collectable_Frame_Data
 {
     public bool collectablePlaced = false;
     public Collectable_ScrObj currentCollectable;
+    [HideInInspector]
+    public int currentCollectableID;
 }
 
 public class Collectable_Frame : MonoBehaviour
@@ -84,6 +86,7 @@ public class Collectable_Frame : MonoBehaviour
         // place selected collectable
         data.collectablePlaced = true;
         data.currentCollectable = menu.data.selectedCollectable;
+        data.currentCollectableID = data.currentCollectable.id;
         Frame_Tier_Update();
 
         // gold mode place check
