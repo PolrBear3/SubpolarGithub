@@ -37,6 +37,7 @@ public class FarmTile_Death_Data
     public bool died = false;
     public Seed_ScrObj previousSeed;
     public int previousHealth;
+    public int damageCount;
 }
 
 public class FarmTile : MonoBehaviour
@@ -180,6 +181,7 @@ public class FarmTile : MonoBehaviour
         // dry out
         if (tileSeedStatus.daysWithoutWater >= data.plantedSeed.waterHealth)
         {
+            deathData.damageCount -= tileSeedStatus.health;
             tileSeedStatus.health = 0;
             Add_Status(10);
         }
@@ -208,6 +210,7 @@ public class FarmTile : MonoBehaviour
     public void NextDay_Seed_Status_Update()
     {
         tileSeedStatus.currentDayWatered = false;
+        deathData.damageCount = 0;
 
         // if the tile has a seed planted
         if (!data.seedPlanted) return;

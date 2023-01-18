@@ -8,13 +8,13 @@ public class Snowy_Stunned : MonoBehaviour, IEvent, IEventResetable
 
     public Event_Data data;
 
-    private void Start()
-    {
-        data.activated = true;
-    }
     private void Awake()
     {
         e = gameObject.transform.parent.GetComponent<Event_System>();
+    }
+    private void Start()
+    {
+        data.activated = true;
     }
     public void Activate_Event()
     {
@@ -55,9 +55,6 @@ public class Snowy_Stunned : MonoBehaviour, IEvent, IEventResetable
         if (data.activated) return;
         data.activated = true;
 
-        // if the current season is winter
-        if (!Is_Season_Winter()) return;
-
         // if the current weather is snowy
         if (!Is_Weather_Snowy()) return;
 
@@ -85,6 +82,7 @@ public class Snowy_Stunned : MonoBehaviour, IEvent, IEventResetable
 
             // data activation 2
             farmTiles[i].tileSeedStatus.health += data.health;
+            farmTiles[i].deathData.damageCount += data.health;
             farmTiles[i].tileSeedStatus.bonusPoints += data.bonusPoints;
         }
     }

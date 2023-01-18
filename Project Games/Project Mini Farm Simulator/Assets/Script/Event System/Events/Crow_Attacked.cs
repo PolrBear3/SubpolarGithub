@@ -79,6 +79,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
 
             // attack value
             farmTiles[i].tileSeedStatus.health += data.health;
+            farmTiles[i].deathData.damageCount += data.health;
             farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
             farmTiles[i].tileSeedStatus.bonusPoints += data.bonusPoints;
 
@@ -130,6 +131,7 @@ public class Crow_Attacked : MonoBehaviour, IEvent, IEventResetable
 
             // attack value
             surroundingFarmTile.tileSeedStatus.health += subData.health;
+            surroundingFarmTile.deathData.damageCount += subData.health;
             surroundingFarmTile.tileSeedStatus.dayPassed += subData.dayPassed;
             surroundingFarmTile.tileSeedStatus.bonusPoints += subData.bonusPoints;
         }

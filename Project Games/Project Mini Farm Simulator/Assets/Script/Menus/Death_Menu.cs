@@ -99,32 +99,6 @@ public class Death_Menu : MonoBehaviour
         }
     }
 
-    private int Damage_Amount(FarmTile farmTile)
-    {
-        var statuses = farmTile.currentStatuses;
-        int damageAmount = 0;
-
-        for (int i = 0; i < statuses.Count; i++)
-        {
-            if (statuses[i] == null) break;
-
-            // if it died from drying out 
-            if (statuses[i].statusID == 10)
-            {
-                damageAmount += farmTile.deathData.previousHealth;
-            }
-            else if (statuses[i].healthValue > 0)
-            {
-                damageAmount += statuses[i].healthValue;
-            }
-            else if (statuses[i].healthValue < 0)
-            {
-                damageAmount -= statuses[i].healthValue;
-            }
-        }
-
-        return damageAmount;
-    }
     private void Update_Death_Info()
     {
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
@@ -134,7 +108,7 @@ public class Death_Menu : MonoBehaviour
 
         // health
         ui.previouHealthText.text = currentFarmTile.deathData.previousHealth.ToString();
-        int deathHealthAmount = currentFarmTile.deathData.previousHealth - Damage_Amount(currentFarmTile);
+        int deathHealthAmount = currentFarmTile.deathData.previousHealth + currentFarmTile.deathData.damageCount;
         ui.deathHealthText.text = deathHealthAmount.ToString();
 
         // current statuses

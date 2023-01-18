@@ -116,6 +116,7 @@ public class Rapid_Growth : MonoBehaviour, IEvent, IEventResetable
             // data activation
             farmTiles[i].tileSeedStatus.dayPassed += data.dayPassed;
             farmTiles[i].tileSeedStatus.health += data.health;
+            farmTiles[i].deathData.damageCount += data.health;
         }
     }
 }

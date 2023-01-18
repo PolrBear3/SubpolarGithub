@@ -9,6 +9,4 @@ public class Status : ScriptableObject
     public Sprite statusIcon;
     [TextArea (5, 5)]
     public string statusDescription;
-
-    public int healthValue;
 }
