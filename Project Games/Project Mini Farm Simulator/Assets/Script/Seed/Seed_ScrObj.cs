@@ -9,6 +9,7 @@ public class Seed_ScrObj : ScriptableObject
     public int seedID;
     public Sprite[] sprites;
 
+    public Season_ScrObj[] bonusSeasons;
     public int seedHealth;
     public int waterHealth;
 

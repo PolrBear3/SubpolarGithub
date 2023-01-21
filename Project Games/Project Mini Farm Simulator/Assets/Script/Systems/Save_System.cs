@@ -349,6 +349,7 @@ public class Save_System : MonoBehaviour
 
             if (!allFrames[i].data.collectablePlaced) continue;
 
+            ES3.Save("isGold" + i.ToString(), allFrames[i].data.isGold);
             ES3.Save("currentCollectableID" + i.ToString(), allFrames[i].data.currentCollectableID);
         }
     }
@@ -363,6 +364,8 @@ public class Save_System : MonoBehaviour
             allFrames[i].data.collectablePlaced = ES3.Load("collectablePlaced" + i.ToString(), allFrames[i].data.collectablePlaced);
 
             if (!allFrames[i].data.collectablePlaced) continue;
+
+            allFrames[i].data.isGold = ES3.Load("isGold" + i.ToString(), allFrames[i].data.isGold);
 
             int savedID = ES3.Load("currentCollectableID" + i.ToString(), allFrames[i].data.currentCollectableID);
             allFrames[i].data.currentCollectable = controller.collectableRoomMenu.ID_Collectable_Search(savedID);

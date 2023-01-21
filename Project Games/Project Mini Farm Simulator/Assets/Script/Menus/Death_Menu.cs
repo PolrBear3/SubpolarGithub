@@ -64,7 +64,6 @@ public class Death_Menu : MonoBehaviour
             Close_Buff_History_Panel();
             return;
         }
-
         controller.Reset_All_Tile_Highlights();
         Button_Shield(true);
         LeanTween.move(ui.rectTransform, new Vector2(0f, -125f), 0.75f).setEase(data.tweenType);
@@ -86,6 +85,8 @@ public class Death_Menu : MonoBehaviour
 
         data.buffPanelOn = false;
         buffPanel.gameObject.SetActive(false);
+        controller.buffMenu.Hide_Buff_ToolTip();
+        controller.plantedMenu.Buff_ToolTip_Reset_FrameNum();
     }
     public void OpenClose_Buff_History_Panel()
     {

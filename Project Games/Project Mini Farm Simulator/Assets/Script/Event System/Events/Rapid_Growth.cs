@@ -30,6 +30,8 @@ public class Rapid_Growth : MonoBehaviour, IEvent, IEventResetable
     {
         if (!farmTile.data.seedPlanted) return false;
 
+        if (farmTile.tileSeedStatus.harvestReady) return false;
+
         return true;
     }
     private bool Planted_Seed_Check(FarmTile farmTile)

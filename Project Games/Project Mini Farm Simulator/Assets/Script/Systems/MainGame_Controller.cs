@@ -180,6 +180,17 @@ public class MainGame_Controller : MonoBehaviour
     }
     
     // ID Search
+    public Season_ScrObj ID_Season_Search(int seasonID)
+    {
+        for (int i = 0; i < allSeasons.Length; i++)
+        {
+            if (seasonID == allSeasons[i].seasonID)
+            {
+                return allSeasons[i];
+            }
+        }
+        return null;
+    }
     public Weather_ScrObj ID_Weather_Search(int weatherID)
     {
         for (int i = 0; i < allWeathers.Length; i++)

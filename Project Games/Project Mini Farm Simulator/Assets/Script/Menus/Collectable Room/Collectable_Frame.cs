@@ -14,6 +14,7 @@ public class Collectable_Frame_UI
 public class Collectable_Frame_Data
 {
     public bool collectablePlaced = false;
+    public bool isGold = false;
     public Collectable_ScrObj currentCollectable;
     [HideInInspector]
     public int currentCollectableID;
@@ -28,7 +29,13 @@ public class Collectable_Frame : MonoBehaviour
 
     public void Load_FrameSprite()
     {
-        if (data.collectablePlaced)
+        if (!data.collectablePlaced) return;
+
+        if (data.isGold)
+        {
+            ui.collectableImage.sprite = data.currentCollectable.goldSprite;
+        }
+        else
         {
             ui.collectableImage.sprite = data.currentCollectable.sprite;
         }
@@ -94,11 +101,13 @@ public class Collectable_Frame : MonoBehaviour
         {
             // normal
             ui.collectableImage.sprite = data.currentCollectable.sprite;
+            data.isGold = false;
         }
         else
         {
             // gold
             ui.collectableImage.sprite = data.currentCollectable.goldSprite;
+            data.isGold = true;
         }
 
         ui.collectableImage.color = Color.white;

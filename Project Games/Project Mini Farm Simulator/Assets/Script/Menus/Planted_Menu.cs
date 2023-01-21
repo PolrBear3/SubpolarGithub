@@ -290,6 +290,9 @@ public class Planted_Menu : MonoBehaviour
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         var x = controller.buffMenu;
 
+        // if frame num is less than current buff amount
+        if (frameNum + 1 > currentFarmTile.currentBuffs.Count) return;
+
         // if active buff is not empty
         if (currentFarmTile.currentBuffs[frameNum] == null) return;
 
