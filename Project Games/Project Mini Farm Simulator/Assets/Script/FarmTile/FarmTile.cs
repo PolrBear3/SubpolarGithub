@@ -313,16 +313,15 @@ public class FarmTile : MonoBehaviour
     }
     public void Remove_Status(int statusID, bool nonBreak)
     {
-        Status statusToRemove = controller.ID_Status_Search(statusID);
-
         for (int i = 0; i < currentStatuses.Count; i++)
         {
             if (currentStatuses[i] == null) break;
-            if (currentStatuses[i] != statusToRemove) continue;
+            if (currentStatuses[i].statusID != statusID) continue;
 
             currentStatuses.Remove(currentStatuses[i]);
 
-            if (!nonBreak) break;
+            if (nonBreak) i -= 1;
+            else break;
         }
     }
 
@@ -360,16 +359,15 @@ public class FarmTile : MonoBehaviour
     }
     public void Remove_Buff(int buffID, bool nonBreak)
     {
-        Buff_ScrObj buffToAdd = controller.ID_Buff_Search(buffID);
-
         for (int i = 0; i < currentBuffs.Count; i++)
         {
             if (currentBuffs[i] == null) break;
-            if (currentBuffs[i] != buffToAdd) continue;
+            if (currentBuffs[i].buffID != buffID) continue;
 
             currentBuffs.Remove(currentBuffs[i]);
 
-            if (!nonBreak) break;
+            if (nonBreak) i -= 1;
+            else break;
         }
     }
 
