@@ -19,6 +19,10 @@ public class MainGame_Controller : MonoBehaviour
     public Buff_System buffSystem;
     public Gacha_System gachaSystem;
 
+    // seed tooltip
+    // buff tooltip
+    public Status_ToolTip statusToolTip;
+
     public FarmTile_Movements_Controller movementsController;
     public FarmTile[] farmTiles;
     [HideInInspector]

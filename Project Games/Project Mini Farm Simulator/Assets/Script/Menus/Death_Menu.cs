@@ -23,7 +23,7 @@ public class Death_Menu_UI
 
 public class Death_Menu : MonoBehaviour
 {
-    [SerializeField] private MainGame_Controller controller;
+    public MainGame_Controller controller;
     [SerializeField] private History_Status_Panel statusPanel;
     [SerializeField] private History_Buff_Panel buffPanel;
 
@@ -59,11 +59,23 @@ public class Death_Menu : MonoBehaviour
     }
     public void Close()
     {
+        Close_Buff_History_Panel();
+        statusPanel.Hide_Status_ToolTip();
+
+        controller.Reset_All_Tile_Highlights();
+        Button_Shield(true);
+        LeanTween.move(ui.rectTransform, new Vector2(0f, -125f), 0.75f).setEase(data.tweenType);
+    }
+    // close for pressing close menu button in death menu
+    public void InMenu_Close()
+    {
         if (data.buffPanelOn)
         {
             Close_Buff_History_Panel();
             return;
         }
+        statusPanel.Hide_Status_ToolTip();
+
         controller.Reset_All_Tile_Highlights();
         Button_Shield(true);
         LeanTween.move(ui.rectTransform, new Vector2(0f, -125f), 0.75f).setEase(data.tweenType);
@@ -78,6 +90,8 @@ public class Death_Menu : MonoBehaviour
 
         var currentFarmTile = controller.farmTiles[controller.openedTileNum];
         buffPanel.Assign_All(currentFarmTile);
+
+        statusPanel.Hide_Status_ToolTip();
     }
     private void Close_Buff_History_Panel()
     {
@@ -86,7 +100,7 @@ public class Death_Menu : MonoBehaviour
         data.buffPanelOn = false;
         buffPanel.gameObject.SetActive(false);
         controller.buffMenu.Hide_Buff_ToolTip();
-        controller.plantedMenu.Buff_ToolTip_Reset_FrameNum();
+        controller.plantedMenu.Hide_Buff_ToolTip();
     }
     public void OpenClose_Buff_History_Panel()
     {

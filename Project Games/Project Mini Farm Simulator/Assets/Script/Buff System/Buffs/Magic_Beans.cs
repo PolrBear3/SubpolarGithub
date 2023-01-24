@@ -59,17 +59,24 @@ public class Magic_Beans : MonoBehaviour, IBuff, IBuffResetable
     }
     private void Magic_Bean_Repeat(FarmTile farmTile, int repeatAmount)
     {
+        bool percentageActivated = false;
+        
         for (int i = 0; i < repeatAmount; i++)
         {
-            if (!b.controller.eventSystem.Percentage_Setter(data.percentage)) continue;
+            if (percentageActivated || !b.controller.eventSystem.Percentage_Setter(data.percentage))
+            {
+                // add dead magic bean status
+                farmTile.Add_Status(18);
+                continue;
+            }
 
-            // add status icon
+            percentageActivated = true;
+
+            // add magic beanstalk status
             farmTile.Add_Status(17);
 
             // activation
             farmTile.tileSeedStatus.dayPassed = farmTile.tileSeedStatus.fullGrownDay;
-
-            break;
         }
     }
 }

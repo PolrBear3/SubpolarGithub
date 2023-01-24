@@ -64,7 +64,7 @@ public class Planted_Menu : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(0f, -125f);
 
         // active buff panel frame number set to null
-        Buff_ToolTip_Reset_FrameNum();
+        Hide_Buff_ToolTip();
     }
 
     public void Button_Shield(bool activate)
@@ -277,13 +277,13 @@ public class Planted_Menu : MonoBehaviour
     {
         currentBuffsPanel.cbON = false;
         currentBuffsPanel.cbPanel.SetActive(false);
-        Buff_ToolTip_Reset_FrameNum();
-        controller.buffMenu.Hide_Buff_ToolTip();
+        Hide_Buff_ToolTip();
     }
 
-    public void Buff_ToolTip_Reset_FrameNum()
+    public void Hide_Buff_ToolTip()
     {
         currentBuffsPanel.openedActiveFrameNum = -1;
+        controller.buffMenu.Hide_Buff_ToolTip();
     }
     public void Show_Hide_Buff_ToolTip(int frameNum)
     {
@@ -299,8 +299,7 @@ public class Planted_Menu : MonoBehaviour
         // if currently opened buff is pressed again, close the tooltip
         if (frameNum == currentBuffsPanel.openedActiveFrameNum)
         {
-            x.Hide_Buff_ToolTip();
-            Buff_ToolTip_Reset_FrameNum();
+            Hide_Buff_ToolTip();
             return;
         }
 
@@ -333,6 +332,7 @@ public class Planted_Menu : MonoBehaviour
             currentStatusPanel.panelOn = true;
             currentStatusPanel.panel.SetActive(true);
             currentStatusPanel.statusIconController.Reset_Status_Icons();
+            currentStatusPanel.statusIconController.Hide_Status_ToolTip();
             currentStatusPanel.statusIconController.Update_CurrentFarmTile_Status();
 
             // close current buffs panel if it is on
@@ -344,12 +344,14 @@ public class Planted_Menu : MonoBehaviour
         {
             currentStatusPanel.panelOn = false;
             currentStatusPanel.panel.SetActive(false);
+            currentStatusPanel.statusIconController.Hide_Status_ToolTip();
         }
     }
     public void Close_CurrentStatus_Panel()
     {
         currentStatusPanel.panelOn = false;
         currentStatusPanel.panel.SetActive(false);
+        currentStatusPanel.statusIconController.Hide_Status_ToolTip();
     }
 
     // planted seed tooltip function
