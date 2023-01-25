@@ -134,6 +134,8 @@ public class UnPlanted_Menu : MonoBehaviour
         currentCropImage.color = Color.clear;
         seedToolTipUIconnection.toolTipAnimator.SetBool("seedSelected", false);
         PlantSeed_Button_Availability();
+
+        Hide_Seed_ToolTip();
     }
     
     private void PlantSeed_Button_Availability()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainGame_Controller : MonoBehaviour
 {
+    public Tutorial_Controller tutorial;
     public Default_Menu defaultMenu;
     public CollectableRoom_Menu collectableRoomMenu;
     public TileBuy_Button tileBuyButton;

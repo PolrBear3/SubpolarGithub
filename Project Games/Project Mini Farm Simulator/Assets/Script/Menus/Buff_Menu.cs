@@ -139,6 +139,8 @@ public class Buff_Menu : MonoBehaviour
         ui.buffPreview.color = Color.clear;
         tooltipUI.toolTipAnimator.SetBool("buffSelected", false);
         ConfirmButton_Availability();
+
+        Hide_Buff_ToolTip();
     }
 
     private void ConfirmButton_Availability()

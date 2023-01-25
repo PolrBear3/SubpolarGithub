@@ -21,7 +21,7 @@ public class Save_System : MonoBehaviour
 {
     public MainGame_Controller controller;
 
-    [SerializeField] private Save_System_Data data;
+    public Save_System_Data data;
     [SerializeField] private Save_System_UI ui;
 
     private void Start()
@@ -121,9 +121,20 @@ public class Save_System : MonoBehaviour
     }
     private void Load_Game()
     {
-        if (!ES3.KeyExists("gameSaved")) return;
+        if (!ES3.KeyExists("gameSaved")) 
+        {
+            // tutorial start panel on
+
+            // start tutorial guide (test)
+            controller.tutorial.Start_Guide_Screen();
+
+            return;
+        }
 
         data.gameSaved = ES3.Load("gameSaved", data.gameSaved);
+
+        // dont initate tutorial start panel
+        Destroy(controller.tutorial.gameObject);
     }
 
     // farm tiles
