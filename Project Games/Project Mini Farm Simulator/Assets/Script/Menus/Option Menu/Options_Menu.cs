@@ -58,7 +58,11 @@ public class Options_Menu : MonoBehaviour
     // main option panel
     private void Open()
     {
-        controller.Reset_All_Menu();
+        if (controller.tutorial == null)
+        {
+            controller.Reset_All_Menu();
+        }
+
         Button_Shield(false);
 
         // default settings page
