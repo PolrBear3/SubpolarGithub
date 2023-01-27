@@ -136,6 +136,18 @@ public class Time_System : MonoBehaviour
         controller.All_FarmTile_WateringCheck();
         // health check
         controller.All_FarmTile_HealthCheck();
+
+        // tutorial guide check
+        if (controller.tutorial != null)
+        {
+            var guideFarmTile = controller.farmTiles[0];
+
+            guideFarmTile.tileSeedStatus.dayPassed = guideFarmTile.tileSeedStatus.fullGrownDay;
+            guideFarmTile.tileSeedStatus.harvestReady = true;
+            guideFarmTile.tileSeedStatus.health = 3;
+            guideFarmTile.tileSeedStatus.bonusPoints = 4;
+        }
+
         // update sprite
         controller.All_FarmTile_Progress_Update();
 

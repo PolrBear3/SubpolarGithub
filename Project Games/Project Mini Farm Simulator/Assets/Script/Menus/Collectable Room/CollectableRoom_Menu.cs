@@ -294,16 +294,18 @@ public class CollectableRoom_Menu : MonoBehaviour
         data.sortMode = allCollectableTierData[data.sortNum].colorLevel;
         ui.findIcon.sprite = allCollectableTierData[data.sortNum].findIcon;
 
+        // search from first page
+        pageController.FisrtPage();
+        Set_New_CurrentButtonPage();
+
         // find function
         bool tierFound = false;
         while (!tierFound)
         {
-            pageController.NextPage();
-            Set_New_CurrentButtonPage();
-
-            // search
+            // search current buttons
             for (int i = 0; i < currentButtons.Count; i++)
             {
+                // tier found
                 if (currentButtons[i].data.thisCollectable.colorLevel == data.sortMode)
                 {
                     tierFound = true;
@@ -311,11 +313,12 @@ public class CollectableRoom_Menu : MonoBehaviour
                 }
             }
 
-            // if search is complete or cant find
-            if (tierFound || pageController.currentPageNum == pageController.pages.Length)
-            {
-                break;
-            }
+            // if it found the tier or if it is the last page to search, stop search
+            if (tierFound || pageController.currentPageNum == pageController.pages.Length) break;
+
+            // go to next page for search
+            pageController.NextPage();
+            Set_New_CurrentButtonPage();
         }
     }
     

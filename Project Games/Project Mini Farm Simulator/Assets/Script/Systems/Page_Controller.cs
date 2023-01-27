@@ -54,6 +54,13 @@ public class Page_Controller : MonoBehaviour
     }
 
     // public functions
+    public void FisrtPage()
+    {
+        currentPageNum = 1;
+        Restart_Deactivate_AllPages();
+        Activate_Page();
+    }
+
     public void NextPage()
     {
         currentPageNum++;

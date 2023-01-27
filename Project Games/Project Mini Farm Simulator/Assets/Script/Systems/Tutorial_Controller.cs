@@ -18,7 +18,6 @@ public class Tutorial_Controller : MonoBehaviour
         // turn on current starting guide screen 
         tutorialScreens[currentScreenNum].SetActive(true);
     }
-
     public void Next_Guide_Screen()
     {
         // turn off current guide screen
@@ -26,6 +25,12 @@ public class Tutorial_Controller : MonoBehaviour
         
         // increase currentScreenNum
         currentScreenNum++;
+
+        // last guide screen check
+        if (tutorialScreens.Length - currentScreenNum == 1)
+        {
+            controller.Reset_All_Menu();
+        }
 
         // tutorial end check
         if (currentScreenNum >= tutorialScreens.Length)
