@@ -132,22 +132,17 @@ public class Time_System : MonoBehaviour
         controller.buffSystem.Reset_All_Buffs();
         // activate all buffs
         controller.buffSystem.Activate_All_Buffs();
+
+        // tutorial guide check for farmtile
+        if (controller.tutorial != null)
+        {
+            controller.tutorial.Tutorial_FarmTile_Update();
+        }
+
         // watering check
         controller.All_FarmTile_WateringCheck();
         // health check
         controller.All_FarmTile_HealthCheck();
-
-        // tutorial guide check
-        if (controller.tutorial != null)
-        {
-            var guideFarmTile = controller.farmTiles[0];
-
-            guideFarmTile.tileSeedStatus.dayPassed = guideFarmTile.tileSeedStatus.fullGrownDay;
-            guideFarmTile.tileSeedStatus.harvestReady = true;
-            guideFarmTile.tileSeedStatus.health = 3;
-            guideFarmTile.tileSeedStatus.bonusPoints = 4;
-        }
-
         // update sprite
         controller.All_FarmTile_Progress_Update();
 

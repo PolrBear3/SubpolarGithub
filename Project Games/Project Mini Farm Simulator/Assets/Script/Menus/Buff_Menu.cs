@@ -102,7 +102,7 @@ public class Buff_Menu : MonoBehaviour
     }
 
     // current button loop functions
-    private void Set_Start_CurrentButtonPage()
+    public void Set_Start_CurrentButtonPage()
     {
         currentButtons = allButtonPages[0].buttons;
     }

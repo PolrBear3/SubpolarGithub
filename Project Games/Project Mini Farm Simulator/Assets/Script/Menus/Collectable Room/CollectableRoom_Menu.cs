@@ -160,6 +160,18 @@ public class CollectableRoom_Menu : MonoBehaviour
         else { Close(); }
     }
 
+    // public functions
+    public void Reset_AllCollectables_Data()
+    {
+        for (int i = 0; i < allCollectables.Length; i++)
+        {
+            allCollectables[i].unLocked = false;
+            allCollectables[i].currentAmount = 0;
+            allCollectables[i].maxAmount = 0;
+            allCollectables[i].isNew = true;
+        }
+    }
+
     // current button loop functions
     private void Set_Start_CurrentButtonPage()
     {

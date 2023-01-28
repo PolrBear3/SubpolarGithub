@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public struct Save_System_Data
 {
     public bool gameSaved;
+    public bool tutorialComplete;
 }
 
 [System.Serializable]
@@ -50,7 +51,10 @@ public class Save_System : MonoBehaviour
 
     private void Save_All()
     {
+        if (!data.tutorialComplete) return;
+
         Save_New_Game();
+        Save_Tutorial_State();
 
         Save_Current_Day();
         Save_Current_Weather();
@@ -64,6 +68,7 @@ public class Save_System : MonoBehaviour
     private void Load_All()
     {
         Load_Game();
+        Load_Tutorial_State();
 
         Load_Current_Day();
         Load_Current_Weather();
@@ -121,20 +126,32 @@ public class Save_System : MonoBehaviour
     }
     private void Load_Game()
     {
-        if (!ES3.KeyExists("gameSaved")) 
-        {
-            // tutorial start panel on
-
-            // start tutorial guide (test)
-            controller.tutorial.Start_Guide_Screen();
-
-            return;
-        }
+        if (!ES3.KeyExists("gameSaved")) return;
 
         data.gameSaved = ES3.Load("gameSaved", data.gameSaved);
+    }
 
-        // dont initate tutorial start panel
-        Destroy(controller.tutorial.gameObject);
+    private void Save_Tutorial_State()
+    {
+        ES3.Save("tutorialComplete", data.tutorialComplete);
+    }
+    private void Load_Tutorial_State()
+    {
+        if (ES3.KeyExists("tutorialComplete"))
+        {
+            data.tutorialComplete = ES3.Load("tutorialComplete", data.tutorialComplete);
+        }
+
+        if (!data.tutorialComplete)
+        {
+            // start tutorial guide
+            controller.tutorial.Start_Guide_Screen();
+        }
+        else
+        {
+            // dont initate tutorial start panel
+            Destroy(controller.tutorial.gameObject);
+        }
     }
 
     // farm tiles
