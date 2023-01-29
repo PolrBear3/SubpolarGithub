@@ -6,11 +6,24 @@ public class Tutorial_Controller : MonoBehaviour
 {
     [SerializeField] private MainGame_Controller controller;
 
-    [SerializeField] private GameObject firstGameScreen;
     [SerializeField] private GameObject optionsMenuTutorialScreen;
-    [SerializeField] private GameObject[] tutorialScreens;
-    private int currentScreenNum = 0;
 
+    [SerializeField] private float alphaSpeed;
+
+    [SerializeField] private GameObject[] tutorialScreens;
+    [SerializeField] private RectTransform[] screenBox;
+
+    private int currentScreenNum = 0;
+    private int screenBoxNum = -1;
+
+    // lean tween screen box
+    private void LeanTween_ScreenBox()
+    {
+        // leanTween
+        LeanTween.alpha(screenBox[screenBoxNum], 0, alphaSpeed).setOnComplete(() => { screenBox[screenBoxNum].gameObject.SetActive(false); });
+    }
+
+    // opitons menu
     public void Press_OpitonsMenu_DuringTutorial()
     {
         if (controller.optionsMenu.data.menuOn)
@@ -31,6 +44,7 @@ public class Tutorial_Controller : MonoBehaviour
         }
     }
 
+    // tutorial guide
     public void Skip_TutorialGuide()
     {
         controller.saveSystem.data.tutorialComplete = true;
@@ -39,11 +53,9 @@ public class Tutorial_Controller : MonoBehaviour
 
     public void Start_Guide_Screen()
     {
-        // close first game screen
-        firstGameScreen.SetActive(false);
-
         // set guide screen number to first page
         currentScreenNum = 0;
+        screenBoxNum = -1;
         
         // turn on current starting guide screen 
         tutorialScreens[currentScreenNum].SetActive(true);
@@ -52,9 +64,10 @@ public class Tutorial_Controller : MonoBehaviour
     {
         // turn off current guide screen
         tutorialScreens[currentScreenNum].SetActive(false);
-        
-        // increase currentScreenNum
+
+        // increase currentScreenNum and currentBoxNum
         currentScreenNum++;
+        screenBoxNum++;
 
         // last guide screen check
         if (tutorialScreens.Length - currentScreenNum == 1)
@@ -69,9 +82,12 @@ public class Tutorial_Controller : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
         // go to next guide screen
         tutorialScreens[currentScreenNum].SetActive(true);
+
+        // screen box lean tween
+        LeanTween_ScreenBox();
     }
 
     public void Replay_TutorialGuide()
@@ -98,6 +114,7 @@ public class Tutorial_Controller : MonoBehaviour
         controller.buffMenu.pageController.FisrtPage();
     }
 
+    // public tutorial functions
     public void Tutorial_FarmTile_Update()
     {
         var guideFarmTile = controller.farmTiles[0];
