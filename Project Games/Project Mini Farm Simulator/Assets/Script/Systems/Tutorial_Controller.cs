@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tutorial_Controller : MonoBehaviour
 {
@@ -19,8 +20,37 @@ public class Tutorial_Controller : MonoBehaviour
     // lean tween screen box
     private void LeanTween_ScreenBox()
     {
+        float delayTime;
+        float alphaSpeedSubtraction;
+        
+        // next day leanTween delay for nextDay animation
+        if (currentScreenNum == 17)
+        {
+            delayTime = 4f; 
+            alphaSpeedSubtraction = 0f;
+        }
+        // shop menu gacha
+        else if (currentScreenNum == 22)
+        {
+            delayTime = 0f;
+            alphaSpeedSubtraction = alphaSpeed;
+        }
+        else
+        {
+            delayTime = 0.75f;
+            alphaSpeedSubtraction = 0f;
+        }
+
         // leanTween
-        LeanTween.alpha(screenBox[screenBoxNum], 0, alphaSpeed).setOnComplete(() => { screenBox[screenBoxNum].gameObject.SetActive(false); });
+        LeanTween.alpha(screenBox[screenBoxNum], 0, alphaSpeed - alphaSpeedSubtraction).setOnComplete(() => { screenBox[screenBoxNum].gameObject.SetActive(false); }).setDelay(delayTime);
+    }
+    private void Reset_ScreenBox_Status()
+    {
+        for (int i = 0; i < screenBox.Length; i++)
+        {
+            screenBox[i].gameObject.SetActive(true);
+            LeanTween.alpha(screenBox[i], 0.6f, 0);
+        }
     }
 
     // opitons menu
@@ -86,17 +116,22 @@ public class Tutorial_Controller : MonoBehaviour
         // go to next guide screen
         tutorialScreens[currentScreenNum].SetActive(true);
 
+        // screen box lean tween end check
+        if (screenBoxNum >= screenBox.Length) return;
+        
         // screen box lean tween
         LeanTween_ScreenBox();
     }
 
     public void Replay_TutorialGuide()
     {
-        // turn off current las screen
+        // turn off current last screen
         tutorialScreens[currentScreenNum].SetActive(false);
 
         // go back to first guide screen
         currentScreenNum = 0;
+        screenBoxNum = -1;
+        Reset_ScreenBox_Status();
         Next_Guide_Screen();
 
         // reset to day 1
