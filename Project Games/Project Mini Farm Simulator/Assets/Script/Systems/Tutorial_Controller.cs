@@ -13,6 +13,7 @@ public class Tutorial_Controller : MonoBehaviour
 
     [SerializeField] private GameObject[] tutorialScreens;
     [SerializeField] private RectTransform[] screenBox;
+    [SerializeField] private RectTransform collectableRoomArrow;
 
     private int currentScreenNum = 0;
     private int screenBoxNum = -1;
@@ -29,12 +30,6 @@ public class Tutorial_Controller : MonoBehaviour
             delayTime = 4f; 
             alphaSpeedSubtraction = 0f;
         }
-        // shop menu gacha
-        else if (currentScreenNum == 22)
-        {
-            delayTime = 0f;
-            alphaSpeedSubtraction = alphaSpeed;
-        }
         else
         {
             delayTime = 0.75f;
@@ -43,6 +38,10 @@ public class Tutorial_Controller : MonoBehaviour
 
         // leanTween
         LeanTween.alpha(screenBox[screenBoxNum], 0, alphaSpeed - alphaSpeedSubtraction).setOnComplete(() => { screenBox[screenBoxNum].gameObject.SetActive(false); }).setDelay(delayTime);
+
+        // collectable room arrow movement
+        if (currentScreenNum != 19) return;
+        LeanTween.alpha(collectableRoomArrow, 0.6f, alphaSpeed).setDelay(delayTime * 2);
     }
     private void Reset_ScreenBox_Status()
     {
@@ -51,6 +50,8 @@ public class Tutorial_Controller : MonoBehaviour
             screenBox[i].gameObject.SetActive(true);
             LeanTween.alpha(screenBox[i], 0.6f, 0);
         }
+
+        LeanTween.alpha(collectableRoomArrow, 0f, 0);
     }
 
     // opitons menu
