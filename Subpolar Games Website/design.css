@@ -4,6 +4,9 @@
     font-weight: 600;
     font-family: 'Times New Roman', Times, serif;
 }
+.amazonLink:hover{
+    color: #ca8b37;
+}
 
 .product{
     font-size: 26px;
@@ -25,20 +28,48 @@
 }
 
 .cartButton{
-    background-color: #d5ba40;
-    border-style: none;
+    cursor: pointer;
+    background: #FFD814;
+    border-color: #FCD200;
+    border-style: solid;
+    border-width: thin;
+    box-shadow: 0 2px 5px 0 rgb(213 217 217 / 50%);
     font-weight: bold;
     width: 127px;
     height: 35px;
     border-radius: 17px;
     margin-right: 10px;
+    
+    transition: 0.15s;
+}
+.cartButton:hover{
+    background: #f7ca00;
+    border-color: #f2c200
+}
+.cartButton:active{
+    background: #f0b800;
+    box-shadow: 0 0 0 3px #c8f3fa, inset 0 0 0 2px #fff;
+    border-color: #008296;
 }
 
 .buyButton{
-    background-color: #ca8b37;
-    border-style: none;
+    cursor: pointer;
+    background: #FFA41C;
+    border-color: #FF8F00;
+    border-style: solid;
+    border-width: thin;
     font-weight: bold;
     width: 127px;
     height: 35px;
     border-radius: 17px;
+
+    transition: 0.15s;
+}
+.buyButton:hover{
+    background-color: #fa8900;
+}
+.buyButton:active{
+    background: #FFA41C;
+    box-shadow: 0 0 0 3px #c8f3fa, inset 0 0 0 2px #fff;
+    border-color: #008296;
 }
