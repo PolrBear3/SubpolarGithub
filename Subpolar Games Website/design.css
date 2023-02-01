@@ -1,75 +1,31 @@
-.amazonLink{
-    color: #3b7083;
-    font-size: 17px;
-    font-weight: 600;
-    font-family: 'Times New Roman', Times, serif;
+a{
+    text-decoration: none;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-right: 0;
 }
-.amazonLink:hover{
-    color: #ca8b37;
-}
-
-.product{
-    font-size: 26px;
-    font-weight: 800;
-    font-family: 'Times New Roman', Times, serif;
+p{
+    margin-bottom: 20px;
 }
 
-.priceStock{
-    color: #3d8228;
-    font-size: 17px;
-    font-weight: 900;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.basicMessage{
-    font-size: 17px;
-    font-weight: 600;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.cartButton{
-    cursor: pointer;
-    background: #FFD814;
-    border-color: #FCD200;
-    border-style: solid;
-    border-width: thin;
-    box-shadow: 0 2px 5px 0 rgb(213 217 217 / 50%);
-    font-weight: bold;
-    width: 127px;
-    height: 35px;
-    border-radius: 17px;
-    margin-right: 10px;
+.Subpolar_Games_Title{
+    text-align: center;
+    margin-bottom: 50px;
     
-    transition: 0.15s;
-}
-.cartButton:hover{
-    background: #f7ca00;
-    border-color: #f2c200
-}
-.cartButton:active{
-    background: #f0b800;
-    box-shadow: 0 0 0 3px #c8f3fa, inset 0 0 0 2px #fff;
-    border-color: #008296;
+    color: #2f325d;
+    font-size: 100px;
+    font-family: Brush Script MT, Brush Script Std, cursive;
 }
 
-.buyButton{
-    cursor: pointer;
-    background: #FFA41C;
-    border-color: #FF8F00;
-    border-style: solid;
-    border-width: thin;
-    font-weight: bold;
-    width: 127px;
-    height: 35px;
-    border-radius: 17px;
+.Game_List{
+    text-align: center;
+    margin-bottom: 50px;
+}
+.Game{
+    margin-right: 70px;
 
-    transition: 0.15s;
-}
-.buyButton:hover{
-    background-color: #fa8900;
-}
-.buyButton:active{
-    background: #FFA41C;
-    box-shadow: 0 0 0 3px #c8f3fa, inset 0 0 0 2px #fff;
-    border-color: #008296;
+    color: black;
+    font-size: 35px;
+    font-family: Brush Script MT, Brush Script Std, cursive;
 }
