@@ -81,6 +81,8 @@ public class Time_System : MonoBehaviour
 
         Check_End0f_Year();
         Check_Season();
+
+        controller.eventSystem.weatherSystem.StartSet_Estimate_Weathers();
         controller.eventSystem.Set_Today_Weather();
 
         controller.defaultMenu.Update_UI();

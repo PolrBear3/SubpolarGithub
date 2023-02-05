@@ -323,6 +323,7 @@ public class Save_System : MonoBehaviour
     private void Save_Current_Weather()
     {
         ES3.Save("currentWeatherID", controller.eventSystem.data.currentWeather.weatherID);
+        ES3.Save("estimateWeathers", controller.eventSystem.weatherSystem.estimateWeathers);
     }
     private void Load_Current_Weather()
     {
@@ -332,8 +333,9 @@ public class Save_System : MonoBehaviour
         var currentWeather = controller.ID_Weather_Search(currentWeatherID);
         controller.eventSystem.data.currentWeather = currentWeather;
 
+        controller.eventSystem.weatherSystem.estimateWeathers = ES3.Load("estimateWeathers", controller.eventSystem.weatherSystem.estimateWeathers);
+
         controller.defaultMenu.Weather_UI_Update();
-        // fade lean tween
     }
 
     // collectables
