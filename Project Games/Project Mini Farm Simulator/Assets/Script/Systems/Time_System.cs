@@ -83,6 +83,7 @@ public class Time_System : MonoBehaviour
         Check_Season();
 
         controller.eventSystem.weatherSystem.StartSet_Estimate_Weathers();
+        controller.weatherNewsMenu.Set_NewsIcon_Blink(false);
         controller.eventSystem.Set_Today_Weather();
 
         controller.defaultMenu.Update_UI();
@@ -117,6 +118,9 @@ public class Time_System : MonoBehaviour
 
         Check_End0f_Year();
         Check_Season();
+
+        controller.eventSystem.weatherSystem.Next_Estimate_Weathers();
+        controller.weatherNewsMenu.Set_NewsIcon_Blink(false);
         controller.eventSystem.Set_Today_Weather();
 
         controller.defaultMenu.Update_UI();

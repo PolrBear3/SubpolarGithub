@@ -20,7 +20,7 @@ public class WeatherEstimation_System : MonoBehaviour
     {
         var currentSeason = controller.timeSystem.currentSeason;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
             weatherData weatherData;
 
@@ -35,7 +35,6 @@ public class WeatherEstimation_System : MonoBehaviour
             estimateWeathers.Add(weatherData);
         }
     }
-
     public void Next_Estimate_Weathers()
     {
         estimateWeathers.RemoveAt(0);

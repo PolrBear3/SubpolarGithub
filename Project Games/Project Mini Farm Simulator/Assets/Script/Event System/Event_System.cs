@@ -63,10 +63,6 @@ public class Event_System : MonoBehaviour
     public void Set_Today_Weather()
     {
         var x = controller.timeSystem.currentSeason;
-
-        // weather news udpate
-        weatherSystem.Next_Estimate_Weathers();
-
         var currentWeatherData = weatherSystem.estimateWeathers[0];
 
         // weather news correct

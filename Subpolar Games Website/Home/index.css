@@ -16,37 +16,47 @@ body{
 }
 
 /* practice */
-.Search_Box{
+.Search_Flex_Box{
     display: flex;
     flex-direction: row;
-    background-color: #5f27cd;
-    height: 70px;
-}
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
 
-.Search_Box_Left{
-    width: 300px;
-    border-style: solid;
+    background-color: rgb(135, 83, 200);
 }
-.Home_Text{
-    color: white;
+.Home_Button{
+    margin-left: 20px;
+    margin-right: 20px;
+    height: 40px;
+    border: none;
+    background-color: rgb(135, 83, 200);
+    font-family: system-ui;
+    font-weight: bold;
+    color: #F0EDCC;
+    font-size: 18px;
 }
-
-.Search_Box_Mid{
-    flex: 1;
-    border-style: solid;
+.Search_Input_Box{
+    width: 60%;
+    height: 30px;
+    max-width: 1000px;
+    border-radius: 20px;
+    border-style: none;
 }
-.Input_Box{
-    text-align: center;
-    margin: auto;
-}
-
-.Search_Box_Right{
-    width: 300px;
-    border-style: solid;
+.Search_Input_Box::placeholder{
+    font-family: system-ui;
+    font-size: 15px;
+    padding-left: 20px;
 }
 .Download_Button{
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 120px;
+    height: 40px;
     border-style: solid;
-    border-color: white;
-    background: none;
-    color: white;
+    border-color: #F0EDCC;
+    border-radius: 3px;
+    background-color: rgb(135, 83, 200);
+    color: #F0EDCC;
+    font-size: 18px;
 }

@@ -6,6 +6,7 @@ public class MainGame_Controller : MonoBehaviour
 {
     public Tutorial_Controller tutorial;
     public Default_Menu defaultMenu;
+    public WeatherNews_Menu weatherNewsMenu;
     public CollectableRoom_Menu collectableRoomMenu;
     public TileBuy_Button tileBuyButton;
     public UnPlanted_Menu unPlantedMenu;
@@ -157,6 +158,7 @@ public class MainGame_Controller : MonoBehaviour
     // ui functions
     public void Reset_All_Menu()
     {
+        weatherNewsMenu.Close();
         plantedMenu.Close();
         unPlantedMenu.Close();
         tileBuyButton.Close();

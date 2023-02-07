@@ -324,6 +324,7 @@ public class Save_System : MonoBehaviour
     {
         ES3.Save("currentWeatherID", controller.eventSystem.data.currentWeather.weatherID);
         ES3.Save("estimateWeathers", controller.eventSystem.weatherSystem.estimateWeathers);
+        ES3.Save("newWeatherChecked", controller.weatherNewsMenu.newWeatherChecked);
     }
     private void Load_Current_Weather()
     {
@@ -334,8 +335,9 @@ public class Save_System : MonoBehaviour
         controller.eventSystem.data.currentWeather = currentWeather;
 
         controller.eventSystem.weatherSystem.estimateWeathers = ES3.Load("estimateWeathers", controller.eventSystem.weatherSystem.estimateWeathers);
-
         controller.defaultMenu.Weather_UI_Update();
+
+        controller.weatherNewsMenu.Set_NewsIcon_Blink(ES3.Load("newWeatherChecked", controller.weatherNewsMenu.newWeatherChecked));
     }
 
     // collectables
