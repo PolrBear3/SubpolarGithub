@@ -11,5 +11,6 @@ public class Weather_ScrObj : ScriptableObject
 
     public Sprite weatherUI;
     public Sprite fadeBackgroundUI;
+    public Sprite weatherBoxUI;
     public Color fadeInGameDayText;
 }

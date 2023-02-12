@@ -1,5 +1,6 @@
 body{
     background-color: #F0EDCC;
+    margin-bottom: 1000px;
 }
 
 /* Title Box */
@@ -17,6 +18,9 @@ body{
 
 /* youtube top ui */
 #youtube_top_UI{
+    position: fixed;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     background-color: white;
@@ -28,6 +32,7 @@ body{
     flex: 1;
     align-items: center;
 }
+
 #hamburger_button{
     margin-left: 15px;
     width: 44px;
@@ -63,6 +68,7 @@ body{
     align-items: center;
     justify-content: center;
 }
+
 #input_box{
     flex: 1;
     width: 0px;
@@ -86,6 +92,7 @@ body{
     font-family: system-ui;
     font-size: 16px;
 }
+
 #search_button{
     margin-left: -1px;
     width: 70px;
@@ -101,11 +108,16 @@ body{
 #search_button:hover{
     background-color: rgb(220, 220, 220);
 }
+#search_button:hover .tooltip_box{
+    opacity: 1;
+    visibility: visible;
+}
 #search_icon{
     width: 20px;
     height: 20px;
     object-fit: cover;
 }
+
 #mike_button{
     margin-left: 10px;
     width: 44px;
@@ -118,6 +130,10 @@ body{
 #mike_button:hover{
     background-color: rgb(222, 222, 222);
 }
+#mike_button:hover .tooltip_box{
+    opacity: 1;
+    visibility: visible;
+}
 #mike_icon{
     width: 20px;
     height: 20px;
@@ -129,6 +145,7 @@ body{
     display: flex;
     align-items: center;
 }
+
 #create_button{
     width: 44px;
     height: 44px;
@@ -139,6 +156,10 @@ body{
 }
 #create_button:hover{
     background-color: rgb(222, 222, 222);
+}
+#create_button:hover .tooltip_box{
+    opacity: 1;
+    visibility: visible;
 }
 #create_icon{
     width: 40px;
@@ -157,6 +178,10 @@ body{
 }
 #notification_button:hover{
     background-color: rgb(222, 222, 222);
+}
+#notification_button:hover .tooltip_box{
+    opacity: 1;
+    visibility: visible;
 }
 #notification_icon{
     width: 20px;
@@ -177,4 +202,25 @@ body{
     border-radius: 28px;
     border-style: none;
     object-fit: cover;
+}
+
+.tooltip_box{
+    opacity: 0;
+    transition: opacity 0.5s;
+    visibility: hidden;
+    position: absolute;
+    justify-content: center;
+    top: 70px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+#tooltip_box_word{
+    margin-left: 9px;
+    margin-right: 9px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex: 100%;
+    font-size: 11px;
+    color: white;
+    text-align: center;
 }

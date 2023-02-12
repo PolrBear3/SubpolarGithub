@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class WeatherNews_Menu_UI
 {
     public RectTransform panel;
+    public GameObject buttonShield;
     public Animator icon;
 }
 
@@ -23,6 +24,9 @@ public class WeatherNews_Menu : MonoBehaviour
 
     public void Open()
     {
+        // button shield off
+        ui.buttonShield.SetActive(false);
+
         // icon blink inactive
         Set_NewsIcon_Blink(true);
 
@@ -34,6 +38,9 @@ public class WeatherNews_Menu : MonoBehaviour
     }
     public void Close()
     {
+        // button shield on
+        ui.buttonShield.SetActive(true);
+
         // leantween close
         LeanTween.move(ui.panel, new Vector2(500f, 104.85f), 0.75f).setEase(LeanTweenType.easeInOutQuint);
     }
@@ -63,7 +70,7 @@ public class WeatherNews_Menu : MonoBehaviour
 
             if (dayCount >= 7) break;
 
-            weatherBoxes[i].Update_WeatherBox(currentDay + dayCount, weatherEst[dayCount].weather.fadeBackgroundUI, weatherEst[dayCount].percentage);
+            weatherBoxes[i].Update_WeatherBox(currentDay + dayCount, weatherEst[dayCount].weather.weatherBoxUI, weatherEst[dayCount].percentage);
         }
     }
 }
