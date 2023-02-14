@@ -22,6 +22,9 @@ public class Default_Menu_UI
 [System.Serializable]
 public class Default_Menu_UI_Previous_Data
 {
+    public RectTransform moneyBox;
+    public RectTransform moneyText;
+    
     public RectTransform seasonBox;
     public RectTransform seasonText;
 
@@ -96,6 +99,9 @@ public class Default_Menu : MonoBehaviour
     }
     public void Next_Day_FadeIn_Previous_Data()
     {
+        var befMoneyText = previousFadeData.moneyText.GetComponent<Text>();
+        befMoneyText.text = moneyText.text;
+
         var seasonBox = previousFadeData.seasonBox.GetComponent<Image>();
         seasonBox.sprite = menuUI.seasonUIBox.sprite;
         var seasonText = previousFadeData.seasonText.GetComponent<Text>();
@@ -110,6 +116,8 @@ public class Default_Menu : MonoBehaviour
         weatherText.text = menuUI.weatherUIText.text;
 
         // fade in default menu data
+        LeanTween.alpha(previousFadeData.moneyBox, 1f, 0f);
+        LeanTween.alpha(previousFadeData.moneyText, 1f, 0f);
         LeanTween.alpha(previousFadeData.seasonBox, 1f, 0f);
         LeanTween.alpha(previousFadeData.seasonText, 1f, 0f);
         LeanTween.alpha(previousFadeData.dayBox, 1f, 0f);
@@ -118,6 +126,8 @@ public class Default_Menu : MonoBehaviour
         LeanTween.alpha(previousFadeData.weatherText, 1f, 0f);
 
         // fade out default menu data
+        LeanTween.alpha(previousFadeData.moneyBox, 0f, 0f).setDelay(3f);
+        LeanTween.alpha(previousFadeData.moneyText, 0f, 0f).setDelay(3f);
         LeanTween.alpha(previousFadeData.seasonBox, 0f, 0f).setDelay(3f);
         LeanTween.alpha(previousFadeData.seasonText, 0f, 0f).setDelay(3f);
         LeanTween.alpha(previousFadeData.dayBox, 0f, 0f).setDelay(3f);

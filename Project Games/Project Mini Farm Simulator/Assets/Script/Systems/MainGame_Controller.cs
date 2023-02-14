@@ -22,8 +22,8 @@ public class MainGame_Controller : MonoBehaviour
     public Gacha_System gachaSystem;
 
     // seed tooltip
-    // buff tooltip
     public Status_ToolTip statusToolTip;
+    // buff tooltip
 
     public FarmTile_Movements_Controller movementsController;
     public FarmTile[] farmTiles;
@@ -178,12 +178,23 @@ public class MainGame_Controller : MonoBehaviour
         defaultMenu.Money_Text_Update();
         defaultMenu.AddMoney_Blink();
     }
+    public void Add_Money_NonBlink(int originalAmount, int bonusAmount)
+    {
+        _money += originalAmount;
+        _money += bonusAmount;
+        defaultMenu.Money_Text_Update();
+    }
     public void Subtract_Money(int amount)
     {
         _money -= amount;
         defaultMenu.Money_Update_Fade_Tween(false, amount, 0);
         defaultMenu.Money_Text_Update();
         defaultMenu.SubtractMoney_RedBlink();
+    }
+    public void Subtract_Money_NonBlink(int amount)
+    {
+        _money -= amount;
+        defaultMenu.Money_Text_Update();
     }
     
     // ID Search
