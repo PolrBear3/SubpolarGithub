@@ -45,6 +45,7 @@ public class FarmTile : MonoBehaviour
     public MainGame_Controller controller;
     public Button button;
     public Animator harvestBorderAnim, farmTileAnim;
+    public AudioSource audioSource;
     
     [HideInInspector]
     public Image image;
@@ -105,6 +106,9 @@ public class FarmTile : MonoBehaviour
 
     public void Open_Menu(FarmTile farmTile)
     {
+        // sound
+        audioSource.Play();
+        
         // if the tile is already selected
         if (data.tileSelected)
         {
