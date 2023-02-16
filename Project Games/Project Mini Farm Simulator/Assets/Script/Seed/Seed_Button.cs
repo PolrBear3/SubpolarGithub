@@ -56,4 +56,8 @@ public class Seed_Button : MonoBehaviour
 
         menu.Reset_Selections();
     }
+    public void Play_Sound_onSelect(AudioClip clip)
+    {
+        menu.controller.soundController.Play_SFX(clip);
+    }
 }

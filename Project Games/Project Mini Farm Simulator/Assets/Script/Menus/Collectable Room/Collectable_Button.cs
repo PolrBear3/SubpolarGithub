@@ -184,6 +184,10 @@ public class Collectable_Button : MonoBehaviour
             UnSelect_Collectable();
         }
     }
+    public void Play_Sound_onSelect(AudioClip clip)
+    {
+        menu.controller.soundController.Play_SFX(clip);
+    }
 
     public void GoldMode_Check()
     {

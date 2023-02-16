@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainGame_Controller : MonoBehaviour
 {
+    public Sound_Controller soundController;
     public Tutorial_Controller tutorial;
     public Default_Menu defaultMenu;
     public WeatherNews_Menu weatherNewsMenu;
