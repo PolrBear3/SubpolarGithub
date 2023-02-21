@@ -62,9 +62,13 @@ public class Thief : MonoBehaviour, IEvent, IEventResetable
             subtractCount += data.bonusPoints;
         }
 
+        if (e.controller.money <= subtractCount) return;
 
+        // if there were no theifs
         if (subtractCount <= 0) return;
 
-        e.controller.Subtract_Money_NonBlink(subtractCount);
+        int stealPrice = Random.Range(0, subtractCount);
+
+        e.controller.Subtract_Money_NonBlink(stealPrice);
     }
 }
