@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Action_Controller : MonoBehaviour
 {
-    public Player_Piece playerPiece;
-    public Token_ScrObj token;
+    [HideInInspector] public Board_Piece boardPiece;
+    public Action_ScrObj action;
+
+    private void Awake()
+    {
+        Connect_BoardPiece();
+    }
+
+    private void Connect_BoardPiece()
+    {
+        boardPiece = transform.parent.parent.gameObject.GetComponent<Board_Piece>();
+    }
 }
