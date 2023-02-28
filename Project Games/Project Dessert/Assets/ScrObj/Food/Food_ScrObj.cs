@@ -8,4 +8,5 @@ public class Food_ScrObj : ScriptableObject
 {
     public int foodID;
     public Sprite foodSprite;
+    public Sprite icon;
 }

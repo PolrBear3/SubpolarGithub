@@ -30,6 +30,7 @@ public class Drag_Drop : MonoBehaviour
         else attached = false;
     }
 
+    // original mouse follow
     private void Object_Attach_Detach()
     {
         if (attached)
@@ -39,6 +40,7 @@ public class Drag_Drop : MonoBehaviour
         }
     }
 
+    // smooth lerp follow
     private void Object_Lerp_Follow()
     {
         if (attached)

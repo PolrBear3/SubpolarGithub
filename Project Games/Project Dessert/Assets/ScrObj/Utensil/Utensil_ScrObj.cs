@@ -8,4 +8,5 @@ public class Utensil_ScrObj : ScriptableObject
 {
     public int utensilID;
     public Sprite utensilSprite;
+    public Sprite icon;
 }
