@@ -77,6 +77,10 @@ public class Save_System : MonoBehaviour
         Load_All_Collectable_Datas();
         Load_All_CollectableFrames();
 
+        // sound
+        controller.soundController.Play_SFX(controller.eventSystem.data.currentWeather.weatherSFX);
+        controller.soundController.Play_BGM(controller.eventSystem.data.currentWeather.weatherBGM);
+
         controller.defaultMenu.Update_UI();
         controller.defaultMenu.Load_Day_Animation();
 

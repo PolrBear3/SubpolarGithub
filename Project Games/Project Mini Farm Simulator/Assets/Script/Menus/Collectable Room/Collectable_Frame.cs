@@ -166,4 +166,12 @@ public class Collectable_Frame : MonoBehaviour
             Remove_Collectable();
         }
     }
+
+    // sound
+    public void Play_Sound_onSelect(AudioClip clip)
+    {
+        if (!menu.data.placeMode) return;
+        
+        menu.controller.soundController.Play_SFX(clip);
+    }
 }

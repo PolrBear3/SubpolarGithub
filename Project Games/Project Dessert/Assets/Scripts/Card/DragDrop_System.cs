@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class DragDrop_System : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class DragDrop_System : MonoBehaviour
 
     private bool attached;
     public float followSpeed;
+
+    [SerializeField] private List<SortingGroup> sortings = new List<SortingGroup>();
 
     private void Awake()
     {
@@ -26,16 +29,15 @@ public class DragDrop_System : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (boxCollider != Physics2D.OverlapPoint(mousePosition)) return;
 
-        if (!attached) attached = true;
-        else attached = false;
-    }
-
-    private void Object_Attach_Detach()
-    {
-        if (attached)
+        if (!attached) 
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            this.transform.position = mousePosition;
+            attached = true;
+            SortingLayer_Update();
+        }
+        else
+        {
+            attached = false;
+            SortingLayer_Update();
         }
     }
 
@@ -47,6 +49,29 @@ public class DragDrop_System : MonoBehaviour
 
             // y changing to x position in a delay
             transform.position = Vector2.Lerp(transform.position, mousePosition, Time.deltaTime * followSpeed);
+        }
+    }
+    private void Object_Attach_Detach()
+    {
+        if (attached)
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            this.transform.position = mousePosition;
+        }
+    }
+
+    private void SortingLayer_Update()
+    {
+        for (int i = 0; i < sortings.Count; i++)
+        {
+            if (attached)
+            {
+                sortings[i].sortingOrder += 1;
+            }
+            else
+            {
+                sortings[i].sortingOrder -= 1;
+            }
         }
     }
 }

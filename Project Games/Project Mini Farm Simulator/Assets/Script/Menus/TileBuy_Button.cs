@@ -37,4 +37,13 @@ public class TileBuy_Button : MonoBehaviour
 
         controller.eventSystem.Activate_All_Events();
     }
+
+    // sound
+    public void Play_Sound_onSelect(AudioClip clip)
+    {
+        var selectedTile = controller.farmTiles[controller.openedTileNum];
+        if (controller.money < selectedTile.data.tilePrice) return;
+
+        controller.soundController.Play_SFX(clip);
+    }
 }

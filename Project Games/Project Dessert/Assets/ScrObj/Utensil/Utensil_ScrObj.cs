@@ -6,6 +6,7 @@ using UnityEngine.UI;
 [CreateAssetMenu(menuName = "New Utensil")]
 public class Utensil_ScrObj : ScriptableObject
 {
+    public Card_Type type = Card_Type.utensil;
     public int utensilID;
     public Sprite utensilSprite;
     public Sprite icon;

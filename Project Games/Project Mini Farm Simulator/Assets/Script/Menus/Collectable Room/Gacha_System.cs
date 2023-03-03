@@ -109,4 +109,13 @@ public class Gacha_System : MonoBehaviour
             menu.controller.defaultMenu.NotEnoughMoney_Blink_Tween();
         }
     }
+
+    // sound
+    public void Play_Sound_onSelect(AudioClip clip)
+    {
+        // player has not enough money
+        if (menu.controller.money < gachaPrice) return;
+        
+        menu.controller.soundController.Play_SFX(clip);
+    }
 }

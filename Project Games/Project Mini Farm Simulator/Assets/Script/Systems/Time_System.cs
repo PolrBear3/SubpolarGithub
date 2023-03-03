@@ -86,6 +86,10 @@ public class Time_System : MonoBehaviour
         controller.weatherNewsMenu.Set_NewsIcon_Blink(false);
         controller.eventSystem.Set_Today_Weather();
 
+        // sound
+        controller.soundController.Play_SFX(controller.eventSystem.data.currentWeather.weatherSFX);
+        controller.soundController.Play_BGM(controller.eventSystem.data.currentWeather.weatherBGM);
+
         controller.defaultMenu.Update_UI();
         controller.defaultMenu.Next_Day_Animation();
 
@@ -122,6 +126,10 @@ public class Time_System : MonoBehaviour
         controller.eventSystem.weatherSystem.Next_Estimate_Weathers();
         controller.weatherNewsMenu.Set_NewsIcon_Blink(false);
         controller.eventSystem.Set_Today_Weather();
+
+        // sound
+        controller.soundController.Play_SFX(controller.eventSystem.data.currentWeather.weatherSFX);
+        controller.soundController.Play_BGM(controller.eventSystem.data.currentWeather.weatherBGM);
 
         controller.defaultMenu.Update_UI();
         controller.defaultMenu.Next_Day_Animation();

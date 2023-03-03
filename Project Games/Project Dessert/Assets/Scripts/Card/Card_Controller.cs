@@ -17,12 +17,12 @@ public class Card_Controller : MonoBehaviour
     public TextMesh amountText;
     public SpriteRenderer main;
 
-    public void Update_Card(Sprite main, Sprite icon, int amount)
+    public void Update_Card(Sprite main, Sprite icon)
     {
         this.main.sprite = main;
         this.icon.sprite = icon;
-        data.currentAmount = amount;
-        amountText.text = amount.ToString();
+        data.currentAmount = 1;
+        amountText.text = data.currentAmount.ToString();
     }
 
     public void Combine_Amount()

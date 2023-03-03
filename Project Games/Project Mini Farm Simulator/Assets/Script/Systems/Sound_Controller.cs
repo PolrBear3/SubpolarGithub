@@ -5,10 +5,16 @@ using UnityEngine.Audio;
 
 public class Sound_Controller : MonoBehaviour
 {
-    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private AudioSource sfxSource2;
     [SerializeField] private AudioSource sfxSource3;
+
+    public void Play_BGM(AudioClip clip)
+    {
+        bgmSource.clip = clip;
+        bgmSource.Play();
+    }
 
     public void Play_SFX(AudioClip clip)
     {
