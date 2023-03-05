@@ -12,7 +12,7 @@ public struct Card_Data
 public class Card_Controller : MonoBehaviour
 {
     public Card_Data data;
-    
+
     public SpriteRenderer icon;
     public TextMesh amountText;
     public SpriteRenderer main;
