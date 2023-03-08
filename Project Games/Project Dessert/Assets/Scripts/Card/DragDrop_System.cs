@@ -5,8 +5,6 @@ using UnityEngine.Rendering;
 
 public class DragDrop_System : MonoBehaviour
 {
-    private CardDetection_System detectionSystem;
-
     private BoxCollider2D boxCollider;
 
     public GameObject shadow;
@@ -20,15 +18,7 @@ public class DragDrop_System : MonoBehaviour
 
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out CardDetection_System system))
-        {
-            detectionSystem = system;
-        }
-
-        if (gameObject.TryGetComponent(out BoxCollider2D system2))
-        {
-            boxCollider = system2;
-        }
+        boxCollider = GetComponent<BoxCollider2D>();
     }
     private void Update()
     {
