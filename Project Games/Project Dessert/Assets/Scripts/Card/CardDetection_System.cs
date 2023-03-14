@@ -11,7 +11,7 @@ public class CardDetection_System : MonoBehaviour
 
     [HideInInspector] public bool cardDetected;
 
-    [SerializeField] private float pushSpeed;
+    [SerializeField] private float pushPower;
     [SerializeField] private float pushDecreaseTime;
 
     [SerializeField] private List<Card_Controller> detectedCards = new List<Card_Controller>();
@@ -43,6 +43,7 @@ public class CardDetection_System : MonoBehaviour
         StartCoroutine(Push_Decrease(rb));
     }
 
+    // seperation system
     private bool DetectedCard_Attached()
     {
         for (int i = 0; i < detectedCards.Count; i++)
@@ -51,7 +52,7 @@ public class CardDetection_System : MonoBehaviour
         }
         return false;
     }
-    public void Push_Cards()
+    private void Push_Cards()
     {
         if (!cardDetected) return;
         if (controller.dragDrop.attached) return;
@@ -61,13 +62,13 @@ public class CardDetection_System : MonoBehaviour
         if (transform.position.x <= detectedCards[0].transform.position.x)
         {
             // transform.Translate(pushSpeed * Time.deltaTime * Vector2.left);
-            rb.AddForce(Vector2.left * pushSpeed, ForceMode2D.Force);
+            rb.AddForce(Vector2.left * pushPower, ForceMode2D.Force);
         }
         // push right
         else if (transform.position.x > detectedCards[0].transform.position.x)
         {
             // transform.Translate(pushSpeed * Time.deltaTime * Vector2.right);
-            rb.AddForce(Vector2.right * pushSpeed, ForceMode2D.Force);
+            rb.AddForce(Vector2.right * pushPower, ForceMode2D.Force);
         }
     }
     private IEnumerator Push_Decrease(Rigidbody2D rb)
@@ -89,6 +90,11 @@ public class CardDetection_System : MonoBehaviour
         rb.velocity = new Vector2(0f, rb.velocity.y);
     }
 
+    // highlight
+    private void Detect_Closest_Card()
+    {
+        
+    }
     public void Highlight_Card(bool activation)
     {
         if (activation)
