@@ -11,11 +11,20 @@ public struct Card_Data
 
 public class Card_Controller : MonoBehaviour
 {
+    [HideInInspector] public DragDrop_System dragDrop;
+    [HideInInspector] public CardDetection_System detection;
+
     public Card_Data data;
 
     public SpriteRenderer icon;
     public TextMesh amountText;
     public SpriteRenderer main;
+
+    private void Awake()
+    {
+        dragDrop = gameObject.GetComponent<DragDrop_System>();
+        detection = gameObject.GetComponent<CardDetection_System>();
+    }
 
     public void Update_Card(Sprite main, Sprite icon)
     {

@@ -209,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1251776921249009483
 Transform:
   m_ObjectHideFlags: 0
@@ -267,7 +267,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.11395097, g: 1, b: 0, a: 0}
+  m_Color: {r: 0.11395097, g: 1, b: 0, a: 0.69803923}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 6631748365140324677}
   - component: {fileID: 1065212046181836987}
   - component: {fileID: 6545164548804099744}
-  - component: {fileID: 506790606193743177}
+  - component: {fileID: 1826852690896562777}
   - component: {fileID: 5161470954460924655}
   - component: {fileID: 6193296719141689058}
   - component: {fileID: 526325926617430905}
@@ -524,7 +524,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &506790606193743177
+--- !u!61 &1826852690896562777
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -562,9 +562,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fd2e6df5a769a48bd4270682f6309a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragDrop: {fileID: 6193296719141689058}
+  detection: {fileID: 526325926617430905}
   data:
     currentAmount: 0
-  dragDrop: {fileID: 6193296719141689058}
   icon: {fileID: 1961704790351903757}
   amountText: {fileID: 4904872536363126286}
   main: {fileID: 6631748365316299115}
@@ -581,14 +582,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shadow: {fileID: 2602796671583860315}
+  mainSorting: {fileID: 1065212046181836987}
+  attached: 0
   followSpeed: 20
   shadowSpeed: 0.1
   shaodwOffset: 0.4
-  sortings:
-  - {fileID: 1065212046181836987}
-  - {fileID: 923293987221450114}
-  - {fileID: 6250613555193320309}
-  - {fileID: 8833589346030648627}
 --- !u!114 &526325926617430905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -602,6 +600,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionBox: {fileID: 4716479073083908039}
+  cardDetected: 0
+  pushSpeed: 0.5
+  pushDecreaseTime: 1
+  detectedCards: []
 --- !u!1 &6631748365316299109
 GameObject:
   m_ObjectHideFlags: 0

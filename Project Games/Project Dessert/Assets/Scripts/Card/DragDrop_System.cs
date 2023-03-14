@@ -5,58 +5,39 @@ using UnityEngine.Rendering;
 
 public class DragDrop_System : MonoBehaviour
 {
+    private Card_Controller controller;
     private BoxCollider2D boxCollider;
 
     public GameObject shadow;
 
+    public SortingGroup mainSorting;
+
     [HideInInspector] public bool attached;
+
     public float followSpeed;
     public float shadowSpeed;
     public float shaodwOffset;
 
-    [SerializeField] private List<SortingGroup> sortings = new List<SortingGroup>();
-
     private void Awake()
     {
-        boxCollider = GetComponent<BoxCollider2D>();
+        controller = gameObject.GetComponent<Card_Controller>();
+        boxCollider = gameObject.GetComponent<BoxCollider2D>();
     }
     private void Update()
     {
-        Object_Clicked();
+        Card_Clicked();
         Object_Lerp_Follow();
-    }
-
-    private void Object_Clicked()
-    {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (boxCollider != Physics2D.OverlapPoint(mousePosition)) return;
-
-        if (!attached) 
-        {
-            attached = true;
-            SortingLayer_Update();
-            Shadow();
-        }
-        else
-        {
-            attached = false;
-            SortingLayer_Update();
-            Shadow();
-        }
     }
 
     // card follow styles
     private void Object_Lerp_Follow()
     {
-        if (attached)
-        {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (!attached) return;
 
-            // y changing to x position in a delay
-            transform.position = Vector2.Lerp(transform.position, mousePosition, Time.deltaTime * followSpeed);
-        }
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // y changing to x position in a delay
+        transform.position = Vector2.Lerp(transform.position, mousePosition, Time.deltaTime * followSpeed);
     }
     private void Object_Attach_Detach()
     {
@@ -67,21 +48,33 @@ public class DragDrop_System : MonoBehaviour
         }
     }
 
-    private void SortingLayer_Update()
+    // gameplay functions
+    private void Card_Clicked()
     {
-        for (int i = 0; i < sortings.Count; i++)
-        {
-            if (attached)
-            {
-                sortings[i].sortingOrder += 1;
-            }
-            else
-            {
-                sortings[i].sortingOrder -= 1;
-            }
-        }
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (boxCollider != Physics2D.OverlapPoint(mousePosition)) return;
+
+        if (!attached && !controller.detection.cardDetected) attached = true;
+        else attached = false;
+
+        SortingLayer_Update();
+        Shadow();
     }
 
+    // effects
+    private void SortingLayer_Update()
+    {
+        if (attached)
+        {
+            mainSorting.sortingOrder = 1;
+        }
+        else if (!attached)
+        {
+            mainSorting.sortingOrder = 0;
+        }
+    }
     private void Shadow()
     {
         if (attached)

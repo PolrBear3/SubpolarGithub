@@ -17,7 +17,9 @@ public class Game_Controller : MonoBehaviour
 
         for (int i = 0; i < amount; i++)
         {
-            var spawnCard = Instantiate(dataBase.card, Vector2.zero, Quaternion.identity).GetComponent<Card_Controller>();
+            float randomPos = Random.Range(-7, 7);
+
+            var spawnCard = Instantiate(dataBase.card, new Vector2(randomPos, 0), Quaternion.identity).GetComponent<Card_Controller>();
             spawnCard.Update_Card(info.foodSprite, dataBase.Find_CardType_Icon(info.type));
         }
     }
