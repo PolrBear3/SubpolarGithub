@@ -44,7 +44,7 @@ public class DragDrop_System : MonoBehaviour
         if (attached)
         {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            this.transform.position = mousePosition;
+            transform.position = mousePosition;
         }
     }
 
