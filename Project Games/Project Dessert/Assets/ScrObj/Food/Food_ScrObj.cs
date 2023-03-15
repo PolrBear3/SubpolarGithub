@@ -8,6 +8,6 @@ public class Food_ScrObj : ScriptableObject
 {
     public Card_Type type = Card_Type.food;
     public int foodID;
+    public int maxAmount;
     public Sprite foodSprite;
-    public Sprite icon;
 }

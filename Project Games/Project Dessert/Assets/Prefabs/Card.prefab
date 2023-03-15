@@ -204,12 +204,12 @@ GameObject:
   - component: {fileID: 3091381734955646259}
   - component: {fileID: 8412771230000321048}
   m_Layer: 0
-  m_Name: Detection Box
+  m_Name: Highlight Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1251776921249009483
 Transform:
   m_ObjectHideFlags: 0
@@ -267,7 +267,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.11395097, g: 1, b: 0, a: 0.69803923}
+  m_Color: {r: 0.11395097, g: 1, b: 0, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -562,10 +562,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fd2e6df5a769a48bd4270682f6309a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
   dragDrop: {fileID: 6193296719141689058}
   detection: {fileID: 526325926617430905}
   data:
+    type: 0
     currentAmount: 0
+    food: {fileID: 0}
+    utensil: {fileID: 0}
   icon: {fileID: 1961704790351903757}
   amountText: {fileID: 4904872536363126286}
   main: {fileID: 6631748365316299115}
@@ -582,6 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shadow: {fileID: 2602796671583860315}
+  highlightBox: {fileID: 4716479073083908039}
   mainSorting: {fileID: 1065212046181836987}
   attached: 0
   followSpeed: 20
@@ -599,7 +604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1cfa7b587fb74194977f6579fbf26e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionBox: {fileID: 4716479073083908039}
   cardDetected: 0
   pushPower: 0.5
   pushDecreaseTime: 0.4

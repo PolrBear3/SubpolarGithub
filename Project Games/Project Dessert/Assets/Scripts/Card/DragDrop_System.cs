@@ -9,6 +9,7 @@ public class DragDrop_System : MonoBehaviour
     private BoxCollider2D boxCollider;
 
     public GameObject shadow;
+    public GameObject highlightBox;
 
     public SortingGroup mainSorting;
 
@@ -49,6 +50,24 @@ public class DragDrop_System : MonoBehaviour
     }
 
     // gameplay functions
+    private void Highlight_Interactable_Cards()
+    {
+        var fieldCards = controller.controller.trackSystem.allFieldCards;
+
+        for (int i = 0; i < fieldCards.Count; i++)
+        {
+            if (attached)
+            {
+                if (fieldCards[i] == controller) continue;
+                if (!fieldCards[i].Combine_Check(controller)) return;
+                LeanTween.alpha(fieldCards[i].dragDrop.highlightBox, 0.7f, 0.25f);
+            }
+            else
+            {
+                LeanTween.alpha(fieldCards[i].dragDrop.highlightBox, 0f, 0.25f);
+            }
+        }
+    }
     private void Card_Clicked()
     {
         if (!Input.GetMouseButtonDown(0)) return;
@@ -58,6 +77,8 @@ public class DragDrop_System : MonoBehaviour
 
         if (!attached && !controller.detection.cardDetected) attached = true;
         else attached = false;
+
+        Highlight_Interactable_Cards();
 
         SortingLayer_Update();
         Shadow();

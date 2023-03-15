@@ -6,11 +6,16 @@ using UnityEngine.UI;
 [System.Serializable]
 public struct Card_Data
 {
+    public Card_Type type;
     public int currentAmount;
+    public Food_ScrObj food;
+    public Utensil_ScrObj utensil;
 }
 
 public class Card_Controller : MonoBehaviour
 {
+    [HideInInspector] public  Game_Controller controller;
+
     [HideInInspector] public DragDrop_System dragDrop;
     [HideInInspector] public CardDetection_System detection;
 
@@ -26,12 +31,46 @@ public class Card_Controller : MonoBehaviour
         detection = gameObject.GetComponent<CardDetection_System>();
     }
 
-    public void Update_Card(Sprite main, Sprite icon)
+    public void New_Card(Game_Controller controller, Food_ScrObj food, Utensil_ScrObj utensil)
     {
-        this.main.sprite = main;
-        this.icon.sprite = icon;
+        this.controller = controller;
+
+        if (food != null)
+        {
+            data.food = food;
+            main.sprite = data.food.foodSprite;
+            data.type = Card_Type.food;
+        }
+        else if (utensil != null)
+        {
+            data.utensil = utensil;
+            main.sprite = data.utensil.utensilSprite;
+            data.type = Card_Type.utensil;
+        }
+
+        icon.sprite = controller.dataBase.Find_CardType_Icon(data.type);
         data.currentAmount = 1;
         amountText.text = data.currentAmount.ToString();
+    }
+
+    public bool Combine_Check(Card_Controller cardController)
+    {
+        if (cardController.data.type == Card_Type.food)
+        {
+            if (cardController.data.food != data.food) return false;
+            if (data.currentAmount == data.food.maxAmount) return false;
+            if (cardController.data.currentAmount == data.food.maxAmount) return false;
+            return true;
+        }
+        else if (cardController.data.type == Card_Type.utensil)
+        {
+            if (cardController.data.utensil != data.utensil) return false;
+            if (data.currentAmount == data.utensil.maxAmount) return false;
+            if (cardController.data.currentAmount == data.utensil.maxAmount) return false;
+            return true;
+        }
+
+        return false;
     }
 
     public void Combine_Amount()

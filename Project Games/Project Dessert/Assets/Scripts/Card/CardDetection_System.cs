@@ -7,14 +7,12 @@ public class CardDetection_System : MonoBehaviour
     private Card_Controller controller;
     private Rigidbody2D rb;
 
-    public GameObject detectionBox;
-
     [HideInInspector] public bool cardDetected;
 
     [SerializeField] private float pushPower;
     [SerializeField] private float pushDecreaseTime;
 
-    [SerializeField] private List<Card_Controller> detectedCards = new List<Card_Controller>();
+    public List<Card_Controller> detectedCards = new List<Card_Controller>();
 
     private void Awake()
     {
@@ -88,22 +86,5 @@ public class CardDetection_System : MonoBehaviour
 
         // Make sure the velocity is exactly 0
         rb.velocity = new Vector2(0f, rb.velocity.y);
-    }
-
-    // highlight
-    private void Detect_Closest_Card()
-    {
-        
-    }
-    public void Highlight_Card(bool activation)
-    {
-        if (activation)
-        {
-            LeanTween.alpha(detectionBox, 0.7f, 0.25f);
-        }
-        else
-        {
-            LeanTween.alpha(detectionBox, 0f, 0.25f);
-        }
     }
 }
