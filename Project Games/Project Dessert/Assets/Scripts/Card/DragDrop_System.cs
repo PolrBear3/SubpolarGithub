@@ -59,7 +59,7 @@ public class DragDrop_System : MonoBehaviour
             if (attached)
             {
                 if (fieldCards[i] == controller) continue;
-                if (!fieldCards[i].Combine_Check(controller)) return;
+                if (!fieldCards[i].Combine_Check(controller)) continue;
                 LeanTween.alpha(fieldCards[i].dragDrop.highlightBox, 0.7f, 0.25f);
             }
             else

@@ -58,15 +58,19 @@ public class Card_Controller : MonoBehaviour
         if (cardController.data.type == Card_Type.food)
         {
             if (cardController.data.food != data.food) return false;
-            if (data.currentAmount == data.food.maxAmount) return false;
+            // dragging card max check
             if (cardController.data.currentAmount == data.food.maxAmount) return false;
+            // dropped cards max check
+            if (data.currentAmount == data.food.maxAmount) return false;
             return true;
         }
         else if (cardController.data.type == Card_Type.utensil)
         {
             if (cardController.data.utensil != data.utensil) return false;
-            if (data.currentAmount == data.utensil.maxAmount) return false;
+            // dragging card max check
             if (cardController.data.currentAmount == data.utensil.maxAmount) return false;
+            // dropped cards max check
+            if (data.currentAmount == data.utensil.maxAmount) return false;
             return true;
         }
 
