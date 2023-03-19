@@ -15,6 +15,8 @@ public class DragDrop_System : MonoBehaviour
 
     [HideInInspector] public bool attached;
 
+    public List<Card_Controller> highlightedCards = new List<Card_Controller>();
+
     public float followSpeed;
     public float shadowSpeed;
     public float shaodwOffset;
@@ -50,6 +52,23 @@ public class DragDrop_System : MonoBehaviour
     }
 
     // gameplay functions
+    private void Card_Clicked()
+    {
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (boxCollider != Physics2D.OverlapPoint(mousePosition)) return;
+
+        if (!attached && !controller.detection.cardDetected) attached = true;
+        else attached = false;
+
+        Combine_to_ClosestCard();
+        Highlight_Interactable_Cards();
+
+        SortingLayer_Update();
+        Shadow();
+    }
+
     private void Highlight_Interactable_Cards()
     {
         var fieldCards = controller.controller.trackSystem.allFieldCards;
@@ -68,20 +87,39 @@ public class DragDrop_System : MonoBehaviour
             }
         }
     }
-    private void Card_Clicked()
+    private void Combine_to_ClosestCard()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
+        if (attached) return;
 
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (boxCollider != Physics2D.OverlapPoint(mousePosition)) return;
+        List<Card_Controller> closeCards = new List<Card_Controller>();
+        Card_Controller closestCard = null;
 
-        if (!attached && !controller.detection.cardDetected) attached = true;
-        else attached = false;
+        if (highlightedCards.Count == 0) return;
 
-        Highlight_Interactable_Cards();
+        // highlighted cards that are detected to this card
+        for (int i = 0; i < highlightedCards.Count; i++)
+        {
+            if (!controller.detection.DetectedCard_Match(highlightedCards[i])) continue;
+            closeCards.Add(highlightedCards[i]);
+        }
 
-        SortingLayer_Update();
-        Shadow();
+        if (closeCards.Count == 0) return;
+
+        // find the closest card
+        float smallestDistance = Mathf.Infinity;
+        for (int i = 0; i < closeCards.Count; i++)
+        {
+            float cardDistance = Vector2.Distance(transform.position, closeCards[i].transform.position);
+
+            if (cardDistance > smallestDistance) continue;
+
+            smallestDistance = cardDistance;
+            closestCard = closeCards[i];
+        }
+
+        closestCard.Increase_Amount(controller.data.currentAmount);
+        controller.controller.trackSystem.Removefrom_Track(controller);
+        Destroy(gameObject);
     }
 
     // effects

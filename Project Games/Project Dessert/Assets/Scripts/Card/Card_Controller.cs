@@ -53,6 +53,7 @@ public class Card_Controller : MonoBehaviour
         amountText.text = data.currentAmount.ToString();
     }
 
+    // card check system
     public bool Combine_Check(Card_Controller cardController)
     {
         if (cardController.data.type == Card_Type.food)
@@ -77,13 +78,15 @@ public class Card_Controller : MonoBehaviour
         return false;
     }
 
-    public void Combine_Amount()
+    // card data system
+    public void Increase_Amount(int amount)
     {
-
+        data.currentAmount += amount;
+        amountText.text = data.currentAmount.ToString();
     }
-    public void Split_Amount() 
+    public void Decrease_Amount(int amount) 
     {
-        data.currentAmount -= 1;
+        data.currentAmount -= amount;
         amountText.text = data.currentAmount.ToString();
     }
 }

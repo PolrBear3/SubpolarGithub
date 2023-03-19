@@ -41,6 +41,18 @@ public class CardDetection_System : MonoBehaviour
         StartCoroutine(Push_Decrease(rb));
     }
 
+    // check system
+    public bool DetectedCard_Match(Card_Controller card)
+    {
+        for (int i = 0; i < detectedCards.Count; i++)
+        {
+            if (card != detectedCards[i]) continue;
+
+            return true;
+        }
+        return false;
+    }
+
     // seperation system
     private bool DetectedCard_Attached()
     {
