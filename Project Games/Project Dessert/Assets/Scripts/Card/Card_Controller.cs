@@ -14,7 +14,7 @@ public struct Card_Data
 
 public class Card_Controller : MonoBehaviour
 {
-    [HideInInspector] public  Game_Controller controller;
+    public Game_Controller controller;
 
     [HideInInspector] public DragDrop_System dragDrop;
     [HideInInspector] public CardDetection_System detection;
@@ -31,7 +31,8 @@ public class Card_Controller : MonoBehaviour
         detection = gameObject.GetComponent<CardDetection_System>();
     }
 
-    public void New_Card(Game_Controller controller, Food_ScrObj food, Utensil_ScrObj utensil)
+    // card basic functions
+    public void Update_Card(Game_Controller controller, Food_ScrObj food, Utensil_ScrObj utensil)
     {
         this.controller = controller;
 
@@ -51,6 +52,11 @@ public class Card_Controller : MonoBehaviour
         icon.sprite = controller.dataBase.Find_CardType_Icon(data.type);
         data.currentAmount = 1;
         amountText.text = data.currentAmount.ToString();
+    }
+
+    public void Spawn_OtherCard(Card_Type cardType, int id, int amount)
+    {
+
     }
 
     // card check system

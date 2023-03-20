@@ -13,7 +13,7 @@ public struct Card_Type_Icon
 
 public class DataBase : MonoBehaviour
 {
-    public GameObject card;
+    public GameObject blankCard;
 
     public Card_Type_Icon[] typeIconDatas;
     public Food_ScrObj[] foods;
