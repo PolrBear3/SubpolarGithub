@@ -5,7 +5,7 @@ using UnityEngine;
 public class CardDetection_System : MonoBehaviour
 {
     private Card_Controller controller;
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
 
     [HideInInspector] public bool cardDetected;
 
