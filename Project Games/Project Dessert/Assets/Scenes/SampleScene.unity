@@ -207,6 +207,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &865905521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 865905522}
+  m_Layer: 0
+  m_Name: Field Cards
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &865905522
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865905521}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1526270543}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1526270540
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +272,7 @@ MonoBehaviour:
   dataBase: {fileID: 1526270542}
   trackSystem: {fileID: 1526270544}
   spawnPoint: {fileID: 1809725609}
+  fieldCardsPoint: {fileID: 865905522}
   pushPowerRange: 3
   powerDecreaseTime: 2.5
   angleRange: 2
@@ -257,8 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blankCard: {fileID: 6631748365140324676, guid: 2b8d7b1ae9bddae43a45a91cf1f77374, type: 3}
-  defaultCards:
-  - {fileID: 6631748365140324676, guid: 04a33286b663745efb2b663d472293ee, type: 3}
+  defaultCards: []
   typeIconDatas:
   - cardType: 0
     typeIcon: {fileID: -435523586, guid: 1ad208325150e9346b3e50054bfff2d6, type: 3}
@@ -282,6 +313,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1809725609}
+  - {fileID: 865905522}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -308,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1809725609}
   m_Layer: 0
-  m_Name: Default Cards
+  m_Name: Spawn Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

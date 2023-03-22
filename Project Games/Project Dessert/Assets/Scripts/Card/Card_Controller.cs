@@ -14,7 +14,7 @@ public struct Card_Data
 
 public class Card_Controller : MonoBehaviour
 {
-    public Game_Controller controller;
+    [HideInInspector] public Game_Controller controller;
 
     [HideInInspector] public DragDrop_System dragDrop;
     [HideInInspector] public CardDetection_System detection;
@@ -54,9 +54,21 @@ public class Card_Controller : MonoBehaviour
         amountText.text = data.currentAmount.ToString();
     }
 
-    public void Spawn_OtherCard(Card_Type cardType, int id, int amount)
+    public void Spawn_OtherCards(Card_Type cardType, int id, int amount)
     {
+        StartCoroutine(Spawn_OtherCards_Delay(cardType, id, amount));
+    }
+    private IEnumerator Spawn_OtherCards_Delay(Card_Type cardType, int id, int amount)
+    {
+        // set spawn point random range -1 to 1
+        // spawn card
+        // spawn card update
+        // move spawn card to field cards point
 
+        for (int i = 0; i < amount; i++)
+        {
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     // card check system

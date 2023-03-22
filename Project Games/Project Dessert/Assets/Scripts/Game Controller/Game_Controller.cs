@@ -8,16 +8,23 @@ public class Game_Controller : MonoBehaviour
     public FieldCard_Track_System trackSystem;
 
     public Transform spawnPoint;
+    public Transform fieldCardsPoint;
     [SerializeField] private float pushPowerRange;
     [SerializeField] private float powerDecreaseTime;
     [SerializeField] private float angleRange;
 
     private void Start()
     {
-        StartCoroutine(Spawn_Default_Cards(1));
+        Spawn_DefaultCards();
     }
 
-    private IEnumerator Spawn_Default_Cards(float delayTime)
+    private void Spawn_DefaultCards()
+    {
+        if (dataBase.defaultCards.Count == 0) return;
+
+        StartCoroutine(Spawn_DefaultCards_Delay());
+    }
+    private IEnumerator Spawn_DefaultCards_Delay()
     {
         for (int i = 0; i < dataBase.defaultCards.Count; i++)
         {
@@ -38,7 +45,7 @@ public class Game_Controller : MonoBehaviour
             cardController.Update_Card(this, null, null);
             trackSystem.Addto_Track(cardController);
 
-            yield return new WaitForSeconds(delayTime);
+            yield return new WaitForSeconds(1f);
         }
     }
     private IEnumerator Spawn_Push_Decrease(Rigidbody2D rb)

@@ -589,6 +589,7 @@ MonoBehaviour:
   highlightBox: {fileID: 4716479073083908039}
   mainSorting: {fileID: 1065212046181836987}
   attached: 0
+  highlightedCards: []
   followSpeed: 20
   shadowSpeed: 0.1
   shaodwOffset: 0.4
@@ -604,6 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1cfa7b587fb74194977f6579fbf26e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   cardDetected: 0
   pushPower: 0.5
   pushDecreaseTime: 0.4
