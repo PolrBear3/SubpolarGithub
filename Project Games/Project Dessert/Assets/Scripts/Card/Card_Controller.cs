@@ -30,23 +30,32 @@ public class Card_Controller : MonoBehaviour
         dragDrop = gameObject.GetComponent<DragDrop_System>();
         detection = gameObject.GetComponent<CardDetection_System>();
     }
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.A)) return;
+        Spawn_OtherCards(Card_Type.food, 0, 3);
+    }
 
-    // card basic functions
-    public void Update_Card(Game_Controller controller, Food_ScrObj food, Utensil_ScrObj utensil)
+    // card update
+    public void Update_Card(Game_Controller controller, Card_Type cardType, int id)
     {
         this.controller = controller;
 
-        if (food != null)
+        if (Card_Type.food == cardType)
         {
-            data.food = food;
+            data.food = controller.dataBase.Find_Food(id);
             main.sprite = data.food.foodSprite;
             data.type = Card_Type.food;
         }
-        else if (utensil != null)
+        else if (Card_Type.utensil == cardType)
         {
-            data.utensil = utensil;
+            data.utensil = controller.dataBase.Find_Utensil(id);
             main.sprite = data.utensil.utensilSprite;
             data.type = Card_Type.utensil;
+        }
+        else if (Card_Type.manager == cardType)
+        {
+            data.type = Card_Type.manager;
         }
 
         icon.sprite = controller.dataBase.Find_CardType_Icon(data.type);
@@ -54,19 +63,34 @@ public class Card_Controller : MonoBehaviour
         amountText.text = data.currentAmount.ToString();
     }
 
+    // other cards spawn function
     public void Spawn_OtherCards(Card_Type cardType, int id, int amount)
     {
         StartCoroutine(Spawn_OtherCards_Delay(cardType, id, amount));
     }
     private IEnumerator Spawn_OtherCards_Delay(Card_Type cardType, int id, int amount)
     {
-        // set spawn point random range -1 to 1
-        // spawn card
-        // spawn card update
-        // move spawn card to field cards point
-
         for (int i = 0; i < amount; i++)
         {
+            // set spawn point random range -1 to 1
+            float xRange = Random.Range(-1f, 1f);
+            float yRange = Random.Range(-1f, 1f);
+
+            // spawn card
+            var spawnedCard = Instantiate(controller.dataBase.blankCard, transform.position, Quaternion.identity);
+            spawnedCard.transform.parent = transform;
+            spawnedCard.transform.localPosition = new Vector2(xRange, yRange);
+            
+            // move spawn card to field cards point
+            spawnedCard.transform.parent = controller.trackSystem.transform;
+
+            // get card controller data
+            if (!spawnedCard.TryGetComponent(out Card_Controller cardController)) continue;
+
+            // update card and add to track system
+            cardController.Update_Card(controller, cardType, id);
+            controller.trackSystem.Addto_Track(cardController);
+
             yield return new WaitForSeconds(1f);
         }
     }
@@ -90,6 +114,11 @@ public class Card_Controller : MonoBehaviour
             if (cardController.data.currentAmount == data.utensil.maxAmount) return false;
             // dropped cards max check
             if (data.currentAmount == data.utensil.maxAmount) return false;
+            return true;
+        }
+        else if (cardController.data.type == Card_Type.manager)
+        {
+            // manager card check
             return true;
         }
 

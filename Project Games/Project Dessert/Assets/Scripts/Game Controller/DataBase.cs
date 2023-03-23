@@ -38,4 +38,13 @@ public class DataBase : MonoBehaviour
         }
         return null;
     }
+    public Utensil_ScrObj Find_Utensil(int id)
+    {
+        for (int i = 0; i < utensils.Length; i++)
+        {
+            if (id != utensils[i].utensilID) continue;
+            return utensils[i];
+        }
+        return null;
+    }
 }

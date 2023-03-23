@@ -59,8 +59,16 @@ public class DragDrop_System : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (boxCollider != Physics2D.OverlapPoint(mousePosition)) return;
 
-        if (!attached && !controller.detection.cardDetected) attached = true;
-        else attached = false;
+        if (!attached && !controller.detection.cardDetected)
+        {
+            attached = true; 
+
+            controller.detection.rb.velocity = Vector2.zero;
+        }
+        else
+        {
+            attached = false;
+        }
 
         Combine_to_ClosestCard();
         Highlight_Interactable_Cards();
