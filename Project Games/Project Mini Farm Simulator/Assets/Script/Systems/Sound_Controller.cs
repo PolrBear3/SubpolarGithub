@@ -15,7 +15,6 @@ public class Sound_Controller : MonoBehaviour
         bgmSource.clip = clip;
         bgmSource.Play();
     }
-
     public void Play_SFX(AudioClip clip)
     {
         if (!sfxSource.isPlaying)
@@ -33,5 +32,16 @@ public class Sound_Controller : MonoBehaviour
             sfxSource3.clip = clip;
             sfxSource3.Play();
         }
+    }
+
+    public void BGM_Volume_Control(float value)
+    {
+        bgmSource.volume = value;
+    }
+    public void SFX_Volume_Control(float value)
+    {
+        sfxSource.volume = value;
+        sfxSource2.volume = value;
+        sfxSource3.volume = value;
     }
 }

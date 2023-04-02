@@ -13,6 +13,8 @@ public class Options_Menu_Data
 public class Options_Menu_UI
 {
     public RectTransform optionsPanel;
+    public Slider bgmSlider;
+    public Slider sfxSlider;
 }
 
 public class Options_Menu : MonoBehaviour
@@ -70,5 +72,26 @@ public class Options_Menu : MonoBehaviour
     {
         if (!data.menuOn) { Open(); }
         else { Close(); }
+    }
+
+    // volume adjust
+    public void Adjust_BGM_Volume()
+    {
+        controller.soundController.BGM_Volume_Control(ui.bgmSlider.value);
+    }
+    public void Adjust_SFX_Volume()
+    {
+        controller.soundController.SFX_Volume_Control(ui.sfxSlider.value);
+    }
+
+    public void Mute_BGM_Volume()
+    {
+        ui.bgmSlider.value = 0.0001f;
+        Adjust_BGM_Volume();
+    }
+    public void Mute_SFX_Volume()
+    {
+        ui.sfxSlider.value = 0.0001f;
+        Adjust_SFX_Volume();
     }
 }
