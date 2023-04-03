@@ -84,14 +84,25 @@ public class Options_Menu : MonoBehaviour
         controller.soundController.SFX_Volume_Control(ui.sfxSlider.value);
     }
 
+    // volume slider adjust
+    public void Adjust_BGM_Volume_Slider(float value)
+    {
+        ui.bgmSlider.value = value;
+    }
+    public void Adjust_SFX_Volume_Slider(float value)
+    {
+        ui.sfxSlider.value = value;
+    }
+
+    // mute option
     public void Mute_BGM_Volume()
     {
-        ui.bgmSlider.value = 0.0001f;
+        Adjust_BGM_Volume_Slider(0.0001f);
         Adjust_BGM_Volume();
     }
     public void Mute_SFX_Volume()
     {
-        ui.sfxSlider.value = 0.0001f;
+        Adjust_SFX_Volume_Slider(0.0001f);
         Adjust_SFX_Volume();
     }
 }

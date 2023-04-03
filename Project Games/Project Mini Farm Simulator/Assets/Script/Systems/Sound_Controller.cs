@@ -10,6 +10,15 @@ public class Sound_Controller : MonoBehaviour
     [SerializeField] private AudioSource sfxSource2;
     [SerializeField] private AudioSource sfxSource3;
 
+    public float BGM_Volume()
+    {
+        return bgmSource.volume;
+    }
+    public float SFX_Volume()
+    {
+        return sfxSource.volume;
+    }
+
     public void Play_BGM(AudioClip clip)
     {
         bgmSource.clip = clip;

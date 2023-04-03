@@ -63,6 +63,8 @@ public class Save_System : MonoBehaviour
         Save_All_Collectable_Datas();
         Save_All_CollectableFrames();
 
+        Save_Sound_State();
+
         Debug.Log("Game Saved");
     }
     private void Load_All()
@@ -77,9 +79,7 @@ public class Save_System : MonoBehaviour
         Load_All_Collectable_Datas();
         Load_All_CollectableFrames();
 
-        // sound
-        controller.soundController.Play_SFX(controller.eventSystem.data.currentWeather.weatherSFX);
-        controller.soundController.Play_BGM(controller.eventSystem.data.currentWeather.weatherBGM);
+        Load_Sound_State();
 
         controller.defaultMenu.Update_UI();
         controller.defaultMenu.Load_Day_Animation();
@@ -156,6 +156,28 @@ public class Save_System : MonoBehaviour
             // dont initate tutorial start panel
             Destroy(controller.tutorial.gameObject);
         }
+    }
+
+    // Sound
+    private void Save_Sound_State()
+    {
+        ES3.Save("bgmVolume", controller.soundController.BGM_Volume());
+        ES3.Save("sfxVolume", controller.soundController.SFX_Volume());
+    }
+    private void Load_Sound_State()
+    {
+        controller.soundController.Play_SFX(controller.eventSystem.data.currentWeather.weatherSFX);
+        controller.soundController.Play_BGM(controller.eventSystem.data.currentWeather.weatherBGM);
+
+        if (!Game_Saved()) return;
+
+        float bgmVolume = ES3.Load("bgmVolume", controller.soundController.BGM_Volume());
+        controller.soundController.BGM_Volume_Control(bgmVolume);
+        controller.optionsMenu.Adjust_BGM_Volume_Slider(bgmVolume);
+
+        float sfxVolume = ES3.Load("sfxVolume", controller.soundController.SFX_Volume());
+        controller.soundController.SFX_Volume_Control(sfxVolume);
+        controller.optionsMenu.Adjust_SFX_Volume_Slider(sfxVolume);
     }
 
     // farm tiles
