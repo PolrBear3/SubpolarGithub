@@ -52,6 +52,9 @@ public class History_Status_Panel : MonoBehaviour
         // open tooltip
         else
         {
+            // close seed tooltip
+            deathMenu.controller.unPlantedMenu.Hide_Seed_ToolTip();
+
             currentIconNum = iconNum;
             statusToolTip.Show(pressedIcon.currentStatus);
         }

@@ -59,6 +59,9 @@ public class Death_Menu : MonoBehaviour
     }
     public void Close()
     {
+        // close seed tooltip
+        controller.unPlantedMenu.Hide_Seed_ToolTip();
+
         Close_Buff_History_Panel();
         statusPanel.Hide_Status_ToolTip();
 
@@ -69,6 +72,9 @@ public class Death_Menu : MonoBehaviour
     // close for pressing close menu button in death menu
     public void InMenu_Close()
     {
+        // close seed tooltip
+        controller.unPlantedMenu.Hide_Seed_ToolTip();
+
         if (data.buffPanelOn)
         {
             Close_Buff_History_Panel();
@@ -104,6 +110,9 @@ public class Death_Menu : MonoBehaviour
     }
     public void OpenClose_Buff_History_Panel()
     {
+        // close seed tooltip
+        controller.unPlantedMenu.Hide_Seed_ToolTip();
+
         if (!data.buffPanelOn)
         {
             Open_Buff_History_Panel();
@@ -128,5 +137,19 @@ public class Death_Menu : MonoBehaviour
 
         // current statuses
         statusPanel.Assign_All(currentFarmTile);
+    }
+
+    // seed tooltip
+    public void Death_Seed_ToolTip()
+    {
+        if (!controller.unPlantedMenu.seedToolTipUIconnection.toolTipOn)
+        {
+            statusPanel.Hide_Status_ToolTip();
+            controller.unPlantedMenu.Show_PlanedSeed_ToolTip(controller.farmTiles[controller.openedTileNum].deathData.previousSeed);
+        }
+        else
+        {
+            controller.unPlantedMenu.Hide_Seed_ToolTip();
+        }
     }
 }

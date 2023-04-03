@@ -274,7 +274,6 @@ public class UnPlanted_Menu : MonoBehaviour
         seedToolTipUIconnection.toolTipOn = false;
         seedToolTipUIconnection.toolTipPanel.SetActive(false);
     }
-
     public void Show_Hide_ToolTip()
     {
         if (!seedToolTipUIconnection.toolTipOn && currentSeedInfo != null)
