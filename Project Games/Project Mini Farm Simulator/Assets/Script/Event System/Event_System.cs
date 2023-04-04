@@ -29,9 +29,6 @@ public struct Event_Data
 public class Event_System_Data
 {
     public Weather_ScrObj currentWeather;
-
-    public int newsAccurate;
-    public int newsInAccurate;
 }
 
 public class Event_System : MonoBehaviour
@@ -69,16 +66,12 @@ public class Event_System : MonoBehaviour
         if (x == currentWeatherData.season && Percentage_Setter(currentWeatherData.percentage))
         {
             data.currentWeather = weatherSystem.estimateWeathers[0].weather;
-            data.newsAccurate++;
         }
         // weather news incorrect
         else
         {
             int randomWeatherNum = Random.Range(0, 9);
             data.currentWeather = x.weatherPercentages[randomWeatherNum];
-
-            if (currentWeatherData.weather == data.currentWeather) data.newsAccurate++;
-            else data.newsInAccurate++;
         }
     }
 
