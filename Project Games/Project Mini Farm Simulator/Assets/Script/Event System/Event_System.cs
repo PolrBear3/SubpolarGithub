@@ -59,20 +59,36 @@ public class Event_System : MonoBehaviour
     // overall check update
     public void Set_Today_Weather()
     {
-        var x = controller.timeSystem.currentSeason;
+        Season_ScrObj currentSeason = controller.timeSystem.currentSeason;
         var currentWeatherData = weatherSystem.estimateWeathers[0];
 
         // weather news correct
-        if (x == currentWeatherData.season && Percentage_Setter(currentWeatherData.percentage))
+        if (currentSeason == currentWeatherData.season && Percentage_Setter(currentWeatherData.percentage))
         {
             data.currentWeather = weatherSystem.estimateWeathers[0].weather;
         }
         // weather news incorrect
         else
         {
-            int randomWeatherNum = Random.Range(0, 9);
-            data.currentWeather = x.weatherPercentages[randomWeatherNum];
+            data.currentWeather = Percentage_Weather();
         }
+    }
+    private Weather_ScrObj Percentage_Weather()
+    {
+        Season_ScrObj currentSeason = controller.timeSystem.currentSeason;
+        Weather_ScrObj chosenWeather = null;
+
+        while (chosenWeather == null)
+        {
+            for (int i = 0; i < currentSeason.weathers.Length; i++)
+            {
+                if (!Percentage_Setter(currentSeason.weathers[i].percentage)) continue;
+                chosenWeather = currentSeason.weathers[i].weather;
+                break;
+            }
+        }
+
+        return chosenWeather;
     }
 
     private void Set_All_Events()

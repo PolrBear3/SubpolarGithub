@@ -28,11 +28,11 @@ public class WeatherEstimation_System : MonoBehaviour
             weatherData.percentage = randomPercentageNum;
 
             int randomWeatherNum = Random.Range(0, 9);
-            weatherData.weather = currentSeason.weatherPercentages[randomWeatherNum];
+            //weatherData.weather = currentSeason.weatherPercentages[randomWeatherNum];
 
             weatherData.season = currentSeason;
 
-            estimateWeathers.Add(weatherData);
+            //estimateWeathers.Add(weatherData);
         }
     }
     public void Next_Estimate_Weathers()
@@ -44,13 +44,13 @@ public class WeatherEstimation_System : MonoBehaviour
         weatherData weatherData;
 
         int randomWeatherNum = Random.Range(0, 9);
-        weatherData.weather = currentSeason.weatherPercentages[randomWeatherNum];
+        //weatherData.weather = currentSeason.weatherPercentages[randomWeatherNum];
 
         float randomPercentageNum = Random.Range(10, 100);
         weatherData.percentage = randomPercentageNum;
 
         weatherData.season = currentSeason;
 
-        estimateWeathers.Add(weatherData);
+        //estimateWeathers.Add(weatherData);
     }
 }
