@@ -27,12 +27,11 @@ public class WeatherEstimation_System : MonoBehaviour
             float randomPercentageNum = Random.Range(10, 100);
             weatherData.percentage = randomPercentageNum;
 
-            int randomWeatherNum = Random.Range(0, 9);
-            //weatherData.weather = currentSeason.weatherPercentages[randomWeatherNum];
+            weatherData.weather = controller.eventSystem.Set_Weather();
 
             weatherData.season = currentSeason;
 
-            //estimateWeathers.Add(weatherData);
+            estimateWeathers.Add(weatherData);
         }
     }
     public void Next_Estimate_Weathers()
@@ -42,15 +41,13 @@ public class WeatherEstimation_System : MonoBehaviour
         var currentSeason = controller.timeSystem.currentSeason;
 
         weatherData weatherData;
-
-        int randomWeatherNum = Random.Range(0, 9);
-        //weatherData.weather = currentSeason.weatherPercentages[randomWeatherNum];
+        weatherData.weather = controller.eventSystem.Set_Weather();
 
         float randomPercentageNum = Random.Range(10, 100);
         weatherData.percentage = randomPercentageNum;
 
         weatherData.season = currentSeason;
 
-        //estimateWeathers.Add(weatherData);
+        estimateWeathers.Add(weatherData);
     }
 }

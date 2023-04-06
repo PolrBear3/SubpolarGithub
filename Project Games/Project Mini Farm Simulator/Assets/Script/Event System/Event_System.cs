@@ -55,6 +55,34 @@ public class Event_System : MonoBehaviour
         }
         else return false;
     }
+    public Weather_ScrObj Set_Weather()
+    {
+        Season_ScrObj currentSeason = controller.timeSystem.currentSeason;
+        Weather_ScrObj chosenWeather = null;
+
+        // check for weather percentage under 0
+        for (int i = 0; i < currentSeason.weathers.Length; i++)
+        {
+            if (currentSeason.weathers[i].percentage >= 1) continue;
+
+            chosenWeather = currentSeason.weathers[i].weather;
+            break;
+        }
+
+        // set weather
+        while (chosenWeather == null)
+        {
+            for (int i = 0; i < currentSeason.weathers.Length; i++)
+            {
+                if (!Percentage_Setter(currentSeason.weathers[i].percentage)) continue;
+                
+                chosenWeather = currentSeason.weathers[i].weather;
+                break;
+            }
+        }
+
+        return chosenWeather;
+    }
 
     // overall check update
     public void Set_Today_Weather()
@@ -70,25 +98,8 @@ public class Event_System : MonoBehaviour
         // weather news incorrect
         else
         {
-            data.currentWeather = Percentage_Weather();
+            data.currentWeather = Set_Weather();
         }
-    }
-    private Weather_ScrObj Percentage_Weather()
-    {
-        Season_ScrObj currentSeason = controller.timeSystem.currentSeason;
-        Weather_ScrObj chosenWeather = null;
-
-        while (chosenWeather == null)
-        {
-            for (int i = 0; i < currentSeason.weathers.Length; i++)
-            {
-                if (!Percentage_Setter(currentSeason.weathers[i].percentage)) continue;
-                chosenWeather = currentSeason.weathers[i].weather;
-                break;
-            }
-        }
-
-        return chosenWeather;
     }
 
     private void Set_All_Events()
@@ -98,7 +109,6 @@ public class Event_System : MonoBehaviour
             allEvents.Add(events.transform.GetChild(i).gameObject);
         }
     }
-
     public void Activate_All_Events()
     {
         for (int i = 0; i < allEvents.Count; i++)
