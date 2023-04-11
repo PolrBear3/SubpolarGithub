@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tile_Controller : MonoBehaviour
 {
+    private SpriteRenderer sr;
+
     private int _rowNum;
     public int rowNum { get => _rowNum; set => _rowNum = value; }
 
@@ -13,11 +15,36 @@ public class Tile_Controller : MonoBehaviour
     private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
+    private void Awake()
+    {
+        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { this.sr = sr; }
+    }
+
     public bool Found(int rowNum, int columnNum)
     {
         if (rowNum != this.rowNum) return false;
         if (columnNum != this.columnNum) return false;
         return true;
+    }
+
+    public bool Has_Prefab()
+    {
+        if (currentPrefabs.Count > 0) return true;
+        return false;
+    }
+    public bool Has_Prefab_TagID(int searchID)
+    {
+        if (!Has_Prefab()) return false;
+
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag tag)) continue;
+            if (searchID != tag.prefabID) continue;
+
+            return true;
+        }
+
+        return false;
     }
 
     public void Set_Data(int row, int column)
@@ -37,5 +64,10 @@ public class Tile_Controller : MonoBehaviour
         {
             currentPrefabs.Add(transform.GetChild(i).gameObject);
         }
+    }
+
+    public void Highlight_Tile()
+    {
+        sr.color = Color.green;
     }
 }

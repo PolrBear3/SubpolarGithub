@@ -11,7 +11,7 @@ public class Prefabs_Controller : MonoBehaviour
     {
         for (int i = 0; i < characters.Length; i++)
         {
-            if (id != characters[i].Prefab_ID()) continue;
+            if (id != characters[i].prefabID) continue;
             return characters[i].Prefab();
         }
         return null;
@@ -20,7 +20,7 @@ public class Prefabs_Controller : MonoBehaviour
     {
         for (int i = 0; i < tiles.Length; i++)
         {
-            if (id != tiles[i].Prefab_ID()) continue;
+            if (id != tiles[i].prefabID) continue;
             return tiles[i].Prefab();
         }
         return null;

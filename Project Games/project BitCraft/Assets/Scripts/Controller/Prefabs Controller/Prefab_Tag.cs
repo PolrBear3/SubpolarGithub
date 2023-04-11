@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Prefab_Tag : MonoBehaviour
 {
-    [SerializeField] private int prefabID;
-    private GameObject thisPrefab;
+    [SerializeField] private int _prefabID;
+    public int prefabID { get => _prefabID; set => _prefabID = value; }
 
-    public int Prefab_ID() 
-    {
-        return prefabID;
-    }
+    private GameObject _thisPrefab;
+    public GameObject thisPrefab { get => _thisPrefab; set => _thisPrefab = value; }
 
     public GameObject Prefab()
     {

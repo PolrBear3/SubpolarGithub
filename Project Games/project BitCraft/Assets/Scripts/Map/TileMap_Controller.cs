@@ -4,18 +4,31 @@ using UnityEngine;
 
 public class TileMap_Controller : MonoBehaviour
 {
+    // components
     [SerializeField] private Game_Controller controller;
 
+    private TileMap_Combination_System _combinationSystem;
+    public TileMap_Combination_System combinationSystem { get => _combinationSystem; set => _combinationSystem = value; }
+
+    private TileMap_Action_System _actionSystem;
+    public TileMap_Action_System actionSystem { get => _actionSystem; set => _actionSystem = value; }
+
+    // ingame components
     private List<Tile_Controller> _tiles = new List<Tile_Controller>();
     public List<Tile_Controller> tiles { get => _tiles; set => _tiles = value; }
 
     private Player_Controller _playerController;
     public Player_Controller playerController { get => _playerController; set => _playerController = value; }
 
+    private void Awake()
+    {
+        if (gameObject.TryGetComponent(out TileMap_Combination_System combinationSystem)) { this.combinationSystem = combinationSystem; }
+        if (gameObject.TryGetComponent(out TileMap_Action_System actionSystem)) { this.actionSystem = actionSystem; }
+    }
     private void Start()
     {
         Set_Tiles(5);
-        Set_Player(2, 2);
+        Set_Player(0, 0);
     }
 
     public Tile_Controller Get_Tile(int rowNum, int columnNum)
