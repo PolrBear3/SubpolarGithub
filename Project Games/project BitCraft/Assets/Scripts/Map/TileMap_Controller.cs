@@ -28,7 +28,7 @@ public class TileMap_Controller : MonoBehaviour
     private void Start()
     {
         Set_Tiles(5);
-        Set_Player(0, 0);
+        Set_Player(4, 0);
     }
 
     public Tile_Controller Get_Tile(int rowNum, int columnNum)

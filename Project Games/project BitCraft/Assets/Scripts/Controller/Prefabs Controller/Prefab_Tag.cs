@@ -2,8 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Prefab_Type
+{
+    all,
+    tile,
+    character,
+    placeable,
+    overlapPlaceable
+}
+
 public class Prefab_Tag : MonoBehaviour
 {
+    [SerializeField] private Prefab_Type _prefabType;
+    public Prefab_Type prefabType { get => _prefabType; set => _prefabType = value; }
+
     [SerializeField] private int _prefabID;
     public int prefabID { get => _prefabID; set => _prefabID = value; }
 

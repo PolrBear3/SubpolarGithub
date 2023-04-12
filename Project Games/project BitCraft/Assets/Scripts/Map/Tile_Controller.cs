@@ -6,10 +6,10 @@ public class Tile_Controller : MonoBehaviour
 {
     private SpriteRenderer sr;
 
-    private int _rowNum;
+    [SerializeField] private int _rowNum;
     public int rowNum { get => _rowNum; set => _rowNum = value; }
 
-    private int _columnNum;
+    [SerializeField] private int _columnNum;
     public int columnNum { get => _columnNum; set => _columnNum = value; }
 
     private List<GameObject> _currentPrefabs = new List<GameObject>();
@@ -27,14 +27,24 @@ public class Tile_Controller : MonoBehaviour
         return true;
     }
 
-    public bool Has_Prefab()
+    public bool Has_Prefab(Prefab_Type type)
     {
-        if (currentPrefabs.Count > 0) return true;
+        if (currentPrefabs.Count <= 0) return false;
+        if (type == Prefab_Type.all) return true;
+
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag tag)) continue;
+            if (type != tag.prefabType) continue;
+
+            return true;
+        }
+
         return false;
     }
-    public bool Has_Prefab_TagID(int searchID)
+    public bool Has_Prefab_ID(Prefab_Type type, int searchID)
     {
-        if (!Has_Prefab()) return false;
+        Has_Prefab(type);
 
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
