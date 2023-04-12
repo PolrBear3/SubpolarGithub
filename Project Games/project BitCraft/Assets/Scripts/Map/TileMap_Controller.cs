@@ -28,7 +28,7 @@ public class TileMap_Controller : MonoBehaviour
     private void Start()
     {
         Set_Tiles(5);
-        Set_Player(4, 0);
+        Set_Player(2, 2);
     }
 
     public Tile_Controller Get_Tile(int rowNum, int columnNum)
@@ -85,10 +85,7 @@ public class TileMap_Controller : MonoBehaviour
         GameObject player = Instantiate(playerPrefab, tilePosition.position, Quaternion.identity);
 
         // set player controller component
-        if (player.TryGetComponent(out Player_Controller playerController))
-        {
-            this.playerController = playerController;
-        }
+        if (player.TryGetComponent(out Player_Controller playerController)) { this.playerController = playerController; }
 
         // update player data
         playerController.Set_Data(rowNum, columnNum);

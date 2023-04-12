@@ -24,19 +24,20 @@ public class TileMap_Combination_System : MonoBehaviour
             break;
         }
 
-        // left tile 3 2
+        // left tile
         crossTiles.Add(mapController.Get_Tile(mainTile.rowNum - 1, mainTile.columnNum));
-        // right tile 5 2
+        // right tile
         crossTiles.Add(mapController.Get_Tile(mainTile.rowNum + 1, mainTile.columnNum));
-        // top tile 4 1
+        // top tile
         crossTiles.Add(mapController.Get_Tile(mainTile.rowNum, mainTile.columnNum - 1));
-        // bottom tile 4 3
+        // bottom tile
         crossTiles.Add(mapController.Get_Tile(mainTile.rowNum, mainTile.columnNum + 1));
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
             if (crossTiles[i] != null) continue;
-            crossTiles.Remove(crossTiles[i]);
+            crossTiles.RemoveAt(i);
+            i--;
         }
 
         return crossTiles;

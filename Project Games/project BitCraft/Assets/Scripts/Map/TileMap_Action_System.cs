@@ -22,7 +22,6 @@ public class TileMap_Action_System : MonoBehaviour
         for (int i = 0; i < tiles.Count; i++)
         {
             if (tiles[i].Has_Prefab(Prefab_Type.all)) continue;
-
             tiles[i].Highlight_Tile();
         }
     }
@@ -35,7 +34,6 @@ public class TileMap_Action_System : MonoBehaviour
         for (int i = 0; i < moveableTiles.Count; i++)
         {
             if (moveableTiles[i].Has_Prefab(Prefab_Type.placeable)) continue;
-
             moveableTiles[i].Highlight_Tile();
         }
     }

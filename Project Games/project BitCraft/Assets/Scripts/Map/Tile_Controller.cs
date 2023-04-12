@@ -6,10 +6,10 @@ public class Tile_Controller : MonoBehaviour
 {
     private SpriteRenderer sr;
 
-    [SerializeField] private int _rowNum;
+    private int _rowNum;
     public int rowNum { get => _rowNum; set => _rowNum = value; }
 
-    [SerializeField] private int _columnNum;
+    private int _columnNum;
     public int columnNum { get => _columnNum; set => _columnNum = value; }
 
     private List<GameObject> _currentPrefabs = new List<GameObject>();
