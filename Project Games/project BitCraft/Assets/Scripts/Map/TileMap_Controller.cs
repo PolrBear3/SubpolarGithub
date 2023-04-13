@@ -87,8 +87,11 @@ public class TileMap_Controller : MonoBehaviour
         // set player controller component
         if (player.TryGetComponent(out Player_Controller playerController)) { this.playerController = playerController; }
 
-        // update player data
-        playerController.Set_Data(rowNum, columnNum);
+        // set player data
+        playerController.Set_Data(this);
+
+        // update player position
+        playerController.Update_Position(rowNum, columnNum);
 
         // place inside tile
         Get_Tile(rowNum, columnNum).Track_Current_Prefabs(player.transform);

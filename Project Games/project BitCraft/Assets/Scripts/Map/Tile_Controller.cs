@@ -12,6 +12,9 @@ public class Tile_Controller : MonoBehaviour
     private int _columnNum;
     public int columnNum { get => _columnNum; set => _columnNum = value; }
 
+    private bool _selectReady = false;
+    public bool selectReady { get => _selectReady; set => _selectReady = value; }
+
     private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
@@ -76,8 +79,20 @@ public class Tile_Controller : MonoBehaviour
         }
     }
 
+    public void Click()
+    {
+        if (!selectReady) return;
+        Debug.Log("available tile clicked");
+    }
+
     public void Highlight_Tile()
     {
+        selectReady = true;
         sr.color = Color.green;
+    }
+    public void UnHighlight_Tile()
+    {
+        selectReady = false;
+        sr.color = Color.white;
     }
 }

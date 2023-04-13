@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class TileMap_Action_System : MonoBehaviour
 {
-    private TileMap_Controller mapController;
+    private TileMap_Controller _mapController;
+    public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
 
     private void Awake()
     {
         if (gameObject.TryGetComponent(out TileMap_Controller mapController)) { this.mapController = mapController; }
     }
-    private void Start()
+
+    public void UnHighlight_All_tiles()
     {
-        Highlight_Player_Moveable_Tiles();
+        List<Tile_Controller> tiles = mapController.tiles;
+
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            tiles[i].UnHighlight_Tile();
+        }
     }
 
-    private void Highlight_Moveable_Tiles()
+    public void Highlight_All_Moveable_Tiles()
     {
         List<Tile_Controller> tiles = mapController.tiles;
 
@@ -26,9 +33,8 @@ public class TileMap_Action_System : MonoBehaviour
         }
     }
 
-    private void Highlight_Player_Moveable_Tiles()
+    public void Highlight_Player_Moveable_Tiles()
     {
-        // set available tiles for player
         List<Tile_Controller> moveableTiles = mapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
         for (int i = 0; i < moveableTiles.Count; i++)
