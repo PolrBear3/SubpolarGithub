@@ -25,4 +25,10 @@ public class Prefabs_Controller : MonoBehaviour
         }
         return null;
     }
+    public GameObject Get_Random_Tile()
+    {
+        int RandomNum = Random.Range(0, tiles.Length);
+
+        return tiles[RandomNum].Prefab();
+    }
 }

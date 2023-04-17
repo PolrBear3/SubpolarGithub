@@ -5,13 +5,17 @@ using UnityEngine;
 public class TileMap_Controller : MonoBehaviour
 {
     // components
-    [SerializeField] private Game_Controller controller;
-
-    private TileMap_Combination_System _combinationSystem;
-    public TileMap_Combination_System combinationSystem { get => _combinationSystem; set => _combinationSystem = value; }
+    [SerializeField] private Game_Controller _controller;
+    public Game_Controller controller { get => _controller; set => _controller = value; }
 
     private TileMap_Action_System _actionSystem;
     public TileMap_Action_System actionSystem { get => _actionSystem; set => _actionSystem = value; }
+
+    private TileMap_Render_System _renderSystem;
+    public TileMap_Render_System renderSystem { get => _renderSystem; set => _renderSystem = value; }
+
+    private TileMap_Combination_System _combinationSystem;
+    public TileMap_Combination_System combinationSystem { get => _combinationSystem; set => _combinationSystem = value; }
 
     // ingame components
     private List<Tile_Controller> _tiles = new List<Tile_Controller>();
@@ -20,10 +24,16 @@ public class TileMap_Controller : MonoBehaviour
     private Player_Controller _playerController;
     public Player_Controller playerController { get => _playerController; set => _playerController = value; }
 
+    // data
+    private int _mapSize;
+    public int mapSize { get => _mapSize; set => _mapSize = value; }
+
+    //
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out TileMap_Combination_System combinationSystem)) { this.combinationSystem = combinationSystem; }
         if (gameObject.TryGetComponent(out TileMap_Action_System actionSystem)) { this.actionSystem = actionSystem; }
+        if (gameObject.TryGetComponent(out TileMap_Render_System renderSystem)) { this.renderSystem = renderSystem; }
+        if (gameObject.TryGetComponent(out TileMap_Combination_System combinationSystem)) { this.combinationSystem = combinationSystem; }
     }
     private void Start()
     {
@@ -41,8 +51,40 @@ public class TileMap_Controller : MonoBehaviour
         return null;
     }
 
+    public Tile_Controller Get_Tile_With_PrefabID(Prefab_Type type, int prefabID)
+    {
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (!tiles[i].Has_Prefab_ID(type, prefabID)) continue;
+            return _tiles[i];
+        }
+        return null;
+    }
+    public List<Tile_Controller> Get_Tiles_With_PrefabID(Prefab_Type type, int prefabID)
+    {
+        List<Tile_Controller> returnList = new List<Tile_Controller>();
+
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (!tiles[i].Has_Prefab_ID(type, prefabID)) continue;
+            returnList.Add(tiles[i]);
+        }
+
+        return returnList;
+    }
+
+    public void AllTiles_Update_Data()
+    {
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            tiles[i].Update_Data();
+        }
+    }
+
     private void Set_Tiles(int size)
     {
+        mapSize = size;
+
         int rowNum = 0;
         int columnNum = 0;
 
@@ -52,7 +94,7 @@ public class TileMap_Controller : MonoBehaviour
             Vector2 position = new(rowNum - 2, -columnNum + 2);
 
             // instantiate
-            GameObject tile = Instantiate(controller.prefabsController.Get_Tile(0), position, Quaternion.identity);
+            GameObject tile = Instantiate(controller.prefabsController.Get_Random_Tile(), position, Quaternion.identity);
 
             // set inside tile map as child
             tile.transform.parent = transform;
@@ -63,8 +105,11 @@ public class TileMap_Controller : MonoBehaviour
                 // add to tiles list
                 tiles.Add(tileData);
 
-                // update tile data
-                tileData.Set_Data(rowNum, columnNum);
+                // set tile data
+                tileData.Set_Data(this);
+
+                // update tile position
+                tileData.Update_Position(rowNum, columnNum);
             }
 
             // tile num update
@@ -94,6 +139,17 @@ public class TileMap_Controller : MonoBehaviour
         playerController.Update_Position(rowNum, columnNum);
 
         // place inside tile
-        Get_Tile(rowNum, columnNum).Track_Current_Prefabs(player.transform);
+        Get_Tile(rowNum, columnNum).Set_Prefab(player.transform);
+
+        // update tiles
+        AllTiles_Update_Data();
+
+        // set player surrounding tiles to default tiles
+        List<Tile_Controller> surroundingTiles = combinationSystem.Prefab_Surrounding(Prefab_Type.character, 0);
+
+        for (int i = 0; i < surroundingTiles.Count; i++)
+        {
+            surroundingTiles[i].Change_Type(0);
+        }
     }
 }

@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class Tile_Controller : MonoBehaviour
 {
-    private SpriteRenderer sr;
+    private SpriteRenderer _sr;
+
+    [SerializeField] private List<Sprite> _sprites = new List<Sprite>(); 
+
+    private TileMap_Controller _mapController;
+    public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
+
+    private Prefab_Tag _prefabTag;
+    public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
     private int _rowNum;
     public int rowNum { get => _rowNum; set => _rowNum = value; }
@@ -15,12 +23,13 @@ public class Tile_Controller : MonoBehaviour
     private bool _selectReady = false;
     public bool selectReady { get => _selectReady; set => _selectReady = value; }
 
-    private List<GameObject> _currentPrefabs = new List<GameObject>();
+    [SerializeField] private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { this.sr = sr; }
+        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
+        if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
     }
 
     public bool Found(int rowNum, int columnNum)
@@ -29,8 +38,13 @@ public class Tile_Controller : MonoBehaviour
         if (columnNum != this.columnNum) return false;
         return true;
     }
+    public bool Is_Prefab_Type(Prefab_Type type)
+    {
+        if (prefabTag.prefabType == type) return true;
+        return false;
+    }
 
-    public bool Has_Prefab(Prefab_Type type)
+    public bool Has_Prefab_Type(Prefab_Type type)
     {
         if (currentPrefabs.Count <= 0) return false;
         if (type == Prefab_Type.all) return true;
@@ -47,7 +61,7 @@ public class Tile_Controller : MonoBehaviour
     }
     public bool Has_Prefab_ID(Prefab_Type type, int searchID)
     {
-        Has_Prefab(type);
+        if (!Has_Prefab_Type(type)) return false;
 
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
@@ -60,15 +74,65 @@ public class Tile_Controller : MonoBehaviour
         return false;
     }
 
-    public void Set_Data(int row, int column)
+    public Sprite Random_Sprite()
+    {
+        if (_sprites.Count <= 0)
+        {
+            Debug.Log("No sprites in _sprites list!");
+            return null;
+        }
+
+        if (_sprites.Count <= 1) return _sprites[0];
+
+        int randNum = Random.Range(0, _sprites.Count);
+        return _sprites[randNum];
+    }
+
+    public void Set_Data(TileMap_Controller mapController)
+    {
+        this.mapController = mapController;
+        _sr.sprite = Random_Sprite();
+    }
+    public void Change_Type(int prefabID)
+    {
+        Prefabs_Controller controller = mapController.controller.prefabsController;
+
+        GameObject tile = controller.Get_Tile(prefabID);
+        Prefab_Tag prefabTag;
+        Tile_Controller tileController;
+
+        // get prefab tag component
+        if (!tile.TryGetComponent(out Prefab_Tag x)) return;
+        prefabTag = x;
+
+        // get tile controller component
+        if (!tile.TryGetComponent(out Tile_Controller y)) return;
+        tileController = y;
+
+        // prefab tag type
+        this.prefabTag.prefabType = prefabTag.prefabType;
+        // prefab tag id
+        this.prefabTag.prefabID = prefabTag.prefabID;
+        // sprite
+        _sr.sprite = tileController.Random_Sprite();
+    }
+
+    public void Set_Prefab(Transform prefabTransform)
+    {
+        prefabTransform.parent = transform;
+    }
+    public void Update_Position(int row, int column)
     {
         rowNum = row;
         columnNum = column;
     }
-    public void Track_Current_Prefabs(Transform prefabTransform)
-    {
-        prefabTransform.parent = transform;
 
+    public void Update_Data()
+    {
+        Update_Current_Prefabs();
+    }
+    private void Update_Current_Prefabs()
+    {
         currentPrefabs.Clear();
 
         if (transform.childCount <= 0) return;
@@ -82,17 +146,22 @@ public class Tile_Controller : MonoBehaviour
     public void Click()
     {
         if (!selectReady) return;
-        Debug.Log("available tile clicked");
+
+        // tile click interactions
+        mapController.actionSystem.Move_Player(this);
+        //
+
+        mapController.actionSystem.UnHighlight_All_tiles();
     }
 
-    public void Highlight_Tile()
+    public void Highlight()
     {
         selectReady = true;
-        sr.color = Color.green;
+        _sr.color = Color.green;
     }
-    public void UnHighlight_Tile()
+    public void UnHighlight()
     {
         selectReady = false;
-        sr.color = Color.white;
+        _sr.color = Color.white;
     }
 }

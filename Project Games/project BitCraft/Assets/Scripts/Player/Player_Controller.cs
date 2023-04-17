@@ -13,8 +13,11 @@ public class Player_Controller : MonoBehaviour
     private int _currentColumnNum;
     public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
 
-    private bool _moveReady = false;
+    [SerializeField] private bool _moveReady = false;
     public bool moveReady { get => _moveReady; set => _moveReady = value; }
+
+    [SerializeField] private float _moveSpeed;
+    public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
 
     public void Set_Data(TileMap_Controller mapController)
     {
@@ -42,7 +45,7 @@ public class Player_Controller : MonoBehaviour
 
     public void Move()
     {
-        // lean tween to vector zero
-        transform.localPosition = Vector2.zero;
+        LeanTween.moveLocal(gameObject, Vector2.zero, moveSpeed).setEase(LeanTweenType.easeInOutQuint);
+        moveReady = false;
     }
 }

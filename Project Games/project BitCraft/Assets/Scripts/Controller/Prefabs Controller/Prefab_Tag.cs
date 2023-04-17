@@ -5,7 +5,6 @@ using UnityEngine;
 public enum Prefab_Type
 {
     all,
-    tile,
     character,
     placeable,
     overlapPlaceable
