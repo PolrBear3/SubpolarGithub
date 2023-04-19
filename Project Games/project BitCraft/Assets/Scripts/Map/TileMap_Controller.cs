@@ -37,7 +37,7 @@ public class TileMap_Controller : MonoBehaviour
     }
     private void Start()
     {
-        Set_Tiles(5);
+        renderSystem.Set_Tiles(5);
         Set_Player(2, 2);
     }
 
@@ -50,7 +50,6 @@ public class TileMap_Controller : MonoBehaviour
         }
         return null;
     }
-
     public Tile_Controller Get_Tile_With_PrefabID(Prefab_Type type, int prefabID)
     {
         for (int i = 0; i < tiles.Count; i++)
@@ -81,46 +80,6 @@ public class TileMap_Controller : MonoBehaviour
         }
     }
 
-    private void Set_Tiles(int size)
-    {
-        mapSize = size;
-
-        int rowNum = 0;
-        int columnNum = 0;
-
-        for (int i = 0; i < size * size; i++)
-        {
-            // set position
-            Vector2 position = new(rowNum - 2, -columnNum + 2);
-
-            // instantiate
-            GameObject tile = Instantiate(controller.prefabsController.Get_Random_Tile(), position, Quaternion.identity);
-
-            // set inside tile map as child
-            tile.transform.parent = transform;
-
-            // get tile controller component
-            if (tile.TryGetComponent(out Tile_Controller tileData))
-            {
-                // add to tiles list
-                tiles.Add(tileData);
-
-                // set tile data
-                tileData.Set_Data(this);
-
-                // update tile position
-                tileData.Update_Position(rowNum, columnNum);
-            }
-
-            // tile num update
-            rowNum++;
-
-            if (rowNum <= 4) continue;
-
-            rowNum = 0;
-            columnNum++;
-        }
-    }
     private void Set_Player(int rowNum, int columnNum)
     {
         GameObject playerPrefab = controller.prefabsController.Get_Character(0);

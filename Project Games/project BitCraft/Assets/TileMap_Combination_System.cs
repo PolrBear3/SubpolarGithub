@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TileMap_Combination_System : MonoBehaviour
 {
-    private TileMap_Controller mapController;
+    private TileMap_Controller _mapController;
+    public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
 
     private void Awake()
     {
@@ -58,6 +59,7 @@ public class TileMap_Combination_System : MonoBehaviour
 
         return surroundingTiles;
     }
+
     public List<Tile_Controller> Map_Crust()
     {
         List<Tile_Controller> allTiles = mapController.tiles;
@@ -76,5 +78,25 @@ public class TileMap_Combination_System : MonoBehaviour
         }
 
         return crustTiles;
+    }
+    public List<Tile_Controller> Map_Corners()
+    {
+        List<Tile_Controller> allTiles = mapController.tiles;
+        List<Tile_Controller> cornerTiles = new List<Tile_Controller>();
+
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            // top corners
+            if (allTiles[i].rowNum == 0 || allTiles[i].rowNum == mapController.mapSize - 1)
+            {
+                // bottom corners
+                if (allTiles[i].columnNum == 0 || allTiles[i].columnNum == mapController.mapSize - 1)
+                {
+                    cornerTiles.Add(allTiles[i]);
+                }
+            }
+        }
+
+        return cornerTiles;
     }
 }

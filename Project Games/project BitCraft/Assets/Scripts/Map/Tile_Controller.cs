@@ -32,6 +32,7 @@ public class Tile_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
     }
 
+    // checks
     public bool Found(int rowNum, int columnNum)
     {
         if (rowNum != this.rowNum) return false;
@@ -74,6 +75,7 @@ public class Tile_Controller : MonoBehaviour
         return false;
     }
 
+    // updates
     public Sprite Random_Sprite()
     {
         if (_sprites.Count <= 0)
@@ -143,6 +145,7 @@ public class Tile_Controller : MonoBehaviour
         }
     }
 
+    // functions
     public void Click()
     {
         if (!selectReady) return;

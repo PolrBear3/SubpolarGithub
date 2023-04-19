@@ -13,12 +13,37 @@ public class Player_Controller : MonoBehaviour
     private int _currentColumnNum;
     public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
 
-    [SerializeField] private bool _moveReady = false;
+    private bool _moveReady = false;
     public bool moveReady { get => _moveReady; set => _moveReady = value; }
 
     [SerializeField] private float _moveSpeed;
     public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
 
+    // checks
+    public bool Position_On_Crust()
+    {
+        List<Tile_Controller> crustTiles = mapController.combinationSystem.Map_Crust();
+
+        for (int i = 0; i < crustTiles.Count; i++)
+        {
+            if (!crustTiles[i].Has_Prefab_ID(Prefab_Type.character, 0)) continue;
+            return true;
+        }
+        return false;
+    }
+    public bool Position_On_Corner()
+    {
+        List<Tile_Controller> cornerTiles = mapController.combinationSystem.Map_Corners();
+
+        for (int i = 0; i < cornerTiles.Count; i++)
+        {
+            if (!cornerTiles[i].Has_Prefab_ID(Prefab_Type.character, 0)) continue;
+            return true;
+        }
+        return false;
+    }
+
+    // updates
     public void Set_Data(TileMap_Controller mapController)
     {
         this.mapController = mapController;
@@ -29,6 +54,7 @@ public class Player_Controller : MonoBehaviour
         currentColumnNum = column;
     }
 
+    // functions
     public void Click()
     {
         if (!moveReady) 

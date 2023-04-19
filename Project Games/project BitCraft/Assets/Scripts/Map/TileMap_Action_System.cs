@@ -38,18 +38,21 @@ public class TileMap_Action_System : MonoBehaviour
     {
         List<Tile_Controller> moveableTiles = mapController.combinationSystem.Prefab_Cross(Prefab_Type.character, 0);
 
-        if (moveableTiles.Count <= 0)
-        {
-            mapController.playerController.moveReady = false;
-            return;
-        }
-
         for (int i = 0; i < moveableTiles.Count; i++)
         {
-            // if tile type is not placeable
-            if (moveableTiles[i].Is_Prefab_Type(Prefab_Type.placeable)) continue;
-            // if tile doesnt have placeable prefab
-            if (moveableTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) continue;
+            if (moveableTiles[i].Is_Prefab_Type(Prefab_Type.placeable) || moveableTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
+            {
+                moveableTiles.RemoveAt(i);
+                i--;
+
+                if (moveableTiles.Count <= 0)
+                {
+                    mapController.playerController.moveReady = false;
+                    break;
+                }
+
+                continue;
+            }
 
             moveableTiles[i].Highlight();
         }
@@ -59,8 +62,10 @@ public class TileMap_Action_System : MonoBehaviour
         Player_Controller player = mapController.playerController;
 
         player.transform.parent = moveTile.transform;
-        mapController.AllTiles_Update_Data();
         player.Update_Position(moveTile.rowNum, moveTile.columnNum);
         player.Move();
+
+        mapController.AllTiles_Update_Data();
+        mapController.renderSystem.Next_Map_Check_Update();
     }
 }
