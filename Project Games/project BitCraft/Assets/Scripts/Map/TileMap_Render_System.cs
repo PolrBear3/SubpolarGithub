@@ -55,6 +55,19 @@ public class TileMap_Render_System : MonoBehaviour
 
     public void Next_Map_Check_Update()
     {
+        Player_Controller player = mapController.playerController;
 
+        if (!player.Position_at_Crust()) return;
+
+        List<Vector2> emptyPositions = mapController.Get_Tile(player.currentRowNum, player.currentColumnNum).Empty_Positions();
+
+        for (int i = 0; i < emptyPositions.Count; i++)
+        {
+            // example tile instantiation as basic tile
+            GameObject nextTile = Instantiate(mapController.controller.prefabsController.Get_Tile(0), emptyPositions[i], Quaternion.identity);
+
+            // set inside tile map as child
+            nextTile.transform.parent = transform;
+        }
     }
 }

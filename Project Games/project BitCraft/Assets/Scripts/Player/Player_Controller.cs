@@ -20,7 +20,7 @@ public class Player_Controller : MonoBehaviour
     public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
 
     // checks
-    public bool Position_On_Crust()
+    public bool Position_at_Crust()
     {
         List<Tile_Controller> crustTiles = mapController.combinationSystem.Map_Crust();
 
@@ -31,7 +31,7 @@ public class Player_Controller : MonoBehaviour
         }
         return false;
     }
-    public bool Position_On_Corner()
+    public bool Position_at_Corner()
     {
         List<Tile_Controller> cornerTiles = mapController.combinationSystem.Map_Corners();
 

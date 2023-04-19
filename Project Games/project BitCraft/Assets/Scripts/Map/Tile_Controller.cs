@@ -75,7 +75,7 @@ public class Tile_Controller : MonoBehaviour
         return false;
     }
 
-    // updates
+    // 
     public Sprite Random_Sprite()
     {
         if (_sprites.Count <= 0)
@@ -89,7 +89,35 @@ public class Tile_Controller : MonoBehaviour
         int randNum = Random.Range(0, _sprites.Count);
         return _sprites[randNum];
     }
+    public List<Vector2> Empty_Positions()
+    {
+        List<Vector2> emptyPositions = new List<Vector2>();
 
+        // left tile
+        if (mapController.Get_Tile(rowNum - 1, columnNum) == null)
+        {
+            emptyPositions.Add(new Vector2(transform.position.x - 1, transform.position.y));
+        }
+        // right tile
+        if (mapController.Get_Tile(rowNum + 1, columnNum) == null)
+        {
+            emptyPositions.Add(new Vector2(transform.position.x + 1, transform.position.y));
+        }
+        // top tile
+        if (mapController.Get_Tile(rowNum, columnNum - 1) == null)
+        {
+            emptyPositions.Add(new Vector2(transform.position.x, transform.position.y + 1));
+        }
+        // bottom tile
+        if (mapController.Get_Tile(rowNum, columnNum + 1) == null)
+        {
+            emptyPositions.Add(new Vector2(transform.position.x, transform.position.y - 1));
+        }
+
+        return emptyPositions;
+    }
+
+    // updates
     public void Set_Data(TileMap_Controller mapController)
     {
         this.mapController = mapController;
