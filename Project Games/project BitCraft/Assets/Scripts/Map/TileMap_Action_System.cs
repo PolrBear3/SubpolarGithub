@@ -66,6 +66,5 @@ public class TileMap_Action_System : MonoBehaviour
         player.Move();
 
         mapController.AllTiles_Update_Data();
-        mapController.renderSystem.Next_Map_Check_Update();
     }
 }
