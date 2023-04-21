@@ -6,8 +6,6 @@ public class Tile_Controller : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
-    [SerializeField] private GameObject nextMapIcon;
-
     [SerializeField] private List<Sprite> _sprites = new List<Sprite>(); 
 
     private TileMap_Controller _mapController;
