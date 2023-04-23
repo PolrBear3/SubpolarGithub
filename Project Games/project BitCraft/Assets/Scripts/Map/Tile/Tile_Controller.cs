@@ -11,6 +11,9 @@ public class Tile_Controller : MonoBehaviour
     private TileMap_Controller _mapController;
     public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
 
+    private Tile_Direction_System _directionSystem;
+    public Tile_Direction_System directionSystem { get => _directionSystem; set => _directionSystem = value; }
+
     private Prefab_Tag _prefabTag;
     public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
@@ -25,6 +28,8 @@ public class Tile_Controller : MonoBehaviour
 
     [SerializeField] private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
+
+    [SerializeField] private Transform _prefabsParent;
 
     private void Awake()
     {
@@ -54,7 +59,6 @@ public class Tile_Controller : MonoBehaviour
         {
             if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag tag)) continue;
             if (type != tag.prefabType) continue;
-
             return true;
         }
 
@@ -96,7 +100,7 @@ public class Tile_Controller : MonoBehaviour
         this.mapController = mapController;
         _sr.sprite = Random_Sprite();
     }
-    public void Change_Type(int prefabID)
+    public void Change_Type_ID(int prefabID)
     {
         Prefabs_Controller controller = mapController.controller.prefabsController;
 
@@ -119,10 +123,56 @@ public class Tile_Controller : MonoBehaviour
         // sprite
         _sr.sprite = tileController.Random_Sprite();
     }
+    public void Change_Random()
+    {
+        Prefabs_Controller controller = mapController.controller.prefabsController;
+
+        GameObject tile = controller.Get_Random_Tile();
+        Prefab_Tag prefabTag;
+        Tile_Controller tileController;
+
+        // get prefab tag component
+        if (!tile.TryGetComponent(out Prefab_Tag x)) return;
+        prefabTag = x;
+
+        // get tile controller component
+        if (!tile.TryGetComponent(out Tile_Controller y)) return;
+        tileController = y;
+
+        // prefab tag type
+        this.prefabTag.prefabType = prefabTag.prefabType;
+        // prefab tag id
+        this.prefabTag.prefabID = prefabTag.prefabID;
+        // sprite
+        _sr.sprite = tileController.Random_Sprite();
+    }
+    public void Change_Random_Overlap()
+    {
+        Prefabs_Controller controller = mapController.controller.prefabsController;
+
+        GameObject tile = controller.Get_Random_Overlap_Tile();
+        Prefab_Tag prefabTag;
+        Tile_Controller tileController;
+
+        // get prefab tag component
+        if (!tile.TryGetComponent(out Prefab_Tag x)) return;
+        prefabTag = x;
+
+        // get tile controller component
+        if (!tile.TryGetComponent(out Tile_Controller y)) return;
+        tileController = y;
+
+        // prefab tag type
+        this.prefabTag.prefabType = prefabTag.prefabType;
+        // prefab tag id
+        this.prefabTag.prefabID = prefabTag.prefabID;
+        // sprite
+        _sr.sprite = tileController.Random_Sprite();
+    }
 
     public void Set_Prefab(Transform prefabTransform)
     {
-        prefabTransform.parent = transform;
+        prefabTransform.parent = _prefabsParent;
     }
     public void Update_Position(int row, int column)
     {
@@ -138,11 +188,11 @@ public class Tile_Controller : MonoBehaviour
     {
         currentPrefabs.Clear();
 
-        if (transform.childCount <= 0) return;
+        if (_prefabsParent.childCount <= 0) return;
 
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < _prefabsParent.childCount; i++)
         {
-            currentPrefabs.Add(transform.GetChild(i).gameObject);
+            currentPrefabs.Add(_prefabsParent.GetChild(i).gameObject);
         }
     }
 
@@ -150,6 +200,8 @@ public class Tile_Controller : MonoBehaviour
     public void Click()
     {
         if (!selectReady) return;
+
+        mapController.actionSystem.Reset_NewMap_Directions();
 
         // tile click interactions
         mapController.actionSystem.Move_Player(this);

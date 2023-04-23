@@ -24,7 +24,6 @@ public class TileMap_Combination_System : MonoBehaviour
 
     public List<Tile_Controller> Prefab_Cross(Prefab_Type type, int prefabID)
     {
-        List<Tile_Controller> allTiles = mapController.tiles;
         List<Tile_Controller> crossTiles = new List<Tile_Controller>();
         Tile_Controller mainTile = mapController.Get_Tile_With_PrefabID(type, prefabID);
 

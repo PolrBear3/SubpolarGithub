@@ -80,13 +80,13 @@ public class TileMap_Controller : MonoBehaviour
         }
     }
 
-    private void Set_Player(int rowNum, int columnNum)
+    public void Set_Player(int rowNum, int columnNum)
     {
         GameObject playerPrefab = controller.prefabsController.Get_Character(0);
-        Transform tilePosition = Get_Tile(rowNum, columnNum).transform;
+        Tile_Controller playerTile = Get_Tile(rowNum, columnNum);
 
         // spawn
-        GameObject player = Instantiate(playerPrefab, tilePosition.position, Quaternion.identity);
+        GameObject player = Instantiate(playerPrefab, playerTile.transform.position, Quaternion.identity);
 
         // set player controller component
         if (player.TryGetComponent(out Player_Controller playerController)) { this.playerController = playerController; }
@@ -98,17 +98,16 @@ public class TileMap_Controller : MonoBehaviour
         playerController.Update_Position(rowNum, columnNum);
 
         // place inside tile
-        Get_Tile(rowNum, columnNum).Set_Prefab(player.transform);
+        playerTile.Set_Prefab(player.transform);
 
         // update tiles
         AllTiles_Update_Data();
 
-        // set player surrounding tiles to default tiles
+        // set player surrounding tiles to type overlap (test)
         List<Tile_Controller> surroundingTiles = combinationSystem.Prefab_Surrounding(Prefab_Type.character, 0);
-
         for (int i = 0; i < surroundingTiles.Count; i++)
         {
-            surroundingTiles[i].Change_Type(0);
+            surroundingTiles[i].Change_Random_Overlap();
         }
     }
 }

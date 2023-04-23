@@ -32,4 +32,19 @@ public class Prefabs_Controller : MonoBehaviour
 
         return tiles[RandomNum].Prefab();
     }
+
+    public GameObject Get_Random_Overlap_Tile()
+    {
+        List<Prefab_Tag> overlapTiles = new List<Prefab_Tag>();
+
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            if (tiles[i].prefabType != Prefab_Type.overlapPlaceable) continue;
+            overlapTiles.Add(tiles[i]);
+        }
+
+        int RandomNum = Random.Range(0, overlapTiles.Count);
+
+        return overlapTiles[RandomNum].gameObject;
+    }
 }

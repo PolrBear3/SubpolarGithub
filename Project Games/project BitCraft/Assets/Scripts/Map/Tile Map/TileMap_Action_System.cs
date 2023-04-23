@@ -47,7 +47,7 @@ public class TileMap_Action_System : MonoBehaviour
 
                 if (moveableTiles.Count <= 0)
                 {
-                    mapController.playerController.moveReady = false;
+                    mapController.playerController.interactReady = false;
                     break;
                 }
 
@@ -57,11 +57,28 @@ public class TileMap_Action_System : MonoBehaviour
             moveableTiles[i].Highlight();
         }
     }
+
+    public void Set_NewMap_Directions()
+    {
+        Player_Controller player = mapController.playerController;
+        Tile_Controller playerTile = mapController.Get_Tile(player.currentRowNum, player.currentColumnNum);
+
+        playerTile.directionSystem.Set_Directions();
+    }
+    public void Reset_NewMap_Directions()
+    {
+        Player_Controller player = mapController.playerController;
+        Tile_Controller playerTile = mapController.Get_Tile(player.currentRowNum, player.currentColumnNum);
+
+        playerTile.directionSystem.Reset_Directions();
+    }
+
     public void Move_Player(Tile_Controller moveTile)
     {
         Player_Controller player = mapController.playerController;
 
-        player.transform.parent = moveTile.transform;
+        moveTile.Set_Prefab(player.transform);
+
         player.Update_Position(moveTile.rowNum, moveTile.columnNum);
         player.Move();
 

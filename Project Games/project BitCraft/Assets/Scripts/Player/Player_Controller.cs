@@ -13,8 +13,8 @@ public class Player_Controller : MonoBehaviour
     private int _currentColumnNum;
     public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
 
-    private bool _moveReady = false;
-    public bool moveReady { get => _moveReady; set => _moveReady = value; }
+    private bool _interactReady = false;
+    public bool interactReady { get => _interactReady; set => _interactReady = value; }
 
     [SerializeField] private float _moveSpeed;
     public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
@@ -57,21 +57,23 @@ public class Player_Controller : MonoBehaviour
     // functions
     public void Click()
     {
-        if (!moveReady) 
+        if (!interactReady) 
         {
-            moveReady = true;
+            interactReady = true;
             mapController.actionSystem.Highlight_Player_Moveable_Tiles();
+            mapController.actionSystem.Set_NewMap_Directions();
         }
         else
         {
-            moveReady = false;
+            interactReady = false;
             mapController.actionSystem.UnHighlight_All_tiles();
+            mapController.actionSystem.Reset_NewMap_Directions();
         }
     }
 
     public void Move()
     {
         LeanTween.moveLocal(gameObject, Vector2.zero, moveSpeed).setEase(LeanTweenType.easeInOutQuint);
-        moveReady = false;
+        interactReady = false;
     }
 }
