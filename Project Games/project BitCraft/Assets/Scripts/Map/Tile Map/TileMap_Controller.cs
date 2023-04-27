@@ -104,7 +104,7 @@ public class TileMap_Controller : MonoBehaviour
         AllTiles_Update_Data();
 
         // set player surrounding tiles to type overlap (test)
-        List<Tile_Controller> surroundingTiles = combinationSystem.Prefab_Surrounding(Prefab_Type.character, 0);
+        List<Tile_Controller> surroundingTiles = combinationSystem.Surrounding_Tiles(Prefab_Type.character, 0);
         for (int i = 0; i < surroundingTiles.Count; i++)
         {
             surroundingTiles[i].Change_Random_Overlap();

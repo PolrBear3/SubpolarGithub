@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum Prefab_Type
 {
+    none,
     all,
     character,
     placeable,

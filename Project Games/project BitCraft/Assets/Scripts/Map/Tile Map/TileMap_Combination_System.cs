@@ -22,7 +22,25 @@ public class TileMap_Combination_System : MonoBehaviour
         }
     }
 
-    public List<Tile_Controller> Prefab_Cross(Prefab_Type type, int prefabID)
+    public List<Tile_Controller> Cross_Tiles(int rowNum, int columnNum)
+    {
+        List<Tile_Controller> crossTiles = new List<Tile_Controller>();
+        Tile_Controller mainTile = mapController.Get_Tile(rowNum, columnNum);
+
+        // left tile
+        crossTiles.Add(mapController.Get_Tile(mainTile.rowNum - 1, mainTile.columnNum));
+        // right tile
+        crossTiles.Add(mapController.Get_Tile(mainTile.rowNum + 1, mainTile.columnNum));
+        // top tile
+        crossTiles.Add(mapController.Get_Tile(mainTile.rowNum, mainTile.columnNum - 1));
+        // bottom tile
+        crossTiles.Add(mapController.Get_Tile(mainTile.rowNum, mainTile.columnNum + 1));
+
+        Remove_Null_Tiles(crossTiles);
+
+        return crossTiles;
+    }
+    public List<Tile_Controller> Cross_Tiles(Prefab_Type type, int prefabID)
     {
         List<Tile_Controller> crossTiles = new List<Tile_Controller>();
         Tile_Controller mainTile = mapController.Get_Tile_With_PrefabID(type, prefabID);
@@ -40,7 +58,26 @@ public class TileMap_Combination_System : MonoBehaviour
 
         return crossTiles;
     }
-    public List<Tile_Controller> Prefab_Surrounding(Prefab_Type type, int prefabID)
+
+    public List<Tile_Controller> Surrounding_Tiles(int rowNum, int columnNum)
+    {
+        List<Tile_Controller> allTiles = mapController.tiles;
+        List<Tile_Controller> surroundingTiles = new List<Tile_Controller>();
+        Tile_Controller prefabTile = mapController.Get_Tile(rowNum, columnNum);
+
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            // if tile row number is not 1 and 2 and 3, skip
+            if (allTiles[i].rowNum != prefabTile.rowNum - 1 && allTiles[i].rowNum != prefabTile.rowNum && allTiles[i].rowNum != prefabTile.rowNum + 1) continue;
+            // if tile column number is not 1 and 2 and 3, skip
+            if (allTiles[i].columnNum != prefabTile.columnNum - 1 && allTiles[i].columnNum != prefabTile.columnNum && allTiles[i].columnNum != prefabTile.columnNum + 1) continue;
+
+            surroundingTiles.Add(allTiles[i]);
+        }
+
+        return surroundingTiles;
+    }
+    public List<Tile_Controller> Surrounding_Tiles(Prefab_Type type, int prefabID)
     {
         List<Tile_Controller> allTiles = mapController.tiles;
         List<Tile_Controller> surroundingTiles = new List<Tile_Controller>();
@@ -59,7 +96,7 @@ public class TileMap_Combination_System : MonoBehaviour
         return surroundingTiles;
     }
 
-    public List<Tile_Controller> Map_Crust()
+    public List<Tile_Controller> Map_Crust_Tiles()
     {
         List<Tile_Controller> allTiles = mapController.tiles;
         List<Tile_Controller> crustTiles = new List<Tile_Controller>();
@@ -78,7 +115,7 @@ public class TileMap_Combination_System : MonoBehaviour
 
         return crustTiles;
     }
-    public List<Tile_Controller> Map_Corners()
+    public List<Tile_Controller> Map_Corners_Tiles()
     {
         List<Tile_Controller> allTiles = mapController.tiles;
         List<Tile_Controller> cornerTiles = new List<Tile_Controller>();

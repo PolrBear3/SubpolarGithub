@@ -36,7 +36,7 @@ public class TileMap_Action_System : MonoBehaviour
     // player action systems
     public void Highlight_Player_Moveable_Tiles()
     {
-        List<Tile_Controller> moveableTiles = mapController.combinationSystem.Prefab_Cross(Prefab_Type.character, 0);
+        List<Tile_Controller> moveableTiles = mapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
         for (int i = 0; i < moveableTiles.Count; i++)
         {

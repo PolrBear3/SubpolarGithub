@@ -22,7 +22,7 @@ public class Player_Controller : MonoBehaviour
     // checks
     public bool Position_at_Crust()
     {
-        List<Tile_Controller> crustTiles = mapController.combinationSystem.Map_Crust();
+        List<Tile_Controller> crustTiles = mapController.combinationSystem.Map_Crust_Tiles();
 
         for (int i = 0; i < crustTiles.Count; i++)
         {
@@ -33,7 +33,7 @@ public class Player_Controller : MonoBehaviour
     }
     public bool Position_at_Corner()
     {
-        List<Tile_Controller> cornerTiles = mapController.combinationSystem.Map_Corners();
+        List<Tile_Controller> cornerTiles = mapController.combinationSystem.Map_Corners_Tiles();
 
         for (int i = 0; i < cornerTiles.Count; i++)
         {
