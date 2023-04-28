@@ -61,7 +61,7 @@ public class TileMap_Combination_System : MonoBehaviour
 
     public List<Tile_Controller> Surrounding_Tiles(int rowNum, int columnNum)
     {
-        List<Tile_Controller> allTiles = mapController.tiles;
+        List<Tile_Controller> allTiles = mapController.currentMap.tiles;
         List<Tile_Controller> surroundingTiles = new List<Tile_Controller>();
         Tile_Controller prefabTile = mapController.Get_Tile(rowNum, columnNum);
 
@@ -79,7 +79,7 @@ public class TileMap_Combination_System : MonoBehaviour
     }
     public List<Tile_Controller> Surrounding_Tiles(Prefab_Type type, int prefabID)
     {
-        List<Tile_Controller> allTiles = mapController.tiles;
+        List<Tile_Controller> allTiles = mapController.currentMap.tiles;
         List<Tile_Controller> surroundingTiles = new List<Tile_Controller>();
         Tile_Controller prefabTile = mapController.Get_Tile_With_PrefabID(type, prefabID);
 
@@ -98,7 +98,7 @@ public class TileMap_Combination_System : MonoBehaviour
 
     public List<Tile_Controller> Map_Crust_Tiles()
     {
-        List<Tile_Controller> allTiles = mapController.tiles;
+        List<Tile_Controller> allTiles = mapController.currentMap.tiles;
         List<Tile_Controller> crustTiles = new List<Tile_Controller>();
 
         for (int i = 0; i < allTiles.Count; i++)
@@ -107,7 +107,7 @@ public class TileMap_Combination_System : MonoBehaviour
             if (allTiles[i].rowNum != 0 && allTiles[i].columnNum != 0)
             {
                 // not right bottom tiles
-                if (allTiles[i].rowNum != mapController.mapSize - 1 && allTiles[i].columnNum != mapController.mapSize - 1) continue;
+                if (allTiles[i].rowNum != mapController.currentMap.mapSize - 1 && allTiles[i].columnNum != mapController.currentMap.mapSize - 1) continue;
             }
 
             crustTiles.Add(allTiles[i]);
@@ -117,16 +117,16 @@ public class TileMap_Combination_System : MonoBehaviour
     }
     public List<Tile_Controller> Map_Corners_Tiles()
     {
-        List<Tile_Controller> allTiles = mapController.tiles;
+        List<Tile_Controller> allTiles = mapController.currentMap.tiles;
         List<Tile_Controller> cornerTiles = new List<Tile_Controller>();
 
         for (int i = 0; i < allTiles.Count; i++)
         {
             // top corners
-            if (allTiles[i].rowNum == 0 || allTiles[i].rowNum == mapController.mapSize - 1)
+            if (allTiles[i].rowNum == 0 || allTiles[i].rowNum == mapController.currentMap.mapSize - 1)
             {
                 // bottom corners
-                if (allTiles[i].columnNum == 0 || allTiles[i].columnNum == mapController.mapSize - 1)
+                if (allTiles[i].columnNum == 0 || allTiles[i].columnNum == mapController.currentMap.mapSize - 1)
                 {
                     cornerTiles.Add(allTiles[i]);
                 }

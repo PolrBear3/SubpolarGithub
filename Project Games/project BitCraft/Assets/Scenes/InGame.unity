@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 1594307731}
   - component: {fileID: 1594307732}
   m_Layer: 0
-  m_Name: Tile Map
+  m_Name: Tile Map Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -327,6 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 1680237657}
+  _allMaps: []
 --- !u!4 &1594307730
 Transform:
   m_ObjectHideFlags: 0
@@ -408,6 +409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0de7003ed9dc9460693bff17d82d0e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapController: {fileID: 4562888784874114379, guid: 5f2e758de47566c42b672d5d51f7a483, type: 3}
   characters:
   - {fileID: 7549250097886151390, guid: faadd262250fb4ef7bafa6d0be10931e, type: 3}
   tiles:

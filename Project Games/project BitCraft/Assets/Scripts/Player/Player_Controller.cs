@@ -6,13 +6,22 @@ public class Player_Controller : MonoBehaviour
 {
     private TileMap_Controller _mapController;
     public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
-    
+
+    // map position
+    private int _positionX;
+    public int positionX { get => _positionX; set => _positionX = value; }
+
+    private int _positionY;
+    public int positionY { get => _positionY; set => _positionY = value; }
+
+    // tile position
     private int _currentRowNum;
     public int currentRowNum { get => _currentRowNum; set => _currentRowNum = value; }
 
     private int _currentColumnNum;
     public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
 
+    // basic data
     private bool _interactReady = false;
     public bool interactReady { get => _interactReady; set => _interactReady = value; }
 
@@ -48,7 +57,12 @@ public class Player_Controller : MonoBehaviour
     {
         this.mapController = mapController;
     }
-    public void Update_Position(int row, int column)
+    public void Update_Map_Position(int positionX, int positionY)
+    {
+        this.positionX = positionX;
+        this.positionY = positionY;
+    }
+    public void Update_Tile_Position(int row, int column)
     {
         currentRowNum = row;
         currentColumnNum = column;

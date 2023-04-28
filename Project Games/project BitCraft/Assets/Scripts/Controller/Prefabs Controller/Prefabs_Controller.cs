@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Prefabs_Controller : MonoBehaviour
 {
+    [SerializeField] private GameObject mapController;
+
     [SerializeField] private Prefab_Tag[] characters;
     [SerializeField] private Prefab_Tag[] tiles;
+
+    public GameObject Get_MapController()
+    {
+        return mapController;
+    }
 
     public GameObject Get_Character(int id)
     {

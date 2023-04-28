@@ -18,15 +18,14 @@ public class TileMap_Controller : MonoBehaviour
     public TileMap_Combination_System combinationSystem { get => _combinationSystem; set => _combinationSystem = value; }
 
     // ingame components
-    private List<Tile_Controller> _tiles = new List<Tile_Controller>();
-    public List<Tile_Controller> tiles { get => _tiles; set => _tiles = value; }
+    [SerializeField] private List<Map_Controller> _allMaps = new List<Map_Controller>();
+    public List<Map_Controller> allMaps { get => _allMaps; set => _allMaps = value; }
+
+    private Map_Controller _currentMap;
+    public Map_Controller currentMap { get => _currentMap; set => _currentMap = value; }
 
     private Player_Controller _playerController;
     public Player_Controller playerController { get => _playerController; set => _playerController = value; }
-
-    // data
-    private int _mapSize;
-    public int mapSize { get => _mapSize; set => _mapSize = value; }
 
     //
     private void Awake()
@@ -37,25 +36,32 @@ public class TileMap_Controller : MonoBehaviour
     }
     private void Start()
     {
-        renderSystem.Set_Tiles(5);
+        renderSystem.Set_New_Map(5);
         Set_Player(2, 2);
     }
 
+    // map data
+    public Map_Controller Get_Map(int positionX, int positionY)
+    {
+        return null;
+    }
+
+    // tile data
     public Tile_Controller Get_Tile(int rowNum, int columnNum)
     {
-        for (int i = 0; i < tiles.Count; i++)
+        for (int i = 0; i < currentMap.tiles.Count; i++)
         {
-            if (!tiles[i].Found(rowNum, columnNum)) continue;
-            return tiles[i];
+            if (!currentMap.tiles[i].Found(rowNum, columnNum)) continue;
+            return currentMap.tiles[i];
         }
         return null;
     }
     public Tile_Controller Get_Tile_With_PrefabID(Prefab_Type type, int prefabID)
     {
-        for (int i = 0; i < tiles.Count; i++)
+        for (int i = 0; i < currentMap.tiles.Count; i++)
         {
-            if (!tiles[i].Has_Prefab_ID(type, prefabID)) continue;
-            return _tiles[i];
+            if (!currentMap.tiles[i].Has_Prefab_ID(type, prefabID)) continue;
+            return currentMap.tiles[i];
         }
         return null;
     }
@@ -63,20 +69,21 @@ public class TileMap_Controller : MonoBehaviour
     {
         List<Tile_Controller> returnList = new List<Tile_Controller>();
 
-        for (int i = 0; i < tiles.Count; i++)
+        for (int i = 0; i < currentMap.tiles.Count; i++)
         {
-            if (!tiles[i].Has_Prefab_ID(type, prefabID)) continue;
-            returnList.Add(tiles[i]);
+            if (!currentMap.tiles[i].Has_Prefab_ID(type, prefabID)) continue;
+            returnList.Add(currentMap.tiles[i]);
         }
 
         return returnList;
     }
 
+    // public functions
     public void AllTiles_Update_Data()
     {
-        for (int i = 0; i < tiles.Count; i++)
+        for (int i = 0; i < currentMap.tiles.Count; i++)
         {
-            tiles[i].Update_Data();
+            currentMap.tiles[i].Update_Data();
         }
     }
 
@@ -95,7 +102,7 @@ public class TileMap_Controller : MonoBehaviour
         playerController.Set_Data(this);
 
         // update player position
-        playerController.Update_Position(rowNum, columnNum);
+        playerController.Update_Tile_Position(rowNum, columnNum);
 
         // place inside tile
         playerTile.Set_Prefab(player.transform);

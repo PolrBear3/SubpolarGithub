@@ -15,7 +15,7 @@ public class TileMap_Action_System : MonoBehaviour
     // public action systems
     public void UnHighlight_All_tiles()
     {
-        List<Tile_Controller> tiles = mapController.tiles;
+        List<Tile_Controller> tiles = mapController.currentMap.tiles;
 
         for (int i = 0; i < tiles.Count; i++)
         {
@@ -24,7 +24,7 @@ public class TileMap_Action_System : MonoBehaviour
     }
     public void Highlight_All_Moveable_Tiles()
     {
-        List<Tile_Controller> tiles = mapController.tiles;
+        List<Tile_Controller> tiles = mapController.currentMap.tiles;
 
         for (int i = 0; i < tiles.Count; i++)
         {
@@ -79,7 +79,7 @@ public class TileMap_Action_System : MonoBehaviour
 
         moveTile.Set_Prefab(player.transform);
 
-        player.Update_Position(moveTile.rowNum, moveTile.columnNum);
+        player.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
         player.Move();
 
         mapController.AllTiles_Update_Data();
