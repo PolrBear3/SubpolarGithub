@@ -79,7 +79,7 @@ public class Tile_Controller : MonoBehaviour
         return false;
     }
 
-    // 
+    // tile control
     public Sprite Random_Sprite()
     {
         if (_sprites.Count <= 0)
@@ -94,7 +94,12 @@ public class Tile_Controller : MonoBehaviour
         return _sprites[randNum];
     }
 
-    // updates
+    public void Update_Position(int row, int column)
+    {
+        rowNum = row;
+        columnNum = column;
+    }
+
     public void Set_Data(TileMap_Controller mapController)
     {
         this.mapController = mapController;
@@ -170,16 +175,28 @@ public class Tile_Controller : MonoBehaviour
         _sr.sprite = tileController.Random_Sprite();
     }
 
+    // prefab control
     public void Set_Prefab(Transform prefabTransform)
     {
         prefabTransform.parent = _prefabsParent;
     }
-    public void Update_Position(int row, int column)
+    public void Remove_Prefab(Prefab_Type type, int searchID)
     {
-        rowNum = row;
-        columnNum = column;
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag prefabTag)) continue;
+            if (prefabTag.prefabType != type) continue;
+            if (prefabTag.prefabID != searchID) continue;
+
+            Destroy(currentPrefabs[i]);
+            currentPrefabs.Clear();
+            break;
+        }
+
+        currentPrefabs.RemoveAll(item => item == null);
     }
 
+    // updates
     public void Update_Data()
     {
         Update_Current_Prefabs();

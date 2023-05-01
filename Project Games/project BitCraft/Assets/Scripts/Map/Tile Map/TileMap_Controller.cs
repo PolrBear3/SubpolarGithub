@@ -40,9 +40,35 @@ public class TileMap_Controller : MonoBehaviour
         Set_Player(2, 2);
     }
 
+    // map check
+    public bool Has_Map(int positionX, int positionY)
+    {
+        for (int i = 0; i < allMaps.Count; i++)
+        {
+            if (allMaps[i].positionX != positionX) continue;
+            if (allMaps[i].positionY != positionY) continue;
+            return true;
+        }
+        return false;
+    }
+    public bool Has_Map(Map_Controller mapController)
+    {
+        for (int i = 0; i < allMaps.Count; i++)
+        {
+            if (allMaps[i] != mapController) continue;
+            return true;
+        }
+        return false;
+    }
     // map data
     public Map_Controller Get_Map(int positionX, int positionY)
     {
+        for (int i = 0; i < allMaps.Count; i++)
+        {
+            if (allMaps[i].positionX != positionX) continue;
+            if (allMaps[i].positionY != positionY) continue;
+            return allMaps[i];
+        }
         return null;
     }
 
@@ -101,7 +127,10 @@ public class TileMap_Controller : MonoBehaviour
         // set player data
         playerController.Set_Data(this);
 
-        // update player position
+        // update player map position
+        playerController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
+
+        // update player tiles position
         playerController.Update_Tile_Position(rowNum, columnNum);
 
         // place inside tile

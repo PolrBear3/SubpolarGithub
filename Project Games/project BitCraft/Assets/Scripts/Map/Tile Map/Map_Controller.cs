@@ -16,22 +16,26 @@ public class Map_Controller : MonoBehaviour
     [SerializeField] private List<Tile_Controller> _tiles = new List<Tile_Controller>();
     public List<Tile_Controller> tiles { get => _tiles; set => _tiles = value; }
 
-    public void Save_Map()
+    public void Update_Position(int positionX, int positionY)
     {
-        // move map position to next position
+        this.positionX = positionX;
+        this.positionY = positionY;
+    }
 
+    public void Save_Hide_Map()
+    {
         // hide all tiles
         for (int i = 0; i < tiles.Count; i++)
         {
             tiles[i].gameObject.SetActive(false);
         }
     }
-
-    public void Load_Map()
+    public void Load_Show_Map()
     {
-        // move map to center
-        
         // show all tiles
-
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            tiles[i].gameObject.SetActive(true);
+        }
     }
 }

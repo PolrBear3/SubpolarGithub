@@ -73,29 +73,55 @@ public class TileMap_Render_System : MonoBehaviour
 
     public void Render_Next_Map(bool isRowMove)
     {
+        // save previous map
+        Map_Controller previousMap = mapController.currentMap;
+
         // save player position
         Player_Controller player = mapController.playerController;
         int previousRow = player.currentRowNum;
         int previousColumn = player.currentColumnNum;
 
-        // move current map to next position and hide
-        mapController.currentMap.Save_Map();
-
-        // set new map
-        Set_New_Map(5);
+        // save map position
+        int previousPosX = previousMap.positionX;
+        int previousPosY = previousMap.positionY;
 
         // save map size
         int mapSize = mapController.currentMap.mapSize - 1;
 
-        // set next player position
-        if (isRowMove) previousRow += mapSize;
-        else previousColumn += mapSize;
+        // remove player from previous map
+        Tile_Controller playerTile = mapController.Get_Tile(previousRow, previousColumn);
+        playerTile.Remove_Prefab(Prefab_Type.character, 0);
+
+        // determine if row or column
+        if (isRowMove) { previousRow += mapSize; previousPosX--; }
+        else { previousColumn += mapSize; previousPosY++; }
 
         // set player to left and top
-        if (previousRow > mapSize) { previousRow = 0; }
-        else if (previousColumn > mapSize) { previousColumn = 0; }
+        if (previousRow > mapSize) { previousRow = 0; previousPosX +=2; }
+        else if (previousColumn > mapSize) { previousColumn = 0; previousPosY -=2; }
+
+        // move current map to next position and hide
+        mapController.currentMap.Save_Hide_Map();
+
+        // if map exist > load previous map
+        if (mapController.Has_Map(previousPosX, previousPosY))
+        {
+            Map_Controller loadMap = mapController.Get_Map(previousPosX, previousPosY);
+            loadMap.Load_Show_Map();
+            mapController.currentMap = loadMap;
+        }
+        // else > set new map
+        else
+        {
+            Set_New_Map(5);
+            mapController.currentMap.Update_Position(previousPosX, previousPosY);
+        }
 
         // set player on map
         mapController.Set_Player(previousRow, previousColumn);
+
+        // update player map position
+        Map_Controller currentMap = mapController.currentMap;
+        player.Update_Map_Position(currentMap.positionX, currentMap.positionY);
     }
 }
