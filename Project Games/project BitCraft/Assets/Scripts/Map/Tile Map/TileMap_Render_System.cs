@@ -92,6 +92,9 @@ public class TileMap_Render_System : MonoBehaviour
         Tile_Controller playerTile = mapController.Get_Tile(previousRow, previousColumn);
         playerTile.Remove_Prefab(Prefab_Type.character, 0);
 
+        // save and hide previous map
+        mapController.currentMap.Save_Hide_Map();
+        
         // determine if row or column
         if (isRowMove) { previousRow += mapSize; previousPosX--; }
         else { previousColumn += mapSize; previousPosY++; }
@@ -100,25 +103,24 @@ public class TileMap_Render_System : MonoBehaviour
         if (previousRow > mapSize) { previousRow = 0; previousPosX +=2; }
         else if (previousColumn > mapSize) { previousColumn = 0; previousPosY -=2; }
 
-        // move current map to next position and hide
-        mapController.currentMap.Save_Hide_Map();
-
-        // if map exist > load previous map
+        // if map exist
         if (mapController.Has_Map(previousPosX, previousPosY))
         {
+            // load existing map
             Map_Controller loadMap = mapController.Get_Map(previousPosX, previousPosY);
             loadMap.Load_Show_Map();
             mapController.currentMap = loadMap;
         }
-        // else > set new map
+        // if new map location
         else
         {
+            // generate new map
             Set_New_Map(5);
             mapController.currentMap.Update_Position(previousPosX, previousPosY);
         }
 
         // set player on map
-        mapController.Set_Player(previousRow, previousColumn);
+        mapController.Set_Player(previousRow, previousColumn, false);
 
         // update player map position
         Map_Controller currentMap = mapController.currentMap;

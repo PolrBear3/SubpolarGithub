@@ -37,7 +37,7 @@ public class TileMap_Controller : MonoBehaviour
     private void Start()
     {
         renderSystem.Set_New_Map(5);
-        Set_Player(2, 2);
+        Set_Player(2, 2, true);
     }
 
     // map check
@@ -113,7 +113,23 @@ public class TileMap_Controller : MonoBehaviour
         }
     }
 
-    public void Set_Player(int rowNum, int columnNum)
+    public void Set_Player_Tile(bool newPlayer)
+    {
+        Tile_Controller playerTile = Get_Tile(playerController.currentRowNum, playerController.currentColumnNum);
+
+        // only the player tile
+        playerTile.Change_Random_Overlap();
+
+        if (!newPlayer) return;
+
+        // player surrounding tiles
+        List<Tile_Controller> surroundingTiles = combinationSystem.Surrounding_Tiles(playerTile);
+        for (int i = 0; i < surroundingTiles.Count; i++)
+        {
+            surroundingTiles[i].Change_Random_Overlap();
+        }
+    }
+    public void Set_Player(int rowNum, int columnNum, bool newPlayer)
     {
         GameObject playerPrefab = controller.prefabsController.Get_Character(0);
         Tile_Controller playerTile = Get_Tile(rowNum, columnNum);
@@ -138,12 +154,8 @@ public class TileMap_Controller : MonoBehaviour
 
         // update tiles
         AllTiles_Update_Data();
-
-        // set player surrounding tiles to type overlap (test)
-        List<Tile_Controller> surroundingTiles = combinationSystem.Surrounding_Tiles(Prefab_Type.character, 0);
-        for (int i = 0; i < surroundingTiles.Count; i++)
-        {
-            surroundingTiles[i].Change_Random_Overlap();
-        }
+        
+        // set player surrounding tiles to type overlap
+        Set_Player_Tile(newPlayer);
     }
 }

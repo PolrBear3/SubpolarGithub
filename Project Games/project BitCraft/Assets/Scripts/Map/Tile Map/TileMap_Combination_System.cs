@@ -59,18 +59,35 @@ public class TileMap_Combination_System : MonoBehaviour
         return crossTiles;
     }
 
-    public List<Tile_Controller> Surrounding_Tiles(int rowNum, int columnNum)
+    public List<Tile_Controller> Surrounding_Tiles(Tile_Controller targetTile)
     {
         List<Tile_Controller> allTiles = mapController.currentMap.tiles;
         List<Tile_Controller> surroundingTiles = new List<Tile_Controller>();
-        Tile_Controller prefabTile = mapController.Get_Tile(rowNum, columnNum);
 
         for (int i = 0; i < allTiles.Count; i++)
         {
             // if tile row number is not 1 and 2 and 3, skip
-            if (allTiles[i].rowNum != prefabTile.rowNum - 1 && allTiles[i].rowNum != prefabTile.rowNum && allTiles[i].rowNum != prefabTile.rowNum + 1) continue;
+            if (allTiles[i].rowNum != targetTile.rowNum - 1 && allTiles[i].rowNum != targetTile.rowNum && allTiles[i].rowNum != targetTile.rowNum + 1) continue;
             // if tile column number is not 1 and 2 and 3, skip
-            if (allTiles[i].columnNum != prefabTile.columnNum - 1 && allTiles[i].columnNum != prefabTile.columnNum && allTiles[i].columnNum != prefabTile.columnNum + 1) continue;
+            if (allTiles[i].columnNum != targetTile.columnNum - 1 && allTiles[i].columnNum != targetTile.columnNum && allTiles[i].columnNum != targetTile.columnNum + 1) continue;
+
+            surroundingTiles.Add(allTiles[i]);
+        }
+
+        return surroundingTiles;
+    }
+    public List<Tile_Controller> Surrounding_Tiles(int rowNum, int columnNum)
+    {
+        List<Tile_Controller> allTiles = mapController.currentMap.tiles;
+        List<Tile_Controller> surroundingTiles = new List<Tile_Controller>();
+        Tile_Controller targetTile = mapController.Get_Tile(rowNum, columnNum);
+
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            // if tile row number is not 1 and 2 and 3, skip
+            if (allTiles[i].rowNum != targetTile.rowNum - 1 && allTiles[i].rowNum != targetTile.rowNum && allTiles[i].rowNum != targetTile.rowNum + 1) continue;
+            // if tile column number is not 1 and 2 and 3, skip
+            if (allTiles[i].columnNum != targetTile.columnNum - 1 && allTiles[i].columnNum != targetTile.columnNum && allTiles[i].columnNum != targetTile.columnNum + 1) continue;
 
             surroundingTiles.Add(allTiles[i]);
         }
