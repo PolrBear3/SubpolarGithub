@@ -9,6 +9,7 @@ public class Tile_Direction_System : MonoBehaviour
     [SerializeField] private GameObject[] _directions;
 
     [SerializeField] private List<Tile_Controller> crossTileEx = new List<Tile_Controller>();
+    [SerializeField] private List<Map_Controller> surroundingMapsEx = new List<Map_Controller>();
 
     private void Awake()
     {
@@ -46,53 +47,30 @@ public class Tile_Direction_System : MonoBehaviour
         // top
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum, _tileController.columnNum - 1));
         surroundingMaps.Add(mapController.Get_Map(currentMap.positionX, currentMap.positionY++));
-        if (crossTiles[0] == null && surroundingMaps[0] != null)
-        {
-            Tile_Controller targetTile = surroundingMaps[0].Get_Tile(currentMap.positionX, surroundingMaps[0].mapSize - 1);
-            targetTile.gameObject.SetActive(true);
-            crossTiles[0] = targetTile;
-            targetTile.gameObject.SetActive(false);
-        }
+        if (crossTiles[0] == null && surroundingMaps[0] != null) crossTiles[0] = surroundingMaps[0].Get_Tile(currentMap.positionX, surroundingMaps[0].mapSize - 1);
 
         // right
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum + 1, _tileController.columnNum));
         surroundingMaps.Add(mapController.Get_Map(currentMap.positionX++, currentMap.positionY));
-        if (crossTiles[1] == null)
-        {
-            Debug.Log("check");
-            Tile_Controller targetTile = surroundingMaps[1].Get_Tile(0, currentMap.positionY);
-            targetTile.gameObject.SetActive(true);
-            crossTiles[1] = targetTile;
-            targetTile.gameObject.SetActive(false);
-        }
+        if (crossTiles[1] == null && surroundingMaps[1] != null) crossTiles[1] = surroundingMaps[1].Get_Tile(0, currentMap.positionY);
 
         // bottom
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum , _tileController.columnNum + 1));
         surroundingMaps.Add(mapController.Get_Map(currentMap.positionX, currentMap.positionY--));
-        if (crossTiles[2] == null && surroundingMaps[2] != null)
-        {
-            Tile_Controller targetTile = surroundingMaps[2].Get_Tile(currentMap.positionX, 0);
-            targetTile.gameObject.SetActive(true);
-            crossTiles[2] = targetTile;
-            targetTile.gameObject.SetActive(false);
-        }
+        if (crossTiles[2] == null && surroundingMaps[2] != null) crossTiles[2] = surroundingMaps[2].Get_Tile(currentMap.positionX, 0);
 
         // left
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum - 1, _tileController.columnNum));
         surroundingMaps.Add(mapController.Get_Map(currentMap.positionX--, currentMap.positionY));
-        if (crossTiles[3] == null && surroundingMaps[3] != null)
-        {
-            Tile_Controller targetTile = surroundingMaps[3].Get_Tile(surroundingMaps[3].mapSize - 1, currentMap.positionY);
-            targetTile.gameObject.SetActive(true);
-            crossTiles[3] = targetTile;
-            targetTile.gameObject.SetActive(false);
-        }
+        if (crossTiles[3] == null && surroundingMaps[3] != null) crossTiles[3] = surroundingMaps[3].Get_Tile(surroundingMaps[3].mapSize - 1, currentMap.positionY);
 
         crossTileEx = crossTiles;
+        surroundingMapsEx = surroundingMaps;
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
             if (crossTiles[i] != null) continue;
+            if (crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable)) continue;
 
             _directions[i].SetActive(true);
         }

@@ -44,20 +44,12 @@ public class Map_Controller : MonoBehaviour
     }
 
     // public functions
-    public void Save_Hide_Map()
+    public void Map_Activation(bool active)
     {
         // hide all tiles
         for (int i = 0; i < tiles.Count; i++)
         {
-            tiles[i].gameObject.SetActive(false);
-        }
-    }
-    public void Load_Show_Map()
-    {
-        // show all tiles
-        for (int i = 0; i < tiles.Count; i++)
-        {
-            tiles[i].gameObject.SetActive(true);
+            tiles[i].gameObject.SetActive(active);
         }
     }
 }

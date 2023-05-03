@@ -93,7 +93,7 @@ public class TileMap_Render_System : MonoBehaviour
         playerTile.Remove_Prefab(Prefab_Type.character, 0);
 
         // save and hide previous map
-        mapController.currentMap.Save_Hide_Map();
+        mapController.currentMap.Map_Activation(false);
         
         // determine if row or column
         if (isRowMove) { previousRow += mapSize; previousPosX--; }
@@ -108,7 +108,7 @@ public class TileMap_Render_System : MonoBehaviour
         {
             // load existing map
             Map_Controller loadMap = mapController.Get_Map(previousPosX, previousPosY);
-            loadMap.Load_Show_Map();
+            loadMap.Map_Activation(true);
             mapController.currentMap = loadMap;
         }
         // if new map location
