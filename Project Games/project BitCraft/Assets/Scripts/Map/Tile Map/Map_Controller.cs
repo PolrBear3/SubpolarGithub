@@ -16,12 +16,34 @@ public class Map_Controller : MonoBehaviour
     [SerializeField] private List<Tile_Controller> _tiles = new List<Tile_Controller>();
     public List<Tile_Controller> tiles { get => _tiles; set => _tiles = value; }
 
+    // tile data
+    public Tile_Controller Get_Tile(int rowNum, int columnNum)
+    {
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (!tiles[i].Found(rowNum, columnNum)) continue;
+            return tiles[i];
+        }
+        return null;
+    }
+    public Tile_Controller Get_Tile(Prefab_Type type, int prefabID)
+    {
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (!tiles[i].Has_Prefab_ID(type, prefabID)) continue;
+            return tiles[i];
+        }
+        return null;
+    }
+
+    // update data
     public void Update_Position(int positionX, int positionY)
     {
         this.positionX = positionX;
         this.positionY = positionY;
     }
 
+    // public functions
     public void Save_Hide_Map()
     {
         // hide all tiles

@@ -82,7 +82,7 @@ public class TileMap_Controller : MonoBehaviour
         }
         return null;
     }
-    public Tile_Controller Get_Tile_With_PrefabID(Prefab_Type type, int prefabID)
+    public Tile_Controller Get_Tile(Prefab_Type type, int prefabID)
     {
         for (int i = 0; i < currentMap.tiles.Count; i++)
         {
@@ -91,7 +91,8 @@ public class TileMap_Controller : MonoBehaviour
         }
         return null;
     }
-    public List<Tile_Controller> Get_Tiles_With_PrefabID(Prefab_Type type, int prefabID)
+
+    public List<Tile_Controller> Get_Tiles(Prefab_Type type, int prefabID)
     {
         List<Tile_Controller> returnList = new List<Tile_Controller>();
 

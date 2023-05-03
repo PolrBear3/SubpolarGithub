@@ -88,6 +88,6 @@ public class Player_Controller : MonoBehaviour
     public void Move()
     {
         LeanTween.moveLocal(gameObject, Vector2.zero, moveSpeed).setEase(LeanTweenType.easeInOutQuint);
-        interactReady = false;
+        Click();
     }
 }

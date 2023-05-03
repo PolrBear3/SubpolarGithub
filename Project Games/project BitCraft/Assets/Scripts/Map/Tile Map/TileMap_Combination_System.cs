@@ -43,7 +43,7 @@ public class TileMap_Combination_System : MonoBehaviour
     public List<Tile_Controller> Cross_Tiles(Prefab_Type type, int prefabID)
     {
         List<Tile_Controller> crossTiles = new List<Tile_Controller>();
-        Tile_Controller mainTile = mapController.Get_Tile_With_PrefabID(type, prefabID);
+        Tile_Controller mainTile = mapController.Get_Tile(type, prefabID);
 
         // left tile
         crossTiles.Add(mapController.Get_Tile(mainTile.rowNum - 1, mainTile.columnNum));
@@ -98,7 +98,7 @@ public class TileMap_Combination_System : MonoBehaviour
     {
         List<Tile_Controller> allTiles = mapController.currentMap.tiles;
         List<Tile_Controller> surroundingTiles = new List<Tile_Controller>();
-        Tile_Controller prefabTile = mapController.Get_Tile_With_PrefabID(type, prefabID);
+        Tile_Controller prefabTile = mapController.Get_Tile(type, prefabID);
 
         for (int i = 0; i < allTiles.Count; i++)
         {
