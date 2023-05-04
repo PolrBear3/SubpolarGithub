@@ -5,10 +5,8 @@ using UnityEngine;
 public class Tile_Direction_System : MonoBehaviour
 {
     private Tile_Controller _tileController;
-
+    
     [SerializeField] private GameObject[] _directions;
-
-    [SerializeField] private List<Tile_Controller> crossTileEx = new List<Tile_Controller>();
 
     private void Awake()
     {
@@ -44,31 +42,30 @@ public class Tile_Direction_System : MonoBehaviour
 
         // top
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum, _tileController.columnNum - 1));
-        Map_Controller topMap = mapController.Get_Map(currentMap.positionX, currentMap.positionY++);
-        if (crossTiles[0] == null && topMap != null) crossTiles[0] = topMap.Get_Tile(currentMap.positionX, currentMap.mapSize - 1);
+        Map_Controller topMap = mapController.Get_Map(currentMap.positionX, currentMap.positionY + 1);
+        if (crossTiles[0] == null && topMap != null) crossTiles[0] = topMap.Get_Tile(_tileController.rowNum, currentMap.mapSize - 1);
 
         // right
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum + 1, _tileController.columnNum));
-        Map_Controller rightMap = mapController.Get_Map(currentMap.positionX++, currentMap.positionY);
-        if (crossTiles[1] == null && rightMap != null) crossTiles[1] = rightMap.Get_Tile(0, currentMap.positionY);
+        Map_Controller rightMap = mapController.Get_Map(currentMap.positionX + 1, currentMap.positionY);
+        if (crossTiles[1] == null && rightMap != null) crossTiles[1] = rightMap.Get_Tile(0, _tileController.columnNum);
 
         // bottom
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum , _tileController.columnNum + 1));
-        Map_Controller bottomMap = mapController.Get_Map(currentMap.positionX, currentMap.positionY--);
-        if (crossTiles[2] == null && bottomMap != null) crossTiles[2] = bottomMap.Get_Tile(currentMap.positionX, 0);
+        Map_Controller bottomMap = mapController.Get_Map(currentMap.positionX, currentMap.positionY - 1);
+        if (crossTiles[2] == null && bottomMap != null) crossTiles[2] = bottomMap.Get_Tile(_tileController.rowNum, 0);
 
         // left
         crossTiles.Add(mapController.Get_Tile(_tileController.rowNum - 1, _tileController.columnNum));
-        Map_Controller leftMap = mapController.Get_Map(currentMap.positionX--, currentMap.positionY);
-        if (crossTiles[3] == null && leftMap != null) crossTiles[3] = leftMap.Get_Tile(currentMap.mapSize - 1, currentMap.positionY);
-
-        crossTileEx = crossTiles;
+        Map_Controller leftMap = mapController.Get_Map(currentMap.positionX - 1, currentMap.positionY);
+        if (crossTiles[3] == null && leftMap != null) crossTiles[3] = leftMap.Get_Tile(currentMap.mapSize - 1, _tileController.columnNum);
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
-            if (crossTiles[i] != null) continue;
-            _directions[i].SetActive(true);
-            // if (crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable)) continue;
+            if (crossTiles[i] == null || !crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable))
+            {
+                _directions[i].SetActive(true);
+            }
         }
     }
 }

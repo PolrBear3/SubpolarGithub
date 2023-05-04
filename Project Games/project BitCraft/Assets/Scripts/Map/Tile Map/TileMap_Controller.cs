@@ -65,9 +65,7 @@ public class TileMap_Controller : MonoBehaviour
     {
         for (int i = 0; i < allMaps.Count; i++)
         {
-            if (allMaps[i].positionX != positionX) continue;
-            if (allMaps[i].positionY != positionY) continue;
-            return allMaps[i];
+            if (allMaps[i].positionX == positionX && allMaps[i].positionY == positionY) return allMaps[i];
         }
         return null;
     }
