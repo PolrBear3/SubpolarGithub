@@ -37,28 +37,30 @@ public class Tile_Direction_System : MonoBehaviour
     {
         TileMap_Controller mapController = _tileController.mapController;
         Map_Controller currentMap = mapController.currentMap;
+        int mapSizeArray = currentMap.mapSize - 1;
 
-        List<Tile_Controller> crossTiles = new List<Tile_Controller>();
+        List<Tile_Controller> crossTiles = new List<Tile_Controller>(4)
+        {
+            mapController.Get_Tile(_tileController.rowNum, _tileController.columnNum - 1),
+            mapController.Get_Tile(_tileController.rowNum + 1, _tileController.columnNum),
+            mapController.Get_Tile(_tileController.rowNum , _tileController.columnNum + 1),
+            mapController.Get_Tile(_tileController.rowNum - 1, _tileController.columnNum)
+        };
 
-        // top
-        crossTiles.Add(mapController.Get_Tile(_tileController.rowNum, _tileController.columnNum - 1));
-        Map_Controller topMap = mapController.Get_Map(currentMap.positionX, currentMap.positionY + 1);
-        if (crossTiles[0] == null && topMap != null) crossTiles[0] = topMap.Get_Tile(_tileController.rowNum, currentMap.mapSize - 1);
+        for (int i = 0; i < crossTiles.Count; i++)
+        {
+            if (crossTiles[i] != null) continue;
 
-        // right
-        crossTiles.Add(mapController.Get_Tile(_tileController.rowNum + 1, _tileController.columnNum));
-        Map_Controller rightMap = mapController.Get_Map(currentMap.positionX + 1, currentMap.positionY);
-        if (crossTiles[1] == null && rightMap != null) crossTiles[1] = rightMap.Get_Tile(0, _tileController.columnNum);
+            int positionX = currentMap.positionX + (i == 1 ? 1 : i == 3 ? -1 : 0);
+            int positionY = currentMap.positionY + (i == 0 ? 1 : i == 2 ? -1 : 0);
+            Map_Controller surroundingMap = mapController.Get_Map(positionX, positionY);
 
-        // bottom
-        crossTiles.Add(mapController.Get_Tile(_tileController.rowNum , _tileController.columnNum + 1));
-        Map_Controller bottomMap = mapController.Get_Map(currentMap.positionX, currentMap.positionY - 1);
-        if (crossTiles[2] == null && bottomMap != null) crossTiles[2] = bottomMap.Get_Tile(_tileController.rowNum, 0);
+            if (surroundingMap == null) continue;
 
-        // left
-        crossTiles.Add(mapController.Get_Tile(_tileController.rowNum - 1, _tileController.columnNum));
-        Map_Controller leftMap = mapController.Get_Map(currentMap.positionX - 1, currentMap.positionY);
-        if (crossTiles[3] == null && leftMap != null) crossTiles[3] = leftMap.Get_Tile(currentMap.mapSize - 1, _tileController.columnNum);
+            int rowNum = i == 1 ? 0 : i == 3 ? mapSizeArray : _tileController.rowNum;
+            int column = i == 0 ? mapSizeArray : i == 2 ? 0 : _tileController.columnNum;
+            crossTiles[i] = surroundingMap.Get_Tile(rowNum, column);
+        }
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
