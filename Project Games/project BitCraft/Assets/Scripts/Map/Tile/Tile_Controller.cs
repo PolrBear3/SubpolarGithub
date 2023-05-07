@@ -100,13 +100,13 @@ public class Tile_Controller : MonoBehaviour
         rowNum = row;
         columnNum = column;
     }
-
     public void Set_Data(TileMap_Controller mapController)
     {
         this.mapController = mapController;
         _sr.sprite = Random_Sprite();
     }
-    public void Change_Type_ID(int prefabID)
+
+    public void Change_Type(int prefabID)
     {
         Prefabs_Controller controller = mapController.controller.prefabsController;
 
@@ -152,28 +152,35 @@ public class Tile_Controller : MonoBehaviour
         // sprite
         _sr.sprite = tileController.Random_Sprite();
     }
-    public void Change_Random_Overlap()
+    public void Change_Adapt(bool overlapOnly)
     {
-        Prefabs_Controller controller = mapController.controller.prefabsController;
+        List<Tile_Controller> surroundingTiles = mapController.combinationSystem.Surrounding_Tiles(rowNum, columnNum);
 
-        GameObject tile = controller.Get_Random_Overlap_Tile();
-        Prefab_Tag prefabTag;
-        Tile_Controller tileController;
+        if (overlapOnly)
+        {
+            // check if there is at least 1 overlap placeable tile
+            bool overlapTileDetected = false;
 
-        // get prefab tag component
-        if (!tile.TryGetComponent(out Prefab_Tag x)) return;
-        prefabTag = x;
+            for (int i = 0; i < surroundingTiles.Count; i++)
+            {
+                if (!surroundingTiles[i].Is_Prefab_Type(Prefab_Type.overlapPlaceable)) continue;
+                overlapTileDetected = true;
+                break;
+            }
 
-        // get tile controller component
-        if (!tile.TryGetComponent(out Tile_Controller y)) return;
-        tileController = y;
+            if (overlapTileDetected)
+            {
+                // remove all placeables
+                for (int i = surroundingTiles.Count - 1; i >= 0; i--)
+                {
+                    if (surroundingTiles[i].prefabTag.prefabType != Prefab_Type.placeable) continue;
+                    surroundingTiles.RemoveAt(i);
+                }
+            }
+        }
 
-        // prefab tag type
-        this.prefabTag.prefabType = prefabTag.prefabType;
-        // prefab tag id
-        this.prefabTag.prefabID = prefabTag.prefabID;
-        // sprite
-        _sr.sprite = tileController.Random_Sprite();
+        Tile_Controller targetTile = surroundingTiles[Random.Range(0, surroundingTiles.Count)];
+        Change_Type(targetTile.prefabTag.prefabID);
     }
 
     // prefab control

@@ -18,7 +18,7 @@ public class TileMap_Controller : MonoBehaviour
     public TileMap_Combination_System combinationSystem { get => _combinationSystem; set => _combinationSystem = value; }
 
     // ingame components
-    [SerializeField] private List<Map_Controller> _allMaps = new List<Map_Controller>();
+    private List<Map_Controller> _allMaps = new List<Map_Controller>();
     public List<Map_Controller> allMaps { get => _allMaps; set => _allMaps = value; }
 
     private Map_Controller _currentMap;
@@ -117,15 +117,16 @@ public class TileMap_Controller : MonoBehaviour
         Tile_Controller playerTile = Get_Tile(playerController.currentRowNum, playerController.currentColumnNum);
 
         // only the player tile
-        playerTile.Change_Random_Overlap();
+        playerTile.Change_Adapt(true);
 
         if (!newPlayer) return;
 
         // player surrounding tiles
         List<Tile_Controller> surroundingTiles = combinationSystem.Surrounding_Tiles(playerTile);
+
         for (int i = 0; i < surroundingTiles.Count; i++)
         {
-            surroundingTiles[i].Change_Random_Overlap();
+            surroundingTiles[i].Change_Adapt(true);
         }
     }
     public void Set_Player(int rowNum, int columnNum, bool newPlayer)
