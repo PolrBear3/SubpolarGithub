@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Prefabs_Controller : MonoBehaviour
+public class Prefabs_Data : MonoBehaviour
 {
     [SerializeField] private GameObject mapController;
 
     [SerializeField] private Prefab_Tag[] characters;
+    [SerializeField] private Prefab_Tag[] objects;
     [SerializeField] private Prefab_Tag[] tiles;
 
     public GameObject Get_MapController()
@@ -20,6 +21,16 @@ public class Prefabs_Controller : MonoBehaviour
         {
             if (id != characters[i].prefabID) continue;
             return characters[i].Prefab();
+        }
+        return null;
+    }
+
+    public GameObject Get_Object(int id)
+    {
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (id != objects[i].prefabID) continue;
+            return objects[i].Prefab();
         }
         return null;
     }
@@ -39,7 +50,6 @@ public class Prefabs_Controller : MonoBehaviour
 
         return tiles[RandomNum].Prefab();
     }
-
     public GameObject Get_Random_Overlap_Tile()
     {
         List<Prefab_Tag> overlapTiles = new List<Prefab_Tag>();

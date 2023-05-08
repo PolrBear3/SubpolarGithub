@@ -108,9 +108,9 @@ public class Tile_Controller : MonoBehaviour
 
     public void Change_Type(int prefabID)
     {
-        Prefabs_Controller controller = mapController.controller.prefabsController;
+        Prefabs_Data data = mapController.controller.prefabsData;
 
-        GameObject tile = controller.Get_Tile(prefabID);
+        GameObject tile = data.Get_Tile(prefabID);
         Prefab_Tag prefabTag;
         Tile_Controller tileController;
 
@@ -131,9 +131,9 @@ public class Tile_Controller : MonoBehaviour
     }
     public void Change_Random()
     {
-        Prefabs_Controller controller = mapController.controller.prefabsController;
+        Prefabs_Data data = mapController.controller.prefabsData;
 
-        GameObject tile = controller.Get_Random_Tile();
+        GameObject tile = data.Get_Random_Tile();
         Prefab_Tag prefabTag;
         Tile_Controller tileController;
 

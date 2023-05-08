@@ -131,7 +131,7 @@ public class TileMap_Controller : MonoBehaviour
     }
     public void Set_Player(int rowNum, int columnNum, bool newPlayer)
     {
-        GameObject playerPrefab = controller.prefabsController.Get_Character(0);
+        GameObject playerPrefab = controller.prefabsData.Get_Character(0);
         Tile_Controller playerTile = Get_Tile(rowNum, columnNum);
 
         // spawn
@@ -157,5 +157,38 @@ public class TileMap_Controller : MonoBehaviour
         
         // set player surrounding tiles to type overlap
         Set_Player_Tile(newPlayer);
+    }
+
+    // test functions
+    public void Set_Character(int characterID, int rowNum, int columnNum)
+    {
+        GameObject characterPrefab = controller.prefabsData.Get_Character(characterID);
+        Tile_Controller characterTile = Get_Tile(rowNum, columnNum);
+
+        // spawn
+        GameObject character = Instantiate(characterPrefab, characterTile.transform.position, Quaternion.identity);
+
+        // set character Prefab_Controller component
+        // if (characterID == 0)
+        // if (character.TryGetComponent(out Prefab_Controller prefabController)) { this.playerController = playerController; } ??
+
+        // set player data
+        // prefabController.Set_Data(this);
+
+        // update player map position
+        // prefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
+
+        // update player tiles position
+        // prefabController.Update_Tile_Position(rowNum, columnNum);
+
+        // place inside tile
+        characterTile.Set_Prefab(character.transform);
+
+        // update tiles
+        AllTiles_Update_Data();
+    }
+    public void Set_Object(int id, int rowNum, int columnNum)
+    {
+
     }
 }

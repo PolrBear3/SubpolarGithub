@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Game_Controller : MonoBehaviour
 {
-    private Prefabs_Controller _prefabsController;
-    public Prefabs_Controller prefabsController { get => _prefabsController; set => _prefabsController = value; }
+    private Prefabs_Data _prefabsData;
+    public Prefabs_Data prefabsData { get => _prefabsData; set => _prefabsData = value; }
 
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out Prefabs_Controller prefabsController))
+        if (gameObject.TryGetComponent(out Prefabs_Data prefabsData))
         {
-            _prefabsController = prefabsController;
+            _prefabsData = prefabsData;
         }
     }
 }

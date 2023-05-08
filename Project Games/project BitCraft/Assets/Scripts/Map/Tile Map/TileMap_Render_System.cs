@@ -25,7 +25,7 @@ public class TileMap_Render_System : MonoBehaviour
             Vector2 position = new(rowNum - 2, -columnNum + 2);
 
             // instantiate
-            GameObject tile = Instantiate(mapController.controller.prefabsController.Get_Random_Tile(), position, Quaternion.identity);
+            GameObject tile = Instantiate(mapController.controller.prefabsData.Get_Random_Tile(), position, Quaternion.identity);
 
             // set inside tile map as child
             tile.transform.parent = mapController.currentMap.transform;
@@ -55,7 +55,7 @@ public class TileMap_Render_System : MonoBehaviour
     public void Set_New_Map(int mapSize)
     {
         // spawn map prefab
-        GameObject setMap = Instantiate(this.mapController.controller.prefabsController.Get_MapController());
+        GameObject setMap = Instantiate(this.mapController.controller.prefabsData.Get_MapController());
 
         // set map inside tilemap controller as child
         setMap.transform.parent = transform;
