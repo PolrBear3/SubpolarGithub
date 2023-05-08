@@ -44,26 +44,6 @@ public class MainGame_Controller : MonoBehaviour
     {
         Set_TileNum_forAll_Tiles();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            Add_Money(100, 0);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            for (int i = 0; i < farmTiles.Length; i++)
-            {
-                if (farmTiles[i].data.seedPlanted && !farmTiles[i].tileSeedStatus.currentDayWatered)
-                {
-                    // water the seeded tile
-                    farmTiles[i].tileSeedStatus.currentDayWatered = true;
-                    farmTiles[i].Add_Status(0);
-                    farmTiles[i].Watering_Check();
-                }
-            }
-        }
-    }
 
     // tile functions
     private void Set_TileNum_forAll_Tiles()
