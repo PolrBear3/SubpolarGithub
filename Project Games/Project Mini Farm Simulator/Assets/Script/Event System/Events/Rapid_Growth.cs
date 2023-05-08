@@ -111,7 +111,6 @@ public class Rapid_Growth : MonoBehaviour, IEvent, IEventResetable
             // if percentage activates
             if (!e.Percentage_Setter(data.percentage)) continue;
 
-
             // add status rapid growth
             farmTiles[i].Add_Status(11);
 
