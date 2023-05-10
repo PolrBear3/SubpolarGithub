@@ -235,10 +235,10 @@ public class Tile_Controller : MonoBehaviour
         mapController.actionSystem.UnHighlight_All_tiles();
     }
 
-    public void Highlight()
+    public void Highlight(Color color)
     {
         selectReady = true;
-        _sr.color = Color.green;
+        _sr.color = color;
     }
     public void UnHighlight()
     {

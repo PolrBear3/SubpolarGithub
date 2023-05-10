@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Prefab_Controller : MonoBehaviour
 {
-    private TileMap_Controller tilemapController;
-    private Prefab_Tag prefabTag;
+    private TileMap_Controller _tilemapController;
+    public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
+
+    private Prefab_Tag _prefabTag;
+    public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
     [Header("Map Position")]
     [SerializeField] private int _positionX;
@@ -31,10 +34,12 @@ public class Prefab_Controller : MonoBehaviour
 
     public void Update_Map_Position(int positionX, int positionY)
     {
-
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
-    public void Update_Tile_Position(int row, int column)
+    public void Update_Tile_Position(int rowNum, int columnNum)
     {
-
+        currentRowNum = rowNum;
+        currentColumnNum = columnNum;
     }
 }

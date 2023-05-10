@@ -4,34 +4,21 @@ using UnityEngine;
 
 public class Player_Controller : MonoBehaviour
 {
-    private TileMap_Controller _mapController;
-    public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
+    private Prefab_Controller _prefabController;
+    public Prefab_Controller prefabController { get => _prefabController; set => _prefabController = value; }
 
-    // map position
-    private int _positionX;
-    public int positionX { get => _positionX; set => _positionX = value; }
-
-    private int _positionY;
-    public int positionY { get => _positionY; set => _positionY = value; }
-
-    // tile position
-    private int _currentRowNum;
-    public int currentRowNum { get => _currentRowNum; set => _currentRowNum = value; }
-
-    private int _currentColumnNum;
-    public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
-
-    // basic data
     private bool _interactReady = false;
     public bool interactReady { get => _interactReady; set => _interactReady = value; }
 
-    [SerializeField] private float _moveSpeed;
-    public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
+    private void Awake()
+    {
+        if (gameObject.TryGetComponent(out Prefab_Controller prefabController)) { this.prefabController = prefabController; }
+    }
 
     // checks
     public bool Position_at_Crust()
     {
-        List<Tile_Controller> crustTiles = mapController.combinationSystem.Map_Crust_Tiles();
+        List<Tile_Controller> crustTiles = prefabController.tilemapController.combinationSystem.Map_Crust_Tiles();
 
         for (int i = 0; i < crustTiles.Count; i++)
         {
@@ -42,7 +29,7 @@ public class Player_Controller : MonoBehaviour
     }
     public bool Position_at_Corner()
     {
-        List<Tile_Controller> cornerTiles = mapController.combinationSystem.Map_Corners_Tiles();
+        List<Tile_Controller> cornerTiles = prefabController.tilemapController.combinationSystem.Map_Corners_Tiles();
 
         for (int i = 0; i < cornerTiles.Count; i++)
         {
@@ -52,42 +39,28 @@ public class Player_Controller : MonoBehaviour
         return false;
     }
 
-    // updates
-    public void Set_Data(TileMap_Controller mapController)
-    {
-        this.mapController = mapController;
-    }
-    public void Update_Map_Position(int positionX, int positionY)
-    {
-        this.positionX = positionX;
-        this.positionY = positionY;
-    }
-    public void Update_Tile_Position(int row, int column)
-    {
-        currentRowNum = row;
-        currentColumnNum = column;
-    }
-
     // functions
     public void Click()
     {
+        TileMap_Controller tilemapController = prefabController.tilemapController;
+
         if (!interactReady) 
         {
             interactReady = true;
-            mapController.actionSystem.Highlight_Player_Moveable_Tiles();
-            mapController.actionSystem.Set_NewMap_Directions();
+            tilemapController.actionSystem.Highlight_Player_Interactable_Tiles();
+            tilemapController.actionSystem.Set_NewMap_Directions();
         }
         else
         {
             interactReady = false;
-            mapController.actionSystem.UnHighlight_All_tiles();
-            mapController.actionSystem.Reset_NewMap_Directions();
+            tilemapController.actionSystem.UnHighlight_All_tiles();
+            tilemapController.actionSystem.Reset_NewMap_Directions();
         }
     }
 
     public void Move()
     {
-        LeanTween.moveLocal(gameObject, Vector2.zero, moveSpeed).setEase(LeanTweenType.easeInOutQuint);
+        LeanTween.moveLocal(gameObject, Vector2.zero, prefabController.moveSpeed).setEase(LeanTweenType.easeInOutQuint);
         Click();
     }
 }

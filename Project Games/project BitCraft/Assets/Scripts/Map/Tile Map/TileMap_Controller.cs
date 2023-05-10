@@ -27,6 +27,9 @@ public class TileMap_Controller : MonoBehaviour
     private Player_Controller _playerController;
     public Player_Controller playerController { get => _playerController; set => _playerController = value; }
 
+    private Prefab_Controller _playerPrefabController;
+    public Prefab_Controller playerPrefabController { get => _playerPrefabController; set => _playerPrefabController = value; }
+
     //
     private void Awake()
     {
@@ -37,7 +40,11 @@ public class TileMap_Controller : MonoBehaviour
     private void Start()
     {
         renderSystem.Set_New_Map(5);
-        Set_Player(2, 2, true);
+
+        Set_Character(0, 2, 2);
+        Set_Player_Tile(true);
+
+        Set_Object(0, 1, 1);
     }
 
     // map check
@@ -114,7 +121,7 @@ public class TileMap_Controller : MonoBehaviour
 
     public void Set_Player_Tile(bool newPlayer)
     {
-        Tile_Controller playerTile = Get_Tile(playerController.currentRowNum, playerController.currentColumnNum);
+        Tile_Controller playerTile = Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
 
         // only the player tile
         playerTile.Change_Adapt(true);
@@ -129,66 +136,75 @@ public class TileMap_Controller : MonoBehaviour
             surroundingTiles[i].Change_Adapt(true);
         }
     }
-    public void Set_Player(int rowNum, int columnNum, bool newPlayer)
-    {
-        GameObject playerPrefab = controller.prefabsData.Get_Character(0);
-        Tile_Controller playerTile = Get_Tile(rowNum, columnNum);
-
-        // spawn
-        GameObject player = Instantiate(playerPrefab, playerTile.transform.position, Quaternion.identity);
-
-        // set player controller component
-        if (player.TryGetComponent(out Player_Controller playerController)) { this.playerController = playerController; }
-
-        // set player data
-        playerController.Set_Data(this);
-
-        // update player map position
-        playerController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
-
-        // update player tiles position
-        playerController.Update_Tile_Position(rowNum, columnNum);
-
-        // place inside tile
-        playerTile.Set_Prefab(player.transform);
-
-        // update tiles
-        AllTiles_Update_Data();
-        
-        // set player surrounding tiles to type overlap
-        Set_Player_Tile(newPlayer);
-    }
 
     // test functions
     public void Set_Character(int characterID, int rowNum, int columnNum)
     {
         GameObject characterPrefab = controller.prefabsData.Get_Character(characterID);
-        Tile_Controller characterTile = Get_Tile(rowNum, columnNum);
+        Tile_Controller targetTile = Get_Tile(rowNum, columnNum);
 
         // spawn
-        GameObject character = Instantiate(characterPrefab, characterTile.transform.position, Quaternion.identity);
+        GameObject character = Instantiate(characterPrefab, targetTile.transform.position, Quaternion.identity);
 
-        // set character Prefab_Controller component
-        // if (characterID == 0)
-        // if (character.TryGetComponent(out Prefab_Controller prefabController)) { this.playerController = playerController; } ??
+        // get Prefab_Controller component
+        if (!character.TryGetComponent(out Prefab_Controller prefabController))
+        {
+            Destroy(character);
+            return;
+        }
+        Prefab_Controller setPrefabController = prefabController;
+
+        // if character is player
+        if (characterID == 0)
+        {
+            playerPrefabController = setPrefabController;
+            if (character.TryGetComponent(out Player_Controller playerController)) { this.playerController = playerController; }
+        }
 
         // set player data
-        // prefabController.Set_Data(this);
+        setPrefabController.Connect_Components(this);
 
         // update player map position
-        // prefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
+        setPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
 
-        // update player tiles position
-        // prefabController.Update_Tile_Position(rowNum, columnNum);
+        // update player tile position
+        setPrefabController.Update_Tile_Position(rowNum, columnNum);
 
         // place inside tile
-        characterTile.Set_Prefab(character.transform);
+        targetTile.Set_Prefab(character.transform);
 
         // update tiles
         AllTiles_Update_Data();
     }
-    public void Set_Object(int id, int rowNum, int columnNum)
+    public void Set_Object(int objectID, int rowNum, int columnNum)
     {
+        GameObject objectPrefab = controller.prefabsData.Get_Object(objectID);
+        Tile_Controller targetTile = Get_Tile(rowNum, columnNum);
 
+        // spawn
+        GameObject objectGameObject = Instantiate(objectPrefab, targetTile.transform.position, Quaternion.identity);
+
+        // get Prefab_Controller component
+        if (!objectGameObject.TryGetComponent(out Prefab_Controller prefabController))
+        {
+            Destroy(objectGameObject);
+            return;
+        }
+        Prefab_Controller setPrefabController = prefabController;
+
+        // set object data
+        setPrefabController.Connect_Components(this);
+
+        // update object map position
+        setPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
+
+        // update objec tile position
+        setPrefabController.Update_Tile_Position(rowNum, columnNum);
+
+        // place inside tile
+        targetTile.Set_Prefab(objectGameObject.transform);
+
+        // update tiles
+        AllTiles_Update_Data();
     }
 }

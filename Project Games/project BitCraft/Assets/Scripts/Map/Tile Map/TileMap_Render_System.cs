@@ -77,9 +77,9 @@ public class TileMap_Render_System : MonoBehaviour
         Map_Controller previousMap = mapController.currentMap;
 
         // save player position
-        Player_Controller player = mapController.playerController;
-        int previousRow = player.currentRowNum;
-        int previousColumn = player.currentColumnNum;
+        Prefab_Controller playerPrefabController = mapController.playerPrefabController;
+        int previousRow = playerPrefabController.currentRowNum;
+        int previousColumn = playerPrefabController.currentColumnNum;
 
         // save map position
         int previousPosX = previousMap.positionX;
@@ -103,27 +103,30 @@ public class TileMap_Render_System : MonoBehaviour
         if (previousRow > mapSize) { previousRow = 0; previousPosX +=2; }
         else if (previousColumn > mapSize) { previousColumn = 0; previousPosY -=2; }
 
-        // if map exist
-        if (mapController.Has_Map(previousPosX, previousPosY))
+
+        // new map render check
+        bool hasMap = mapController.Has_Map(previousPosX, previousPosY);
+
+        if (hasMap)
         {
-            // load existing map
             Map_Controller loadMap = mapController.Get_Map(previousPosX, previousPosY);
             loadMap.Map_Activation(true);
             mapController.currentMap = loadMap;
         }
-        // if new map location
         else
         {
-            // generate new map
             Set_New_Map(5);
             mapController.currentMap.Update_Position(previousPosX, previousPosY);
         }
 
         // set player on map
-        mapController.Set_Player(previousRow, previousColumn, false);
+        mapController.Set_Character(0, previousRow, previousColumn);
 
         // update player map position
         Map_Controller currentMap = mapController.currentMap;
-        player.Update_Map_Position(currentMap.positionX, currentMap.positionY);
+        playerPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
+
+        // set player tile
+        if (!hasMap) mapController.Set_Player_Tile(false);
     }
 }

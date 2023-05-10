@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 725340121840702115}
   - component: {fileID: 8537117108615183467}
   - component: {fileID: 6900627066728663899}
-  - component: {fileID: 6341667895375504846}
+  - component: {fileID: -5113172227308652651}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -72,8 +72,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1838515331
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1946553249, guid: 87086d13935fd431d9880246000a854e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabType: 3
   _prefabID: 0
---- !u!114 &6341667895375504846
+--- !u!114 &-5113172227308652651
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,3 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43b90dcc61324c6a86b6790e8a0c899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _positionX: 0
+  _positionY: 0
+  _currentRowNum: 0
+  _currentColumnNum: 0
+  _moveSpeed: 0

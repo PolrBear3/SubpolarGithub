@@ -29,58 +29,41 @@ public class TileMap_Action_System : MonoBehaviour
         for (int i = 0; i < tiles.Count; i++)
         {
             if (tiles[i].Has_Prefab_Type(Prefab_Type.all)) continue;
-            tiles[i].Highlight();
+            tiles[i].Highlight(Color.green);
         }
     }
 
     // player action systems
-    public void Highlight_Player_Moveable_Tiles()
+    public void Highlight_Player_Interactable_Tiles()
     {
-        List<Tile_Controller> moveableTiles = mapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
+        List<Tile_Controller> crossTiles = mapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
-        for (int i = 0; i < moveableTiles.Count; i++)
-        {
-            if (moveableTiles[i].Is_Prefab_Type(Prefab_Type.placeable) || moveableTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
-            {
-                moveableTiles.RemoveAt(i);
-                i--;
-
-                if (moveableTiles.Count <= 0)
-                {
-                    mapController.playerController.interactReady = false;
-                    break;
-                }
-
-                continue;
-            }
-
-            moveableTiles[i].Highlight();
-        }
     }
 
     public void Set_NewMap_Directions()
     {
-        Player_Controller player = mapController.playerController;
-        Tile_Controller playerTile = mapController.Get_Tile(player.currentRowNum, player.currentColumnNum);
+        Prefab_Controller playerPrefabController = mapController.playerPrefabController;
+        Tile_Controller playerTile = mapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
 
         playerTile.directionSystem.Set_Directions();
     }
     public void Reset_NewMap_Directions()
     {
-        Player_Controller player = mapController.playerController;
-        Tile_Controller playerTile = mapController.Get_Tile(player.currentRowNum, player.currentColumnNum);
+        Prefab_Controller playerPrefabController = mapController.playerPrefabController;
+        Tile_Controller playerTile = mapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
 
         playerTile.directionSystem.Reset_Directions();
     }
 
     public void Move_Player(Tile_Controller moveTile)
     {
-        Player_Controller player = mapController.playerController;
+        Player_Controller playerController = mapController.playerController;
+        Prefab_Controller playerPrefabController = mapController.playerPrefabController;
 
-        moveTile.Set_Prefab(player.transform);
+        moveTile.Set_Prefab(playerController.transform);
 
-        player.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
-        player.Move();
+        playerPrefabController.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
+        playerController.Move();
 
         mapController.AllTiles_Update_Data();
     }
