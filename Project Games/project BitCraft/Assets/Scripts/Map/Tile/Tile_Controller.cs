@@ -9,8 +9,8 @@ public class Tile_Controller : MonoBehaviour
 
     [SerializeField] private List<Sprite> _sprites = new List<Sprite>(); 
 
-    private TileMap_Controller _mapController;
-    public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
+    private TileMap_Controller _tilemapController;
+    public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
 
     private Tile_Direction_System _directionSystem;
     public Tile_Direction_System directionSystem { get => _directionSystem; set => _directionSystem = value; }
@@ -24,8 +24,11 @@ public class Tile_Controller : MonoBehaviour
     private int _columnNum;
     public int columnNum { get => _columnNum; set => _columnNum = value; }
 
-    private bool _selectReady = false;
-    public bool selectReady { get => _selectReady; set => _selectReady = value; }
+    private bool _moveReady = false;
+    public bool moveReady { get => _moveReady; set => _moveReady = value; }
+
+    private bool _objectReady = false;
+    public bool objectReady { get => _objectReady; set => _objectReady = value; }
 
     [SerializeField] private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
@@ -102,13 +105,13 @@ public class Tile_Controller : MonoBehaviour
     }
     public void Set_Data(TileMap_Controller mapController)
     {
-        this.mapController = mapController;
+        this.tilemapController = mapController;
         _sr.sprite = Random_Sprite();
     }
 
     public void Change_Type(int prefabID)
     {
-        Prefabs_Data data = mapController.controller.prefabsData;
+        Prefabs_Data data = tilemapController.controller.prefabsData;
 
         GameObject tile = data.Get_Tile(prefabID);
         Prefab_Tag prefabTag;
@@ -131,7 +134,7 @@ public class Tile_Controller : MonoBehaviour
     }
     public void Change_Random()
     {
-        Prefabs_Data data = mapController.controller.prefabsData;
+        Prefabs_Data data = tilemapController.controller.prefabsData;
 
         GameObject tile = data.Get_Random_Tile();
         Prefab_Tag prefabTag;
@@ -154,7 +157,7 @@ public class Tile_Controller : MonoBehaviour
     }
     public void Change_Adapt(bool overlapOnly)
     {
-        List<Tile_Controller> surroundingTiles = mapController.combinationSystem.Surrounding_Tiles(rowNum, columnNum);
+        List<Tile_Controller> surroundingTiles = tilemapController.combinationSystem.Surrounding_Tiles(rowNum, columnNum);
 
         if (overlapOnly)
         {
@@ -224,25 +227,34 @@ public class Tile_Controller : MonoBehaviour
     // functions
     public void Click()
     {
-        if (!selectReady) return;
+        if (moveReady)
+        {
+            tilemapController.actionSystem.Reset_NewMap_Directions();
+            tilemapController.actionSystem.Move_Player(this);
+        }
+        else if (objectReady)
+        {
 
-        mapController.actionSystem.Reset_NewMap_Directions();
+        }
 
-        // tile click interactions
-        mapController.actionSystem.Move_Player(this);
-        //
-
-        mapController.actionSystem.UnHighlight_All_tiles();
+        tilemapController.actionSystem.UnHighlight_All_tiles();
     }
 
-    public void Highlight(Color color)
+    public void Move_Highlight()
     {
-        selectReady = true;
-        _sr.color = color;
+        moveReady = true;
+        _sr.color = Color.green;
+    }
+    public void Object_Highlight()
+    {
+        objectReady = true;
+        _sr.color = Color.blue;
     }
     public void UnHighlight()
     {
-        selectReady = false;
+        moveReady = false;
+        objectReady = false;
         _sr.color = Color.white;
+        // deactivate object popup box
     }
 }
