@@ -1,0 +1,40 @@
+body{
+    background-image: url("images/white-abstract-background_23-2148810113.png");
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    width: 400px;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;;
+}
+
+h1{
+    margin-top: 15px;
+}
+
+.input-box{
+    margin: 0;
+}
+
+.button-box{
+    display: grid;
+    margin-top: 15px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+.button{
+    text-align: center;
+}
+
+.task-box{
+    display: flex;
+    gap: 190px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
