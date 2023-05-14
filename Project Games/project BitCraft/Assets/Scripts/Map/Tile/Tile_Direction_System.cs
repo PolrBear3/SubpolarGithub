@@ -19,11 +19,11 @@ public class Tile_Direction_System : MonoBehaviour
 
     public void Click(bool isRowMove)
     {
-        _tileController.mapController.playerController.interactReady = false;
-        _tileController.mapController.actionSystem.UnHighlight_All_tiles();
+        _tileController.tilemapController.playerController.interactReady = false;
+        _tileController.tilemapController.actionSystem.UnHighlight_All_tiles();
         Reset_Directions();
 
-        _tileController.mapController.renderSystem.Render_Next_Map(isRowMove);
+        _tileController.tilemapController.renderSystem.Render_Next_Map(isRowMove);
     }
 
     public void Reset_Directions()
@@ -35,7 +35,7 @@ public class Tile_Direction_System : MonoBehaviour
     }
     public void Set_Directions()
     {
-        TileMap_Controller mapController = _tileController.mapController;
+        TileMap_Controller mapController = _tileController.tilemapController;
         Map_Controller currentMap = mapController.currentMap;
         int mapSizeArray = currentMap.mapSize - 1;
 

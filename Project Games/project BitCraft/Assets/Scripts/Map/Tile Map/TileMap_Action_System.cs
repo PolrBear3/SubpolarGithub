@@ -29,7 +29,7 @@ public class TileMap_Action_System : MonoBehaviour
         for (int i = 0; i < tiles.Count; i++)
         {
             if (tiles[i].Has_Prefab_Type(Prefab_Type.all)) continue;
-            tiles[i].Highlight(Color.green);
+            tiles[i].Move_Highlight();
         }
     }
 
@@ -38,6 +38,22 @@ public class TileMap_Action_System : MonoBehaviour
     {
         List<Tile_Controller> crossTiles = mapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
+        for (int i = 0; i < crossTiles.Count; i++)
+        {
+            if (crossTiles[i] == null) continue;
+            
+            // highlight moveable tiles
+            if (!crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable) && !crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
+            {
+                crossTiles[i].Move_Highlight();
+            }
+
+            // highlight interactable object tiles
+            if (crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
+            {
+                // object interact highlight
+            }
+        }
     }
 
     public void Set_NewMap_Directions()
