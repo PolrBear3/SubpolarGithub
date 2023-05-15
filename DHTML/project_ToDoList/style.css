@@ -34,13 +34,15 @@ h1{
 
 .task-board{
     display: flex;
-    flex-direction: row;
-    gap: 20px;
     margin-top: 15px;
     margin-bottom: 15px;
-    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
 }
 .task-buttons{
-    display: flex;
+    display: block;
+    margin-left: 50px;
     gap: 5px;
+}
+.task-complete{
+    text-decoration: line-through;
 }
