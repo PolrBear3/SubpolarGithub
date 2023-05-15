@@ -32,13 +32,15 @@ h1{
     text-align: center;
 }
 
-.task-box{
+.task-board{
     display: flex;
-    flex-direction: column;
-    gap: 190px;
+    flex-direction: row;
+    gap: 20px;
     margin-top: 15px;
     margin-bottom: 15px;
+    grid-template-columns: repeat(3, 1fr);
 }
-.task-board{
-
+.task-buttons{
+    display: flex;
+    gap: 5px;
 }

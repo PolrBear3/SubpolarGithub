@@ -8,7 +8,7 @@ function Show_Task(){
     let resultHTML = '';
     
     for (let i = 0; i < allTasks.length; i++) {
-        resultHTML += '<div class="task-board"><div>Task</div><div class="task-buttons"><button>Check</button><button>Delete</button></div></div>'
+        resultHTML += '<div id="task-box" class="task-box"><div class="task-board"><div>Task</div><div class="task-buttons"><button>Check</button><button>Delete</button></div></div>'
     }
 
     document.getElementById("task-box").innerHTML = resultHTML;
