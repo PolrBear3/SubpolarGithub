@@ -51,7 +51,7 @@ public class TileMap_Action_System : MonoBehaviour
             // highlight interactable object tiles
             if (crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
             {
-                // object interact highlight
+                crossTiles[i].Object_Highlight();
             }
         }
     }

@@ -33,6 +33,8 @@ public class Tile_Controller : MonoBehaviour
     [SerializeField] private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
+    [SerializeField] private GameObject objectBlinkBox;
+
     [SerializeField] private Transform _prefabsParent;
 
     private void Awake()
@@ -234,7 +236,7 @@ public class Tile_Controller : MonoBehaviour
         }
         else if (objectReady)
         {
-
+            // action system object interact ??
         }
 
         tilemapController.actionSystem.UnHighlight_All_tiles();
@@ -248,13 +250,14 @@ public class Tile_Controller : MonoBehaviour
     public void Object_Highlight()
     {
         objectReady = true;
-        _sr.color = Color.blue;
+        objectBlinkBox.SetActive(objectReady);
     }
     public void UnHighlight()
     {
         moveReady = false;
         objectReady = false;
+
         _sr.color = Color.white;
-        // deactivate object popup box
+        objectBlinkBox.SetActive(objectReady);
     }
 }

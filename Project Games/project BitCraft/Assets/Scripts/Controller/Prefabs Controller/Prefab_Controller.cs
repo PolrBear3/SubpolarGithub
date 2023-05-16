@@ -23,6 +23,8 @@ public class Prefab_Controller : MonoBehaviour
     public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
 
     [Header("Interaction Data")]
+    [SerializeField] private Vector2 _setPosition;
+    public Vector2 setPosition { get => _setPosition; set => _setPosition = value; }
     [SerializeField] private float _moveSpeed;
     public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
 

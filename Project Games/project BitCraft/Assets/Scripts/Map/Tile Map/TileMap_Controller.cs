@@ -172,6 +172,7 @@ public class TileMap_Controller : MonoBehaviour
 
         // place inside tile
         targetTile.Set_Prefab(character.transform);
+        character.transform.localPosition = setPrefabController.setPosition;
 
         // update tiles
         AllTiles_Update_Data();
@@ -203,6 +204,7 @@ public class TileMap_Controller : MonoBehaviour
 
         // place inside tile
         targetTile.Set_Prefab(objectGameObject.transform);
+        objectGameObject.transform.localPosition = setPrefabController.setPosition;
 
         // update tiles
         AllTiles_Update_Data();
