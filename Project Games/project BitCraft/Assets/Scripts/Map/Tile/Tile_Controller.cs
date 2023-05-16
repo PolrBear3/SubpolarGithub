@@ -236,7 +236,7 @@ public class Tile_Controller : MonoBehaviour
         }
         else if (objectReady)
         {
-            // action system object interact ??
+            tilemapController.actionSystem.Interact_Object(this);
         }
 
         tilemapController.actionSystem.UnHighlight_All_tiles();

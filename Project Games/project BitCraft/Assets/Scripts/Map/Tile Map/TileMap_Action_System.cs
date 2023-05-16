@@ -83,4 +83,12 @@ public class TileMap_Action_System : MonoBehaviour
 
         mapController.AllTiles_Update_Data();
     }
+    public void Interact_Object(Tile_Controller tileWithObject)
+    {
+        Player_Controller playerController = mapController.playerController;
+
+        // object interaction function goes here
+
+        playerController.Click();
+    }
 }
