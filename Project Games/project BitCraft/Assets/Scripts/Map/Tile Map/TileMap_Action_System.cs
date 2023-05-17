@@ -87,7 +87,14 @@ public class TileMap_Action_System : MonoBehaviour
     {
         Player_Controller playerController = mapController.playerController;
 
-        // object interaction function goes here
+        for (int i = 0; i < tileWithObject.currentPrefabs.Count; i++)
+        {
+            // get all Iinteractable objects
+            if (!tileWithObject.currentPrefabs[i].TryGetComponent(out IInteractable interactable)) continue;
+
+            // activate interable objects
+            interactable.Interact();
+        }
 
         playerController.Click();
     }
