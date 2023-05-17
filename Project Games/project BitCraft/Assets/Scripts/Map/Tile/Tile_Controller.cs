@@ -63,6 +63,7 @@ public class Tile_Controller : MonoBehaviour
 
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
+            if (currentPrefabs[i] == null) continue;
             if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag tag)) continue;
             if (type != tag.prefabType) continue;
             return true;

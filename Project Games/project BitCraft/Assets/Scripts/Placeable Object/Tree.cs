@@ -17,7 +17,7 @@ public class Tree : MonoBehaviour, IInteractable
 
     private void Cut()
     {
-
+        Destroy(gameObject);
     }
 
     private void Get_Damage()

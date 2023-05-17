@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class TileMap_Action_System : MonoBehaviour
 {
-    private TileMap_Controller _mapController;
-    public TileMap_Controller mapController { get => _mapController; set => _mapController = value; }
+    private TileMap_Controller _tilemapController;
+    public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
 
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out TileMap_Controller mapController)) { this.mapController = mapController; }
+        if (gameObject.TryGetComponent(out TileMap_Controller mapController)) { this.tilemapController = mapController; }
     }
 
     // public action systems
     public void UnHighlight_All_tiles()
     {
-        List<Tile_Controller> tiles = mapController.currentMap.tiles;
+        List<Tile_Controller> tiles = tilemapController.currentMap.tiles;
 
         for (int i = 0; i < tiles.Count; i++)
         {
@@ -24,7 +24,7 @@ public class TileMap_Action_System : MonoBehaviour
     }
     public void Highlight_All_Moveable_Tiles()
     {
-        List<Tile_Controller> tiles = mapController.currentMap.tiles;
+        List<Tile_Controller> tiles = tilemapController.currentMap.tiles;
 
         for (int i = 0; i < tiles.Count; i++)
         {
@@ -36,7 +36,7 @@ public class TileMap_Action_System : MonoBehaviour
     // player action systems
     public void Highlight_Player_Interactable_Tiles()
     {
-        List<Tile_Controller> crossTiles = mapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
+        List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
@@ -58,34 +58,35 @@ public class TileMap_Action_System : MonoBehaviour
 
     public void Set_NewMap_Directions()
     {
-        Prefab_Controller playerPrefabController = mapController.playerPrefabController;
-        Tile_Controller playerTile = mapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
+        Prefab_Controller playerPrefabController = tilemapController.playerPrefabController;
+        Tile_Controller playerTile = tilemapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
 
         playerTile.directionSystem.Set_Directions();
     }
     public void Reset_NewMap_Directions()
     {
-        Prefab_Controller playerPrefabController = mapController.playerPrefabController;
-        Tile_Controller playerTile = mapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
+        Prefab_Controller playerPrefabController = tilemapController.playerPrefabController;
+        Tile_Controller playerTile = tilemapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
 
         playerTile.directionSystem.Reset_Directions();
     }
 
     public void Move_Player(Tile_Controller moveTile)
     {
-        Player_Controller playerController = mapController.playerController;
-        Prefab_Controller playerPrefabController = mapController.playerPrefabController;
+        Player_Controller playerController = tilemapController.playerController;
+        Prefab_Controller playerPrefabController = tilemapController.playerPrefabController;
 
         moveTile.Set_Prefab(playerController.transform);
 
         playerPrefabController.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
         playerController.Move();
 
-        mapController.AllTiles_Update_Data();
+        tilemapController.AllTiles_Update_Data();
+        playerController.Click();
     }
     public void Interact_Object(Tile_Controller tileWithObject)
     {
-        Player_Controller playerController = mapController.playerController;
+        Player_Controller playerController = tilemapController.playerController;
 
         for (int i = 0; i < tileWithObject.currentPrefabs.Count; i++)
         {
@@ -96,6 +97,7 @@ public class TileMap_Action_System : MonoBehaviour
             interactable.Interact();
         }
 
+        tilemapController.AllTiles_Update_Data();
         playerController.Click();
     }
 }
