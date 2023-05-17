@@ -10,6 +10,9 @@ public class Prefab_Controller : MonoBehaviour
     private Prefab_Tag _prefabTag;
     public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
+    private Health_Controller _healthController;
+    public Health_Controller healthController { get => _healthController; set => _healthController = value; }
+
     [Header("Map Position")]
     [SerializeField] private int _positionX;
     public int positionX { get => _positionX; set => _positionX = value; }
@@ -31,7 +34,9 @@ public class Prefab_Controller : MonoBehaviour
     public void Connect_Components(TileMap_Controller tilemapController)
     {
         this.tilemapController = tilemapController;
+        
         if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
+        if (gameObject.TryGetComponent(out Health_Controller healthController)) { this.healthController = healthController; }
     }
 
     public void Update_Map_Position(int positionX, int positionY)

@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8537117108615183467}
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
-  - component: {fileID: -5912040683378438804}
+  - component: {fileID: 4651572311096850505}
+  - component: {fileID: 4688511875017061401}
   m_Layer: 0
-  m_Name: Tree
+  m_Name: Green Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1838515331
+  m_SortingLayerID: -1023252657
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1946553249, guid: 87086d13935fd431d9880246000a854e, type: 3}
@@ -119,7 +120,21 @@ MonoBehaviour:
   _currentColumnNum: 0
   _setPosition: {x: 0, y: 0.25}
   _moveSpeed: 0
---- !u!114 &-5912040683378438804
+--- !u!114 &4651572311096850505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013186990097543618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed87d32bdb6e4141bfe4c26860bb3cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxLifeCount: 0
+  _currentLifeCount: 0
+--- !u!114 &4688511875017061401
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

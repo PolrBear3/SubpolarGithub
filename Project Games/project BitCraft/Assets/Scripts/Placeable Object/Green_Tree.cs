@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tree : MonoBehaviour, IInteractable
+public class Green_Tree : MonoBehaviour, IInteractable
 {
     private Prefab_Controller controller;
 
@@ -17,16 +17,19 @@ public class Tree : MonoBehaviour, IInteractable
 
     private void Cut()
     {
+        Get_Damage();
+        Cut_Animation();
+        if (controller.healthController.currentLifeCount > 0) return;
         Destroy(gameObject);
     }
 
     private void Get_Damage()
     {
-
+        controller.healthController.Subtract_Current_LifeCount(1);
     }
 
     private void Cut_Animation()
     {
-
+        Debug.Log(controller.healthController.currentLifeCount);
     }
 }
