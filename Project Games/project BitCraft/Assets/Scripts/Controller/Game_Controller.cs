@@ -7,11 +7,11 @@ public class Game_Controller : MonoBehaviour
     private Prefabs_Data _prefabsData;
     public Prefabs_Data prefabsData { get => _prefabsData; set => _prefabsData = value; }
 
+    [SerializeField] private TileMap_Controller _tilemapController;
+    public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
+
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out Prefabs_Data prefabsData))
-        {
-            _prefabsData = prefabsData;
-        }
+        if (gameObject.TryGetComponent(out Prefabs_Data prefabsData)) { _prefabsData = prefabsData; }
     }
 }
