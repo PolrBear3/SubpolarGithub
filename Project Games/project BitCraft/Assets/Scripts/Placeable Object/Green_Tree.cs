@@ -12,24 +12,23 @@ public class Green_Tree : MonoBehaviour, IInteractable
     }
     public void Interact()
     {
-        Cut();
+        Get_Damaged();
+        Health_Check();
     }
 
-    private void Cut()
+    private void Health_Check()
     {
-        Get_Damage();
-        Cut_Animation();
         if (controller.healthController.currentLifeCount > 0) return;
         Destroy(gameObject);
     }
 
-    private void Get_Damage()
+    private void Get_Damaged()
     {
         controller.healthController.Subtract_Current_LifeCount(1);
     }
 
     private void Cut_Animation()
     {
-        Debug.Log(controller.healthController.currentLifeCount);
+        
     }
 }
