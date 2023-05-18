@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory_Controller : MonoBehaviour
 {
-    [SerializeField] private List<Slot> _slots = new List<Slot>();
+    private List<Slot> _slots = new List<Slot>();
     public List<Slot> slots { get => _slots; set => _slots = value; }
 
     private void Awake()
@@ -14,9 +14,16 @@ public class Inventory_Controller : MonoBehaviour
 
     private void Set_Slots()
     {
-        for (int i = 0; i < slots.Count; i++)
+        int slotCount = transform.childCount;
+        
+        for (int i = 0; i < slotCount; i++)
         {
-            slots[i].Set_Inventory_Controller(this);
+            GameObject slotGameObject = transform.GetChild(i).gameObject;
+            
+            if (slotGameObject.TryGetComponent(out Slot slot)) { _slots.Add(slot); }
+
+            _slots[i].Set_Inventory_Controller(this);
+            _slots[i].Clear();
         }
     }
 }
