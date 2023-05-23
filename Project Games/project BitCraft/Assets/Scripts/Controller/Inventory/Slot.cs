@@ -12,6 +12,7 @@ public class Slot : MonoBehaviour
     public Inventory_Controller inventory { get => _inventory; set => _inventory = value; }
 
     private Item_ScrObj _currentItem;
+    public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
 
     private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
@@ -37,6 +38,67 @@ public class Slot : MonoBehaviour
     }
 
     // functions
+    public void Left_Click()
+    {
+        Drag_Slot dragSlot = _inventory.dragSlot;
+        
+        dragSlot.Save_Previous_Slot(this);
+
+        // Drag
+        if (!dragSlot.itemDragging)
+        {
+            dragSlot.Assign(_currentItem, _currentAmount);
+            Clear();
+        }
+        // Drop
+        else
+        {
+            // Drop - Empty Slot
+            if (_currentItem == null)
+            {
+                Assign(dragSlot.currentItem, dragSlot.currentAmount);
+                dragSlot.Clear();
+            }
+            // Drop - Non-Empty Slot
+            else
+            {
+                // Increase Item Amount
+                if (dragSlot.Is_Same_Item(_currentItem) && !Is_Max_Amount())
+                {
+                    int increaseAmount = _currentAmount + dragSlot.currentAmount;
+
+                    // Over Max Amount
+                    if (increaseAmount > _currentItem.maxAmount)
+                    {
+                        int leftOver = increaseAmount - _currentItem.maxAmount;
+
+                        dragSlot.Assign(_currentItem, leftOver);
+                        Assign(_currentItem, _currentItem.maxAmount);
+                    }
+                    // Not Max Amount
+                    else
+                    {
+                        Increase_Amount(dragSlot.currentAmount);
+                        dragSlot.Clear();
+                    }
+                }
+                // Swap Items
+                else
+                {
+                    Item_ScrObj savedItem = _currentItem;
+                    int savedAmount = _currentAmount;
+
+                    Assign(dragSlot.currentItem, dragSlot.currentAmount);
+                    dragSlot.Assign(savedItem, savedAmount);
+                }
+            }
+        }
+    }
+    public void Right_Click()
+    {
+
+    }
+
     private void Calculate_LeftOver()
     {
         if (_currentAmount > _currentItem.maxAmount)

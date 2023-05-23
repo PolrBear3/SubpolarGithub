@@ -5,13 +5,21 @@ using UnityEngine;
 public class Inventory_Controller : MonoBehaviour
 {
     [SerializeField] private Drag_Slot _dragSlot;
+    public Drag_Slot dragSlot { get => _dragSlot; set => _dragSlot = value; }
 
     private List<Slot> _slots = new List<Slot>();
     public List<Slot> slots { get => _slots; set => _slots = value; }
 
+    public Item_ScrObj log;
+    public Item_ScrObj water;
+
     private void Awake()
     {
         Set_Slots();
+        _slots[0].Assign(log, 4);
+        _slots[1].Assign(log, 4);
+        _slots[2].Assign(water, 4);
+        _slots[3].Assign(log, 48);
     }
 
     private void Set_Slots()
@@ -29,6 +37,7 @@ public class Inventory_Controller : MonoBehaviour
         }
     }
 
+    // functions
     public void Add_Item(Item_ScrObj item, int amount)
     {
         for (int i = 0; i < _slots.Count; i++)
