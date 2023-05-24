@@ -14,10 +14,13 @@ public class Slot : MonoBehaviour
     private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
 
+    private bool _hasItem;
+    public bool hasItem { get => _hasItem; set => _hasItem = value; }
+
     private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 
-    // check system
+    // Check System
     public bool Is_Same_Item(Item_ScrObj item)
     {
         if (_currentItem == null) return false;
@@ -31,17 +34,20 @@ public class Slot : MonoBehaviour
         return true;
     }
 
-    // script component connection
+    // Setup
     public void Set_Inventory_Controller(Inventory_Controller inventory)
     {
         _inventory = inventory;
     }
 
-    // functions
+    // Functions
     public void Left_Click()
     {
         Drag_Slot dragSlot = _inventory.dragSlot;
-        
+
+        // Prevent Empty Slot Click
+        if (!dragSlot.hasItem && !_hasItem) return;
+
         dragSlot.Save_Previous_Slot(this);
 
         // Drag
@@ -111,6 +117,8 @@ public class Slot : MonoBehaviour
 
     public void Assign(Item_ScrObj item, int amount)
     {
+        _hasItem = true;
+
         _currentItem = item;
         _currentAmount = amount;
 
@@ -126,6 +134,8 @@ public class Slot : MonoBehaviour
     }
     public void Clear()
     {
+        _hasItem = false;
+
         _currentItem = null;
         _currentAmount = 0;
 

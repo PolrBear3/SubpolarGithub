@@ -15,6 +15,9 @@ public class Drag_Slot : MonoBehaviour
     private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
 
+    private bool _hasItem;
+    public bool hasItem { get => _hasItem; set => _hasItem = value; }
+
     private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 
@@ -32,7 +35,7 @@ public class Drag_Slot : MonoBehaviour
         Drag_Item();
     }
 
-    // check system
+    // Check System
     public bool Is_Same_Item(Item_ScrObj item)
     {
         if (_currentItem == null) return false;
@@ -46,7 +49,7 @@ public class Drag_Slot : MonoBehaviour
         return true;
     }
 
-    // functions
+    // Functions
     public void Save_Previous_Slot(Slot slot)
     {
         _previousSlot = slot;
@@ -54,6 +57,8 @@ public class Drag_Slot : MonoBehaviour
 
     public void Assign(Item_ScrObj item, int amount)
     {
+        _hasItem = true;
+
         _currentItem = item;
         _currentAmount = amount;
 
@@ -71,6 +76,8 @@ public class Drag_Slot : MonoBehaviour
     }
     public void Clear()
     {
+        _hasItem = false;
+
         _currentItem = null;
         _currentAmount = 0;
 

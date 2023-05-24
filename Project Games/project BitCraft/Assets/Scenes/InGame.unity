@@ -635,8 +635,8 @@ GameObject:
   - component: {fileID: 691676243}
   - component: {fileID: 691676245}
   - component: {fileID: 691676244}
-  - component: {fileID: 691676247}
   - component: {fileID: 691676248}
+  - component: {fileID: 691676247}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -720,9 +720,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea400ec5c9947947adf461f6c1e6db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 1680237657}
   _dragSlot: {fileID: 8510077633292129958}
-  log: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
-  water: {fileID: 11400000, guid: 9facc8bc460f3d14599ee83672a0c4fe, type: 2}
 --- !u!114 &691676248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1096,6 +1095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tilemapController: {fileID: 1594307729}
+  _inventoryController: {fileID: 691676247}
 --- !u!4 &1680237658
 Transform:
   m_ObjectHideFlags: 0
@@ -1448,6 +1448,7 @@ MonoBehaviour:
   _inventoryController: {fileID: 691676247}
   _itemImage: {fileID: 8510077633438444881}
   _amountText: {fileID: 972888224781254820}
+  _previousSlot: {fileID: 0}
 --- !u!222 &8510077633438444846
 CanvasRenderer:
   m_ObjectHideFlags: 0
