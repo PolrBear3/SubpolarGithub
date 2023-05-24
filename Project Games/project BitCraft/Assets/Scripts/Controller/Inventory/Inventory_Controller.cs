@@ -17,11 +17,31 @@ public class Inventory_Controller : MonoBehaviour
     {
         Set_Slots();
     }
+    private void Start()
+    {
+        Add_Item(_controller.prefabsData.Get_Item(0), 50);
+        Add_Item(_controller.prefabsData.Get_Item(1), 50);
+    }
 
     // Check System
     public bool Is_Inventory_Full()
     {
-        return false;
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            if (!_slots[i].hasItem) return false;
+        }
+        return true;
+    }
+
+    // Gets
+    public Slot Empty_Slot()
+    {
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            if (_slots[i].hasItem) continue;
+            return _slots[i];
+        }
+        return null;
     }
 
     // Setup

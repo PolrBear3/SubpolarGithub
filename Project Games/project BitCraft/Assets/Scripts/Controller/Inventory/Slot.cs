@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
@@ -19,6 +20,15 @@ public class Slot : MonoBehaviour
 
     private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _inventory.dragSlot.slotDetected = true;
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _inventory.dragSlot.slotDetected = false;
+    }
 
     // Check System
     public bool Is_Same_Item(Item_ScrObj item)
@@ -46,9 +56,7 @@ public class Slot : MonoBehaviour
         Drag_Slot dragSlot = _inventory.dragSlot;
 
         // Prevent Empty Slot Click
-        if (!dragSlot.hasItem && !_hasItem) return;
-
-        dragSlot.Save_Previous_Slot(this);
+        if (!dragSlot.itemDragging && !_hasItem) return;
 
         // Drag
         if (!dragSlot.itemDragging)
@@ -105,16 +113,6 @@ public class Slot : MonoBehaviour
 
     }
 
-    private void Calculate_LeftOver()
-    {
-        if (_currentAmount > _currentItem.maxAmount)
-        {
-            int leftOver = _currentAmount - _currentItem.maxAmount;
-            _currentAmount = _currentItem.maxAmount;
-            _inventory.Add_Item(_currentItem, leftOver);
-        }
-    }
-
     public void Assign(Item_ScrObj item, int amount)
     {
         _hasItem = true;
@@ -122,7 +120,12 @@ public class Slot : MonoBehaviour
         _currentItem = item;
         _currentAmount = amount;
 
-        Calculate_LeftOver();
+        if (_currentAmount > _currentItem.maxAmount)
+        {
+            int leftOver = _currentAmount - _currentItem.maxAmount;
+            _currentAmount = _currentItem.maxAmount;
+            _inventory.Add_Item(_currentItem, leftOver);
+        }
 
         _itemImage.sprite = item.sprite;
         _itemImage.color = Color.white;
@@ -151,7 +154,12 @@ public class Slot : MonoBehaviour
     {
         _currentAmount += amount;
 
-        Calculate_LeftOver();
+        if (_currentAmount > _currentItem.maxAmount)
+        {
+            int leftOver = _currentAmount - _currentItem.maxAmount;
+            _currentAmount = _currentItem.maxAmount;
+            _inventory.Add_Item(_currentItem, leftOver);
+        }
 
         _amountText.text = _currentAmount.ToString();
     }

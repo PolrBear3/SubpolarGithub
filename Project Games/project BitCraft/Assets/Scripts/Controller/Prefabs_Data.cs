@@ -15,6 +15,8 @@ public class Prefabs_Data : MonoBehaviour
     [SerializeField] private Prefab_Tag[] objects;
     [SerializeField] private Prefab_Tag[] tiles;
 
+    [SerializeField] private Item_ScrObj[] items;
+
     public GameObject Get_MapController()
     {
         return mapController;
@@ -29,13 +31,22 @@ public class Prefabs_Data : MonoBehaviour
         }
         return null;
     }
-
     public GameObject Get_Object(int id)
     {
         for (int i = 0; i < objects.Length; i++)
         {
             if (id != objects[i].prefabID) continue;
             return objects[i].Prefab();
+        }
+        return null;
+    }
+
+    public Item_ScrObj Get_Item(int id)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (id != items[i].id) continue;
+            return items[i];
         }
         return null;
     }
