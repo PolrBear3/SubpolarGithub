@@ -1407,6 +1407,7 @@ GameObject:
   - component: {fileID: 8510077633292129957}
   - component: {fileID: 8510077633292129955}
   - component: {fileID: 8510077633292129958}
+  - component: {fileID: 8510077633292129959}
   m_Layer: 5
   m_Name: Drag Slot
   m_TagString: Untagged
@@ -1449,9 +1450,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventoryController: {fileID: 691676247}
+  playerAction:
+    m_Name: Player
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bd7bc04c-d858-4a92-8f5b-d9209c61bab3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   _itemImage: {fileID: 8510077633438444881}
   _amountText: {fileID: 972888224781254820}
-  _previousSlot: {fileID: 0}
+--- !u!114 &8510077633292129959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8510077633292129956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 1b8c2cb9080885d4fb3e04662a8364c9, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 10a6a0c9-2eb7-4d9a-ac5c-3bdfbb8b7530
+    m_ActionName: Player Interaction/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8510077633292129958}
+        m_TargetAssemblyTypeName: Drag_Slot, Assembly-CSharp
+        m_MethodName: Return_Drag_Item
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5ed7998b-a337-4d1f-b2a5-4a59a82cbd9b
+    m_ActionName: Player Interaction/Click[/Mouse/leftButton]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player Interaction
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 606758276}
 --- !u!222 &8510077633438444846
 CanvasRenderer:
   m_ObjectHideFlags: 0

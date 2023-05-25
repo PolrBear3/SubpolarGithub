@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class Drag_Slot : MonoBehaviour
 {
     [SerializeField] private Inventory_Controller _inventoryController;
 
     private RectTransform _rectTransform;
-    
+
+    public InputAction playerAction;
+    private InputAction click;
+
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
 
@@ -21,7 +25,7 @@ public class Drag_Slot : MonoBehaviour
     private bool _itemDragging = false;
     public bool itemDragging { get => _itemDragging; set => _itemDragging = value; }
 
-    [SerializeField] private bool _slotDetected = true;
+    private bool _slotDetected = true;
     public bool slotDetected { get => _slotDetected; set => _slotDetected = value; }
 
     private void Awake()
@@ -31,7 +35,6 @@ public class Drag_Slot : MonoBehaviour
     private void Update()
     {
         Drag_Item();
-        Return_Drag_Item();
     }
 
     // Check System
@@ -92,10 +95,10 @@ public class Drag_Slot : MonoBehaviour
 
         _rectTransform.anchoredPosition = canvasPosition;
     }
-    public void Return_Drag_Item()
+    public void Return_Drag_Item(InputAction.CallbackContext context)
     {
         if (!itemDragging) return;
-        if (!Input.GetMouseButtonDown(0)) return;
+        if (!context.performed) return;
         if (_slotDetected) return;
 
         _inventoryController.Empty_Slot().Assign(_currentItem, _currentAmount);
