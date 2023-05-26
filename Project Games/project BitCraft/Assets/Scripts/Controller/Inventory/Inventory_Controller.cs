@@ -17,11 +17,6 @@ public class Inventory_Controller : MonoBehaviour
     {
         Set_Slots();
     }
-    private void Start()
-    {
-        Add_Item(_controller.prefabsData.Get_Item(0), 50);
-        Add_Item(_controller.prefabsData.Get_Item(1), 50);
-    }
 
     // Check System
     public bool Is_Inventory_Full()

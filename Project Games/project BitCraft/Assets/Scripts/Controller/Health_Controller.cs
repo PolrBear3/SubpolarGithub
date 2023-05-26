@@ -7,7 +7,7 @@ public class Health_Controller : MonoBehaviour
     [SerializeField] private int _maxLifeCount;
     public int maxLifeCount { get => _maxLifeCount; set => _maxLifeCount = value; }
 
-    [SerializeField] private int _currentLifeCount;
+    private int _currentLifeCount;
     public int currentLifeCount
     {
         get => _currentLifeCount;
@@ -20,14 +20,14 @@ public class Health_Controller : MonoBehaviour
         }
     }
 
-    public void Set_LifeCount(int amount)
+    private void Start()
     {
-        maxLifeCount = amount;
-        currentLifeCount = maxLifeCount;
+        Set_LifeCount();
     }
-    public void Set_Max_LifeCount(int amount)
+
+    public void Set_LifeCount()
     {
-        maxLifeCount = amount;
+        _currentLifeCount = _maxLifeCount;
     }
 
     public void Add_Current_LifeCount(int amount)

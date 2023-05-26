@@ -45,6 +45,8 @@ public class TileMap_Controller : MonoBehaviour
         Set_Player_Tile(true);
 
         Set_Object(0, 1, 1);
+        Set_Object(0, 3, 4);
+        Set_Object(0, 2, 3);
     }
 
     // map check
