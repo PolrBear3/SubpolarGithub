@@ -241,6 +241,7 @@ public class Tile_Controller : MonoBehaviour
         }
 
         tilemapController.actionSystem.UnHighlight_All_tiles();
+        tilemapController.playerController.interactReady = false;
     }
 
     public void Move_Highlight()

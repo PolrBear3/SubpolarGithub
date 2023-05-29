@@ -73,4 +73,23 @@ public class Inventory_Controller : MonoBehaviour
             break;
         }
     }
+    public void Add_Item(int itemID, int amount)
+    {
+        Item_ScrObj item = controller.prefabsData.Get_Item(itemID);
+        
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            if (_slots[i].currentAmount <= 0)
+            {
+                _slots[i].Assign(item, amount);
+                break;
+            }
+
+            if (_slots[i].Is_Max_Amount()) continue;
+            if (!_slots[i].Is_Same_Item(item)) continue;
+
+            _slots[i].Increase_Amount(amount);
+            break;
+        }
+    }
 }

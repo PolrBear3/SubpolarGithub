@@ -30,6 +30,11 @@ public class TileMap_Controller : MonoBehaviour
     private Prefab_Controller _playerPrefabController;
     public Prefab_Controller playerPrefabController { get => _playerPrefabController; set => _playerPrefabController = value; }
 
+    // option variables
+    [Header("Map Option Variables")]
+    [SerializeField] private int _worldSize;
+    public int worldSize { get => _worldSize; set => _worldSize = value; }
+
     //
     private void Awake()
     {
@@ -43,10 +48,6 @@ public class TileMap_Controller : MonoBehaviour
 
         Set_Character(0, 2, 2);
         Set_Player_Tile(true);
-
-        Set_Object(0, 1, 1);
-        Set_Object(0, 3, 4);
-        Set_Object(0, 2, 3);
     }
 
     // map check
@@ -69,6 +70,7 @@ public class TileMap_Controller : MonoBehaviour
         }
         return false;
     }
+    
     // map data
     public Map_Controller Get_Map(int positionX, int positionY)
     {

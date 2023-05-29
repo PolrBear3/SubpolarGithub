@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TileMap_Action_System : MonoBehaviour
 {
@@ -20,16 +21,6 @@ public class TileMap_Action_System : MonoBehaviour
         for (int i = 0; i < tiles.Count; i++)
         {
             tiles[i].UnHighlight();
-        }
-    }
-    public void Highlight_All_Moveable_Tiles()
-    {
-        List<Tile_Controller> tiles = tilemapController.currentMap.tiles;
-
-        for (int i = 0; i < tiles.Count; i++)
-        {
-            if (tiles[i].Has_Prefab_Type(Prefab_Type.all)) continue;
-            tiles[i].Move_Highlight();
         }
     }
 

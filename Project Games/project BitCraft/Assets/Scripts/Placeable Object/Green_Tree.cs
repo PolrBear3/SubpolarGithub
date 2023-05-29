@@ -22,19 +22,18 @@ public class Green_Tree : MonoBehaviour, IInteractable
     {
         _controller.healthController.Subtract_Current_LifeCount(1);
     }
+    private void Health_Check()
+    {
+        if (_controller.healthController.currentLifeCount > 0) return;
+        Give_Item();
+        Destroy(gameObject);
+    }
     private void Give_Item()
     {
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
         int itemAmount = Random.Range(3, 5);
 
         inventory.Add_Item(item, itemAmount);
-    }
-    
-    private void Health_Check()
-    {
-        if (_controller.healthController.currentLifeCount > 0) return;
-        Give_Item();
-        Destroy(gameObject);
     }
 
     private void Cut_Animation()
