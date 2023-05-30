@@ -10,9 +10,6 @@ public class Drag_Slot : MonoBehaviour
 
     private RectTransform _rectTransform;
 
-    public InputAction playerAction;
-    private InputAction click;
-
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
 
@@ -31,6 +28,7 @@ public class Drag_Slot : MonoBehaviour
     private bool _tileDetected = false;
     public bool tileDetected { get => _tileDetected; set => _tileDetected = value; }
 
+    //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out RectTransform rectTransform)) { _rectTransform = rectTransform; }
@@ -60,8 +58,6 @@ public class Drag_Slot : MonoBehaviour
         _currentItem = item;
         _currentAmount = amount;
 
-        // Calculate_LeftOver();
-
         _itemImage.sprite = item.sprite;
         _itemImage.color = Color.white;
 
@@ -71,6 +67,8 @@ public class Drag_Slot : MonoBehaviour
         _amountText.color = textColor;
 
         _itemDragging = true;
+
+        _inventoryController.controller.tilemapController.actionSystem.Highlight_ItemDrop_Tiles();
     }
     public void Clear()
     {
@@ -85,6 +83,8 @@ public class Drag_Slot : MonoBehaviour
         _amountText.color = textColor;
 
         _itemDragging = false;
+
+        _inventoryController.controller.tilemapController.actionSystem.UnHighlight_All_tiles();
     }
 
     // Updates
@@ -100,8 +100,8 @@ public class Drag_Slot : MonoBehaviour
     }
     public void Return_Drag_Item(InputAction.CallbackContext context)
     {
-        if (!itemDragging) return;
         if (!context.performed) return;
+        if (!itemDragging) return;
         if (_slotDetected) return;
         if (_tileDetected) return;
 

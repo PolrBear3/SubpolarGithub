@@ -17,6 +17,10 @@ public class Inventory_Controller : MonoBehaviour
     {
         Set_Slots();
     }
+    private void Start()
+    {
+        Add_Item(0, 25);
+    }
 
     // Check System
     public bool Is_Inventory_Full()

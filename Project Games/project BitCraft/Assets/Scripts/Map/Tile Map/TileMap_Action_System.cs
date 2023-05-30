@@ -31,8 +31,6 @@ public class TileMap_Action_System : MonoBehaviour
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
-            if (crossTiles[i] == null) continue;
-            
             // highlight moveable tiles
             if (!crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable) && !crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
             {
@@ -44,6 +42,16 @@ public class TileMap_Action_System : MonoBehaviour
             {
                 crossTiles[i].Object_Highlight();
             }
+        }
+    }
+    public void Highlight_ItemDrop_Tiles()
+    {
+        List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
+
+        for (int i = 0; i < crossTiles.Count; i++)
+        {
+            if (crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable) || crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) return;
+            crossTiles[i].ItemDrop_Highlight();
         }
     }
 

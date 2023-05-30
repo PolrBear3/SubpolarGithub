@@ -30,7 +30,6 @@ public class TileMap_Controller : MonoBehaviour
     private Prefab_Controller _playerPrefabController;
     public Prefab_Controller playerPrefabController { get => _playerPrefabController; set => _playerPrefabController = value; }
 
-    // option variables
     [Header("Map Option Variables")]
     [SerializeField] private int _worldSize;
     public int worldSize { get => _worldSize; set => _worldSize = value; }

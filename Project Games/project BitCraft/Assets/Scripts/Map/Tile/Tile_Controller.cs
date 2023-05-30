@@ -29,25 +29,22 @@ public class Tile_Controller : MonoBehaviour
     private bool _objectReady = false;
     public bool objectReady { get => _objectReady; set => _objectReady = value; }
 
+    private bool _itemDropReady = false;
+    public bool itemDropReady { get => _itemDropReady; set => _itemDropReady = value; }
+
     [SerializeField] private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
-    [SerializeField] private GameObject objectBlinkBox;
-
     [SerializeField] private Transform _prefabsParent;
 
+    [SerializeField] private GameObject objectInteractBox;
+    [SerializeField] private GameObject itemDropkBox;
+
+    //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
         if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
-    }
-    private void OnMouseEnter()
-    {
-        _tilemapController.controller.inventoryController.dragSlot.tileDetected = true;
-    }
-    private void OnMouseExit()
-    {
-        _tilemapController.controller.inventoryController.dragSlot.tileDetected = false;
     }
 
     // checks
@@ -250,23 +247,40 @@ public class Tile_Controller : MonoBehaviour
         tilemapController.actionSystem.UnHighlight_All_tiles();
         tilemapController.playerController.interactReady = false;
     }
+    public void Pointer_Enter()
+    {
+        if (!_moveReady && !_objectReady) return;
+        _tilemapController.controller.inventoryController.dragSlot.tileDetected = true;
+    }
+    public void Pointer_Exit()
+    {
+        _tilemapController.controller.inventoryController.dragSlot.tileDetected = false;
+    }
 
     public void Move_Highlight()
     {
-        moveReady = true;
+        _moveReady = true;
         _sr.color = Color.green;
     }
     public void Object_Highlight()
     {
-        objectReady = true;
-        objectBlinkBox.SetActive(objectReady);
+        _objectReady = true;
+        objectInteractBox.SetActive(_objectReady);
     }
+    public void ItemDrop_Highlight()
+    {
+        _itemDropReady = true;
+        itemDropkBox.SetActive(_itemDropReady);
+    }
+
     public void UnHighlight()
     {
-        moveReady = false;
-        objectReady = false;
+        _moveReady = false;
+        _objectReady = false;
+        _itemDropReady = false;
 
         _sr.color = Color.white;
-        objectBlinkBox.SetActive(objectReady);
+        objectInteractBox.SetActive(_objectReady);
+        itemDropkBox.SetActive(_itemDropReady);
     }
 }
