@@ -48,9 +48,11 @@ public class TileMap_Action_System : MonoBehaviour
     {
         List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
+        UnHighlight_All_tiles();
+
         for (int i = 0; i < crossTiles.Count; i++)
         {
-            if (crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable) || crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) return;
+            if (crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) return;
             crossTiles[i].ItemDrop_Highlight();
         }
     }

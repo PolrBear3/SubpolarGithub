@@ -234,14 +234,20 @@ public class Tile_Controller : MonoBehaviour
     // functions
     public void Click()
     {
-        if (moveReady)
+        if (_moveReady)
         {
             tilemapController.actionSystem.Reset_NewMap_Directions();
             tilemapController.actionSystem.Move_Player(this);
         }
-        else if (objectReady)
+        else if (_objectReady)
         {
             tilemapController.actionSystem.Interact_Object(this);
+        }
+        else if (_itemDropReady)
+        {
+            // item drop function goes here
+            Debug.Log("Item Drop Successful!");
+            return;
         }
 
         tilemapController.actionSystem.UnHighlight_All_tiles();
@@ -249,7 +255,7 @@ public class Tile_Controller : MonoBehaviour
     }
     public void Pointer_Enter()
     {
-        if (!_moveReady && !_objectReady) return;
+        if (!_itemDropReady) return;
         _tilemapController.controller.inventoryController.dragSlot.tileDetected = true;
     }
     public void Pointer_Exit()

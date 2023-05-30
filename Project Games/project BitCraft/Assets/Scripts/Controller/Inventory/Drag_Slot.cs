@@ -25,7 +25,7 @@ public class Drag_Slot : MonoBehaviour
     private bool _slotDetected = true;
     public bool slotDetected { get => _slotDetected; set => _slotDetected = value; }
 
-    private bool _tileDetected = false;
+    [SerializeField] private bool _tileDetected = false;
     public bool tileDetected { get => _tileDetected; set => _tileDetected = value; }
 
     //
