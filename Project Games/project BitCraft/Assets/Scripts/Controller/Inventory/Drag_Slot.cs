@@ -28,6 +28,9 @@ public class Drag_Slot : MonoBehaviour
     private bool _slotDetected = true;
     public bool slotDetected { get => _slotDetected; set => _slotDetected = value; }
 
+    private bool _tileDetected = false;
+    public bool tileDetected { get => _tileDetected; set => _tileDetected = value; }
+
     private void Awake()
     {
         if (gameObject.TryGetComponent(out RectTransform rectTransform)) { _rectTransform = rectTransform; }
@@ -100,6 +103,7 @@ public class Drag_Slot : MonoBehaviour
         if (!itemDragging) return;
         if (!context.performed) return;
         if (_slotDetected) return;
+        if (_tileDetected) return;
 
         _inventoryController.Empty_Slot().Assign(_currentItem, _currentAmount);
         Clear();

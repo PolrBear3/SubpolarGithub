@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Tile_Controller : MonoBehaviour
 {
@@ -41,6 +40,14 @@ public class Tile_Controller : MonoBehaviour
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
         if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
+    }
+    private void OnMouseEnter()
+    {
+        _tilemapController.controller.inventoryController.dragSlot.tileDetected = true;
+    }
+    private void OnMouseExit()
+    {
+        _tilemapController.controller.inventoryController.dragSlot.tileDetected = false;
     }
 
     // checks
