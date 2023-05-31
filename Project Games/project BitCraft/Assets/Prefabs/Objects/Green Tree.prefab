@@ -120,6 +120,7 @@ MonoBehaviour:
   _currentColumnNum: 0
   _setPosition: {x: 0, y: 0.25}
   _moveSpeed: 0
+  _currentAmount: 0
 --- !u!114 &4651572311096850505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,8 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed87d32bdb6e4141bfe4c26860bb3cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxLifeCount: 3
-  _currentLifeCount: 0
+  _maxLifeCount: 1
 --- !u!114 &4688511875017061401
 MonoBehaviour:
   m_ObjectHideFlags: 0

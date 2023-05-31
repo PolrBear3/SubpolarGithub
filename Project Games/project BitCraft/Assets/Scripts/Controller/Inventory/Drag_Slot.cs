@@ -87,6 +87,28 @@ public class Drag_Slot : MonoBehaviour
         _inventoryController.controller.tilemapController.actionSystem.UnHighlight_All_tiles();
     }
 
+    public void Increase_Amount(int amount)
+    {
+        _currentAmount += amount;
+
+        if (_currentAmount > _currentItem.maxAmount)
+        {
+            int leftOver = _currentAmount - _currentItem.maxAmount;
+            _currentAmount = _currentItem.maxAmount;
+            _inventoryController.Add_Item(_currentItem, leftOver);
+        }
+
+        _amountText.text = _currentAmount.ToString();
+    }
+    public void Decrease_Amount(int amount)
+    {
+        _currentAmount -= amount;
+        _amountText.text = _currentAmount.ToString();
+
+        if (_currentAmount > 0) return;
+        Clear();
+    }
+
     // Updates
     public void Drag_Item()
     {

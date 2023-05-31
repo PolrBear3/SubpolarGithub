@@ -90,6 +90,19 @@ public class Tile_Controller : MonoBehaviour
         return false;
     }
 
+    // Get
+    public Prefab_Controller Get_Object_PrefabController(int objectID)
+    {
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (!currentPrefabs[i].TryGetComponent(out Prefab_Controller controller)) continue;
+            if (controller.prefabTag.prefabType == Prefab_Type.character) continue;
+            if (controller.prefabTag.prefabID != objectID) continue;
+            return controller;
+        }
+        return null;
+    }
+
     // tile control
     public Sprite Random_Sprite()
     {
@@ -236,22 +249,21 @@ public class Tile_Controller : MonoBehaviour
     {
         if (_moveReady)
         {
-            tilemapController.actionSystem.Reset_NewMap_Directions();
-            tilemapController.actionSystem.Move_Player(this);
+            _tilemapController.actionSystem.Reset_NewMap_Directions();
+            _tilemapController.actionSystem.Move_Player(this);
         }
         else if (_objectReady)
         {
-            tilemapController.actionSystem.Interact_Object(this);
+            _tilemapController.actionSystem.Interact_Object(this);
         }
         else if (_itemDropReady)
         {
-            // item drop function goes here
-            Debug.Log("Item Drop Successful!");
-            return;
+            _tilemapController.actionSystem.Drop_Item(this);
+            if (_tilemapController.controller.inventoryController.dragSlot.itemDragging) return;
         }
 
-        tilemapController.actionSystem.UnHighlight_All_tiles();
-        tilemapController.playerController.interactReady = false;
+        _tilemapController.actionSystem.UnHighlight_All_tiles();
+        _tilemapController.playerController.interactReady = false;
     }
     public void Pointer_Enter()
     {

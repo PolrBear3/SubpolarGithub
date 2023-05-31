@@ -31,6 +31,10 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
 
+    [SerializeField] private int _currentAmount;
+    public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
+
+    // Connection
     public void Connect_Components(TileMap_Controller tilemapController)
     {
         this.tilemapController = tilemapController;
@@ -39,6 +43,7 @@ public class Prefab_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Health_Controller healthController)) { this.healthController = healthController; }
     }
 
+    // Updates
     public void Update_Map_Position(int positionX, int positionY)
     {
         this.positionX = positionX;
@@ -48,5 +53,15 @@ public class Prefab_Controller : MonoBehaviour
     {
         currentRowNum = rowNum;
         currentColumnNum = columnNum;
+    }
+
+    // Amount Control
+    public void Increase_Amount(int amount)
+    {
+        _currentAmount += amount;
+    }
+    public void Decrease_Amount(int amount)
+    {
+        _currentAmount -= amount;
     }
 }

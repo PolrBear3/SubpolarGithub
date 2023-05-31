@@ -8,6 +8,7 @@ public class TileMap_Action_System : MonoBehaviour
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
 
+    //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out TileMap_Controller mapController)) { this.tilemapController = mapController; }
@@ -52,7 +53,7 @@ public class TileMap_Action_System : MonoBehaviour
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
-            if (crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) return;
+            if (crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) continue;
             crossTiles[i].ItemDrop_Highlight();
         }
     }
@@ -100,5 +101,12 @@ public class TileMap_Action_System : MonoBehaviour
 
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
+    }
+    public void Drop_Item(Tile_Controller targetTile)
+    {
+        Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
+
+        dragSlot.Decrease_Amount(1);
+        // _tilemapController.Set_Object(dragging item object); 
     }
 }

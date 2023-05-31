@@ -47,9 +47,12 @@ public class TileMap_Controller : MonoBehaviour
 
         Set_Character(0, 2, 2);
         Set_Player_Tile(true);
+
+        Set_Object(0, 1, 2);
+        Set_Object(0, 3, 2);
     }
 
-    // map check
+    // Check
     public bool Has_Map(int positionX, int positionY)
     {
         for (int i = 0; i < allMaps.Count; i++)
@@ -69,8 +72,8 @@ public class TileMap_Controller : MonoBehaviour
         }
         return false;
     }
-    
-    // map data
+
+    // Get
     public Map_Controller Get_Map(int positionX, int positionY)
     {
         for (int i = 0; i < allMaps.Count; i++)
@@ -80,7 +83,6 @@ public class TileMap_Controller : MonoBehaviour
         return null;
     }
 
-    // tile data
     public Tile_Controller Get_Tile(int rowNum, int columnNum)
     {
         for (int i = 0; i < currentMap.tiles.Count; i++)
@@ -113,7 +115,7 @@ public class TileMap_Controller : MonoBehaviour
         return returnList;
     }
 
-    // public functions
+    // Functions
     public void AllTiles_Update_Data()
     {
         for (int i = 0; i < currentMap.tiles.Count; i++)
@@ -122,6 +124,7 @@ public class TileMap_Controller : MonoBehaviour
         }
     }
 
+    // Set
     public void Set_Player_Tile(bool newPlayer)
     {
         Tile_Controller playerTile = Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
@@ -140,7 +143,6 @@ public class TileMap_Controller : MonoBehaviour
         }
     }
 
-    // test functions
     public void Set_Character(int characterID, int rowNum, int columnNum)
     {
         GameObject characterPrefab = controller.prefabsData.Get_Character(characterID);
@@ -184,6 +186,14 @@ public class TileMap_Controller : MonoBehaviour
     {
         GameObject objectPrefab = controller.prefabsData.Get_Object(objectID);
         Tile_Controller targetTile = Get_Tile(rowNum, columnNum);
+        Prefab_Controller targetObject = targetTile.Get_Object_PrefabController(objectID);
+
+        // same object check
+        if (targetObject != null)
+        {
+            targetObject.currentAmount++;
+            return;
+        }
 
         // spawn
         GameObject objectGameObject = Instantiate(objectPrefab, targetTile.transform.position, Quaternion.identity);
