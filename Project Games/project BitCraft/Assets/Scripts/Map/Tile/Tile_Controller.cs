@@ -95,11 +95,13 @@ public class Tile_Controller : MonoBehaviour
     {
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
+            if (currentPrefabs[i] == null) continue;
             if (!currentPrefabs[i].TryGetComponent(out Prefab_Controller controller)) continue;
             if (controller.prefabTag.prefabType == Prefab_Type.character) continue;
             if (controller.prefabTag.prefabID != objectID) continue;
             return controller;
         }
+
         return null;
     }
 

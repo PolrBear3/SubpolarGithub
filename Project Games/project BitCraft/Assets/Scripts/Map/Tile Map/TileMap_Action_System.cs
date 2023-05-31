@@ -107,6 +107,6 @@ public class TileMap_Action_System : MonoBehaviour
         Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
 
         dragSlot.Decrease_Amount(1);
-        // _tilemapController.Set_Object(dragging item object); 
+        _tilemapController.Set_Object(0, targetTile.rowNum, targetTile.columnNum); 
     }
 }
