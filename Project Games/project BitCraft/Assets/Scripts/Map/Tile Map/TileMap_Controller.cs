@@ -48,8 +48,8 @@ public class TileMap_Controller : MonoBehaviour
         Set_Character(0, 2, 2);
         Set_Player_Tile(true);
 
-        Set_Object(0, 1, 2);
-        Set_Object(0, 3, 2);
+        Set_Object(0100, 1, 2);
+        Set_Object(0100, 3, 2);
     }
 
     // Check
@@ -191,7 +191,7 @@ public class TileMap_Controller : MonoBehaviour
         // same object check
         if (targetObject != null)
         {
-            targetObject.currentAmount++;
+            targetObject.Increase_Amount(1);
             return;
         }
 
@@ -208,6 +208,7 @@ public class TileMap_Controller : MonoBehaviour
 
         // set object data
         setPrefabController.Connect_Components(this);
+        setPrefabController.Increase_Amount(1);
 
         // update object map position
         setPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);

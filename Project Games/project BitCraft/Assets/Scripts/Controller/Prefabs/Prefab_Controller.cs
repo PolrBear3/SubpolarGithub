@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Prefab_Controller : MonoBehaviour
 {
+    private SpriteRenderer _sr;
+    
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
 
@@ -31,8 +33,33 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
 
-    [SerializeField] private int _currentAmount;
+    [SerializeField] private List<Prefab_Tag> _dropAvailableTiles = new List<Prefab_Tag>();
+
+    private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
+
+    [Header("Sprite Control Data")]
+    [SerializeField] private int _changeAmount;
+    [SerializeField] private List<Sprite> _sprites = new List<Sprite>();
+
+    //
+    private void Awake()
+    {
+        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
+    }
+
+    // Check
+    public bool Drop_Available(int tilePrefabID)
+    {
+        // all tiles available
+        if (_dropAvailableTiles.Count <= 0) return true;
+
+        for (int i = 0; i < _dropAvailableTiles.Count; i++)
+        {
+            if (_dropAvailableTiles[i].prefabID == tilePrefabID) return true;
+        }
+        return false;
+    }
 
     // Connection
     public void Connect_Components(TileMap_Controller tilemapController)
@@ -55,13 +82,27 @@ public class Prefab_Controller : MonoBehaviour
         currentColumnNum = columnNum;
     }
 
+    private void Sprite_Update()
+    {
+        if (_sprites.Count <= 0) return;
+        int spriteNum = (_currentAmount / _changeAmount) - 1;
+        
+        if (spriteNum <= 0) spriteNum = 0;
+        if (spriteNum >= _sprites.Count - 1) spriteNum = _sprites.Count - 1;
+        
+        if (_sr.sprite == _sprites[spriteNum]) return;
+        _sr.sprite = _sprites[spriteNum];
+    }
+
     // Amount Control
     public void Increase_Amount(int amount)
     {
         _currentAmount += amount;
+        Sprite_Update();
     }
     public void Decrease_Amount(int amount)
     {
         _currentAmount -= amount;
+        Sprite_Update();
     }
 }

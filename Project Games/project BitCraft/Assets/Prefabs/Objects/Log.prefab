@@ -12,10 +12,8 @@ GameObject:
   - component: {fileID: 8537117108615183467}
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
-  - component: {fileID: 4651572311096850505}
-  - component: {fileID: 4688511875017061401}
   m_Layer: 0
-  m_Name: Green Tree
+  m_Name: Log
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: -1023252657
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1946553249, guid: 87086d13935fd431d9880246000a854e, type: 3}
+  m_Sprite: {fileID: -1547034577, guid: 87086d13935fd431d9880246000a854e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a380b94a48e84b1e8d3b0a61f805b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefabType: 3
-  _prefabID: 100
+  _prefabType: 4
+  _prefabID: 101
 --- !u!114 &-5113172227308652651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,35 +116,11 @@ MonoBehaviour:
   _positionY: 0
   _currentRowNum: 0
   _currentColumnNum: 0
-  _setPosition: {x: 0, y: 0.25}
+  _setPosition: {x: 0, y: 0.6}
   _moveSpeed: 0
   _dropAvailableTiles:
   - {fileID: 6869539982473061104, guid: e3840954157f04acf8fd9a46c4108a87, type: 3}
-  _changeAmount: 0
-  _sprites: []
---- !u!114 &4651572311096850505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013186990097543618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ed87d32bdb6e4141bfe4c26860bb3cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxLifeCount: 1
---- !u!114 &4688511875017061401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013186990097543618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24a2492350f0e4e1a83e0a47e4416cd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropItem: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
+  _changeAmount: 25
+  _sprites:
+  - {fileID: -1547034577, guid: 87086d13935fd431d9880246000a854e, type: 3}
+  - {fileID: 1485032241, guid: 87086d13935fd431d9880246000a854e, type: 3}

@@ -6,7 +6,7 @@ public class Green_Tree : MonoBehaviour, IInteractable
 {
     private Prefab_Controller _controller;
 
-    [SerializeField] private Item_ScrObj item;
+    [SerializeField] private Item_ScrObj dropItem;
 
     private void Awake()
     {
@@ -25,15 +25,15 @@ public class Green_Tree : MonoBehaviour, IInteractable
     private void Health_Check()
     {
         if (_controller.healthController.currentLifeCount > 0) return;
-        Give_Item();
+        Drop_Item();
         Destroy(gameObject);
     }
-    private void Give_Item()
+    private void Drop_Item()
     {
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
         int itemAmount = Random.Range(3, 5);
 
-        inventory.Add_Item(item, itemAmount);
+        inventory.Add_Item(dropItem, itemAmount);
     }
 
     private void Cut_Animation()

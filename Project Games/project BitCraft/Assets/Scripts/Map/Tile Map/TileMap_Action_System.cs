@@ -48,12 +48,14 @@ public class TileMap_Action_System : MonoBehaviour
     public void Highlight_ItemDrop_Tiles()
     {
         List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
-
         UnHighlight_All_tiles();
+
+        int dragItemID = _tilemapController.controller.inventoryController.dragSlot.currentItem.id;
+        Prefab_Controller prefabController = _tilemapController.controller.prefabsData.Get_Object_PrefabController(dragItemID);
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
-            if (crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) continue;
+            if (!prefabController.Drop_Available(crossTiles[i].prefabTag.prefabID)) continue;
             crossTiles[i].ItemDrop_Highlight();
         }
     }
@@ -106,7 +108,7 @@ public class TileMap_Action_System : MonoBehaviour
     {
         Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
 
+        _tilemapController.Set_Object(dragSlot.currentItem.id, targetTile.rowNum, targetTile.columnNum); 
         dragSlot.Decrease_Amount(1);
-        _tilemapController.Set_Object(0, targetTile.rowNum, targetTile.columnNum); 
     }
 }

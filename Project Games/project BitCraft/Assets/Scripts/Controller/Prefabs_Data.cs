@@ -22,6 +22,7 @@ public class Prefabs_Data : MonoBehaviour
         return mapController;
     }
 
+    // Character
     public GameObject Get_Character(int id)
     {
         for (int i = 0; i < characters.Length; i++)
@@ -31,6 +32,8 @@ public class Prefabs_Data : MonoBehaviour
         }
         return null;
     }
+    
+    // Object
     public GameObject Get_Object(int id)
     {
         for (int i = 0; i < objects.Length; i++)
@@ -40,17 +43,14 @@ public class Prefabs_Data : MonoBehaviour
         }
         return null;
     }
-
-    public Item_ScrObj Get_Item(int id)
+    public Prefab_Controller Get_Object_PrefabController(int id)
     {
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (id != items[i].id) continue;
-            return items[i];
-        }
-        return null;
+        GameObject prefab = Get_Object(id);
+        if (!prefab.TryGetComponent(out Prefab_Controller prefabController)) return null;
+        return prefabController;
     }
 
+    // Tile
     public GameObject Get_Tile(int id)
     {
         for (int i = 0; i < tiles.Length; i++)
@@ -79,5 +79,15 @@ public class Prefabs_Data : MonoBehaviour
         int RandomNum = Random.Range(0, overlapTiles.Count);
 
         return overlapTiles[RandomNum].gameObject;
+    }
+
+    public Item_ScrObj Get_Item(int id)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (id != items[i].id) continue;
+            return items[i];
+        }
+        return null;
     }
 }
