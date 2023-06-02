@@ -48,8 +48,8 @@ public class TileMap_Controller : MonoBehaviour
         Set_Character(0, 2, 2);
         Set_Player_Tile(true);
 
-        Set_Object(0100, 1, 2);
         Set_Object(0100, 3, 2);
+        Set_Object(0100, 1, 2);
     }
 
     // Check
@@ -184,18 +184,18 @@ public class TileMap_Controller : MonoBehaviour
     }
     public void Set_Object(int objectID, int rowNum, int columnNum)
     {
-        GameObject objectPrefab = controller.prefabsData.Get_Object(objectID);
         Tile_Controller targetTile = Get_Tile(rowNum, columnNum);
-        Prefab_Controller targetObject = targetTile.Get_Object_PrefabController(objectID);
+        Prefab_Controller targetObject = targetTile.Get_Prefab_PrefabController(false, objectID);
 
-        // same object check
-        if (targetObject != null)
+        // tile current objects max amount and same object check
+        if (targetTile.Is_PrefabsAmount_Max() || targetObject != null)
         {
-            targetObject.Increase_Amount(1);
+            if (targetObject != null) targetObject.Increase_Amount(1);
             return;
         }
 
         // spawn
+        GameObject objectPrefab = controller.prefabsData.Get_Object(objectID);
         GameObject objectGameObject = Instantiate(objectPrefab, targetTile.transform.position, Quaternion.identity);
 
         // get Prefab_Controller component

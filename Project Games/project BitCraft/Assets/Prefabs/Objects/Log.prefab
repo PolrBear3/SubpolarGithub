@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1023252657
+  m_SortingLayerID: 385652707
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1547034577, guid: 87086d13935fd431d9880246000a854e, type: 3}
@@ -116,11 +116,14 @@ MonoBehaviour:
   _positionY: 0
   _currentRowNum: 0
   _currentColumnNum: 0
-  _setPosition: {x: 0, y: 0.6}
+  _setPosition: {x: -0.25, y: 0.6}
   _moveSpeed: 0
   _dropAvailableTiles:
   - {fileID: 6869539982473061104, guid: e3840954157f04acf8fd9a46c4108a87, type: 3}
-  _changeAmount: 25
+  _currentAmount: 0
+  _changeAmount: 10
   _sprites:
   - {fileID: -1547034577, guid: 87086d13935fd431d9880246000a854e, type: 3}
   - {fileID: 1485032241, guid: 87086d13935fd431d9880246000a854e, type: 3}
+  - {fileID: 485756670, guid: 87086d13935fd431d9880246000a854e, type: 3}
+  - {fileID: 2141705406, guid: 87086d13935fd431d9880246000a854e, type: 3}

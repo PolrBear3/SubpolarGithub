@@ -32,11 +32,15 @@ public class Tile_Controller : MonoBehaviour
     private bool _itemDropReady = false;
     public bool itemDropReady { get => _itemDropReady; set => _itemDropReady = value; }
 
+    [Header("Current Prefabs Data")]
+    [SerializeField] private Transform _prefabsParent;
+    
+    [SerializeField] private int _maxPrefabsAmount;
+
     [SerializeField] private List<GameObject> _currentPrefabs = new List<GameObject>();
     public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
-    [SerializeField] private Transform _prefabsParent;
-
+    [Header("Interaction Box")]
     [SerializeField] private GameObject objectInteractBox;
     [SerializeField] private GameObject itemDropkBox;
 
@@ -47,7 +51,7 @@ public class Tile_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
     }
 
-    // checks
+    // Check
     public bool Found(int rowNum, int columnNum)
     {
         if (rowNum != this.rowNum) return false;
@@ -90,8 +94,23 @@ public class Tile_Controller : MonoBehaviour
         return false;
     }
 
+    public bool Is_PrefabsAmount_Max()
+    {
+        if (currentPrefabs.Count <= 0) return false;
+
+        int prefabsCount = 0;
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (currentPrefabs == null) continue;
+            prefabsCount++;
+        }
+
+        if (prefabsCount >= _maxPrefabsAmount) return true;
+        else return false;
+    }
+
     // Get
-    public Prefab_Controller Get_Object_PrefabController(int objectID)
+    public Prefab_Controller Get_Prefab_PrefabController(bool ignoreMax, int objectID)
     {
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
@@ -99,13 +118,17 @@ public class Tile_Controller : MonoBehaviour
             if (!currentPrefabs[i].TryGetComponent(out Prefab_Controller controller)) continue;
             if (controller.prefabTag.prefabType == Prefab_Type.character) continue;
             if (controller.prefabTag.prefabID != objectID) continue;
+            if (!ignoreMax)
+            {
+                if (controller.currentAmount >= _tilemapController.controller.prefabsData.Get_Item(objectID).maxAmount) continue;
+            }
             return controller;
         }
 
         return null;
     }
 
-    // tile control
+    // Tile Control
     public Sprite Random_Sprite()
     {
         if (_sprites.Count <= 0)
@@ -208,7 +231,7 @@ public class Tile_Controller : MonoBehaviour
         Change_Type(targetTile.prefabTag.prefabID);
     }
 
-    // prefab control
+    // Prefab Control
     public void Set_Prefab(Transform prefabTransform)
     {
         prefabTransform.parent = _prefabsParent;
@@ -229,7 +252,7 @@ public class Tile_Controller : MonoBehaviour
         currentPrefabs.RemoveAll(item => item == null);
     }
 
-    // updates
+    // Update
     public void Update_Data()
     {
         Update_Current_Prefabs();
@@ -246,7 +269,7 @@ public class Tile_Controller : MonoBehaviour
         }
     }
 
-    // functions
+    // Function
     public void Click()
     {
         if (_moveReady)

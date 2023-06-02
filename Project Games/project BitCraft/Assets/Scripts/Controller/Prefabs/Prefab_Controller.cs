@@ -35,7 +35,7 @@ public class Prefab_Controller : MonoBehaviour
 
     [SerializeField] private List<Prefab_Tag> _dropAvailableTiles = new List<Prefab_Tag>();
 
-    private int _currentAmount;
+    [SerializeField] private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 
     [Header("Sprite Control Data")]
