@@ -9,7 +9,7 @@ public class TileMap_Render_System : MonoBehaviour
 
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out TileMap_Controller mapController)) { this.tilemapController = mapController; }
+        if (gameObject.TryGetComponent(out TileMap_Controller mapController)) { tilemapController = mapController; }
     }
 
     private void Set_New_Tiles(int size)
@@ -25,7 +25,7 @@ public class TileMap_Render_System : MonoBehaviour
             Vector2 position = new(rowNum - 2, -columnNum + 2);
 
             // instantiate
-            GameObject tile = Instantiate(tilemapController.controller.prefabsData.Get_Random_Tile(), position, Quaternion.identity);
+            GameObject tile = Instantiate(tilemapController.controller.prefabsData.Get_Tile(0), position, Quaternion.identity);
 
             // set inside tile map as child
             tile.transform.parent = tilemapController.currentMap.transform;
@@ -55,17 +55,17 @@ public class TileMap_Render_System : MonoBehaviour
     public void Set_New_Map(int mapSize)
     {
         // spawn map prefab
-        GameObject setMap = Instantiate(this.tilemapController.controller.prefabsData.Get_MapController());
+        GameObject setMap = Instantiate(tilemapController.controller.prefabsData.Get_MapController());
 
         // set map inside tilemap controller as child
         setMap.transform.parent = transform;
 
         // connect to current map component
         if (!setMap.TryGetComponent(out Map_Controller mapController)) return;
-        this.tilemapController.currentMap = mapController;
+        tilemapController.currentMap = mapController;
 
         // add new map to all map list
-        this.tilemapController.allMaps.Add(this.tilemapController.currentMap);
+        tilemapController.allMaps.Add(tilemapController.currentMap);
 
         // set tiles inside current map
         Set_New_Tiles(mapSize);
@@ -94,23 +94,29 @@ public class TileMap_Render_System : MonoBehaviour
 
         // save and hide previous map
         tilemapController.currentMap.Map_Activation(false);
-        
-        // determine if row or column
-        if (isRowMove) { previousRow += mapSize; previousPosX--; }
-        else { previousColumn += mapSize; previousPosY++; }
 
-        // set player to left and top
-        if (previousRow > mapSize) { previousRow = 0; previousPosX +=2; }
-        else if (previousColumn > mapSize) { previousColumn = 0; previousPosY -=2; }
+        // determine if row or column
+        if (isRowMove) previousRow += mapSize;
+        else previousColumn += mapSize;
+
+        // set player to left (right map move)
+        if (isRowMove && previousRow > mapSize) { previousRow = 0; previousPosX++; }
+        // set player to right (left map move)
+        else if (isRowMove) previousPosX--;
+
+        // set player to bottom (top map move)
+        if (!isRowMove && previousColumn > mapSize) { previousColumn = 0; previousPosY--; }
+        // set player to top (bottom map move)
+        else if (!isRowMove) previousPosY++;
 
         // check world size for map position
         int worldSize = tilemapController.worldSize;
 
-        if (previousPosX >= worldSize - 1) { previousPosX = -(worldSize - 2); }
-        else if (previousPosX <= -(worldSize - 2)) { previousPosX = worldSize - 1; }
+        if (previousPosX > worldSize / 2) previousPosX = -(previousPosX - 1);
+        else if (previousPosX < -(worldSize / 2)) previousPosX = -(previousPosX + 1);
 
-        if (previousPosY >= worldSize - 1) { previousPosY = -(worldSize - 2); }
-        else if (previousPosY <= -(worldSize - 2)) { previousPosY = worldSize - 1; }
+        if (previousPosY > worldSize / 2) previousPosY = -(previousPosY - 1);
+        else if (previousPosY < -(worldSize / 2)) previousPosY = -(previousPosY + 1);
 
         // new map render check
         bool hasMap = tilemapController.Has_Map(previousPosX, previousPosY);

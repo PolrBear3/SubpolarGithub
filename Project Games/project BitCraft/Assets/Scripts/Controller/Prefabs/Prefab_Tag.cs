@@ -19,6 +19,9 @@ public class Prefab_Tag : MonoBehaviour
     [SerializeField] private int _prefabID;
     public int prefabID { get => _prefabID; set => _prefabID = value; }
 
+    [SerializeField] private int _layerOrderNum;
+    public int layerOrderNum { get => _layerOrderNum; set => _layerOrderNum = value; }
+
     private GameObject _thisPrefab;
     public GameObject thisPrefab { get => _thisPrefab; set => _thisPrefab = value; }
 

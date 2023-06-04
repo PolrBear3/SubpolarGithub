@@ -42,13 +42,13 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private int _changeAmount;
     [SerializeField] private List<Sprite> _sprites = new List<Sprite>();
 
-    //
-    private void Awake()
+    // Check
+    public bool Is_Prefab_Type(Prefab_Type type)
     {
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
+        if (prefabTag.prefabType == type) return true;
+        return false;
     }
 
-    // Check
     public bool Drop_Available(int tilePrefabID)
     {
         // all tiles available
@@ -65,7 +65,8 @@ public class Prefab_Controller : MonoBehaviour
     public void Connect_Components(TileMap_Controller tilemapController)
     {
         this.tilemapController = tilemapController;
-        
+
+        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
         if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
         if (gameObject.TryGetComponent(out Health_Controller healthController)) { this.healthController = healthController; }
     }
@@ -92,6 +93,10 @@ public class Prefab_Controller : MonoBehaviour
         
         if (_sr.sprite == _sprites[spriteNum]) return;
         _sr.sprite = _sprites[spriteNum];
+    }
+    public void Sprite_LayerOrder_Update()
+    {
+        _sr.sortingOrder = (_currentColumnNum * 10) + _prefabTag.layerOrderNum;
     }
 
     // Amount Control

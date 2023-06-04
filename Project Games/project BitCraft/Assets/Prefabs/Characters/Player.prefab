@@ -76,8 +76,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1838515331
-  m_SortingLayer: 3
+  m_SortingLayerID: 385652707
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 80b28a5a167104a49a8ca20dbc75a15c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -159,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabType: 2
   _prefabID: 0
+  _layerOrderNum: 3
 --- !u!114 &3719693828992680941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +178,10 @@ MonoBehaviour:
   _currentColumnNum: 0
   _setPosition: {x: 0, y: 0}
   _moveSpeed: 0.5
+  _dropAvailableTiles: []
+  _currentAmount: 0
+  _changeAmount: 0
+  _sprites: []
 --- !u!114 &7373377854124037029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +195,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLifeCount: 0
-  _currentLifeCount: 0
 --- !u!114 &3096086046249689037
 MonoBehaviour:
   m_ObjectHideFlags: 0

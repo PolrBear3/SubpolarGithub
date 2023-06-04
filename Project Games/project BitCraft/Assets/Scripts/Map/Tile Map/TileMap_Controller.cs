@@ -166,14 +166,17 @@ public class TileMap_Controller : MonoBehaviour
             if (character.TryGetComponent(out Player_Controller playerController)) { this.playerController = playerController; }
         }
 
-        // set player data
+        // set character data
         setPrefabController.Connect_Components(this);
 
-        // update player map position
+        // update character map position
         setPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
 
-        // update player tile position
+        // update character tile position
         setPrefabController.Update_Tile_Position(rowNum, columnNum);
+
+        // update character sprite layer order
+        setPrefabController.Sprite_LayerOrder_Update();
 
         // place inside tile
         targetTile.Set_Prefab(character.transform);
@@ -213,8 +216,11 @@ public class TileMap_Controller : MonoBehaviour
         // update object map position
         setPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
 
-        // update objec tile position
+        // update object tile position
         setPrefabController.Update_Tile_Position(rowNum, columnNum);
+
+        // update object sprite layer order
+        setPrefabController.Sprite_LayerOrder_Update();
 
         // place inside tile
         targetTile.Set_Prefab(objectGameObject.transform);

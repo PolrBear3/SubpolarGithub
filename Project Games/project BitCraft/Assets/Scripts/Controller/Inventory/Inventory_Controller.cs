@@ -80,7 +80,13 @@ public class Inventory_Controller : MonoBehaviour
     public void Add_Item(int itemID, int amount)
     {
         Item_ScrObj item = controller.prefabsData.Get_Item(itemID);
-        
+
+        if (item == null)
+        {
+            Debug.Log("Invalid Item ID");
+            return;
+        }
+
         for (int i = 0; i < _slots.Count; i++)
         {
             if (_slots[i].currentAmount <= 0)
