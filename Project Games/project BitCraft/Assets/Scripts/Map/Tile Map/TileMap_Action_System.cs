@@ -47,18 +47,22 @@ public class TileMap_Action_System : MonoBehaviour
     }
     public void Highlight_ItemDrop_Tiles()
     {
-        List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
         UnHighlight_All_tiles();
+        
+        List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
         int dragItemID = _tilemapController.controller.inventoryController.dragSlot.currentItem.id;
-        Prefab_Controller itemObject = _tilemapController.controller.prefabsData.Get_Object_PrefabController(dragItemID);
+        
+        Prefab_Controller dragObjectController = _tilemapController.controller.prefabsData.Get_Object_PrefabController(dragItemID);
+        Prefab_Tag dragObjectTag = _tilemapController.controller.prefabsData.Get_Object_PrefabTag(dragItemID);
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
             // drop available tile
-            if (!itemObject.Drop_Available(crossTiles[i].prefabTag.prefabID)) continue;
+            if (!dragObjectController.Drop_Available(crossTiles[i].prefabTag.prefabID)) continue;
 
-            // !!!!!!!!
+            // dragging item is placeable & tile have placeable object
+            if (dragObjectTag.prefabType == Prefab_Type.placeable && crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) continue;
 
             crossTiles[i].ItemDrop_Highlight();
         }
@@ -88,7 +92,7 @@ public class TileMap_Action_System : MonoBehaviour
 
         playerPrefabController.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
         playerController.Move();
-        playerPrefabController.Sprite_LayerOrder_Update();
+        playerPrefabController.Sprite_LayerOrder_Update(0);
 
         tilemapController.AllTiles_Update_Data();
         playerController.Click();

@@ -175,15 +175,15 @@ public class TileMap_Controller : MonoBehaviour
         // update character tile position
         setPrefabController.Update_Tile_Position(rowNum, columnNum);
 
-        // update character sprite layer order
-        setPrefabController.Sprite_LayerOrder_Update();
-
         // place inside tile
         targetTile.Set_Prefab(character.transform);
         character.transform.localPosition = setPrefabController.setPosition;
 
         // update tiles
         AllTiles_Update_Data();
+
+        // update character sprite layer order
+        setPrefabController.Sprite_LayerOrder_Update(targetTile.currentPrefabs.Count);
     }
     public void Set_Object(int objectID, int rowNum, int columnNum)
     {
@@ -219,14 +219,18 @@ public class TileMap_Controller : MonoBehaviour
         // update object tile position
         setPrefabController.Update_Tile_Position(rowNum, columnNum);
 
-        // update object sprite layer order
-        setPrefabController.Sprite_LayerOrder_Update();
-
         // place inside tile
         targetTile.Set_Prefab(objectGameObject.transform);
-        objectGameObject.transform.localPosition = setPrefabController.setPosition;
+
+        Vector2 originalSet = setPrefabController.setPosition;
+        Vector2 updatedSet = new Vector2(originalSet.x + (0.1f * targetTile.Prefab_Type_Amount(Prefab_Type.overlapPlaceable)), originalSet.y);
+
+        objectGameObject.transform.localPosition = updatedSet;
 
         // update tiles
         AllTiles_Update_Data();
+
+        // update object sprite layer order
+        setPrefabController.Sprite_LayerOrder_Update(targetTile.currentPrefabs.Count);
     }
 }

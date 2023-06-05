@@ -5,10 +5,10 @@ using UnityEngine;
 public class Prefab_Controller : MonoBehaviour
 {
     private SpriteRenderer _sr;
-    
+
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
-
+    
     private Prefab_Tag _prefabTag;
     public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
@@ -42,6 +42,14 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private int _changeAmount;
     [SerializeField] private List<Sprite> _sprites = new List<Sprite>();
 
+    // 
+    private void Awake()
+    {
+        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
+        if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { _prefabTag = prefabTag; }
+        if (gameObject.TryGetComponent(out Health_Controller healthController)) { _healthController = healthController; }
+    }
+
     // Check
     public bool Is_Prefab_Type(Prefab_Type type)
     {
@@ -65,10 +73,6 @@ public class Prefab_Controller : MonoBehaviour
     public void Connect_Components(TileMap_Controller tilemapController)
     {
         this.tilemapController = tilemapController;
-
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
-        if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
-        if (gameObject.TryGetComponent(out Health_Controller healthController)) { this.healthController = healthController; }
     }
 
     // Updates
@@ -94,9 +98,9 @@ public class Prefab_Controller : MonoBehaviour
         if (_sr.sprite == _sprites[spriteNum]) return;
         _sr.sprite = _sprites[spriteNum];
     }
-    public void Sprite_LayerOrder_Update()
+    public void Sprite_LayerOrder_Update(int prefabOrder)
     {
-        _sr.sortingOrder = (_currentColumnNum * 10) + _prefabTag.layerOrderNum;
+        _sr.sortingOrder = (_currentColumnNum * 10) + _prefabTag.layerOrderNum + _currentRowNum - prefabOrder;
     }
 
     // Amount Control

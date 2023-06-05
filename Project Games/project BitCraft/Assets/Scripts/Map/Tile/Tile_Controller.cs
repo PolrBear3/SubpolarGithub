@@ -128,6 +128,22 @@ public class Tile_Controller : MonoBehaviour
         return null;
     }
 
+    public int Prefab_Type_Amount(Prefab_Type type)
+    {
+        int count = 0;
+
+        if (currentPrefabs.Count <= 0) return count;
+
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (currentPrefabs[i] == null) continue;
+            if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag tag)) continue;
+            if (type != tag.prefabType) continue;
+            count ++;
+        }
+        return count;
+    }
+
     // Tile Control
     public Sprite Random_Sprite()
     {
