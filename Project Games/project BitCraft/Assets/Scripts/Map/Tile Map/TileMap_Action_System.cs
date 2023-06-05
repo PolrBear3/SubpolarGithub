@@ -103,10 +103,13 @@ public class TileMap_Action_System : MonoBehaviour
 
         for (int i = 0; i < tileWithObject.currentPrefabs.Count; i++)
         {
-            // get all Iinteractable objects
+            // ignore destroyed object
+            if (tileWithObject.currentPrefabs[i] == null) continue;
+
+            // find Iinteractable object
             if (!tileWithObject.currentPrefabs[i].TryGetComponent(out IInteractable interactable)) continue;
 
-            // activate interable objects
+            // activate interable object
             interactable.Interact();
         }
 

@@ -8,9 +8,10 @@ public class Green_Tree : MonoBehaviour, IInteractable
 
     [SerializeField] private Item_ScrObj dropItem;
 
+    //
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out Prefab_Controller controller)) { this._controller = controller; }
+        if (gameObject.TryGetComponent(out Prefab_Controller controller)) { _controller = controller; }
     }
     public void Interact()
     {
@@ -18,6 +19,7 @@ public class Green_Tree : MonoBehaviour, IInteractable
         Health_Check();
     }
 
+    // Function
     private void Get_Damaged()
     {
         _controller.healthController.Subtract_Current_LifeCount(1);
@@ -36,6 +38,7 @@ public class Green_Tree : MonoBehaviour, IInteractable
         inventory.Add_Item(dropItem, itemAmount);
     }
 
+    // Visual
     private void Cut_Animation()
     {
         

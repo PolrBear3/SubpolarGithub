@@ -17,12 +17,8 @@ public class Inventory_Controller : MonoBehaviour
     {
         Set_Slots();
     }
-    private void Start()
-    {
-        Add_Item(101, 250);
-    }
 
-    // Check System
+    // Check
     public bool Is_Inventory_Full()
     {
         for (int i = 0; i < _slots.Count; i++)
@@ -32,7 +28,7 @@ public class Inventory_Controller : MonoBehaviour
         return true;
     }
 
-    // Gets
+    // Get
     public Slot Empty_Slot()
     {
         for (int i = 0; i < _slots.Count; i++)
@@ -59,7 +55,7 @@ public class Inventory_Controller : MonoBehaviour
         }
     }
 
-    // Functions
+    // Function
     public void Add_Item(Item_ScrObj item, int amount)
     {
         for (int i = 0; i < _slots.Count; i++)
