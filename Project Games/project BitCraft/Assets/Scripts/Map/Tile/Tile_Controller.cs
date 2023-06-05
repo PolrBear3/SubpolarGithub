@@ -306,6 +306,16 @@ public class Tile_Controller : MonoBehaviour
         _tilemapController.actionSystem.UnHighlight_All_tiles();
         _tilemapController.playerController.interactReady = false;
     }
+    public void Pointer_Down()
+    {
+        if (!_itemDropReady) return;
+
+    }
+    public void Pointer_Up()
+    {
+        if (!_itemDropReady) return;
+
+    }
     public void Pointer_Enter()
     {
         if (!_itemDropReady) return;

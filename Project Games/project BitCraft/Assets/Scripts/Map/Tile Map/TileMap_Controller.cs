@@ -37,9 +37,9 @@ public class TileMap_Controller : MonoBehaviour
     //
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out TileMap_Action_System actionSystem)) { this.actionSystem = actionSystem; }
-        if (gameObject.TryGetComponent(out TileMap_Render_System renderSystem)) { this.renderSystem = renderSystem; }
-        if (gameObject.TryGetComponent(out TileMap_Combination_System combinationSystem)) { this.combinationSystem = combinationSystem; }
+        if (gameObject.TryGetComponent(out TileMap_Action_System actionSystem)) { _actionSystem = actionSystem; }
+        if (gameObject.TryGetComponent(out TileMap_Render_System renderSystem)) { _renderSystem = renderSystem; }
+        if (gameObject.TryGetComponent(out TileMap_Combination_System combinationSystem)) { _combinationSystem = combinationSystem; }
     }
     private void Start()
     {
