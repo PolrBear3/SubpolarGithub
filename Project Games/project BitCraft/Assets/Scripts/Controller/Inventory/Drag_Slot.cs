@@ -16,7 +16,7 @@ public class Drag_Slot : MonoBehaviour
     private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
 
-    private int _currentAmount;
+    [SerializeField] private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 
     private bool _itemDragging = false;
@@ -27,6 +27,10 @@ public class Drag_Slot : MonoBehaviour
 
     private bool _tileDetected = false;
     public bool tileDetected { get => _tileDetected; set => _tileDetected = value; }
+
+    [Header("Interaction Data")]
+    [SerializeField] private int _bundleDropAmount;
+    public int bundleDropAmount { get => _bundleDropAmount; set => _bundleDropAmount = value; }
 
     //
     private void Awake()
@@ -120,6 +124,12 @@ public class Drag_Slot : MonoBehaviour
 
         _rectTransform.anchoredPosition = canvasPosition;
     }
+    public void Return_Drag_Item()
+    {
+        if (_inventoryController.Is_Inventory_Full()) _inventoryController.Add_Item(_currentItem, _currentAmount);
+        else _inventoryController.Empty_Slot().Assign(_currentItem, _currentAmount);
+        Clear();
+    }
     public void Return_Drag_Item(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -127,7 +137,8 @@ public class Drag_Slot : MonoBehaviour
         if (_slotDetected) return;
         if (_tileDetected) return;
 
-        _inventoryController.Empty_Slot().Assign(_currentItem, _currentAmount);
+        if (_inventoryController.Is_Inventory_Full()) _inventoryController.Add_Item(_currentItem, _currentAmount);
+        else _inventoryController.Empty_Slot().Assign(_currentItem, _currentAmount);
         Clear();
     }
 }

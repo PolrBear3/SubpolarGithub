@@ -56,12 +56,12 @@ public class Prefab_Controller : MonoBehaviour
         if (prefabTag.prefabType == type) return true;
         return false;
     }
-
     public bool Drop_Available(int tilePrefabID)
     {
-        // all tiles available
+        // if all tiles available
         if (_dropAvailableTiles.Count <= 0) return true;
 
+        // available tiles check
         for (int i = 0; i < _dropAvailableTiles.Count; i++)
         {
             if (_dropAvailableTiles[i].prefabID == tilePrefabID) return true;
@@ -69,10 +69,24 @@ public class Prefab_Controller : MonoBehaviour
         return false;
     }
 
+    // Get
+    public int LeftOver_Amount()
+    {
+        int maxAmount = _tilemapController.controller.prefabsData.Get_Item(prefabTag.prefabID).maxAmount;
+        int leftOverAmount = _currentAmount - maxAmount;
+        if (leftOverAmount <= 0) return 0;
+        return leftOverAmount;
+    }
+    public int Max_Amount()
+    {
+        int maxAmount = _tilemapController.controller.prefabsData.Get_Item(prefabTag.prefabID).maxAmount;
+        return maxAmount;
+    }
+
     // Connection
     public void Connect_Components(TileMap_Controller tilemapController)
     {
-        this.tilemapController = tilemapController;
+        _tilemapController = tilemapController;
     }
 
     // Updates

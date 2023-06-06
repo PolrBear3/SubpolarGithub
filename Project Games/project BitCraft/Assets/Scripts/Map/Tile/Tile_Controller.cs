@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Tile_Controller : MonoBehaviour
+public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private SpriteRenderer _sr;
 
@@ -32,13 +33,16 @@ public class Tile_Controller : MonoBehaviour
     private bool _itemDropReady = false;
     public bool itemDropReady { get => _itemDropReady; set => _itemDropReady = value; }
 
+    private bool _itemDropHold = false;
+    public bool itemDropHold { get => _itemDropHold; set => _itemDropHold = value; }
+
     [Header("Current Prefabs Data")]
     [SerializeField] private Transform _prefabsParent;
     
     [SerializeField] private int _maxPrefabsAmount;
 
-    [SerializeField] private List<GameObject> _currentPrefabs = new List<GameObject>();
-    public List<GameObject> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
+    [SerializeField] private List<Prefab_Controller> _currentPrefabs = new List<Prefab_Controller>();
+    public List<Prefab_Controller> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
     [Header("Interaction Box")]
     [SerializeField] private GameObject objectInteractBox;
@@ -110,24 +114,6 @@ public class Tile_Controller : MonoBehaviour
     }
 
     // Get
-    public Prefab_Controller Get_Prefab_PrefabController(bool ignoreMax, int objectID)
-    {
-        for (int i = 0; i < currentPrefabs.Count; i++)
-        {
-            if (currentPrefabs[i] == null) continue;
-            if (!currentPrefabs[i].TryGetComponent(out Prefab_Controller controller)) continue;
-            if (controller.prefabTag.prefabType == Prefab_Type.character) continue;
-            if (controller.prefabTag.prefabID != objectID) continue;
-            if (!ignoreMax)
-            {
-                if (controller.currentAmount >= _tilemapController.controller.prefabsData.Get_Item(objectID).maxAmount) continue;
-            }
-            return controller;
-        }
-
-        return null;
-    }
-
     public int Prefab_Type_Amount(Prefab_Type type)
     {
         int count = 0;
@@ -142,6 +128,20 @@ public class Tile_Controller : MonoBehaviour
             count ++;
         }
         return count;
+    }
+    public Prefab_Controller Current_Prefab(int id, bool ignoreMax)
+    {
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (id != currentPrefabs[i].prefabTag.prefabID) continue;
+            if (!ignoreMax)
+            {
+                int maxAmount = _tilemapController.controller.prefabsData.Get_Item(id).maxAmount;
+                if (currentPrefabs[i].currentAmount >= maxAmount) continue;
+            }
+            return currentPrefabs[i];
+        }
+        return null;
     }
 
     // Tile Control
@@ -271,9 +271,11 @@ public class Tile_Controller : MonoBehaviour
     // Update
     public void Update_Data()
     {
-        Update_Current_Prefabs();
+        Update_CurrentPrefabs();
+        Update_CurrentPrefabs_LeftOver();
     }
-    private void Update_Current_Prefabs()
+    
+    private void Update_CurrentPrefabs()
     {
         currentPrefabs.Clear();
 
@@ -281,49 +283,90 @@ public class Tile_Controller : MonoBehaviour
 
         for (int i = 0; i < _prefabsParent.childCount; i++)
         {
-            currentPrefabs.Add(_prefabsParent.GetChild(i).gameObject);
+            if (!_prefabsParent.GetChild(i).TryGetComponent(out Prefab_Controller controller)) continue;
+            currentPrefabs.Add(controller);
+        }
+    }
+    public void Update_CurrentPrefabs_LeftOver()
+    {
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            Item_ScrObj objectItem = _tilemapController.controller.prefabsData.Get_Item(currentPrefabs[i].prefabTag.prefabID);
+
+            if (objectItem == null) continue;
+
+            int maxAmount = objectItem.maxAmount;
+            int leftOver = currentPrefabs[i].currentAmount - maxAmount;
+            
+            // if there is leftover
+            if (leftOver <= 0) continue;
+
+            // set current prefab amount to max amount
+            currentPrefabs[i].currentAmount = maxAmount;
+
+            // test
+            if (i == _maxPrefabsAmount - 1)
+            {
+                Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
+                leftOver = dragSlot.bundleDropAmount - leftOver;
+                dragSlot.currentAmount -= leftOver;
+
+                if (dragSlot.itemDragging) dragSlot.Return_Drag_Item();
+
+                continue;
+            }
+            else
+            {
+                // set new pile of leftover amount objects
+                _tilemapController.Set_Object(currentPrefabs[i].prefabTag.prefabID, leftOver, rowNum, columnNum);
+            }
         }
     }
 
     // Function
-    public void Click()
-    {
-        if (_moveReady)
-        {
-            _tilemapController.actionSystem.Reset_NewMap_Directions();
-            _tilemapController.actionSystem.Move_Player(this);
-        }
-        else if (_objectReady)
-        {
-            _tilemapController.actionSystem.Interact_Object(this);
-        }
-        else if (_itemDropReady)
-        {
-            _tilemapController.actionSystem.Drop_Item(this);
-            if (_tilemapController.controller.inventoryController.dragSlot.itemDragging) return;
-        }
-
-        _tilemapController.actionSystem.UnHighlight_All_tiles();
-        _tilemapController.playerController.interactReady = false;
-    }
-    public void Pointer_Down()
-    {
-        if (!_itemDropReady) return;
-
-    }
-    public void Pointer_Up()
-    {
-        if (!_itemDropReady) return;
-
-    }
-    public void Pointer_Enter()
+    public void OnPointerEnter(PointerEventData eventData)
     {
         if (!_itemDropReady) return;
         _tilemapController.controller.inventoryController.dragSlot.tileDetected = true;
     }
-    public void Pointer_Exit()
+    public void OnPointerExit(PointerEventData eventData)
     {
         _tilemapController.controller.inventoryController.dragSlot.tileDetected = false;
+    }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
+
+        // left mouse click
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (_moveReady)
+            {
+                _tilemapController.actionSystem.Reset_NewMap_Directions();
+                _tilemapController.actionSystem.Move_Player(this);
+            }
+            else if (_objectReady)
+            {
+                _tilemapController.actionSystem.Interact_Object(this);
+            }
+            else if (_itemDropReady)
+            {
+                _tilemapController.actionSystem.Drop_Item(this, dragSlot.bundleDropAmount);
+                if (dragSlot.itemDragging) return;
+            }
+        }
+        // right mouse click
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (_itemDropReady)
+            {
+                _tilemapController.actionSystem.Drop_Item(this, 1);
+                if (dragSlot.itemDragging) return;
+            }
+        }
+
+        _tilemapController.actionSystem.UnHighlight_All_tiles();
+        _tilemapController.playerController.interactReady = false;
     }
 
     public void Move_Highlight()

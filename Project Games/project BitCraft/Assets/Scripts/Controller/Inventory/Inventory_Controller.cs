@@ -17,6 +17,10 @@ public class Inventory_Controller : MonoBehaviour
     {
         Set_Slots();
     }
+    private void Start()
+    {
+        
+    }
 
     // Check
     public bool Is_Inventory_Full()

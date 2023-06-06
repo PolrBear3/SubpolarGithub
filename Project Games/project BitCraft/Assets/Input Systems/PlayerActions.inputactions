@@ -15,13 +15,22 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Select",
+                    "name": "Left Select",
                     "type": "Button",
                     "id": "5ed7998b-a337-4d1f-b2a5-4a59a82cbd9b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Right Select",
+                    "type": "Button",
+                    "id": "894aada2-0fb8-46e1-8b7e-02e14d109250",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -65,7 +74,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "Left Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -76,7 +85,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "Left Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -87,7 +96,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Select",
+                    "action": "Left Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f17559bf-e398-4bcc-84e1-45d67a03e353",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

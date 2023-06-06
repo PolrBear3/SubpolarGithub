@@ -64,6 +64,10 @@ public class TileMap_Action_System : MonoBehaviour
             // dragging item is placeable & tile have placeable object
             if (dragObjectTag.prefabType == Prefab_Type.placeable && crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) continue;
 
+            // test
+            Prefab_Controller checkPrefab = crossTiles[i].Current_Prefab(dragItemID, false);
+            if (crossTiles[i].Is_PrefabsAmount_Max() && checkPrefab == null) continue;
+
             crossTiles[i].ItemDrop_Highlight();
         }
     }
@@ -116,11 +120,11 @@ public class TileMap_Action_System : MonoBehaviour
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
     }
-    public void Drop_Item(Tile_Controller targetTile)
+    public void Drop_Item(Tile_Controller targetTile, int amount)
     {
         Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
 
-        _tilemapController.Set_Object(dragSlot.currentItem.id, targetTile.rowNum, targetTile.columnNum); 
-        dragSlot.Decrease_Amount(1);
+        _tilemapController.Set_Object(dragSlot.currentItem.id, amount, targetTile.rowNum, targetTile.columnNum); 
+        dragSlot.Decrease_Amount(amount);
     }
 }

@@ -48,8 +48,8 @@ public class TileMap_Controller : MonoBehaviour
         Set_Character(0, 2, 2);
         Set_Player_Tile(true);
 
-        Set_Object(0100, 3, 2);
-        Set_Object(0100, 1, 2);
+        Set_Object(0100, 1, 3, 2);
+        Set_Object(0100, 1, 1, 2);
     }
 
     // Check
@@ -185,15 +185,17 @@ public class TileMap_Controller : MonoBehaviour
         // update character sprite layer order
         setPrefabController.Sprite_LayerOrder_Update(targetTile.currentPrefabs.Count);
     }
-    public void Set_Object(int objectID, int rowNum, int columnNum)
+    public void Set_Object(int objectID, int amount, int rowNum, int columnNum)
     {
         Tile_Controller targetTile = Get_Tile(rowNum, columnNum);
-        Prefab_Controller targetObject = targetTile.Get_Prefab_PrefabController(false, objectID);
+        Prefab_Controller targetObject = targetTile.Current_Prefab(objectID, false);
+
 
         // tile current objects max amount and same object check
         if (targetTile.Is_PrefabsAmount_Max() || targetObject != null)
         {
-            if (targetObject != null) targetObject.Increase_Amount(1);
+            if (targetObject != null) targetObject.Increase_Amount(amount);
+            targetTile.Update_CurrentPrefabs_LeftOver();
             return;
         }
 
@@ -211,7 +213,9 @@ public class TileMap_Controller : MonoBehaviour
 
         // set object data
         setPrefabController.Connect_Components(this);
-        setPrefabController.Increase_Amount(1);
+
+        if (amount <= 0) amount = 1;
+        setPrefabController.Increase_Amount(amount);
 
         // update object map position
         setPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
@@ -221,7 +225,7 @@ public class TileMap_Controller : MonoBehaviour
 
         // place inside tile
         targetTile.Set_Prefab(objectGameObject.transform);
-
+        
         Vector2 originalSet = setPrefabController.setPosition;
         Vector2 updatedSet = new Vector2(originalSet.x + (0.1f * targetTile.Prefab_Type_Amount(Prefab_Type.overlapPlaceable)), originalSet.y);
 

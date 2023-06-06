@@ -514,13 +514,13 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9885774
-    height: 3.1365314
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.625
+  orthographic size: 5.8125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1454,6 +1454,8 @@ MonoBehaviour:
   _inventoryController: {fileID: 691676247}
   _itemImage: {fileID: 8510077633438444881}
   _amountText: {fileID: 972888224781254820}
+  _currentAmount: 0
+  _bundleDropAmount: 10
 --- !u!114 &8510077633292129959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1499,6 +1501,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5ed7998b-a337-4d1f-b2a5-4a59a82cbd9b
     m_ActionName: Player Interaction/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8510077633292129958}
+        m_TargetAssemblyTypeName: Drag_Slot, Assembly-CSharp
+        m_MethodName: Return_Drag_Item
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 894aada2-0fb8-46e1-8b7e-02e14d109250
+    m_ActionName: Player Interaction/Right Select[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Interaction
