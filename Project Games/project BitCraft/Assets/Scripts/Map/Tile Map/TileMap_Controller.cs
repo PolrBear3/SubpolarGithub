@@ -190,12 +190,26 @@ public class TileMap_Controller : MonoBehaviour
         Tile_Controller targetTile = Get_Tile(rowNum, columnNum);
         Prefab_Controller targetObject = targetTile.Current_Prefab(objectID, false);
 
-
         // tile current objects max amount and same object check
-        if (targetTile.Is_PrefabsAmount_Max() || targetObject != null)
+        if (targetObject != null)
         {
+            int objectMaxAmount = _controller.prefabsData.Get_Item(objectID).maxAmount;
+
             if (targetObject != null) targetObject.Increase_Amount(amount);
-            targetTile.Update_CurrentPrefabs_LeftOver();
+            
+            // leftover
+            if (targetObject.currentAmount >= objectMaxAmount)
+            {
+                int leftOver = targetObject.currentAmount - objectMaxAmount;
+
+                // set amount to max
+                targetObject.currentAmount = objectMaxAmount;
+
+                // return
+                if (_controller.inventoryController.dragSlot.itemDragging) _controller.inventoryController.dragSlot.Increase_Amount(leftOver);
+                //else _controller.inventoryController.Add_Item(objectID, leftOver);
+            }
+
             return;
         }
 

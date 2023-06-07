@@ -259,8 +259,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
             if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag prefabTag)) continue;
             if (prefabTag.prefabType != type) continue;
             if (prefabTag.prefabID != searchID) continue;
-
-            Destroy(currentPrefabs[i]);
+            Destroy(currentPrefabs[i].gameObject);
             currentPrefabs.Clear();
             break;
         }
@@ -272,9 +271,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public void Update_Data()
     {
         Update_CurrentPrefabs();
-        Update_CurrentPrefabs_LeftOver();
     }
-    
     private void Update_CurrentPrefabs()
     {
         currentPrefabs.Clear();
@@ -285,41 +282,6 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         {
             if (!_prefabsParent.GetChild(i).TryGetComponent(out Prefab_Controller controller)) continue;
             currentPrefabs.Add(controller);
-        }
-    }
-    public void Update_CurrentPrefabs_LeftOver()
-    {
-        for (int i = 0; i < currentPrefabs.Count; i++)
-        {
-            Item_ScrObj objectItem = _tilemapController.controller.prefabsData.Get_Item(currentPrefabs[i].prefabTag.prefabID);
-
-            if (objectItem == null) continue;
-
-            int maxAmount = objectItem.maxAmount;
-            int leftOver = currentPrefabs[i].currentAmount - maxAmount;
-            
-            // if there is leftover
-            if (leftOver <= 0) continue;
-
-            // set current prefab amount to max amount
-            currentPrefabs[i].currentAmount = maxAmount;
-
-            // test
-            if (i == _maxPrefabsAmount - 1)
-            {
-                Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
-                leftOver = dragSlot.bundleDropAmount - leftOver;
-                dragSlot.currentAmount -= leftOver;
-
-                if (dragSlot.itemDragging) dragSlot.Return_Drag_Item();
-
-                continue;
-            }
-            else
-            {
-                // set new pile of leftover amount objects
-                _tilemapController.Set_Object(currentPrefabs[i].prefabTag.prefabID, leftOver, rowNum, columnNum);
-            }
         }
     }
 
@@ -352,7 +314,12 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
             else if (_itemDropReady)
             {
                 _tilemapController.actionSystem.Drop_Item(this, dragSlot.bundleDropAmount);
-                if (dragSlot.itemDragging) return;
+                
+                if (dragSlot.itemDragging)
+                {
+                    _tilemapController.actionSystem.Highlight_ItemDrop_Tiles();
+                    return;
+                }
             }
         }
         // right mouse click

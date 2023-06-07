@@ -94,14 +94,6 @@ public class Drag_Slot : MonoBehaviour
     public void Increase_Amount(int amount)
     {
         _currentAmount += amount;
-
-        if (_currentAmount > _currentItem.maxAmount)
-        {
-            int leftOver = _currentAmount - _currentItem.maxAmount;
-            _currentAmount = _currentItem.maxAmount;
-            _inventoryController.Add_Item(_currentItem, leftOver);
-        }
-
         _amountText.text = _currentAmount.ToString();
     }
     public void Decrease_Amount(int amount)

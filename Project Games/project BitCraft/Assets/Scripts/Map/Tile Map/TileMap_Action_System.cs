@@ -123,8 +123,11 @@ public class TileMap_Action_System : MonoBehaviour
     public void Drop_Item(Tile_Controller targetTile, int amount)
     {
         Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
+        int finalAmount = amount;
 
-        _tilemapController.Set_Object(dragSlot.currentItem.id, amount, targetTile.rowNum, targetTile.columnNum); 
-        dragSlot.Decrease_Amount(amount);
+        if (dragSlot.currentAmount < amount) finalAmount = dragSlot.currentAmount;
+
+        _tilemapController.Set_Object(dragSlot.currentItem.id, finalAmount, targetTile.rowNum, targetTile.columnNum); 
+        dragSlot.Decrease_Amount(finalAmount);
     }
 }
