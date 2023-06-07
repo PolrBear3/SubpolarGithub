@@ -241,7 +241,7 @@ public class TileMap_Controller : MonoBehaviour
         targetTile.Set_Prefab(objectGameObject.transform);
         
         Vector2 originalSet = setPrefabController.setPosition;
-        Vector2 updatedSet = new Vector2(originalSet.x + (0.1f * targetTile.Prefab_Type_Amount(Prefab_Type.overlapPlaceable)), originalSet.y);
+        Vector2 updatedSet = new Vector2(originalSet.x + (0.167f * targetTile.Prefab_Type_Amount(Prefab_Type.overlapPlaceable)), originalSet.y);
 
         objectGameObject.transform.localPosition = updatedSet;
 
