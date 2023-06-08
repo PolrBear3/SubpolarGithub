@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
@@ -21,6 +21,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 
+    //
     public void OnPointerEnter(PointerEventData eventData)
     {
         _inventory.dragSlot.slotDetected = true;
@@ -28,6 +29,11 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         _inventory.dragSlot.slotDetected = false;
+    }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) Default_DragDrop();
+        else if (eventData.button == PointerEventData.InputButton.Right) Bundle_DragDrop();
     }
 
     // Check System
@@ -51,7 +57,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     // Functions
-    public void Left_Click()
+    public void Default_DragDrop()
     {
         Drag_Slot dragSlot = _inventory.dragSlot;
 
@@ -108,9 +114,62 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             }
         }
     }
-    public void Right_Click()
+    public void Bundle_DragDrop()
     {
+        Drag_Slot dragSlot = _inventory.dragSlot;
 
+        // Prevent Empty Slot Click
+        if (!dragSlot.itemDragging && !_hasItem) return;
+
+        // Drag
+        if (!dragSlot.itemDragging)
+        {
+            dragSlot.Assign(_currentItem, _currentAmount);
+            Clear();
+        }
+        // Drop
+        else
+        {
+            // Drop - Empty Slot
+            if (_currentItem == null)
+            {
+                Assign(dragSlot.currentItem, dragSlot.currentAmount);
+                dragSlot.Clear();
+            }
+            // Drop - Non-Empty Slot
+            else
+            {
+                // Increase Item Amount
+                if (dragSlot.Is_Same_Item(_currentItem) && !Is_Max_Amount())
+                {
+                    int increaseAmount = _currentAmount + dragSlot.currentAmount;
+
+                    // Over Max Amount
+                    if (increaseAmount > _currentItem.maxAmount)
+                    {
+                        int leftOver = increaseAmount - _currentItem.maxAmount;
+
+                        dragSlot.Assign(_currentItem, leftOver);
+                        Assign(_currentItem, _currentItem.maxAmount);
+                    }
+                    // Not Max Amount
+                    else
+                    {
+                        Increase_Amount(dragSlot.currentAmount);
+                        dragSlot.Clear();
+                    }
+                }
+                // Swap Items
+                else
+                {
+                    Item_ScrObj savedItem = _currentItem;
+                    int savedAmount = _currentAmount;
+
+                    Assign(dragSlot.currentItem, dragSlot.currentAmount);
+                    dragSlot.Assign(savedItem, savedAmount);
+                }
+            }
+        }
     }
 
     public void Assign(Item_ScrObj item, int amount)
