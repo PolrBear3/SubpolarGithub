@@ -35,6 +35,8 @@ public class TileMap_Action_System : MonoBehaviour
             // highlight moveable tiles
             if (!crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable) && !crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
             {
+                if (crossTiles[i].Has_Prefab_Type(Prefab_Type.character)) continue;
+                
                 crossTiles[i].Move_Highlight();
             }
 
@@ -58,15 +60,15 @@ public class TileMap_Action_System : MonoBehaviour
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
-            // drop available tile
+            // object not drop available for this tile
             if (!dragObjectController.Drop_Available(crossTiles[i].prefabTag.prefabID)) continue;
 
-            // dragging item is placeable & tile have placeable object
+            // dragging item is placeable & tile has placeable object
             if (dragObjectTag.prefabType == Prefab_Type.placeable && crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) continue;
 
-            // test
-            Prefab_Controller checkPrefab = crossTiles[i].Current_Prefab(dragItemID, false);
-            if (crossTiles[i].Is_PrefabsAmount_Max() && checkPrefab == null) continue;
+            // if tile has overlapplaceable object and max amount
+            Prefab_Controller tileCurrentPrefab = crossTiles[i].Get_Current_Prefab(dragItemID, false);
+            if (crossTiles[i].Has_Prefab_Type(Prefab_Type.overlapPlaceable) && tileCurrentPrefab == null) continue;
 
             crossTiles[i].ItemDrop_Highlight();
         }
@@ -125,6 +127,7 @@ public class TileMap_Action_System : MonoBehaviour
         Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
         int finalAmount = amount;
 
+        // if dragSlot amount is less than bundle drop amount, change drop amount to dragslot current amount
         if (dragSlot.currentAmount < amount) finalAmount = dragSlot.currentAmount;
 
         _tilemapController.Set_Object(dragSlot.currentItem.id, finalAmount, targetTile.rowNum, targetTile.columnNum); 

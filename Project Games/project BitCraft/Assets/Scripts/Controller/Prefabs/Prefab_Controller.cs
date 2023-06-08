@@ -27,7 +27,7 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private int _currentColumnNum;
     public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
 
-    [Header("Interaction Data")]
+    [Header("Start Data")]
     [SerializeField] private Vector2 _setPosition;
     public Vector2 setPosition { get => _setPosition; set => _setPosition = value; }
     [SerializeField] private float _moveSpeed;
@@ -35,6 +35,7 @@ public class Prefab_Controller : MonoBehaviour
 
     [SerializeField] private List<Prefab_Tag> _dropAvailableTiles = new List<Prefab_Tag>();
 
+    [Header("Update Data")]
     [SerializeField] private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 

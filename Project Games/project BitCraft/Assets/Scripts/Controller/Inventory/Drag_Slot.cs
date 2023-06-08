@@ -16,7 +16,7 @@ public class Drag_Slot : MonoBehaviour
     private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
 
-    [SerializeField] private int _currentAmount;
+    private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 
     private bool _itemDragging = false;

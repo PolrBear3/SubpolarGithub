@@ -188,16 +188,17 @@ public class TileMap_Controller : MonoBehaviour
     public void Set_Object(int objectID, int amount, int rowNum, int columnNum)
     {
         Tile_Controller targetTile = Get_Tile(rowNum, columnNum);
-        Prefab_Controller targetObject = targetTile.Current_Prefab(objectID, false);
+        Prefab_Controller targetObject = targetTile.Get_Current_Prefab(objectID, false);
+        Item_ScrObj targetItem = _controller.prefabsData.Get_Item(objectID);
 
         // tile current objects max amount and same object check
         if (targetObject != null)
         {
             int objectMaxAmount = _controller.prefabsData.Get_Item(objectID).maxAmount;
 
-            if (targetObject != null) targetObject.Increase_Amount(amount);
+            targetObject.Increase_Amount(amount);
             
-            // leftover
+            // leftover calculation
             if (targetObject.currentAmount >= objectMaxAmount)
             {
                 int leftOver = targetObject.currentAmount - objectMaxAmount;
@@ -205,9 +206,9 @@ public class TileMap_Controller : MonoBehaviour
                 // set amount to max
                 targetObject.currentAmount = objectMaxAmount;
 
-                // return
+                // return leftover (dragSlot or inventory)
                 if (_controller.inventoryController.dragSlot.itemDragging) _controller.inventoryController.dragSlot.Increase_Amount(leftOver);
-                //else _controller.inventoryController.Add_Item(objectID, leftOver);
+                else if (targetItem != null) _controller.inventoryController.Add_Item(targetItem, leftOver);
             }
 
             return;
@@ -239,11 +240,7 @@ public class TileMap_Controller : MonoBehaviour
 
         // place inside tile
         targetTile.Set_Prefab(objectGameObject.transform);
-        
-        Vector2 originalSet = setPrefabController.setPosition;
-        Vector2 updatedSet = new Vector2(originalSet.x + (0.167f * targetTile.Prefab_Type_Amount(Prefab_Type.overlapPlaceable)), originalSet.y);
-
-        objectGameObject.transform.localPosition = updatedSet;
+        objectGameObject.transform.localPosition = setPrefabController.setPosition; ;
 
         // update tiles
         AllTiles_Update_Data();

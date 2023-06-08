@@ -38,8 +38,6 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     [Header("Current Prefabs Data")]
     [SerializeField] private Transform _prefabsParent;
-    
-    [SerializeField] private int _maxPrefabsAmount;
 
     [SerializeField] private List<Prefab_Controller> _currentPrefabs = new List<Prefab_Controller>();
     public List<Prefab_Controller> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
@@ -98,23 +96,8 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         return false;
     }
 
-    public bool Is_PrefabsAmount_Max()
-    {
-        if (currentPrefabs.Count <= 0) return false;
-
-        int prefabsCount = 0;
-        for (int i = 0; i < currentPrefabs.Count; i++)
-        {
-            if (currentPrefabs == null) continue;
-            prefabsCount++;
-        }
-
-        if (prefabsCount >= _maxPrefabsAmount) return true;
-        else return false;
-    }
-
     // Get
-    public int Prefab_Type_Amount(Prefab_Type type)
+    public int Get_PrefabType_Amount(Prefab_Type type)
     {
         int count = 0;
 
@@ -129,7 +112,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         }
         return count;
     }
-    public Prefab_Controller Current_Prefab(int id, bool ignoreMax)
+    public Prefab_Controller Get_Current_Prefab(int id, bool ignoreMax)
     {
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
