@@ -32,8 +32,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left) Default_DragDrop();
-        else if (eventData.button == PointerEventData.InputButton.Right) Bundle_Drag();
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        Default_DragDrop();
     }
 
     // Check System
@@ -113,23 +113,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
                 }
             }
         }
-    }
-    public void Bundle_Drag()
-    {
-        Drag_Slot dragSlot = _inventory.dragSlot;
-        int dragAmount = dragSlot.bundleDropAmount;
-
-        // Set Bundle Drag and Drop Amount
-        if (_currentAmount < dragAmount) dragAmount = _currentAmount;
-
-        // Prevent Empty Slot Click
-        if (!_hasItem) return;
-
-        // Drag
-        if (dragSlot.itemDragging) dragSlot.Increase_Amount(dragAmount);
-        else dragSlot.Assign(_currentItem, dragAmount);
-
-        Decrease_Amount(dragAmount);
     }
 
     public void Assign(Item_ScrObj item, int amount)
