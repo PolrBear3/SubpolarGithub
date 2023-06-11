@@ -33,7 +33,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left) Default_DragDrop();
-        else if (eventData.button == PointerEventData.InputButton.Right) Bundle_DragDrop();
+        else if (eventData.button == PointerEventData.InputButton.Right) Bundle_Drag();
     }
 
     // Check System
@@ -114,62 +114,22 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
             }
         }
     }
-    public void Bundle_DragDrop()
+    public void Bundle_Drag()
     {
         Drag_Slot dragSlot = _inventory.dragSlot;
+        int dragAmount = dragSlot.bundleDropAmount;
+
+        // Set Bundle Drag and Drop Amount
+        if (_currentAmount < dragAmount) dragAmount = _currentAmount;
 
         // Prevent Empty Slot Click
-        if (!dragSlot.itemDragging && !_hasItem) return;
+        if (!_hasItem) return;
 
         // Drag
-        if (!dragSlot.itemDragging)
-        {
-            dragSlot.Assign(_currentItem, _currentAmount);
-            Clear();
-        }
-        // Drop
-        else
-        {
-            // Drop - Empty Slot
-            if (_currentItem == null)
-            {
-                Assign(dragSlot.currentItem, dragSlot.currentAmount);
-                dragSlot.Clear();
-            }
-            // Drop - Non-Empty Slot
-            else
-            {
-                // Increase Item Amount
-                if (dragSlot.Is_Same_Item(_currentItem) && !Is_Max_Amount())
-                {
-                    int increaseAmount = _currentAmount + dragSlot.currentAmount;
+        if (dragSlot.itemDragging) dragSlot.Increase_Amount(dragAmount);
+        else dragSlot.Assign(_currentItem, dragAmount);
 
-                    // Over Max Amount
-                    if (increaseAmount > _currentItem.maxAmount)
-                    {
-                        int leftOver = increaseAmount - _currentItem.maxAmount;
-
-                        dragSlot.Assign(_currentItem, leftOver);
-                        Assign(_currentItem, _currentItem.maxAmount);
-                    }
-                    // Not Max Amount
-                    else
-                    {
-                        Increase_Amount(dragSlot.currentAmount);
-                        dragSlot.Clear();
-                    }
-                }
-                // Swap Items
-                else
-                {
-                    Item_ScrObj savedItem = _currentItem;
-                    int savedAmount = _currentAmount;
-
-                    Assign(dragSlot.currentItem, dragSlot.currentAmount);
-                    dragSlot.Assign(savedItem, savedAmount);
-                }
-            }
-        }
+        Decrease_Amount(dragAmount);
     }
 
     public void Assign(Item_ScrObj item, int amount)
