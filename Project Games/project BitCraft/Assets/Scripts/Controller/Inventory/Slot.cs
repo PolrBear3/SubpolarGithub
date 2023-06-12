@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
@@ -30,11 +30,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     {
         _inventory.dragSlot.slotDetected = false;
     }
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button != PointerEventData.InputButton.Left) return;
-        Default_DragDrop();
-    }
 
     // Check System
     public bool Is_Same_Item(Item_ScrObj item)
@@ -57,7 +52,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     }
 
     // Functions
-    public void Default_DragDrop()
+    public void DragDrop_Item()
     {
         Drag_Slot dragSlot = _inventory.dragSlot;
 
