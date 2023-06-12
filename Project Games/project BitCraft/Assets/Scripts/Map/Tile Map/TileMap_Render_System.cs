@@ -25,7 +25,7 @@ public class TileMap_Render_System : MonoBehaviour
             Vector2 position = new(rowNum - 2, -columnNum + 2);
 
             // instantiate
-            GameObject tile = Instantiate(tilemapController.controller.prefabsData.Get_Random_Tile(), position, Quaternion.identity);
+            GameObject tile = Instantiate(tilemapController.controller.prefabsData.Get_Tile(0), position, Quaternion.identity);
 
             // set inside tile map as child
             tile.transform.parent = tilemapController.currentMap.transform;
