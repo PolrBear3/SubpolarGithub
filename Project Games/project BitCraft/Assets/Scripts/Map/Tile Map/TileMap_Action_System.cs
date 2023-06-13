@@ -25,10 +25,11 @@ public class TileMap_Action_System : MonoBehaviour
         }
     }
 
+
     // player action systems
     public void Highlight_Player_Interactable_Tiles()
     {
-        List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
+        List<Tile_Controller> crossTiles = _tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
@@ -80,6 +81,9 @@ public class TileMap_Action_System : MonoBehaviour
         Tile_Controller playerTile = tilemapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
 
         playerTile.directionSystem.Set_Directions();
+
+        // activate object action think cloud
+        playerTile.objectActionSystem.Activate_ThinkCloud();
     }
     public void Reset_NewMap_Directions()
     {
@@ -87,6 +91,9 @@ public class TileMap_Action_System : MonoBehaviour
         Tile_Controller playerTile = tilemapController.Get_Tile(playerPrefabController.currentRowNum, playerPrefabController.currentColumnNum);
 
         playerTile.directionSystem.Reset_Directions();
+
+        // deactivate object action think cloud
+        playerTile.objectActionSystem.Deactivate_ThinkCloud();
     }
 
     public void Move_Player(Tile_Controller moveTile)

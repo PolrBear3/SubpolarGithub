@@ -22,6 +22,23 @@ public class TileMap_Combination_System : MonoBehaviour
         }
     }
 
+    public List<Tile_Controller> Cross_Tiles(Tile_Controller targetTile)
+    {
+        List<Tile_Controller> crossTiles = new List<Tile_Controller>();
+
+        // left tile
+        crossTiles.Add(mapController.Get_Tile(targetTile.rowNum - 1, targetTile.columnNum));
+        // right tile
+        crossTiles.Add(mapController.Get_Tile(targetTile.rowNum + 1, targetTile.columnNum));
+        // top tile
+        crossTiles.Add(mapController.Get_Tile(targetTile.rowNum, targetTile.columnNum - 1));
+        // bottom tile
+        crossTiles.Add(mapController.Get_Tile(targetTile.rowNum, targetTile.columnNum + 1));
+
+        Remove_Null_Tiles(crossTiles);
+
+        return crossTiles;
+    }
     public List<Tile_Controller> Cross_Tiles(int rowNum, int columnNum)
     {
         List<Tile_Controller> crossTiles = new List<Tile_Controller>();

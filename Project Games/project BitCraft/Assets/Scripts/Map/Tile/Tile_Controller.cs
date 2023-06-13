@@ -15,6 +15,9 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     private Tile_Direction_System _directionSystem;
     public Tile_Direction_System directionSystem { get => _directionSystem; set => _directionSystem = value; }
 
+    private Object_Action_System _objectActionSystem;
+    public Object_Action_System objectActionSystem { get => _objectActionSystem; set => _objectActionSystem = value; }
+
     private Prefab_Tag _prefabTag;
     public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
