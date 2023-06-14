@@ -86,6 +86,8 @@ public class Drag_Slot : MonoBehaviour
         textColor.a = 0f;
         _amountText.color = textColor;
 
+        _rectTransform.anchoredPosition = new Vector2(0, -587.55f);
+
         _itemDragging = false;
 
         _inventoryController.controller.tilemapController.actionSystem.UnHighlight_All_tiles();
