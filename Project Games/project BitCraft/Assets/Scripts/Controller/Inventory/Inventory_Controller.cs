@@ -19,7 +19,7 @@ public class Inventory_Controller : MonoBehaviour
     }
     private void Start()
     {
-        Add_Item(101, 300);
+        
     }
 
     // Check

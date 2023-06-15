@@ -87,30 +87,22 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
-            if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag tag)) continue;
-            if (searchID != tag.prefabID) continue;
-
+            if (searchID != currentPrefabs[i].prefabTag.prefabID) continue;
             return true;
         }
-
         return false;
     }
 
     // Get
-    public int Get_PrefabType_Amount(Prefab_Type type)
+    public Prefab_Controller Get_Current_Prefab(Prefab_Type prefabType)
     {
-        int count = 0;
-
-        if (currentPrefabs.Count <= 0) return count;
-
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
-            if (currentPrefabs[i] == null) continue;
-            if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag tag)) continue;
-            if (type != tag.prefabType) continue;
-            count ++;
+            if (!Has_Prefab_Type(prefabType)) continue;
+            if (prefabType != currentPrefabs[i].prefabTag.prefabType) continue;
+            return currentPrefabs[i];
         }
-        return count;
+        return null;
     }
     public Prefab_Controller Get_Current_Prefab(int id, bool ignoreMax)
     {
@@ -235,19 +227,33 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     {
         prefabTransform.parent = _prefabsParent;
     }
-    public void Remove_Prefab(Prefab_Type type, int searchID)
+
+    public void Remove_Prefab(Prefab_Type type)
     {
         for (int i = 0; i < currentPrefabs.Count; i++)
         {
-            if (!currentPrefabs[i].TryGetComponent(out Prefab_Tag prefabTag)) continue;
-            if (prefabTag.prefabType != type) continue;
-            if (prefabTag.prefabID != searchID) continue;
+            if (currentPrefabs[i].prefabTag.prefabType != type) continue;
             Destroy(currentPrefabs[i].gameObject);
             currentPrefabs.Clear();
             break;
         }
 
         currentPrefabs.RemoveAll(item => item == null);
+        Update_CurrentPrefabs();
+    }
+    public void Remove_Prefab(Prefab_Type type, int searchID)
+    {
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (currentPrefabs[i].prefabTag.prefabType != type) continue;
+            if (currentPrefabs[i].prefabTag.prefabID != searchID) continue;
+            Destroy(currentPrefabs[i].gameObject);
+            currentPrefabs.Clear();
+            break;
+        }
+
+        currentPrefabs.RemoveAll(item => item == null);
+        Update_CurrentPrefabs();
     }
 
     // Update

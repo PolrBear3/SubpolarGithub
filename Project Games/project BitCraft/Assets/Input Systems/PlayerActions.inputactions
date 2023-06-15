@@ -31,6 +31,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Shortcut Key 1",
+                    "type": "PassThrough",
+                    "id": "2b0b1dd3-9702-43cf-b490-2b6ef4a936ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shortcut Key 2",
+                    "type": "PassThrough",
+                    "id": "221cb7de-0e0a-48ee-a6b3-1c94aeb6d180",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shortcut Key 3",
+                    "type": "PassThrough",
+                    "id": "0a392a30-0b28-40b1-bdc6-499a3e41b8e7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -108,6 +135,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Right Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3867b4b-6bdd-4ee0-b009-cc077826fd1d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shortcut Key 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "94e43c92-2df8-4c7b-a694-77bd342ac0e3",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shortcut Key 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b3eeee3-71d5-4df8-a25f-92fe189a0da0",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shortcut Key 3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
