@@ -192,7 +192,6 @@ public class TileMap_Controller : MonoBehaviour
         Prefab_Controller targetObject = targetTile.Get_Current_Prefab(objectID, false);
         Item_ScrObj targetItem = _controller.prefabsData.Get_Item(objectID);
 
-        // tile current objects max amount and same object check
         if (targetObject != null)
         {
             int objectMaxAmount = _controller.prefabsData.Get_Item(objectID).maxAmount;
