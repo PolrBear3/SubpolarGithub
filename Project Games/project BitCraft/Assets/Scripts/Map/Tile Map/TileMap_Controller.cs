@@ -50,7 +50,7 @@ public class TileMap_Controller : MonoBehaviour
 
         Set_Object(0100, 1, 3, 2);
         Set_Object(0100, 1, 1, 2);
-        Set_Object(0200, 1, 2, 1);
+        Set_Object(0300, 1, 2, 1);
     }
 
     // Check
