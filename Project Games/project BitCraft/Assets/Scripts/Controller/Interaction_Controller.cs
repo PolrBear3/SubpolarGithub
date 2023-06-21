@@ -17,6 +17,10 @@ public class Interaction_Controller : MonoBehaviour
     {
         Interact_Object();
     }
+    public void OnShortcutKey3()
+    {
+        Use_Equipment();
+    }
 
     // Interaction Button Functions
     public void Pickup_Object()
@@ -50,5 +54,9 @@ public class Interaction_Controller : MonoBehaviour
 
         // activate interactable object
         interactable.Interact();
+    }
+    public void Use_Equipment()
+    {
+
     }
 }
