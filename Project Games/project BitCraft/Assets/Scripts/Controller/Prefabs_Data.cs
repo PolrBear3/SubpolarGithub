@@ -6,6 +6,10 @@ public interface IInteractable
 {
     void Interact();
 }
+public interface IInteractableUpdate
+{
+    void Interact_Update();
+}
 
 public class Prefabs_Data : MonoBehaviour
 {

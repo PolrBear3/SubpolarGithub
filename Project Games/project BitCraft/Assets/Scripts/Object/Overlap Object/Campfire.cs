@@ -19,6 +19,6 @@ public class Campfire : MonoBehaviour, IInteractable
     // Functions
     private void Rest()
     {
-        
+        Debug.Log("Campfire Interaction Activated");
     }
 }

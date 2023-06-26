@@ -52,6 +52,11 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
         if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { this.prefabTag = prefabTag; }
     }
+    public void Update_Data()
+    {
+        Update_CurrentPrefabs();
+        Activate_IInteractableUpdates();
+    }
 
     // Check
     public bool Found(int rowNum, int columnNum)
@@ -257,10 +262,6 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     }
 
     // Update
-    public void Update_Data()
-    {
-        Update_CurrentPrefabs();
-    }
     private void Update_CurrentPrefabs()
     {
         currentPrefabs.Clear();
@@ -271,6 +272,14 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         {
             if (!_prefabsParent.GetChild(i).TryGetComponent(out Prefab_Controller controller)) continue;
             currentPrefabs.Add(controller);
+        }
+    }
+    private void Activate_IInteractableUpdates()
+    {
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (!currentPrefabs[i].TryGetComponent(out IInteractableUpdate interactableUpdate)) continue;
+            interactableUpdate.Interact_Update();
         }
     }
 
