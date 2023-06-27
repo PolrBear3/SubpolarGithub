@@ -100,11 +100,21 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
     }
     private void Craft()
     {
-        if (!ingredient1.hasItem || !ingredient2.hasItem) return;
-        if (Get_Craft_Item() == null) return;
-
+        if (!ingredient1.hasItem && !ingredient2.hasItem) return;
+        
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
-        inventory.Add_Item(Get_Craft_Item(), 1);
+
+        // craft successful
+        if (Get_Craft_Item() != null)
+        {
+            inventory.Add_Item(Get_Craft_Item(), 1);
+        }
+        // craft fail
+        else
+        {
+            if (ingredient1.hasItem) inventory.Add_Item(ingredient1.currentItem, ingredient1.currentAmount);
+            if (ingredient2.hasItem) inventory.Add_Item(ingredient2.currentItem, ingredient2.currentAmount);
+        }
         
         ingredient1.Clear_Item();
         ingredient2.Clear_Item();

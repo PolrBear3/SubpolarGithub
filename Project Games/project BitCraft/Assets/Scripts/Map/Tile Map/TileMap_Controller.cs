@@ -48,8 +48,11 @@ public class TileMap_Controller : MonoBehaviour
         Set_Character(0, 2, 2);
         Set_Player_Tile(true);
 
-        Set_Object(1100, 1, 3, 2);
+        // tree
         Set_Object(1100, 1, 1, 2);
+        Set_Object(1100, 1, 3, 2);
+
+        // basic craft table
         Set_Object(1200, 1, 2, 1);
     }
 
