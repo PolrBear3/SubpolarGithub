@@ -10,6 +10,10 @@ public interface IInteractableUpdate
 {
     void Interact_Update();
 }
+public interface IDamageable
+{
+    void Damage(int damageAmount);
+}
 
 public class Prefabs_Data : MonoBehaviour
 {
@@ -66,6 +70,24 @@ public class Prefabs_Data : MonoBehaviour
         {
             if (id != items[i].id) continue;
             return items[i];
+        }
+        return null;
+    }
+    public Item_ScrObj Get_Item(List<Ingredient> ingredients)
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (ingredients.Count != items[i].ingredients.Count) continue;
+
+            int errorAmount = items[i].ingredients.Count;
+            for (int j = 0; j < ingredients.Count; j++)
+            {
+                if (ingredients[j].ingredientItem != items[i].ingredients[j].ingredientItem) break;
+                if (ingredients[j].amount < items[i].ingredients[j].amount) break;
+                errorAmount--;
+            }
+
+            if (errorAmount <= 0) return items[i];
         }
         return null;
     }
