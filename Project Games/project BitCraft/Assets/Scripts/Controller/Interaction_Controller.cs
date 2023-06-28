@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Interaction_Controller : MonoBehaviour
 {
     [SerializeField] private Game_Controller _controller;
     public Game_Controller controller { get => _controller; set => _controller = value; }
+
+    [SerializeField] private Image _interactIcon;
 
     //
     public void OnShortcutKey1()
@@ -42,6 +44,11 @@ public class Interaction_Controller : MonoBehaviour
         // remove item object from tile
         playerTile.Remove_Prefab(Prefab_Type.overlapPlaceable);
     }
+
+    public void Interact_Icon_Update()
+    {
+
+    }
     public void Interact_Object()
     {
         // get player position tile
@@ -55,6 +62,7 @@ public class Interaction_Controller : MonoBehaviour
         // activate interactable object
         interactable.Interact();
     }
+
     public void Use_Equipment()
     {
 

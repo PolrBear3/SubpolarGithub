@@ -54,6 +54,9 @@ public class TileMap_Controller : MonoBehaviour
 
         // basic craft table
         Set_Object(1200, 1, 2, 1);
+
+        // campfire
+        Set_Object(2200, 1, 2, 3);
     }
 
     // Check
