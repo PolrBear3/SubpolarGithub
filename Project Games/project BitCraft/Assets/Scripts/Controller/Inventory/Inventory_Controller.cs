@@ -62,6 +62,8 @@ public class Inventory_Controller : MonoBehaviour
     // Function
     public void Add_Item(Item_ScrObj item, int amount)
     {
+        if (amount <= 0) return;
+        
         for (int i = 0; i < _slots.Count; i++)
         {
             if (_slots[i].currentAmount <= 0)
@@ -79,6 +81,8 @@ public class Inventory_Controller : MonoBehaviour
     }
     public void Add_Item(int itemID, int amount)
     {
+        if (amount <= 0) return;
+
         Item_ScrObj item = controller.prefabsData.Get_Item(itemID);
 
         if (item == null)

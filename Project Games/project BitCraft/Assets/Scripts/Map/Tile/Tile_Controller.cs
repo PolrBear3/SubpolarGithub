@@ -98,6 +98,16 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         return false;
     }
 
+    public bool Has_Interactable()
+    {
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            if (!currentPrefabs[i].TryGetComponent(out IInteractable interactable)) continue;
+            return true;
+        }
+        return false;
+    }
+
     // Get
     public Prefab_Controller Get_Current_Prefab(Prefab_Type prefabType)
     {

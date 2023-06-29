@@ -222,6 +222,8 @@ public class TileMap_Controller : MonoBehaviour
 
         // spawn
         GameObject objectPrefab = controller.prefabsData.Get_Object(objectID);
+        if (objectPrefab == null) return;
+        
         GameObject objectGameObject = Instantiate(objectPrefab, targetTile.transform.position, Quaternion.identity);
 
         // get Prefab_Controller component

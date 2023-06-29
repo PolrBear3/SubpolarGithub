@@ -6,17 +6,16 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
 {
     private Prefab_Controller _controller;
 
-    [SerializeField] private Item_ScrObj dropItem;
-
     //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Prefab_Controller controller)) { _controller = controller; }
     }
+    
     public void Interact()
     {
         Drop_Leaf();
-        Damage(1);
+        Drop_Item();
     }
     public void Damage(int damageAmount)
     {
@@ -41,11 +40,14 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
         int itemAmount = Random.Range(3, 5);
 
-        inventory.Add_Item(dropItem, 50);
+        inventory.Add_Item(2100, itemAmount);                 
     }
     private void Drop_Leaf()
     {
+        Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
+        int itemAmount = Random.Range(0, 2);
         
+        inventory.Add_Item(1101, itemAmount);
     }
 
     // Visual

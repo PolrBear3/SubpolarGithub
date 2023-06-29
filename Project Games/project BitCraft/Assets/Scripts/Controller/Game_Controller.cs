@@ -13,6 +13,9 @@ public class Game_Controller : MonoBehaviour
     [SerializeField] private Inventory_Controller _inventoryController;
     public Inventory_Controller inventoryController { get => _inventoryController; set => _inventoryController = value; }
 
+    [SerializeField] private Interaction_Controller _interactionController;
+    public Interaction_Controller interactionController { get => _interactionController; set => _interactionController = value; }
+
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Prefabs_Data prefabsData)) { _prefabsData = prefabsData; }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Prefab_Controller : MonoBehaviour
 {
     private SpriteRenderer _sr;
+    public SpriteRenderer sr { get => _sr; set => _sr = value; }
 
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }

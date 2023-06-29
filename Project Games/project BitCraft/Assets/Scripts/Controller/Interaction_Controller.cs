@@ -24,7 +24,7 @@ public class Interaction_Controller : MonoBehaviour
         Use_Equipment();
     }
 
-    // Interaction Button Functions
+    // Button Functions
     public void Pickup_Object()
     {
         // get player position tile
@@ -44,11 +44,6 @@ public class Interaction_Controller : MonoBehaviour
         // remove item object from tile
         playerTile.Remove_Prefab(Prefab_Type.overlapPlaceable);
     }
-
-    public void Interact_Icon_Update()
-    {
-
-    }
     public void Interact_Object()
     {
         // get player position tile
@@ -62,9 +57,32 @@ public class Interaction_Controller : MonoBehaviour
         // activate interactable object
         interactable.Interact();
     }
-
     public void Use_Equipment()
     {
 
+    }
+
+    // Button Icon Updates
+    public void Update_Interact_Icon()
+    {
+        // get player current tile
+        Tile_Controller playerTile = _controller.tilemapController.Get_Tile(Prefab_Type.character, 0);
+
+        // check for overlap placeable object
+        Prefab_Controller overlapObject = playerTile.Get_Current_Prefab(Prefab_Type.overlapPlaceable);
+
+        // check for Iinteractable
+        if (overlapObject == null || !playerTile.Has_Interactable())
+        {
+            // empty interaction icon
+            _interactIcon.sprite = null;
+            _interactIcon.color = Color.clear;
+        }
+        else
+        {
+            // update interaction icon
+            _interactIcon.sprite = overlapObject.sr.sprite;
+            _interactIcon.color = Color.white;
+        }
     }
 }

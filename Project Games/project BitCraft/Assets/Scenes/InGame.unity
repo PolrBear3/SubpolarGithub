@@ -626,7 +626,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1133724004, guid: 87086d13935fd431d9880246000a854e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1185,15 +1185,15 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+    x: 0.00079239305
+    y: 0.0014084507
+    width: 0.99841523
+    height: 0.9971831
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.0625
+  orthographic size: 5.75
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2211,6 +2211,7 @@ MonoBehaviour:
   items:
   - {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
   - {fileID: 11400000, guid: 6cfb0271c33eecb4488ae17bc47455e2, type: 2}
+  - {fileID: 11400000, guid: 01b5a423f2a914e499070dc842eb437a, type: 2}
 --- !u!114 &1680237657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2225,6 +2226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tilemapController: {fileID: 1594307729}
   _inventoryController: {fileID: 691676247}
+  _interactionController: {fileID: 495333715}
 --- !u!4 &1680237658
 Transform:
   m_ObjectHideFlags: 0

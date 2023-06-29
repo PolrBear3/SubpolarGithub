@@ -55,13 +55,23 @@ public class TileMap_Action_System : MonoBehaviour
 
         int dragItemID = _tilemapController.controller.inventoryController.dragSlot.currentItem.id;
         
-        Prefab_Controller dragObjectController = _tilemapController.controller.prefabsData.Get_Object_PrefabController(dragItemID);
+        Prefab_Controller dragObjectPrefab = _tilemapController.controller.prefabsData.Get_Object_PrefabController(dragItemID);
+        
+        if (dragObjectPrefab == null)
+        {
+            for (int i = 0; i < crossTiles.Count; i++)
+            {
+                crossTiles[i].ItemDrop_Highlight();
+            }
+            return;
+        }
+        
         Prefab_Tag dragObjectTag = _tilemapController.controller.prefabsData.Get_Object_PrefabTag(dragItemID);
 
         for (int i = 0; i < crossTiles.Count; i++)
         {
             // object not drop available for this tile
-            if (!dragObjectController.Drop_Available(crossTiles[i].prefabTag.prefabID)) continue;
+            if (!dragObjectPrefab.Drop_Available(crossTiles[i].prefabTag.prefabID)) continue;
 
             // dragging item is placeable & tile has placeable object
             if (dragObjectTag.prefabType == Prefab_Type.placeable && crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable)) continue;
@@ -102,6 +112,8 @@ public class TileMap_Action_System : MonoBehaviour
 
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
+
+        _tilemapController.controller.interactionController.Update_Interact_Icon();
     }
     public void Interact_Object(Tile_Controller tileWithObject)
     {

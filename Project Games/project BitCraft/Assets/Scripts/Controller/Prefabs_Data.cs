@@ -51,17 +51,19 @@ public class Prefabs_Data : MonoBehaviour
         }
         return null;
     }
-    public Prefab_Controller Get_Object_PrefabController(int id)
-    {
-        GameObject prefab = Get_Object(id);
-        if (!prefab.TryGetComponent(out Prefab_Controller prefabController)) return null;
-        return prefabController;
-    }
     public Prefab_Tag Get_Object_PrefabTag(int id)
     {
         GameObject prefab = Get_Object(id);
+        if (prefab == null) return null;
         if (!prefab.TryGetComponent(out Prefab_Tag prefabTag)) return null;
         return prefabTag;
+    }
+    public Prefab_Controller Get_Object_PrefabController(int id)
+    {
+        GameObject prefab = Get_Object(id);
+        if (prefab == null) return null;
+        if (!prefab.TryGetComponent(out Prefab_Controller prefabController)) return null;
+        return prefabController;
     }
 
     public Item_ScrObj Get_Item(int id)
