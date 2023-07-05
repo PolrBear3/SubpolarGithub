@@ -8,7 +8,8 @@ public enum Prefab_Type
     all,
     character,
     placeable,
-    overlapPlaceable
+    overlapPlaceable,
+    unplaceable
 }
 
 public class Prefab_Tag : MonoBehaviour

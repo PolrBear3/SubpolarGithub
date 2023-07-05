@@ -56,6 +56,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     {
         Update_CurrentPrefabs();
         Activate_IInteractableUpdates();
+        Remove_Prefab(Prefab_Type.unplaceable);
     }
 
     // Check

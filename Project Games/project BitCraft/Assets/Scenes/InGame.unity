@@ -1185,15 +1185,15 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.00079239305
-    y: 0.0014084507
-    width: 0.99841523
-    height: 0.9971831
+    x: 0
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.75
+  orthographic size: 5.625
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2197,6 +2197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapController: {fileID: 4562888784874114379, guid: 5f2e758de47566c42b672d5d51f7a483, type: 3}
+  customObject: {fileID: 2013186990097543618, guid: b692a5ae5254b4f7b8c4da6dfeb9d79f, type: 3}
   characters:
   - {fileID: 7549250097886151390, guid: faadd262250fb4ef7bafa6d0be10931e, type: 3}
   objects:

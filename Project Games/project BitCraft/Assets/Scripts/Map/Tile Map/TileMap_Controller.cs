@@ -222,7 +222,12 @@ public class TileMap_Controller : MonoBehaviour
 
         // spawn
         GameObject objectPrefab = controller.prefabsData.Get_Object(objectID);
-        if (objectPrefab == null) return;
+        if (objectPrefab == null)
+        {
+            // add unplaceable object
+            _controller.tilemapController.controller.prefabsData.Add_CustomObject_toData(Prefab_Type.unplaceable, objectID);
+            objectPrefab = controller.prefabsData.Get_Object(objectID);
+        }
         
         GameObject objectGameObject = Instantiate(objectPrefab, targetTile.transform.position, Quaternion.identity);
 

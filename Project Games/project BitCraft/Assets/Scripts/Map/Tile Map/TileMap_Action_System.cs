@@ -56,7 +56,8 @@ public class TileMap_Action_System : MonoBehaviour
         int dragItemID = _tilemapController.controller.inventoryController.dragSlot.currentItem.id;
         
         Prefab_Controller dragObjectPrefab = _tilemapController.controller.prefabsData.Get_Object_PrefabController(dragItemID);
-        
+
+        // if dragging item is unplaceable
         if (dragObjectPrefab == null)
         {
             for (int i = 0; i < crossTiles.Count; i++)

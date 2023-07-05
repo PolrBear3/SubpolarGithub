@@ -67,25 +67,38 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
         Tile_Controller currentTile = _controller.tilemapController.Get_Tile(_controller.currentRowNum, _controller.currentColumnNum);
 
         // save object
-        Prefab_Controller overlapObject = currentTile.Get_Current_Prefab(Prefab_Type.overlapPlaceable);
-        if (overlapObject == null) return;
+        Prefab_Controller ingredient;
+
+        if (currentTile.Has_Prefab_Type(Prefab_Type.overlapPlaceable))
+        {
+            // save overlap
+            ingredient = currentTile.Get_Current_Prefab(Prefab_Type.overlapPlaceable);
+        }
+        else
+        {
+            // save unplaceable
+            ingredient = currentTile.Get_Current_Prefab(Prefab_Type.unplaceable);
+        }
+
+        // no ingredients inserted
+        if (ingredient == null) return;
         
         // save item
-        Item_ScrObj objectItem = _controller.tilemapController.controller.prefabsData.Get_Item(overlapObject.prefabTag.prefabID);
+        Item_ScrObj objectItem = _controller.tilemapController.controller.prefabsData.Get_Item(ingredient.prefabTag.prefabID);
 
         // insert item
         if (!ingredient1.hasItem || (ingredient1.currentItem == objectItem && !ingredient1.Is_Max_Amount()))
         {
-            ingredient1.Assign_Item(objectItem, overlapObject.currentAmount);
+            ingredient1.Assign_Item(objectItem, ingredient.currentAmount);
         }
         else if (!ingredient2.hasItem || (ingredient2.currentItem == objectItem && !ingredient2.Is_Max_Amount()))
         {
-            ingredient2.Assign_Item(objectItem, overlapObject.currentAmount);
+            ingredient2.Assign_Item(objectItem, ingredient.currentAmount);
         }
         else
         {
             Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
-            inventory.Add_Item(objectItem, overlapObject.currentAmount);
+            inventory.Add_Item(objectItem, ingredient.currentAmount);
         }
 
         // calculate left over
@@ -97,6 +110,9 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
 
         // remove overlap object
         currentTile.Remove_Prefab(Prefab_Type.overlapPlaceable);
+
+        // remove unplacealbe object
+        currentTile.Remove_Prefab(Prefab_Type.unplaceable);
     }
     private void Craft()
     {

@@ -19,8 +19,10 @@ public class Prefabs_Data : MonoBehaviour
 {
     [SerializeField] private GameObject mapController;
 
+    [SerializeField] private GameObject customObject;
+
     [SerializeField] private Prefab_Tag[] characters;
-    [SerializeField] private Prefab_Tag[] objects;
+    [SerializeField] private List<Prefab_Tag> objects = new List<Prefab_Tag>();
     [SerializeField] private Prefab_Tag[] tiles;
 
     [SerializeField] private Item_ScrObj[] items;
@@ -42,9 +44,22 @@ public class Prefabs_Data : MonoBehaviour
     }
     
     // Object and Item
+    public void Add_CustomObject_toData(Prefab_Type type, int id)
+    {
+        if (!customObject.TryGetComponent(out Prefab_Tag tag)) return;
+
+        customObject.name = Get_Item(id).itemName;
+        Prefab_Tag addTag = tag;
+
+        addTag.prefabType = type;
+        addTag.prefabID = id;
+
+        objects.Add(addTag);
+    }
+
     public GameObject Get_Object(int id)
     {
-        for (int i = 0; i < objects.Length; i++)
+        for (int i = 0; i < objects.Count; i++)
         {
             if (id != objects[i].prefabID) continue;
             return objects[i].Prefab();

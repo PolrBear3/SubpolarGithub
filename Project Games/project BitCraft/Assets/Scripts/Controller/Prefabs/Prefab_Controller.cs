@@ -35,13 +35,15 @@ public class Prefab_Controller : MonoBehaviour
     public float moveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
 
     [SerializeField] private List<Prefab_Tag> _dropAvailableTiles = new List<Prefab_Tag>();
-    
+
+    [Header("Update Data")]
+    [SerializeField] private int _currentAmount;
+    public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
+
     [Header("Sprite Control Data")]
     [SerializeField] private int _changeAmount;
     [SerializeField] private List<Sprite> _sprites = new List<Sprite>();
     
-    private int _currentAmount;
-    public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 
     // 
     private void Awake()
