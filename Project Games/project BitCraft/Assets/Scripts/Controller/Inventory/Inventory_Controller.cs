@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Inventory_Controller : MonoBehaviour
 {
@@ -13,13 +14,24 @@ public class Inventory_Controller : MonoBehaviour
     private List<Slot> _slots = new List<Slot>();
     public List<Slot> slots { get => _slots; set => _slots = value; }
 
+    private Slot _equippedSlot;
+    public Slot equippedSlot { get => _equippedSlot; set => _equippedSlot = value; }
+
+    private int _currentSlotNum;
+
+    //
     private void Awake()
     {
         Set_Slots();
     }
     private void Start()
     {
-        
+        Set_EquipSlot(0);
+    }
+
+    public void OnScroll(InputAction.CallbackContext context)
+    {
+        float scrollValue = context.ReadValue<float>();
     }
 
     // Check
@@ -43,7 +55,7 @@ public class Inventory_Controller : MonoBehaviour
         return null;
     }
 
-    // Setup
+    // Set
     private void Set_Slots()
     {
         int slotCount = transform.childCount;
@@ -56,6 +68,26 @@ public class Inventory_Controller : MonoBehaviour
 
             _slots[i].Set_Inventory_Controller(this);
             _slots[i].Clear();
+        }
+    }
+
+    // Equipment
+    private void Set_EquipSlot(int slotNum)
+    {
+        _equippedSlot = _slots[slotNum];
+        _equippedSlot.Equip(true);
+    }
+    private void Update_EquipSlot(float direction)
+    {
+        // right
+        if (direction > 0)
+        {
+
+        }
+        // left
+        else
+        {
+
         }
     }
 

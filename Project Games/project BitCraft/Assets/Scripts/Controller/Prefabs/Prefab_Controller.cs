@@ -10,10 +10,10 @@ public class Prefab_Controller : MonoBehaviour
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
     
-    private Prefab_Tag _prefabTag;
+    [SerializeField] private Prefab_Tag _prefabTag;
     public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
-    private Health_Controller _healthController;
+    [SerializeField] private Health_Controller _healthController;
     public Health_Controller healthController { get => _healthController; set => _healthController = value; }
 
     [Header("Map Position")]
@@ -43,14 +43,11 @@ public class Prefab_Controller : MonoBehaviour
     [Header("Sprite Control Data")]
     [SerializeField] private int _changeAmount;
     [SerializeField] private List<Sprite> _sprites = new List<Sprite>();
-    
 
     // 
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
-        if (gameObject.TryGetComponent(out Prefab_Tag prefabTag)) { _prefabTag = prefabTag; }
-        if (gameObject.TryGetComponent(out Health_Controller healthController)) { _healthController = healthController; }
     }
 
     // Check

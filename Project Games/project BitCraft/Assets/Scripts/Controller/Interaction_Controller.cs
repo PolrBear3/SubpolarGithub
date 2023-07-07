@@ -85,4 +85,8 @@ public class Interaction_Controller : MonoBehaviour
             _interactIcon.color = Color.white;
         }
     }
+    public void Update_Equipment_Icon()
+    {
+
+    }
 }

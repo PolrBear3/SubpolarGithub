@@ -13,9 +13,8 @@ GameObject:
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
   - component: {fileID: 4651572311096850505}
-  - component: {fileID: 4688511875017061401}
   m_Layer: 0
-  m_Name: Green Tree
+  m_Name: Apple Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 385652707
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1946553249, guid: 87086d13935fd431d9880246000a854e, type: 3}
+  m_Sprite: {fileID: -1087144048, guid: 87086d13935fd431d9880246000a854e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabType: 3
-  _prefabID: 1100
+  _prefabID: 0
   _layerOrderNum: 2
 --- !u!114 &-5113172227308652651
 MonoBehaviour:
@@ -115,6 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43b90dcc61324c6a86b6790e8a0c899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prefabTag: {fileID: 6900627066728663899}
+  _healthController: {fileID: 4651572311096850505}
   _positionX: 0
   _positionY: 0
   _currentRowNum: 0
@@ -123,6 +124,7 @@ MonoBehaviour:
   _moveSpeed: 0
   _dropAvailableTiles:
   - {fileID: 6869539982473061104, guid: e3840954157f04acf8fd9a46c4108a87, type: 3}
+  _currentAmount: 0
   _changeAmount: 0
   _sprites: []
 --- !u!114 &4651572311096850505
@@ -138,16 +140,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLifeCount: 1
---- !u!114 &4688511875017061401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013186990097543618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24a2492350f0e4e1a83e0a47e4416cd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropItem: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}

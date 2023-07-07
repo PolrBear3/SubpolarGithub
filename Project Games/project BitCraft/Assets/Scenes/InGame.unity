@@ -881,9 +881,9 @@ RectTransform:
   m_Father: {fileID: 495333711}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 340, y: -75.00006}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 130, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &474020517
@@ -940,8 +940,8 @@ GameObject:
   - component: {fileID: 495333711}
   - component: {fileID: 495333714}
   - component: {fileID: 495333713}
-  - component: {fileID: 495333716}
   - component: {fileID: 495333715}
+  - component: {fileID: 495333716}
   m_Layer: 5
   m_Name: Interaction Panel
   m_TagString: Untagged
@@ -965,7 +965,7 @@ RectTransform:
   - {fileID: 930659553}
   - {fileID: 474020516}
   m_Father: {fileID: 999280902}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -1052,11 +1052,11 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 10a6a0c9-2eb7-4d9a-ac5c-3bdfbb8b7530
-    m_ActionName: Player Interaction/Point[/Mouse/position]
+    m_ActionName: Player Interaction/Point[/Mouse/position,/Pen/position]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 5ed7998b-a337-4d1f-b2a5-4a59a82cbd9b
-    m_ActionName: Player Interaction/Left Select[/Mouse/leftButton]
+    m_ActionName: Player Interaction/Left Select[/Mouse/leftButton,/Pen/press]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 894aada2-0fb8-46e1-8b7e-02e14d109250
@@ -1094,9 +1094,37 @@ MonoBehaviour:
     m_ActionId: 221cb7de-0e0a-48ee-a6b3-1c94aeb6d180
     m_ActionName: Player Interaction/Shortcut Key 2[/Keyboard/w]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 495333715}
+        m_TargetAssemblyTypeName: Interaction_Controller, Assembly-CSharp
+        m_MethodName: Use_Equipment
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 0a392a30-0b28-40b1-bdc6-499a3e41b8e7
     m_ActionName: Player Interaction/Shortcut Key 3[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 691676247}
+        m_TargetAssemblyTypeName: Inventory_Controller, Assembly-CSharp
+        m_MethodName: OnScroll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0039fc82-401e-47bb-aea3-e40ff373a373
+    m_ActionName: Player Interaction/Scroll[/Mouse/scroll/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Interaction
@@ -1193,7 +1221,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.625
+  orthographic size: 5.8125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1309,6 +1337,7 @@ GameObject:
   - component: {fileID: 691676245}
   - component: {fileID: 691676244}
   - component: {fileID: 691676248}
+  - component: {fileID: 691676249}
   - component: {fileID: 691676247}
   m_Layer: 5
   m_Name: Inventory Panel
@@ -1419,6 +1448,76 @@ MonoBehaviour:
   m_Spacing: {x: 30, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &691676249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691676242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 1b8c2cb9080885d4fb3e04662a8364c9, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 10a6a0c9-2eb7-4d9a-ac5c-3bdfbb8b7530
+    m_ActionName: Player Interaction/Point[/Mouse/position,/Pen/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5ed7998b-a337-4d1f-b2a5-4a59a82cbd9b
+    m_ActionName: Player Interaction/Left Select[/Mouse/leftButton,/Pen/press]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 894aada2-0fb8-46e1-8b7e-02e14d109250
+    m_ActionName: Player Interaction/Right Select[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2b0b1dd3-9702-43cf-b490-2b6ef4a936ee
+    m_ActionName: Player Interaction/Shortcut Key 1[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 221cb7de-0e0a-48ee-a6b3-1c94aeb6d180
+    m_ActionName: Player Interaction/Shortcut Key 2[/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0a392a30-0b28-40b1-bdc6-499a3e41b8e7
+    m_ActionName: Player Interaction/Shortcut Key 3[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 691676247}
+        m_TargetAssemblyTypeName: Inventory_Controller, Assembly-CSharp
+        m_MethodName: OnScroll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0039fc82-401e-47bb-aea3-e40ff373a373
+    m_ActionName: Player Interaction/Scroll[/Mouse/scroll/y]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player Interaction
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 606758276}
 --- !u!1 &730497283
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,9 +1554,9 @@ RectTransform:
   m_Father: {fileID: 495333711}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80, y: -75.00006}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -130, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &730497285
@@ -1849,9 +1948,9 @@ RectTransform:
   m_Father: {fileID: 495333711}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 210, y: -75.00006}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &930659554
@@ -1985,8 +2084,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 691676243}
-  - {fileID: 8510077633292129957}
   - {fileID: 495333711}
+  - {fileID: 8510077633292129957}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2639,7 +2738,7 @@ RectTransform:
   - {fileID: 8510077633438444880}
   - {fileID: 4335206977281589225}
   m_Father: {fileID: 999280902}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2735,6 +2834,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0a392a30-0b28-40b1-bdc6-499a3e41b8e7
     m_ActionName: Player Interaction/Shortcut Key 3[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0039fc82-401e-47bb-aea3-e40ff373a373
+    m_ActionName: Player Interaction/Scroll[/Mouse/scroll/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Interaction

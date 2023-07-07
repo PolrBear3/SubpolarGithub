@@ -60,6 +60,6 @@ public class Player_Controller : MonoBehaviour
 
     public void Move()
     {
-        LeanTween.moveLocal(gameObject, Vector2.zero, prefabController.moveSpeed).setEase(LeanTweenType.easeInOutQuint);
+        LeanTween.moveLocal(gameObject, _prefabController.setPosition, prefabController.moveSpeed).setEase(LeanTweenType.easeInOutQuint);
     }
 }

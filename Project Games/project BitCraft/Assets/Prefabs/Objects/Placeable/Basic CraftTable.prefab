@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c43b90dcc61324c6a86b6790e8a0c899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prefabTag: {fileID: -805645501094084125}
+  _healthController: {fileID: 0}
   _positionX: 0
   _positionY: 0
   _currentRowNum: 0
@@ -124,6 +126,7 @@ MonoBehaviour:
   _moveSpeed: 0
   _dropAvailableTiles:
   - {fileID: 6869539982473061104, guid: e3840954157f04acf8fd9a46c4108a87, type: 3}
+  _currentAmount: 0
   _changeAmount: 0
   _sprites: []
 --- !u!114 &72582589171988431
@@ -173,15 +176,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -246,15 +249,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

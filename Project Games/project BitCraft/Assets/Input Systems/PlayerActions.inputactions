@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Shortcut Key 1",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "2b0b1dd3-9702-43cf-b490-2b6ef4a936ee",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -43,7 +43,7 @@
                 },
                 {
                     "name": "Shortcut Key 2",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "221cb7de-0e0a-48ee-a6b3-1c94aeb6d180",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -52,12 +52,21 @@
                 },
                 {
                     "name": "Shortcut Key 3",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "0a392a30-0b28-40b1-bdc6-499a3e41b8e7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Scroll",
+                    "type": "Value",
+                    "id": "0039fc82-401e-47bb-aea3-e40ff373a373",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shortcut Key 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "20afc034-b5f8-4054-bf24-7acd9c1b272e",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

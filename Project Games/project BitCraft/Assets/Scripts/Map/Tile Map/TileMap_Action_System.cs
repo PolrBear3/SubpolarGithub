@@ -50,15 +50,15 @@ public class TileMap_Action_System : MonoBehaviour
     public void Highlight_ItemDrop_Tiles()
     {
         UnHighlight_All_tiles();
-        
+
         List<Tile_Controller> crossTiles = tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
         int dragItemID = _tilemapController.controller.inventoryController.dragSlot.currentItem.id;
-        
+
         Prefab_Controller dragObjectPrefab = _tilemapController.controller.prefabsData.Get_Object_PrefabController(dragItemID);
 
         // if dragging item is unplaceable
-        if (dragObjectPrefab == null)
+        if (dragObjectPrefab == null || dragObjectPrefab.prefabTag.prefabType == Prefab_Type.unplaceable)
         {
             for (int i = 0; i < crossTiles.Count; i++)
             {
@@ -66,7 +66,7 @@ public class TileMap_Action_System : MonoBehaviour
             }
             return;
         }
-        
+
         Prefab_Tag dragObjectTag = _tilemapController.controller.prefabsData.Get_Object_PrefabTag(dragItemID);
 
         for (int i = 0; i < crossTiles.Count; i++)

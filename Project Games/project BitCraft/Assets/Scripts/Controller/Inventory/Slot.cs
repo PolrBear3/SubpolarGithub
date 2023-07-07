@@ -8,6 +8,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
+    [SerializeField] private GameObject _equipCursor;
     
     private Inventory_Controller _inventory;
     public Inventory_Controller inventory { get => _inventory; set => _inventory = value; }
@@ -17,6 +18,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private bool _hasItem;
     public bool hasItem { get => _hasItem; set => _hasItem = value; }
+
+    private bool _equipped;
+    public bool equipped { get => _equipped; set => _equipped = value; }
 
     private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
@@ -145,6 +149,12 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         Color textColor = _amountText.color;
         textColor.a = 0f;
         _amountText.color = textColor;
+    }
+
+    public void Equip(bool equipped)
+    {
+        _equipped = equipped;
+        _equipCursor.SetActive(equipped);
     }
 
     public void Increase_Amount(int amount)
