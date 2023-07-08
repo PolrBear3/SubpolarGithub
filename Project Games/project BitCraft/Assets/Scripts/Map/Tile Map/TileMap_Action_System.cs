@@ -25,7 +25,7 @@ public class TileMap_Action_System : MonoBehaviour
         }
     }
 
-    // player action systems
+    // Tile Highlight
     public void Highlight_Player_Interactable_Tiles()
     {
         List<Tile_Controller> crossTiles = _tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
@@ -85,6 +85,7 @@ public class TileMap_Action_System : MonoBehaviour
         }
     }
 
+    // Map Direction
     public void Set_NewMap_Directions()
     {
         Prefab_Controller playerPrefabController = tilemapController.playerPrefabController;
@@ -100,6 +101,7 @@ public class TileMap_Action_System : MonoBehaviour
         playerTile.directionSystem.Reset_Directions();
     }
 
+    // Tile Click Action
     public void Move_Player(Tile_Controller moveTile)
     {
         Player_Controller playerController = tilemapController.playerController;

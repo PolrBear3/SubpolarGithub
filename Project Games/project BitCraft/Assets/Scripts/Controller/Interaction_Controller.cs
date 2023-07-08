@@ -59,7 +59,8 @@ public class Interaction_Controller : MonoBehaviour
     }
     public void Use_Equipment()
     {
-
+        // get player position tile
+        Tile_Controller playerTile = _controller.tilemapController.Get_Tile(Prefab_Type.character, 0);
     }
 
     // Button Icon Updates
@@ -87,6 +88,7 @@ public class Interaction_Controller : MonoBehaviour
     }
     public void Update_Equipment_Icon()
     {
-
+        // get player position tile
+        Tile_Controller playerTile = _controller.tilemapController.Get_Tile(Prefab_Type.character, 0);
     }
 }

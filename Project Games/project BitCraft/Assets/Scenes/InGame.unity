@@ -1213,15 +1213,15 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+    x: 0.0038314175
+    y: 0.008517887
+    width: 2.0114942
+    height: 2.1260648
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.8125
+  orthographic size: 6.0625
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1424,6 +1424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 1680237657}
   _dragSlot: {fileID: 8510077633292129958}
+  _currentScrollNum: 0
 --- !u!114 &691676248
 MonoBehaviour:
   m_ObjectHideFlags: 0

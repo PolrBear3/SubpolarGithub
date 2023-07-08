@@ -17,7 +17,7 @@ public class Inventory_Controller : MonoBehaviour
     private Slot _equippedSlot;
     public Slot equippedSlot { get => _equippedSlot; set => _equippedSlot = value; }
 
-    private int _currentSlotNum;
+    private int _currentScrollValue;
 
     //
     private void Awake()
@@ -32,6 +32,8 @@ public class Inventory_Controller : MonoBehaviour
     public void OnScroll(InputAction.CallbackContext context)
     {
         float scrollValue = context.ReadValue<float>();
+
+        Update_EquipSlot(scrollValue);
     }
 
     // Check
@@ -59,13 +61,14 @@ public class Inventory_Controller : MonoBehaviour
     private void Set_Slots()
     {
         int slotCount = transform.childCount;
-        
+
         for (int i = 0; i < slotCount; i++)
         {
             GameObject slotGameObject = transform.GetChild(i).gameObject;
-            
+
             if (slotGameObject.TryGetComponent(out Slot slot)) { _slots.Add(slot); }
 
+            _slots[i].slotNum = i;
             _slots[i].Set_Inventory_Controller(this);
             _slots[i].Clear();
         }
@@ -74,21 +77,28 @@ public class Inventory_Controller : MonoBehaviour
     // Equipment
     private void Set_EquipSlot(int slotNum)
     {
+        if (_equippedSlot != null) _equippedSlot.Equip(false);
+
         _equippedSlot = _slots[slotNum];
         _equippedSlot.Equip(true);
     }
-    private void Update_EquipSlot(float direction)
+    private void Update_EquipSlot(float scrollValue)
     {
-        // right
-        if (direction > 0)
-        {
+        _currentScrollValue += Mathf.RoundToInt(scrollValue);
+        _equippedSlot.slotNum = _currentScrollValue / 120;
 
-        }
-        // left
-        else
+        if (_equippedSlot.slotNum > _slots.Count - 1)
         {
-
+            _equippedSlot.slotNum = 0;
+            _currentScrollValue = 0;
         }
+        else if (_equippedSlot.slotNum < 0)
+        {
+            _equippedSlot.slotNum = _slots.Count - 1;
+            _currentScrollValue = _equippedSlot.slotNum * 120;
+        }
+
+        Set_EquipSlot(_equippedSlot.slotNum);
     }
 
     // Function

@@ -16,6 +16,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
 
+    private int _slotNum;
+    public int slotNum { get => _slotNum; set => _slotNum = value; }
+
     private bool _hasItem;
     public bool hasItem { get => _hasItem; set => _hasItem = value; }
 
