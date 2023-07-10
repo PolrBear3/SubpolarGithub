@@ -19,7 +19,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private int _slotNum;
     public int slotNum { get => _slotNum; set => _slotNum = value; }
 
-    private bool _hasItem;
+    [SerializeField] private bool _hasItem;
     public bool hasItem { get => _hasItem; set => _hasItem = value; }
 
     private bool _equipped;
@@ -71,6 +71,8 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             dragSlot.Assign(_currentItem, _currentAmount);
             Clear();
+
+            _inventory.controller.interactionController.Update_Equipment_Icon();
         }
         // Drop
         else
@@ -80,6 +82,8 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             {
                 Assign(dragSlot.currentItem, dragSlot.currentAmount);
                 dragSlot.Clear();
+
+                _inventory.controller.interactionController.Update_Equipment_Icon();
             }
             // Drop - Non-Empty Slot
             else
@@ -112,6 +116,8 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
                     Assign(dragSlot.currentItem, dragSlot.currentAmount);
                     dragSlot.Assign(savedItem, savedAmount);
+
+                    _inventory.controller.interactionController.Update_Equipment_Icon();
                 }
             }
         }

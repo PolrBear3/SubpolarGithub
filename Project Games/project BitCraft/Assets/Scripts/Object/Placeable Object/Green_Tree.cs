@@ -11,11 +11,10 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
     {
         if (gameObject.TryGetComponent(out Prefab_Controller controller)) { _controller = controller; }
     }
-    
+
     public void Interact()
     {
         Drop_Leaf();
-        Drop_Item();
     }
     public void Damage(int damageAmount)
     {

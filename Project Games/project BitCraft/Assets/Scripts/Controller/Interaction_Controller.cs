@@ -9,6 +9,7 @@ public class Interaction_Controller : MonoBehaviour
     public Game_Controller controller { get => _controller; set => _controller = value; }
 
     [SerializeField] private Image _interactIcon;
+    [SerializeField] private Image _equipmentIcon; 
 
     //
     public void OnShortcutKey1()
@@ -59,8 +60,15 @@ public class Interaction_Controller : MonoBehaviour
     }
     public void Use_Equipment()
     {
-        // get player position tile
-        Tile_Controller playerTile = _controller.tilemapController.Get_Tile(Prefab_Type.character, 0);
+        _controller.tilemapController.playerController.prefabController.equipmentController.Update_Current_Equipments();
+
+        Item_ScrObj equippedItem = _controller.inventoryController.equippedSlot.currentItem;
+        if (equippedItem == null) return;
+
+        Prefab_Controller itemObject = _controller.prefabsData.Get_Object_PrefabController(equippedItem.id);
+        if (!itemObject.TryGetComponent(out IEquippable equippable)) return;
+
+        equippable.Use();
     }
 
     // Button Icon Updates
@@ -88,7 +96,25 @@ public class Interaction_Controller : MonoBehaviour
     }
     public void Update_Equipment_Icon()
     {
-        // get player position tile
-        Tile_Controller playerTile = _controller.tilemapController.Get_Tile(Prefab_Type.character, 0);
+        if (!_controller.inventoryController.equippedSlot.hasItem)
+        {
+            _equipmentIcon.sprite = null;
+            _equipmentIcon.color = Color.clear;
+            return;
+        }
+
+        Item_ScrObj equippedItem = _controller.inventoryController.equippedSlot.currentItem;
+        Prefab_Controller itemObject = _controller.prefabsData.Get_Object_PrefabController(equippedItem.id);
+
+        if (itemObject.TryGetComponent(out IEquippable equippable))
+        {
+            _equipmentIcon.sprite = equippedItem.sprite;
+            _equipmentIcon.color = Color.white;
+        }
+        else
+        {
+            _equipmentIcon.sprite = null;
+            _equipmentIcon.color = Color.clear;
+        }
     }
 }

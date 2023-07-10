@@ -26,14 +26,14 @@ public class Inventory_Controller : MonoBehaviour
     }
     private void Start()
     {
+        Add_Item(9999, 10);
         Set_EquipSlot(0);
     }
 
     public void OnScroll(InputAction.CallbackContext context)
     {
         float scrollValue = context.ReadValue<float>();
-
-        Update_EquipSlot(scrollValue);
+        Scroll_EquipSlot(scrollValue);
     }
 
     // Check
@@ -81,8 +81,10 @@ public class Inventory_Controller : MonoBehaviour
 
         _equippedSlot = _slots[slotNum];
         _equippedSlot.Equip(true);
+
+        _controller.interactionController.Update_Equipment_Icon();
     }
-    private void Update_EquipSlot(float scrollValue)
+    private void Scroll_EquipSlot(float scrollValue)
     {
         _currentScrollValue += Mathf.RoundToInt(scrollValue);
         _equippedSlot.slotNum = _currentScrollValue / 120;

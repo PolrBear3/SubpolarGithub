@@ -16,6 +16,9 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private Health_Controller _healthController;
     public Health_Controller healthController { get => _healthController; set => _healthController = value; }
 
+    [SerializeField] private Equipment_Controller _equipmentController;
+    public Equipment_Controller equipmentController { get => _equipmentController; set => _equipmentController = value; }
+
     [Header("Map Position")]
     [SerializeField] private int _positionX;
     public int positionX { get => _positionX; set => _positionX = value; }
@@ -89,7 +92,7 @@ public class Prefab_Controller : MonoBehaviour
         _tilemapController = tilemapController;
     }
 
-    // Updates
+    // Map and Tile Update
     public void Update_Map_Position(int positionX, int positionY)
     {
         this.positionX = positionX;
@@ -101,6 +104,7 @@ public class Prefab_Controller : MonoBehaviour
         currentColumnNum = columnNum;
     }
 
+    // Sprite Update
     private void Sprite_Update()
     {
         if (_sprites.Count <= 0) return;

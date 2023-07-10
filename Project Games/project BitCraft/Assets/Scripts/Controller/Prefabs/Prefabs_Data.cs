@@ -10,6 +10,10 @@ public interface IInteractableUpdate
 {
     void Interact_Update();
 }
+public interface IEquippable
+{
+    void Use();
+}
 public interface IDamageable
 {
     void Damage(int damageAmount);
