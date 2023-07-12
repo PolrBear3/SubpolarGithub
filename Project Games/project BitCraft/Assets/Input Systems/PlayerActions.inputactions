@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shortcut Key 1",
+                    "name": "Interaction Key 1",
                     "type": "Button",
                     "id": "2b0b1dd3-9702-43cf-b490-2b6ef4a936ee",
                     "expectedControlType": "Button",
@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shortcut Key 2",
+                    "name": "Interaction Key 2",
                     "type": "Button",
                     "id": "221cb7de-0e0a-48ee-a6b3-1c94aeb6d180",
                     "expectedControlType": "Button",
@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shortcut Key 3",
+                    "name": "Interaction Key 3",
                     "type": "Button",
                     "id": "0a392a30-0b28-40b1-bdc6-499a3e41b8e7",
                     "expectedControlType": "Button",
@@ -67,6 +67,87 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Number Key 1",
+                    "type": "Button",
+                    "id": "7658b139-f423-49a3-883e-1f7e26ed2299",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 2",
+                    "type": "Button",
+                    "id": "71349153-9f5a-4c08-a7d9-ee0c6836acd8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 3",
+                    "type": "Button",
+                    "id": "0af1893a-4a00-4a89-a60c-6e4f06814cfb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 4",
+                    "type": "Button",
+                    "id": "eb685839-d083-4150-9610-f2241fbe0561",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 5",
+                    "type": "Button",
+                    "id": "341c4740-b5d5-4eb0-bfd5-8648365dce77",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 6",
+                    "type": "Button",
+                    "id": "897cbaf6-1529-4d9b-a3f4-3312731f5ec5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 7",
+                    "type": "Button",
+                    "id": "7ec75a66-4f04-4d75-a1b6-d88f03aa468f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 8",
+                    "type": "Button",
+                    "id": "e23a89b5-49d3-4c29-af5f-4c691f66005c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Number Key 9",
+                    "type": "Button",
+                    "id": "08fa67b3-e432-404f-9dc8-cfdcf280c31a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -76,7 +157,7 @@
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -109,7 +190,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Left Select",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -142,7 +223,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Right Select",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -153,8 +234,8 @@
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Shortcut Key 1",
+                    "groups": "PC",
+                    "action": "Interaction Key 1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -164,8 +245,8 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Shortcut Key 2",
+                    "groups": "PC",
+                    "action": "Interaction Key 2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -175,8 +256,8 @@
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Shortcut Key 3",
+                    "groups": "PC",
+                    "action": "Interaction Key 3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -186,8 +267,107 @@
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1297d655-da9f-49ab-af87-0cad969dbc74",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "69b0c8e1-b05e-4461-9283-d9c2d923a7a5",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad2f509e-5048-48e2-b8ce-a0566251ca4f",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "385af59f-8973-45e7-8fcd-66f61cdf7f82",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bf43f64b-bef2-45c0-a9f9-853059e9abf5",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f2b5d95-5759-45a4-a566-b3376c6bb730",
+                    "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 6",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "83528d28-eb42-4445-ab58-b520eebb5fd5",
+                    "path": "<Keyboard>/7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 7",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d86d437-1561-40c7-b69a-99da58fe96a1",
+                    "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 8",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3ab6be1-538f-46a9-a55f-993085c358b9",
+                    "path": "<Keyboard>/9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Number Key 9",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

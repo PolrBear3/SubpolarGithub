@@ -84,6 +84,15 @@ public class TileMap_Action_System : MonoBehaviour
             crossTiles[i].ItemDrop_Highlight();
         }
     }
+    public void Highlight_EquipmentUse_Tiles(List<Tile_Controller> targetTiles)
+    {
+        UnHighlight_All_tiles();
+
+        for (int i = 0; i < targetTiles.Count; i++)
+        {
+            targetTiles[i].Equipment_Highlight();
+        }
+    }
 
     // Map Direction
     public void Set_NewMap_Directions()
@@ -140,6 +149,7 @@ public class TileMap_Action_System : MonoBehaviour
     public void Drop_Item(Tile_Controller targetTile, int amount)
     {
         Drag_Slot dragSlot = _tilemapController.controller.inventoryController.dragSlot;
+
         int finalAmount = amount;
 
         // if dragSlot amount is less than bundle drop amount, change drop amount to dragslot current amount

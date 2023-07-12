@@ -33,8 +33,8 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     private bool _itemDropReady = false;
     public bool itemDropReady { get => _itemDropReady; set => _itemDropReady = value; }
 
-    private bool _itemDropHold = false;
-    public bool itemDropHold { get => _itemDropHold; set => _itemDropHold = value; }
+    private bool _equipmentUseReady = false;
+    public bool equipmentUseReady { get => _equipmentUseReady; set => _equipmentUseReady = value; }
 
     [Header("Current Prefabs Data")]
     [SerializeField] private Transform _prefabsParent;
@@ -43,8 +43,9 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public List<Prefab_Controller> currentPrefabs { get => _currentPrefabs; set => _currentPrefabs = value; }
 
     [Header("Interaction Box")]
-    [SerializeField] private GameObject objectInteractBox;
-    [SerializeField] private GameObject itemDropkBox;
+    [SerializeField] private GameObject _objectInteractBox;
+    [SerializeField] private GameObject _itemDropkBox;
+    [SerializeField] private GameObject _equipmentUseBox;
 
     //
     private void Awake()
@@ -353,12 +354,17 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     public void Object_Highlight()
     {
         _objectReady = true;
-        objectInteractBox.SetActive(_objectReady);
+        _objectInteractBox.SetActive(_objectReady);
     }
     public void ItemDrop_Highlight()
     {
         _itemDropReady = true;
-        itemDropkBox.SetActive(_itemDropReady);
+        _itemDropkBox.SetActive(_itemDropReady);
+    }
+    public void Equipment_Highlight()
+    {
+        _equipmentUseReady = true;
+        _equipmentUseBox.SetActive(_equipmentUseReady);
     }
 
     public void UnHighlight()
@@ -366,9 +372,11 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         _moveReady = false;
         _objectReady = false;
         _itemDropReady = false;
+        _equipmentUseReady = false;
 
         _sr.color = Color.white;
-        objectInteractBox.SetActive(_objectReady);
-        itemDropkBox.SetActive(_itemDropReady);
+        _objectInteractBox.SetActive(_objectReady);
+        _itemDropkBox.SetActive(_itemDropReady);
+        _equipmentUseBox.SetActive(_equipmentUseReady);
     }
 }

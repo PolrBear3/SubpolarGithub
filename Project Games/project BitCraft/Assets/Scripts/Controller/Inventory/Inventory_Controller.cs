@@ -35,6 +35,11 @@ public class Inventory_Controller : MonoBehaviour
         float scrollValue = context.ReadValue<float>();
         Scroll_EquipSlot(scrollValue);
     }
+    public void OnNumberKey(int num)
+    {
+        Set_EquipSlot(num);
+        Update_Current_ScrollValue(num);
+    }
 
     // Check
     public bool Is_Inventory_Full()
@@ -84,6 +89,7 @@ public class Inventory_Controller : MonoBehaviour
 
         _controller.interactionController.Update_Equipment_Icon();
     }
+
     private void Scroll_EquipSlot(float scrollValue)
     {
         _currentScrollValue += Mathf.RoundToInt(scrollValue);
@@ -101,6 +107,10 @@ public class Inventory_Controller : MonoBehaviour
         }
 
         Set_EquipSlot(_equippedSlot.slotNum);
+    }
+    private void Update_Current_ScrollValue(int slotNum)
+    {
+        _currentScrollValue = slotNum * 120;
     }
 
     // Function

@@ -19,7 +19,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private int _slotNum;
     public int slotNum { get => _slotNum; set => _slotNum = value; }
 
-    [SerializeField] private bool _hasItem;
+    private bool _hasItem;
     public bool hasItem { get => _hasItem; set => _hasItem = value; }
 
     private bool _equipped;

@@ -9,18 +9,18 @@ public class Interaction_Controller : MonoBehaviour
     public Game_Controller controller { get => _controller; set => _controller = value; }
 
     [SerializeField] private Image _interactIcon;
-    [SerializeField] private Image _equipmentIcon; 
+    [SerializeField] private Image _equipmentIcon;
 
     //
-    public void OnShortcutKey1()
+    public void OnInteractionKey1()
     {
         Pickup_Object();
     }
-    public void OnShortcutKey2()
+    public void OnInteractionKey2()
     {
         Interact_Object();
     }
-    public void OnShortcutKey3()
+    public void OnInteractionKey3()
     {
         Use_Equipment();
     }
@@ -44,6 +44,8 @@ public class Interaction_Controller : MonoBehaviour
 
         // remove item object from tile
         playerTile.Remove_Prefab(Prefab_Type.overlapPlaceable);
+
+        Update_Equipment_Icon();
     }
     public void Interact_Object()
     {
@@ -66,12 +68,16 @@ public class Interaction_Controller : MonoBehaviour
         if (equippedItem == null) return;
 
         Prefab_Controller itemObject = _controller.prefabsData.Get_Object_PrefabController(equippedItem.id);
-        if (!itemObject.TryGetComponent(out IEquippable equippable)) return;
+        if (!itemObject.TryGetComponent(out IEquippable checkEquipment)) return;
 
-        equippable.Use();
+        Prefab_Controller player = _controller.tilemapController.playerController.prefabController;
+        Prefab_Controller playerEquipment = player.equipmentController.currentEquipment;
+
+        if (!playerEquipment.TryGetComponent(out IEquippable currentEquipment)) return;
+        currentEquipment.Use();
     }
 
-    // Button Icon Updates
+    // Icon Updates
     public void Update_Interact_Icon()
     {
         // get player current tile
