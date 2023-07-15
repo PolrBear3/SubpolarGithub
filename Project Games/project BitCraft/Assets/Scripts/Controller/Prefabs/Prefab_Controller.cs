@@ -87,9 +87,13 @@ public class Prefab_Controller : MonoBehaviour
     }
 
     // Connection
-    public void Connect_Components(TileMap_Controller tilemapController)
+    public void Connect_TileMap_Controller(TileMap_Controller tilemapController)
     {
         _tilemapController = tilemapController;
+    }
+    public void Connect_Equipment_Controller(Equipment_Controller equipmentController)
+    {
+        _equipmentController = equipmentController;
     }
 
     // Map and Tile Update

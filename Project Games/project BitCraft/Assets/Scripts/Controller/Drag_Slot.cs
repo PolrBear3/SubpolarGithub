@@ -120,9 +120,12 @@ public class Drag_Slot : MonoBehaviour
     }
     public void Return_Drag_Item()
     {
+        if (!itemDragging) return;
         if (_inventoryController.Is_Inventory_Full()) _inventoryController.Add_Item(_currentItem, _currentAmount);
         else _inventoryController.Empty_Slot().Assign(_currentItem, _currentAmount);
+
         Clear();
+        _inventoryController.controller.interactionController.Update_Equipment_Icon();
     }
     public void Return_Drag_Item(InputAction.CallbackContext context)
     {
@@ -133,6 +136,8 @@ public class Drag_Slot : MonoBehaviour
 
         if (_inventoryController.Is_Inventory_Full()) _inventoryController.Add_Item(_currentItem, _currentAmount);
         else _inventoryController.Empty_Slot().Assign(_currentItem, _currentAmount);
+
         Clear();
+        _inventoryController.controller.interactionController.Update_Equipment_Icon();
     }
 }

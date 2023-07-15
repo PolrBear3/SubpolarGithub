@@ -6,6 +6,8 @@ public class Hatchet : MonoBehaviour, IEquippable
 {
     private Prefab_Controller _prefabController;
 
+    [SerializeField] private int _damage;
+
     private bool _useReady;
 
     //
@@ -16,10 +18,6 @@ public class Hatchet : MonoBehaviour, IEquippable
 
     public void Use()
     {
-        Debug.Log("Hatchet Used");
-
-        /*
-
         // target tiles highlight
         if (!_useReady)
         {
@@ -27,15 +25,22 @@ public class Hatchet : MonoBehaviour, IEquippable
             TileMap_Combination_System combiSystem = _prefabController.tilemapController.combinationSystem;
 
             actionSystem.Highlight_EquipmentUse_Tiles(combiSystem.Cross_Tiles(Prefab_Type.character, 0));
+
             _useReady = true;
         }
         // use hatchet
         else
         {
-            Debug.Log("Hatchet Used");
+            Equipment_Controller equipmentController = _prefabController.equipmentController;
+            Tile_Controller targetTile = equipmentController.equipmentUseTile;
+
+            for (int i = 0; i < targetTile.currentPrefabs.Count; i++)
+            {
+                if (!targetTile.currentPrefabs[i].TryGetComponent(out IDamageable damageable)) continue;
+                damageable.Damage(_damage);
+            }
+
             _useReady = false;
         }
-
-        */
     }
 }

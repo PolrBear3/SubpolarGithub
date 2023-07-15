@@ -12,6 +12,9 @@ public class Equipment_Controller : MonoBehaviour
     [SerializeField] private Prefab_Controller _currentEquipment;
     public Prefab_Controller currentEquipment { get => _currentEquipment; set => _currentEquipment = value; }
 
+    [SerializeField] private Tile_Controller _equipmentUseTile;
+    public Tile_Controller equipmentUseTile { get => _equipmentUseTile; set => _equipmentUseTile = value; }
+
     //
     private void Awake()
     {
@@ -53,12 +56,15 @@ public class Equipment_Controller : MonoBehaviour
             if (hasDuplicate) continue;
 
             Prefab_Controller searchObject = data.Get_Object_PrefabController(currentSlots[i].currentItem.id);
+            if (searchObject == null) return;
             if (!searchObject.TryGetComponent(out IEquippable equippable)) continue;
 
             GameObject prefabObject = Instantiate(searchObject.prefabTag.Prefab(), transform);
             if (!prefabObject.TryGetComponent(out Prefab_Controller currentController)) continue;
 
-            currentController.Connect_Components(_prefabController.tilemapController);
+            // connection
+            currentController.Connect_TileMap_Controller(_prefabController.tilemapController);
+            currentController.Connect_Equipment_Controller(_prefabController.equipmentController);
 
             // current equipment update
             if (inventoryController.equippedSlot.hasItem && inventoryController.equippedSlot.currentItem.id == currentController.prefabTag.prefabID)
@@ -69,5 +75,9 @@ public class Equipment_Controller : MonoBehaviour
             _inventoryEquipments.Add(currentController);
             currentController.sr.color = Color.clear;
         }
+    }
+    public void Update_EquipmentUse_Tile(Tile_Controller clickedTile)
+    {
+        _equipmentUseTile = clickedTile;
     }
 }

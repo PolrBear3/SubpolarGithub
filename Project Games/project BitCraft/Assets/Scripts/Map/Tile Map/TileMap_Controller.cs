@@ -174,7 +174,7 @@ public class TileMap_Controller : MonoBehaviour
         }
 
         // set character data
-        setPrefabController.Connect_Components(this);
+        setPrefabController.Connect_TileMap_Controller(this);
 
         // update character map position
         setPrefabController.Update_Map_Position(currentMap.positionX, currentMap.positionY);
@@ -240,7 +240,7 @@ public class TileMap_Controller : MonoBehaviour
         Prefab_Controller setPrefabController = prefabController;
 
         // set object data
-        setPrefabController.Connect_Components(this);
+        setPrefabController.Connect_TileMap_Controller(this);
 
         if (amount <= 0) amount = 1;
         setPrefabController.Increase_Amount(amount);

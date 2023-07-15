@@ -7,7 +7,7 @@ public class Player_Controller : MonoBehaviour
     private Prefab_Controller _prefabController;
     public Prefab_Controller prefabController { get => _prefabController; set => _prefabController = value; }
 
-    private bool _interactReady = false;
+    [SerializeField] private bool _interactReady = false;
     public bool interactReady { get => _interactReady; set => _interactReady = value; }
 
     private void Awake()

@@ -30,6 +30,7 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
     private void Health_Check()
     {
         if (_controller.healthController.currentLifeCount > 0) return;
+
         Drop_Item();
         Destroy(gameObject);
     }

@@ -87,6 +87,7 @@ public class Inventory_Controller : MonoBehaviour
         _equippedSlot = _slots[slotNum];
         _equippedSlot.Equip(true);
 
+        _controller.tilemapController.actionSystem.UnHighlight_All_EquipmentUseTiles();
         _controller.interactionController.Update_Equipment_Icon();
     }
 

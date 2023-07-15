@@ -62,13 +62,15 @@ public class Interaction_Controller : MonoBehaviour
     }
     public void Use_Equipment()
     {
+        if (_controller.inventoryController.dragSlot.itemDragging) return;
+
         _controller.tilemapController.playerController.prefabController.equipmentController.Update_Current_Equipments();
 
         Item_ScrObj equippedItem = _controller.inventoryController.equippedSlot.currentItem;
         if (equippedItem == null) return;
 
         Prefab_Controller itemObject = _controller.prefabsData.Get_Object_PrefabController(equippedItem.id);
-        if (!itemObject.TryGetComponent(out IEquippable checkEquipment)) return;
+        if (itemObject == null || !itemObject.TryGetComponent(out IEquippable checkEquipment)) return;
 
         Prefab_Controller player = _controller.tilemapController.playerController.prefabController;
         Prefab_Controller playerEquipment = player.equipmentController.currentEquipment;
@@ -102,7 +104,7 @@ public class Interaction_Controller : MonoBehaviour
     }
     public void Update_Equipment_Icon()
     {
-        if (!_controller.inventoryController.equippedSlot.hasItem)
+        if (_controller.inventoryController.dragSlot.itemDragging || !_controller.inventoryController.equippedSlot.hasItem)
         {
             _equipmentIcon.sprite = null;
             _equipmentIcon.color = Color.clear;
@@ -112,15 +114,15 @@ public class Interaction_Controller : MonoBehaviour
         Item_ScrObj equippedItem = _controller.inventoryController.equippedSlot.currentItem;
         Prefab_Controller itemObject = _controller.prefabsData.Get_Object_PrefabController(equippedItem.id);
 
-        if (itemObject.TryGetComponent(out IEquippable equippable))
-        {
-            _equipmentIcon.sprite = equippedItem.sprite;
-            _equipmentIcon.color = Color.white;
-        }
-        else
+        if (itemObject == null || !itemObject.TryGetComponent(out IEquippable equippable))
         {
             _equipmentIcon.sprite = null;
             _equipmentIcon.color = Color.clear;
+        }
+        else
+        {
+            _equipmentIcon.sprite = equippedItem.sprite;
+            _equipmentIcon.color = Color.white;
         }
     }
 }

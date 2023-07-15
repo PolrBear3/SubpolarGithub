@@ -17,17 +17,35 @@ public class TileMap_Action_System : MonoBehaviour
     // public action systems
     public void UnHighlight_All_tiles()
     {
-        List<Tile_Controller> tiles = tilemapController.currentMap.tiles;
+        _tilemapController.playerController.interactReady = false;
 
-        for (int i = 0; i < tiles.Count; i++)
+        List<Tile_Controller> allTiles = tilemapController.currentMap.tiles;
+
+        for (int i = 0; i < allTiles.Count; i++)
         {
-            tiles[i].UnHighlight();
+            allTiles[i].UnHighlight();
+        }
+    }
+    public void UnHighlight_All_EquipmentUseTiles()
+    {
+        Map_Controller currentMap = _tilemapController.currentMap;
+        if (currentMap == null) return;
+
+        _tilemapController.playerController.interactReady = false;
+
+        List<Tile_Controller> allTiles = currentMap.tiles;
+
+        for (int i = 0; i < allTiles.Count; i++)
+        {
+            allTiles[i].Equipment_Highlight_Activation(false);
         }
     }
 
     // Tile Highlight
     public void Highlight_Player_Interactable_Tiles()
     {
+        UnHighlight_All_tiles();
+
         List<Tile_Controller> crossTiles = _tilemapController.combinationSystem.Cross_Tiles(Prefab_Type.character, 0);
 
         for (int i = 0; i < crossTiles.Count; i++)
@@ -36,14 +54,14 @@ public class TileMap_Action_System : MonoBehaviour
             if (!crossTiles[i].Is_Prefab_Type(Prefab_Type.placeable) && !crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
             {
                 if (crossTiles[i].Has_Prefab_Type(Prefab_Type.character)) continue;
-                
-                crossTiles[i].Move_Highlight();
+
+                crossTiles[i].Move_Highlight_Activation(true);
             }
 
             // highlight interactable object tiles
             if (crossTiles[i].Has_Prefab_Type(Prefab_Type.placeable))
             {
-                crossTiles[i].Object_Highlight();
+                crossTiles[i].Object_Highlight_Activation(true);
             }
         }
     }
@@ -62,7 +80,7 @@ public class TileMap_Action_System : MonoBehaviour
         {
             for (int i = 0; i < crossTiles.Count; i++)
             {
-                crossTiles[i].ItemDrop_Highlight();
+                crossTiles[i].ItemDrop_Highlight_Activation(true);
             }
             return;
         }
@@ -81,7 +99,7 @@ public class TileMap_Action_System : MonoBehaviour
             Prefab_Controller tileCurrentPrefab = crossTiles[i].Get_Current_Prefab(dragItemID, false);
             if (crossTiles[i].Has_Prefab_Type(Prefab_Type.overlapPlaceable) && tileCurrentPrefab == null) continue;
 
-            crossTiles[i].ItemDrop_Highlight();
+            crossTiles[i].ItemDrop_Highlight_Activation(true);
         }
     }
     public void Highlight_EquipmentUse_Tiles(List<Tile_Controller> targetTiles)
@@ -90,7 +108,7 @@ public class TileMap_Action_System : MonoBehaviour
 
         for (int i = 0; i < targetTiles.Count; i++)
         {
-            targetTiles[i].Equipment_Highlight();
+            targetTiles[i].Equipment_Highlight_Activation(true);
         }
     }
 
@@ -157,5 +175,16 @@ public class TileMap_Action_System : MonoBehaviour
 
         _tilemapController.Set_Object(dragSlot.currentItem.id, finalAmount, targetTile.rowNum, targetTile.columnNum); 
         dragSlot.Decrease_Amount(finalAmount);
+    }
+    public void Use_Equipment(Tile_Controller targetTile)
+    {
+        Equipment_Controller playerEquipment = _tilemapController.playerController.prefabController.equipmentController;
+
+        playerEquipment.Update_EquipmentUse_Tile(targetTile);
+
+        if (!playerEquipment.currentEquipment.TryGetComponent(out IEquippable equippable)) return;
+        equippable.Use();
+
+        tilemapController.AllTiles_Update_Data();
     }
 }

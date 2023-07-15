@@ -255,7 +255,6 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
             break;
         }
 
-        currentPrefabs.RemoveAll(item => item == null);
         Update_CurrentPrefabs();
     }
     public void Remove_Prefab(Prefab_Type type, int searchID)
@@ -269,13 +268,13 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
             break;
         }
 
-        currentPrefabs.RemoveAll(item => item == null);
         Update_CurrentPrefabs();
     }
 
     // Update
     private void Update_CurrentPrefabs()
     {
+        currentPrefabs.RemoveAll(item => item == null);
         currentPrefabs.Clear();
 
         if (_prefabsParent.childCount <= 0) return;
@@ -331,6 +330,11 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
                     return;
                 }
             }
+            else if (_equipmentUseReady)
+            {
+                Update_Data();
+                _tilemapController.actionSystem.Use_Equipment(this);
+            }
         }
         // right mouse click
         else if (eventData.button == PointerEventData.InputButton.Right)
@@ -346,37 +350,38 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         _tilemapController.playerController.interactReady = false;
     }
 
-    public void Move_Highlight()
+    public void Move_Highlight_Activation(bool activate)
     {
-        _moveReady = true;
-        _sr.color = Color.green;
+        _moveReady = activate;
+
+        if (activate) _sr.color = Color.green;
+        else _sr.color = Color.white;
     }
-    public void Object_Highlight()
+    public void Object_Highlight_Activation(bool activate)
     {
-        _objectReady = true;
-        _objectInteractBox.SetActive(_objectReady);
+        _objectReady = activate;
+        _objectInteractBox.SetActive(activate);
     }
-    public void ItemDrop_Highlight()
+    public void ItemDrop_Highlight_Activation(bool activate)
     {
-        _itemDropReady = true;
-        _itemDropkBox.SetActive(_itemDropReady);
+
+
+        _itemDropReady = activate;
+        _itemDropkBox.SetActive(activate);
     }
-    public void Equipment_Highlight()
+    public void Equipment_Highlight_Activation(bool activate)
     {
-        _equipmentUseReady = true;
-        _equipmentUseBox.SetActive(_equipmentUseReady);
+        _equipmentUseReady = activate;
+        _equipmentUseBox.SetActive(activate);
     }
 
     public void UnHighlight()
     {
-        _moveReady = false;
-        _objectReady = false;
-        _itemDropReady = false;
-        _equipmentUseReady = false;
+        Move_Highlight_Activation(false);
+        Object_Highlight_Activation(false);
+        ItemDrop_Highlight_Activation(false);
+        Equipment_Highlight_Activation(false);
 
-        _sr.color = Color.white;
-        _objectInteractBox.SetActive(_objectReady);
-        _itemDropkBox.SetActive(_itemDropReady);
-        _equipmentUseBox.SetActive(_equipmentUseReady);
+        _directionSystem.Reset_Directions();
     }
 }
