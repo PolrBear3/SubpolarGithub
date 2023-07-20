@@ -14,7 +14,7 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
 
     public void Interact()
     {
-        Drop_Leaf();
+        Drop_Leaf(0, 2);
     }
     public void Damage(int damageAmount)
     {
@@ -31,21 +31,23 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
     {
         if (_controller.healthController.currentLifeCount > 0) return;
 
-        Drop_Item();
+        Drop_Log();
+        Drop_Leaf(2, 5);
+
         Destroy(gameObject);
     }
 
-    private void Drop_Item()
+    private void Drop_Log()
     {
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
         int itemAmount = Random.Range(3, 5);
 
         inventory.Add_Item(2100, itemAmount);                 
     }
-    private void Drop_Leaf()
+    private void Drop_Leaf(int minAmount, int maxAmount)
     {
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
-        int itemAmount = Random.Range(0, 2);
+        int itemAmount = Random.Range(minAmount, maxAmount);
         
         inventory.Add_Item(1101, itemAmount);
     }

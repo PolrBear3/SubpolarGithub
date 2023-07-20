@@ -17,8 +17,6 @@ public class TileMap_Action_System : MonoBehaviour
     // public action systems
     public void UnHighlight_All_tiles()
     {
-        _tilemapController.playerController.interactReady = false;
-
         List<Tile_Controller> allTiles = tilemapController.currentMap.tiles;
 
         for (int i = 0; i < allTiles.Count; i++)

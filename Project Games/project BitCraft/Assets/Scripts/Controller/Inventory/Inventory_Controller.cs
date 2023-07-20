@@ -50,6 +50,31 @@ public class Inventory_Controller : MonoBehaviour
         }
         return true;
     }
+    public bool Is_Inventory_Full(Item_ScrObj item, int amount)
+    {
+        int amountCount = amount;
+
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            if (!_slots[i].hasItem) return false;
+            if (item != _slots[i].currentItem) continue;
+
+            if (amount + _slots[i].currentAmount > item.maxAmount)
+            {
+                amountCount = amountCount + _slots[i].currentAmount - item.maxAmount;
+                continue;
+            }
+
+            return false;
+        }
+
+        if (amountCount > 0) return true;
+        return true;
+    }
+    public bool Is_Inventory_Full(int itemID, int amount)
+    {
+        return false;
+    }
 
     // Get
     public Slot Empty_Slot()
@@ -117,7 +142,7 @@ public class Inventory_Controller : MonoBehaviour
     // Function
     public void Add_Item(Item_ScrObj item, int amount)
     {
-        if (amount <= 0) return;
+        if (item == null || amount <= 0) return;
         
         for (int i = 0; i < _slots.Count; i++)
         {

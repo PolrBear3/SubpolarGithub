@@ -56,7 +56,7 @@ public class Equipment_Controller : MonoBehaviour
             if (hasDuplicate) continue;
 
             Prefab_Controller searchObject = data.Get_Object_PrefabController(currentSlots[i].currentItem.id);
-            if (searchObject == null) return;
+            if (searchObject == null) continue;
             if (!searchObject.TryGetComponent(out IEquippable equippable)) continue;
 
             GameObject prefabObject = Instantiate(searchObject.prefabTag.Prefab(), transform);
