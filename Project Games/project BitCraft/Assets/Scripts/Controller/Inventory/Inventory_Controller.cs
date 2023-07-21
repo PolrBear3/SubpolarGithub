@@ -17,8 +17,6 @@ public class Inventory_Controller : MonoBehaviour
     private Slot _equippedSlot;
     public Slot equippedSlot { get => _equippedSlot; set => _equippedSlot = value; }
 
-    private int _currentScrollValue;
-
     //
     private void Awake()
     {
@@ -30,15 +28,13 @@ public class Inventory_Controller : MonoBehaviour
         Set_EquipSlot(0);
     }
 
-    public void OnScroll(InputAction.CallbackContext context)
+    public void OnNext()
     {
-        float scrollValue = context.ReadValue<float>();
-        Scroll_EquipSlot(scrollValue);
+        Set_EquipSlot(_equippedSlot.slotNum + 1);
     }
-    public void OnNumberKey(int num)
+    public void OnBack()
     {
-        Set_EquipSlot(num);
-        Update_Current_ScrollValue(num);
+        Set_EquipSlot(_equippedSlot.slotNum - 1);
     }
 
     // Check
@@ -107,36 +103,27 @@ public class Inventory_Controller : MonoBehaviour
     // Equipment
     private void Set_EquipSlot(int slotNum)
     {
-        if (_equippedSlot != null) _equippedSlot.Equip(false);
+        int setSlotNum = slotNum;
 
-        _equippedSlot = _slots[slotNum];
+        if (slotNum > _slots.Count - 1)
+        {
+            setSlotNum = 0;
+        }
+        else if (slotNum < 0)
+        {
+            setSlotNum = _slots.Count - 1;
+        }
+
+        if (_equippedSlot != null)
+        {
+            _equippedSlot.Equip(false);
+        }
+
+        _equippedSlot = _slots[setSlotNum];
         _equippedSlot.Equip(true);
 
         _controller.tilemapController.actionSystem.UnHighlight_All_EquipmentUseTiles();
         _controller.interactionController.Update_Equipment_Icon();
-    }
-
-    private void Scroll_EquipSlot(float scrollValue)
-    {
-        _currentScrollValue += Mathf.RoundToInt(scrollValue);
-        _equippedSlot.slotNum = _currentScrollValue / 120;
-
-        if (_equippedSlot.slotNum > _slots.Count - 1)
-        {
-            _equippedSlot.slotNum = 0;
-            _currentScrollValue = 0;
-        }
-        else if (_equippedSlot.slotNum < 0)
-        {
-            _equippedSlot.slotNum = _slots.Count - 1;
-            _currentScrollValue = _equippedSlot.slotNum * 120;
-        }
-
-        Set_EquipSlot(_equippedSlot.slotNum);
-    }
-    private void Update_Current_ScrollValue(int slotNum)
-    {
-        _currentScrollValue = slotNum * 120;
     }
 
     // Function

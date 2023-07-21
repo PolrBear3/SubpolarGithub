@@ -15,21 +15,48 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Left Select",
+                    "name": "Left Click",
                     "type": "Button",
                     "id": "5ed7998b-a337-4d1f-b2a5-4a59a82cbd9b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
-                    "name": "Right Select",
+                    "name": "Right Click",
                     "type": "Button",
                     "id": "894aada2-0fb8-46e1-8b7e-02e14d109250",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Next",
+                    "type": "Button",
+                    "id": "5b3da20b-d714-4b71-b817-0694ba04de41",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "34cb9dcf-4844-4e6b-94b4-267937d95dae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "ceaaa598-d29b-4b06-9c24-56281aa48a30",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
@@ -58,15 +85,6 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Scroll",
-                    "type": "Value",
-                    "id": "0039fc82-401e-47bb-aea3-e40ff373a373",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 },
                 {
                     "name": "Number Key 1",
@@ -191,7 +209,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "Left Select",
+                    "action": "Left Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -202,7 +220,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left Select",
+                    "action": "Left Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -213,7 +231,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Left Select",
+                    "action": "Left Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -224,7 +242,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "Right Select",
+                    "action": "Right Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -258,17 +276,6 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Interaction Key 3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "20afc034-b5f8-4054-bf24-7acd9c1b272e",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -368,6 +375,39 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Number Key 9",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3013556b-b3ca-40b3-a6db-7dce07018fa5",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bfbc49f7-eb21-4f9b-ab44-79139e4be9ab",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "414a1b56-7e76-4b38-8f55-814a30308c1d",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
