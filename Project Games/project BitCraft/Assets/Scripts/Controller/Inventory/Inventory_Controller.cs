@@ -36,7 +36,7 @@ public class Inventory_Controller : MonoBehaviour
     {
         Set_EquipSlot(_equippedSlot.slotNum - 1);
     }
-
+    
     // Check
     public bool Is_Inventory_Full()
     {
