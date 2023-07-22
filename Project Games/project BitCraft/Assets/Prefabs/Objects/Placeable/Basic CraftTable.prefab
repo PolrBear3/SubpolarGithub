@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabType: 3
-  _prefabID: 1200
+  _prefabID: 114122
   _layerOrderNum: 2
 --- !u!114 &4422558924385719662
 MonoBehaviour:
@@ -273,10 +273,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61f4fe01fca344059c249e5b7006955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient1: {fileID: 8234980014576937371}
-  ingredient2: {fileID: 4670300823035358842}
-  ingredientBox1: {fileID: 7886054927822425353}
-  ingredientBox2: {fileID: 5767007211670178438}
+  _ingredientBox1: {fileID: 7518538626075104291}
+  _ingredientBox2: {fileID: 5024782108625989091}
+  _ingredient1: {fileID: 8234980014576937371}
+  _ingredient2: {fileID: 4670300823035358842}
+  _ingredientBox1Sprite: {fileID: 7886054927822425353}
+  _ingredientBox2Sprite: {fileID: 5767007211670178438}
+  _whiteBox: {fileID: 1169688415, guid: 66906aa7add1648f48551fdc9adb41bf, type: 3}
+  _greenBox: {fileID: -952031273, guid: 66906aa7add1648f48551fdc9adb41bf, type: 3}
 --- !u!1 &7518538626075104291
 GameObject:
   m_ObjectHideFlags: 0

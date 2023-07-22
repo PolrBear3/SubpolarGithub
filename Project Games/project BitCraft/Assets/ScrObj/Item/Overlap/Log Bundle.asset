@@ -10,10 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2080244e0a83ed3428ec2b2c6ecdf1c2, type: 3}
-  m_Name: Green Leaf
+  m_Name: Log Bundle
   m_EditorClassIdentifier: 
-  id: 1101
-  sprite: {fileID: -1068966818, guid: 472b73032cd8b644eae31ac7da9e8876, type: 3}
-  itemName: Green Leaf
-  maxAmount: 50
-  ingredients: []
+  id: 445157
+  sprite: {fileID: 128593734, guid: 472b73032cd8b644eae31ac7da9e8876, type: 3}
+  itemName: Log Bundle
+  maxAmount: 1
+  ingredients:
+  - ingredientItem: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
+    amount: 50
+  - ingredientItem: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
+    amount: 50

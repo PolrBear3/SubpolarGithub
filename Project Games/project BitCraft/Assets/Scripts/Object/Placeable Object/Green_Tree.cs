@@ -42,14 +42,14 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
         int itemAmount = Random.Range(3, 5);
 
-        inventory.Add_Item(2100, itemAmount);                 
+        inventory.Add_Item(364979, itemAmount);                 
     }
     private void Drop_Leaf(int minAmount, int maxAmount)
     {
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
         int itemAmount = Random.Range(minAmount, maxAmount);
         
-        inventory.Add_Item(1101, itemAmount);
+        inventory.Add_Item(677972, itemAmount);
     }
 
     // Visual

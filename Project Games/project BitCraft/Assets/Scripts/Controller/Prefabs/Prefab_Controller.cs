@@ -31,6 +31,9 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private int _currentColumnNum;
     public int currentColumnNum { get => _currentColumnNum; set => _currentColumnNum = value; }
 
+    private int _previousRowNum;
+    private int _previousColumnNum;
+
     [Header("Start Data")]
     [SerializeField] private Vector2 _setPosition;
     public Vector2 setPosition { get => _setPosition; set => _setPosition = value; }
@@ -104,8 +107,11 @@ public class Prefab_Controller : MonoBehaviour
     }
     public void Update_Tile_Position(int rowNum, int columnNum)
     {
-        currentRowNum = rowNum;
-        currentColumnNum = columnNum;
+        _previousRowNum = _currentRowNum;
+        _previousColumnNum = _currentColumnNum;
+
+        _currentRowNum = rowNum;
+        _currentColumnNum = columnNum;
     }
 
     // Sprite Update
@@ -120,9 +126,21 @@ public class Prefab_Controller : MonoBehaviour
         if (_sr.sprite == _sprites[spriteNum]) return;
         _sr.sprite = _sprites[spriteNum];
     }
+
     public void Sprite_LayerOrder_Update(int prefabOrder)
     {
         _sr.sortingOrder = (_currentColumnNum * 10) + _prefabTag.layerOrderNum + _currentRowNum - prefabOrder;
+    }
+
+    public void Sprite_Flip_Update()
+    {
+        if (_previousRowNum > _currentRowNum) transform.localRotation = Quaternion.Euler(0, 180, 0);
+        else if (_previousRowNum < _currentRowNum) transform.localRotation = Quaternion.Euler(0, 0, 0);
+    }
+    public void Sprite_Flip_Update(int interactTileRowNum)
+    {
+        if (interactTileRowNum < _currentRowNum) transform.localRotation = Quaternion.Euler(0, 180, 0);
+        else if (interactTileRowNum > _currentRowNum) transform.localRotation = Quaternion.Euler(0, 0, 0);
     }
 
     // Amount Control

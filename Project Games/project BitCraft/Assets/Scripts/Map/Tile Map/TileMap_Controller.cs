@@ -49,14 +49,14 @@ public class TileMap_Controller : MonoBehaviour
         Set_Player_Tile(true);
 
         // tree
-        Set_Object(1100, 1, 1, 2);
-        Set_Object(1100, 1, 3, 2);
+        Set_Object(852792, 1, 1, 2);
+        Set_Object(852792, 1, 3, 2);
 
         // basic craft table
-        Set_Object(1200, 1, 2, 1);
+        Set_Object(114122, 1, 2, 1);
 
         // campfire
-        Set_Object(2200, 1, 2, 3);
+        Set_Object(135409, 1, 2, 3);
     }
 
     // Check

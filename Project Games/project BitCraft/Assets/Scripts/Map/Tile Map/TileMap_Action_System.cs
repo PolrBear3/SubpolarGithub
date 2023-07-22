@@ -137,6 +137,7 @@ public class TileMap_Action_System : MonoBehaviour
         playerPrefabController.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
         playerController.Move();
         playerPrefabController.Sprite_LayerOrder_Update(0);
+        playerPrefabController.Sprite_Flip_Update();
 
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
@@ -161,6 +162,9 @@ public class TileMap_Action_System : MonoBehaviour
 
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
+
+        // player flip
+        playerController.prefabController.Sprite_Flip_Update(tileWithObject.rowNum);
     }
     public void Drop_Item(Tile_Controller targetTile, int amount)
     {
@@ -173,6 +177,10 @@ public class TileMap_Action_System : MonoBehaviour
 
         _tilemapController.Set_Object(dragSlot.currentItem.id, finalAmount, targetTile.rowNum, targetTile.columnNum); 
         dragSlot.Decrease_Amount(finalAmount);
+
+        // player flip
+        Prefab_Controller player = _tilemapController.playerPrefabController;
+        player.Sprite_Flip_Update(targetTile.rowNum);
     }
     public void Use_Equipment(Tile_Controller targetTile)
     {
@@ -184,5 +192,9 @@ public class TileMap_Action_System : MonoBehaviour
         equippable.Use();
 
         tilemapController.AllTiles_Update_Data();
+
+        // player flip
+        Prefab_Controller player = _tilemapController.playerPrefabController;
+        player.Sprite_Flip_Update(targetTile.rowNum);
     }
 }

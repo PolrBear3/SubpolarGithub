@@ -9,7 +9,7 @@ public class Mini_ItemIcon : MonoBehaviour
     private bool _hasItem;
     public bool hasItem { get => _hasItem; set => _hasItem = value; }
 
-    [SerializeField] private Item_ScrObj _currentItem;
+    private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
 
     [SerializeField] private int _currentAmount;

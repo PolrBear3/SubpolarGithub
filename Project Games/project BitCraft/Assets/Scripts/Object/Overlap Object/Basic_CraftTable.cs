@@ -6,11 +6,17 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
 {
     private Prefab_Controller _controller;
 
-    [SerializeField] private Mini_ItemIcon ingredient1;
-    [SerializeField] private Mini_ItemIcon ingredient2;
+    [SerializeField] private GameObject _ingredientBox1;
+    [SerializeField] private GameObject _ingredientBox2;
 
-    [SerializeField] private SpriteRenderer ingredientBox1;
-    [SerializeField] private SpriteRenderer ingredientBox2;
+    [SerializeField] private Mini_ItemIcon _ingredient1;
+    [SerializeField] private Mini_ItemIcon _ingredient2;
+
+    [SerializeField] private SpriteRenderer _ingredientBox1Sprite;
+    [SerializeField] private SpriteRenderer _ingredientBox2Sprite;
+
+    [SerializeField] private Sprite _whiteBox;
+    [SerializeField] private Sprite _greenBox;
 
     //
     private void Awake()
@@ -41,18 +47,18 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
         Ingredient checkIngredient1;
         Ingredient checkIngredient2;
 
-        checkIngredient1.ingredientItem = ingredient1.currentItem;
-        checkIngredient1.amount = ingredient1.currentAmount;
+        checkIngredient1.ingredientItem = _ingredient1.currentItem;
+        checkIngredient1.amount = _ingredient1.currentAmount;
         if (checkIngredient1.ingredientItem != null) targetIngredients.Add(checkIngredient1);
 
-        checkIngredient2.ingredientItem = ingredient2.currentItem;
-        checkIngredient2.amount = ingredient2.currentAmount;
+        checkIngredient2.ingredientItem = _ingredient2.currentItem;
+        checkIngredient2.amount = _ingredient2.currentAmount;
         if (checkIngredient2.ingredientItem != null) targetIngredients.Add(checkIngredient2);
 
         return data.Get_Item(targetIngredients);
     }
 
-    // Functions
+    // Basic Functions
     private void Get_Damaged(int damageAmount)
     {
         _controller.healthController.Subtract_Current_LifeCount(damageAmount);
@@ -60,33 +66,19 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
     private void Health_Check()
     {
         if (_controller.healthController.currentLifeCount > 0) return;
-        // drop ingredients 1 and 2
-        // drop Basic CraftTable ingredients
+
+        Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
+
+        // return ingredients 1 and 2
+        inventory.Add_Item(_ingredient1.currentItem, _ingredient1.currentAmount);
+        inventory.Add_Item(_ingredient2.currentItem, _ingredient2.currentAmount);
+
+        // return Basic CraftTable ingredients
+
         Destroy(gameObject);
     }
 
-    private void IngredientBox_Activation(int boxNum, bool activate)
-    {
-        if (boxNum == 1)
-        {
-            if (activate)
-            {
-                ingredientBox1.color = Color.white;
-                return;
-            }
-            ingredientBox1.color = Color.clear;
-        }
-        else
-        {
-            if (activate)
-            {
-                ingredientBox2.color = Color.white;
-                return;
-            }
-            ingredientBox2.color = Color.clear;
-        }
-    }
-
+    // Crafting
     private void Insert_Ingredient()
     {
         Tile_Controller currentTile = _controller.tilemapController.Get_Tile(_controller.currentRowNum, _controller.currentColumnNum);
@@ -106,20 +98,24 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
         }
 
         // no ingredients inserted
-        if (ingredient == null) return;
+        if (ingredient == null)
+        {
+            IngredientBox_CraftItemFound_Update();
+            return;
+        }
         
         // save item
         Item_ScrObj objectItem = _controller.tilemapController.controller.prefabsData.Get_Item(ingredient.prefabTag.prefabID);
 
         // insert item
-        if (!ingredient1.hasItem || (ingredient1.currentItem == objectItem && !ingredient1.Is_Max_Amount()))
+        if (!_ingredient1.hasItem || (_ingredient1.currentItem == objectItem && !_ingredient1.Is_Max_Amount()))
         {
-            ingredient1.Assign_Item(objectItem, ingredient.currentAmount);
+            _ingredient1.Assign_Item(objectItem, ingredient.currentAmount);
             IngredientBox_Activation(1, true);
         }
-        else if (!ingredient2.hasItem || (ingredient2.currentItem == objectItem && !ingredient2.Is_Max_Amount()))
+        else if (!_ingredient2.hasItem || (_ingredient2.currentItem == objectItem && !_ingredient2.Is_Max_Amount()))
         {
-            ingredient2.Assign_Item(objectItem, ingredient.currentAmount);
+            _ingredient2.Assign_Item(objectItem, ingredient.currentAmount);
             IngredientBox_Activation(2, true);
         }
         else
@@ -129,11 +125,12 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
         }
 
         // calculate left over
-        if (ingredient1.LeftOver() > 0)
+        if (_ingredient1.LeftOver() > 0)
         {
-            ingredient2.Assign_Item(ingredient1.currentItem, ingredient1.LeftOver());
+            _ingredient2.Assign_Item(_ingredient1.currentItem, _ingredient1.LeftOver());
             IngredientBox_Activation(2, true);
-            ingredient1.currentAmount -= ingredient1.LeftOver();
+
+            _ingredient1.currentAmount -= _ingredient1.LeftOver();
         }
 
         // remove overlap object
@@ -141,6 +138,9 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
 
         // remove unplacealbe object
         currentTile.Remove_Prefab(Prefab_Type.unplaceable);
+
+        // craft item available check
+        IngredientBox_CraftItemFound_Update();
     }
     private void Use_Ingredient()
     {
@@ -148,22 +148,22 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
 
         for (int i = 0; i < itemIngredients.Count; i++)
         {
-            if (ingredient1.currentItem == itemIngredients[i].ingredientItem)
+            if (_ingredient1.currentItem == itemIngredients[i].ingredientItem)
             {
-                ingredient1.currentAmount -= itemIngredients[i].amount;
-                if (ingredient1.currentAmount <= 0)
+                _ingredient1.currentAmount -= itemIngredients[i].amount;
+                if (_ingredient1.currentAmount <= 0)
                 {
-                    ingredient1.Clear_Item();
+                    _ingredient1.Clear_Item();
                     IngredientBox_Activation(1, false);
                 }
                 continue;
             }
-            if (ingredient2.currentItem == itemIngredients[i].ingredientItem)
+            if (_ingredient2.currentItem == itemIngredients[i].ingredientItem)
             {
-                ingredient2.currentAmount -= itemIngredients[i].amount;
-                if (ingredient2.currentAmount <= 0)
+                _ingredient2.currentAmount -= itemIngredients[i].amount;
+                if (_ingredient2.currentAmount <= 0)
                 {
-                    ingredient2.Clear_Item();
+                    _ingredient2.Clear_Item();
                     IngredientBox_Activation(2, false);
                 }
                 continue;
@@ -172,7 +172,9 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
     }
     private void Craft()
     {
-        if (!ingredient1.hasItem && !ingredient2.hasItem) return;
+        Craft_Bounce();
+
+        if (!_ingredient1.hasItem && !_ingredient2.hasItem) return;
         
         Inventory_Controller inventory = _controller.tilemapController.controller.inventoryController;
         Item_ScrObj craftItem = Get_Craft_Item();
@@ -186,19 +188,69 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
         // craft fail
         else
         {
-            if (ingredient1.hasItem && !inventory.Is_Inventory_Full(ingredient1.currentItem, ingredient1.currentAmount))
+            if (_ingredient1.hasItem && !inventory.Is_Inventory_Full(_ingredient1.currentItem, _ingredient1.currentAmount))
             {
-                inventory.Add_Item(ingredient1.currentItem, ingredient1.currentAmount);
-                ingredient1.Clear_Item();
+                inventory.Add_Item(_ingredient1.currentItem, _ingredient1.currentAmount);
+                _ingredient1.Clear_Item();
                 IngredientBox_Activation(1, false);
             }
 
-            if (ingredient2.hasItem && !inventory.Is_Inventory_Full(ingredient2.currentItem, ingredient2.currentAmount))
+            if (_ingredient2.hasItem && !inventory.Is_Inventory_Full(_ingredient2.currentItem, _ingredient2.currentAmount))
             {
-                inventory.Add_Item(ingredient2.currentItem, ingredient2.currentAmount);
-                ingredient2.Clear_Item();
+                inventory.Add_Item(_ingredient2.currentItem, _ingredient2.currentAmount);
+                _ingredient2.Clear_Item();
                 IngredientBox_Activation(2, false);
             }
         }
+    }
+
+    // Visual
+    private void IngredientBox_Activation(int boxNum, bool activate)
+    {
+        if (boxNum == 1)
+        {
+            if (activate)
+            {
+                _ingredientBox1Sprite.color = Color.white;
+                return;
+            }
+
+            _ingredientBox1Sprite.color = Color.clear;
+        }
+        else
+        {
+            if (activate)
+            {
+                _ingredientBox2Sprite.color = Color.white;
+                return;
+            }
+
+            _ingredientBox2Sprite.color = Color.clear;
+        }
+    }
+    private void IngredientBox_CraftItemFound_Update()
+    {
+        if (Get_Craft_Item() != null)
+        {
+            _ingredientBox1Sprite.sprite = _greenBox;
+            _ingredientBox2Sprite.sprite = _greenBox;
+        }
+        else
+        {
+            _ingredientBox1Sprite.sprite = _whiteBox;
+            _ingredientBox2Sprite.sprite = _whiteBox;
+        }
+    }
+
+    // Animation
+    private void Craft_Bounce()
+    {
+        // up
+        LeanTween.moveLocal(_ingredientBox1, new Vector2(-0.22f, 0.55f), 0.2f).setEase(LeanTweenType.easeInOutQuint);
+        LeanTween.moveLocal(_ingredientBox2, new Vector2(0.22f, 0.55f), 0.2f).setDelay(0.1f).setEase(LeanTweenType.easeInOutQuint);
+
+        // down
+        LeanTween.moveLocal(_ingredientBox1, new Vector2(-0.22f, 0.5f), 0.2f).setDelay(0.2f).setEase(LeanTweenType.easeInOutQuint).setEase(LeanTweenType.easeInOutQuint);
+        LeanTween.moveLocal(_ingredientBox2, new Vector2(0.22f, 0.5f), 0.2f).setDelay(0.3f);
     }
 }
