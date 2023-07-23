@@ -8,10 +8,14 @@ public class Drag_Slot : MonoBehaviour
 {
     [SerializeField] private Inventory_Controller _inventoryController;
 
+    private Object_Scanner _objectScanner;
+    public Object_Scanner objectScanner { get => _objectScanner; set => _objectScanner = value; }
+
     private RectTransform _rectTransform;
 
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
+    [SerializeField] private Text _droppedAmountText;
 
     private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }
@@ -36,10 +40,11 @@ public class Drag_Slot : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out RectTransform rectTransform)) { _rectTransform = rectTransform; }
+        if (gameObject.TryGetComponent(out Object_Scanner objectScanner)) { _objectScanner = objectScanner; }
     }
     private void Update()
     {
-        Drag_Item();
+        Follow_Pointer();
     }
 
     // Check System
@@ -56,7 +61,7 @@ public class Drag_Slot : MonoBehaviour
         return true;
     }
 
-    // Functions
+    // Dragging Functions
     public void Assign(Item_ScrObj item, int amount)
     {
         _currentItem = item;
@@ -108,9 +113,9 @@ public class Drag_Slot : MonoBehaviour
     }
 
     // Updates
-    public void Drag_Item()
+    public void Follow_Pointer()
     {
-        if (!_itemDragging) return;
+        if (!_itemDragging && !_objectScanner.objectDetected) return;
         
         Vector2 mousePosition = Input.mousePosition;
         Vector2 canvasPosition = Vector2.zero;
