@@ -15,7 +15,6 @@ public class Drag_Slot : MonoBehaviour
 
     [SerializeField] private Image _itemImage;
     [SerializeField] private Text _amountText;
-    [SerializeField] private Text _droppedAmountText;
 
     private Item_ScrObj _currentItem;
     public Item_ScrObj currentItem { get => _currentItem; set => _currentItem = value; }

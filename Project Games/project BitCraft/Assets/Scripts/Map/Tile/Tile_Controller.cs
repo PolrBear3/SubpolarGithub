@@ -271,6 +271,14 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         Update_CurrentPrefabs();
     }
 
+    private void Prefab_BC_Activation(bool activate)
+    {
+        for (int i = 0; i < currentPrefabs.Count; i++)
+        {
+            currentPrefabs[i].BC_Activation(activate);
+        }
+    }
+
     // Update
     private void Update_CurrentPrefabs()
     {
@@ -364,10 +372,9 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     }
     public void ItemDrop_Highlight_Activation(bool activate)
     {
-
-
         _itemDropReady = activate;
         _itemDropkBox.SetActive(activate);
+        Prefab_BC_Activation(!activate);
     }
     public void Equipment_Highlight_Activation(bool activate)
     {

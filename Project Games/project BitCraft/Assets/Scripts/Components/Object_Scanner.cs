@@ -7,7 +7,8 @@ public class Object_Scanner : MonoBehaviour
 {
     private Drag_Slot _dragSlot;
 
-    [SerializeField] private Text _amountText;
+    [SerializeField] private Image _droppedIcon; 
+    [SerializeField] private Text _droppedText;
 
     private bool _objectDetected;
     public bool objectDetected { get => _objectDetected; set => _objectDetected = value; }
@@ -23,19 +24,23 @@ public class Object_Scanner : MonoBehaviour
 
         _objectDetected = true;
 
-        Color textColor = _amountText.color;
+        _droppedIcon.color = Color.white;
 
-        _amountText.text = amount.ToString();
+        Color textColor = _droppedText.color;
+
+        _droppedText.text = amount.ToString();
         textColor.a = 1f;
-        _amountText.color = textColor;
+        _droppedText.color = textColor;
     }
     public void Hide_Amount()
     {
         _objectDetected = false;
 
-        Color textColor = _amountText.color;
+        _droppedIcon.color = Color.clear;
+
+        Color textColor = _droppedText.color;
 
         textColor.a = 0f;
-        _amountText.color = textColor;
+        _droppedText.color = textColor;
     }
 }

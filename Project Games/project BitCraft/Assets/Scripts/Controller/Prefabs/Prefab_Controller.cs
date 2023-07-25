@@ -7,6 +7,9 @@ public class Prefab_Controller : MonoBehaviour
     private SpriteRenderer _sr;
     public SpriteRenderer sr { get => _sr; set => _sr = value; }
 
+    private BoxCollider2D _bc;
+    public BoxCollider2D bc { get => _bc; set => bc = value; }
+
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
     
@@ -54,6 +57,7 @@ public class Prefab_Controller : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
+        if (gameObject.TryGetComponent(out BoxCollider2D bc)) { _bc = bc; }
     }
 
     // Check
@@ -141,6 +145,13 @@ public class Prefab_Controller : MonoBehaviour
     {
         if (interactTileRowNum < _currentRowNum) transform.localRotation = Quaternion.Euler(0, 180, 0);
         else if (interactTileRowNum > _currentRowNum) transform.localRotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    // Interaction Control
+    public void BC_Activation(bool activate)
+    {
+        if (_bc == null) return;
+        _bc.enabled = activate;
     }
 
     // Amount Control
