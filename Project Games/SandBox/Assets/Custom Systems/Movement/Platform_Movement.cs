@@ -20,9 +20,9 @@ public class Platform_Movement : MonoBehaviour
         Move();
     }
 
-    public void OnMovement(InputAction.CallbackContext context)
+    public void OnMovement(InputValue value)
     {
-        _xDirection = context.ReadValue<Vector2>().x;
+        _xDirection = value.Get<Vector2>().x;
     }
 
     // Movement
