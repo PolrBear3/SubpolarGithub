@@ -10,6 +10,9 @@ public class Game_Controller : MonoBehaviour
     [SerializeField] private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
 
+    [SerializeField] private Time_Controller _timeController;
+    public Time_Controller timeController { get => _timeController; set => _timeController = value; }
+
     [SerializeField] private Inventory_Controller _inventoryController;
     public Inventory_Controller inventoryController { get => _inventoryController; set => _inventoryController = value; }
 

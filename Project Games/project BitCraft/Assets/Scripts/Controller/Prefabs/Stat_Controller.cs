@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Stat_Controller : MonoBehaviour
 {
+    [Header("Max Stats")]
     [SerializeField] private int _maxLifeCount;
     [SerializeField] private int _maxFatigue;
     [SerializeField] private int _maxHunger;
     [SerializeField] private int _maxLungCapacity;
 
+    [Header("Current Stats")]
     [SerializeField] private int _currentLifeCount;
     public int currentLifeCount
     {
