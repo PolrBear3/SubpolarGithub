@@ -19,9 +19,6 @@ public class Prefab_Controller : MonoBehaviour
     [SerializeField] private Stat_Controller _statController;
     public Stat_Controller statController { get => _statController; set => _statController = value; }
 
-    [SerializeField] private Health_Controller _healthController;
-    public Health_Controller healthController { get => _healthController; set => _healthController = value; }
-
     [SerializeField] private Equipment_Controller _equipmentController;
     public Equipment_Controller equipmentController { get => _equipmentController; set => _equipmentController = value; }
 

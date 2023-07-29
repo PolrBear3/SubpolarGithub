@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8537117108615183467}
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
-  - component: {fileID: 4651572311096850505}
+  - component: {fileID: 5764221875984540746}
   - component: {fileID: 4688511875017061401}
   m_Layer: 0
   m_Name: Green Tree
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabTag: {fileID: 6900627066728663899}
-  _healthController: {fileID: 4651572311096850505}
+  _statController: {fileID: 5764221875984540746}
   _equipmentController: {fileID: 0}
   _positionX: 0
   _positionY: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   _currentAmount: 0
   _changeAmount: 0
   _sprites: []
---- !u!114 &4651572311096850505
+--- !u!114 &5764221875984540746
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,10 +138,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2013186990097543618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ed87d32bdb6e4141bfe4c26860bb3cf, type: 3}
+  m_Script: {fileID: 11500000, guid: fe10ed84c00c2471a9666adb9f7fefb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLifeCount: 3
+  _maxFatigue: 0
+  _maxHunger: 0
+  _maxLungCapacity: 0
+  _currentLifeCount: 0
+  _currentFatigue: 0
+  _currentHunger: 0
+  _currentLungCapacity: 0
 --- !u!114 &4688511875017061401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,3 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a2492350f0e4e1a83e0a47e4416cd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _additionalItem: {fileID: 0}
+  _leafAmount: 10
+  _additionalAmount: 0

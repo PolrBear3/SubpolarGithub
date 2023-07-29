@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1120809463876764471}
   - component: {fileID: 7549250097886151390}
   - component: {fileID: 3719693828992680941}
-  - component: {fileID: 7373377854124037029}
+  - component: {fileID: 5943235777382035921}
   - component: {fileID: 3096086046249689037}
   m_Layer: 0
   m_Name: Player
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabTag: {fileID: 7549250097886151390}
-  _healthController: {fileID: 7373377854124037029}
+  _statController: {fileID: 5943235777382035921}
   _equipmentController: {fileID: 5511476646684392976}
   _positionX: 0
   _positionY: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   _currentAmount: 0
   _changeAmount: 0
   _sprites: []
---- !u!114 &7373377854124037029
+--- !u!114 &5943235777382035921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -195,10 +195,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5523278180378848208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ed87d32bdb6e4141bfe4c26860bb3cf, type: 3}
+  m_Script: {fileID: 11500000, guid: fe10ed84c00c2471a9666adb9f7fefb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLifeCount: 5
+  _maxFatigue: 0
+  _maxHunger: 0
+  _maxLungCapacity: 0
+  _currentLifeCount: 0
+  _currentFatigue: 0
+  _currentHunger: 0
+  _currentLungCapacity: 0
 --- !u!114 &3096086046249689037
 MonoBehaviour:
   m_ObjectHideFlags: 0

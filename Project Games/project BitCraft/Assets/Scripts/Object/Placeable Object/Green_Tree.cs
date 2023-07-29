@@ -31,11 +31,11 @@ public class Green_Tree : MonoBehaviour, IInteractable, IDamageable
     // Function
     private void Get_Damaged(int damageAmount)
     {
-        _controller.healthController.Subtract_Current_LifeCount(damageAmount);
+        _controller.statController.Update_Current_LifeCount(-damageAmount);
     }
     private void Health_Check()
     {
-        if (_controller.healthController.currentLifeCount > 0) return;
+        if (_controller.statController.currentLifeCount > 0) return;
 
         Drop_Log(3, 5);
         Drop_Leaf(2, 5);

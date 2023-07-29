@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 7738360019665485410}
   - component: {fileID: -805645501094084125}
   - component: {fileID: 4422558924385719662}
-  - component: {fileID: 1513514210230383055}
+  - component: {fileID: 7516715032212792930}
   - component: {fileID: 72582589171988431}
   m_Layer: 0
   m_Name: Basic CraftTable
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabTag: {fileID: -805645501094084125}
-  _healthController: {fileID: 1513514210230383055}
+  _statController: {fileID: 7516715032212792930}
   _equipmentController: {fileID: 0}
   _positionX: 0
   _positionY: 0
@@ -248,7 +248,7 @@ MonoBehaviour:
   _currentAmount: 0
   _changeAmount: 0
   _sprites: []
---- !u!114 &1513514210230383055
+--- !u!114 &7516715032212792930
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,10 +257,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6824486887574020720}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ed87d32bdb6e4141bfe4c26860bb3cf, type: 3}
+  m_Script: {fileID: 11500000, guid: fe10ed84c00c2471a9666adb9f7fefb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLifeCount: 3
+  _maxFatigue: 0
+  _maxHunger: 0
+  _maxLungCapacity: 0
+  _currentLifeCount: 0
+  _currentFatigue: 0
+  _currentHunger: 0
+  _currentLungCapacity: 0
 --- !u!114 &72582589171988431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +460,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5145318391217782881, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
 --- !u!4 &2694887185115194552 stripped
@@ -525,6 +536,10 @@ PrefabInstance:
     - target: {fileID: 3531824878932699811, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5145318391217782881, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 608adb99d9b9b534c9d5c2c25f1666f3, type: 3}
