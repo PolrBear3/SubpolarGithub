@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Basic_Gear : MonoBehaviour
 {
-    [SerializeField] private Tile _currentTile;
+    private Tile _currentTile;
     public Tile currentTile { get => _currentTile; set => _currentTile = value; }
 
     [SerializeField] private float _spinSpeed;
 
-    [SerializeField] private bool _spinInActive;
+    private bool _spinInActive;
     public bool spinInActive { get => _spinInActive; set => _spinInActive = value; }
 
     private bool _spinningRight;
@@ -40,42 +40,14 @@ public class Basic_Gear : MonoBehaviour
     {
         Player_Movement player = _currentTile.levelController.gameController.currentPlayer;
 
-        _spinInActive = false;
-
-        Spin_Activation_Check();
-
-        _currentTile.currentGear = null;
-        _currentTile = null;
-        player.currentGear = this;
-
         transform.parent = player.holdPoint;
         LeanTween.moveLocal(gameObject, Vector2.zero, 0.5f).setEase(LeanTweenType.easeInOutQuint);
     }
-
     public void Move_toTile(Tile targetTile)
     {
-        if (targetTile.currentGear != null || targetTile.hasObject) return;
-
-        _currentTile = targetTile;
-        targetTile.currentGear = this;
 
         transform.parent = _currentTile.transform;
         LeanTween.moveLocal(gameObject, Vector2.zero, 0.5f).setEase(LeanTweenType.easeInOutQuint);
-
-        Spin_Activation_Check();
-    }
-    public void Move_toTile(int toX, int toY)
-    {
-        Tile nextTile = _currentTile.levelController.Get_Tile(toX, toY);
-        if (nextTile.currentGear != null || nextTile.hasObject) return;
-
-        _currentTile = nextTile;
-        nextTile.currentGear = this;
-
-        transform.parent = _currentTile.transform;
-        LeanTween.moveLocal(gameObject, Vector2.zero, 0.5f).setEase(LeanTweenType.easeInOutQuint);
-
-        Spin_Activation_Check();
     }
 
     // Spin Update
@@ -90,12 +62,10 @@ public class Basic_Gear : MonoBehaviour
             if (_spinningRight == surroundingTiles[i].currentGear.spinningRight)
             {
                 _spinInActive = true;
-                surroundingTiles[i].currentGear.spinInActive = true;
             }
             else
             {
                 _spinInActive = false;
-                surroundingTiles[i].currentGear.spinInActive = false;
             }
         }
     }

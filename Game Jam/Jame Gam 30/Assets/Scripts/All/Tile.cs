@@ -16,7 +16,7 @@ public class Tile : MonoBehaviour
     private bool _hasObject;
     public bool hasObject { get => _hasObject; set => _hasObject = value; }
 
-    private Basic_Gear _currentGear;
+    [SerializeField] private Basic_Gear _currentGear;
     public Basic_Gear currentGear { get => _currentGear; set => _currentGear = value; }
 
     // Set
