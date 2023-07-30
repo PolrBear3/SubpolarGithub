@@ -12,7 +12,7 @@ public class Player_Movement : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private Animator _animator;
 
-    [SerializeField] private Tile _detectedTile;
+    private Tile _detectedTile;
 
     [SerializeField] private Transform _holdPoint;
     public Transform holdPoint { get => _holdPoint; set => _holdPoint = value; }
@@ -41,7 +41,7 @@ public class Player_Movement : MonoBehaviour
     }
     public void OnInteract()
     {
-        Hold_Drop();
+        Hold_Drop_Gear();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -70,24 +70,25 @@ public class Player_Movement : MonoBehaviour
             _animator.SetBool("isMoving", true);
         }
     }
-    private void Hold_Drop()
+    private void Hold_Drop_Gear()
     {
-        // Gear
         if (_detectedTile == null) return;
 
-        if (_currentGear == null)
+        // hold
+        if (_currentGear == null && _detectedTile.currentGear != null)
         {
-            if (_detectedTile.currentGear == null) return;
-
+            _currentGear = _detectedTile.currentGear;
             _detectedTile.currentGear.Move_toPlayer();
         }
-        else
+        // drop
+        else if (_currentGear != null && _detectedTile.currentGear == null)
         {
-            if (_detectedTile.currentGear != null) return;
-
-            _currentGear.Move_toTile(_detectedTile);
+            _detectedTile.currentGear = currentGear;
+            _detectedTile.currentGear.Move_toTile(_detectedTile);
             _currentGear = null;
         }
+
+        _gameController.currentLevel.AllGears_Spin_Activation_Check();
     }
 
     // Basic Functions

@@ -17,6 +17,7 @@ public class Level_Controller : MonoBehaviour
     private void Awake()
     {
         Set_AllTiles_Data();
+        AllGears_Spin_Activation_Check();
     }
 
     // Set
@@ -75,7 +76,7 @@ public class Level_Controller : MonoBehaviour
         for (int i = 0; i < _allTiles.Count; i++)
         {
             if (_allTiles[i].currentGear == null) continue;
-
+            _allTiles[i].currentGear.Spin_Activation_Check();
         }
     }
 }

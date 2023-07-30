@@ -9,17 +9,16 @@ public class Basic_Gear : MonoBehaviour
 
     [SerializeField] private float _spinSpeed;
 
+    [SerializeField] private bool _spinningRight;
+    public bool spinningRight { get => _spinningRight; set => _spinningRight = value; }
+
     private bool _spinInActive;
     public bool spinInActive { get => _spinInActive; set => _spinInActive = value; }
-
-    private bool _spinningRight;
-    public bool spinningRight { get => _spinningRight; set => _spinningRight = value; }
 
     //
     private void Awake()
     {
         Set_CurrentTile();
-        Spin_Activation_Check();
     }
     private void FixedUpdate()
     {
@@ -38,13 +37,20 @@ public class Basic_Gear : MonoBehaviour
     // Action
     public void Move_toPlayer()
     {
+        _spinInActive = false;
+
         Player_Movement player = _currentTile.levelController.gameController.currentPlayer;
+
+        _currentTile.currentGear = null;
+        _currentTile = null;
 
         transform.parent = player.holdPoint;
         LeanTween.moveLocal(gameObject, Vector2.zero, 0.5f).setEase(LeanTweenType.easeInOutQuint);
     }
     public void Move_toTile(Tile targetTile)
     {
+        _currentTile = targetTile;
+        _currentTile.currentGear = this;
 
         transform.parent = _currentTile.transform;
         LeanTween.moveLocal(gameObject, Vector2.zero, 0.5f).setEase(LeanTweenType.easeInOutQuint);
@@ -55,19 +61,16 @@ public class Basic_Gear : MonoBehaviour
     {
         List<Tile> surroundingTiles = _currentTile.levelController.Surrounding_Tiles(_currentTile);
 
+        bool inActive = false;
+
         for (int i = 0; i < surroundingTiles.Count; i++)
         {
             if (surroundingTiles[i].currentGear == null) continue;
-
-            if (_spinningRight == surroundingTiles[i].currentGear.spinningRight)
-            {
-                _spinInActive = true;
-            }
-            else
-            {
-                _spinInActive = false;
-            }
+            if (!surroundingTiles[i].currentGear.spinInActive && _spinningRight != surroundingTiles[i].currentGear.spinningRight) continue;
+            else inActive = true;
         }
+
+        _spinInActive = inActive;
     }
     private void Spin()
     {
