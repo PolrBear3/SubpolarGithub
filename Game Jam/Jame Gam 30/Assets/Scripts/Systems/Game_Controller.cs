@@ -17,20 +17,44 @@ public class Game_Controller : MonoBehaviour
     [SerializeField] private Level_Controller _currentLevel;
     public Level_Controller currentLevel { get => _currentLevel; set => _currentLevel = value; }
 
+    private int _currentLevelNum;
+    public int currentLevelNum { get => _currentLevelNum; set => _currentLevelNum = value; }
+
+    [Header("Extra")]
+    [SerializeField] private GameObject _openingCurtain;
+
     //
     private void Start()
     {
-        Set_Level(0);
-        Set_Player();
+        Load_Level();
+    }
+    private void OnApplicationQuit()
+    {
+        Save_Level();
     }
 
     // Game Set
-    private void Set_Level(int levelNum)
+    private void Load_Level()
+    {
+        _currentLevelNum = ES3.Load("_currentLevelNum", _currentLevelNum);
+        if (_currentLevelNum >= _allLevels.Count - 1) _currentLevelNum = _allLevels.Count - 1;
+        Set_Level(_currentLevelNum);
+
+        LeanTween.alpha(_openingCurtain, 0f, _currentLevel.timeController.transitionTime);
+    }
+    public void Save_Level()
+    {
+        ES3.Save("_currentLevelNum", _currentLevelNum);
+    }
+
+    public void Set_Level(int levelNum)
     {
         _currentLevel = null;
         GameObject level = Instantiate(allLevels[levelNum]);
         if (level.TryGetComponent(out Level_Controller levelController)) _currentLevel = levelController;
         _currentLevel.gameController = this;
+
+        Set_Player();
     }
     private void Set_Player()
     {

@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level_Controller : MonoBehaviour
 {
     private Game_Controller _gameController;
     public Game_Controller gameController { get => _gameController; set => _gameController = value; }
+
+    [SerializeField] private Time_Controller _timeController;
+    public Time_Controller timeController { get => _timeController; set => _timeController = value; }
+
+    private Gold_Gear _goldGear;
+    public Gold_Gear goldGear { get => _goldGear; set => _goldGear = value; }
 
     [Header("Set Data")]
     [SerializeField] private List<Tile> _allTiles = new List<Tile>();
@@ -18,6 +25,8 @@ public class Level_Controller : MonoBehaviour
     {
         Set_AllTiles_Data();
         AllGears_Spin_Activation_Check();
+
+        _timeController.Start_Game();
     }
 
     // Set
@@ -70,13 +79,35 @@ public class Level_Controller : MonoBehaviour
         return surroundingTiles;
     }
 
-    // Update Check
+    // All Gears
     public void AllGears_Spin_Activation_Check()
     {
+        // refresh calculation
         for (int i = 0; i < _allTiles.Count; i++)
         {
             if (_allTiles[i].currentGear == null) continue;
-            _allTiles[i].currentGear.Spin_Activation_Check();
+            _allTiles[i].currentGear.spinInActive = false;
+            _allTiles[i].currentGear.Spin_Activation_Check(true);
         }
+        // calculate
+        for (int i = 0; i < _allTiles.Count; i++)
+        {
+            if (_allTiles[i].currentGear == null) continue;
+            _allTiles[i].currentGear.Spin_Activation_Check(false);
+        }
+    }
+
+    // Level Controller
+    IEnumerator Next_Level_Delay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        _gameController.currentLevelNum++;
+        _gameController.Save_Level();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void Next_Level(float delayTime)
+    {
+        StartCoroutine(Next_Level_Delay(delayTime));
     }
 }

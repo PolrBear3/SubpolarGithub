@@ -15,6 +15,9 @@ public class Basic_Gear : MonoBehaviour
     private bool _spinInActive;
     public bool spinInActive { get => _spinInActive; set => _spinInActive = value; }
 
+    private Gold_Gear _goldGear;
+    public Gold_Gear goldGear { get => _goldGear; set => _goldGear = value; }
+
     //
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class Basic_Gear : MonoBehaviour
     public void Move_toPlayer()
     {
         _spinInActive = false;
+        _currentTile.indicator.Deactivate_Animation();
 
         Player_Movement player = _currentTile.levelController.gameController.currentPlayer;
 
@@ -57,21 +61,45 @@ public class Basic_Gear : MonoBehaviour
     }
 
     // Spin Update
-    public void Spin_Activation_Check()
+    public void Spin_Activation_Check(bool refresh)
     {
-        List<Tile> surroundingTiles = _currentTile.levelController.Surrounding_Tiles(_currentTile);
-
-        bool inActive = false;
-
-        for (int i = 0; i < surroundingTiles.Count; i++)
+        if (_goldGear != null)
         {
-            if (surroundingTiles[i].currentGear == null) continue;
-            if (!surroundingTiles[i].currentGear.spinInActive && _spinningRight != surroundingTiles[i].currentGear.spinningRight) continue;
-            else inActive = true;
+            _goldGear.SpinPower_Check();
+            return;
         }
 
-        _spinInActive = inActive;
+        List<Tile> surroundingTiles = _currentTile.levelController.Surrounding_Tiles(_currentTile);
+
+        if (refresh)
+        {
+            for (int i = 0; i < surroundingTiles.Count; i++)
+            {
+                if (surroundingTiles[i].currentGear == null) continue;
+                if (_spinningRight != surroundingTiles[i].currentGear.spinningRight) continue;
+
+                _spinInActive = true;
+                _currentTile.indicator.Spin_InActive_Animation(_spinningRight);
+                return;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < surroundingTiles.Count; i++)
+            {
+                if (surroundingTiles[i].currentGear == null) continue;
+                if (!surroundingTiles[i].currentGear.spinInActive && _spinningRight != surroundingTiles[i].currentGear.spinningRight) continue;
+
+                _spinInActive = true;
+                _currentTile.indicator.Spin_InActive_Animation(_spinningRight);
+                return;
+            }
+        }
+
+        _spinInActive = false;
+        _currentTile.indicator.Deactivate_Animation();
     }
+
     private void Spin()
     {
         if (_spinInActive) return;

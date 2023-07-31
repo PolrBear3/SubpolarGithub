@@ -27,9 +27,9 @@ public class Player_Movement : MonoBehaviour
     //
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out SpriteRenderer spriteRenderer)) { _spriteRenderer = spriteRenderer; }
-        if (gameObject.TryGetComponent(out Rigidbody2D rigidBody)) { _rigidBody = rigidBody; }
-        if (gameObject.TryGetComponent(out Animator animator)) { _animator = animator; }
+        if (gameObject.TryGetComponent(out SpriteRenderer spriteRenderer)) _spriteRenderer = spriteRenderer;
+        if (gameObject.TryGetComponent(out Rigidbody2D rigidBody)) _rigidBody = rigidBody;
+        if (gameObject.TryGetComponent(out Animator animator)) _animator = animator;
     }
     private void FixedUpdate()
     {
@@ -46,10 +46,14 @@ public class Player_Movement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Tile detectTile)) { _detectedTile = detectTile; }
+        if (collision.TryGetComponent(out Tile detectTile)) _detectedTile = detectTile;
+
+        if (_detectedTile.isDefaultTile || _currentGear == null || _detectedTile.currentGear != null) return;
+        _detectedTile.indicator.GearPlace_Indication(true);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        _detectedTile.indicator.GearPlace_Indication(false);
         _detectedTile = null;
     }
 
@@ -73,16 +77,22 @@ public class Player_Movement : MonoBehaviour
     private void Hold_Drop_Gear()
     {
         if (_detectedTile == null) return;
+        if (_detectedTile.isDefaultTile) return;
+        if (_detectedTile.currentGear != null && _detectedTile.currentGear.goldGear != null) return;
 
         // hold
         if (_currentGear == null && _detectedTile.currentGear != null)
         {
+            _detectedTile.indicator.GearPlace_Indication(true);
+
             _currentGear = _detectedTile.currentGear;
             _detectedTile.currentGear.Move_toPlayer();
         }
         // drop
         else if (_currentGear != null && _detectedTile.currentGear == null)
         {
+            _detectedTile.indicator.GearPlace_Indication(false);
+
             _detectedTile.currentGear = currentGear;
             _detectedTile.currentGear.Move_toTile(_detectedTile);
             _currentGear = null;
