@@ -10,7 +10,9 @@ public class Gold_Gear : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private Sprite _darkGearSprite;
-    [SerializeField] private int _spinPower;
+
+    [SerializeField] private List<Tile> _setTiles = new List<Tile>();
+    public List<Tile> setTiles { get => _setTiles; set => _setTiles = value; }
 
     //
     private void Awake()
@@ -38,29 +40,19 @@ public class Gold_Gear : MonoBehaviour
     // Update
     public void SpinPower_Check()
     {
-        Tile currentTile = _basicGear.currentTile;
-        List<Tile> surroundingTiles = currentTile.levelController.Surrounding_Tiles(currentTile);
-        List<Basic_Gear> checkGears = new List<Basic_Gear>();
-
-        int powerCount = 0;
-        for (int i = 0; i < surroundingTiles.Count; i++)
+        for (int i = 0; i < _setTiles.Count; i++)
         {
-            if (surroundingTiles[i].currentGear == null) continue;
-            checkGears.Add(surroundingTiles[i].currentGear);
-
-            if (!surroundingTiles[i].currentGear.spinInActive) continue;
-            powerCount++;
+            if (_setTiles[i].currentGear == null) return;
+            if (!_setTiles[i].currentGear.spinInActive) return;
         }
-
-        if (powerCount < _spinPower) return;
 
         _basicGear.currentTile.levelController.timeController.End_Game();
         DarkGear_Update();
         _basicGear.spinningRight = !_basicGear.spinningRight;
 
-        for (int i = 0; i < checkGears.Count; i++)
+        for (int i = 0; i < _setTiles.Count; i++)
         {
-            checkGears[i].Spin_Activation_Check(true);
+            _setTiles[i].currentGear.Spin_Activation_Check(true);
         }
     }
 }

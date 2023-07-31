@@ -1278,6 +1278,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6319543045192878527}
     m_Modifications:
+    - target: {fileID: -2605942635060579837, guid: 7fffff26415c84c9b9a3b8490c73e629, type: 3}
+      propertyPath: _spinningRight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2199567340893815415, guid: 7fffff26415c84c9b9a3b8490c73e629, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1566,6 +1570,14 @@ PrefabInstance:
       propertyPath: _spinPower
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3633041331009962519, guid: 25829a03e956845cbb310f766333de6b, type: 3}
+      propertyPath: _setTiles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633041331009962519, guid: 25829a03e956845cbb310f766333de6b, type: 3}
+      propertyPath: _setTiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 1508695038743158187}
     - target: {fileID: 6811759837414552449, guid: 25829a03e956845cbb310f766333de6b, type: 3}
       propertyPath: m_Name
       value: Gold Gear
