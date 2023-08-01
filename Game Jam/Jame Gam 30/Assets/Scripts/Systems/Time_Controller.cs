@@ -70,7 +70,14 @@ public class Time_Controller : MonoBehaviour
     private void Run_Time()
     {
         if (!_timeRunning) return;
-        if (_currentTime <= 0) return;
+
+        if (_currentTime <= 0)
+        {
+            _timeRunning = false;
+            _levelController.gameController.currentPlayer.Die();
+            return;
+        }
+
         _currentTime -= Time.deltaTime;
     }
 }

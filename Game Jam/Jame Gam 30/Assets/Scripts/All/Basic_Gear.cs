@@ -9,11 +9,17 @@ public class Basic_Gear : MonoBehaviour
 
     [SerializeField] private float _spinSpeed;
 
+    [SerializeField] private bool _unHoldable;
+    public bool unHoldable { get => _unHoldable; set => _unHoldable = value; }
+
     [SerializeField] private bool _spinningRight;
     public bool spinningRight { get => _spinningRight; set => _spinningRight = value; }
 
     private bool _spinInActive;
     public bool spinInActive { get => _spinInActive; set => _spinInActive = value; }
+
+    private Object_Gear _objectGear;
+    public Object_Gear objectGear { get => _objectGear; set => _objectGear = value; }
 
     private Gold_Gear _goldGear;
     public Gold_Gear goldGear { get => _goldGear; set => _goldGear = value; }
@@ -63,11 +69,7 @@ public class Basic_Gear : MonoBehaviour
     // Spin Update
     public void Spin_Activation_Check(bool refresh)
     {
-        if (_goldGear != null)
-        {
-            _goldGear.SpinPower_Check();
-            return;
-        }
+        if (_goldGear != null || _objectGear != null) return;
 
         List<Tile> surroundingTiles = _currentTile.levelController.Surrounding_Tiles(_currentTile);
 
@@ -76,6 +78,8 @@ public class Basic_Gear : MonoBehaviour
             for (int i = 0; i < surroundingTiles.Count; i++)
             {
                 if (surroundingTiles[i].currentGear == null) continue;
+                if (surroundingTiles[i].currentGear.goldGear != null) continue;
+                if (surroundingTiles[i].currentGear.objectGear != null) continue;
                 if (_spinningRight != surroundingTiles[i].currentGear.spinningRight) continue;
 
                 _spinInActive = true;
@@ -88,6 +92,8 @@ public class Basic_Gear : MonoBehaviour
             for (int i = 0; i < surroundingTiles.Count; i++)
             {
                 if (surroundingTiles[i].currentGear == null) continue;
+                if (surroundingTiles[i].currentGear.goldGear != null) continue;
+                if (surroundingTiles[i].currentGear.objectGear != null) continue;
                 if (!surroundingTiles[i].currentGear.spinInActive && _spinningRight != surroundingTiles[i].currentGear.spinningRight) continue;
 
                 _spinInActive = true;

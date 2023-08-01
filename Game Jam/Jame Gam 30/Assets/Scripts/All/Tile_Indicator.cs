@@ -7,7 +7,8 @@ public class Tile_Indicator : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private Animator _animator;
 
-    [SerializeField] private GameObject _gearPlace;
+    [SerializeField] private GameObject _gearIndicator;
+    [SerializeField] private SpriteRenderer _goldGearIndicator;
 
     //
     private void Awake()
@@ -28,9 +29,15 @@ public class Tile_Indicator : MonoBehaviour
     }
 
     // Gear
-    public void GearPlace_Indication(bool activate)
+    public void Gear_Indication(bool activate)
     {
-        if (activate) LeanTween.alpha(_gearPlace, 0.8f, 0f);
-        else LeanTween.alpha(_gearPlace, 0f, 0f);
+        if (activate) LeanTween.alpha(_gearIndicator, 0.8f, 0f);
+        else LeanTween.alpha(_gearIndicator, 0f, 0f);
+    }
+
+    // Gold Gear
+    public void GoldGear_Indication()
+    {
+        _goldGearIndicator.color = Color.white;
     }
 }

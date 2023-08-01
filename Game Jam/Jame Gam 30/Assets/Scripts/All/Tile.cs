@@ -16,7 +16,7 @@ public class Tile : MonoBehaviour
     private int _yPosition;
     public int yPosition { get => _yPosition; set => _yPosition = value; }
 
-    [SerializeField] private bool _hasObject;
+    private bool _hasObject;
     public bool hasObject { get => _hasObject; set => _hasObject = value; }
 
     [SerializeField] private bool _isDefaultTile;

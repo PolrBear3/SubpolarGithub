@@ -21,6 +21,9 @@ public class Level_Controller : MonoBehaviour
     [SerializeField] private int levelSizeX;
     [SerializeField] private int levelSizeY;
 
+    [SerializeField] private Transform _playerStartTile;
+    public Transform playerStartTile { get => _playerStartTile; set => _playerStartTile = value; }
+
     private void Awake()
     {
         Set_AllTiles_Data();
@@ -79,7 +82,7 @@ public class Level_Controller : MonoBehaviour
         return surroundingTiles;
     }
 
-    // All Gears
+    // All Gears Update
     public void AllGears_Spin_Activation_Check()
     {
         // refresh calculation
@@ -95,6 +98,18 @@ public class Level_Controller : MonoBehaviour
             if (_allTiles[i].currentGear == null) continue;
             _allTiles[i].currentGear.Spin_Activation_Check(false);
         }
+
+        // object gear
+        for (int i = 0; i < _allTiles.Count; i++)
+        {
+            if (_allTiles[i].currentGear == null) continue;
+            if (_allTiles[i].currentGear.objectGear == null) continue;
+            _allTiles[i].currentGear.objectGear.Activate_Object();
+        }
+
+        // gold gear update
+        if (_goldGear == null) return;
+        _goldGear.SpinReverse_Check();
     }
 
     // Level Controller
@@ -109,5 +124,17 @@ public class Level_Controller : MonoBehaviour
     public void Next_Level(float delayTime)
     {
         StartCoroutine(Next_Level_Delay(delayTime));
+    }
+
+    IEnumerator Reload_Level_Delay(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        _gameController.Save_Level();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void Reload_Level(float delayTime)
+    {
+        StartCoroutine(Reload_Level_Delay(delayTime));
     }
 }

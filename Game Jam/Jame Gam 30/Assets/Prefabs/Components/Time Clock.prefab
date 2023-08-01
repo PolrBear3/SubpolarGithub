@@ -557,6 +557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spinSpeed: 2
+  _unHoldable: 0
   _spinningRight: 0
 --- !u!114 &7900528125580373230
 MonoBehaviour:
@@ -571,7 +572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _darkGearSprite: {fileID: -1385440933, guid: b4829790d4dad4cf8a854f659746cc5b, type: 3}
-  _spinPower: 0
+  _setTiles: []
 --- !u!1 &4161059743716276883
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,8 +847,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
-  m_Sprite: {fileID: -1383844120, guid: 704ce3fb4f2484e5bbc8910082fbaf04, type: 3}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 1035730103, guid: f9068ed1e2d83439c889c3dcded7c1ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -962,7 +963,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 2010432142, guid: 704ce3fb4f2484e5bbc8910082fbaf04, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0

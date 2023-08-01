@@ -7,14 +7,14 @@ public class Game_Controller : MonoBehaviour
     [Header("Player")]
     [SerializeField] private GameObject _player;
 
-    [SerializeField] private Player_Movement _currentPlayer;
+    private Player_Movement _currentPlayer;
     public Player_Movement currentPlayer { get => _currentPlayer; set => _currentPlayer = value; }
 
     [Header("Level")]
     [SerializeField] private List<GameObject> _allLevels = new List<GameObject>();
     public List<GameObject> allLevels { get => _allLevels; set => _allLevels = value; }
 
-    [SerializeField] private Level_Controller _currentLevel;
+    private Level_Controller _currentLevel;
     public Level_Controller currentLevel { get => _currentLevel; set => _currentLevel = value; }
 
     private int _currentLevelNum;
@@ -22,6 +22,7 @@ public class Game_Controller : MonoBehaviour
 
     [Header("Extra")]
     [SerializeField] private GameObject _openingCurtain;
+    [SerializeField] private GameObject _deathCurtain;
 
     //
     private void Start()
@@ -33,6 +34,16 @@ public class Game_Controller : MonoBehaviour
         Save_Level();
     }
 
+    // Curtain Control
+    public void Activate_OpeningCurtain()
+    {
+        LeanTween.alpha(_openingCurtain, 0f, _currentLevel.timeController.transitionTime);
+    }
+    public void Acivate_DeathCuratin()
+    {
+        LeanTween.alpha(_deathCurtain, 1f, _currentLevel.timeController.transitionTime);
+    }
+
     // Game Set
     private void Load_Level()
     {
@@ -40,7 +51,7 @@ public class Game_Controller : MonoBehaviour
         if (_currentLevelNum >= _allLevels.Count - 1) _currentLevelNum = _allLevels.Count - 1;
         Set_Level(_currentLevelNum);
 
-        LeanTween.alpha(_openingCurtain, 0f, _currentLevel.timeController.transitionTime);
+        Activate_OpeningCurtain();
     }
     public void Save_Level()
     {
@@ -62,5 +73,7 @@ public class Game_Controller : MonoBehaviour
         GameObject player = Instantiate(_player);
         if (player.TryGetComponent(out Player_Movement currentPlayer)) _currentPlayer = currentPlayer;
         _currentPlayer.gameController = this;
+
+        player.transform.position = _currentLevel.playerStartTile.position;
     }
 }

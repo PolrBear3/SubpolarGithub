@@ -46,14 +46,17 @@ public class Player_Movement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Tile detectTile)) _detectedTile = detectTile;
+        if (!collision.TryGetComponent(out Tile detectTile)) return;
+        _detectedTile = detectTile;
 
         if (_detectedTile.isDefaultTile || _currentGear == null || _detectedTile.currentGear != null) return;
-        _detectedTile.indicator.GearPlace_Indication(true);
+        _detectedTile.indicator.Gear_Indication(true);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        _detectedTile.indicator.GearPlace_Indication(false);
+        if (!collision.TryGetComponent(out Tile detectTile)) return;
+
+        _detectedTile.indicator.Gear_Indication(false);
         _detectedTile = null;
     }
 
@@ -78,12 +81,12 @@ public class Player_Movement : MonoBehaviour
     {
         if (_detectedTile == null) return;
         if (_detectedTile.isDefaultTile) return;
-        if (_detectedTile.currentGear != null && _detectedTile.currentGear.goldGear != null) return;
+        if (_detectedTile.currentGear != null && _detectedTile.currentGear.unHoldable) return;
 
         // hold
         if (_currentGear == null && _detectedTile.currentGear != null)
         {
-            _detectedTile.indicator.GearPlace_Indication(true);
+            _detectedTile.indicator.Gear_Indication(true);
 
             _currentGear = _detectedTile.currentGear;
             _detectedTile.currentGear.Move_toPlayer();
@@ -91,7 +94,7 @@ public class Player_Movement : MonoBehaviour
         // drop
         else if (_currentGear != null && _detectedTile.currentGear == null)
         {
-            _detectedTile.indicator.GearPlace_Indication(false);
+            _detectedTile.indicator.Gear_Indication(false);
 
             _detectedTile.currentGear = currentGear;
             _detectedTile.currentGear.Move_toTile(_detectedTile);
@@ -99,6 +102,15 @@ public class Player_Movement : MonoBehaviour
         }
 
         _gameController.currentLevel.AllGears_Spin_Activation_Check();
+    }
+    public void Die()
+    {
+        _rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
+        _animator.SetTrigger("death");
+
+        _gameController.currentLevel.timeController.timeRunning = false;
+        _gameController.Acivate_DeathCuratin();
+        _gameController.currentLevel.Reload_Level(2.2f);
     }
 
     // Basic Functions

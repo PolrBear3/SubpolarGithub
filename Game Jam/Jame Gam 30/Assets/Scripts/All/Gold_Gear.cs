@@ -8,17 +8,16 @@ public class Gold_Gear : MonoBehaviour
     public Basic_Gear basicGear { get => _basicGear; set => _basicGear = value; }
 
     private SpriteRenderer _spriteRenderer;
-
     [SerializeField] private Sprite _darkGearSprite;
 
     [SerializeField] private List<Tile> _setTiles = new List<Tile>();
-    public List<Tile> setTiles { get => _setTiles; set => _setTiles = value; }
 
     //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) _spriteRenderer = sr;
         Set_CurrentTile();
+        SetTiles_Indication();
     }
 
     // Set
@@ -30,6 +29,13 @@ public class Gold_Gear : MonoBehaviour
         if (_basicGear.currentTile == null) return;
         _basicGear.currentTile.levelController.goldGear = this;
     }
+    private void SetTiles_Indication()
+    {
+        for (int i = 0; i < _setTiles.Count; i++)
+        {
+            _setTiles[i].indicator.GoldGear_Indication();
+        }
+    }
 
     // Sprite
     public void DarkGear_Update()
@@ -38,21 +44,26 @@ public class Gold_Gear : MonoBehaviour
     }
 
     // Update
-    public void SpinPower_Check()
+    public void SpinReverse_Check()
     {
+        List<Basic_Gear> surroundingGears = new List<Basic_Gear>();
+
         for (int i = 0; i < _setTiles.Count; i++)
         {
             if (_setTiles[i].currentGear == null) return;
-            if (!_setTiles[i].currentGear.spinInActive) return;
+            surroundingGears.Add(_setTiles[i].currentGear);
+
+            if (_setTiles[i].currentGear.spinInActive) return;
+            if (_basicGear.spinningRight != _setTiles[i].currentGear.spinningRight) return;
         }
 
         _basicGear.currentTile.levelController.timeController.End_Game();
-        DarkGear_Update();
         _basicGear.spinningRight = !_basicGear.spinningRight;
+        DarkGear_Update();
 
-        for (int i = 0; i < _setTiles.Count; i++)
+        for (int i = 0; i < surroundingGears.Count; i++)
         {
-            _setTiles[i].currentGear.Spin_Activation_Check(true);
+            surroundingGears[i].Spin_Activation_Check(true);
         }
     }
 }
