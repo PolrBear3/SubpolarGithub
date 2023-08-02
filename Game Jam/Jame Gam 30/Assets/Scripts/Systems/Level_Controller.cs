@@ -118,6 +118,9 @@ public class Level_Controller : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
 
         _gameController.currentLevelNum++;
+
+        if (_gameController.currentLevelNum > _gameController.allLevels.Count - 1) _gameController.currentLevelNum = 0;
+
         _gameController.Save_Level();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

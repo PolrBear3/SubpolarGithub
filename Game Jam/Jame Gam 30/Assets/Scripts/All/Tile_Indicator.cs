@@ -9,6 +9,7 @@ public class Tile_Indicator : MonoBehaviour
 
     [SerializeField] private GameObject _gearIndicator;
     [SerializeField] private SpriteRenderer _goldGearIndicator;
+    [SerializeField] private SpriteRenderer _objectGearIndicator;
 
     //
     private void Awake()
@@ -39,5 +40,11 @@ public class Tile_Indicator : MonoBehaviour
     public void GoldGear_Indication()
     {
         _goldGearIndicator.color = Color.white;
+    }
+
+    // Object Gear
+    public void ObjectGear_Indication()
+    {
+        _objectGearIndicator.color = Color.white;
     }
 }

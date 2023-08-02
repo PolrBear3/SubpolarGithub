@@ -14,34 +14,40 @@ public class Object_Gear : MonoBehaviour
 
     [SerializeField] private GameObject _object;
 
+    [SerializeField] private List<Tile> _setTiles = new List<Tile>();
+
     //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Basic_Gear basicGear)) _basicGear = basicGear;
         _basicGear.objectGear = this;
+
+        SetTiles_Indication();
     }
 
     //
-    private bool Activate_Available()
+    private void SetTiles_Indication()
     {
-        List<Tile> surroundingTiles = _basicGear.currentTile.levelController.Surrounding_Tiles(_basicGear.currentTile);
-
-        for (int i = 0; i < surroundingTiles.Count; i++)
+        for (int i = 0; i < _setTiles.Count; i++)
         {
-            if (surroundingTiles[i].currentGear == null) continue;
-            if (surroundingTiles[i].currentGear.spinInActive) continue;
-            if (_basicGear.spinningRight != surroundingTiles[i].currentGear.spinningRight) continue;
-            return true;
+            _setTiles[i].indicator.ObjectGear_Indication();
         }
-        return false;
     }
 
     public void Activate_Object()
     {
-        if (!Activate_Available()) return;
+        for (int i = 0; i < _setTiles.Count; i++)
+        {
+            if (_setTiles[i].currentGear == null) return;
+            if (_setTiles[i].currentGear.spinInActive) return;
+            if (_basicGear.spinningRight != _setTiles[i].currentGear.spinningRight) return;
+        }
+
         if (!_object.TryGetComponent(out IActivate activate)) return;
 
         activate.Activate();
         _basicGear.spinningRight = !_basicGear.spinningRight;
+
+        _basicGear.currentTile.levelController.gameController.soundController.Play_Sound(2);
     }
 }

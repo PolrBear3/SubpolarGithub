@@ -65,6 +65,8 @@ public class Time_Controller : MonoBehaviour
         LeanTween.alpha(_darkBox, 1f, _transitionTime).setDelay(_transitionTime);
 
         _levelController.Next_Level(4f);
+
+        _levelController.gameController.soundController.Play_Sound(1);
     }
 
     private void Run_Time()

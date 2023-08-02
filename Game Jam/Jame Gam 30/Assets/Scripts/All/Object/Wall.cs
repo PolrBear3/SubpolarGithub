@@ -9,6 +9,7 @@ public class Wall : MonoBehaviour, IActivate
 
     private bool _opened;
 
+    [SerializeField] private bool _openVertical;
     [SerializeField] private bool _openLeft;
     [SerializeField] private int _openRange;
     [SerializeField] private float _openSpeed;
@@ -33,11 +34,17 @@ public class Wall : MonoBehaviour, IActivate
         if (_openLeft) openNum = -_openRange;
         else openNum = _openRange;
 
-        Tile moveTile = _currentTile.levelController.Get_Tile(_currentTile.xPosition + openNum, _currentTile.yPosition);
+        Tile moveTile;
+        if (!_openVertical) moveTile = _currentTile.levelController.Get_Tile(_currentTile.xPosition + openNum, _currentTile.yPosition);
+        else moveTile = _currentTile.levelController.Get_Tile(_currentTile.xPosition, _currentTile.yPosition + (-openNum));
+
         _currentTile = moveTile;
 
         transform.parent = moveTile.transform;
-        LeanTween.moveLocalX(gameObject, 0f, _openSpeed);
+        LeanTween.cancel(gameObject);
+        LeanTween.moveLocal(gameObject, Vector2.zero, _openSpeed);
+
+        _currentTile.levelController.gameController.soundController.Play_Sound(3);
     }
     private void Close()
     {
@@ -47,10 +54,16 @@ public class Wall : MonoBehaviour, IActivate
         if (_openLeft) openNum = _openRange;
         else openNum = -_openRange;
 
-        Tile moveTile = _currentTile.levelController.Get_Tile(_currentTile.xPosition + openNum, _currentTile.yPosition);
+        Tile moveTile;
+        if (!_openVertical) moveTile = _currentTile.levelController.Get_Tile(_currentTile.xPosition + openNum, _currentTile.yPosition);
+        else moveTile = _currentTile.levelController.Get_Tile(_currentTile.xPosition, _currentTile.yPosition + (-openNum));
+
         _currentTile = moveTile;
 
         transform.parent = moveTile.transform;
-        LeanTween.moveLocalX(gameObject, 0f, _openSpeed);
+        LeanTween.cancel(gameObject);
+        LeanTween.moveLocal(gameObject, Vector2.zero, _openSpeed);
+
+        _currentTile.levelController.gameController.soundController.Play_Sound(3);
     }
 }

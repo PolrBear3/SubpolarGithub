@@ -10,10 +10,10 @@ public class Tile : MonoBehaviour
     [SerializeField] private Tile_Indicator _indicator;
     public Tile_Indicator indicator { get => _indicator; set => _indicator = value; }
 
-    private int _xPosition;
+    [SerializeField] private int _xPosition;
     public int xPosition { get => _xPosition; set => _xPosition = value; }
 
-    private int _yPosition;
+    [SerializeField] private int _yPosition;
     public int yPosition { get => _yPosition; set => _yPosition = value; }
 
     private bool _hasObject;

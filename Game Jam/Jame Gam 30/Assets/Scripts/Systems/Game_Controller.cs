@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Game_Controller : MonoBehaviour
 {
+    [SerializeField] private Sound_Controller _soundController;
+    public Sound_Controller soundController { get => _soundController; set => _soundController = value; }
+
     [Header("Player")]
     [SerializeField] private GameObject _player;
 

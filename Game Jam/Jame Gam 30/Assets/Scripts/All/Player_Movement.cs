@@ -14,6 +14,8 @@ public class Player_Movement : MonoBehaviour
 
     private Tile _detectedTile;
 
+    [SerializeField] private SpriteRenderer _thinkBox;
+
     [SerializeField] private Transform _holdPoint;
     public Transform holdPoint { get => _holdPoint; set => _holdPoint = value; }
 
@@ -49,7 +51,13 @@ public class Player_Movement : MonoBehaviour
         if (!collision.TryGetComponent(out Tile detectTile)) return;
         _detectedTile = detectTile;
 
+        if (_detectedTile.currentGear != null && _detectedTile.currentGear.goldGear != null && _gameController.currentLevelNum == 0)
+        {
+            _thinkBox.color = Color.white;
+        }
+
         if (_detectedTile.isDefaultTile || _currentGear == null || _detectedTile.currentGear != null) return;
+
         _detectedTile.indicator.Gear_Indication(true);
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -58,6 +66,8 @@ public class Player_Movement : MonoBehaviour
 
         _detectedTile.indicator.Gear_Indication(false);
         _detectedTile = null;
+
+        _thinkBox.color = Color.clear;
     }
 
     // Action
@@ -105,12 +115,16 @@ public class Player_Movement : MonoBehaviour
     }
     public void Die()
     {
+        LeanTween.cancelAll();
+
         _rigidBody.constraints = RigidbodyConstraints2D.FreezePosition;
         _animator.SetTrigger("death");
 
         _gameController.currentLevel.timeController.timeRunning = false;
         _gameController.Acivate_DeathCuratin();
         _gameController.currentLevel.Reload_Level(2.2f);
+
+        _gameController.soundController.Play_Sound(4);
     }
 
     // Basic Functions
