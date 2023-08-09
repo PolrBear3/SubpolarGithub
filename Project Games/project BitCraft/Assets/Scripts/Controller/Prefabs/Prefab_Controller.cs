@@ -45,7 +45,7 @@ public class Prefab_Controller : MonoBehaviour
 
     [SerializeField] private List<Prefab_Tag> _dropAvailableTiles = new List<Prefab_Tag>();
 
-    [Header("Update Data")]
+    // [Header("Update Data")]
     [SerializeField] private int _currentAmount;
     public int currentAmount { get => _currentAmount; set => _currentAmount = value; }
 

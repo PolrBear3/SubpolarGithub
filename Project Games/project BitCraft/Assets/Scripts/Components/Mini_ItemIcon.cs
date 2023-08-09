@@ -47,6 +47,7 @@ public class Mini_ItemIcon : MonoBehaviour
         _hasItem = true;
         _currentItem = item;
         _sr.sprite = item.sprite;
+        _sr.color = Color.white;
         _currentAmount = amount;
     }
     public void Clear_Item()
@@ -54,6 +55,7 @@ public class Mini_ItemIcon : MonoBehaviour
         _hasItem = false;
         _currentItem = null;
         _sr.sprite = null;
+        _sr.color = Color.clear;
         _currentAmount = 0;
     }
 }

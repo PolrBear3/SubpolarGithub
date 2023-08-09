@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class Interaction_Controller : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private Game_Controller _controller;
     public Game_Controller controller { get => _controller; set => _controller = value; }
 
+    [Header("Main")]
+    [SerializeField] private Image _pickupIcon;
     [SerializeField] private Image _interactIcon;
     [SerializeField] private Image _equipmentIcon;
 
@@ -45,6 +48,7 @@ public class Interaction_Controller : MonoBehaviour
         // remove item object from tile
         playerTile.Remove_Prefab(Prefab_Type.overlapPlaceable);
 
+        Update_Pickup_Icon(true);
         Update_Equipment_Icon();
     }
     public void Interact_Object()
@@ -80,6 +84,33 @@ public class Interaction_Controller : MonoBehaviour
     }
 
     // Icon Updates
+    public void Update_Pickup_Icon(bool pickupSuccessful)
+    {
+        if (pickupSuccessful)
+        {
+            // deactivate pickup icon
+            _pickupIcon.color = Color.clear;
+
+            return;
+        }
+
+        // get player current tile
+        Tile_Controller playerTile = _controller.tilemapController.Get_Tile(Prefab_Type.character, 0);
+
+        // check for overlap placeable object
+        Prefab_Controller overlapObject = playerTile.Get_Current_Prefab(Prefab_Type.overlapPlaceable);
+        // check for pickup objects
+        if (overlapObject == null || playerTile.Has_Interactable())
+        {
+            // deactivate pickup icon
+            _pickupIcon.color = Color.clear;
+        }
+        else
+        {
+            // activate pickup icon
+            _pickupIcon.color = Color.white;
+        }
+    }
     public void Update_Interact_Icon()
     {
         // get player current tile

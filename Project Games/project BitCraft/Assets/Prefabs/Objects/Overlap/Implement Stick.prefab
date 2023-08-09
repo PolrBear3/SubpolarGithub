@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
   m_Layer: 0
-  m_Name: Custom Object
+  m_Name: Implement Stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 385652707
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -140418462, guid: 87086d13935fd431d9880246000a854e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &6900627066728663899
@@ -98,9 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a380b94a48e84b1e8d3b0a61f805b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefabType: 5
-  _prefabID: 677972
-  _layerOrderNum: 0
+  _prefabType: 4
+  _prefabID: 546483
+  _layerOrderNum: 1
 --- !u!114 &-5113172227308652651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,9 +120,10 @@ MonoBehaviour:
   _positionY: 0
   _currentRowNum: 0
   _currentColumnNum: 0
-  _setPosition: {x: 0, y: 0}
+  _setPosition: {x: 0, y: 0.4}
   _moveSpeed: 0
-  _dropAvailableTiles: []
+  _dropAvailableTiles:
+  - {fileID: 6869539982473061104, guid: e3840954157f04acf8fd9a46c4108a87, type: 3}
   _currentAmount: 0
-  _changeAmount: 0
+  _changeAmount: 10
   _sprites: []

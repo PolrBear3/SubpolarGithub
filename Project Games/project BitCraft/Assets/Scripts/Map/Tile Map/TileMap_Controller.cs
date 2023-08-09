@@ -50,7 +50,9 @@ public class TileMap_Controller : MonoBehaviour
 
         // apple tree
         Set_Object(236573, 1, 1, 2);
-        Set_Object(852792, 1, 3, 2);
+
+        // rock
+        Set_Object(213474, 1, 3, 2);
 
         // basic craft table
         Set_Object(114122, 1, 2, 1);

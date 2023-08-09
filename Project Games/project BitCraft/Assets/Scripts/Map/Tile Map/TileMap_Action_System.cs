@@ -132,6 +132,8 @@ public class TileMap_Action_System : MonoBehaviour
         Player_Controller playerController = tilemapController.playerController;
         Prefab_Controller playerPrefabController = tilemapController.playerPrefabController;
 
+        _tilemapController.controller.timeController.Update_Time(1);
+
         moveTile.Set_Prefab(playerController.transform);
 
         playerPrefabController.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
@@ -142,6 +144,7 @@ public class TileMap_Action_System : MonoBehaviour
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
 
+        _tilemapController.controller.interactionController.Update_Pickup_Icon(false);
         _tilemapController.controller.interactionController.Update_Interact_Icon();
     }
     public void Interact_Object(Tile_Controller tileWithObject)
@@ -181,6 +184,8 @@ public class TileMap_Action_System : MonoBehaviour
         // player flip
         Prefab_Controller player = _tilemapController.playerPrefabController;
         player.Sprite_Flip_Update(targetTile.rowNum);
+
+        _tilemapController.controller.interactionController.Update_Equipment_Icon();
     }
     public void Use_Equipment(Tile_Controller targetTile)
     {
