@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
   - component: {fileID: 5764221875984540746}
+  - component: {fileID: 6674807307677676447}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Untagged
@@ -140,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe10ed84c00c2471a9666adb9f7fefb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxLifeCount: 5
+  _maxLifeCount: 10
   _maxFatigue: 0
   _maxHunger: 0
   _maxLungCapacity: 0
@@ -148,3 +149,24 @@ MonoBehaviour:
   _currentFatigue: 0
   _currentHunger: 0
   _currentLungCapacity: 0
+--- !u!114 &6674807307677676447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013186990097543618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3468e4e78536b4d50a421b358de89473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactDrops: []
+  _removedDrops:
+  - item: {fileID: 11400000, guid: d2b1184f2db32478097b08dab26b57d6, type: 2}
+    minDropAmount: 10
+    maxDropAmount: 20
+  _currentItemData:
+  - item: {fileID: 11400000, guid: d2b1184f2db32478097b08dab26b57d6, type: 2}
+    maxAmount: 20
+    currentAmount: 0

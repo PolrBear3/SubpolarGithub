@@ -24,8 +24,8 @@ public class Inventory_Controller : MonoBehaviour
     }
     private void Start()
     {
-        Add_Item(401020, 10);
         Set_EquipSlot(0);
+        Add_Item(401020, 1);
     }
 
     public void OnNext()

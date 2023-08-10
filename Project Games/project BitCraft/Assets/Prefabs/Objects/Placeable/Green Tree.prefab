@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
   - component: {fileID: 5764221875984540746}
-  - component: {fileID: 4688511875017061401}
+  - component: {fileID: 5713258036042100760}
   m_Layer: 0
   m_Name: Green Tree
   m_TagString: Untagged
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe10ed84c00c2471a9666adb9f7fefb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxLifeCount: 3
+  _maxLifeCount: 5
   _maxFatigue: 0
   _maxHunger: 0
   _maxLungCapacity: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   _currentFatigue: 0
   _currentHunger: 0
   _currentLungCapacity: 0
---- !u!114 &4688511875017061401
+--- !u!114 &5713258036042100760
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,9 +158,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2013186990097543618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24a2492350f0e4e1a83e0a47e4416cd1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3468e4e78536b4d50a421b358de89473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _additionalItem: {fileID: 0}
-  _leafAmount: 10
-  _additionalAmount: 0
+  _interactDrops:
+  - item: {fileID: 11400000, guid: 01b5a423f2a914e499070dc842eb437a, type: 2}
+    minDropAmount: 0
+    maxDropAmount: 3
+  _removedDrops:
+  - item: {fileID: 11400000, guid: 01b5a423f2a914e499070dc842eb437a, type: 2}
+    minDropAmount: 2
+    maxDropAmount: 5
+  - item: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
+    minDropAmount: 3
+    maxDropAmount: 6
+  _currentItemData:
+  - item: {fileID: 11400000, guid: 01b5a423f2a914e499070dc842eb437a, type: 2}
+    maxAmount: 20
+    currentAmount: 0
+  - item: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
+    maxAmount: 6
+    currentAmount: 0
