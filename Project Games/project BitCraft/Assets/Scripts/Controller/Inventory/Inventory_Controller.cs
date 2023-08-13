@@ -25,7 +25,7 @@ public class Inventory_Controller : MonoBehaviour
     private void Start()
     {
         Set_EquipSlot(0);
-        Add_Item(401020, 1);
+        Add_Item(474033, 20);
     }
 
     public void OnNext()
@@ -172,5 +172,11 @@ public class Inventory_Controller : MonoBehaviour
             _slots[i].Increase_Amount(amount);
             break;
         }
+    }
+
+    public void Decrease_EquippedSlot_Item(int amount)
+    {
+        _equippedSlot.Decrease_Amount(amount);
+        _controller.interactionController.Update_Equipment_Icon();
     }
 }

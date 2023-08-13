@@ -7,8 +7,6 @@ public class Time_Controller : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Game_Controller _gameController;
-
-    [Header("Main")]
     [SerializeField] private List<UI_Bar> _timeBars = new List<UI_Bar>();
 
     [Header("Value")]
@@ -19,6 +17,9 @@ public class Time_Controller : MonoBehaviour
 
     private int _currentBarCount;
     public int currentBarCount { get => _currentBarCount; set => _currentBarCount = value; }
+
+    private bool _isNight;
+    public bool isNight { get => _isNight; set => isNight = value; }
 
     //
     private void Start()
@@ -35,6 +36,8 @@ public class Time_Controller : MonoBehaviour
         {
             _timeBars[i].Empty();
         }
+
+        Update_TimePeriod();
     }
 
     private void Set_Time(int setAmount)
@@ -58,7 +61,10 @@ public class Time_Controller : MonoBehaviour
 
             if (barCount <= 0) break;
         }
+
+        Update_TimePeriod();
     }
+
     public void Update_Time(int updateAmount)
     {
         _currentTime += updateAmount;
@@ -66,5 +72,10 @@ public class Time_Controller : MonoBehaviour
         if (_currentTime > _maxTime) _currentTime = 0;
 
         Set_Time(_currentTime);
+    }
+    public void Update_TimePeriod()
+    {
+        if (_currentBarCount > 3) _isNight = true;
+        else _isNight = false;
     }
 }

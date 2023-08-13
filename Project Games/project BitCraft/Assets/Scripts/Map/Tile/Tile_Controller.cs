@@ -7,7 +7,10 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
 {
     private SpriteRenderer _sr;
 
-    [SerializeField] private List<Sprite> _sprites = new List<Sprite>(); 
+    [Header("Sprite")]
+    [SerializeField] private List<Sprite> _sprites = new List<Sprite>();
+    [SerializeField] private List<Sprite> _shadowSprites = new List<Sprite>();
+    private int _spriteNum;
 
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
@@ -35,6 +38,9 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     private bool _equipmentUseReady = false;
     public bool equipmentUseReady { get => _equipmentUseReady; set => _equipmentUseReady = value; }
+
+    private bool _shadowMode;
+    public bool shadowMode { get => _shadowMode; set => _shadowMode = value; }
 
     [Header("Current Prefabs Data")]
     [SerializeField] private Transform _prefabsParent;
@@ -148,6 +154,8 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         if (_sprites.Count <= 1) return _sprites[0];
 
         int randNum = Random.Range(0, _sprites.Count);
+        _spriteNum = randNum;
+
         return _sprites[randNum];
     }
 
@@ -240,6 +248,14 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     }
 
     // Prefab Control
+    private void Hide_AllPrefabs_Activation(bool activate)
+    {
+        for (int i = 0; i < _currentPrefabs.Count; i++)
+        {
+            _currentPrefabs[i].gameObject.SetActive(activate);
+        }
+    }
+
     public void Set_Prefab(Transform prefabTransform)
     {
         prefabTransform.parent = _prefabsParent;
@@ -302,7 +318,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         }
     }
 
-    // Function
+    // Pointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!_itemDropReady) return;
@@ -358,6 +374,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         _tilemapController.playerController.interactReady = false;
     }
 
+    // Highlight
     public void Move_Highlight_Activation(bool activate)
     {
         _moveReady = activate;
@@ -391,4 +408,21 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
         _directionSystem.Reset_Directions();
     }
+
+    // Shadow Mode
+    public void ShadowMode_Activation(bool activate)
+    {
+        _shadowMode = activate;
+        Hide_AllPrefabs_Activation(!activate);
+
+        if (activate)
+        {
+            _sr.sprite = _shadowSprites[_spriteNum];
+        }
+        else
+        {
+            _sr.sprite = _sprites[_spriteNum];
+        }
+    }
+
 }

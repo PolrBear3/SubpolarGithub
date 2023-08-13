@@ -52,13 +52,15 @@ public class TileMap_Controller : MonoBehaviour
         Set_Object(236573, 1, 1, 2);
 
         // rock
-        Set_Object(213474, 1, 3, 2);
+        Set_Object(213474, 1, 4, 2);
 
         // basic craft table
         Set_Object(114122, 1, 2, 1);
 
         // campfire
         Set_Object(135409, 1, 2, 3);
+
+        renderSystem.Activate_ShadowMode();
     }
 
     // Check

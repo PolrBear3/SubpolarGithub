@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 725340121840702115}
   - component: {fileID: 8537117108615183467}
+  - component: {fileID: 8881422756312916912}
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
   - component: {fileID: 4482161588790279522}
@@ -88,6 +89,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8881422756312916912
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013186990097543618}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &6900627066728663899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,9 +203,15 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 01b5a423f2a914e499070dc842eb437a, type: 2}
     maxAmount: 20
     currentAmount: 0
+    regenerateAmount: 2
+    regeneratePercentage: 50
   - item: {fileID: 11400000, guid: 688cb4a560c514b899b50daedd5032de, type: 2}
     maxAmount: 10
     currentAmount: 0
+    regenerateAmount: 2
+    regeneratePercentage: 20
   - item: {fileID: 11400000, guid: d1ba7f3d73dc1a148a8b47f982720209, type: 2}
     maxAmount: 6
     currentAmount: 0
+    regenerateAmount: 0
+    regeneratePercentage: 0

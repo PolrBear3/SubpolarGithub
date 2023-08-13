@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct Drop_ItemData
+public class Drop_ItemData
 {
     public Item_ScrObj item;
     public int minDropAmount;
@@ -15,10 +15,16 @@ public class Current_ItemData
 {
     public Item_ScrObj item;
     public int maxAmount;
-    [HideInInspector] public int currentAmount;
+    public int currentAmount;
+
+    [Range(0, 100)]
+    public int regenerateAmount;
+
+    [Range(0, 100)]
+    public float regeneratePercentage;
 }
 
-public class Basic_Object : MonoBehaviour, IInteractable, IDamageable
+public class Basic_Object : MonoBehaviour, IInteractable, IDamageable, IInteractableUpdate
 {
     private Prefab_Controller _controller;
 
@@ -45,6 +51,10 @@ public class Basic_Object : MonoBehaviour, IInteractable, IDamageable
         _controller.statController.Update_Current_LifeCount(-damageAmount);
         Health_Check();
     }
+    public void Interact_Update()
+    {
+        Regenerate_ItemDrop();
+    }
 
     // Set
     private void Set_Current_ItemData_Amount()
@@ -64,6 +74,24 @@ public class Basic_Object : MonoBehaviour, IInteractable, IDamageable
             return _currentItemData[i];
         }
         return null;
+    }
+    private Drop_ItemData RemovedDrop_Item(Item_ScrObj targetItem)
+    {
+        for (int i = 0; i < _removedDrops.Count; i++)
+        {
+            if (_removedDrops[i].item != targetItem) continue;
+            return _removedDrops[i];
+        }
+        return null;
+    }
+    public bool Percentage_Successful(float percentage)
+    {
+        var value = (100 - percentage) * 0.01f;
+        if (Random.value > value)
+        {
+            return true;
+        }
+        else return false;
     }
 
     // Functions
@@ -123,6 +151,20 @@ public class Basic_Object : MonoBehaviour, IInteractable, IDamageable
 
             targetItem.currentAmount -= dropAmount;
             inventory.Add_Item(_removedDrops[i].item, dropAmount);
+        }
+    }
+
+    private void Regenerate_ItemDrop()
+    {
+        for (int i = 0; i < _currentItemData.Count; i++)
+        {
+            if (!Percentage_Successful(_currentItemData[i].regeneratePercentage)) continue;
+
+            int amount = Random.Range(0, _currentItemData[i].regenerateAmount);
+            _currentItemData[i].currentAmount += amount;
+
+            if (_currentItemData[i].currentAmount <= _currentItemData[i].maxAmount) continue;
+            _currentItemData[i].currentAmount = _currentItemData[i].maxAmount;
         }
     }
 }

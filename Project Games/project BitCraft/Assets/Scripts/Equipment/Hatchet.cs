@@ -37,6 +37,8 @@ public class Hatchet : MonoBehaviour, IEquippable
             for (int i = 0; i < targetTile.currentPrefabs.Count; i++)
             {
                 if (!targetTile.currentPrefabs[i].TryGetComponent(out IDamageable damageable)) continue;
+
+                _prefabController.tilemapController.controller.inventoryController.Decrease_EquippedSlot_Item(1);
                 damageable.Damage(_damage);
             }
 

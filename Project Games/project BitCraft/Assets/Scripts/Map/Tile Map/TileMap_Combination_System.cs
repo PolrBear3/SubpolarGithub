@@ -39,6 +39,26 @@ public class TileMap_Combination_System : MonoBehaviour
 
         return crossTiles;
     }
+    public List<Tile_Controller> Cross_Tiles(Tile_Controller targetTile, int range)
+    {
+        List<Tile_Controller> crossTiles = new List<Tile_Controller>();
+
+        for (int i = 0; i < range; i++)
+        {
+            // left tile
+            crossTiles.Add(mapController.Get_Tile(targetTile.rowNum - (i + 1), targetTile.columnNum));
+            // right tile
+            crossTiles.Add(mapController.Get_Tile(targetTile.rowNum + (i + 1), targetTile.columnNum));
+            // top tile
+            crossTiles.Add(mapController.Get_Tile(targetTile.rowNum, targetTile.columnNum - (i + 1)));
+            // bottom tile
+            crossTiles.Add(mapController.Get_Tile(targetTile.rowNum, targetTile.columnNum + (i + 1)));
+        }
+
+        Remove_Null_Tiles(crossTiles);
+
+        return crossTiles;
+    }
     public List<Tile_Controller> Cross_Tiles(int rowNum, int columnNum)
     {
         List<Tile_Controller> crossTiles = new List<Tile_Controller>();

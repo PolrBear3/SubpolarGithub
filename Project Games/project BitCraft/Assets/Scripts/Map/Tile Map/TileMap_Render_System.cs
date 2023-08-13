@@ -7,11 +7,13 @@ public class TileMap_Render_System : MonoBehaviour
     private TileMap_Controller _tilemapcontroller;
     public TileMap_Controller tilemapController { get => _tilemapcontroller; set => _tilemapcontroller = value; }
 
+    //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out TileMap_Controller mapController)) { tilemapController = mapController; }
     }
 
+    // Set
     private void Set_New_Tiles(int size)
     {
         tilemapController.currentMap.mapSize = size;
@@ -142,5 +144,19 @@ public class TileMap_Render_System : MonoBehaviour
 
         // set player tile
         if (!hasMap) tilemapController.Set_Player_Tile(false);
+    }
+
+    // Update
+    public void Activate_ShadowMode()
+    {
+        Tile_Controller playerTile = _tilemapcontroller.Get_Tile(Prefab_Type.character, 0);
+        List<Tile_Controller> allTiles = _tilemapcontroller.currentMap.tiles;
+        List<Tile_Controller> surroundingTiles = _tilemapcontroller.combinationSystem.Surrounding_Tiles(playerTile);
+
+        for (int i = allTiles.Count - 1; i >= 0; i--)
+        {
+            if (surroundingTiles.Contains(allTiles[i])) continue;
+            allTiles[i].ShadowMode_Activation(true);
+        }
     }
 }
