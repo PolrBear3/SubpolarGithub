@@ -147,15 +147,31 @@ public class TileMap_Render_System : MonoBehaviour
     }
 
     // Update
-    public void Activate_ShadowMode()
+    public void Update_Player_ShadowMode()
     {
-        Tile_Controller playerTile = _tilemapcontroller.Get_Tile(Prefab_Type.character, 0);
+        Time_Controller timeController = _tilemapcontroller.controller.timeController;
         List<Tile_Controller> allTiles = _tilemapcontroller.currentMap.tiles;
+
+        if (!timeController.isNight)
+        {
+            for (int i = 0; i < allTiles.Count; i++)
+            {
+                allTiles[i].ShadowMode_Activation(false);
+            }
+            return;
+        }
+
+        Tile_Controller playerTile = _tilemapcontroller.Get_Tile(Prefab_Type.character, 0);
         List<Tile_Controller> surroundingTiles = _tilemapcontroller.combinationSystem.Surrounding_Tiles(playerTile);
 
         for (int i = allTiles.Count - 1; i >= 0; i--)
         {
-            if (surroundingTiles.Contains(allTiles[i])) continue;
+            if (surroundingTiles.Contains(allTiles[i]))
+            {
+                allTiles[i].ShadowMode_Activation(false);
+                continue;
+            }
+
             allTiles[i].ShadowMode_Activation(true);
         }
     }

@@ -9,9 +9,14 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
 
     [Header("Sprite")]
     [SerializeField] private List<Sprite> _sprites = new List<Sprite>();
+    public List<Sprite> sprites { get => _sprites; set => _sprites = value; }
+
     [SerializeField] private List<Sprite> _shadowSprites = new List<Sprite>();
+    public List<Sprite> shadowSprites { get => _shadowSprites; set => _shadowSprites = value; }
+
     private int _spriteNum;
 
+    // [Header("Components")]
     private TileMap_Controller _tilemapController;
     public TileMap_Controller tilemapController { get => _tilemapController; set => _tilemapController = value; }
 
@@ -21,6 +26,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     private Prefab_Tag _prefabTag;
     public Prefab_Tag prefabTag { get => _prefabTag; set => _prefabTag = value; }
 
+    // [Header("Update Data")]
     private int _rowNum;
     public int rowNum { get => _rowNum; set => _rowNum = value; }
 
@@ -156,7 +162,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         int randNum = Random.Range(0, _sprites.Count);
         _spriteNum = randNum;
 
-        return _sprites[randNum];
+        return _sprites[_spriteNum];
     }
 
     public void Update_Position(int row, int column)
@@ -190,6 +196,9 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
         this.prefabTag.prefabType = prefabTag.prefabType;
         // prefab tag id
         this.prefabTag.prefabID = prefabTag.prefabID;
+        // sprites list data
+        _sprites = y.sprites;
+        _shadowSprites = y.shadowSprites;
         // sprite
         _sr.sprite = tileController.Random_Sprite();
     }

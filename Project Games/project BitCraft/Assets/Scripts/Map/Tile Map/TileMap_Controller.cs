@@ -50,17 +50,21 @@ public class TileMap_Controller : MonoBehaviour
 
         // apple tree
         Set_Object(236573, 1, 1, 2);
+        Set_Object_Tile(Get_Tile(1, 2));
 
         // rock
         Set_Object(213474, 1, 4, 2);
+        Set_Object_Tile(Get_Tile(4, 2));
 
         // basic craft table
         Set_Object(114122, 1, 2, 1);
+        Set_Object_Tile(Get_Tile(2, 1));
 
         // campfire
         Set_Object(135409, 1, 2, 3);
+        Set_Object_Tile(Get_Tile(2, 3));
 
-        renderSystem.Activate_ShadowMode();
+        renderSystem.Update_Player_ShadowMode();
     }
 
     // Check
@@ -152,6 +156,10 @@ public class TileMap_Controller : MonoBehaviour
         {
             surroundingTiles[i].Change_Adapt(true);
         }
+    }
+    public void Set_Object_Tile(Tile_Controller targetTile)
+    {
+        targetTile.Change_Adapt(true);
     }
 
     public void Set_Character(int characterID, int rowNum, int columnNum)

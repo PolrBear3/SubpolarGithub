@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdate, IDamageable
 {
+    private LeanTween_AnimationController _animController;
     private Prefab_Controller _controller;
 
     [SerializeField] private GameObject _ingredientBox1;
@@ -21,6 +22,7 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
     //
     private void Awake()
     {
+        if (gameObject.TryGetComponent(out LeanTween_AnimationController animController)) _animController = animController;
         if (gameObject.TryGetComponent(out Prefab_Controller controller)) { _controller = controller; }
     }
 
@@ -36,6 +38,8 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
     {
         Get_Damaged(damageAmount);
         Health_Check();
+
+        _animController.Interact_Animation();
     }
 
     // Get

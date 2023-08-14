@@ -144,6 +144,8 @@ public class TileMap_Action_System : MonoBehaviour
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
 
+        _tilemapController.renderSystem.Update_Player_ShadowMode();
+
         _tilemapController.controller.interactionController.Update_Pickup_Icon(false);
         _tilemapController.controller.interactionController.Update_Interact_Icon();
     }

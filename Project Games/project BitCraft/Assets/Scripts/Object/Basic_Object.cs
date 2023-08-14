@@ -26,6 +26,7 @@ public class Current_ItemData
 
 public class Basic_Object : MonoBehaviour, IInteractable, IDamageable, IInteractableUpdate
 {
+    private LeanTween_AnimationController _animController;
     private Prefab_Controller _controller;
 
     [SerializeField] private List<Drop_ItemData> _interactDrops = new List<Drop_ItemData>();
@@ -35,6 +36,7 @@ public class Basic_Object : MonoBehaviour, IInteractable, IDamageable, IInteract
     //
     private void Awake()
     {
+        if (gameObject.TryGetComponent(out LeanTween_AnimationController animController)) _animController = animController;
         if (gameObject.TryGetComponent(out Prefab_Controller controller)) { _controller = controller; }
     }
     private void Start()
@@ -45,11 +47,15 @@ public class Basic_Object : MonoBehaviour, IInteractable, IDamageable, IInteract
     public void Interact()
     {
         Interact_ItemDrop();
+
+        _animController.Interact_Animation();
     }
     public void Damage(int damageAmount)
     {
         _controller.statController.Update_Current_LifeCount(-damageAmount);
         Health_Check();
+
+        _animController.Interact_Animation();
     }
     public void Interact_Update()
     {
