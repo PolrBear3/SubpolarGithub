@@ -144,6 +144,8 @@ public class TileMap_Render_System : MonoBehaviour
 
         // set player tile
         if (!hasMap) tilemapController.Set_Player_Tile(false);
+
+        Update_Player_ShadowMode();
     }
 
     // Update
