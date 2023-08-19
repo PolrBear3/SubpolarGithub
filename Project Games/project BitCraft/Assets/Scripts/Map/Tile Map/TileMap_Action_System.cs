@@ -198,7 +198,9 @@ public class TileMap_Action_System : MonoBehaviour
         if (!playerEquipment.currentEquipment.TryGetComponent(out IEquippable equippable)) return;
         equippable.Use();
 
-        tilemapController.AllTiles_Update_Data();
+        _tilemapController.AllTiles_Update_Data();
+
+        _tilemapController.controller.inventoryController.dragSlot.objectScanner.Update_Life();
 
         // player flip
         Prefab_Controller player = _tilemapController.playerPrefabController;

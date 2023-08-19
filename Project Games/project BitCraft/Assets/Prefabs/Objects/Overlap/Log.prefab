@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 725340121840702115}
   - component: {fileID: 8537117108615183467}
   - component: {fileID: 4191113908133730743}
+  - component: {fileID: 3447755449437515638}
   - component: {fileID: 6900627066728663899}
   - component: {fileID: -5113172227308652651}
-  - component: {fileID: 3447755449437515638}
   m_Layer: 0
   m_Name: Log
   m_TagString: Untagged
@@ -114,6 +114,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.625, y: 0.3749021}
   m_EdgeRadius: 0
+--- !u!114 &3447755449437515638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013186990097543618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b21e9f66b47f48e8ac5a9f74ca486ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6900627066728663899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabTag: {fileID: 6900627066728663899}
-  _healthController: {fileID: 0}
+  _statController: {fileID: 0}
   _equipmentController: {fileID: 0}
   _positionX: 0
   _positionY: 0
@@ -159,15 +171,3 @@ MonoBehaviour:
   - {fileID: 1485032241, guid: 87086d13935fd431d9880246000a854e, type: 3}
   - {fileID: 485756670, guid: 87086d13935fd431d9880246000a854e, type: 3}
   - {fileID: 2141705406, guid: 87086d13935fd431d9880246000a854e, type: 3}
---- !u!114 &3447755449437515638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013186990097543618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b21e9f66b47f48e8ac5a9f74ca486ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

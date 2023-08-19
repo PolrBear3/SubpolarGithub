@@ -165,4 +165,14 @@ public class Prefab_Controller : MonoBehaviour
         _currentAmount -= amount;
         Sprite_Update();
     }
+
+    // Functions
+    public void Destroy_Prefab()
+    {
+        // all functions before destroy
+        _tilemapController.controller.inventoryController.dragSlot.objectScanner.Hide_Life();
+
+        // destroy
+        Destroy(gameObject);
+    }
 }

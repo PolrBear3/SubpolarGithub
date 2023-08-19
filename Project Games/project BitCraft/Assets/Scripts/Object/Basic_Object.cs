@@ -106,7 +106,7 @@ public class Basic_Object : MonoBehaviour, IInteractable, IDamageable, IInteract
         if (_controller.statController.currentLifeCount > 0) return;
 
         Removed_ItemDrop();
-        Destroy(gameObject);
+        _controller.Destroy_Prefab();
     }
 
     private void Interact_ItemDrop()
