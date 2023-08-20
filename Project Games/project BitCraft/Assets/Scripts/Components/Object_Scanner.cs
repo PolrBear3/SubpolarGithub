@@ -7,6 +7,10 @@ public class Object_Scanner : MonoBehaviour
 {
     private Drag_Slot _dragSlot;
 
+    [Header("Main")]
+    [SerializeField] private float _hoverTime;
+    public float hoverTime { get => _hoverTime; set => _hoverTime = value; }
+
     [Header ("Amount")]
     [SerializeField] private Image _droppedIcon; 
     [SerializeField] private Text _droppedText;
