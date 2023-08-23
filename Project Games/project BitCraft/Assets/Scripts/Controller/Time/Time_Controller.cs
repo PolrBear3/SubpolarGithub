@@ -7,16 +7,12 @@ public class Time_Controller : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Game_Controller _gameController;
-    [SerializeField] private List<UI_Bar> _timeBars = new List<UI_Bar>();
 
     [Header("Value")]
     [SerializeField] private int _maxTime;
-
-    private int _currentTime;
+    [SerializeField] private List<UI_Bar> _timeBars = new List<UI_Bar>();
+    [SerializeField]private int _currentTime;
     public int currentTime { get => _currentTime; set => _currentTime = value; }
-
-    private int _currentBarCount;
-    public int currentBarCount { get => _currentBarCount; set => _currentBarCount = value; }
 
     private bool _isNight;
     public bool isNight { get => _isNight; set => isNight = value; }
@@ -30,7 +26,7 @@ public class Time_Controller : MonoBehaviour
     //
     public void Reset_Time()
     {
-        _currentBarCount = 0;
+        _currentTime = 0;
 
         for (int i = 0; i < _timeBars.Count; i++)
         {
@@ -42,8 +38,6 @@ public class Time_Controller : MonoBehaviour
 
     private void Set_Time(int setAmount)
     {
-        Reset_Time();
-
         _currentTime = setAmount;
 
         int singleBarCount = _maxTime / _timeBars.Count;
@@ -55,27 +49,32 @@ public class Time_Controller : MonoBehaviour
 
         for (int i = 0; i < _timeBars.Count; i++)
         {
-            _timeBars[i].Fill();
-            barCount--;
-            _currentBarCount++;
+            if (barCount > 0)
+            {
+                _timeBars[i].Fill();
+                barCount--;
+                continue;
+            }
 
-            if (barCount <= 0) break;
+            _timeBars[i].Empty();
         }
 
         Update_TimePeriod();
     }
-
     public void Update_Time(int updateAmount)
     {
         _currentTime += updateAmount;
 
-        if (_currentTime > _maxTime) _currentTime = 0;
+        if (_currentTime > _maxTime) Reset_Time();
 
         Set_Time(_currentTime);
     }
+
     public void Update_TimePeriod()
     {
-        if (_currentBarCount > 3) _isNight = true;
+        int nightTime = _maxTime - _maxTime / 3;
+
+        if (_currentTime > nightTime) _isNight = true;
         else _isNight = false;
     }
 }

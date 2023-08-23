@@ -11,21 +11,22 @@ public class Inventory_Controller : MonoBehaviour
     [SerializeField] private Drag_Slot _dragSlot;
     public Drag_Slot dragSlot { get => _dragSlot; set => _dragSlot = value; }
 
-    private List<Slot> _slots = new List<Slot>();
+    [SerializeField] private List<Slot> _slots = new List<Slot>();
     public List<Slot> slots { get => _slots; set => _slots = value; }
 
     private Slot _equippedSlot;
     public Slot equippedSlot { get => _equippedSlot; set => _equippedSlot = value; }
 
     //
-    private void Awake()
-    {
-        Set_Slots();
-    }
     private void Start()
     {
+        //
+        Set_Slots();
+
+        // inventory functions
         Add_Item(474033, 20);
 
+        //
         Set_EquipSlot(0);
     }
 
@@ -87,14 +88,8 @@ public class Inventory_Controller : MonoBehaviour
     // Set
     private void Set_Slots()
     {
-        int slotCount = transform.childCount;
-
-        for (int i = 0; i < slotCount; i++)
+        for (int i = 0; i < _slots.Count; i++)
         {
-            GameObject slotGameObject = transform.GetChild(i).gameObject;
-
-            if (slotGameObject.TryGetComponent(out Slot slot)) { _slots.Add(slot); }
-
             _slots[i].slotNum = i;
             _slots[i].Set_Inventory_Controller(this);
             _slots[i].Clear();
