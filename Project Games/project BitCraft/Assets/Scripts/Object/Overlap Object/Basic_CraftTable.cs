@@ -65,7 +65,7 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
     // Basic Functions
     private void Get_Damaged(int damageAmount)
     {
-        _controller.statController.Update_Current_LifeCount(-damageAmount);
+        _controller.statController.Update_Current_Life(-damageAmount);
     }
     private void Health_Check()
     {

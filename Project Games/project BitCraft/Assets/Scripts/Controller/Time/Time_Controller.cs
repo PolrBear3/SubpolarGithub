@@ -68,6 +68,7 @@ public class Time_Controller : MonoBehaviour
         if (_currentTime > _maxTime) Reset_Time();
 
         Set_Time(_currentTime);
+        _gameController.tilemapController.renderSystem.Update_Player_ShadowMode();
     }
 
     public void Update_TimePeriod()

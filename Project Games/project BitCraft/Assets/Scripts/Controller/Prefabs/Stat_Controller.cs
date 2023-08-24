@@ -6,9 +6,13 @@ public class Stat_Controller : MonoBehaviour
 {
     [Header("Max Stats")]
     [SerializeField] private int _maxLifeCount;
+    public int maxLifeCount { get => _maxLifeCount; set => _maxLifeCount = value; }
     [SerializeField] private int _maxFatigue;
+    public int maxFatigue { get => _maxFatigue; set => _maxFatigue = value; }
     [SerializeField] private int _maxHunger;
+    public int maxHunger { get => _maxHunger; set => _maxHunger = value; }
     [SerializeField] private int _maxLungCapacity;
+    public int maxLungCapacity { get => _maxLungCapacity; set => _maxLungCapacity = value; }
 
     [Header("Current Stats")]
     [SerializeField] private int _currentLifeCount;
@@ -19,8 +23,14 @@ public class Stat_Controller : MonoBehaviour
         {
             _currentLifeCount = value;
 
-            if (_currentLifeCount <= _maxLifeCount) return;
-            _currentLifeCount = _maxLifeCount;
+            if (_currentLifeCount >= _maxLifeCount)
+            {
+                _currentLifeCount = _maxLifeCount;
+            }
+            else if (_currentLifeCount <= 0)
+            {
+                _currentLifeCount = 0;
+            }
         }
     }
     [SerializeField] private int _currentFatigue;
@@ -31,32 +41,14 @@ public class Stat_Controller : MonoBehaviour
         {
             _currentFatigue = value;
 
-            if (_currentFatigue <= _maxFatigue) return;
-            _currentLifeCount = _maxFatigue;
-        }
-    }
-    [SerializeField] private int _currentHunger;
-    public int currentHunger
-    {
-        get => _currentHunger;
-        set
-        {
-            _currentHunger = value;
-
-            if (_currentHunger <= _maxHunger) return;
-            _currentHunger = _maxHunger;
-        }
-    }
-    [SerializeField] private int _currentLungCapacity;
-    public int currentLungCapacity
-    {
-        get => _currentLungCapacity;
-        set
-        {
-            _currentLifeCount = value;
-
-            if (_currentLungCapacity <= _maxLungCapacity) return;
-            _currentLungCapacity = _maxLungCapacity;
+            if (_currentFatigue >= _maxFatigue)
+            {
+                _currentFatigue = _maxFatigue;
+            }
+            else if (_currentFatigue <= 0)
+            {
+                _currentFatigue = 0;
+            }
         }
     }
 
@@ -71,13 +63,15 @@ public class Stat_Controller : MonoBehaviour
     {
         _currentLifeCount = _maxLifeCount;
         _currentFatigue = _maxFatigue;
-        _currentHunger = _maxHunger;
-        _currentLungCapacity = _maxLungCapacity;
     }
 
     // Functions
-    public void Update_Current_LifeCount(int amount)
+    public void Update_Current_Life(int value)
     {
-        _currentLifeCount += amount;
+        currentLifeCount += value;
+    }
+    public void Update_Current_Fatigue(int value)
+    {
+        currentFatigue += value;
     }
 }

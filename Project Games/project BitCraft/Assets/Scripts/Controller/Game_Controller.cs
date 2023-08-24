@@ -21,6 +21,9 @@ public class Game_Controller : MonoBehaviour
     [SerializeField] private Time_Controller _timeController;
     public Time_Controller timeController { get => _timeController; set => _timeController = value; }
 
+    [SerializeField] private PlayerStat_Controller _statPanel;
+    public PlayerStat_Controller statPanel { get => _statPanel; set => _statPanel = value; }
+
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Prefabs_Data prefabsData)) { _prefabsData = prefabsData; }

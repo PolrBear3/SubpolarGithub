@@ -132,15 +132,23 @@ public class TileMap_Action_System : MonoBehaviour
         Player_Controller playerController = tilemapController.playerController;
         Prefab_Controller playerPrefabController = tilemapController.playerPrefabController;
 
+        // time
         _tilemapController.controller.timeController.Update_Time(1);
 
+        // player stat
+        _tilemapController.playerController.prefabController.statController.Update_Current_Fatigue(-1);
+        _tilemapController.controller.statPanel.Update_Fatigue_UIBar();
+
+        // tile
         moveTile.Set_Prefab(playerController.transform);
 
+        // prefab control
         playerPrefabController.Update_Tile_Position(moveTile.rowNum, moveTile.columnNum);
         playerController.Move();
         playerPrefabController.Sprite_LayerOrder_Update(0);
         playerPrefabController.Sprite_Flip_Update();
 
+        // update
         tilemapController.AllTiles_Update_Data();
         playerController.Click();
 

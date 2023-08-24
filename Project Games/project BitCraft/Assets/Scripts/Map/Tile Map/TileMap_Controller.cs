@@ -182,7 +182,10 @@ public class TileMap_Controller : MonoBehaviour
         if (characterID == 0)
         {
             playerPrefabController = setPrefabController;
+
             if (character.TryGetComponent(out Player_Controller playerController)) { this.playerController = playerController; }
+
+            _controller.statPanel.Link_Player_StatController(playerController.prefabController.statController);
         }
 
         // set character data

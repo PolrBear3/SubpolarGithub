@@ -52,7 +52,7 @@ public class Basic_Object : MonoBehaviour, IInteractable, IDamageable, IInteract
     }
     public void Damage(int damageAmount)
     {
-        _controller.statController.Update_Current_LifeCount(-damageAmount);
+        _controller.statController.Update_Current_Life(-damageAmount);
         Health_Check();
 
         _animController.Interact_Animation();
