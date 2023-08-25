@@ -60,6 +60,10 @@ public class TileMap_Controller : MonoBehaviour
         Set_Object(114122, 1, 2, 1);
         Set_Object_Tile(Get_Tile(2, 1));
 
+        // stones
+        Set_Object(474033, 50, 3, 1);
+        Set_Object_Tile(Get_Tile(3, 1));
+
         // campfire
         Set_Object(135409, 1, 2, 3);
         Set_Object_Tile(Get_Tile(2, 3));

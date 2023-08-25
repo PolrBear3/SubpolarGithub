@@ -261,6 +261,7 @@ public class Tile_Controller : MonoBehaviour, IPointerClickHandler, IPointerEnte
     {
         for (int i = 0; i < _currentPrefabs.Count; i++)
         {
+            if (_currentPrefabs[i] == null) continue;
             _currentPrefabs[i].gameObject.SetActive(activate);
         }
     }

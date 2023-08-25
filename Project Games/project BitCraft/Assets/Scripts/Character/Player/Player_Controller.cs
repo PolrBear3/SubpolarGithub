@@ -15,7 +15,7 @@ public class Player_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Prefab_Controller prefabController)) { this.prefabController = prefabController; }
     }
 
-    // checks
+    // Check
     public bool Position_at_Crust()
     {
         List<Tile_Controller> crustTiles = prefabController.tilemapController.combinationSystem.Map_Crust_Tiles();
@@ -39,7 +39,7 @@ public class Player_Controller : MonoBehaviour
         return false;
     }
 
-    // functions
+    // Functions
     public void Click()
     {
         TileMap_Controller tilemapController = prefabController.tilemapController;
@@ -58,8 +58,10 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    // Actions
     public void Move()
     {
+        _prefabController.animationController.Update_Sprite(0);
         LeanTween.moveLocal(gameObject, _prefabController.setPosition, prefabController.moveSpeed).setEase(LeanTweenType.easeInOutQuint);
     }
 }

@@ -24,7 +24,7 @@ public class Inventory_Controller : MonoBehaviour
         Set_Slots();
 
         // inventory functions
-        Add_Item(474033, 20);
+        
 
         //
         Set_EquipSlot(0);

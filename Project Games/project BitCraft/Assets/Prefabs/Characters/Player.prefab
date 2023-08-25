@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7549250097886151390}
   - component: {fileID: 3719693828992680941}
   - component: {fileID: 5943235777382035921}
+  - component: {fileID: 3801948723520724775}
   - component: {fileID: 3096086046249689037}
   m_Layer: 0
   m_Name: Player
@@ -175,6 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabTag: {fileID: 7549250097886151390}
   _statController: {fileID: 5943235777382035921}
+  _animationController: {fileID: 3801948723520724775}
   _equipmentController: {fileID: 5511476646684392976}
   _positionX: 0
   _positionY: 0
@@ -204,8 +206,21 @@ MonoBehaviour:
   _maxLungCapacity: 0
   _currentLifeCount: 0
   _currentFatigue: 0
-  _currentHunger: 0
-  _currentLungCapacity: 0
+--- !u!114 &3801948723520724775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5523278180378848208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433fa536cd26f482b9ec72f45097b3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _updateSprites:
+  - {fileID: -1109237409, guid: 80b28a5a167104a49a8ca20dbc75a15c, type: 3}
+  - {fileID: 50356350, guid: 80b28a5a167104a49a8ca20dbc75a15c, type: 3}
 --- !u!114 &3096086046249689037
 MonoBehaviour:
   m_ObjectHideFlags: 0

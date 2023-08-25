@@ -27,5 +27,7 @@ public class Campfire : MonoBehaviour, IInteractable
 
         controller.tilemapController.playerController.prefabController.statController.Update_Current_Fatigue(_updateValue);
         controller.statPanel.Update_Fatigue_UIBar();
+
+        controller.tilemapController.playerController.prefabController.animationController.Update_Sprite(1);
     }
 }

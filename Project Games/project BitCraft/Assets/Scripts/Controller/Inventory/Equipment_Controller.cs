@@ -9,10 +9,10 @@ public class Equipment_Controller : MonoBehaviour
     [SerializeField] private List<Prefab_Controller> _inventoryEquipments;
     public List<Prefab_Controller> inventoryEquipments { get => _inventoryEquipments; set => _inventoryEquipments = value; }
 
-    [SerializeField] private Prefab_Controller _currentEquipment;
+    private Prefab_Controller _currentEquipment;
     public Prefab_Controller currentEquipment { get => _currentEquipment; set => _currentEquipment = value; }
 
-    [SerializeField] private Tile_Controller _equipmentUseTile;
+    private Tile_Controller _equipmentUseTile;
     public Tile_Controller equipmentUseTile { get => _equipmentUseTile; set => _equipmentUseTile = value; }
 
     //
