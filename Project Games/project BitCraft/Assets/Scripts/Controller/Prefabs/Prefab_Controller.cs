@@ -173,7 +173,7 @@ public class Prefab_Controller : MonoBehaviour
     public void Destroy_Prefab()
     {
         // all functions before destroy
-        _tilemapController.controller.inventoryController.dragSlot.objectScanner.Hide_Life();
+        _tilemapController.controller.inventoryController.dragSlot.objectScanner.Hide_All();
 
         // destroy
         Destroy(gameObject);

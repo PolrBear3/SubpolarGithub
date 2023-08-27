@@ -25,9 +25,18 @@ public class Object_Scanner : MonoBehaviour
     private bool _objectDetected;
     public bool objectDetected { get => _objectDetected; set => _objectDetected = value; }
 
+    //
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Drag_Slot dragSlot)) { _dragSlot = dragSlot; }
+    }
+
+
+    //
+    public void Hide_All()
+    {
+        Hide_Amount();
+        Hide_Life();
     }
 
     public void Show_Amount(Prefab_Controller scannedPrefab)
@@ -46,6 +55,10 @@ public class Object_Scanner : MonoBehaviour
         _droppedText.text = scannedPrefab.currentAmount.ToString();
         textColor.a = 1f;
         _droppedText.color = textColor;
+    }
+    public void Update_Amount()
+    {
+
     }
     public void Hide_Amount()
     {

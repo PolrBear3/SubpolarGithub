@@ -23,6 +23,7 @@ public class PlayerStat_Controller : MonoBehaviour, IPointerEnterHandler, IPoint
     [SerializeField] private Sprite _UnHoldSprite;
 
     [Header("InGame Value")]
+    [SerializeField] private List<UI_Bar> _lifeBars = new List<UI_Bar>();
     [SerializeField] private List<UI_Bar> _fatigueBars = new List<UI_Bar>();
 
     //
@@ -78,25 +79,45 @@ public class PlayerStat_Controller : MonoBehaviour, IPointerEnterHandler, IPoint
     public void Update_All_UIBar()
     {
         Update_Fatigue_UIBar();
+        Update_Life_UIBar();
     }
 
     public void Update_Fatigue_UIBar()
     {
         Stat_Controller psc = _playerStatController;
 
-        int playerFatigue = psc.currentFatigue;
-        int barCount = playerFatigue / _fatigueBars.Count;
+        int singleBarValue = psc.maxFatigue / _lifeBars.Count;
+        int currentBarCount = psc.currentFatigue / singleBarValue;
 
         for (int i = 0; i < _fatigueBars.Count; i++)
         {
-            if (barCount > 0)
+            if (currentBarCount > 0)
             {
                 _fatigueBars[i].Fill();
-                barCount--;
+                currentBarCount--;
                 continue;
             }
 
             _fatigueBars[i].Empty();
+        }
+    }
+    public void Update_Life_UIBar()
+    {
+        Stat_Controller psc = _playerStatController;
+
+        int singleBarValue = psc.maxLifeCount / _lifeBars.Count;
+        int currentBarCount = psc.currentLifeCount / singleBarValue;
+
+        for (int i = 0; i < _lifeBars.Count; i++)
+        {
+            if (currentBarCount > 0)
+            {
+                _lifeBars[i].Fill();
+                currentBarCount--;
+                continue;
+            }
+
+            _lifeBars[i].Empty();
         }
     }
 }

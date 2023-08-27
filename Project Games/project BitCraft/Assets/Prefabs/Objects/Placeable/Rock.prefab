@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 725340121840702115}
   - component: {fileID: 8537117108615183467}
+  - component: {fileID: 4029216585978305924}
   - component: {fileID: 417199669786865676}
   - component: {fileID: 6900627066728663899}
-  - component: {fileID: 4029216585978305924}
   - component: {fileID: 5946947024188406957}
   - component: {fileID: -5113172227308652651}
   - component: {fileID: 5764221875984540746}
@@ -91,6 +91,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &4029216585978305924
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013186990097543618}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.6}
+  m_EdgeRadius: 0
 --- !u!114 &417199669786865676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,32 +144,6 @@ MonoBehaviour:
   _prefabType: 3
   _prefabID: 213474
   _layerOrderNum: 2
---- !u!61 &4029216585978305924
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013186990097543618}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.6, y: 0.6}
-  m_EdgeRadius: 0
 --- !u!114 &5946947024188406957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabTag: {fileID: 6900627066728663899}
   _statController: {fileID: 5764221875984540746}
+  _animationController: {fileID: 0}
   _equipmentController: {fileID: 0}
   _positionX: 0
   _positionY: 0
@@ -200,8 +201,6 @@ MonoBehaviour:
   _maxLungCapacity: 0
   _currentLifeCount: 0
   _currentFatigue: 0
-  _currentHunger: 0
-  _currentLungCapacity: 0
 --- !u!114 &6674807307677676447
 MonoBehaviour:
   m_ObjectHideFlags: 0

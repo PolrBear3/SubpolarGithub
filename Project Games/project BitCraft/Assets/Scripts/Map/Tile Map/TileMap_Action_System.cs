@@ -137,7 +137,7 @@ public class TileMap_Action_System : MonoBehaviour
 
         // player stat
         _tilemapController.playerController.prefabController.statController.Update_Current_Fatigue(-1);
-        _tilemapController.controller.statPanel.Update_Fatigue_UIBar();
+        _tilemapController.controller.statPanel.Update_All_UIBar();
 
         // tile
         moveTile.Set_Prefab(playerController.transform);

@@ -79,7 +79,7 @@ public class Basic_CraftTable : MonoBehaviour, IInteractable, IInteractableUpdat
 
         // return Basic CraftTable ingredients
 
-        Destroy(gameObject);
+        _controller.Destroy_Prefab();
     }
 
     // Crafting
