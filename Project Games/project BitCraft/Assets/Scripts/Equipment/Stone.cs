@@ -8,6 +8,9 @@ public class Stone : MonoBehaviour, IEquippable
 
     private bool _useReady;
 
+    [SerializeField] private int _meleeDamage;
+    [SerializeField] private int _throwDamage;
+
     //
     private void Awake()
     {
@@ -59,7 +62,7 @@ public class Stone : MonoBehaviour, IEquippable
         {
             if (!targetTile.currentPrefabs[i].TryGetComponent(out IDamageable damageable)) continue;
 
-            int damage = Random.Range(0, 2);
+            int damage = Random.Range(0, _meleeDamage);
 
             _prefabController.tilemapController.controller.inventoryController.Decrease_EquippedSlot_Item(1);
             damageable.Damage(damage);
@@ -72,10 +75,8 @@ public class Stone : MonoBehaviour, IEquippable
             if (targetTile.currentPrefabs[i].prefabTag.prefabType != Prefab_Type.character) continue;
             if (!targetTile.currentPrefabs[i].TryGetComponent(out IDamageable damageable)) continue;
 
-            int damage = Random.Range(0, 2);
-
             _prefabController.tilemapController.controller.inventoryController.Decrease_EquippedSlot_Item(1);
-            damageable.Damage(damage);
+            damageable.Damage(_throwDamage);
         }
     }
 }
