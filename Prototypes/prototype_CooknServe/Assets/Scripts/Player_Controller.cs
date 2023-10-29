@@ -4,21 +4,11 @@ using UnityEngine;
 
 public class Player_Controller : MonoBehaviour
 {
-    private Rigidbody2D _rb;
-    public Rigidbody2D rb { get => _rb; set => _rb = value; }
-
     [SerializeField] private Player_Movement _playerMovement;
     public Player_Movement playerMovement { get => _playerMovement; set => _playerMovement = value; }
 
-    //
-    private void Awake()
-    {
-        Get_AllComponents();
-    }
+    [SerializeField] private Player_Animation _playerAnimation;
+    public Player_Animation playerAnimation { get => _playerAnimation; set => _playerAnimation = value; }
 
     //
-    private void Get_AllComponents()
-    {
-        if (gameObject.TryGetComponent(out Rigidbody2D rb)) { _rb = rb; }
-    }
 }
