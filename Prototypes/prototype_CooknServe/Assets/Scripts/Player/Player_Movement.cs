@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player_Movement : MonoBehaviour
 {
-    private Rigidbody2D _rb;
-    public Rigidbody2D rb { get => _rb; set => _rb = value; }
+    [HideInInspector] public Rigidbody2D rb;
 
     private Player_Controller _playerController;
 
@@ -18,7 +17,7 @@ public class Player_Movement : MonoBehaviour
     //
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out Rigidbody2D rb)) _rb = rb;
+        if (gameObject.TryGetComponent(out Rigidbody2D rb)) this.rb = rb;
         if (gameObject.TryGetComponent(out Player_Controller playerController)) _playerController = playerController;
     }
     private void FixedUpdate()
