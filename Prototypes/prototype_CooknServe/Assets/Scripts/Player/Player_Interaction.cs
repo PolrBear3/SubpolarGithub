@@ -8,7 +8,7 @@ public class Player_Interaction : MonoBehaviour
 
     //
     private Food _currentFood;
-    [SerializeField] private SpriteRenderer _foodSR;
+    [SerializeField] private SpriteRenderer _currentFoodIcon;
 
     //
     private void Awake()
