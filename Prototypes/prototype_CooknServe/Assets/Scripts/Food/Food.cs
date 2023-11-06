@@ -13,13 +13,13 @@ public class FoodState_Data
 
 public class Food : MonoBehaviour
 {
-    [HideInInspector] public Food_ScrObj food;
+    [HideInInspector] public Food_ScrObj foodScrObj;
     [HideInInspector] public List<FoodState_Data> data = new List<FoodState_Data>();
 
     //
     public void Set_Food(Food_ScrObj setFood)
     {
-        food = setFood;
+        foodScrObj = setFood;
     }
     public void Update_State(FoodState_Type updateType, int updateLevel)
     {

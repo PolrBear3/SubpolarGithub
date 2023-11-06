@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface IInteractable
+{
+    void Interact();
+}
+
 public class Data_Controller : MonoBehaviour
 {
     public List<Food_ScrObj> allFoods = new();
