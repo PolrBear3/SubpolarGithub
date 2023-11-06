@@ -7,6 +7,7 @@ public interface IInteractable
     void Interact();
 }
 
+
 public class Data_Controller : MonoBehaviour
 {
     public List<Food_ScrObj> allFoods = new();

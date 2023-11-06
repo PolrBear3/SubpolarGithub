@@ -5,21 +5,19 @@ using UnityEngine.InputSystem;
 
 public class Player_Interaction : MonoBehaviour
 {
-    [HideInInspector] public Player_Controller _playerController;
-
     //
-    private Food _currentFood;
+    [HideInInspector] public Food currentFood;
     [SerializeField] private SpriteRenderer _currentFoodIcon;
 
-    public List<GameObject> detectedInteractables = new();
+    private List<GameObject> _detectedInteractables = new();
+    [HideInInspector] public GameObject _closestInteractable;
 
     //
-    private void Awake()
+    private void Update()
     {
-        if (gameObject.TryGetComponent(out Player_Controller playerController)) _playerController = playerController;
+        Update_Closest_Interactable();
     }
 
-    //
     private void OnInteract()
     {
         Interact();
@@ -30,32 +28,50 @@ public class Player_Interaction : MonoBehaviour
     {
         if (!collision.TryGetComponent(out IInteractable interactable)) return;
 
-        detectedInteractables.Add(collision.gameObject);
+        _detectedInteractables.Add(collision.gameObject);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out IInteractable interactable)) return;
 
-        detectedInteractables.Remove(collision.gameObject);
+        _detectedInteractables.Remove(collision.gameObject);
     }
 
     //
+    private GameObject Get_Closest_Interactable()
+    {
+        float closestDistance = Vector2.Distance(_detectedInteractables[0].transform.position, transform.position);
+        GameObject closestInteractable = _detectedInteractables[0];
+
+        for (int i = 0; i < _detectedInteractables.Count; i++)
+        {
+            if (Vector2.Distance(_detectedInteractables[i].transform.position, transform.position) >= closestDistance) continue;
+            closestInteractable = _detectedInteractables[i];
+        }
+
+        return closestInteractable;
+    }
+    private void Update_Closest_Interactable()
+    {
+        if (_detectedInteractables.Count <= 0) return;
+        _closestInteractable = Get_Closest_Interactable();
+    }
     private void Interact()
     {
-        if (detectedInteractables.Count <= 0) return;
-        if (!detectedInteractables[0].TryGetComponent(out IInteractable interactable)) return;
+        if (_detectedInteractables.Count <= 0) return;
+        if (!_closestInteractable.TryGetComponent(out IInteractable interactable)) return;
         interactable.Interact();
     }
 
     public void Set_CurrentFood(Food setFood)
     {
-        _currentFood = setFood;
-        _currentFoodIcon.sprite = _currentFood.foodScrObj.ingameSprite;
+        currentFood = setFood;
+        _currentFoodIcon.sprite = currentFood.foodScrObj.ingameSprite;
         _currentFoodIcon.color = Color.white;
     }
     public void Empty_CurrentFood()
     {
-        _currentFood = null;
+        currentFood = null;
         _currentFoodIcon.sprite = null;
         _currentFoodIcon.color = Color.clear;
     }
