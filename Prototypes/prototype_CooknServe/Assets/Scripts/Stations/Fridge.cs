@@ -7,6 +7,8 @@ public class Fridge : MonoBehaviour, IInteractable
     private Game_Controller _gameController;
     private Player_Controller _playerController;
 
+    [SerializeField] private Food_ScrObj _foodScrObj;
+
     //
     private void Awake()
     {
@@ -15,7 +17,7 @@ public class Fridge : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Give_Apple();
+        Give_Food();
     }
 
     //
@@ -33,12 +35,12 @@ public class Fridge : MonoBehaviour, IInteractable
     }
 
     //
-    private void Give_Apple()
+    private void Give_Food()
     {
-        Food newApple = gameObject.AddComponent<Food>();
-        newApple.Set_Food(_gameController.dataController.Get_Food(0));
-        newApple.Update_State(FoodState_Type.sliced, 3);
+        Food newFood = gameObject.AddComponent<Food>();
+        newFood.Set_Food(_gameController.dataController.Get_Food(_foodScrObj));
+        newFood.Update_State(FoodState_Type.sliced, 3);
 
-        _playerController.playerInteraction.Set_CurrentFood(newApple);
+        _playerController.playerInteraction.Set_CurrentFood(newFood);
     }
 }

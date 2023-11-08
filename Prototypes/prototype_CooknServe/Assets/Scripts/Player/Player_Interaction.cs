@@ -65,6 +65,12 @@ public class Player_Interaction : MonoBehaviour
 
     public void Set_CurrentFood(Food setFood)
     {
+        if (setFood == null)
+        {
+            Empty_CurrentFood();
+            return;
+        }
+
         currentFood = setFood;
         _currentFoodIcon.sprite = currentFood.foodScrObj.ingameSprite;
         _currentFoodIcon.color = Color.white;

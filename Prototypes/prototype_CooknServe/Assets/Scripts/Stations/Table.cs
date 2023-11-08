@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Table : MonoBehaviour, IInteractable
 {
@@ -10,6 +11,8 @@ public class Table : MonoBehaviour, IInteractable
     private Food _currentFood;
     [SerializeField] private SpriteRenderer _currentFoodIcon;
 
+    [SerializeField] private bool _optionsOn;
+
     //
     private void Awake()
     {
@@ -18,7 +21,36 @@ public class Table : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Use_Table();
+        _optionsOn = true;
+    }
+
+    private void OnOption1()
+    {
+        if (!_optionsOn) return;
+
+        if (_playerController.playerInteraction.currentFood != null)
+        {
+            Swap_Food();
+        }
+        else
+        {
+            Give_Food();
+        }
+
+        _optionsOn = false;
+    }
+    private void OnOption2()
+    {
+        if (!_optionsOn) return;
+
+        // Mix Food
+
+        _optionsOn = false;
+    }
+    private void OnMovement()
+    {
+        // Exit Options
+        _optionsOn = false;
     }
 
     //
@@ -36,17 +68,11 @@ public class Table : MonoBehaviour, IInteractable
     }
 
     //
-    private void Use_Table()
+    private void Set_Food()
     {
-        if (_currentFood == null) Set_PlayerFood();
-        else Give_CurrentFood();
-    }
-
-    private void Set_PlayerFood()
-    {
-        if (_playerController.playerInteraction.currentFood == null) return;
-
         Player_Interaction interaction = _playerController.playerInteraction;
+
+        if (_playerController.playerInteraction.currentFood == null) return;
 
         _currentFood = interaction.currentFood;
         _currentFoodIcon.sprite = _currentFood.foodScrObj.ingameSprite;
@@ -54,7 +80,19 @@ public class Table : MonoBehaviour, IInteractable
 
         interaction.Empty_CurrentFood();
     }
-    private void Give_CurrentFood()
+    private void Swap_Food()
+    {
+        // save previous food
+        Food previousFood = _currentFood;
+
+        // update this food to player food
+        Set_Food();
+
+        // update player food to previous food
+        _playerController.playerInteraction.Set_CurrentFood(previousFood);
+    }
+
+    private void Give_Food()
     {
         if (_playerController.playerInteraction.currentFood != null) return;
 
