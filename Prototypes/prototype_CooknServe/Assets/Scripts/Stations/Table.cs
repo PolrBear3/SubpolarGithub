@@ -74,6 +74,7 @@ public class Table : MonoBehaviour, IInteractable
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
 
         _playerController = null;
+        Options_Update(false);
     }
 
     //
