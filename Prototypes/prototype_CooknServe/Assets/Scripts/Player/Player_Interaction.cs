@@ -6,8 +6,9 @@ using UnityEngine.InputSystem;
 public class Player_Interaction : MonoBehaviour
 {
     //
-    [HideInInspector] public Food currentFood;
     [SerializeField] private SpriteRenderer _currentFoodIcon;
+
+    [HideInInspector] public Food currentFood;
 
     private List<GameObject> _detectedInteractables = new();
     [HideInInspector] public GameObject _closestInteractable;
@@ -72,6 +73,7 @@ public class Player_Interaction : MonoBehaviour
         }
 
         currentFood = setFood;
+
         _currentFoodIcon.sprite = currentFood.foodScrObj.ingameSprite;
         _currentFoodIcon.color = Color.white;
     }

@@ -9,4 +9,6 @@ public class Food_ScrObj : ScriptableObject
     public Sprite ingameSprite;
     public string foodName;
     public int id;
+
+    public List<Ingredient> ingredients = new();
 }

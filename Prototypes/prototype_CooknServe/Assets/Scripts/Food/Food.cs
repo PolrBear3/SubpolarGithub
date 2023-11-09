@@ -2,24 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum FoodState_Type { sliced, heated }
-
-[System.Serializable]
-public class FoodState_Data
-{
-    public FoodState_Type stateType;
-    public int stateLevel;
-}
-
 public class Food : MonoBehaviour
 {
     [HideInInspector] public Food_ScrObj foodScrObj;
     [HideInInspector] public List<FoodState_Data> data = new List<FoodState_Data>();
 
+    public List<Ingredient> ingredientsData = new();
+
     //
-    public void Set_Food(Food_ScrObj setFood)
+    public void Set_Food(Food_ScrObj setFood, List<Ingredient> ingredientsData)
     {
         foodScrObj = setFood;
+        this.ingredientsData = ingredientsData;
     }
     public void Update_State(FoodState_Type updateType, int updateLevel)
     {

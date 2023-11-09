@@ -305,10 +305,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8df11d601c5ff46cfa0e9d6a956e16d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allFoods:
+  ingredientFoods:
   - {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
   - {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
   - {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
+  mergedFoods:
+  - {fileID: 11400000, guid: 655d6e99319ae4e20887436b371f1c5b, type: 2}
+  - {fileID: 11400000, guid: a50e274af592e49ac8871921686e2d0c, type: 2}
 --- !u!114 &408341639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +336,7 @@ PrefabInstance:
     - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
       propertyPath: _foodScrObj
       value: 
-      objectReference: {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
+      objectReference: {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
     - target: {fileID: 7366090731837522239, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
       propertyPath: m_Name
       value: Fridge (1)
@@ -458,7 +461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8419198045815295846, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8419198045815295846, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
       propertyPath: m_LocalPosition.y
@@ -568,7 +571,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3224405375533897282, guid: b0ca5831fe24f4be7af12d11f364fd91, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3224405375533897282, guid: b0ca5831fe24f4be7af12d11f364fd91, type: 3}
       propertyPath: m_LocalPosition.y
@@ -622,7 +625,7 @@ SceneRoots:
   - {fileID: 195357627}
   - {fileID: 408341637}
   - {fileID: 1339260688}
-  - {fileID: 1930985379}
   - {fileID: 8728830438072496526}
+  - {fileID: 1930985379}
   - {fileID: 833723837}
   - {fileID: 4932362284746475083}

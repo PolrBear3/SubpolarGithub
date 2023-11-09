@@ -38,7 +38,9 @@ public class Fridge : MonoBehaviour, IInteractable
     private void Give_Food()
     {
         Food newFood = gameObject.AddComponent<Food>();
-        newFood.Set_Food(_gameController.dataController.Get_Food(_foodScrObj));
+        Food_ScrObj searchedFood = _gameController.dataController.Get_Food(_foodScrObj);
+
+        newFood.Set_Food(searchedFood, searchedFood.ingredients);
         newFood.Update_State(FoodState_Type.sliced, 3);
 
         _playerController.playerInteraction.Set_CurrentFood(newFood);

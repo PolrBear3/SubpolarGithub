@@ -8,10 +8,11 @@ public class Table : MonoBehaviour, IInteractable
     private Game_Controller _gameController;
     private Player_Controller _playerController;
 
-    private Food _currentFood;
     [SerializeField] private SpriteRenderer _currentFoodIcon;
+    [SerializeField] private GameObject _interactPointer;
 
-    [SerializeField] private bool _optionsOn;
+    private Food _currentFood;
+    private bool _optionsOn;
 
     //
     private void Awake()
@@ -21,7 +22,14 @@ public class Table : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        _optionsOn = true;
+        if (!_optionsOn)
+        {
+            Options_Update(true);
+        }
+        else
+        {
+            Options_Update(false);
+        }
     }
 
     private void OnOption1()
@@ -37,20 +45,21 @@ public class Table : MonoBehaviour, IInteractable
             Give_Food();
         }
 
-        _optionsOn = false;
+        Options_Update(false);
     }
     private void OnOption2()
     {
         if (!_optionsOn) return;
 
-        // Mix Food
+        Merge_Food();
 
-        _optionsOn = false;
+        Options_Update(false);
     }
     private void OnMovement()
     {
-        // Exit Options
-        _optionsOn = false;
+        if (!_optionsOn) return;
+
+        Options_Update(false);
     }
 
     //
@@ -68,6 +77,12 @@ public class Table : MonoBehaviour, IInteractable
     }
 
     //
+    private void Options_Update(bool optionsOn)
+    {
+        _optionsOn = optionsOn;
+        _interactPointer.SetActive(_optionsOn);
+    }
+
     private void Set_Food()
     {
         Player_Interaction interaction = _playerController.playerInteraction;
@@ -80,6 +95,7 @@ public class Table : MonoBehaviour, IInteractable
 
         interaction.Empty_CurrentFood();
     }
+
     private void Swap_Food()
     {
         // save previous food
@@ -91,7 +107,6 @@ public class Table : MonoBehaviour, IInteractable
         // update player food to previous food
         _playerController.playerInteraction.Set_CurrentFood(previousFood);
     }
-
     private void Give_Food()
     {
         if (_playerController.playerInteraction.currentFood != null) return;
@@ -104,5 +119,27 @@ public class Table : MonoBehaviour, IInteractable
         _currentFoodIcon.color = Color.clear;
 
         interaction.Set_CurrentFood(interaction.currentFood);
+    }
+
+    private void Merge_Food()
+    {
+        Player_Interaction player = _playerController.playerInteraction;
+
+        if (player.currentFood == null || _currentFood == null)
+        {
+            Give_Food();
+            return;
+        }
+
+        List<Food_ScrObj> ingredients = new();
+        ingredients.Add(player.currentFood.foodScrObj);
+        ingredients.Add(_currentFood.foodScrObj);
+
+        Food_ScrObj mergedFood = _gameController.dataController.Get_MergedFood(ingredients);
+        _currentFood.Set_Food(mergedFood, mergedFood.ingredients);
+        _currentFoodIcon.sprite = _currentFood.foodScrObj.ingameSprite;
+        _currentFoodIcon.color = Color.white;
+
+        player.Empty_CurrentFood();
     }
 }
