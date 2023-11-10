@@ -9,7 +9,7 @@ public class Table : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     [SerializeField] private SpriteRenderer _currentFoodIcon;
-    [SerializeField] private GameObject _interactPointer;
+    [SerializeField] private GameObject _optionsMenu;
 
     private Food _currentFood;
     private bool _optionsOn;
@@ -81,7 +81,9 @@ public class Table : MonoBehaviour, IInteractable
     private void Options_Update(bool optionsOn)
     {
         _optionsOn = optionsOn;
-        _interactPointer.SetActive(_optionsOn);
+        _optionsMenu.SetActive(_optionsOn);
+
+        // option box icon update
     }
 
     private void Set_Food()
@@ -132,12 +134,19 @@ public class Table : MonoBehaviour, IInteractable
             return;
         }
 
+        if (player.currentFood.foodScrObj == _currentFood.foodScrObj)
+        {
+            Swap_Food();
+            return;
+        }
+
         List<Food_ScrObj> ingredients = new();
         ingredients.Add(player.currentFood.foodScrObj);
         ingredients.Add(_currentFood.foodScrObj);
 
         Food_ScrObj mergedFood = _gameController.dataController.Get_MergedFood(ingredients);
-        _currentFood.Set_Food(mergedFood, mergedFood.ingredients);
+        _currentFood.Set_Food(mergedFood);
+
         _currentFoodIcon.sprite = _currentFood.foodScrObj.ingameSprite;
         _currentFoodIcon.color = Color.white;
 

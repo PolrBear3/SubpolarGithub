@@ -7,13 +7,10 @@ public class Food : MonoBehaviour
     [HideInInspector] public Food_ScrObj foodScrObj;
     [HideInInspector] public List<FoodState_Data> data = new List<FoodState_Data>();
 
-    public List<Ingredient> ingredientsData = new();
-
     //
-    public void Set_Food(Food_ScrObj setFood, List<Ingredient> ingredientsData)
+    public void Set_Food(Food_ScrObj setFood)
     {
         foodScrObj = setFood;
-        this.ingredientsData = ingredientsData;
     }
     public void Update_State(FoodState_Type updateType, int updateLevel)
     {
