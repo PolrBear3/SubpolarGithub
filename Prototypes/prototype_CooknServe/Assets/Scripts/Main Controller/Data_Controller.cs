@@ -84,6 +84,7 @@ public class Data_Controller : MonoBehaviour
 
             for (int k = 0; k < insertedIngredients.Count; k++)
             {
+                if (insertedIngredients[k] == null) continue;
                 if (!mergedFoodIngredients.Contains(insertedIngredients[k])) continue;
 
                 matchCount--;

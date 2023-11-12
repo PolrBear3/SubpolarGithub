@@ -9,7 +9,11 @@ public class Table : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     [SerializeField] private SpriteRenderer _currentFoodIcon;
-    [SerializeField] private GameObject _optionsMenu;
+
+    [Header ("Options Menu")]
+    [SerializeField] private GameObject _menu;
+    [SerializeField] private Icon_Controller _icon1;
+    [SerializeField] private Icon_Controller _icon2;
 
     private Food _currentFood;
     private bool _optionsOn;
@@ -25,6 +29,7 @@ public class Table : MonoBehaviour, IInteractable
         if (!_optionsOn)
         {
             Options_Update(true);
+            Icons_Update();
         }
         else
         {
@@ -51,7 +56,20 @@ public class Table : MonoBehaviour, IInteractable
     {
         if (!_optionsOn) return;
 
-        Merge_Food();
+        Player_Interaction player = _playerController.playerInteraction;
+
+        if (_currentFood == null && player.currentFood != null)
+        {
+            Swap_Food();
+        }
+        else if (_currentFood != null && player.currentFood == null)
+        {
+            Give_Food();
+        }
+        else
+        {
+            Merge_Food();
+        }
 
         Options_Update(false);
     }
@@ -81,9 +99,48 @@ public class Table : MonoBehaviour, IInteractable
     private void Options_Update(bool optionsOn)
     {
         _optionsOn = optionsOn;
-        _optionsMenu.SetActive(_optionsOn);
+        _menu.SetActive(_optionsOn);
+    }
+    private void Icons_Update()
+    {
+        Player_Interaction player = _playerController.playerInteraction;
 
-        // option box icon update
+        if (_currentFood == null && player.currentFood == null)
+        {
+            _icon1.Clear();
+            _icon2.Clear();
+            return;
+        }
+
+        if (_currentFood == null && player.currentFood != null)
+        {
+            _icon1.Assign(player.currentFood.foodScrObj.ingameSprite);
+            _icon2.Assign(player.currentFood.foodScrObj.ingameSprite);
+        }
+        else if (_currentFood != null && player.currentFood == null)
+        {
+            _icon1.Assign(_currentFood.foodScrObj.ingameSprite);
+            _icon2.Assign(_currentFood.foodScrObj.ingameSprite);
+        }
+        else
+        {
+            List<Food_ScrObj> ingredients = new();
+            ingredients.Add(player.currentFood.foodScrObj);
+            ingredients.Add(_currentFood.foodScrObj);
+
+            Food_ScrObj mergedFood = _gameController.dataController.Get_MergedFood(ingredients);
+
+            _icon1.Assign(_currentFood.foodScrObj.ingameSprite);
+
+            if (mergedFood == null)
+            {
+                _icon2.Assign(_currentFood.foodScrObj.ingameSprite);
+            }
+            else
+            {
+                _icon2.Assign(mergedFood.ingameSprite);
+            }
+        }
     }
 
     private void Set_Food()
