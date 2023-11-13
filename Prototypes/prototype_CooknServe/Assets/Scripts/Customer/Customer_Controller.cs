@@ -11,6 +11,4 @@ public class Customer_Controller : MonoBehaviour
     {
         if (gameObject.TryGetComponent(out Customer_Order customerOrder)) { this.customerOrder = customerOrder; }
     }
-
-    //
 }

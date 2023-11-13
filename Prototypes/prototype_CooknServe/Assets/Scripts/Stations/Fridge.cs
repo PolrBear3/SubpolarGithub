@@ -15,8 +15,10 @@ public class Fridge : MonoBehaviour, IInteractable
         _gameController = FindObjectOfType<Game_Controller>();
     }
 
+    //
     public void Interact()
     {
+        if (_playerController.playerInteraction.closestInteractable != gameObject) return;
         Give_Food();
     }
 
@@ -37,7 +39,7 @@ public class Fridge : MonoBehaviour, IInteractable
     //
     private void Give_Food()
     {
-        Food newFood = gameObject.AddComponent<Food>();
+        Food newFood = new();
         Food_ScrObj searchedFood = _gameController.dataController.Get_Food(_foodScrObj);
 
         newFood.Set_Food(searchedFood);

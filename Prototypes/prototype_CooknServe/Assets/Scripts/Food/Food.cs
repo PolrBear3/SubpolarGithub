@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Food : MonoBehaviour
+public class Food
 {
     [HideInInspector] public Food_ScrObj foodScrObj;
     [HideInInspector] public List<FoodState_Data> data = new List<FoodState_Data>();

@@ -6,12 +6,11 @@ using UnityEngine.InputSystem;
 public class Player_Interaction : MonoBehaviour
 {
     //
-    [SerializeField] private SpriteRenderer _currentFoodIcon;
-
     [HideInInspector] public Food currentFood;
+    [SerializeField] private Icon_Controller _currentFoodIcon;
 
     private List<GameObject> _detectedInteractables = new();
-    [HideInInspector] public GameObject _closestInteractable;
+    [HideInInspector] public GameObject closestInteractable;
 
     //
     private void Update()
@@ -36,9 +35,16 @@ public class Player_Interaction : MonoBehaviour
         if (!collision.TryGetComponent(out IInteractable interactable)) return;
 
         _detectedInteractables.Remove(collision.gameObject);
+        closestInteractable = null;
     }
 
     //
+    private void Update_Closest_Interactable()
+    {
+        if (_detectedInteractables.Count <= 0) return;
+        closestInteractable = Get_Closest_Interactable();
+    }
+
     private GameObject Get_Closest_Interactable()
     {
         float closestDistance = Vector2.Distance(_detectedInteractables[0].transform.position, transform.position);
@@ -52,18 +58,24 @@ public class Player_Interaction : MonoBehaviour
 
         return closestInteractable;
     }
-    private void Update_Closest_Interactable()
+    public bool Is_Closest_Interactable(GameObject interactable)
     {
-        if (_detectedInteractables.Count <= 0) return;
-        _closestInteractable = Get_Closest_Interactable();
+        if (closestInteractable == interactable) return true;
+        return false;
     }
+
     private void Interact()
     {
         if (_detectedInteractables.Count <= 0) return;
-        if (!_closestInteractable.TryGetComponent(out IInteractable interactable)) return;
-        interactable.Interact();
+
+        for (int i = 0; i < _detectedInteractables.Count; i++)
+        {
+            if (!_detectedInteractables[i].TryGetComponent(out IInteractable interactable)) return;
+            interactable.Interact();
+        }
     }
 
+    //
     public void Set_CurrentFood(Food setFood)
     {
         if (setFood == null)
@@ -73,14 +85,11 @@ public class Player_Interaction : MonoBehaviour
         }
 
         currentFood = setFood;
-
-        _currentFoodIcon.sprite = currentFood.foodScrObj.ingameSprite;
-        _currentFoodIcon.color = Color.white;
+        _currentFoodIcon.Assign(currentFood.foodScrObj.ingameSprite);
     }
     public void Empty_CurrentFood()
     {
         currentFood = null;
-        _currentFoodIcon.sprite = null;
-        _currentFoodIcon.color = Color.clear;
+        _currentFoodIcon.Clear();
     }
 }

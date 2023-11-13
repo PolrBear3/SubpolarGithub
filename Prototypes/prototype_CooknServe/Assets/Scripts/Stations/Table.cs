@@ -8,7 +8,7 @@ public class Table : MonoBehaviour, IInteractable
     private Game_Controller _gameController;
     private Player_Controller _playerController;
 
-    [SerializeField] private SpriteRenderer _currentFoodIcon;
+    [SerializeField] private Icon_Controller _currentFoodIcon;
 
     [Header ("Options Menu")]
     [SerializeField] private GameObject _menu;
@@ -26,15 +26,18 @@ public class Table : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (!_optionsOn)
+        Player_Interaction player = _playerController.playerInteraction;
+
+        if (_currentFood == null && player.currentFood == null) return;
+
+        if (!_optionsOn && player.Is_Closest_Interactable(gameObject))
         {
             Options_Update(true);
             Icons_Update();
+            return;
         }
-        else
-        {
-            Options_Update(false);
-        }
+
+        Options_Update(false);
     }
 
     private void OnOption1()
@@ -73,25 +76,19 @@ public class Table : MonoBehaviour, IInteractable
 
         Options_Update(false);
     }
-    private void OnMovement()
-    {
-        if (!_optionsOn) return;
-
-        Options_Update(false);
-    }
 
     //
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
-
         _playerController = playerController;
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
-
         _playerController = null;
+
+        if (!_optionsOn) return;
         Options_Update(false);
     }
 
@@ -145,15 +142,14 @@ public class Table : MonoBehaviour, IInteractable
 
     private void Set_Food()
     {
-        Player_Interaction interaction = _playerController.playerInteraction;
+        Player_Interaction player = _playerController.playerInteraction;
 
-        if (_playerController.playerInteraction.currentFood == null) return;
+        if (player.currentFood == null) return;
 
-        _currentFood = interaction.currentFood;
-        _currentFoodIcon.sprite = _currentFood.foodScrObj.ingameSprite;
-        _currentFoodIcon.color = Color.white;
+        _currentFood = player.currentFood;
+        _currentFoodIcon.Assign(_currentFood.foodScrObj.ingameSprite);
 
-        interaction.Empty_CurrentFood();
+        player.Empty_CurrentFood();
     }
 
     private void Swap_Food()
@@ -171,14 +167,13 @@ public class Table : MonoBehaviour, IInteractable
     {
         if (_playerController.playerInteraction.currentFood != null) return;
 
-        Player_Interaction interaction = _playerController.playerInteraction;
+        Player_Interaction player = _playerController.playerInteraction;
 
-        interaction.currentFood = _currentFood;
+        player.currentFood = _currentFood;
+        player.Set_CurrentFood(player.currentFood);
+
         _currentFood = null;
-        _currentFoodIcon.sprite = null;
-        _currentFoodIcon.color = Color.clear;
-
-        interaction.Set_CurrentFood(interaction.currentFood);
+        _currentFoodIcon.Clear();
     }
 
     private void Merge_Food()
@@ -202,10 +197,15 @@ public class Table : MonoBehaviour, IInteractable
         ingredients.Add(_currentFood.foodScrObj);
 
         Food_ScrObj mergedFood = _gameController.dataController.Get_MergedFood(ingredients);
-        _currentFood.Set_Food(mergedFood);
 
-        _currentFoodIcon.sprite = _currentFood.foodScrObj.ingameSprite;
-        _currentFoodIcon.color = Color.white;
+        if (mergedFood == null)
+        {
+            Swap_Food();
+            return;
+        }
+
+        _currentFood.Set_Food(mergedFood);
+        _currentFoodIcon.Assign(_currentFood.foodScrObj.ingameSprite);
 
         player.Empty_CurrentFood();
     }
