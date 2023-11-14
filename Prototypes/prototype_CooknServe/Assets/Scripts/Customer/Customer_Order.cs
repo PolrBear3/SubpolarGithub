@@ -8,14 +8,16 @@ public class Customer_Order : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     private Food _orderFood;
-    [SerializeField] private Icon_Controller _serveIcon;
+    [SerializeField] private Icon_Controller _currentFoodIcon;
 
-    [Header("Options Menu")]
+    [SerializeField] private int _servePoint;
+
+    [Header("Order Menu")]
     [SerializeField] private GameObject _menu;
-    [SerializeField] private Icon_Controller _menuIcon;
+    [SerializeField] private Icon_Controller _orderIcon;
 
     private bool _menuOn;
-    private bool _orderTaken;
+    private bool _isOrdered;
 
     // UnityEngine
     private void Awake()
@@ -26,30 +28,33 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
+        Menu_Activate(!_menuOn);
+
+        if (!_menuOn) return;
+
         Player_Interaction player = _playerController.playerInteraction;
 
-        if (!player.Is_Closest_Interactable(gameObject) || _menuOn)
-        {
-            Menu_Activate(false);
-            return;
-        }
+        if (!player.Is_Closest_Interactable(gameObject)) return;
+        if (_isOrdered) return;
 
-        Menu_Activate(true);
-
-        if (_orderFood != null) return;
-
+        _isOrdered = true;
         Set_Order();
     }
 
     // Player Input
     private void OnOption1()
     {
-        if (_playerController == null || !_menuOn) return;
+        if (_playerController == null) return;
 
-        Menu_Activate(false);
+        Menu_Activate(!_menuOn);
+        Serve_Order();
+    }
+    private void OnOption2()
+    {
+        if (_playerController == null) return;
 
-        if (!_orderTaken) Take_Order();
-        else Serve_Order();
+        Menu_Activate(!_menuOn);
+        Serve_Order();
     }
 
     // OnTrigger
@@ -95,14 +100,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
         orderFood.data.Add(randData);
 
         _orderFood = orderFood;
-        _menuIcon.Assign(_orderFood.foodScrObj.sprite);
-    }
-    private void Take_Order()
-    {
-        _orderTaken = true;
-
-        _serveIcon.gameObject.SetActive(true);
-        _serveIcon.Assign(_orderFood.foodScrObj.emptySprite);
+        _orderIcon.Assign(_orderFood.foodScrObj.sprite);
     }
     private void Serve_Order()
     {
@@ -114,15 +112,14 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         if (playerFood != _orderFood.foodScrObj) return;
 
+        _servePoint++;
+
         Cancel_Order();
         player.Empty_CurrentFood();
     }
     private void Cancel_Order()
     {
-        _orderTaken = false;
         _orderFood = null;
-
-        _menuIcon.Clear();
-        _serveIcon.Clear();
+        _isOrdered = false;
     }
 }

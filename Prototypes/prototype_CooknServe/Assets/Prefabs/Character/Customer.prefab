@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3866529123996901816}
   - component: {fileID: 7946594719593924635}
   m_Layer: 0
-  m_Name: Options Menu
+  m_Name: Order Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 4723811715373858240}
   - component: {fileID: 5934727722895316355}
   m_Layer: 0
-  m_Name: Food Icon 1
+  m_Name: Order Food Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,7 +169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &454395164018697175
 Transform:
   m_ObjectHideFlags: 0
@@ -226,7 +226,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 1162158454, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -234,7 +234,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &5735590887829985401
@@ -523,9 +523,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5da85ad905034fa8942871eb0551af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serveIcon: {fileID: 5735590887829985401}
+  _currentFoodIcon: {fileID: 5735590887829985401}
   _menu: {fileID: 254754144826477250}
-  _menuIcon: {fileID: 5934727722895316355}
+  _orderIcon: {fileID: 5934727722895316355}
 --- !u!1 &8136589570389077972
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +537,7 @@ GameObject:
   - component: {fileID: 2426584079977512851}
   - component: {fileID: 2281200433810108763}
   m_Layer: 0
-  m_Name: Option 1
+  m_Name: Order Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
