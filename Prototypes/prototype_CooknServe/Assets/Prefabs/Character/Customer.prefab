@@ -129,7 +129,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -792667474, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -137,7 +137,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &5934727722895316355
@@ -169,7 +169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &454395164018697175
 Transform:
   m_ObjectHideFlags: 0
@@ -226,7 +226,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 1162158454, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -234,7 +234,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &5735590887829985401
@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 9178826915786458251}
   - component: {fileID: 5544714521306889460}
   - component: {fileID: 2509055865607579981}
+  - component: {fileID: 3356586634453384164}
   - component: {fileID: 1344022680734360712}
   - component: {fileID: 8205934714752258880}
   m_Layer: 0
@@ -467,6 +468,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.5}
   m_EdgeRadius: 0
+--- !u!114 &3356586634453384164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 395680d7b4f8843b191207304f01b3f8, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player_Action
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!114 &1344022680734360712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,7 +523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5da85ad905034fa8942871eb0551af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serveReadyIcon: {fileID: 5735590887829985401}
+  _serveIcon: {fileID: 5735590887829985401}
   _menu: {fileID: 254754144826477250}
   _menuIcon: {fileID: 5934727722895316355}
 --- !u!1 &8136589570389077972

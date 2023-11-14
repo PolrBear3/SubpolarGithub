@@ -8,42 +8,51 @@ public class Customer_Order : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     private Food _orderFood;
-    [SerializeField] private Icon_Controller _serveReadyIcon;
+    [SerializeField] private Icon_Controller _serveIcon;
 
     [Header("Options Menu")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private Icon_Controller _menuIcon;
 
     private bool _menuOn;
-    private bool _serveReady;
+    private bool _orderTaken;
 
-    //
+    // UnityEngine
     private void Awake()
     {
         _gameController = FindObjectOfType<Game_Controller>();
     }
 
-    //
+    // IInteractable
     public void Interact()
     {
-        if (!_playerController.playerInteraction.Is_Closest_Interactable(gameObject)) return;
+        Player_Interaction player = _playerController.playerInteraction;
 
-        if (_orderFood == null)
+        if (!player.Is_Closest_Interactable(gameObject) || _menuOn)
         {
-            Set_Order();
+            Menu_Activate(false);
+            return;
         }
-        else
-        {
-            Serve_Order();
-        }
+
+        Menu_Activate(true);
+
+        if (_orderFood != null) return;
+
+        Set_Order();
     }
 
+    // Player Input
     private void OnOption1()
     {
+        if (_playerController == null || !_menuOn) return;
 
+        Menu_Activate(false);
+
+        if (!_orderTaken) Take_Order();
+        else Serve_Order();
     }
 
-    //
+    // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
@@ -53,15 +62,17 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         _playerController = null;
+
+        Menu_Activate(false);
     }
 
-    //
+    // Custom
     private void Menu_Activate(bool activate)
     {
-        
+        _menuOn = activate;
+        _menu.SetActive(activate);
     }
 
-    //
     private void Set_Order()
     {
         if (_orderFood != null) return;
@@ -82,14 +93,17 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Food orderFood = new();
         orderFood.foodScrObj = randFood;
         orderFood.data.Add(randData);
-        _orderFood = orderFood;
-    }
 
+        _orderFood = orderFood;
+        _menuIcon.Assign(_orderFood.foodScrObj.sprite);
+    }
     private void Take_Order()
     {
+        _orderTaken = true;
 
+        _serveIcon.gameObject.SetActive(true);
+        _serveIcon.Assign(_orderFood.foodScrObj.emptySprite);
     }
-
     private void Serve_Order()
     {
         Player_Interaction player = _playerController.playerInteraction;
@@ -103,12 +117,12 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Cancel_Order();
         player.Empty_CurrentFood();
     }
-
     private void Cancel_Order()
     {
+        _orderTaken = false;
         _orderFood = null;
 
         _menuIcon.Clear();
-        _serveReadyIcon.Clear();
+        _serveIcon.Clear();
     }
 }
