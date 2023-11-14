@@ -85,7 +85,7 @@ public class Player_Interaction : MonoBehaviour
         }
 
         currentFood = setFood;
-        _currentFoodIcon.Assign(currentFood.foodScrObj.ingameSprite);
+        _currentFoodIcon.Assign(currentFood.foodScrObj.sprite);
     }
     public void Empty_CurrentFood()
     {

@@ -8,9 +8,14 @@ public class Customer_Order : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     private Food _orderFood;
-    [SerializeField] private Icon_Controller _orderFoodIcon;
+    [SerializeField] private Icon_Controller _serveReadyIcon;
 
-    [SerializeField] private int _testPoint;
+    [Header("Options Menu")]
+    [SerializeField] private GameObject _menu;
+    [SerializeField] private Icon_Controller _menuIcon;
+
+    private bool _menuOn;
+    private bool _serveReady;
 
     //
     private void Awake()
@@ -33,6 +38,11 @@ public class Customer_Order : MonoBehaviour, IInteractable
         }
     }
 
+    private void OnOption1()
+    {
+
+    }
+
     //
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -43,6 +53,12 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         _playerController = null;
+    }
+
+    //
+    private void Menu_Activate(bool activate)
+    {
+        
     }
 
     //
@@ -67,7 +83,6 @@ public class Customer_Order : MonoBehaviour, IInteractable
         orderFood.foodScrObj = randFood;
         orderFood.data.Add(randData);
         _orderFood = orderFood;
-        _orderFoodIcon.Assign(_orderFood.foodScrObj.ingameSprite);
     }
 
     private void Take_Order()
@@ -85,15 +100,15 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         if (playerFood != _orderFood.foodScrObj) return;
 
-        _testPoint++;
         Cancel_Order();
-
         player.Empty_CurrentFood();
     }
 
     private void Cancel_Order()
     {
         _orderFood = null;
-        _orderFoodIcon.Clear();
+
+        _menuIcon.Clear();
+        _serveReadyIcon.Clear();
     }
 }
