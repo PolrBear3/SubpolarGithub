@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu (menuName = "New Food!")]
 public class Food_ScrObj : ScriptableObject
 {
-    public Sprite emptySprite;
+    public Sprite eatSprite;
     public Sprite sprite;
     public string foodName;
     public int id;

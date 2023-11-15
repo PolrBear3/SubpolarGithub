@@ -17,7 +17,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     [SerializeField] private Icon_Controller _orderIcon;
 
     private bool _menuOn;
-    private bool _isOrdered;
+    private bool _orderServed;
 
     // UnityEngine
     private void Awake()
@@ -28,30 +28,29 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-        Menu_Activate(!_menuOn);
+        if (_orderServed) return;
 
-        if (!_menuOn) return;
+        if (!_menuOn && _playerController.playerInteraction.Is_Closest_Interactable(gameObject))
+        {
+            Menu_Activate(true);
+            Set_Order();
+            return;
+        }
 
-        Player_Interaction player = _playerController.playerInteraction;
-
-        if (!player.Is_Closest_Interactable(gameObject)) return;
-        if (_isOrdered) return;
-
-        _isOrdered = true;
-        Set_Order();
+        Menu_Activate(false);
     }
 
     // Player Input
     private void OnOption1()
     {
-        if (_playerController == null) return;
+        if (_playerController == null || _orderServed) return;
 
         Menu_Activate(!_menuOn);
         Serve_Order();
     }
     private void OnOption2()
     {
-        if (_playerController == null) return;
+        if (_playerController == null || _orderServed) return;
 
         Menu_Activate(!_menuOn);
         Serve_Order();
@@ -76,6 +75,17 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         _menuOn = activate;
         _menu.SetActive(activate);
+    }
+
+    private IEnumerator Serve_Update(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        _currentFoodIcon.Assign(_orderFood.foodScrObj.eatSprite);
+    }
+    private IEnumerator Coin_Update(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        _currentFoodIcon.Assign(null); // coin sprite update
     }
 
     private void Set_Order()
@@ -104,6 +114,8 @@ public class Customer_Order : MonoBehaviour, IInteractable
     }
     private void Serve_Order()
     {
+        if (_orderServed) return;
+
         Player_Interaction player = _playerController.playerInteraction;
 
         if (player.currentFood == null) return;
@@ -114,12 +126,18 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         _servePoint++;
 
-        Cancel_Order();
+        _currentFoodIcon.gameObject.SetActive(true);
+        _currentFoodIcon.Assign(_orderFood.foodScrObj.sprite);
+
+        _orderServed = true;
         player.Empty_CurrentFood();
+
+        StartCoroutine(Serve_Update(1));
+        StartCoroutine(Coin_Update(2));
     }
-    private void Cancel_Order()
+    private void Reset_Order()
     {
         _orderFood = null;
-        _isOrdered = false;
+        _orderServed = false;
     }
 }

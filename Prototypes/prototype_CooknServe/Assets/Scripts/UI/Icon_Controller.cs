@@ -15,7 +15,11 @@ public class Icon_Controller : MonoBehaviour
     //
     public void Assign(Sprite sprite)
     {
-        if (sprite == null) return;
+        if (sprite == null)
+        {
+            Clear();
+            return;
+        }
 
         _sr.color = Color.white;
         _sr.sprite = sprite;

@@ -128,7 +128,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -163,13 +163,14 @@ GameObject:
   - component: {fileID: 454395164018697175}
   - component: {fileID: 7477000384960899772}
   - component: {fileID: 5735590887829985401}
+  - component: {fileID: 4147146235358235830}
   m_Layer: 0
   m_Name: Current Food Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &454395164018697175
 Transform:
   m_ObjectHideFlags: 0
@@ -249,6 +250,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e695d39e8337a45b79042bf5eceb58bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &4147146235358235830
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422799627003220200}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5c77a0b2bf5be4310a3d89c80b12b08e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1973236465954369193
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,6 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentFoodIcon: {fileID: 5735590887829985401}
+  _servePoint: 0
   _menu: {fileID: 254754144826477250}
   _orderIcon: {fileID: 5934727722895316355}
 --- !u!1 &8136589570389077972
