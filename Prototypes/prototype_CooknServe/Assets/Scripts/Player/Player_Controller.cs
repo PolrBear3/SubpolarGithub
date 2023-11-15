@@ -8,6 +8,9 @@ public class Player_Controller : MonoBehaviour
     [HideInInspector] public Player_Animation playerAnimation;
     [HideInInspector] public Player_Interaction playerInteraction;
 
+    [Header("Data")]
+    public int currentCoin;
+
     //
     private void Awake()
     {

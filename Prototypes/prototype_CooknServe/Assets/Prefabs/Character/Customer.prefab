@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 2509055865607579981}
   - component: {fileID: 3356586634453384164}
   - component: {fileID: 1344022680734360712}
+  - component: {fileID: 1500914672002286352}
   - component: {fileID: 8205934714752258880}
   m_Layer: 0
   m_Name: Customer
@@ -532,7 +533,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59882e9163a44e2abe3499a69d5d544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customerMovement: {fileID: 0}
   customerOrder: {fileID: 0}
+--- !u!114 &1500914672002286352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29bd480d5187c4108b5bc758391b2970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8205934714752258880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,7 +560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentFoodIcon: {fileID: 5735590887829985401}
-  _servePoint: 0
+  _coinSprite: {fileID: 169430214, guid: 7b10f4ee19b254f2eb974ba11f55e47c, type: 3}
   _menu: {fileID: 254754144826477250}
   _orderIcon: {fileID: 5934727722895316355}
 --- !u!1 &8136589570389077972

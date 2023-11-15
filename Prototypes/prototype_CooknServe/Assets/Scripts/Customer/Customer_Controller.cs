@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Customer_Controller : MonoBehaviour
 {
-   [HideInInspector] public Customer_Order customerOrder;
+    [HideInInspector] public Customer_Movement customerMovement;
+    [HideInInspector] public Customer_Order customerOrder;
 
     //
     private void Awake()
     {
+        if (gameObject.TryGetComponent(out Customer_Movement customerMovement)) { this.customerMovement = customerMovement; }
         if (gameObject.TryGetComponent(out Customer_Order customerOrder)) { this.customerOrder = customerOrder; }
     }
 }
