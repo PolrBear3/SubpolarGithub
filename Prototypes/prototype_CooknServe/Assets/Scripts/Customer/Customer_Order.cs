@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Customer_Order : MonoBehaviour, IInteractable
 {
-    private Game_Controller _gameController;
-    private Player_Controller _playerController;
+    private Customer_Controller _customerController;
 
     private Food _orderFood;
 
@@ -24,13 +23,15 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // UnityEngine
     private void Awake()
     {
-        _gameController = FindObjectOfType<Game_Controller>();
+        if (gameObject.TryGetComponent(out Customer_Controller customerController)) { _customerController = customerController; }
     }
 
     // IInteractable
     public void Interact()
     {
-        Player_Interaction player = _playerController.playerInteraction;
+        Player_Interaction player = _customerController.playerController.playerInteraction;
+
+        _customerController.customerMovement.Flip_toPlayer();
 
         if (_calculateComplete && player.Is_Closest_Interactable(gameObject))
         {
@@ -55,30 +56,23 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // Player Input
     private void OnOption1()
     {
-        if (_playerController == null || _orderServed) return;
+        if (_customerController.playerController == null || _orderServed) return;
 
         Menu_Activate(!_menuOn);
         Serve_Order();
     }
     private void OnOption2()
     {
-        if (_playerController == null || _orderServed) return;
+        if (_customerController.playerController == null || _orderServed) return;
 
         Menu_Activate(!_menuOn);
         Serve_Order();
     }
 
     // OnTrigger
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller playerController)) return;
-        _playerController = playerController;
-    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
-        _playerController = null;
-
         Menu_Activate(false);
     }
 
@@ -106,7 +100,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         if (_orderFood != null) return;
 
-        Data_Controller data = _gameController.dataController;
+        Data_Controller data = _customerController.gameController.dataController;
 
         // random merged food
         int randFoodID = Random.Range(0, data.mergedFoods.Count);
@@ -130,7 +124,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         if (_orderServed) return;
 
-        Player_Interaction player = _playerController.playerInteraction;
+        Player_Interaction player = _customerController.playerController.playerInteraction;
 
         if (player.currentFood == null) return;
 
@@ -148,7 +142,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     }
     private void Pay_Order()
     {
-        _playerController.currentCoin++;
+        _customerController.playerController.currentCoin++;
         _currentFoodIcon.Clear();
 
         Reset_Order();

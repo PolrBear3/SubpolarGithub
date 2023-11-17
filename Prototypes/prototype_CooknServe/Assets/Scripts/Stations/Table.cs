@@ -28,16 +28,32 @@ public class Table : MonoBehaviour, IInteractable
     {
         Player_Interaction player = _playerController.playerInteraction;
 
+        if (!player.Is_Closest_Interactable(gameObject))
+        {
+            Options_Update(false);
+            return;
+        }
+
         if (_currentFood == null && player.currentFood == null) return;
 
-        if (!_menuOn && player.Is_Closest_Interactable(gameObject))
+        if (_currentFood != null && player.currentFood == null)
+        {
+            Give_Food();
+            return;
+        }
+
+        if (_currentFood == null && player.currentFood != null || Current_MergedFood() == null)
+        {
+            Swap_Food();
+            return;
+        }
+
+        if (!_menuOn)
         {
             Options_Update(true);
             Icons_Update();
             return;
         }
-
-        Options_Update(false);
     }
 
     private void OnOption1()
@@ -165,9 +181,9 @@ public class Table : MonoBehaviour, IInteractable
     }
     private void Give_Food()
     {
-        if (_playerController.playerInteraction.currentFood != null) return;
-
         Player_Interaction player = _playerController.playerInteraction;
+
+        if (player.currentFood != null) return;
 
         player.currentFood = _currentFood;
         player.Set_CurrentFood(player.currentFood);
@@ -176,37 +192,31 @@ public class Table : MonoBehaviour, IInteractable
         _currentFoodIcon.Clear();
     }
 
-    private void Merge_Food()
+    private Food_ScrObj Current_MergedFood()
     {
         Player_Interaction player = _playerController.playerInteraction;
 
-        if (player.currentFood == null || _currentFood == null)
-        {
-            Give_Food();
-            return;
-        }
-
-        if (player.currentFood.foodScrObj == _currentFood.foodScrObj)
-        {
-            Swap_Food();
-            return;
-        }
+        if (player.currentFood == null) return null;
+        if (_currentFood == null) return null;
 
         List<Food_ScrObj> ingredients = new();
         ingredients.Add(player.currentFood.foodScrObj);
         ingredients.Add(_currentFood.foodScrObj);
 
         Food_ScrObj mergedFood = _gameController.dataController.Get_MergedFood(ingredients);
-
-        if (mergedFood == null)
+        return mergedFood;
+    }
+    private void Merge_Food()
+    {
+        if (Current_MergedFood() == null)
         {
             Swap_Food();
             return;
         }
 
-        _currentFood.Set_Food(mergedFood);
+        _currentFood.Set_Food(Current_MergedFood());
         _currentFoodIcon.Assign(_currentFood.foodScrObj.sprite);
 
-        player.Empty_CurrentFood();
+        _playerController.playerInteraction.Empty_CurrentFood();
     }
 }

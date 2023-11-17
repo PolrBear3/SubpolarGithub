@@ -18,7 +18,7 @@ public class Fridge : MonoBehaviour, IInteractable
     //
     public void Interact()
     {
-        if (_playerController.playerInteraction.Is_Closest_Interactable(gameObject)) return;
+        if (!_playerController.playerInteraction.Is_Closest_Interactable(gameObject)) return;
         Give_Food();
     }
 
