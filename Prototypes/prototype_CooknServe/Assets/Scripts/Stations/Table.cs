@@ -28,7 +28,7 @@ public class Table : MonoBehaviour, IInteractable
     {
         Player_Interaction player = _playerController.playerInteraction;
 
-        if (!player.Is_Closest_Interactable(gameObject))
+        if (_menuOn || !player.Is_Closest_Interactable(gameObject))
         {
             Options_Update(false);
             return;
