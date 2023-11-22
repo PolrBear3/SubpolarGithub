@@ -179,9 +179,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 0.47413793
+    width: 0.55030304
+    height: 0.55037713
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -362,6 +362,14 @@ PrefabInstance:
       propertyPath: _foodScrObj
       value: 
       objectReference: {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.data[0].stateLevel
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7366090731837522239, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
       propertyPath: m_Name
       value: Fridge (2)
@@ -480,6 +488,26 @@ PrefabInstance:
       propertyPath: _foodScrObj
       value: 
       objectReference: {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.data[0].stateType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.data[1].stateType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.data[0].stateLevel
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.data[1].stateLevel
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7366090731837522239, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
       propertyPath: m_Name
       value: Fridge (1)
@@ -598,6 +626,14 @@ PrefabInstance:
       propertyPath: _foodScrObj
       value: 
       objectReference: {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3986403693232836610, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+      propertyPath: _stateDatas.Array.data[0].stateLevel
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7366090731837522239, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
       propertyPath: m_Name
       value: Fridge

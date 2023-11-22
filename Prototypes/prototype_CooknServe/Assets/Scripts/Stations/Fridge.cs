@@ -8,6 +8,7 @@ public class Fridge : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     [SerializeField] private Food_ScrObj _foodScrObj;
+    [SerializeField] private List<FoodState_Data> _stateDatas = new();
 
     //
     private void Awake()
@@ -43,7 +44,11 @@ public class Fridge : MonoBehaviour, IInteractable
         Food_ScrObj searchedFood = _gameController.dataController.Get_Food(_foodScrObj);
 
         newFood.Set_Food(searchedFood);
-        newFood.Update_State(FoodState_Type.sliced, 3);
+
+        for (int i = 0; i < _stateDatas.Count; i++)
+        {
+            newFood.Update_State(_stateDatas[i].stateType, _stateDatas[i].stateLevel);
+        }
 
         _playerController.playerInteraction.Set_CurrentFood(newFood);
     }

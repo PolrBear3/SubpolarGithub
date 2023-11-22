@@ -2,22 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class FoodStateIndicator_Data
+{
+    public FoodState_Type type;
+    public SpriteRenderer sr;
+    public List<Sprite> sprite = new();
+}
+
 public class FoodState_Indicator : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
-    [Header("Heated State")]
-    public SpriteRenderer heatSR;
-    public List<Sprite> heatSprites = new();
+    public List<FoodStateIndicator_Data> foodStateIndicatorDatas = new();
 
-    [Header("Sliced State")]
-    public SpriteRenderer sliceSR;
-    public List<Sprite> sliceSprites = new();
-
+    // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
     }
 
+    // Get
+    private FoodStateIndicator_Data Get_Data(FoodState_Type type)
+    {
+        for (int i = 0; i < foodStateIndicatorDatas.Count; i++)
+        {
+            if (type != foodStateIndicatorDatas[i].type) continue;
 
+            return foodStateIndicatorDatas[i];
+        }
+        return null;
+    }
+
+    // Custom
+    private void Reset_State()
+    {
+        for (int i = 0; i < foodStateIndicatorDatas.Count; i++)
+        {
+            foodStateIndicatorDatas[i].sr.sprite = null;
+        }
+    }
+    public void Update_State(List<FoodState_Data> foodStateData)
+    {
+        Reset_State();
+
+        for (int i = 0; i < foodStateData.Count; i++)
+        {
+            FoodStateIndicator_Data data = Get_Data(foodStateData[i].stateType);
+            data.sr.sprite = data.sprite[foodStateData[i].stateLevel - 1];
+        }
+    }
 }

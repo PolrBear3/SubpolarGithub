@@ -12,6 +12,8 @@ public class Player_Interaction : MonoBehaviour
     private List<GameObject> _detectedInteractables = new();
     [HideInInspector] public GameObject closestInteractable;
 
+    public FoodState_Indicator indicator;
+
     //
     private void Update()
     {
@@ -86,10 +88,21 @@ public class Player_Interaction : MonoBehaviour
 
         currentFood = setFood;
         _currentFoodIcon.Assign(currentFood.foodScrObj.sprite);
+
+        if (currentFood.data.Count <= 0)
+        {
+            indicator.gameObject.SetActive(false);
+            return;
+        }
+
+        indicator.gameObject.SetActive(true);
+        indicator.Update_State(currentFood.data);
     }
     public void Empty_CurrentFood()
     {
         currentFood = null;
         _currentFoodIcon.Clear();
+
+        indicator.gameObject.SetActive(false);
     }
 }

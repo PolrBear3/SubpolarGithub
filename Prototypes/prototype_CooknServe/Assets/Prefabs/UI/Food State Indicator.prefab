@@ -115,8 +115,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4463975442562387945}
   - {fileID: 3520994664959960792}
+  - {fileID: 4463975442562387945}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &86491703751747292
@@ -183,16 +183,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d5a494a5fb9447ca93e0941ec6eac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heatSR: {fileID: 5182247472030619642}
-  heatSprites:
-  - {fileID: -360950683, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: 1647089805, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: -1461787928, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  sliceSR: {fileID: 3221176839709967706}
-  sliceSprites:
-  - {fileID: 1257690123, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: -847429947, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  foodStateIndicatorDatas:
+  - type: 0
+    sr: {fileID: 3221176839709967706}
+    sprite:
+    - {fileID: 1257690123, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: -847429947, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - type: 1
+    sr: {fileID: 5182247472030619642}
+    sprite:
+    - {fileID: -360950683, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 1647089805, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: -1461787928, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
 --- !u!1 &6379939628538746229
 GameObject:
   m_ObjectHideFlags: 0
