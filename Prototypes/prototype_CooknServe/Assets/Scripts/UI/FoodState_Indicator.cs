@@ -23,7 +23,7 @@ public class FoodState_Indicator : MonoBehaviour
     }
 
     // Get
-    private FoodStateIndicator_Data Get_Data(FoodState_Type type)
+    public FoodStateIndicator_Data Get_Data(FoodState_Type type)
     {
         for (int i = 0; i < foodStateIndicatorDatas.Count; i++)
         {
@@ -42,7 +42,7 @@ public class FoodState_Indicator : MonoBehaviour
             foodStateIndicatorDatas[i].sr.sprite = null;
         }
     }
-    public void Update_State(List<FoodState_Data> foodStateData)
+    public void Update_StateSprite(List<FoodState_Data> foodStateData)
     {
         Reset_State();
 

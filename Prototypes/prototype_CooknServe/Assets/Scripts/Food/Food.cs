@@ -7,7 +7,18 @@ public class Food
     [HideInInspector] public Food_ScrObj foodScrObj;
     [HideInInspector] public List<FoodState_Data> data = new List<FoodState_Data>();
 
-    //
+    // Get
+    public FoodState_Data Get_FoodState_Data(FoodState_Type stateType)
+    {
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (data[i].stateType != stateType) continue;
+            return data[i];
+        }
+        return null;
+    }
+
+    // Custom
     public void Set_Food(Food_ScrObj setFood)
     {
         foodScrObj = setFood;
@@ -19,7 +30,7 @@ public class Food
         {
             if (data[i].stateType == updateType)
             {
-                data[i].stateLevel = updateLevel;
+                data[i].stateLevel += updateLevel;
                 return;
             }
         }

@@ -10,12 +10,16 @@ public class Oven : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     private Food _currentFood;
+    [SerializeField] private FoodState_Indicator _indicator;
 
+    [Header("Sprites")]
     [SerializeField] private Sprite _activeSprite;
     [SerializeField] private Sprite _inactiveSprite;
 
-    private Coroutine _testCoroutine;
-    [SerializeField] private int _testHeatLevel;
+    private Coroutine _heatCoroutine;
+
+    [Header("Data")]
+    [SerializeField] private float _heatIncreaseTime;
 
     // UnityEngine
     private void Awake()
@@ -45,25 +49,10 @@ public class Oven : MonoBehaviour, IInteractable
 
         Swap_Food();
         Sprite_Update();
-
-        //
-        if (_testCoroutine != null) StopCoroutine(_testCoroutine);
-
-        if (_currentFood == null) return;
-
-        _testCoroutine = StartCoroutine(Heat_Food());
-        //
+        HeatFood_Update();
     }
 
     // Custom
-    private void Swap_Food()
-    {
-        Player_Interaction player = _playerController.playerInteraction;
-        Food playerFood = player.currentFood;
-
-        player.Set_CurrentFood(_currentFood);
-        _currentFood = playerFood;
-    }
     private void Sprite_Update()
     {
         // active
@@ -73,12 +62,36 @@ public class Oven : MonoBehaviour, IInteractable
         else _sr.sprite = _inactiveSprite;
     }
 
+    private void Swap_Food()
+    {
+        Player_Interaction player = _playerController.playerInteraction;
+        Food playerFood = player.currentFood;
+
+        player.Set_CurrentFood(_currentFood);
+        _currentFood = playerFood;
+    }
+
     private IEnumerator Heat_Food()
     {
         while (_currentFood != null)
         {
-            yield return new WaitForSeconds(1f);
-            _testHeatLevel++;
+            yield return new WaitForSeconds(_heatIncreaseTime);
+
+            FoodState_Data stateData = _currentFood.Get_FoodState_Data(FoodState_Type.heated);
+            FoodStateIndicator_Data indicatorData = _indicator.Get_Data(FoodState_Type.heated);
+
+            if (indicatorData != null && stateData != null && stateData.stateLevel >= indicatorData.sprite.Count) continue; 
+
+            _currentFood.Update_State(FoodState_Type.heated, 1);
+            _indicator.Update_StateSprite(_currentFood.data);
         }
+    }
+    private void HeatFood_Update()
+    {
+        if (_heatCoroutine != null) StopCoroutine(_heatCoroutine);
+
+        if (_currentFood == null) return;
+
+        _heatCoroutine = StartCoroutine(Heat_Food());
     }
 }

@@ -96,7 +96,7 @@ public class Player_Interaction : MonoBehaviour
         }
 
         indicator.gameObject.SetActive(true);
-        indicator.Update_State(currentFood.data);
+        indicator.Update_StateSprite(currentFood.data);
     }
     public void Empty_CurrentFood()
     {
