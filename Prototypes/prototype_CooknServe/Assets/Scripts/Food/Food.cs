@@ -23,16 +23,18 @@ public class Food
     {
         foodScrObj = setFood;
     }
+
     public void Update_State(FoodState_Type updateType, int updateLevel)
     {
+        if (updateLevel <= 0) return;
+
         // existing
         for (int i = 0; i < data.Count; i++)
         {
-            if (data[i].stateType == updateType)
-            {
-                data[i].stateLevel += updateLevel;
-                return;
-            }
+            if (data[i].stateType != updateType) continue;
+
+            data[i].stateLevel += updateLevel;
+            return;
         }
 
         // new
@@ -40,5 +42,15 @@ public class Food
         newData.stateType = updateType;
         newData.stateLevel = updateLevel;
         data.Add(newData);
+    }
+    public void Shuffle_State()
+    {
+        for (int i = 0; i < data.Count - 1; i++)
+        {
+            int randomNum = Random.Range(i, data.Count);
+            FoodState_Data stateData = data[i];
+            data[i] = data[randomNum];
+            data[randomNum] = stateData;
+        }
     }
 }

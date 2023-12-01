@@ -5,8 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class FoodStateIndicator_Data
 {
-    public FoodState_Type type;
-    public SpriteRenderer sr;
+    public FoodState_Type stateType;
     public List<Sprite> sprite = new();
 }
 
@@ -14,6 +13,7 @@ public class FoodState_Indicator : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
+    public List<SpriteRenderer> _stateBoxSR = new();
     public List<FoodStateIndicator_Data> foodStateIndicatorDatas = new();
 
     // UnityEngine
@@ -27,7 +27,7 @@ public class FoodState_Indicator : MonoBehaviour
     {
         for (int i = 0; i < foodStateIndicatorDatas.Count; i++)
         {
-            if (type != foodStateIndicatorDatas[i].type) continue;
+            if (type != foodStateIndicatorDatas[i].stateType) continue;
 
             return foodStateIndicatorDatas[i];
         }
@@ -37,11 +37,12 @@ public class FoodState_Indicator : MonoBehaviour
     // Custom
     private void Reset_State()
     {
-        for (int i = 0; i < foodStateIndicatorDatas.Count; i++)
+        for (int i = 0; i < _stateBoxSR.Count; i++)
         {
-            foodStateIndicatorDatas[i].sr.sprite = null;
+            _stateBoxSR[i].sprite = null;
         }
     }
+
     public void Update_StateSprite(List<FoodState_Data> foodStateData)
     {
         Reset_State();
@@ -49,7 +50,19 @@ public class FoodState_Indicator : MonoBehaviour
         for (int i = 0; i < foodStateData.Count; i++)
         {
             FoodStateIndicator_Data data = Get_Data(foodStateData[i].stateType);
-            data.sr.sprite = data.sprite[foodStateData[i].stateLevel - 1];
+            _stateBoxSR[i].sprite = data.sprite[foodStateData[i].stateLevel - 1];
+        }
+    }
+    public void Update_StateSprite(List<FoodState_Data> foodStateData, FoodState_Type stateType)
+    {
+        Reset_State();
+
+        for (int i = 0; i < foodStateData.Count; i++)
+        {
+            if (foodStateData[i].stateType != stateType) continue;
+
+            FoodStateIndicator_Data data = Get_Data(foodStateData[i].stateType);
+            _stateBoxSR[0].sprite = data.sprite[foodStateData[i].stateLevel - 1];
         }
     }
 }

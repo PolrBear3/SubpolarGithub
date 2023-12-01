@@ -83,15 +83,22 @@ public class Oven : MonoBehaviour, IInteractable
             if (indicatorData != null && stateData != null && stateData.stateLevel >= indicatorData.sprite.Count) continue; 
 
             _currentFood.Update_State(FoodState_Type.heated, 1);
-            _indicator.Update_StateSprite(_currentFood.data);
+            _indicator.Update_StateSprite(_currentFood.data, FoodState_Type.heated);
         }
     }
     private void HeatFood_Update()
     {
         if (_heatCoroutine != null) StopCoroutine(_heatCoroutine);
 
-        if (_currentFood == null) return;
+        if (_currentFood == null)
+        {
+            _indicator.gameObject.SetActive(false);
+            return;
+        }
 
+        _indicator.gameObject.SetActive(true);
+
+        _indicator.Update_StateSprite(_currentFood.data, FoodState_Type.heated);
         _heatCoroutine = StartCoroutine(Heat_Food());
     }
 }

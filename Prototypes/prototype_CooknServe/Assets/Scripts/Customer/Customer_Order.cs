@@ -10,6 +10,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
     [Header("Default")]
     [SerializeField] private Icon_Controller _currentFoodIcon;
+    [SerializeField] private FoodState_Indicator _indicator;
     [SerializeField] private Sprite _coinSprite;
 
     [Header("Order Menu")]
@@ -106,20 +107,30 @@ public class Customer_Order : MonoBehaviour, IInteractable
         int randFoodID = Random.Range(0, data.mergedFoods.Count);
         Food_ScrObj randFood = data.Get_MergedFood(randFoodID);
 
-        // random heat level
-        int randStateLevel = Random.Range(1, 3);
-        FoodState_Data randData = new();
-        randData.stateType = FoodState_Type.heated;
-        randData.stateLevel = randStateLevel;
-
         // set order food
         Food orderFood = new();
         orderFood.foodScrObj = randFood;
-        orderFood.data.Add(randData);
 
         _orderFood = orderFood;
         _orderIcon.Assign(_orderFood.foodScrObj.sprite);
+
+        Set_State();
     }
+    private void Set_State()
+    {
+        List<FoodStateIndicator_Data> data = _indicator.foodStateIndicatorDatas;
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (Random.value > 0.5f) continue;
+
+            int stateLevel = Random.Range(1, 3);
+            _orderFood.Update_State(data[i].stateType, stateLevel);
+        }
+
+        _orderFood.Shuffle_State();
+        _indicator.Update_StateSprite(_orderFood.data);
+    }
+
     private void Serve_Order()
     {
         if (_orderServed) return;
