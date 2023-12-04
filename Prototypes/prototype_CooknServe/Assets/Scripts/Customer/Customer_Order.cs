@@ -77,6 +77,22 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Menu_Activate(false);
     }
 
+    // Check
+    private bool State_inOrder(List<FoodState_Data> playerData)
+    {
+        List<FoodState_Data> currentData = _orderFood.data;
+        int matchCount = currentData.Count;
+
+        for (int i = 0; i < currentData.Count; i++)
+        {
+            if (playerData.Count - 1 < i) return false;
+            if (currentData[i].stateType == playerData[i].stateType) matchCount--;
+        }
+
+        if (matchCount <= 0) return true;
+        return false;
+    }
+
     // Custom
     private void Menu_Activate(bool activate)
     {
@@ -142,6 +158,8 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Food_ScrObj playerFood = player.currentFood.foodScrObj;
 
         if (playerFood != _orderFood.foodScrObj) return;
+
+        if (!State_inOrder(player.currentFood.data)) return;
 
         _currentFoodIcon.gameObject.SetActive(true);
         _currentFoodIcon.Assign(_orderFood.foodScrObj.sprite);
