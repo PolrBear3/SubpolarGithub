@@ -8,6 +8,7 @@ public class Customer_Controller : MonoBehaviour
     [HideInInspector] public Player_Controller playerController;
 
     [HideInInspector] public Customer_Movement customerMovement;
+    [HideInInspector] public Customer_Animation customerAnimation;
     [HideInInspector] public Customer_Order customerOrder;
 
     // UnityEngine
@@ -16,7 +17,12 @@ public class Customer_Controller : MonoBehaviour
         gameController = FindObjectOfType<Game_Controller>();
 
         if (gameObject.TryGetComponent(out Customer_Movement customerMovement)) { this.customerMovement = customerMovement; }
+        if (gameObject.TryGetComponent(out Customer_Animation customerAnimation)) { this.customerAnimation = customerAnimation; }
         if (gameObject.TryGetComponent(out Customer_Order customerOrder)) { this.customerOrder = customerOrder; }
+    }
+    private void Start()
+    {
+        Spawn();
     }
 
     // OnTrigger
@@ -29,5 +35,11 @@ public class Customer_Controller : MonoBehaviour
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         this.playerController = null;
+    }
+
+    //
+    public void Spawn()
+    {
+        customerAnimation.Spawn_Effect();
     }
 }

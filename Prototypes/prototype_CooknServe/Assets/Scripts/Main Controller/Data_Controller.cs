@@ -25,6 +25,8 @@ public class Ingredient
 
 public class Data_Controller : MonoBehaviour
 {
+    public List<GameObject> prefabs = new();
+
     public List<Food_ScrObj> ingredientFoods = new();
     public List<Food_ScrObj> mergedFoods = new();
 

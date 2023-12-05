@@ -21,6 +21,8 @@ public class Customer_Order : MonoBehaviour, IInteractable
     private bool _orderServed;
     private bool _calculateComplete;
 
+    private int _calculatePay;
+
     // UnityEngine
     private void Awake()
     {
@@ -36,9 +38,12 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         if (_calculateComplete && player.Is_Closest_Interactable(gameObject))
         {
-            Pay_Order();
-            Menu_Activate(false);
+            _customerController.playerController.currentCoin = _calculatePay;
 
+            _currentFoodIcon.Clear();
+            Reset_Order();
+
+            Menu_Activate(false);
             return;
         }
 
@@ -60,6 +65,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
         if (_customerController.playerController == null || _orderServed) return;
 
         Menu_Activate(!_menuOn);
+        Pay_Calculation();
         Serve_Order();
     }
     private void OnOption2()
@@ -67,6 +73,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
         if (_customerController.playerController == null || _orderServed) return;
 
         Menu_Activate(!_menuOn);
+        Pay_Calculation();
         Serve_Order();
     }
 
@@ -78,15 +85,53 @@ public class Customer_Order : MonoBehaviour, IInteractable
     }
 
     // Check
+    private bool State_isMatch(List<FoodState_Data> playerData)
+    {
+        List<FoodState_Data> currentData = _orderFood.data;
+        int matchCount = currentData.Count;
+
+        if (playerData.Count != currentData.Count) return false;
+
+        for (int i = 0; i < currentData.Count; i++)
+        {
+            for (int j = 0; j < playerData.Count; j++)
+            {
+                if (currentData[i].stateType == playerData[j].stateType) matchCount--;
+            }
+        }
+
+        if (matchCount <= 0) return true;
+        return false;
+    }
     private bool State_inOrder(List<FoodState_Data> playerData)
     {
         List<FoodState_Data> currentData = _orderFood.data;
         int matchCount = currentData.Count;
 
+        if (playerData.Count != currentData.Count) return false;
+
         for (int i = 0; i < currentData.Count; i++)
         {
-            if (playerData.Count - 1 < i) return false;
             if (currentData[i].stateType == playerData[i].stateType) matchCount--;
+        }
+
+        if (matchCount <= 0) return true;
+        return false;
+    }
+    private bool StateLevel_isMatch(List<FoodState_Data> playerData)
+    {
+        List<FoodState_Data> currentData = _orderFood.data;
+        int matchCount = currentData.Count;
+
+        if (playerData.Count != currentData.Count) return false;
+
+        for (int i = 0; i < currentData.Count; i++)
+        {
+            for (int j = 0; j < playerData.Count; j++)
+            {
+                if (currentData[i].stateType != playerData[j].stateType) continue;
+                if (currentData[i].stateLevel == playerData[j].stateLevel) matchCount--;
+            }
         }
 
         if (matchCount <= 0) return true;
@@ -161,6 +206,8 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         if (!State_inOrder(player.currentFood.data)) return;
 
+        if (!StateLevel_isMatch(player.currentFood.data)) return;
+
         _currentFoodIcon.gameObject.SetActive(true);
         _currentFoodIcon.Assign(_orderFood.foodScrObj.sprite);
 
@@ -169,17 +216,21 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         StartCoroutine(Serve_Animation(1));
     }
-    private void Pay_Order()
+    private void Pay_Calculation()
     {
-        _customerController.playerController.currentCoin++;
-        _currentFoodIcon.Clear();
+        Player_Interaction player = _customerController.playerController.playerInteraction;
 
-        Reset_Order();
+        _calculatePay++;
+
+        if (State_inOrder(player.currentFood.data)) _calculatePay++;
+        if (StateLevel_isMatch(player.currentFood.data)) _calculatePay++;
     }
     private void Reset_Order()
     {
         _orderFood = null;
         _orderServed = false;
         _calculateComplete = false;
+
+        _calculatePay = 0;
     }
 }
