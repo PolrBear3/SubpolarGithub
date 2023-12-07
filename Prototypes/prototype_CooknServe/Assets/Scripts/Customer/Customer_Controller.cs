@@ -41,5 +41,6 @@ public class Customer_Controller : MonoBehaviour
     public void Spawn()
     {
         customerAnimation.Spawn_Effect();
+        gameController.Connect_Character(gameObject);
     }
 }

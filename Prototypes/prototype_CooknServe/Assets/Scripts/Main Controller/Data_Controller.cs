@@ -25,10 +25,24 @@ public class Ingredient
 
 public class Data_Controller : MonoBehaviour
 {
+    public List<BoxCollider2D> boxAreas = new();
     public List<GameObject> prefabs = new();
 
     public List<Food_ScrObj> ingredientFoods = new();
     public List<Food_ScrObj> mergedFoods = new();
+
+    // box Area
+    public Vector2 Get_BoxArea_Position(int boxAreaNum)
+    {
+        BoxCollider2D boxArea = boxAreas[boxAreaNum];
+        Vector2 center = boxArea.bounds.center;
+
+        float randX = Random.Range(center.x - boxArea.bounds.extents.x, center.x + boxArea.bounds.extents.x);
+        float randY = Random.Range(center.y - boxArea.bounds.extents.y, center.y + boxArea.bounds.extents.y);
+
+        Vector2 randPos = new Vector2(randX, 0);
+        return randPos;
+    }
 
     // Ingredient Food
     public Food_ScrObj Get_Food(int foodID)

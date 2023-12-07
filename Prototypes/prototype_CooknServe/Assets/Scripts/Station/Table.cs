@@ -23,6 +23,10 @@ public class Table : MonoBehaviour, IInteractable
     {
         _gameController = FindObjectOfType<Game_Controller>();
     }
+    private void Start()
+    {
+        _gameController.Connect_Station(gameObject);
+    }
 
     public void Interact()
     {

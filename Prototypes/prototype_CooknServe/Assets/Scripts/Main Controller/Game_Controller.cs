@@ -5,26 +5,25 @@ using UnityEngine;
 public class Game_Controller : MonoBehaviour
 {
     [HideInInspector] public Data_Controller dataController;
+    [HideInInspector] public Spawn_Controller spawnController;
 
-    private List<GameObject> _currentCharacters = new();
-    private List<GameObject> _currentStations = new();
+    [HideInInspector] public List<GameObject> currentCharacters = new();
+    [HideInInspector] public List<GameObject> currentStations = new();
 
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Data_Controller dataController)) { this.dataController = dataController; }
+        if (gameObject.TryGetComponent(out Spawn_Controller spawnController)) { this.spawnController = spawnController; }
     }
 
-    // Track
-    public void Track_Character(GameObject character)
+    // Track Current Prefabs
+    public void Connect_Character(GameObject character)
     {
-        _currentCharacters.Add(character);
+        currentCharacters.Add(character);
     }
-    public void Track_Station(GameObject station)
+    public void Connect_Station(GameObject station)
     {
-        _currentStations.Add(station);
+        currentStations.Add(station);
     }
-
-    // Spawn
-
 }

@@ -28,6 +28,10 @@ public class Oven : MonoBehaviour, IInteractable
 
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
     }
+    private void Start()
+    {
+        _gameController.Connect_Station(gameObject);
+    }
 
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
