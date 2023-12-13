@@ -13,7 +13,7 @@ public class Player_Movement : MonoBehaviour
     private Vector2 _moveDirection;
     private bool _facingRight;
 
-    [SerializeField] private float _moveSpeed;
+    public float moveSpeed;
 
     //
     private void Awake()
@@ -38,7 +38,7 @@ public class Player_Movement : MonoBehaviour
     //
     private void Move()
     {
-        rb.velocity = new Vector2(_moveDirection.x * _moveSpeed, _moveDirection.y * _moveSpeed);
+        rb.velocity = new Vector2(_moveDirection.x * moveSpeed, _moveDirection.y * moveSpeed);
     }
 
     private void Flip()

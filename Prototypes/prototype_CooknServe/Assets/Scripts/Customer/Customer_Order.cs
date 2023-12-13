@@ -36,6 +36,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Player_Interaction player = _customerController.playerController.playerInteraction;
 
         _customerController.customerMovement.Flip_toPlayer();
+        _customerController.customerMovement.Stop_Roam();
 
         if (_calculateComplete && player.Is_Closest_Interactable(gameObject))
         {
@@ -83,6 +84,8 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         Menu_Activate(false);
+
+        StartCoroutine(_customerController.customerMovement.Free_Roam());
     }
 
     // Check

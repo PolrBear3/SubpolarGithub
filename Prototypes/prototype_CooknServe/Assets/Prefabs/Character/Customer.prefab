@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 9178826915786458251}
   - component: {fileID: 5544714521306889460}
   - component: {fileID: 6103459802116463913}
-  - component: {fileID: 8691033740032385976}
+  - component: {fileID: 8203539265618599950}
   - component: {fileID: 2509055865607579981}
   - component: {fileID: 3356586634453384164}
   - component: {fileID: 1344022680734360712}
@@ -472,7 +472,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!50 &8691033740032385976
+--- !u!50 &8203539265618599950
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -498,7 +498,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &2509055865607579981
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -603,7 +603,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29bd480d5187c4108b5bc758391b2970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roamIntervalTime: 3
+  rb: {fileID: 0}
+  moveSpeed: 0.5
+  updatePosition: {x: 0, y: 0}
+  roamIntervalTime: 10
+  roamDelayTime: 3
   roamActive: 0
 --- !u!114 &3958631106323547416
 MonoBehaviour:
