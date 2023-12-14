@@ -10,12 +10,12 @@ public class Customer_Movement : MonoBehaviour
 
     [Header("Data")]
     public float moveSpeed;
-    [HideInInspector] public Vector2 updatePosition;
+    private Vector2 _nextPosition;
 
     [Header("Free Roam")]
+    public float roamStartTime;
     public float roamIntervalTime;
-    public float roamDelayTime;
-    public bool roamActive;
+    [HideInInspector] public bool roamActive;
 
     // UnityEngine
     private void Awake()
@@ -26,25 +26,32 @@ public class Customer_Movement : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(Free_Roam());
+        Start_FreeRoam();
     }
     private void Update()
     {
-        UpdatePosition_Movement();
+        Update_NextPosition_Movement();
     }
 
     // Check
-    public bool Is_RoamActive()
+    public bool Is_NextPosition()
     {
-        if ((Vector2)transform.position == updatePosition || !roamActive) return false;
-        return true;
+        if ((Vector2)transform.position == _nextPosition) return true;
+        return false;
     }
 
     // Custom
-    private void UpdatePosition_Movement()
+    private void Update_NextPosition_Movement()
     {
-        if (!Is_RoamActive()) return;
-        transform.position = Vector2.MoveTowards(transform.position, updatePosition, .5f * Time.deltaTime);
+        if (Is_NextPosition()) return;
+        transform.position = Vector2.MoveTowards(transform.position, _nextPosition, .5f * Time.deltaTime);
+    }
+
+    public void Update_NextPosition(Vector2 position)
+    {
+        Stop_FreeRoam();
+        _nextPosition = position;
+        Flip_Update();
     }
 
     // Flip
@@ -55,34 +62,38 @@ public class Customer_Movement : MonoBehaviour
         if (transform.position.x > player.transform.position.x) _sr.flipX = true;
         else _sr.flipX = false;
     }
-    private void Flip_Update()
+    public void Flip_Update()
     {
-        if (transform.position.x > updatePosition.x) _sr.flipX = true;
+        if (transform.position.x > _nextPosition.x) _sr.flipX = true;
         else _sr.flipX = false;
     }
 
     // Move Type
-    public IEnumerator Free_Roam()
+    private IEnumerator Free_Roam()
     {
-        updatePosition = transform.position;
+        yield return new WaitForSeconds(roamStartTime);
 
-        yield return new WaitForSeconds(roamDelayTime);
-
-        roamActive = true;
+        Vector2 startPos = _customerController.gameController.dataController.Get_BoxArea_Position(0);
+        Update_NextPosition(startPos);
 
         while (roamActive)
         {
             yield return new WaitForSeconds(roamIntervalTime);
 
             Vector2 nextPos = _customerController.gameController.dataController.Get_BoxArea_Position(0);
-            updatePosition = nextPos;
-
-            Flip_Update();
+            Update_NextPosition(nextPos);
         }
     }
-    public void Stop_Roam()
+    public void Start_FreeRoam()
     {
+        _nextPosition = transform.position;
+        roamActive = true;
+        StartCoroutine(Free_Roam());
+    }
+    public void Stop_FreeRoam()
+    {
+        StopAllCoroutines();
         roamActive = false;
-        updatePosition = transform.position;
+        _nextPosition = transform.position;
     }
 }

@@ -18,7 +18,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     [SerializeField] private Icon_Controller _orderIcon;
     [SerializeField] private Timer_Clock _timerClock;
 
-    private bool _menuOn;
+    [HideInInspector] public bool menuOn;
     private bool _orderServed;
     [HideInInspector] public bool _calculateComplete;
 
@@ -36,7 +36,6 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Player_Interaction player = _customerController.playerController.playerInteraction;
 
         _customerController.customerMovement.Flip_toPlayer();
-        _customerController.customerMovement.Stop_Roam();
 
         if (_calculateComplete && player.Is_Closest_Interactable(gameObject))
         {
@@ -51,7 +50,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         if (_orderServed) return;
 
-        if (!_menuOn && player.Is_Closest_Interactable(gameObject))
+        if (!menuOn && player.Is_Closest_Interactable(gameObject))
         {
             Menu_Activate(true);
             Set_Order();
@@ -66,7 +65,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         if (_customerController.playerController == null || _orderServed) return;
 
-        Menu_Activate(!_menuOn);
+        Menu_Activate(!menuOn);
         Pay_Calculation();
         Serve_Order();
     }
@@ -74,7 +73,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         if (_customerController.playerController == null || _orderServed) return;
 
-        Menu_Activate(!_menuOn);
+        Menu_Activate(!menuOn);
         Pay_Calculation();
         Serve_Order();
     }
@@ -82,10 +81,9 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (!menuOn) return;
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         Menu_Activate(false);
-
-        StartCoroutine(_customerController.customerMovement.Free_Roam());
     }
 
     // Check
@@ -145,22 +143,26 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // Custom
     private void Menu_Activate(bool activate)
     {
-        _menuOn = activate;
+        menuOn = activate;
 
-        if (_menuOn)
+        if (menuOn)
         {
             _menu.SetActive(activate);
             Update_Clock_Position();
+
+            _customerController.customerMovement.Stop_FreeRoam();
         }
         else
         {
             Update_Clock_Position();
             _menu.SetActive(activate);
+
+            _customerController.customerMovement.Start_FreeRoam();
         }
     }
     private void Update_Clock_Position()
     {
-        if (_menuOn)
+        if (menuOn)
         {
             _timerClock.transform.parent = _menu.transform;
             _timerClock.transform.localPosition = new Vector2(-0.625f, 1.3624f);

@@ -605,9 +605,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   moveSpeed: 0.5
-  updatePosition: {x: 0, y: 0}
+  roamStartTime: 2
   roamIntervalTime: 10
-  roamDelayTime: 3
   roamActive: 0
 --- !u!114 &3958631106323547416
 MonoBehaviour:
@@ -639,6 +638,7 @@ MonoBehaviour:
   _menu: {fileID: 254754144826477250}
   _orderIcon: {fileID: 5934727722895316355}
   _timerClock: {fileID: 4000493701858360601}
+  menuOn: 0
   _calculateComplete: 0
 --- !u!1 &8136589570389077972
 GameObject:

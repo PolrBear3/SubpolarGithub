@@ -10,6 +10,8 @@ public class Order_Stand : MonoBehaviour, IInteractable
     private Game_Controller _gameController;
     private Player_Controller _playerController;
 
+    public Transform lineStartPoint;
+
     [Header("Sprites")]
     public Sprite activeSprite;
     public Sprite inactiveSprite;
@@ -56,5 +58,31 @@ public class Order_Stand : MonoBehaviour, IInteractable
     private void Order_Toggle()
     {
         _orderOpen = !_orderOpen;
+        Line_Customers();
+    }
+
+    private void Line_Customers()
+    {
+        List<GameObject> currentCharacters = _gameController.currentCharacters;
+        List<Customer_Controller> allCustomers = new();
+
+        for (int i = 0; i < currentCharacters.Count; i++)
+        {
+            if (!currentCharacters[i].TryGetComponent(out Customer_Controller customer)) continue;
+            allCustomers.Add(customer);
+        }
+
+        allCustomers.Sort((customerA, customerB) =>
+            Vector2.Distance(customerA.transform.position, transform.position)
+            .CompareTo(Vector2.Distance(customerB.transform.position, transform.position)));
+
+        float lineCountPosition = lineStartPoint.position.x;
+        for (int i = 0; i < allCustomers.Count; i++)
+        {
+            Vector2 linePosition = new Vector2(lineStartPoint.transform.position.x + lineCountPosition, lineStartPoint.transform.position.y);
+            allCustomers[i].customerMovement.Update_NextPosition(linePosition);
+
+            lineCountPosition -= .75f;
+        }
     }
 }

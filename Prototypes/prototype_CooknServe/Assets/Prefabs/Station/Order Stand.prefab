@@ -31,7 +31,8 @@ Transform:
   m_LocalPosition: {x: 1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5640675137702719489}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8111016883710994970
@@ -143,5 +144,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bac3e3d335ab496681e82136e385733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineStartPoint: {fileID: 5640675137702719489}
   activeSprite: {fileID: 1232175325, guid: efc963dc4f222479caa64033825131e4, type: 3}
   inactiveSprite: {fileID: 934698014, guid: efc963dc4f222479caa64033825131e4, type: 3}
+--- !u!1 &8596722748160539915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5640675137702719489}
+  m_Layer: 0
+  m_Name: Line Start Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5640675137702719489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8596722748160539915}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.25, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3044993776361682597}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
