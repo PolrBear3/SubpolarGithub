@@ -604,9 +604,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  moveSpeed: 0.5
-  roamStartTime: 2
-  roamIntervalTime: 10
+  moveSpeed: 5
+  roamStartTime:
+    min: 1
+    max: 5
+  roamIntervalTime:
+    min: 5
+    max: 10
   roamActive: 0
 --- !u!114 &3958631106323547416
 MonoBehaviour:

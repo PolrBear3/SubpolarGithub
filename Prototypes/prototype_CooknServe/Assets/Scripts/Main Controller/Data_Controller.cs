@@ -40,7 +40,7 @@ public class Data_Controller : MonoBehaviour
         float randX = Random.Range(center.x - boxArea.bounds.extents.x, center.x + boxArea.bounds.extents.x);
         float randY = Random.Range(center.y - boxArea.bounds.extents.y, center.y + boxArea.bounds.extents.y);
 
-        Vector2 randPos = new Vector2(randX, 0);
+        Vector2 randPos = new Vector2(randX, randY);
         return randPos;
     }
 

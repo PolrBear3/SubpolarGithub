@@ -39,7 +39,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         if (_calculateComplete && player.Is_Closest_Interactable(gameObject))
         {
-            _customerController.playerController.currentCoin = _calculatePay;
+            _customerController.playerController.currentCoin += _calculatePay;
 
             _currentFoodIcon.Clear();
             Reset_Order();

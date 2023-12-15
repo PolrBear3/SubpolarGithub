@@ -35,6 +35,7 @@ public class Order_Stand : MonoBehaviour, IInteractable
     {
         Order_Toggle();
         Sprite_Toggle();
+        Line_Customers();
     }
 
     // OnTrigger
@@ -58,7 +59,6 @@ public class Order_Stand : MonoBehaviour, IInteractable
     private void Order_Toggle()
     {
         _orderOpen = !_orderOpen;
-        Line_Customers();
     }
 
     private void Line_Customers()
@@ -72,6 +72,16 @@ public class Order_Stand : MonoBehaviour, IInteractable
             allCustomers.Add(customer);
         }
 
+        if (!_orderOpen)
+        {
+            for (int i = 0; i < allCustomers.Count; i++)
+            {
+                allCustomers[i].customerMovement.Start_FreeRoam();
+            }
+
+            return;
+        }
+
         allCustomers.Sort((customerA, customerB) =>
             Vector2.Distance(customerA.transform.position, transform.position)
             .CompareTo(Vector2.Distance(customerB.transform.position, transform.position)));
@@ -80,6 +90,8 @@ public class Order_Stand : MonoBehaviour, IInteractable
         for (int i = 0; i < allCustomers.Count; i++)
         {
             Vector2 linePosition = new Vector2(lineStartPoint.transform.position.x + lineCountPosition, lineStartPoint.transform.position.y);
+
+            allCustomers[i].customerMovement.Stop_FreeRoam();
             allCustomers[i].customerMovement.Update_NextPosition(linePosition);
 
             lineCountPosition -= .75f;

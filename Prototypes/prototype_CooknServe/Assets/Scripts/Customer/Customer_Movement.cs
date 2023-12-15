@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct MinMax_Data
+{
+    public float min;
+    public float max;
+}
+
 public class Customer_Movement : MonoBehaviour
 {
     private SpriteRenderer _sr;
@@ -13,8 +20,8 @@ public class Customer_Movement : MonoBehaviour
     private Vector2 _nextPosition;
 
     [Header("Free Roam")]
-    public float roamStartTime;
-    public float roamIntervalTime;
+    public MinMax_Data roamStartTime;
+    public MinMax_Data roamIntervalTime;
     [HideInInspector] public bool roamActive;
 
     // UnityEngine
@@ -44,12 +51,11 @@ public class Customer_Movement : MonoBehaviour
     private void Update_NextPosition_Movement()
     {
         if (Is_NextPosition()) return;
-        transform.position = Vector2.MoveTowards(transform.position, _nextPosition, .5f * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, _nextPosition, moveSpeed * 0.1f * Time.deltaTime);
     }
 
     public void Update_NextPosition(Vector2 position)
     {
-        Stop_FreeRoam();
         _nextPosition = position;
         Flip_Update();
     }
@@ -71,14 +77,16 @@ public class Customer_Movement : MonoBehaviour
     // Move Type
     private IEnumerator Free_Roam()
     {
-        yield return new WaitForSeconds(roamStartTime);
+        float startTime = Random.Range(roamStartTime.min, roamStartTime.max);
+        yield return new WaitForSeconds(startTime);
 
         Vector2 startPos = _customerController.gameController.dataController.Get_BoxArea_Position(0);
         Update_NextPosition(startPos);
 
         while (roamActive)
         {
-            yield return new WaitForSeconds(roamIntervalTime);
+            float intervalTime = Random.Range(roamIntervalTime.min, roamIntervalTime.max);
+            yield return new WaitForSeconds(intervalTime);
 
             Vector2 nextPos = _customerController.gameController.dataController.Get_BoxArea_Position(0);
             Update_NextPosition(nextPos);
