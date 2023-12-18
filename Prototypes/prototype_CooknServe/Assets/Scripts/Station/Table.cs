@@ -220,6 +220,7 @@ public class Table : MonoBehaviour, IInteractable
 
         _currentFood.Set_Food(Current_MergedFood());
         _currentFoodIcon.Assign(_currentFood.foodScrObj.sprite);
+        _currentFood.data.Clear();
 
         _playerController.playerInteraction.Empty_CurrentFood();
     }

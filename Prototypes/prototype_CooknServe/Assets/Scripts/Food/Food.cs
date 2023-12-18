@@ -26,12 +26,16 @@ public class Food
 
     public void Update_State(FoodState_Type updateType, int updateLevel)
     {
-        if (updateLevel <= 0) return;
-
         // existing
         for (int i = 0; i < data.Count; i++)
         {
             if (data[i].stateType != updateType) continue;
+
+            if (updateLevel <= 0)
+            {
+                data.RemoveAt(i);
+                return;
+            }
 
             data[i].stateLevel += updateLevel;
             return;
