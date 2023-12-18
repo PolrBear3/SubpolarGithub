@@ -34,7 +34,7 @@ public class Slice_Table : MonoBehaviour, IInteractable
         _playerController = playerController;
 
         if (_sliceCoroutine == null) return;
-        _sliceCoroutine = StartCoroutine(Slice_Food());
+        SliceFood_Update();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -43,6 +43,7 @@ public class Slice_Table : MonoBehaviour, IInteractable
 
         if (_sliceCoroutine == null) return;
         StopCoroutine(_sliceCoroutine);
+        _sliceIcon.color = Color.clear;
     }
 
     // IInteractable
@@ -86,7 +87,11 @@ public class Slice_Table : MonoBehaviour, IInteractable
             FoodState_Data stateData = _currentFood.Get_FoodState_Data(FoodState_Type.sliced);
             FoodStateIndicator_Data indicatorData = _indicator.Get_Data(FoodState_Type.sliced);
 
-            if (stateData != null && stateData.stateLevel >= indicatorData.sprite.Count) continue;
+            if (stateData != null && stateData.stateLevel >= indicatorData.sprite.Count)
+            {
+                _sliceIcon.color = Color.clear;
+                continue;
+            }
 
             _currentFood.Update_State(FoodState_Type.sliced, 1);
             _indicator.Update_StateSprite(_currentFood.data, FoodState_Type.sliced);
@@ -99,6 +104,7 @@ public class Slice_Table : MonoBehaviour, IInteractable
         if (_currentFood == null)
         {
             _indicator.gameObject.SetActive(false);
+            _sliceIcon.color = Color.clear;
             return;
         }
 
@@ -106,5 +112,16 @@ public class Slice_Table : MonoBehaviour, IInteractable
         _indicator.Update_StateSprite(_currentFood.data, FoodState_Type.sliced);
 
         _sliceCoroutine = StartCoroutine(Slice_Food());
+
+        FoodState_Data stateData = _currentFood.Get_FoodState_Data(FoodState_Type.sliced);
+        FoodStateIndicator_Data indicatorData = _indicator.Get_Data(FoodState_Type.sliced);
+
+        if (stateData != null && stateData.stateLevel >= indicatorData.sprite.Count)
+        {
+            _sliceIcon.color = Color.clear;
+            return;
+        }
+
+        _sliceIcon.color = Color.white;
     }
 }
