@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player_Animation : MonoBehaviour
 {
     private Animator _anim;
+    [SerializeField] private Animator _shadowAnim;
 
     private Player_Controller _playerController;
 
@@ -25,9 +26,11 @@ public class Player_Animation : MonoBehaviour
         if (_playerController.playerMovement.rb.velocity == Vector2.zero)
         {
             _anim.SetBool("isMoving", false);
+            _shadowAnim.SetBool("isMoving", false);
             return;
         }
 
         _anim.SetBool("isMoving", true);
+        _shadowAnim.SetBool("isMoving", true);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Player_Movement : MonoBehaviour
 {
     private SpriteRenderer _sr;
+    [SerializeField] private SpriteRenderer _shadowSR;
     [HideInInspector] public Rigidbody2D rb;
 
     private Player_Controller _playerController;
@@ -13,6 +14,7 @@ public class Player_Movement : MonoBehaviour
     private Vector2 _moveDirection;
     private bool _facingRight;
 
+    [Header("Data")]
     public float moveSpeed;
 
     //
@@ -54,6 +56,7 @@ public class Player_Movement : MonoBehaviour
         _facingRight = !_facingRight;
 
         _sr.flipX = _facingRight;
+        _shadowSR.flipX = _facingRight;
     }
     private void Flip_Update()
     {

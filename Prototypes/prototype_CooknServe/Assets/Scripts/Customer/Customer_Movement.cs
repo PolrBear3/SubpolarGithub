@@ -12,6 +12,7 @@ public struct MinMax_Data
 public class Customer_Movement : MonoBehaviour
 {
     private SpriteRenderer _sr;
+    [SerializeField] private SpriteRenderer _shadowSR;
     [HideInInspector] public Rigidbody2D rb;
     private Customer_Controller _customerController;
 
@@ -67,11 +68,15 @@ public class Customer_Movement : MonoBehaviour
 
         if (transform.position.x > player.transform.position.x) _sr.flipX = true;
         else _sr.flipX = false;
+
+        _shadowSR.flipX = _sr.flipX;
     }
     public void Flip_Update()
     {
         if (transform.position.x > _nextPosition.x) _sr.flipX = true;
         else _sr.flipX = false;
+
+        _shadowSR.flipX = _sr.flipX;
     }
 
     // Move Type
