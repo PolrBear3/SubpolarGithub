@@ -11,9 +11,13 @@ public class Customer_Controller : MonoBehaviour
     [HideInInspector] public Customer_Animation customerAnimation;
     [HideInInspector] public Customer_Order customerOrder;
 
+    private BoxCollider2D _bc;
+
     // UnityEngine
     private void Awake()
     {
+        if (gameObject.TryGetComponent(out BoxCollider2D bc)) { _bc = bc; }
+
         gameController = FindObjectOfType<Game_Controller>();
 
         if (gameObject.TryGetComponent(out Customer_Movement customerMovement)) { this.customerMovement = customerMovement; }
@@ -42,5 +46,23 @@ public class Customer_Controller : MonoBehaviour
     {
         gameController.Connect_Character(gameObject);
         customerAnimation.Spawn_Effect();
+    }
+
+    private IEnumerator Leave_Delay(float delayTime)
+    {
+        gameController.currentCharacters.Remove(gameObject);
+        _bc.enabled = false;
+
+        yield return new WaitForSeconds(delayTime);
+
+        customerAnimation.Leave_Effect();
+        yield return new WaitForSeconds(customerAnimation.alphaTime);
+
+        gameController.spawnController.Spawn_Customer(1, delayTime * 2f);
+        Destroy(gameObject);
+    }
+    public void Leave(float delayTime)
+    {
+        StartCoroutine(Leave_Delay(delayTime));
     }
 }

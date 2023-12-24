@@ -65,6 +65,26 @@ public class Data_Controller : MonoBehaviour
     }
 
     // Merged Food
+    private bool Is_FoodStateData_Match(List<FoodState_Data> foodsData, List<FoodState_Data> mergedFoodData)
+    {
+        if (foodsData.Count != mergedFoodData.Count) return false;
+
+        int matchCount = mergedFoodData.Count;
+
+        for (int i = 0; i < foodsData.Count; i++)
+        {
+            for (int j = 0; j < mergedFoodData.Count; j++)
+            {
+                if (foodsData[i].stateType != mergedFoodData[j].stateType) continue;
+                if (foodsData[i].stateLevel != mergedFoodData[j].stateLevel) continue;
+                matchCount--;
+            }
+        }
+
+        if (matchCount > 0) return false;
+        return true;
+    }
+
     public Food_ScrObj Get_MergedFood(int foodID)
     {
         for (int i = 0; i < mergedFoods.Count; i++)
@@ -98,13 +118,13 @@ public class Data_Controller : MonoBehaviour
                 mergedFoodIngredients.Add(mergedFoods[i].ingredients[j].foodScrObj);
             }
 
-            for (int k = 0; k < insertedIngredients.Count; k++)
+            for (int j = 0; j < insertedIngredients.Count; j++)
             {
-                if (insertedIngredients[k] == null) continue;
-                if (!mergedFoodIngredients.Contains(insertedIngredients[k])) continue;
+                if (insertedIngredients[j] == null) continue;
+                if (!mergedFoodIngredients.Contains(insertedIngredients[j])) continue;
 
                 matchCount--;
-                mergedFoodIngredients.Remove(insertedIngredients[k]);
+                mergedFoodIngredients.Remove(insertedIngredients[j]);
             }
 
             if (matchCount > 0) continue;
@@ -112,5 +132,28 @@ public class Data_Controller : MonoBehaviour
         }
 
         return null;
+    }
+    public Food_ScrObj Get_MergedFood(List<Food> foods)
+    {
+        List<Food_ScrObj> ingredients = new();
+
+        for (int i = 0; i < foods.Count; i++)
+        {
+            ingredients.Add(foods[i].foodScrObj);
+        }
+
+        Food_ScrObj mergedFood = Get_MergedFood(ingredients);
+        if (mergedFood == null) return null;
+
+        for (int i = 0; i < foods.Count; i++)
+        {
+            for (int j = 0; j < mergedFood.ingredients.Count; j++)
+            {
+                if (foods[i].foodScrObj != mergedFood.ingredients[j].foodScrObj) continue;
+                if (!Is_FoodStateData_Match(foods[i].data, mergedFood.ingredients[j].data)) return null;
+            }
+        }
+
+        return mergedFood;
     }
 }

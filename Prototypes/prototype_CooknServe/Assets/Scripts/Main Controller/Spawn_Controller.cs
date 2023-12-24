@@ -7,7 +7,7 @@ public class Spawn_Controller : MonoBehaviour
     private Game_Controller _gameController;
 
     [Header("Data")]
-    public float spawnIntervalTime;
+    public float startIntervalTime;
 
     // UnityEngine
     private void Awake()
@@ -16,18 +16,22 @@ public class Spawn_Controller : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(Spawn_Customer(5));
+        Spawn_Customer(5, startIntervalTime);
     }
 
     // Custom
-    public IEnumerator Spawn_Customer(int customerAmount)
+    private IEnumerator Spawn_Customer_Delay(int customerAmount, float intervalTime)
     {
         for (int i = 0; i < customerAmount; i++)
         {
-            yield return new WaitForSeconds(spawnIntervalTime);
+            yield return new WaitForSeconds(intervalTime);
 
             Vector2 spawnPos = _gameController.dataController.Get_BoxArea_Position(0);
             Instantiate(_gameController.dataController.prefabs[0], spawnPos, Quaternion.identity);
         }
+    }
+    public void Spawn_Customer(int customerAmount, float intervalTime)
+    {
+        StartCoroutine(Spawn_Customer_Delay(customerAmount, intervalTime));
     }
 }

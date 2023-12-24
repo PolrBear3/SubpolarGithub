@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.InputSystem;
 
 public class Order_Stand : MonoBehaviour, IInteractable
@@ -11,6 +12,7 @@ public class Order_Stand : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     public Transform lineStartPoint;
+    public TMP_Text amountText;
 
     [Header("Sprites")]
     public Sprite activeSprite;
@@ -28,6 +30,7 @@ public class Order_Stand : MonoBehaviour, IInteractable
     private void Start()
     {
         _gameController.Connect_Station(gameObject);
+        Update_CurrentCoin_Text();
     }
 
     // IInteractable
@@ -38,7 +41,7 @@ public class Order_Stand : MonoBehaviour, IInteractable
         Line_Customers();
     }
 
-    // OnTrigger
+    // OnTriggers
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
@@ -50,7 +53,7 @@ public class Order_Stand : MonoBehaviour, IInteractable
         _playerController = null;
     }
 
-    //
+    // Toggles
     private void Sprite_Toggle()
     {
         if (_orderOpen) _sr.sprite = activeSprite;
@@ -61,6 +64,13 @@ public class Order_Stand : MonoBehaviour, IInteractable
         _orderOpen = !_orderOpen;
     }
 
+    // Coin Text Control
+    private void Update_CurrentCoin_Text()
+    {
+        amountText.text = _gameController.currentCoin.ToString();
+    }
+
+    // Functions
     private void Line_Customers()
     {
         List<GameObject> currentCharacters = _gameController.currentCharacters;

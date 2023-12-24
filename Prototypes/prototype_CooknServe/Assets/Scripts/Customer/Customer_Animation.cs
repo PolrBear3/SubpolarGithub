@@ -9,6 +9,9 @@ public class Customer_Animation : MonoBehaviour
 
     private Customer_Controller _customerController;
 
+    [Header("Data")]
+    public float alphaTime;
+
     // UnityEngine
     private void Awake()
     {
@@ -28,7 +31,11 @@ public class Customer_Animation : MonoBehaviour
         spriteColor.a = 0f;
         _sr.color = spriteColor;
 
-        LeanTween.alpha(gameObject, 1f, 2f);
+        LeanTween.alpha(gameObject, 1f, alphaTime);
+    }
+    public void Leave_Effect()
+    {
+        LeanTween.alpha(gameObject, 0f, alphaTime);
     }
 
     private void Walk_Animation()

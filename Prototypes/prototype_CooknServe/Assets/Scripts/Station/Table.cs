@@ -203,9 +203,13 @@ public class Table : MonoBehaviour, IInteractable
         if (player.currentFood == null) return null;
         if (_currentFood == null) return null;
 
-        List<Food_ScrObj> ingredients = new();
+        /* List<Food_ScrObj> ingredients = new();
         ingredients.Add(player.currentFood.foodScrObj);
-        ingredients.Add(_currentFood.foodScrObj);
+        ingredients.Add(_currentFood.foodScrObj); */
+
+        List<Food> ingredients = new();
+        ingredients.Add(player.currentFood);
+        ingredients.Add(_currentFood);
 
         Food_ScrObj mergedFood = _gameController.dataController.Get_MergedFood(ingredients);
         return mergedFood;

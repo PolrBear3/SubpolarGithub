@@ -10,6 +10,9 @@ public class Game_Controller : MonoBehaviour
     [HideInInspector] public List<GameObject> currentCharacters = new();
     [HideInInspector] public List<GameObject> currentStations = new();
 
+    [Header("Data")]
+    public int currentCoin;
+
     // UnityEngine
     private void Awake()
     {
