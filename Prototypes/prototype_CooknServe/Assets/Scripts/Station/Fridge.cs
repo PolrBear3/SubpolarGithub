@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Fridge : MonoBehaviour, IInteractable
 {
@@ -10,7 +11,16 @@ public class Fridge : MonoBehaviour, IInteractable
     [SerializeField] private Food_ScrObj _foodScrObj;
     [SerializeField] private List<FoodState_Data> _stateDatas = new();
 
-    //
+    [Header("Data")]
+    [SerializeField] private int _currentAmount;
+
+    [Header("Food Amount Display")]
+    [SerializeField] private SpriteRenderer _foodIcon;
+    [SerializeField] private TMP_Text _amountText;
+    [SerializeField] private float _fadeTime;
+    private Coroutine _fadeCoroutine;
+
+    // UnityEngine
     private void Awake()
     {
         _gameController = FindObjectOfType<Game_Controller>();
@@ -20,14 +30,18 @@ public class Fridge : MonoBehaviour, IInteractable
         _gameController.Connect_Station(gameObject);
     }
 
-    //
+    // IInteractable
     public void Interact()
     {
         if (!_playerController.playerInteraction.Is_Closest_Interactable(gameObject)) return;
+
+        if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
+
         Give_Food();
+        Display_FoodAmount();
     }
 
-    //
+    // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
@@ -42,8 +56,27 @@ public class Fridge : MonoBehaviour, IInteractable
     }
 
     //
+    private IEnumerator FoodAmount_Hide_Delay()
+    {
+        yield return new WaitForSeconds(_fadeTime);
+
+        LeanTween.alpha(_foodIcon.gameObject, 0f, 0.01f);
+        _amountText.alpha = 0f;
+    }
+    private void Display_FoodAmount()
+    {
+        _foodIcon.sprite = _foodScrObj.sprite;
+
+        LeanTween.alpha(_foodIcon.gameObject, 1f, 0.01f);
+        _amountText.alpha = 1f;
+
+        _fadeCoroutine = StartCoroutine(FoodAmount_Hide_Delay());
+    }
+
     private void Give_Food()
     {
+        if (_currentAmount <= 0) return;
+
         Food newFood = new();
         Food_ScrObj searchedFood = _gameController.dataController.Get_Food(_foodScrObj);
 
@@ -55,5 +88,8 @@ public class Fridge : MonoBehaviour, IInteractable
         }
 
         _playerController.playerInteraction.Set_CurrentFood(newFood);
+
+        _currentAmount--;
+        _amountText.text = _currentAmount.ToString();
     }
 }

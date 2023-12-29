@@ -25,13 +25,39 @@ public class Ingredient
 
 public class Data_Controller : MonoBehaviour
 {
+    [SerializeField] private Camera _mainCamera;
+
     public List<BoxCollider2D> boxAreas = new();
     public List<GameObject> prefabs = new();
 
     public List<Food_ScrObj> ingredientFoods = new();
     public List<Food_ScrObj> mergedFoods = new();
 
-    // box Area
+    // Position
+    public Vector2 Get_OuterCamera_Position(float horizontal, float vertical, float outerDistance)
+    {
+        float horizontalPos = horizontal;
+        float verticalPos = vertical;
+
+        if (horizontalPos == 0) horizontalPos = 0.5f;
+        else if (horizontalPos == -1f) horizontalPos = 0f;
+
+        if (verticalPos == 0) verticalPos = 0.5f;
+        else if (verticalPos == -1f) verticalPos = 0f;
+
+        Vector2 cameraPosition = _mainCamera.ViewportToWorldPoint(new Vector2(horizontalPos, verticalPos));
+
+        float horizontalDistance = 0f;
+        float verticalDistance = 0f;
+
+        if (horizontalPos == 1f) horizontalDistance = outerDistance;
+        else if (horizontalPos == 0f) horizontalDistance = -outerDistance;
+
+        if (verticalPos == 1f) verticalDistance = outerDistance;
+        else if (verticalPos == 0f) verticalDistance = -outerDistance;
+
+        return new Vector2(cameraPosition.x + horizontalDistance, cameraPosition.y + verticalDistance);
+    }
     public Vector2 Get_BoxArea_Position(int boxAreaNum)
     {
         BoxCollider2D boxArea = boxAreas[boxAreaNum];

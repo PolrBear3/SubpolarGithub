@@ -35,7 +35,7 @@ public class FoodState_Indicator : MonoBehaviour
     }
 
     // Custom
-    private void Reset_State()
+    public void Reset_State()
     {
         for (int i = 0; i < _stateBoxSR.Count; i++)
         {

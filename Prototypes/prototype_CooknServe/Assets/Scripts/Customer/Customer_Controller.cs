@@ -45,24 +45,23 @@ public class Customer_Controller : MonoBehaviour
     public void Spawn()
     {
         gameController.Connect_Character(gameObject);
-        customerAnimation.Spawn_Effect();
     }
 
-    private IEnumerator Leave_Delay(float delayTime)
+    private IEnumerator Leave_Coroutine()
     {
+        while (!customerMovement.Is_NextPosition())
+        {
+            yield return null;
+        }
+
+        gameController.spawnController.Spawn_Customer(gameController.dataController.Get_OuterCamera_Position(-1, 0, 3), 1, 0);
         gameController.currentCharacters.Remove(gameObject);
-        _bc.enabled = false;
-
-        yield return new WaitForSeconds(delayTime);
-
-        customerAnimation.Leave_Effect();
-        yield return new WaitForSeconds(customerAnimation.alphaTime);
-
-        gameController.spawnController.Spawn_Customer(1, delayTime * 2f);
         Destroy(gameObject);
     }
-    public void Leave(float delayTime)
+    public void Leave()
     {
-        StartCoroutine(Leave_Delay(delayTime));
+        customerMovement.Stop_FreeRoam();
+        customerMovement.Leave();
+        StartCoroutine(Leave_Coroutine());
     }
 }

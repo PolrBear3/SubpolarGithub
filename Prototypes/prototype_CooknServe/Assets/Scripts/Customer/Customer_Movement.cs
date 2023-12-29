@@ -12,8 +12,9 @@ public struct MinMax_Data
 public class Customer_Movement : MonoBehaviour
 {
     private SpriteRenderer _sr;
-    [SerializeField] private SpriteRenderer _shadowSR;
     [HideInInspector] public Rigidbody2D rb;
+
+    [SerializeField] private SpriteRenderer _shadowSR;
     private Customer_Controller _customerController;
 
     [Header("Data")]
@@ -24,6 +25,7 @@ public class Customer_Movement : MonoBehaviour
     public MinMax_Data roamStartTime;
     public MinMax_Data roamIntervalTime;
     [HideInInspector] public bool roamActive;
+    public Coroutine freeRoamCoroutine;
 
     // UnityEngine
     private void Awake()
@@ -34,7 +36,7 @@ public class Customer_Movement : MonoBehaviour
     }
     private void Start()
     {
-        Start_FreeRoam();
+        FreeRoam();
     }
     private void Update()
     {
@@ -44,8 +46,9 @@ public class Customer_Movement : MonoBehaviour
     // Check
     public bool Is_NextPosition()
     {
-        if ((Vector2)transform.position == _nextPosition) return true;
-        return false;
+        float threshold = 0.1f;
+        float distance = Vector2.Distance(transform.position, _nextPosition);
+        return distance < threshold;
     }
 
     // Custom
@@ -80,7 +83,7 @@ public class Customer_Movement : MonoBehaviour
     }
 
     // Move Type
-    private IEnumerator Free_Roam()
+    private IEnumerator FreeRoam_Coroutine()
     {
         float startTime = Random.Range(roamStartTime.min, roamStartTime.max);
         yield return new WaitForSeconds(startTime);
@@ -97,16 +100,22 @@ public class Customer_Movement : MonoBehaviour
             Update_NextPosition(nextPos);
         }
     }
-    public void Start_FreeRoam()
+    public void FreeRoam()
     {
         _nextPosition = transform.position;
         roamActive = true;
-        StartCoroutine(Free_Roam());
+        freeRoamCoroutine = StartCoroutine(FreeRoam_Coroutine());
     }
     public void Stop_FreeRoam()
     {
-        StopAllCoroutines();
+        if (freeRoamCoroutine != null) StopCoroutine(freeRoamCoroutine);
         roamActive = false;
         _nextPosition = transform.position;
+    }
+
+    public void Leave()
+    {
+        Vector2 nextPosition = _customerController.gameController.dataController.Get_OuterCamera_Position(-1, 0, 3);
+        Update_NextPosition(nextPosition);
     }
 }

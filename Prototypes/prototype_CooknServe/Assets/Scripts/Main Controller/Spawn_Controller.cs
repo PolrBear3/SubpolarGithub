@@ -16,22 +16,20 @@ public class Spawn_Controller : MonoBehaviour
     }
     private void Start()
     {
-        Spawn_Customer(5, startIntervalTime);
+        Spawn_Customer(_gameController.dataController.Get_OuterCamera_Position(-1, 0, 3), 5, startIntervalTime);
     }
 
     // Custom
-    private IEnumerator Spawn_Customer_Delay(int customerAmount, float intervalTime)
+    private IEnumerator Spawn_Customer_Delay(Vector2 area, int customerAmount, float intervalTime)
     {
         for (int i = 0; i < customerAmount; i++)
         {
             yield return new WaitForSeconds(intervalTime);
-
-            Vector2 spawnPos = _gameController.dataController.Get_BoxArea_Position(0);
-            Instantiate(_gameController.dataController.prefabs[0], spawnPos, Quaternion.identity);
+            Instantiate(_gameController.dataController.prefabs[0], area, Quaternion.identity);
         }
     }
-    public void Spawn_Customer(int customerAmount, float intervalTime)
+    public void Spawn_Customer(Vector2 area, int customerAmount, float intervalTime)
     {
-        StartCoroutine(Spawn_Customer_Delay(customerAmount, intervalTime));
+        StartCoroutine(Spawn_Customer_Delay(area, customerAmount, intervalTime));
     }
 }

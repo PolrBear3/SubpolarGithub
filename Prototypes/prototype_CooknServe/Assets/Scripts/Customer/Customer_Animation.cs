@@ -25,19 +25,6 @@ public class Customer_Animation : MonoBehaviour
     }
 
     // Custom
-    public void Spawn_Effect()
-    {
-        Color spriteColor = _sr.color;
-        spriteColor.a = 0f;
-        _sr.color = spriteColor;
-
-        LeanTween.alpha(gameObject, 1f, alphaTime);
-    }
-    public void Leave_Effect()
-    {
-        LeanTween.alpha(gameObject, 0f, alphaTime);
-    }
-
     private void Walk_Animation()
     {
         if (_customerController.customerMovement.Is_NextPosition())

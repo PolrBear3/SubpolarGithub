@@ -43,7 +43,9 @@ public class Slice_Table : MonoBehaviour, IInteractable
 
         if (_sliceCoroutine == null) return;
         StopCoroutine(_sliceCoroutine);
+
         _sliceIcon.color = Color.clear;
+        _indicator.transform.localPosition = new Vector2(0, 1.0625f);
     }
 
     // IInteractable
@@ -90,6 +92,8 @@ public class Slice_Table : MonoBehaviour, IInteractable
             if (stateData != null && stateData.stateLevel >= indicatorData.sprite.Count)
             {
                 _sliceIcon.color = Color.clear;
+                _indicator.transform.localPosition = new Vector2(0, 1.0625f);
+
                 continue;
             }
 
@@ -105,6 +109,8 @@ public class Slice_Table : MonoBehaviour, IInteractable
         {
             _indicator.gameObject.SetActive(false);
             _sliceIcon.color = Color.clear;
+            _indicator.transform.localPosition = new Vector2(0, 1.0625f);
+
             return;
         }
 
@@ -119,9 +125,12 @@ public class Slice_Table : MonoBehaviour, IInteractable
         if (stateData != null && stateData.stateLevel >= indicatorData.sprite.Count)
         {
             _sliceIcon.color = Color.clear;
+            _indicator.transform.localPosition = new Vector2(0, 1.0625f);
+
             return;
         }
 
+        _indicator.transform.localPosition = new Vector2(0, 1.5f);
         _sliceIcon.color = Color.white;
     }
 }

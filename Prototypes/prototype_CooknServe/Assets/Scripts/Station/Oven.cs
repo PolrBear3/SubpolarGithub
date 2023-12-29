@@ -10,6 +10,7 @@ public class Oven : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     private Food _currentFood;
+    [SerializeField] private Icon_Controller _currentFoodIcon;
     [SerializeField] private FoodState_Indicator _indicator;
 
     [Header("Sprites")]
@@ -38,11 +39,19 @@ public class Oven : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         _playerController = playerController;
+
+        _indicator.transform.localPosition = new Vector2(0, 1.0625f);
+
+        if (_currentFood == null) return;
+        _currentFoodIcon.Assign(_currentFood.foodScrObj.sprite);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         _playerController = null;
+
+        _currentFoodIcon.Clear();
+        _indicator.transform.localPosition = new Vector2(0, 0.56f);
     }
 
     // IInteractable
@@ -73,6 +82,14 @@ public class Oven : MonoBehaviour, IInteractable
 
         player.Set_CurrentFood(_currentFood);
         _currentFood = playerFood;
+
+        if (_currentFood == null)
+        {
+            _currentFoodIcon.Clear();
+            return;
+        }
+
+        _currentFoodIcon.Assign(_currentFood.foodScrObj.sprite);
     }
 
     private IEnumerator Heat_Food()

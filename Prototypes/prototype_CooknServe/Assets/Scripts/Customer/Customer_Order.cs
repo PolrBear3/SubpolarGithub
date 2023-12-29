@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Customer_Order : MonoBehaviour, IInteractable
 {
-    private Customer_Controller _customerController;
+    private BoxCollider2D _bc;
 
+    private Customer_Controller _customerController;
     private Food _orderFood;
 
     [Header("Default")]
@@ -18,15 +19,16 @@ public class Customer_Order : MonoBehaviour, IInteractable
     [SerializeField] private Icon_Controller _orderIcon;
     [SerializeField] private Timer_Clock _timerClock;
 
-    [HideInInspector] public bool menuOn;
+    private bool menuOn;
     private bool _orderServed;
-    [HideInInspector] public bool _calculateComplete;
+    private bool _calculateComplete;
 
     private int _calculatePay;
 
     // UnityEngine
     private void Awake()
     {
+        if (gameObject.TryGetComponent(out BoxCollider2D bc)) { _bc = bc; }
         if (gameObject.TryGetComponent(out Customer_Controller customerController)) { _customerController = customerController; }
     }
 
@@ -37,20 +39,22 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         _customerController.customerMovement.Flip_toPlayer();
 
+        // pay complete
         if (_calculateComplete && player.Is_Closest_Interactable(gameObject))
         {
             _customerController.gameController.currentCoin += _calculatePay;
-            _customerController.Leave(3f);
+            _customerController.Leave();
+            _bc.enabled = false;
 
             _currentFoodIcon.Clear();
             Reset_Order();
 
-            Menu_Activate(false);
             return;
         }
 
         if (_orderServed) return;
 
+        // set order and run time
         if (!menuOn && player.Is_Closest_Interactable(gameObject))
         {
             Menu_Activate(true);
@@ -64,17 +68,17 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // Player Input
     private void OnOption1()
     {
-        if (_customerController.playerController == null || _orderServed) return;
+        if (!menuOn || _customerController.playerController == null || _orderServed) return;
 
-        Menu_Activate(!menuOn);
+        Menu_Activate(false);
         Pay_Calculation();
         Serve_Order();
     }
     private void OnOption2()
     {
-        if (_customerController.playerController == null || _orderServed) return;
+        if (!menuOn || _customerController.playerController == null || _orderServed) return;
 
-        Menu_Activate(!menuOn);
+        Menu_Activate(false);
         Pay_Calculation();
         Serve_Order();
     }
@@ -158,7 +162,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
             Update_Clock_Position();
             _menu.SetActive(activate);
 
-            _customerController.customerMovement.Start_FreeRoam();
+            _customerController.customerMovement.FreeRoam();
         }
     }
     private void Update_Clock_Position()
@@ -166,12 +170,12 @@ public class Customer_Order : MonoBehaviour, IInteractable
         if (menuOn)
         {
             _timerClock.transform.parent = _menu.transform;
-            _timerClock.transform.localPosition = new Vector2(-0.625f, 1.3624f);
+            _timerClock.transform.localPosition = new Vector2(-0.5f, 1.487f);
         }
         else
         {
             _timerClock.transform.parent = _customerController.transform;
-            _timerClock.transform.localPosition = new Vector2(0f, 0.56f);
+            _timerClock.transform.localPosition = new Vector2(0f, 0.685f);
         }
     }
 
@@ -228,8 +232,6 @@ public class Customer_Order : MonoBehaviour, IInteractable
     }
     private void Serve_Order()
     {
-        if (_orderServed) return;
-
         Player_Interaction player = _customerController.playerController.playerInteraction;
 
         if (player.currentFood == null) return;
@@ -253,11 +255,13 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
     private void Pay_Calculation()
     {
-        Player_Interaction player = _customerController.playerController.playerInteraction;
+        if (!_calculateComplete) return;
 
         _calculatePay++;
 
         if (_timerClock.timeEnd) return;
+
+        Player_Interaction player = _customerController.playerController.playerInteraction;
         if (State_inOrder(player.currentFood.data)) _calculatePay++;
         if (StateLevel_isMatch(player.currentFood.data)) _calculatePay++;
     }

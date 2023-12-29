@@ -9,7 +9,7 @@ public class Timer_Clock : MonoBehaviour
     public List<Sprite> clockSprites = new();
 
     public float setTime;
-    public bool timeEnd;
+    [HideInInspector] public bool timeEnd;
 
     public Coroutine timeCoroutine;
 

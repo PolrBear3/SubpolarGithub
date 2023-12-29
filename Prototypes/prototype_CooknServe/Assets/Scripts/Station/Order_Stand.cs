@@ -12,12 +12,24 @@ public class Order_Stand : MonoBehaviour, IInteractable
     private Player_Controller _playerController;
 
     public Transform lineStartPoint;
+
+    [Header("Current Coin Display")]
+    public GameObject coinIcon;
     public TMP_Text amountText;
+    public float fadeTime;
+    private Coroutine fadeCoroutine;
 
     [Header("Sprites")]
     public Sprite activeSprite;
     public Sprite inactiveSprite;
 
+    [Header("Options Menu")]
+    public GameObject menu;
+    public Icon_Controller orderIcon;
+    public Sprite _activeIcon;
+    public Sprite _inactiveIcon;
+
+    private bool _menuOn;
     private bool _orderOpen;
 
     // UnityEngine
@@ -33,12 +45,38 @@ public class Order_Stand : MonoBehaviour, IInteractable
         Update_CurrentCoin_Text();
     }
 
-    // IInteractable
-    public void Interact()
+    // InputSystem
+    private void OnOption1()
     {
+        if (!_menuOn) return;
+
         Order_Toggle();
         Sprite_Toggle();
         Line_Customers();
+
+        OptionsMenu_Toggle();
+    }
+    private void OnOption2()
+    {
+        if (!_menuOn) return;
+
+        Update_CurrentCoin_Text();
+        Display_CurrentCoin();
+
+        OptionsMenu_Toggle();
+    }
+
+    // IInteractable
+    public void Interact()
+    {
+        if (_menuOn || !_playerController.playerInteraction.Is_Closest_Interactable(gameObject))
+        {
+            _menuOn = false;
+            menu.SetActive(_menuOn);
+            return;
+        }
+
+        OptionsMenu_Toggle();
     }
 
     // OnTriggers
@@ -51,13 +89,35 @@ public class Order_Stand : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller playerController)) return;
         _playerController = null;
+
+        _menuOn = false;
+        menu.SetActive(_menuOn);
     }
 
     // Toggles
+    private void OptionsMenu_Toggle()
+    {
+        _menuOn = !_menuOn;
+        menu.SetActive(_menuOn);
+
+        if (!_menuOn) return;
+
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        amountText.alpha = 0f;
+        LeanTween.alpha(coinIcon, 0f, 0.01f);
+    }
     private void Sprite_Toggle()
     {
-        if (_orderOpen) _sr.sprite = activeSprite;
-        else _sr.sprite = inactiveSprite;
+        if (_orderOpen)
+        {
+            _sr.sprite = activeSprite;
+            orderIcon.Assign(_inactiveIcon);
+        }
+        else
+        {
+            _sr.sprite = inactiveSprite;
+            orderIcon.Assign(_activeIcon);
+        }
     }
     private void Order_Toggle()
     {
@@ -65,6 +125,21 @@ public class Order_Stand : MonoBehaviour, IInteractable
     }
 
     // Coin Text Control
+    private IEnumerator CurrentCoin_Hide_Delay()
+    {
+        yield return new WaitForSeconds(fadeTime);
+
+        amountText.alpha = 0f;
+        LeanTween.alpha(coinIcon, 0f, 0.01f);
+    }
+    private void Display_CurrentCoin()
+    {
+        amountText.alpha = 1f;
+        LeanTween.alpha(coinIcon, 1f, 0.01f);
+
+        fadeCoroutine = StartCoroutine(CurrentCoin_Hide_Delay());
+    }
+
     private void Update_CurrentCoin_Text()
     {
         amountText.text = _gameController.currentCoin.ToString();
@@ -86,7 +161,7 @@ public class Order_Stand : MonoBehaviour, IInteractable
         {
             for (int i = 0; i < allCustomers.Count; i++)
             {
-                allCustomers[i].customerMovement.Start_FreeRoam();
+                allCustomers[i].customerMovement.FreeRoam();
             }
 
             return;
