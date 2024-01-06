@@ -23,6 +23,7 @@ public class Customer_Movement : MonoBehaviour
     [Header("Free Roam")]
     public MinMax_Data roamStartTime;
     public MinMax_Data roamIntervalTime;
+
     [HideInInspector] public bool roamActive;
     public Coroutine freeRoamCoroutine;
 
@@ -77,8 +78,8 @@ public class Customer_Movement : MonoBehaviour
         else _sr.flipX = false;
     }
 
-    // Move Type
-    private IEnumerator FreeRoam_Coroutine()
+    // Free Roam
+    private IEnumerator FreeRoam_Delay()
     {
         float startTime = Random.Range(roamStartTime.min, roamStartTime.max);
         yield return new WaitForSeconds(startTime);
@@ -99,8 +100,10 @@ public class Customer_Movement : MonoBehaviour
     {
         _nextPosition = transform.position;
         roamActive = true;
-        freeRoamCoroutine = StartCoroutine(FreeRoam_Coroutine());
+        freeRoamCoroutine = StartCoroutine(FreeRoam_Delay());
     }
+
+    // Stop Free Roam
     public void Stop_FreeRoam()
     {
         if (freeRoamCoroutine != null) StopCoroutine(freeRoamCoroutine);
@@ -108,6 +111,26 @@ public class Customer_Movement : MonoBehaviour
         _nextPosition = transform.position;
     }
 
+    private IEnumerator Stop_FreeRoam_Delay(float returnTime)
+    {
+        while (roamActive || !Is_NextPosition())
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(returnTime);
+
+        if (!roamActive)
+        {
+            FreeRoam();
+        }
+    }
+    public void Stop_FreeRoam(float returnTime)
+    {
+        StartCoroutine(Stop_FreeRoam_Delay(returnTime));
+    }
+
+    // Leave
     public void Leave()
     {
         Vector2 nextPosition = _customerController.gameController.dataController.Get_OuterCamera_Position(-1, 0, -3, -3);

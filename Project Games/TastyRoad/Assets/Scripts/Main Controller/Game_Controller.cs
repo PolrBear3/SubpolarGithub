@@ -11,6 +11,10 @@ public class Game_Controller : MonoBehaviour
     [HideInInspector] public List<GameObject> currentCharacters = new();
     [HideInInspector] public List<GameObject> currentStations = new();
 
+    [Header("Opening Panel")]
+    [SerializeField] private float _openingTime;
+    [SerializeField] private GameObject _openingPanel;
+
     [Header("Data")]
     public int currentCoin;
 
@@ -19,6 +23,10 @@ public class Game_Controller : MonoBehaviour
     {
         if (gameObject.TryGetComponent(out Data_Controller dataController)) { this.dataController = dataController; }
         if (gameObject.TryGetComponent(out Spawn_Controller spawnController)) { this.spawnController = spawnController; }
+    }
+    private void Start()
+    {
+        LoadGame_Animation();
     }
 
     // Track Current Prefabs
@@ -33,5 +41,12 @@ public class Game_Controller : MonoBehaviour
     public void Connect_Station(GameObject station)
     {
         currentStations.Add(station);
+    }
+
+    //
+    private void LoadGame_Animation()
+    {
+        _openingPanel.SetActive(true);
+        LeanTween.moveLocalX(_openingPanel, -2000f, _openingTime);
     }
 }

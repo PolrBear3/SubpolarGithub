@@ -7,7 +7,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     private BoxCollider2D _bc;
 
     private Customer_Controller _customerController;
-    private Food _orderFood;
+    [HideInInspector] public Food orderFood;
 
     [Header("Default")]
     [SerializeField] private Icon_Controller _currentFoodIcon;
@@ -74,7 +74,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
             {
                 Menu_Activate(true);
 
-                if (_orderFood != null) return;
+                if (orderFood != null) return;
                 Set_Order();
 
                 return;
@@ -93,7 +93,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     // Check
     private bool State_isMatch(List<FoodState_Data> playerData)
     {
-        List<FoodState_Data> currentData = _orderFood.data;
+        List<FoodState_Data> currentData = orderFood.data;
         int matchCount = currentData.Count;
 
         if (playerData.Count != currentData.Count) return false;
@@ -111,7 +111,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     }
     private bool State_inOrder(List<FoodState_Data> playerData)
     {
-        List<FoodState_Data> currentData = _orderFood.data;
+        List<FoodState_Data> currentData = orderFood.data;
         int matchCount = currentData.Count;
 
         if (playerData.Count != currentData.Count) return false;
@@ -126,7 +126,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     }
     private bool StateLevel_isMatch(List<FoodState_Data> playerData)
     {
-        List<FoodState_Data> currentData = _orderFood.data;
+        List<FoodState_Data> currentData = orderFood.data;
         int matchCount = currentData.Count;
 
         if (playerData.Count != currentData.Count) return false;
@@ -190,8 +190,8 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Food orderFood = new();
         orderFood.foodScrObj = randFood;
 
-        _orderFood = orderFood;
-        _orderIcon.Assign(_orderFood.foodScrObj.sprite);
+        this.orderFood = orderFood;
+        _orderIcon.Assign(this.orderFood.foodScrObj.sprite);
 
         Set_State();
 
@@ -208,17 +208,17 @@ public class Customer_Order : MonoBehaviour, IInteractable
             if (Random.value > 0.5f) continue;
 
             int stateLevel = Random.Range(1, 3);
-            _orderFood.Update_State(data[i].stateType, stateLevel);
+            orderFood.Update_State(data[i].stateType, stateLevel);
         }
 
-        _orderFood.Shuffle_State();
-        _indicator.Update_StateSprite(_orderFood.data);
+        orderFood.Shuffle_State();
+        _indicator.Update_StateSprite(orderFood.data);
     }
 
     private IEnumerator Serve_Animation(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
-        _currentFoodIcon.Assign(_orderFood.foodScrObj.eatSprite);
+        _currentFoodIcon.Assign(orderFood.foodScrObj.eatSprite);
 
         yield return new WaitForSeconds(delayTime);
         _currentFoodIcon.Assign(null);
@@ -236,12 +236,12 @@ public class Customer_Order : MonoBehaviour, IInteractable
 
         Food_ScrObj playerFood = player.currentFood.foodScrObj;
 
-        if (playerFood != _orderFood.foodScrObj) return;
+        if (playerFood != orderFood.foodScrObj) return;
 
         _customerController.customerMovement.Stop_FreeRoam();
 
         _currentFoodIcon.gameObject.SetActive(true);
-        _currentFoodIcon.Assign(_orderFood.foodScrObj.sprite);
+        _currentFoodIcon.Assign(orderFood.foodScrObj.sprite);
 
         _orderServed = true;
         Pay_Calculation();
@@ -267,7 +267,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
     }
     private void Reset_Order()
     {
-        _orderFood = null;
+        orderFood = null;
         _orderServed = false;
         _calculateComplete = false;
 

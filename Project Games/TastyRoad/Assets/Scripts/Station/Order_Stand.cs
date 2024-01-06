@@ -13,6 +13,9 @@ public class Order_Stand : MonoBehaviour, IInteractable
 
     public Transform lineStartPoint;
 
+    [Header("Data")]
+    public float lineWaitTime;
+
     [Header("Current Coin Display")]
     public GameObject coinIcon;
     public TMP_Text amountText;
@@ -161,6 +164,7 @@ public class Order_Stand : MonoBehaviour, IInteractable
         {
             for (int i = 0; i < allCustomers.Count; i++)
             {
+                if (allCustomers[i].customerMovement.roamActive) continue;
                 allCustomers[i].customerMovement.FreeRoam();
             }
 
@@ -174,12 +178,16 @@ public class Order_Stand : MonoBehaviour, IInteractable
         float lineCountPosition = lineStartPoint.position.x;
         for (int i = 0; i < allCustomers.Count; i++)
         {
+            if (allCustomers[i].customerOrder.orderFood != null) continue;
+
             Vector2 linePosition = new Vector2(lineStartPoint.transform.position.x + lineCountPosition, lineStartPoint.transform.position.y);
 
             allCustomers[i].customerMovement.Stop_FreeRoam();
             allCustomers[i].customerMovement.Update_NextPosition(linePosition);
 
             lineCountPosition -= .75f;
+
+            allCustomers[i].customerMovement.Stop_FreeRoam(lineWaitTime);
         }
     }
 }
