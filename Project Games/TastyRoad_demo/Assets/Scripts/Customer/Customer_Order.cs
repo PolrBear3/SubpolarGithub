@@ -37,13 +37,13 @@ public class Customer_Order : MonoBehaviour, IInteractable
     {
         Player_Interaction player = _customerController.playerController.playerInteraction;
 
-        _customerController.customerMovement.Flip_toPlayer();
-
         if (!player.Is_Closest_Interactable(gameObject))
         {
             if (_menuOn) Menu_Activate(false);
             return;
         }
+
+        _customerController.customerMovement.Flip_toPlayer();
 
         // pay complete
         if (_calculateComplete)
