@@ -595,9 +595,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.44537812
-    width: 0.6130993
-    height: 0.61314523
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 195357624}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
   m_Name: 
@@ -1203,7 +1203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 408341637}
-  - component: {fileID: 408341638}
+  - component: {fileID: 408341641}
   - component: {fileID: 408341639}
   - component: {fileID: 408341640}
   m_Layer: 0
@@ -1229,38 +1229,6 @@ Transform:
   - {fileID: 1007864952}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &408341638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 408341636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8df11d601c5ff46cfa0e9d6a956e16d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mainCamera: {fileID: 195357626}
-  boxAreas:
-  - {fileID: 1303072235}
-  locations:
-  - {fileID: 2241724137223510468, guid: 9ce47d2ef9c4d491685088e0b55d45b8, type: 3}
-  stations:
-  - {fileID: 7366090731837522239, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
-  - {fileID: 5587925294155870417, guid: 78cd79c62e3a44132b36c8c3f726fd74, type: 3}
-  - {fileID: 4573784915183013672, guid: 308c89858f28544caad727fc8bf3a73b, type: 3}
-  - {fileID: 8403737644267042646, guid: 93967c9ba6a6f41a78c4658be35e9709, type: 3}
-  - {fileID: 5231110676368674916, guid: b0ca5831fe24f4be7af12d11f364fd91, type: 3}
-  characters:
-  - {fileID: 5817206134798704318, guid: 49c6fd7c6717546ee99b1cf6ff71e931, type: 3}
-  ingredientFoods:
-  - {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
-  - {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
-  - {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
-  mergedFoods:
-  - {fileID: 11400000, guid: 655d6e99319ae4e20887436b371f1c5b, type: 2}
-  - {fileID: 11400000, guid: a50e274af592e49ac8871921686e2d0c, type: 2}
 --- !u!114 &408341639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1294,6 +1262,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startIntervalTime: 2
+--- !u!114 &408341641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408341636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b696b68d27511410490665483076e5d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mainCamera: {fileID: 195357626}
+  boxAreas:
+  - {fileID: 1303072235}
+  stations:
+  - {fileID: 7366090731837522239, guid: 645753a9830494289bc7835c2c47bf31, type: 3}
+  - {fileID: 5587925294155870417, guid: 78cd79c62e3a44132b36c8c3f726fd74, type: 3}
+  - {fileID: 4573784915183013672, guid: 308c89858f28544caad727fc8bf3a73b, type: 3}
+  - {fileID: 8403737644267042646, guid: 93967c9ba6a6f41a78c4658be35e9709, type: 3}
+  - {fileID: 5231110676368674916, guid: b0ca5831fe24f4be7af12d11f364fd91, type: 3}
+  - {fileID: 431179356087621328, guid: b40ad81e510c941768ee5df011f98c0e, type: 3}
+  characters:
+  - {fileID: 6894812432335870425, guid: 689e1ab7ca6824748a999fb65d3966ae, type: 3}
+  - {fileID: 5817206134798704318, guid: 49c6fd7c6717546ee99b1cf6ff71e931, type: 3}
+  ingredientFoods:
+  - {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
+  - {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
+  - {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
+  mergedFoods:
+  - {fileID: 11400000, guid: 655d6e99319ae4e20887436b371f1c5b, type: 2}
+  - {fileID: 11400000, guid: a50e274af592e49ac8871921686e2d0c, type: 2}
 --- !u!1001 &410390290
 PrefabInstance:
   m_ObjectHideFlags: 0

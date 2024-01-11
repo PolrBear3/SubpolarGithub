@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Customer_Animation : MonoBehaviour
 {
-    private SpriteRenderer _sr;
     private Animator _anim;
 
     private Customer_Controller _customerController;
@@ -15,7 +14,6 @@ public class Customer_Animation : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
         if (gameObject.TryGetComponent(out Animator anim)) { _anim = anim; }
         if (gameObject.TryGetComponent(out Customer_Controller customerController)) { _customerController = customerController; }
     }

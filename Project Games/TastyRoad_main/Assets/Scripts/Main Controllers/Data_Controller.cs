@@ -35,7 +35,7 @@ public class Data_Controller : MonoBehaviour
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
 
-    // Position
+    // Get Position
     public Vector2 Get_OuterCamera_Position(float horizontal, float vertical, float positionX, float positionY)
     {
         float horizontalPos = horizontal;
@@ -51,6 +51,7 @@ public class Data_Controller : MonoBehaviour
 
         return new Vector2(cameraPosition.x + positionX, cameraPosition.y + positionY);
     }
+
     public Vector2 Get_BoxArea_Position(int boxAreaNum)
     {
         BoxCollider2D boxArea = boxAreas[boxAreaNum];
@@ -83,27 +84,7 @@ public class Data_Controller : MonoBehaviour
         return null;
     }
 
-    // Get Ingredient Food
-    private bool Is_FoodStateData_Match(List<State_Data> foodsData, List<State_Data> mergedFoodData)
-    {
-        if (foodsData.Count != mergedFoodData.Count) return false;
-
-        int matchCount = mergedFoodData.Count;
-
-        for (int i = 0; i < foodsData.Count; i++)
-        {
-            for (int j = 0; j < mergedFoodData.Count; j++)
-            {
-                if (foodsData[i].stateType != mergedFoodData[j].stateType) continue;
-                if (foodsData[i].stateLevel != mergedFoodData[j].stateLevel) continue;
-                matchCount--;
-            }
-        }
-
-        if (matchCount > 0) return false;
-        return true;
-    }
-
+    // Get Cooked Food
     public Food_ScrObj CookedFood(int foodID)
     {
         for (int i = 0; i < cookedFoods.Count; i++)
@@ -120,36 +101,6 @@ public class Data_Controller : MonoBehaviour
             if (foodScrObj != cookedFoods[i]) continue;
             return cookedFoods[i];
         }
-        return null;
-    }
-    public Food_ScrObj CookedFood(List<Food_ScrObj> foodIngredients)
-    {
-        for (int i = 0; i < cookedFoods.Count; i++)
-        {
-            List<Food_ScrObj> insertedIngredients = foodIngredients;
-            List<Food_ScrObj> mergedFoodIngredients = new();
-            int matchCount = cookedFoods[i].ingredients.Count;
-
-            if (insertedIngredients.Count != matchCount) continue;
-
-            for (int j = 0; j < cookedFoods[i].ingredients.Count; j++)
-            {
-                mergedFoodIngredients.Add(cookedFoods[i].ingredients[j].foodScrObj);
-            }
-
-            for (int j = 0; j < insertedIngredients.Count; j++)
-            {
-                if (insertedIngredients[j] == null) continue;
-                if (!mergedFoodIngredients.Contains(insertedIngredients[j])) continue;
-
-                matchCount--;
-                mergedFoodIngredients.Remove(insertedIngredients[j]);
-            }
-
-            if (matchCount > 0) continue;
-            return cookedFoods[i];
-        }
-
         return null;
     }
 }

@@ -183,7 +183,7 @@ public class Customer_Order : MonoBehaviour, IInteractable
         Data_Controller data = _customerController.gameController.dataController;
 
         // random merged food
-        int randFoodID = Random.Range(0, data.mergedFoods.Count);
+        int randFoodID = Random.Range(0, data.ingredientFoods.Count);
         Food_ScrObj randFood = data.Get_MergedFood(randFoodID);
 
         // set order food
