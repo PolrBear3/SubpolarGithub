@@ -5,6 +5,8 @@ using TMPro;
 
 public class FoodData_Controller : MonoBehaviour
 {
+    [HideInInspector] public FoodState_Controller stateController;
+
     private SpriteRenderer _sr;
     [SerializeField] private TMP_Text _amountText;
 
@@ -17,6 +19,7 @@ public class FoodData_Controller : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
+        if (gameObject.TryGetComponent(out FoodState_Controller stateController)) { this.stateController = stateController; }
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
     }
 

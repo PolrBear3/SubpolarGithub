@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_Controller : MonoBehaviour
+public class Player_Controller : MonoBehaviour, IInteractable
 {
-    [HideInInspector] public Main_Controller _mainController;
+    [HideInInspector] public Main_Controller mainController;
 
-    [HideInInspector] public Detection_Controller _detectionController;
-    [HideInInspector] public BasicAnimation_Controller _animationController;
+    [HideInInspector] public Detection_Controller detectionController;
+    [HideInInspector] public BasicAnimation_Controller animationController;
+    public FoodData_Controller currentFoodData;
 
-    [HideInInspector] public Player_Movement _movement;
+    [HideInInspector] public Player_Movement movement;
 
     // UnityEngine
     private void Awake()
     {
-        _mainController = FindObjectOfType<Main_Controller>();
+        mainController = FindObjectOfType<Main_Controller>();
+        mainController.Track_CurrentCharacter(gameObject);
 
-        if (gameObject.TryGetComponent(out Detection_Controller detectionController)) { _detectionController = detectionController; }
-        if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { _animationController = animationController; }
-        if (gameObject.TryGetComponent(out Player_Movement movement)) { _movement = movement; }
+        if (gameObject.TryGetComponent(out Detection_Controller detectionController)) { this.detectionController = detectionController; }
+        if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { this.animationController = animationController; }
+        if (gameObject.TryGetComponent(out Player_Movement movement)) { this.movement = movement; }
     }
 
-    private void Start()
+    // IInteractable
+    public void Interact()
     {
-        _mainController.Track_CurrentCharacter(gameObject);
+
     }
 
     // Player Input
     private void OnInteract()
     {
-        if (_detectionController.Closest_Interactable() == null) return;
-        if (!_detectionController.Closest_Interactable().TryGetComponent(out IInteractable interactable)) return;
+        if (detectionController.Closest_Interactable() == null) return;
+        if (!detectionController.Closest_Interactable().TryGetComponent(out IInteractable interactable)) return;
         interactable.Interact();
     }
 }

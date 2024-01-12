@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class Detection_Controller : MonoBehaviour
 {
-    private List<GameObject> _detectedObjects;
+    [SerializeField] private List<GameObject> _detectedObjects;
 
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.isTrigger == false) return;
+
         _detectedObjects.Add(collision.gameObject);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (collision.isTrigger == false) return;
+
         _detectedObjects.Remove(collision.gameObject);
     }
 

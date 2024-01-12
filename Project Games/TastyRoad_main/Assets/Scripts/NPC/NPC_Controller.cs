@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class NPC_Controller : MonoBehaviour, IInteractable
 {
-    [HideInInspector] public Main_Controller _mainController;
+    [HideInInspector] public Main_Controller mainController;
 
-    [HideInInspector] public Detection_Controller _detectionController;
-    [HideInInspector] public BasicAnimation_Controller _animationController;
+    [HideInInspector] public Detection_Controller detectionController;
+    [HideInInspector] public BasicAnimation_Controller animationController;
+
+    [HideInInspector] public NPC_Movement movement;
 
     // UnityEngine
     private void Awake()
     {
-        _mainController = FindObjectOfType<Main_Controller>();
+        mainController = FindObjectOfType<Main_Controller>();
+        mainController.Track_CurrentCharacter(gameObject);
 
-        if (gameObject.TryGetComponent(out Detection_Controller detectionController)) { _detectionController = detectionController; }
-        if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { _animationController = animationController; }
-    }
-    private void Start()
-    {
-        _mainController.Track_CurrentCharacter(gameObject);
+        if (gameObject.TryGetComponent(out Detection_Controller detectionController)) { this.detectionController = detectionController; }
+        if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { this.animationController = animationController; }
+
+        if (gameObject.TryGetComponent(out NPC_Movement movement)) { this.movement = movement; }
     }
 
     // IInteractable

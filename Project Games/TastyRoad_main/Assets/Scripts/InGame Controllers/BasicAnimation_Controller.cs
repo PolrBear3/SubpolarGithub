@@ -30,6 +30,17 @@ public class BasicAnimation_Controller : MonoBehaviour
             Flip_Sprite(false);
         }
     }
+    public void Flip_Sprite(GameObject targetObject)
+    {
+        if (transform.position.x > targetObject.transform.position.x)
+        {
+            Flip_Sprite(true);
+        }
+        else if (transform.position.x < targetObject.transform.position.x)
+        {
+            Flip_Sprite(false);
+        }
+    }
 
     // Basic Animation Control
     public void Idle_Move(bool isMoving)

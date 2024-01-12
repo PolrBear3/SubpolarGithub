@@ -10,7 +10,7 @@ public class Player_Movement : MonoBehaviour
     private Rigidbody2D _rigidBody;
 
     private Vector2 _currentDirection;
-    public float moveSpeed;
+    [SerializeField] private float _moveSpeed;
 
     // UnityEngine
     private void Awake()
@@ -19,11 +19,14 @@ public class Player_Movement : MonoBehaviour
         if (gameObject.TryGetComponent(out Rigidbody2D rigidbody)) { _rigidBody = rigidbody; }
     }
 
+    private void Update()
+    {
+        _playerController.animationController.Idle_Move(Is_Moving());
+    }
+
     private void FixedUpdate()
     {
         Rigidbody_Move();
-
-        _playerController._animationController.Idle_Move(Is_Moving());
     }
 
     // Player Input
@@ -32,7 +35,7 @@ public class Player_Movement : MonoBehaviour
         Vector2 input = value.Get<Vector2>();
         _currentDirection = input;
 
-        _playerController._animationController.Flip_Sprite(_currentDirection.x);
+        _playerController.animationController.Flip_Sprite(_currentDirection.x);
     }
 
     // Check
@@ -45,6 +48,6 @@ public class Player_Movement : MonoBehaviour
     // Fixed Update Move
     private void Rigidbody_Move()
     {
-        _rigidBody.velocity = new Vector2(_currentDirection.x * moveSpeed, _currentDirection.y * moveSpeed);
+        _rigidBody.velocity = new Vector2(_currentDirection.x * _moveSpeed, _currentDirection.y * _moveSpeed);
     }
 }
