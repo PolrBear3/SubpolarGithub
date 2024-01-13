@@ -9,6 +9,7 @@ public class Player_Controller : MonoBehaviour, IInteractable
 
     [HideInInspector] public Detection_Controller detectionController;
     [HideInInspector] public BasicAnimation_Controller animationController;
+
     public FoodData_Controller currentFoodData;
 
     [HideInInspector] public Player_Movement movement;
@@ -27,7 +28,7 @@ public class Player_Controller : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-
+        
     }
 
     // Player Input
@@ -35,6 +36,7 @@ public class Player_Controller : MonoBehaviour, IInteractable
     {
         if (detectionController.Closest_Interactable() == null) return;
         if (!detectionController.Closest_Interactable().TryGetComponent(out IInteractable interactable)) return;
+
         interactable.Interact();
     }
 }

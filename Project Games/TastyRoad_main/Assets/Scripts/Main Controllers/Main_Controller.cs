@@ -18,6 +18,8 @@ public class Main_Controller : MonoBehaviour
     public List<GameObject> currentCharacters = new();
     public List<GameObject> currentStations = new();
 
+    public int currentCoin;
+
     // UnityEngine
     private void Awake()
     {
