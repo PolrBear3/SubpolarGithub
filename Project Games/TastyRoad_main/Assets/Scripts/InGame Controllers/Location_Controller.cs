@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GD.MinMaxSlider;
 
 public class Location_Controller : MonoBehaviour
 {
     [HideInInspector] public Main_Controller _mainController;
 
-    public List<SpriteRenderer> roamAreas = new();
+    [SerializeField] private List<SpriteRenderer> _roamAreas = new();
+
+    [MinMaxSlider(1f, 60f)]
+    [SerializeField] private Vector2 _spawnIntervalTime;
 
     // UnityEngine
     private void Awake()
@@ -20,14 +24,13 @@ public class Location_Controller : MonoBehaviour
         // Toggle Off All Roam Area Colors On Game Start
         RoamAreas_ColorToggle(false);
 
-        // NPC Spawn Test
-        Spawn_NPCs(1, 2);
+        Spawn_NPCs(5);
     }
 
     // Get
     public Vector2 Random_RoamArea(int arrayNum)
     {
-        SpriteRenderer roamArea = roamAreas[arrayNum];
+        SpriteRenderer roamArea = _roamAreas[arrayNum];
         Vector2 centerPosition = roamArea.bounds.center;
 
         float randX = Random.Range(centerPosition.x - roamArea.bounds.extents.x, centerPosition.x + roamArea.bounds.extents.x);
@@ -41,24 +44,25 @@ public class Location_Controller : MonoBehaviour
     {
         if (toggleOn == true) return;
 
-        for (int i = 0; i < roamAreas.Count; i++)
+        for (int i = 0; i < _roamAreas.Count; i++)
         {
-            roamAreas[i].color = Color.clear;
+            _roamAreas[i].color = Color.clear;
         }
     }
 
-    // NPC Spawn Test
-    private IEnumerator Spawn_NPCs_Coroutine(int amount, float intervalTime)
+    // NPC Spawn
+    private IEnumerator Spawn_NPCs_Coroutine(int amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(-1, 0, -3, -3));
+            _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(-1, 0, -2, -3));
 
-            yield return new WaitForSeconds(intervalTime);
+            float randIntervalTime = Random.Range(_spawnIntervalTime.x, _spawnIntervalTime.y);
+            yield return new WaitForSeconds(randIntervalTime);
         }
     }
-    private void Spawn_NPCs(int amount, float intervalTime)
+    private void Spawn_NPCs(int amount)
     {
-        StartCoroutine(Spawn_NPCs_Coroutine(amount, intervalTime));
+        StartCoroutine(Spawn_NPCs_Coroutine(amount));
     }
 }

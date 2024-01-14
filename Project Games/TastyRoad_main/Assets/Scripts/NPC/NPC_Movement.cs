@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GD.MinMaxSlider;
 
 public class NPC_Movement : MonoBehaviour
 {
@@ -9,9 +10,11 @@ public class NPC_Movement : MonoBehaviour
     private Vector2 _targetPosition;
 
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _roamIntervalTime;
+    private Coroutine _moveCoroutine;
 
-    private Coroutine _roamCoroutine;
+    [MinMaxSlider(1f, 60f)]
+    [SerializeField] private Vector2 _roamIntervalTime;
+
     private bool _roamActive;
 
     // UnityEngine
@@ -77,6 +80,24 @@ public class NPC_Movement : MonoBehaviour
         _controller.animationController.Flip_Sprite(Move_Direction());
     }
 
+    // Assign Movement (Reach Position, Time Pass, Return to Free Roam)
+    private IEnumerator Assign_TargetPosition_Coroutine(Vector2 newPosition, float roamReturnTime)
+    {
+        Assign_TargetPosition(newPosition);
+
+        while (At_TargetPosition() == false)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(roamReturnTime);
+        Free_Roam();
+    }
+    public void Assign_TargetPosition(Vector2 newPosition, float roamReturnTime)
+    {
+        _moveCoroutine = StartCoroutine(Assign_TargetPosition_Coroutine(newPosition, roamReturnTime));
+    }
+
     // Free Roam Movement
     private IEnumerator Free_Roam_Coroutine()
     {
@@ -89,7 +110,8 @@ public class NPC_Movement : MonoBehaviour
                 yield return null;
             }
 
-            yield return new WaitForSeconds(_roamIntervalTime);
+            float randIntervalTime = Random.Range(_roamIntervalTime.x, _roamIntervalTime.y);
+            yield return new WaitForSeconds(randIntervalTime);
 
             Vector2 roamTargetPos = _controller.mainController.currentLocation.Random_RoamArea(0);
             Assign_TargetPosition(roamTargetPos);
@@ -98,15 +120,16 @@ public class NPC_Movement : MonoBehaviour
     public void Free_Roam()
     {
         _roamActive = true;
-        _roamCoroutine = StartCoroutine(Free_Roam_Coroutine());
+        _moveCoroutine = StartCoroutine(Free_Roam_Coroutine());
     }
 
-    public void Cancel_FreeRoam()
+    // Free Roam Stop
+    public void Stop_FreeRoam()
     {
-        if (_roamCoroutine != null)
+        if (_moveCoroutine != null)
         {
             _roamActive = false;
-            StopCoroutine(_roamCoroutine);
+            StopCoroutine(_moveCoroutine);
         }
 
         _targetPosition = transform.position;

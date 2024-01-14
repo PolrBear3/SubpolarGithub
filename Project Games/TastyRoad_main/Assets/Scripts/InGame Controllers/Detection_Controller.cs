@@ -5,11 +5,14 @@ using UnityEngine;
 public class Detection_Controller : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _detectedprefabs;
+    private Player_Controller player;
 
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.isTrigger == false) return;
+
+        if (collision.TryGetComponent(out Player_Controller player)) { this.player = player; }
 
         _detectedprefabs.Add(collision.gameObject);
     }
@@ -17,6 +20,8 @@ public class Detection_Controller : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.isTrigger == false) return;
+
+        if (collision.TryGetComponent(out Player_Controller player)) { player = null; }
 
         _detectedprefabs.Remove(collision.gameObject);
     }
@@ -69,7 +74,7 @@ public class Detection_Controller : MonoBehaviour
         return closestInteractable;
     }
 
-    // Check
+    // Check Detected Object
     public bool Has_Object(GameObject specificObject)
     {
         for (int i = 0; i < _detectedprefabs.Count; i++)
@@ -78,5 +83,18 @@ public class Detection_Controller : MonoBehaviour
         }
 
         return false;
+    }
+
+    // Get Player
+    public Player_Controller Player()
+    {
+        return player;
+    }
+
+    // Check Player
+    public bool Has_Player()
+    {
+        if (player != null) return true;
+        else return false;
     }
 }

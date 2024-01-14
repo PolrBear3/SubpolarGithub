@@ -287,9 +287,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.47362754
-    width: 0.5499697
-    height: 0.5497847
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -428,6 +428,7 @@ MonoBehaviour:
   currentLocation: {fileID: 0}
   currentCharacters: []
   currentStations: []
+  currentCoin: 0
 --- !u!1001 &948113757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -654,10 +655,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1163841217886637491, guid: f3a3e443cf3be452f915e117e7bc5362, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3a3e443cf3be452f915e117e7bc5362, type: 3}
 --- !u!4 &2103662873 stripped
 Transform:

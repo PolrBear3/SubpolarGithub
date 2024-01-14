@@ -6,9 +6,22 @@ using UnityEngine.InputSystem;
 
 public class OrderStand : MonoBehaviour, IInteractable
 {
-    private Main_Controller _mainController;
+    private SpriteRenderer _spriteRenderer;
 
+    private Main_Controller _mainController;
+    private Detection_Controller _detection;
     [SerializeField] private Action_Bubble _actionBubble;
+
+    [Header("Order Stand Sprites")]
+    [SerializeField] private Sprite _openStand;
+    [SerializeField] private Sprite _closedStand;
+
+    [Header ("NPC Control")]
+    [SerializeField] private Transform _lineStartPoint;
+    [SerializeField] private Sprite _lineOpenSprite;
+    [SerializeField] private Sprite _lineClosedSprite;
+
+    private bool _lineOpen;
 
     [Header ("Current Coin Display")]
     [SerializeField] private GameObject _coinDisplay;
@@ -21,8 +34,12 @@ public class OrderStand : MonoBehaviour, IInteractable
     // UnityEngine
     private void Awake()
     {
+        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
+
         _mainController = FindObjectOfType<Main_Controller>();
         _mainController.Track_CurrentStation(gameObject);
+
+        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
 
         if (gameObject.TryGetComponent(out PlayerInput playerInput))
         {
@@ -33,7 +50,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Player_Controller player))
+        if (_detection.Has_Player() == true)
         {
             _actionBubble.Toggle_Off();
         }
@@ -44,22 +61,35 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         _coinDisplay.SetActive(false);
 
-        _actionBubble.Update_Bubble(_coinSprite, null);
+        _actionBubble.Update_Bubble(OrderToggle_Sprite(), _coinSprite);
     }
 
     // Player Input
     private void OnAction1()
     {
-        Show_CurrentCoin();
+        Line_CurrentNPCs();
 
         _actionBubble.Toggle_Off();
     }
 
     private void OnAction2()
     {
-        // Line_NPCs();
+        Show_CurrentCoin();
 
         _actionBubble.Toggle_Off();
+    }
+
+    // Get Line Toggle Sprite for Action Bubble
+    private Sprite OrderToggle_Sprite()
+    {
+        if (_lineOpen == false)
+        {
+            return _lineOpenSprite;
+        }
+        else
+        {
+            return _lineClosedSprite;
+        }
     }
 
     // Show Current Coin
@@ -80,5 +110,45 @@ public class OrderStand : MonoBehaviour, IInteractable
         }
 
         coinCoroutine = StartCoroutine(Show_CurrentCoin_Coroutine());
+    }
+
+    // Line Current NPCs
+    private void Line_CurrentNPCs()
+    {
+        if (_lineOpen == false)
+        {
+            _lineOpen = true;
+            _spriteRenderer.sprite = _openStand;
+        }
+        else
+        {
+            _lineOpen = false;
+            _spriteRenderer.sprite = _closedStand;
+
+            return;
+        }
+
+        List<GameObject> characters = _mainController.currentCharacters;
+
+        // sort closest to farthest
+        characters.Sort((customerA, customerB) =>
+        Vector2.Distance(customerA.transform.position, transform.position)
+        .CompareTo(Vector2.Distance(customerB.transform.position, transform.position)));
+
+        float lineSpaceCount = 0;
+
+        for (int i = 0; i < characters.Count; i++)
+        {
+            if (characters[i].TryGetComponent(out NPC_Controller npc))
+            {
+                NPC_Movement movement = npc.movement;
+                movement.Stop_FreeRoam();
+
+                Vector2 targetPosition = new Vector2(_lineStartPoint.position.x - lineSpaceCount, _lineStartPoint.position.y);
+                movement.Assign_TargetPosition(targetPosition, 3f);
+
+                lineSpaceCount += 0.75f;
+            }
+        }
     }
 }
