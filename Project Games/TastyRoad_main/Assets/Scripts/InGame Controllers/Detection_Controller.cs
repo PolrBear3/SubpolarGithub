@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class Detection_Controller : MonoBehaviour
 {
+    private BoxCollider2D _boxCollider;
+
     [SerializeField] private List<GameObject> _detectedprefabs;
-    private Player_Controller player;
+    [HideInInspector] public Player_Controller player;
+
+    // UnityEngine
+    private void Awake()
+    {
+        if (gameObject.TryGetComponent(out BoxCollider2D boxCollider)) { _boxCollider = boxCollider; }
+    }
 
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
@@ -85,16 +93,16 @@ public class Detection_Controller : MonoBehaviour
         return false;
     }
 
-    // Get Player
-    public Player_Controller Player()
-    {
-        return player;
-    }
-
     // Check Player
     public bool Has_Player()
     {
         if (player != null) return true;
         else return false;
+    }
+
+    // Box Collider Toggle On Off
+    public void BoxCollider_Toggle(bool toggleOn)
+    {
+        _boxCollider.enabled = toggleOn;
     }
 }

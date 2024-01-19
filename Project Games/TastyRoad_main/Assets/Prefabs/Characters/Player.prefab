@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3822302725464732542}
   - component: {fileID: 385993438348478003}
   - component: {fileID: 1296528359833819897}
+  - component: {fileID: 9121272627405539894}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -310,8 +311,9 @@ MonoBehaviour:
   mainController: {fileID: 0}
   detectionController: {fileID: 0}
   animationController: {fileID: 0}
-  currentFoodData: {fileID: 7716495279168354930}
+  foodIcon: {fileID: 3671351110632059167}
   movement: {fileID: 0}
+  interaction: {fileID: 0}
 --- !u!114 &1296528359833819897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,6 +327,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 2
+--- !u!114 &9121272627405539894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6894812432335870425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a6a53121484c43889a62227cdd747ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8079673766953025140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -387,9 +401,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
   m_PrefabInstance: {fileID: 8079673766953025140}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7716495279168354930 stripped
+--- !u!114 &3671351110632059167 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1960961298066310150, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
   m_PrefabInstance: {fileID: 8079673766953025140}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

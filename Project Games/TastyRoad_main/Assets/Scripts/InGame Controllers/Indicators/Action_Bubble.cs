@@ -5,18 +5,22 @@ using UnityEngine.InputSystem;
 
 public class Action_Bubble : MonoBehaviour
 {
-    private PlayerInput _playerInput;
-    [SerializeField] private GameObject _toggle;
+    [HideInInspector] private PlayerInput _playerInput;
 
+    [SerializeField] private GameObject _toggle;
     [SerializeField] private GameObject _leftBubble;
     [SerializeField] private GameObject _rightBubble;
 
     private SpriteRenderer _leftIcon;
     private SpriteRenderer _rightIcon;
 
+    [HideInInspector] public bool bubbleOn;
+
     // UnityEngine
     private void Awake()
     {
+        if (transform.parent.TryGetComponent(out PlayerInput playerInput)) { _playerInput = playerInput; }
+
         if (_leftBubble.transform.GetChild(0).TryGetComponent(out SpriteRenderer leftIcon)) { _leftIcon = leftIcon; }
         if (_rightBubble.transform.GetChild(0).TryGetComponent(out SpriteRenderer rightIcon)) { _rightIcon = rightIcon; }
     }
@@ -35,8 +39,15 @@ public class Action_Bubble : MonoBehaviour
     // Hide Action Bubble
     public void Toggle_Off()
     {
+        bubbleOn = false;
+
         _toggle.SetActive(false);
-        _playerInput.enabled = false;
+
+        if (_playerInput != null)
+        {
+            _playerInput.enabled = false;
+
+        }
     }
 
     // Update Bubble Icon Sprite
@@ -50,6 +61,8 @@ public class Action_Bubble : MonoBehaviour
         }
 
         // toggle on
+        bubbleOn = true;
+
         _toggle.SetActive(true);
         _playerInput.enabled = true;
 

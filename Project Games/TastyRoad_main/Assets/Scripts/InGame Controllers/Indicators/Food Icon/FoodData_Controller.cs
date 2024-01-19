@@ -5,21 +5,22 @@ using TMPro;
 
 public class FoodData_Controller : MonoBehaviour
 {
-    [HideInInspector] public FoodState_Controller stateController;
+    [HideInInspector] public StateBox_Controller stateBoxController;
 
     private SpriteRenderer _sr;
     [SerializeField] private TMP_Text _amountText;
 
-    private Food_ScrObj _currentFood;
-    [HideInInspector] public int _currentAmount;
+    [HideInInspector] public FoodData currentFoodData;
 
-    private bool _iconTransparent;
-    private bool _amountTransparent;
+    [HideInInspector] public bool hasFood;
+
+    [SerializeField] private bool _iconTransparent;
+    [SerializeField] private bool _amountTransparent;
 
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out FoodState_Controller stateController)) { this.stateController = stateController; }
+        if (gameObject.TryGetComponent(out StateBox_Controller stateBoxController)) { this.stateBoxController = stateBoxController; }
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
 
         _sr.color = Color.clear;
@@ -31,9 +32,9 @@ public class FoodData_Controller : MonoBehaviour
     {
         _iconTransparent = isTransparent;
 
-        if (_iconTransparent == false)
+        if (_iconTransparent == false && currentFoodData.foodScrObj != null)
         {
-            Assign_Food(_currentFood);
+            _sr.color = Color.white;
         }
         else
         {
@@ -45,9 +46,10 @@ public class FoodData_Controller : MonoBehaviour
     {
         _amountTransparent = isTransparent;
 
-        if (_amountTransparent == false)
+        if (_amountTransparent == false && currentFoodData.currentAmount > 1)
         {
-            Update_Amount(_currentAmount);
+            _amountText.color = Color.black;
+            _amountText.text = currentFoodData.currentAmount.ToString();
         }
         else
         {
@@ -58,34 +60,33 @@ public class FoodData_Controller : MonoBehaviour
     // Food Control
     public void Assign_Food(Food_ScrObj foodScrObj)
     {
+        // empty food assigned
         if (foodScrObj == null)
         {
             Clear_Food();
             return;
         }
 
-        // only update amount if same food
-        if (foodScrObj == _currentFood)
-        {
-            Update_Amount(1);
-            return;
-        }
-
         // new food update
-        _currentAmount = 1;
-        _currentFood = foodScrObj;
+        hasFood = true;
 
+        currentFoodData.currentAmount = 1;
+        currentFoodData.foodScrObj = foodScrObj;
+
+        // transparency control
         if (_iconTransparent == false)
         {
-            _sr.sprite = _currentFood.sprite;
+            _sr.sprite = currentFoodData.foodScrObj.sprite;
             _sr.color = Color.white;
         }
     }
 
     public void Clear_Food()
     {
-        _currentFood = null;
-        _currentAmount = 0;
+        hasFood = false;
+
+        currentFoodData.foodScrObj = null;
+        currentFoodData.currentAmount = 0;
 
         _sr.color = Color.clear;
         _sr.sprite = null;
@@ -93,21 +94,76 @@ public class FoodData_Controller : MonoBehaviour
         _amountText.color = Color.clear;
     }
 
+    // Get State Data
+    public FoodState_Data Current_FoodState(FoodState_Type stateType)
+    {
+        for (int i = 0; i < currentFoodData.stateData.Count; i++)
+        {
+            if (currentFoodData.stateData[i].stateType != stateType) continue;
+
+            return currentFoodData.stateData[i];
+        }
+
+        return null;
+    }
+
+    // State Control
+    public void Assign_State(List<FoodState_Data> data)
+    {
+        Clear_State();
+        currentFoodData.stateData = data;
+
+        stateBoxController.Update_StateBoxes();
+    }
+
+    public void Update_State(FoodState_Type stateType, int level)
+    {
+        FoodState_Data targetState = Current_FoodState(stateType);
+
+        // new state
+        if (targetState == null)
+        {
+            FoodState_Data newState = new();
+            newState.stateType = stateType;
+            newState.stateLevel = level;
+
+            currentFoodData.stateData.Add(newState);
+        }
+        // same state found
+        else
+        {
+            // set maximum state level according to boxsprites
+            if (targetState.stateLevel < stateBoxController.stateBoxSprites[0].boxSprite.Count)
+            {
+                targetState.stateLevel += level;
+            }
+        }
+
+        stateBoxController.Update_StateBoxes();
+    }
+
+    public void Clear_State()
+    {
+        currentFoodData.stateData.Clear();
+
+        stateBoxController.Clear_StateBoxes();
+    }
+
     // Amount Control
     public void Update_Amount(int updateAmount)
     {
-        _currentAmount += updateAmount;
+        currentFoodData.currentAmount += updateAmount;
 
-        if (_currentAmount <= 0)
+        if (currentFoodData.currentAmount <= 0)
         {
             Clear_Food();
             return;
         }
 
-        if (_currentAmount > 1 && _amountTransparent == false)
+        if (currentFoodData.currentAmount > 1 && _amountTransparent == false)
         {
             _amountText.color = Color.black;
-            _amountText.text = _currentAmount.ToString();
+            _amountText.text = currentFoodData.currentAmount.ToString();
         }
         else
         {

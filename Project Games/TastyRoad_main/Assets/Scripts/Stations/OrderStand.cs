@@ -22,6 +22,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     [SerializeField] private Sprite _lineClosedSprite;
 
     private bool _lineOpen;
+    [SerializeField] private float _lineWaitTime;
 
     [Header ("Current Coin Display")]
     [SerializeField] private GameObject _coinDisplay;
@@ -34,17 +35,11 @@ public class OrderStand : MonoBehaviour, IInteractable
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
-
         _mainController = FindObjectOfType<Main_Controller>();
         _mainController.Track_CurrentStation(gameObject);
 
+        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
-
-        if (gameObject.TryGetComponent(out PlayerInput playerInput))
-        {
-            _actionBubble.Set_PlayerInput(playerInput);
-        }
     }
 
     // OnTrigger
@@ -61,13 +56,13 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         _coinDisplay.SetActive(false);
 
-        _actionBubble.Update_Bubble(OrderToggle_Sprite(), _coinSprite);
+        _actionBubble.Update_Bubble(LineToggle_Sprite(), _coinSprite);
     }
 
     // Player Input
     private void OnAction1()
     {
-        Line_CurrentNPCs();
+        Line_CurrentNPCs_Toggle();
 
         _actionBubble.Toggle_Off();
     }
@@ -80,7 +75,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
 
     // Get Line Toggle Sprite for Action Bubble
-    private Sprite OrderToggle_Sprite()
+    private Sprite LineToggle_Sprite()
     {
         if (_lineOpen == false)
         {
@@ -113,8 +108,10 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
 
     // Line Current NPCs
-    private void Line_CurrentNPCs()
+    private void Line_CurrentNPCs_Toggle()
     {
+        List<GameObject> characters = _mainController.currentCharacters;
+
         if (_lineOpen == false)
         {
             _lineOpen = true;
@@ -124,11 +121,7 @@ public class OrderStand : MonoBehaviour, IInteractable
         {
             _lineOpen = false;
             _spriteRenderer.sprite = _closedStand;
-
-            return;
         }
-
-        List<GameObject> characters = _mainController.currentCharacters;
 
         // sort closest to farthest
         characters.Sort((customerA, customerB) =>
@@ -139,15 +132,23 @@ public class OrderStand : MonoBehaviour, IInteractable
 
         for (int i = 0; i < characters.Count; i++)
         {
-            if (characters[i].TryGetComponent(out NPC_Controller npc))
-            {
-                NPC_Movement movement = npc.movement;
-                movement.Stop_FreeRoam();
+            if (!characters[i].TryGetComponent(out NPC_Controller npc)) continue;
 
+            NPC_Movement movement = npc.movement;
+            movement.Stop_FreeRoam();
+
+            // line open
+            if (_lineOpen == true)
+            {
                 Vector2 targetPosition = new Vector2(_lineStartPoint.position.x - lineSpaceCount, _lineStartPoint.position.y);
-                movement.Assign_TargetPosition(targetPosition, 3f);
+                movement.Assign_TargetPosition(targetPosition, _lineWaitTime);
 
                 lineSpaceCount += 0.75f;
+            }
+            // line closed
+            else
+            {
+                movement.Free_Roam(0f);
             }
         }
     }

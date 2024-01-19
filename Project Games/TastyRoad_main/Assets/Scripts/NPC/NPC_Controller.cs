@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPC_Controller : MonoBehaviour, IInteractable
+public class NPC_Controller : MonoBehaviour
 {
     [HideInInspector] public Main_Controller mainController;
 
     [HideInInspector] public Detection_Controller detectionController;
     [HideInInspector] public BasicAnimation_Controller animationController;
 
+    public FoodData_Controller foodIcon;
+
     [HideInInspector] public NPC_Movement movement;
+    [HideInInspector] public NPC_Interaction interaction;
 
     // UnityEngine
     private void Awake()
@@ -21,11 +24,6 @@ public class NPC_Controller : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { this.animationController = animationController; }
 
         if (gameObject.TryGetComponent(out NPC_Movement movement)) { this.movement = movement; }
-    }
-
-    // IInteractable
-    public void Interact()
-    {
-        
+        if (gameObject.TryGetComponent(out NPC_Interaction interaction)) { this.interaction = interaction; }
     }
 }

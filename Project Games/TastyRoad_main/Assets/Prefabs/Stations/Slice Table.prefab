@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3012105161785036807}
   - component: {fileID: 5908351277094408431}
   - component: {fileID: 2009275281452978819}
+  - component: {fileID: 2536691477706197586}
   m_Layer: 0
   m_Name: Slice Table
   m_TagString: Untagged
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1862457933
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1797526927, guid: efc963dc4f222479caa64033825131e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -143,4 +144,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectedObjects: []
+  _detectedprefabs: []
+  player: {fileID: 0}
+--- !u!114 &2536691477706197586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8403737644267042646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f07c58c9915204ddd9cfbcea4ae0a14c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

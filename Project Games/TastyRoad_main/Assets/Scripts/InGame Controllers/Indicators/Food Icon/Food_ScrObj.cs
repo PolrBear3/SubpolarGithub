@@ -11,5 +11,5 @@ public class Food_ScrObj : ScriptableObject
     public string foodName;
     public int id;
 
-    public List<Ingredient> ingredients = new();
+    public List<FoodData> ingredients = new();
 }

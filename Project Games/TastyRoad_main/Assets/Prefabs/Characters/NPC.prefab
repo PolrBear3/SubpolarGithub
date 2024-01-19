@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -7268301005637499790}
   - component: {fileID: 9094981842974887859}
   - component: {fileID: 2978574373251596411}
+  - component: {fileID: 1602899645111724261}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -225,6 +226,7 @@ MonoBehaviour:
   detectionController: {fileID: 0}
   animationController: {fileID: 0}
   movement: {fileID: 0}
+  interaction: {fileID: 0}
 --- !u!114 &2978574373251596411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,3 +241,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 5
   _roamIntervalTime: {x: 2, y: 7}
+--- !u!114 &1602899645111724261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5b608fb3a2242b8b2a63bfbcd61c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

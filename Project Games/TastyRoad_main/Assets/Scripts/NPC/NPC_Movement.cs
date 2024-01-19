@@ -27,7 +27,7 @@ public class NPC_Movement : MonoBehaviour
     {
         _targetPosition = transform.position;
 
-        Free_Roam();
+        Free_Roam(Random.Range(_roamIntervalTime.x, _roamIntervalTime.y));
     }
 
     private void Update()
@@ -90,8 +90,7 @@ public class NPC_Movement : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(roamReturnTime);
-        Free_Roam();
+        Free_Roam(roamReturnTime);
     }
     public void Assign_TargetPosition(Vector2 newPosition, float roamReturnTime)
     {
@@ -99,8 +98,13 @@ public class NPC_Movement : MonoBehaviour
     }
 
     // Free Roam Movement
-    private IEnumerator Free_Roam_Coroutine()
+    private IEnumerator Free_Roam_Coroutine(float startDelayTime)
     {
+        yield return new WaitForSeconds(startDelayTime);
+
+        Vector2 startTargetPos = _controller.mainController.currentLocation.Random_RoamArea(0);
+        Assign_TargetPosition(startTargetPos);
+
         // repeat until free roam deactivates
         while (_roamActive == true)
         {
@@ -117,10 +121,10 @@ public class NPC_Movement : MonoBehaviour
             Assign_TargetPosition(roamTargetPos);
         }
     }
-    public void Free_Roam()
+    public void Free_Roam(float startDelayTime)
     {
         _roamActive = true;
-        _moveCoroutine = StartCoroutine(Free_Roam_Coroutine());
+        _moveCoroutine = StartCoroutine(Free_Roam_Coroutine(startDelayTime));
     }
 
     // Free Roam Stop

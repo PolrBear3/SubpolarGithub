@@ -61,7 +61,7 @@ public class Location_Controller : MonoBehaviour
             yield return new WaitForSeconds(randIntervalTime);
         }
     }
-    private void Spawn_NPCs(int amount)
+    public void Spawn_NPCs(int amount)
     {
         StartCoroutine(Spawn_NPCs_Coroutine(amount));
     }
