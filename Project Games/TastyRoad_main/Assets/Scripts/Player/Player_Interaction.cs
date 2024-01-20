@@ -13,12 +13,6 @@ public class Player_Interaction : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out Player_Controller controller)) { _controller = controller; }
     }
 
-    private void Start()
-    {
-        _controller.foodIcon.Assign_Food(_controller.mainController.dataController.RawFood(0));
-        _controller.foodIcon.Update_State(FoodState_Type.sliced, 1);
-    }
-
     // Player Input
     private void OnInteract()
     {

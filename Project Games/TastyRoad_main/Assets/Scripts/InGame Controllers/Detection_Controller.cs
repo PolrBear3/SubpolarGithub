@@ -29,7 +29,7 @@ public class Detection_Controller : MonoBehaviour
     {
         if (collision.isTrigger == false) return;
 
-        if (collision.TryGetComponent(out Player_Controller player)) { player = null; }
+        if (collision.TryGetComponent(out Player_Controller player)) { this.player = null; }
 
         _detectedprefabs.Remove(collision.gameObject);
     }

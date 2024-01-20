@@ -40,7 +40,7 @@ public class Oven : MonoBehaviour, IInteractable
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_detection.Has_Player() == true)
+        if (_detection.Has_Player() == false)
         {
             _foodIcon.FoodIcon_Transparency(true);
 

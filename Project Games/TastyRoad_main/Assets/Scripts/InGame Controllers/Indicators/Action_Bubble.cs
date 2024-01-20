@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Action_Bubble : MonoBehaviour
 {
-    [HideInInspector] private PlayerInput _playerInput;
+    private PlayerInput _playerInput;
 
     [SerializeField] private GameObject _toggle;
     [SerializeField] private GameObject _leftBubble;
@@ -53,7 +53,7 @@ public class Action_Bubble : MonoBehaviour
     // Update Bubble Icon Sprite
     public void Update_Bubble(Sprite leftIcon, Sprite rightIcon)
     {
-        // turn off if bubble is alreay || no sprites are assigned
+        // turn off if bubble is on || no sprites are assigned
         if (_toggle.activeSelf == true || leftIcon == null)
         {
             Toggle_Off();
@@ -64,7 +64,11 @@ public class Action_Bubble : MonoBehaviour
         bubbleOn = true;
 
         _toggle.SetActive(true);
-        _playerInput.enabled = true;
+
+        if (_playerInput != null)
+        {
+            _playerInput.enabled = true;
+        }
 
         // left bubble toggle on
         _leftBubble.SetActive(true);

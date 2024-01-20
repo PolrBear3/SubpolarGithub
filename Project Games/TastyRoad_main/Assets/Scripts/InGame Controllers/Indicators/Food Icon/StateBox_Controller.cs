@@ -8,7 +8,7 @@ public class StateBox_Sprite
     public bool isTransparent;
 
     public FoodState_Type type;
-    public List<Sprite> boxSprite = new();
+    public List<Sprite> boxSprites = new();
 }
 
 public class StateBox_Controller : MonoBehaviour
@@ -36,14 +36,14 @@ public class StateBox_Controller : MonoBehaviour
         {
             if (stateBoxSprites[i].type == type)
             {
-                return stateBoxSprites[i].boxSprite[level - 1];
+                return stateBoxSprites[i].boxSprites[level - 1];
             }
         }
 
         return null;
     }
 
-    // Get Current FoodState Data that are Not Transparent
+    // Get Current FoodState Data According to Transparency
     private List<FoodState_Data> NonTransparent_FoodState_Data()
     {
         List<FoodState_Data> currentData = new(_foodData.currentFoodData.stateData);

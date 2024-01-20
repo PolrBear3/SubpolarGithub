@@ -67,6 +67,13 @@ public class FoodData_Controller : MonoBehaviour
             return;
         }
 
+        // same food assigned
+        if (currentFoodData.foodScrObj == foodScrObj)
+        {
+            Update_Amount(1);
+            return;
+        }
+
         // new food update
         hasFood = true;
 
@@ -92,6 +99,30 @@ public class FoodData_Controller : MonoBehaviour
         _sr.sprite = null;
 
         _amountText.color = Color.clear;
+    }
+
+    // Check and Compare Other State Data with this State Data
+    public bool Same_StateData(List<FoodState_Data> stateData)
+    {
+        int matchCount = currentFoodData.stateData.Count;
+
+        if (matchCount != stateData.Count) return false;
+
+        for (int i = 0; i < stateData.Count; i++)
+        {
+            List<FoodState_Data> thisStateData = currentFoodData.stateData;
+
+            for (int j = 0; j < thisStateData.Count; j++)
+            {
+                if (stateData[i].stateType != thisStateData[j].stateType) continue;
+                if (stateData[i].stateLevel != thisStateData[j].stateLevel) return false;
+
+                matchCount--;
+            }
+        }
+
+        if (matchCount <= 0) return true;
+        else return false;
     }
 
     // Get State Data
@@ -133,7 +164,7 @@ public class FoodData_Controller : MonoBehaviour
         else
         {
             // set maximum state level according to boxsprites
-            if (targetState.stateLevel < stateBoxController.stateBoxSprites[0].boxSprite.Count)
+            if (targetState.stateLevel < stateBoxController.stateBoxSprites[0].boxSprites.Count)
             {
                 targetState.stateLevel += level;
             }

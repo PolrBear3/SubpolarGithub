@@ -20,16 +20,10 @@ public class Table : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
 
-    private void Start()
-    {
-        _foodIcon.Assign_Food(_mainController.dataController.RawFood(1));
-        _foodIcon.Update_State(FoodState_Type.heated, 1);
-    }
-
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_detection.Has_Player() == true)
+        if (_detection.Has_Player() == false)
         {
             _actionBubble.Toggle_Off();
         }
@@ -47,7 +41,7 @@ public class Table : MonoBehaviour, IInteractable
         }
     }
 
-    // Player Input
+    // InputSystem
     private void OnAction1()
     {
         Swap_Food();
@@ -83,8 +77,6 @@ public class Table : MonoBehaviour, IInteractable
     // Action Bubble Update 
     private void Update_ActionBubble()
     {
-        FoodData playerFoodData = _detection.player.foodIcon.currentFoodData;
-
         // if player or table does not have food
         if (CookedFood() == null) return;
 
