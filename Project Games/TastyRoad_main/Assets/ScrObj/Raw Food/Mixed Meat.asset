@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f353cbe3ace40978c039eb9c2b7751, type: 3}
+  m_Name: Mixed Meat
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 1160372704, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
+  eatSprite: {fileID: 1168270979, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
+  foodName: Mixed Meat
+  id: 4
+  ingredients:
+  - foodScrObj: {fileID: 11400000, guid: 861a45623bd8946e5bade040b7c65e72, type: 2}
+    currentAmount: 0
+    stateData:
+    - stateType: 0
+      stateLevel: 3
+  - foodScrObj: {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
+    currentAmount: 0
+    stateData:
+    - stateType: 0
+      stateLevel: 3

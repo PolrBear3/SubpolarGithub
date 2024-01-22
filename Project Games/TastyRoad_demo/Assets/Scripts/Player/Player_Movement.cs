@@ -5,59 +5,49 @@ using UnityEngine.InputSystem;
 
 public class Player_Movement : MonoBehaviour
 {
-    private SpriteRenderer _sr;
-    [HideInInspector] public Rigidbody2D rb;
-
     private Player_Controller _playerController;
 
-    private Vector2 _moveDirection;
-    private bool _facingRight;
+    private Rigidbody2D _rigidBody;
 
-    [Header("Data")]
-    public float moveSpeed;
+    private Vector2 _currentDirection;
+    [SerializeField] private float _moveSpeed;
 
-    //
+    // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) _sr = sr;
-        if (gameObject.TryGetComponent(out Rigidbody2D rb)) this.rb = rb;
-        if (gameObject.TryGetComponent(out Player_Controller playerController)) _playerController = playerController;
-    }
-    private void FixedUpdate()
-    {
-        Move();
+        if (gameObject.TryGetComponent(out Player_Controller playerController)) { _playerController = playerController; }
+        if (gameObject.TryGetComponent(out Rigidbody2D rigidbody)) { _rigidBody = rigidbody; }
     }
 
+    private void Update()
+    {
+        _playerController.animationController.Idle_Move(Is_Moving());
+    }
+
+    private void FixedUpdate()
+    {
+        Rigidbody_Move();
+    }
+
+    // Player Input
     private void OnMovement(InputValue value)
     {
         Vector2 input = value.Get<Vector2>();
+        _currentDirection = input;
 
-        _moveDirection = input;
-        Flip_Update();
+        _playerController.animationController.Flip_Sprite(_currentDirection.x);
     }
 
-    //
-    private void Move()
+    // Check
+    public bool Is_Moving()
     {
-        rb.velocity = new Vector2(_moveDirection.x * moveSpeed, _moveDirection.y * moveSpeed);
+        if (_rigidBody.velocity != Vector2.zero) return true;
+        else return false;
     }
 
-    private void Flip()
+    // Fixed Update Move
+    private void Rigidbody_Move()
     {
-        Vector2 currentDirection = gameObject.transform.localScale;
-        currentDirection.x *= -1;
-        gameObject.transform.localScale = currentDirection;
-
-        _facingRight = !_facingRight;
-    }
-    private void Flip_Sprite()
-    {
-        _facingRight = !_facingRight;
-        _sr.flipX = _facingRight;
-    }
-    private void Flip_Update()
-    {
-        if (_moveDirection.x > 0 && _facingRight) Flip_Sprite();
-        if (_moveDirection.x < 0 && !_facingRight) Flip_Sprite();
+        _rigidBody.velocity = new Vector2(_currentDirection.x * _moveSpeed, _currentDirection.y * _moveSpeed);
     }
 }

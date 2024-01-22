@@ -33,6 +33,8 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
+        Interact_FacePlayer();
+
         Assign_FoodOrder();
 
         ActionBubble_Toggle();
@@ -48,6 +50,17 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         ActionBubble_Toggle();
         StateBox_Toggle();
+    }
+
+    // Stop and Face Player if Interacted
+    private void Interact_FacePlayer()
+    {
+        if (_controller.actionBubble.bubbleOn == true) return;
+
+        _controller.movement.Stop_FreeRoam();
+        _controller.movement.Free_Roam(4f);
+
+        _controller.animationController.Flip_Sprite(_controller.detection.player.gameObject);
     }
 
     // Update Action Bubble

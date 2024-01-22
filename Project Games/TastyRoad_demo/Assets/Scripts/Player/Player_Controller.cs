@@ -1,26 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player_Controller : MonoBehaviour
 {
-    private Game_Controller _gameController;
+    [HideInInspector] public Main_Controller mainController;
 
-    [HideInInspector] public Player_Movement playerMovement;
-    [HideInInspector] public Player_Animation playerAnimation;
-    [HideInInspector] public Player_Interaction playerInteraction;
+    [HideInInspector] public Detection_Controller detectionController;
+    [HideInInspector] public BasicAnimation_Controller animationController;
+
+    public FoodData_Controller foodIcon;
+
+    [HideInInspector] public Player_Movement movement;
+    [HideInInspector] public Player_Interaction interaction;
 
     // UnityEngine
     private void Awake()
     {
-        _gameController = FindObjectOfType<Game_Controller>();
+        mainController = FindObjectOfType<Main_Controller>();
+        mainController.Track_CurrentCharacter(gameObject);
 
-        if (gameObject.TryGetComponent(out Player_Movement playerMovement)) this.playerMovement = playerMovement;
-        if (gameObject.TryGetComponent(out Player_Animation playerAnimation)) this.playerAnimation = playerAnimation;
-        if (gameObject.TryGetComponent(out Player_Interaction playerInteraction)) this.playerInteraction = playerInteraction;
-    }
-    private void Start()
-    {
-        _gameController.Connect_Character(gameObject);
+        if (gameObject.TryGetComponent(out Detection_Controller detectionController)) { this.detectionController = detectionController; }
+        if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { this.animationController = animationController; }
+
+        if (gameObject.TryGetComponent(out Player_Movement movement)) { this.movement = movement; }
     }
 }
