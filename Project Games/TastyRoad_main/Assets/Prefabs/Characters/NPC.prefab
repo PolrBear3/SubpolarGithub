@@ -216,7 +216,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: InGame
+  m_DefaultActionMap: efdb47f0-522a-4445-9e7d-e8f0829c5b8a
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &-2268305881826384539
@@ -290,9 +290,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5b608fb3a2242b8b2a63bfbcd61c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateBoxes: {fileID: 0}
+  _stateBoxes: {fileID: 310095952750188638}
   _eatAnimationSR: {fileID: 532419520745837338}
   _coinSprite: {fileID: 169430214, guid: 7b10f4ee19b254f2eb974ba11f55e47c, type: 3}
+  animTransitionTime: 1
+  roamDelayTime: {x: 2, y: 4}
+  leaveTime: {x: 1, y: 5}
 --- !u!1 &9180975415276054669
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +465,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food Icon
       objectReference: {fileID: 0}
+    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: _iconTransparent
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.06
@@ -507,6 +514,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+--- !u!1 &310095952750188638 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5676929509273313230, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+  m_PrefabInstance: {fileID: 5369750837924792208}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &600854475878320379 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}

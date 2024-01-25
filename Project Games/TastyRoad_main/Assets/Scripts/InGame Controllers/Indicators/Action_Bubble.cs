@@ -87,6 +87,23 @@ public class Action_Bubble : MonoBehaviour
 
         Update_BubblePosition();
     }
+    public void Update_Bubble(Food_ScrObj leftFood, Food_ScrObj rightFood)
+    {
+        // reposition left food icon to the center of the bubble
+        _leftIcon.transform.localPosition = leftFood.centerPosition / 100;
+
+        // reposition right food icon to the center of the bubble
+        Sprite rightFoodSprite = null;
+
+        if (rightFood != null)
+        {
+            rightFoodSprite = rightFood.sprite;
+            _rightIcon.transform.localPosition = rightFood.centerPosition / 100;
+        }
+
+        //
+        Update_Bubble(leftFood.sprite, rightFoodSprite);
+    }
 
     // Update Bubble Position
     private void Update_BubblePosition()

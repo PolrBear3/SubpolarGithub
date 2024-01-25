@@ -42,6 +42,11 @@ public class OrderStand : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
 
+    private void Start()
+    {
+        _coinDisplay.SetActive(false);
+    }
+
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {

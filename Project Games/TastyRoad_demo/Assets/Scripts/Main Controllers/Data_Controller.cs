@@ -42,6 +42,26 @@ public class Data_Controller : MonoBehaviour
         else return true;
     }
 
+    // Get All Food
+    public List<Food_ScrObj> AllFoods()
+    {
+        List<Food_ScrObj> allFoods = new();
+
+        // add all raw foods
+        for (int i = 0; i < rawFoods.Count; i++)
+        {
+            allFoods.Add(rawFoods[i]);
+        }
+
+        // add all cooked foods
+        for (int i = 0; i < cookedFoods.Count; i++)
+        {
+            allFoods.Add(cookedFoods[i]);
+        }
+
+        return allFoods;
+    }
+
     // Get Raw Food
     public Food_ScrObj RawFood(int foodID)
     {
@@ -76,16 +96,16 @@ public class Data_Controller : MonoBehaviour
 
     public Food_ScrObj CookedFood(List<Food_ScrObj> foods)
     {
-        for (int i = 0; i < cookedFoods.Count; i++)
+        for (int i = 0; i < AllFoods().Count; i++)
         {
             List<Food_ScrObj> cookedFoodIngredients = new();
 
-            if (foods.Count != cookedFoods[i].ingredients.Count) continue;
+            if (foods.Count != AllFoods()[i].ingredients.Count) continue;
 
             // create ingredient check list
-            for (int j = 0; j < cookedFoods[i].ingredients.Count; j++)
+            for (int j = 0; j < AllFoods()[i].ingredients.Count; j++)
             {
-                cookedFoodIngredients.Add(cookedFoods[i].ingredients[j].foodScrObj);
+                cookedFoodIngredients.Add(AllFoods()[i].ingredients[j].foodScrObj);
             }
 
             // if match, remove from check list
@@ -100,7 +120,7 @@ public class Data_Controller : MonoBehaviour
             // if check list is 0, add to matchCookedFoods list
             if (cookedFoodIngredients.Count > 0) continue;
 
-            return cookedFoods[i];
+            return AllFoods()[i];
         }
 
         return null;

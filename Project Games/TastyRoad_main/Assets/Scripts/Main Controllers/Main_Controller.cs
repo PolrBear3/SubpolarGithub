@@ -26,6 +26,9 @@ public class Main_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Data_Controller dataController)) { this.dataController = dataController; }
     }
 
+    // Static
+
+
     // Camera
     public Vector2 OuterCamera_Position(float horizontal, float vertical, float positionX, float positionY)
     {

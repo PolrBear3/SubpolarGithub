@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GD.MinMaxSlider;
 
 public class NPC_Movement : MonoBehaviour
 {
@@ -12,7 +11,6 @@ public class NPC_Movement : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     private Coroutine _moveCoroutine;
 
-    [MinMaxSlider(1f, 60f)]
     [SerializeField] private Vector2 _roamIntervalTime;
 
     private bool _roamActive;

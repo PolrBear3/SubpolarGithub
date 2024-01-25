@@ -80,7 +80,7 @@ public class Table : MonoBehaviour, IInteractable
         // if player or table does not have food
         if (CookedFood() == null) return;
 
-        _actionBubble.Update_Bubble(_foodIcon.currentFoodData.foodScrObj.sprite, CookedFood().sprite);
+        _actionBubble.Update_Bubble(_foodIcon.currentFoodData.foodScrObj, CookedFood());
     }
 
     // Swap Current and Player Food

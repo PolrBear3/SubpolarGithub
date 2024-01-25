@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Detection_Controller : MonoBehaviour
 {
-    private BoxCollider2D _boxCollider;
+    [HideInInspector] public BoxCollider2D boxCollider;
 
     [SerializeField] private List<GameObject> _detectedprefabs;
     [HideInInspector] public Player_Controller player;
@@ -12,7 +12,7 @@ public class Detection_Controller : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out BoxCollider2D boxCollider)) { _boxCollider = boxCollider; }
+        if (gameObject.TryGetComponent(out BoxCollider2D boxCollider)) { this.boxCollider = boxCollider; }
     }
 
     // OnTrigger
@@ -103,6 +103,6 @@ public class Detection_Controller : MonoBehaviour
     // Box Collider Toggle On Off
     public void BoxCollider_Toggle(bool toggleOn)
     {
-        _boxCollider.enabled = toggleOn;
+        boxCollider.enabled = toggleOn;
     }
 }

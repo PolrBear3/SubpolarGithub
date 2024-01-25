@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GD.MinMaxSlider;
 
 public class Location_Controller : MonoBehaviour
 {
@@ -9,7 +8,6 @@ public class Location_Controller : MonoBehaviour
 
     [SerializeField] private List<SpriteRenderer> _roamAreas = new();
 
-    [MinMaxSlider(1f, 60f)]
     [SerializeField] private Vector2 _spawnIntervalTime;
 
     // UnityEngine

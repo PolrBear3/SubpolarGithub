@@ -7,7 +7,7 @@ public class FoodData_Controller : MonoBehaviour
 {
     [HideInInspector] public StateBox_Controller stateBoxController;
 
-    private SpriteRenderer _sr;
+    [SerializeField] private SpriteRenderer _icon;
     [SerializeField] private TMP_Text _amountText;
 
     [HideInInspector] public FoodData currentFoodData;
@@ -21,9 +21,8 @@ public class FoodData_Controller : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out StateBox_Controller stateBoxController)) { this.stateBoxController = stateBoxController; }
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _sr = sr; }
 
-        _sr.color = Color.clear;
+        _icon.color = Color.clear;
         _amountText.color = Color.clear;
     }
 
@@ -32,14 +31,13 @@ public class FoodData_Controller : MonoBehaviour
     {
         _iconTransparent = isTransparent;
 
-        if (_iconTransparent == false && currentFoodData.foodScrObj != null)
+        if (_iconTransparent == false && hasFood == true)
         {
-            _sr.color = Color.white;
+            _icon.color = Color.white;
+            return;
         }
-        else
-        {
-            _sr.color = Color.clear;
-        }
+
+        _icon.color = Color.clear;
     }
 
     public void AmountText_Transparency(bool isTransparent)
@@ -80,14 +78,14 @@ public class FoodData_Controller : MonoBehaviour
         currentFoodData.currentAmount = 1;
         currentFoodData.foodScrObj = foodScrObj;
 
-        // transparency control
-        if (_iconTransparent == false)
-        {
-            _sr.sprite = currentFoodData.foodScrObj.sprite;
-            _sr.color = Color.white;
-        }
-    }
+        // food sprite update
+        _icon.transform.localPosition = foodScrObj.centerPosition / 100;
+        _icon.sprite = currentFoodData.foodScrObj.sprite;
 
+        if (_iconTransparent == true) return;
+
+        _icon.color = Color.white;
+    }
     public void Clear_Food()
     {
         hasFood = false;
@@ -95,10 +93,54 @@ public class FoodData_Controller : MonoBehaviour
         currentFoodData.foodScrObj = null;
         currentFoodData.currentAmount = 0;
 
-        _sr.color = Color.clear;
-        _sr.sprite = null;
+        _icon.color = Color.clear;
+        _icon.sprite = null;
 
         _amountText.color = Color.clear;
+    }
+
+    // Amount Control
+    public void Assign_Amount(int assignAmount)
+    {
+        if (hasFood == false) return;
+
+        currentFoodData.currentAmount = assignAmount;
+
+        if (assignAmount <= 0)
+        {
+            Clear_Food();
+            return;
+        }
+
+        _amountText.text = currentFoodData.currentAmount.ToString();
+
+        if (_amountTransparent == true || assignAmount <= 1) return;
+
+        _amountText.color = Color.black;
+    }
+    public void Update_Amount(int updateAmount)
+    {
+        if (hasFood == false) return;
+
+        currentFoodData.currentAmount += updateAmount;
+
+        if (currentFoodData.currentAmount <= 0)
+        {
+            Clear_Food();
+            return;
+        }
+
+        if (_amountTransparent == true) return;
+
+        // show amount when more than 1
+        if (currentFoodData.currentAmount <= 1)
+        {
+            _amountText.color = Color.clear;
+            return;
+        }
+
+        _amountText.color = Color.black;
+        _amountText.text = currentFoodData.currentAmount.ToString();
     }
 
     // Check and Compare Other State Data with this State Data
@@ -178,27 +220,5 @@ public class FoodData_Controller : MonoBehaviour
         currentFoodData.stateData.Clear();
 
         stateBoxController.Clear_StateBoxes();
-    }
-
-    // Amount Control
-    public void Update_Amount(int updateAmount)
-    {
-        currentFoodData.currentAmount += updateAmount;
-
-        if (currentFoodData.currentAmount <= 0)
-        {
-            Clear_Food();
-            return;
-        }
-
-        if (currentFoodData.currentAmount > 1 && _amountTransparent == false)
-        {
-            _amountText.color = Color.black;
-            _amountText.text = currentFoodData.currentAmount.ToString();
-        }
-        else
-        {
-            _amountText.color = Color.clear;
-        }
     }
 }

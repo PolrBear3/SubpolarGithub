@@ -14,6 +14,11 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     private bool _foodOrderServed;
     private int _foodScore;
 
+    [Header("Adjust Data")]
+    [SerializeField] private float animTransitionTime;
+    [SerializeField] private Vector2 roamDelayTime;
+    [SerializeField] private Vector2 leaveTime;
+
     // UnityEngine
     private void Awake()
     {
@@ -68,7 +73,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         if (_foodOrderServed == true) return;
 
-        _controller.actionBubble.Update_Bubble(_controller.foodIcon.currentFoodData.foodScrObj.sprite, null);
+        _controller.actionBubble.Update_Bubble(_controller.foodIcon.currentFoodData.foodScrObj, null);
     }
 
     // Toggle On Off StateBox
@@ -155,22 +160,22 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         _eatAnimationSR.sprite = servedFood.sprite;
 
         // wait
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(animTransitionTime);
 
         // eat food sprite
         _eatAnimationSR.sprite = servedFood.eatSprite;
 
         // wait
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(animTransitionTime);
 
         // no sprite
         _eatAnimationSR.sprite = null;
 
         // wait
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(animTransitionTime);
 
         // activate free roam
-        movement.Free_Roam(3f);
+        movement.Free_Roam(Random.Range(roamDelayTime.x, roamDelayTime.y));
         // turn on collider
         detection.BoxCollider_Toggle(true);
         // coin sprite
@@ -184,8 +189,9 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     // Get Served Food Order Score
     private int Calculated_FoodScore()
     {
-        int foodScore = 1;
         FoodData playerFoodData = _controller.detection.player.foodIcon.currentFoodData;
+
+        int foodScore = playerFoodData.foodScrObj.price;
 
         if (_controller.foodIcon.Same_StateData(playerFoodData.stateData)) foodScore++;
 
@@ -205,7 +211,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         _eatAnimationSR.sprite = null;
         _controller.foodIcon.Clear_Food();
 
-        Leave_Location(3f);
+        Leave_Location(Random.Range(leaveTime.x, leaveTime.y));
     }
 
     // Leave Area
