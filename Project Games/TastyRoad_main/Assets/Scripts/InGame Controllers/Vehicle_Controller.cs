@@ -8,6 +8,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     [HideInInspector] public Main_Controller mainController;
     [HideInInspector] public Detection_Controller detection;
 
+    [Header("Insert Vehicle Panel Prefab")]
     [SerializeField] private VehiclePanel_Controller _panel;
 
     [Header(" ")]
@@ -48,7 +49,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         }
     }
 
-    //
+    // Vehicle Prefab Control
     private void Transparency_Update()
     {
         if (detection.Has_Player() == false) return;
@@ -63,7 +64,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         }
     }
 
-    //
+    // Panel Control
     public void VehiclePanel_Toggle(bool toggleOn)
     {
         if (toggleOn == false)

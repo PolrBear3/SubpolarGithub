@@ -18,6 +18,8 @@ public class Main_Controller : MonoBehaviour
     public List<GameObject> currentCharacters = new();
     public List<GameObject> currentStations = new();
 
+    public List<Food_ScrObj> archiveFoods = new();
+
     public int currentCoin;
 
     // UnityEngine
@@ -26,10 +28,6 @@ public class Main_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Data_Controller dataController)) { this.dataController = dataController; }
     }
 
-    // Static
-
-
-    // Camera
     public Vector2 OuterCamera_Position(float horizontal, float vertical, float positionX, float positionY)
     {
         float horizontalPos = horizontal;
@@ -95,5 +93,26 @@ public class Main_Controller : MonoBehaviour
     {
         GameObject station = Instantiate(dataController.stations[arrayNum], spawnPosition, Quaternion.identity);
         station.transform.parent = _stationFile;
+    }
+
+    // Current Archive Foods Control
+    public bool Is_ArchivedFood(Food_ScrObj food)
+    {
+        if (food == null) return false;
+
+        for (int i = 0; i < archiveFoods.Count; i++)
+        {
+            if (food == archiveFoods[i]) return true;
+        }
+        return false;
+    }
+
+    public void AddFood_ToArhive(Food_ScrObj food)
+    {
+        if (food == null) return;
+
+        if (Is_ArchivedFood(food) == true) return;
+
+        archiveFoods.Add(food);
     }
 }

@@ -83,6 +83,17 @@ public class Data_Controller : MonoBehaviour
         return null;
     }
 
+    public bool Is_RawFood(Food_ScrObj foodScrObj)
+    {
+        if (foodScrObj == null) return false;
+
+        for (int i = 0; i < rawFoods.Count; i++)
+        {
+            if (foodScrObj == rawFoods[i]) return true;
+        }
+        return false;
+    }
+
     // Get Cooked Food
     public Food_ScrObj CookedFood(int foodID)
     {

@@ -6,13 +6,9 @@ using TMPro;
 
 public class VechiclePanel_ItemBox : MonoBehaviour
 {
-    private Image _borderImage;
     [SerializeField] private Image _iconImage;
     [SerializeField] private TextMeshProUGUI _amountText;
-
-    [Header("Border Sprites")]
-    [SerializeField] private Sprite _unselectedBorder;
-    [SerializeField] private Sprite _selectedBorder;
+    [SerializeField] private Image _selectIcon;
 
     [HideInInspector] public int boxNum;
 
@@ -23,9 +19,9 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out Image borderImage)) { _borderImage = borderImage; }
-
-        Assign_Item(null);
+        _iconImage.color = Color.clear;
+        _amountText.color = Color.clear;
+        _selectIcon.color = Color.clear;
     }
 
     //
@@ -33,12 +29,12 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     {
         if (isSelected == true)
         {
-            _borderImage.sprite = _selectedBorder;
+            _selectIcon.color = Color.white;
 
             return;
         }
 
-        _borderImage.sprite = _unselectedBorder;
+        _selectIcon.color = Color.clear;
     }
 
     // sprite update included
@@ -73,7 +69,7 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     {
         currentAmount = assignAmount;
 
-        if (currentAmount <= 0)
+        if (hasItem == false || currentAmount <= 0)
         {
             currentFood = null;
             _amountText.color = Color.clear;
@@ -88,7 +84,7 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     {
         currentAmount += updateAmount;
 
-        if (currentAmount <= 0)
+        if (hasItem == false || currentAmount <= 0)
         {
             currentFood = null;
             _amountText.color = Color.clear;

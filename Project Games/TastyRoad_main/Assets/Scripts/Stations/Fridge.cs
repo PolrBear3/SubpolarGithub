@@ -95,8 +95,7 @@ public class Fridge : MonoBehaviour, IInteractable
     {
         if (_foodIcon.hasFood)
         {
-            float foodPositionY = _foodIcon.currentFoodData.foodScrObj.centerPosition.y;
-            _targetIndicator.transform.localPosition = new Vector2(0f, foodPositionY + 4.1f);
+            _targetIndicator.transform.localPosition = new Vector2(0f, 1.16f);
 
             return;
         }
