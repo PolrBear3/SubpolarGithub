@@ -3,47 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public interface IVehicleMenu
+{
+    public List<VechiclePanel_ItemBox> ItemBoxes();
+    public bool MenuInteraction_Active();
+
+    public void Exit_MenuInteraction();
+}
+
 public class VehiclePanel_Controller : MonoBehaviour
 {
-    [HideInInspector] public FoodMenu_Controller foodMenu;
-    [HideInInspector] public ArchiveMenu_Controller archiveMenu;
-
     [HideInInspector] public List<VechiclePanel_ItemBox> itemBoxes = new();
     [HideInInspector] public VechiclePanel_ItemBox currentItemBox;
 
     [Header("Insert Vehicle Prefab")]
     public Vehicle_Controller vehicleController;
 
+    [Header("All Menu Controllers")]
+    public FoodMenu_Controller foodMenu;
+    public ArchiveMenu_Controller archiveMenu;
+
     [Header("Menu Control")]
     [SerializeField] private List<GameObject> _menus = new();
     [SerializeField] private List<GameObject> _menuIcons = new();
 
     private int _currentMenuNum;
-    public int currentMenuNum => _currentMenuNum;
 
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out FoodMenu_Controller foodMenu)) { this.foodMenu = foodMenu; }
-        if (gameObject.TryGetComponent(out ArchiveMenu_Controller archiveMenu)) { this.archiveMenu = archiveMenu; }
-    }
-    private void Start()
-    {
         Menu_Control(0);
-
-        // test function for demo
-        Data_Controller data = vehicleController.mainController.dataController;
-
-        foodMenu.Add_FoodItem(data.RawFood(0), 998);
-        foodMenu.Add_FoodItem(data.RawFood(1), 998);
-        foodMenu.Add_FoodItem(data.RawFood(2), 998);
-        foodMenu.Add_FoodItem(data.RawFood(3), 998);
-        foodMenu.Add_FoodItem(data.RawFood(5), 998);
     }
 
     // InputSystem
     private void OnCursorControl(InputValue value)
     {
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
+        if (currentMenu.MenuInteraction_Active() == true) return;
+
         Vector2 input = value.Get<Vector2>();
 
         CursorDirection_Control(input);
@@ -51,25 +48,36 @@ public class VehiclePanel_Controller : MonoBehaviour
 
     private void OnOption1()
     {
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
+        if (currentMenu.MenuInteraction_Active() == true) return;
+
         Menu_Control(-1);
     }
 
     private void OnOption2()
     {
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
+        if (currentMenu.MenuInteraction_Active() == true) return;
+
         Menu_Control(1);
     }
 
     private void OnExit()
     {
-        if (foodMenu.fridgeTargetMode == true) return;
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
+
+        if (currentMenu.MenuInteraction_Active() == true)
+        {
+            currentMenu.Exit_MenuInteraction();
+            return;
+        }
 
         vehicleController.VehiclePanel_Toggle(false);
-
         vehicleController.Player_InputSystem_Toggle(true);
     }
 
     // Item Box Main Control
-    public void Assign_All_BoxNum()
+    private void Assign_All_BoxNum()
     {
         int numCount = 0;
 
@@ -83,35 +91,29 @@ public class VehiclePanel_Controller : MonoBehaviour
 
     private void CursorDirection_Control(Vector2 inputDireciton)
     {
-        if (foodMenu.fridgeTargetMode == true) return;
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
+        if (currentMenu.MenuInteraction_Active() == true) return;
 
         float calculatedDirection = inputDireciton.x + -(inputDireciton.y * 5);
-        int convertedDirection = (int)calculatedDirection;
 
+        int convertedDirection = (int)calculatedDirection;
         int nextBoxNum = currentItemBox.boxNum + convertedDirection;
 
-        // less than min box num
-        if (nextBoxNum < 0)
-        {
-            nextBoxNum = itemBoxes.Count - 1;
-        }
+        // cursor moves up outside
+        if (nextBoxNum < 0) return;
 
-        // more than max box num
-        if (nextBoxNum > itemBoxes.Count - 1)
-        {
-            nextBoxNum = 0;
-        }
+        // cursor moves down outside
+        if (nextBoxNum > itemBoxes.Count - 1) return;
 
         currentItemBox.BoxSelect_Toggle(false);
 
         currentItemBox = itemBoxes[nextBoxNum];
-
         currentItemBox.BoxSelect_Toggle(true);
     }
 
     private void Menu_Control(int controlNum)
     {
-        if (foodMenu.fridgeTargetMode == true) return;
+        if (currentItemBox != null) currentItemBox.BoxSelect_Toggle(false);
 
         _menus[_currentMenuNum].SetActive(false);
         _menuIcons[_currentMenuNum].SetActive(false);
@@ -124,9 +126,13 @@ public class VehiclePanel_Controller : MonoBehaviour
         _menus[_currentMenuNum].SetActive(true);
         _menuIcons[_currentMenuNum].SetActive(true);
 
-        // assign current menu item boxes here
-        foodMenu.Assign_ItemBoxes();
-        archiveMenu.Assign_ItemBoxes();
-        //
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu newMenu) == false) return;
+        itemBoxes = newMenu.ItemBoxes();
+
+        Assign_All_BoxNum();
+
+        // set starting cursor at first box
+        currentItemBox = itemBoxes[0];
+        currentItemBox.BoxSelect_Toggle(true);
     }
 }

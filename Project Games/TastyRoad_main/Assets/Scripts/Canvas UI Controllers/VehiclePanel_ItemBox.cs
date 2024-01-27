@@ -46,8 +46,8 @@ public class VechiclePanel_ItemBox : MonoBehaviour
             currentFood = food;
 
             _iconImage.sprite = food.sprite;
-            _iconImage.color = Color.white;
 
+            _iconImage.color = Color.white;
             _iconImage.transform.localPosition = food.centerPosition;
 
             return;

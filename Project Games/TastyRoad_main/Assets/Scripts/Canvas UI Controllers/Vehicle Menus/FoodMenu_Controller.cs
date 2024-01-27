@@ -3,24 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class FoodMenu_Controller : MonoBehaviour
+public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
 {
-    private VehiclePanel_Controller _controller;
+    [SerializeField] private VehiclePanel_Controller _controller;
 
+    [Header("")]
+    [SerializeField] private Vector2 _layoutCount;
     [SerializeField] private List<VechiclePanel_ItemBox> _itemBoxes = new();
+
+    private bool _fridgeTargetMode;
 
     private List<Fridge> _currentFridges = new();
     private Fridge _currentTargetFridge;
 
-    private bool _fridgeTargetMode;
-    public bool fridgeTargetMode => _fridgeTargetMode;
-
     private int _currentFridgeNum;
 
     // UnityEngine
-    private void Awake()
+    private void Start()
     {
-        if (gameObject.TryGetComponent(out VehiclePanel_Controller controller)) { _controller = controller; }
+        // test function for demo
+        Data_Controller data = _controller.vehicleController.mainController.dataController;
+
+        Add_FoodItem(data.RawFood(0), 998);
+        Add_FoodItem(data.RawFood(1), 998);
+        Add_FoodItem(data.RawFood(2), 998);
+        Add_FoodItem(data.RawFood(3), 998);
+        Add_FoodItem(data.RawFood(5), 998);
     }
 
     // InputSystem
@@ -38,22 +46,23 @@ public class FoodMenu_Controller : MonoBehaviour
         Fridge_TargetSystem_Toggle(true);
     }
 
-    private void OnExit()
+    // IVehicleMenu
+    public List<VechiclePanel_ItemBox> ItemBoxes()
     {
-        Fridge_TargetSystem_Toggle(false);
+        // add functions that needs to be run whenever menu is opened
+        
+        //
+
+        return _itemBoxes;
+    }
+    public bool MenuInteraction_Active()
+    {
+        return _fridgeTargetMode;
     }
 
-    //
-    public void Assign_ItemBoxes()
+    public void Exit_MenuInteraction()
     {
-        if (_controller.currentMenuNum != 0) return;
-
-        _controller.itemBoxes = _itemBoxes;
-        _controller.Assign_All_BoxNum();
-
-        // set starting cursor at first box
-        _controller.currentItemBox = _itemBoxes[0];
-        _controller.currentItemBox.BoxSelect_Toggle(true);
+        Fridge_TargetSystem_Toggle(false);
     }
 
     // Food to Fridge Export System
@@ -83,8 +92,6 @@ public class FoodMenu_Controller : MonoBehaviour
 
     private void Fridge_TargetSystem_Toggle(bool toggleOn)
     {
-        if (_controller.currentMenuNum != 0) return;
-
         _currentFridges = CurrentFridges();
 
         if (toggleOn == true && _fridgeTargetMode == false)
@@ -110,8 +117,6 @@ public class FoodMenu_Controller : MonoBehaviour
     {
         if (_fridgeTargetMode == false) return;
 
-        _currentFridges[_currentFridgeNum].TargetIndicator_Toggle(false);
-
         int convertedDireciton = (int)xInputDirection;
         int nextFridgeNum = _currentFridgeNum + convertedDireciton;
 
@@ -127,10 +132,32 @@ public class FoodMenu_Controller : MonoBehaviour
             nextFridgeNum = 0;
         }
 
+        _currentFridges[_currentFridgeNum].TargetIndicator_Toggle(false);
+
         _currentFridgeNum = nextFridgeNum;
 
         _currentTargetFridge = _currentFridges[_currentFridgeNum];
         _currentTargetFridge.TargetIndicator_Toggle(true);
+    }
+
+    private void Export_FoodItem_toFridge()
+    {
+        if (_fridgeTargetMode == false) return;
+
+        Food_ScrObj prevFood = _controller.currentItemBox.currentFood;
+        int prevAmount = _controller.currentItemBox.currentAmount;
+
+        FoodData_Controller fridgeIcon = _currentTargetFridge.FoodIcon();
+        FoodData fridgeData = fridgeIcon.currentFoodData;
+
+        // fridge > current item box
+        _controller.currentItemBox.Assign_Item(fridgeData.foodScrObj);
+        _controller.currentItemBox.Assign_Amount(fridgeData.currentAmount);
+
+        // current item box > fridge
+        fridgeIcon.Assign_Food(prevFood);
+        fridgeIcon.Assign_Amount(prevAmount);
+        fridgeIcon.FoodIcon_Transparency(false);
     }
 
     public void Add_FoodItem(Food_ScrObj food, int amount)
@@ -153,25 +180,5 @@ public class FoodMenu_Controller : MonoBehaviour
 
             return;
         }
-    }
-
-    private void Export_FoodItem_toFridge()
-    {
-        if (_fridgeTargetMode == false) return;
-
-        Food_ScrObj prevFood = _controller.currentItemBox.currentFood;
-        int prevAmount = _controller.currentItemBox.currentAmount;
-
-        FoodData_Controller fridgeIcon = _currentTargetFridge.FoodIcon();
-        FoodData fridgeData = fridgeIcon.currentFoodData;
-
-        // fridge > current item box
-        _controller.currentItemBox.Assign_Item(fridgeData.foodScrObj);
-        _controller.currentItemBox.Assign_Amount(fridgeData.currentAmount);
-
-        // current item box > fridge
-        fridgeIcon.Assign_Food(prevFood);
-        fridgeIcon.Assign_Amount(prevAmount);
-        fridgeIcon.FoodIcon_Transparency(false);
     }
 }
