@@ -10,6 +10,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
 
     [Header("Insert Vehicle Panel Prefab")]
     [SerializeField] private VehiclePanel_Controller _panel;
+    public VehiclePanel_Controller panel => _panel;
 
     [Header(" ")]
     [SerializeField] private Transform _transparencyPoint;
@@ -18,7 +19,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     private void Awake()
     {
         mainController = FindObjectOfType<Main_Controller>();
-        mainController.Track_CurrentStation(gameObject);
+        mainController.Track_CurrentVehicle(this);
 
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { this.detection = detection; }
     }
@@ -75,6 +76,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         }
 
         _panel.gameObject.SetActive(true);
+        _panel.Menu_Control(_panel.currentMenuNum);
     }
 
     public void Player_InputSystem_Toggle(bool toggleOn)

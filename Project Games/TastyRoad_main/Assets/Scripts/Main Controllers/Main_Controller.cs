@@ -8,6 +8,8 @@ public class Main_Controller : MonoBehaviour
 
     [SerializeField] private Camera _mainCamera;
 
+    [SerializeField] private RectTransform _openingCurtain;
+
     [Header("File Locations")]
     [SerializeField] private Transform _locationFile;
     [SerializeField] private Transform _characterFile;
@@ -15,6 +17,8 @@ public class Main_Controller : MonoBehaviour
 
     [Header("Current Data")]
     public Location_Controller currentLocation;
+    public Vehicle_Controller currentVehicle;
+
     public List<GameObject> currentCharacters = new();
     public List<GameObject> currentStations = new();
 
@@ -28,6 +32,12 @@ public class Main_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Data_Controller dataController)) { this.dataController = dataController; }
     }
 
+    private void Start()
+    {
+        LeanTween.alpha(_openingCurtain, 0f, 1f);
+    }
+
+    //
     public Vector2 OuterCamera_Position(float horizontal, float vertical, float positionX, float positionY)
     {
         float horizontalPos = horizontal;
@@ -59,6 +69,12 @@ public class Main_Controller : MonoBehaviour
     {
         GameObject location = Instantiate(dataController.locations[arrayNum], Vector2.zero, Quaternion.identity);
         location.transform.parent = _locationFile;
+    }
+
+    // Current Vechicle Control
+    public void Track_CurrentVehicle(Vehicle_Controller vehicle)
+    {
+        currentVehicle = vehicle;
     }
 
     // Current Characters Control

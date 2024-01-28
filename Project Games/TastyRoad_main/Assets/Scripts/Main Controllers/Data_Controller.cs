@@ -9,12 +9,20 @@ public interface IInteractable
 
 public class Data_Controller : MonoBehaviour
 {
+    private Main_Controller _mainController;
+
     public List<GameObject> locations = new();
     public List<GameObject> stations = new();
     public List<GameObject> characters = new();
 
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
+
+    // UnityEngine
+    private void Awake()
+    {
+        if (gameObject.TryGetComponent(out Main_Controller mainController)) { _mainController = mainController; }
+    }
 
     // Check if State Data Matches (checks if visitor data matches home data)
     public bool Food_StateData_Match(List<FoodState_Data> visitorData, List<FoodState_Data> homeData)

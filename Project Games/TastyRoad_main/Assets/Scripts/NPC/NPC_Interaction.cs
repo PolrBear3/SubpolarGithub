@@ -73,7 +73,11 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         if (_foodOrderServed == true) return;
 
-        _controller.actionBubble.Update_Bubble(_controller.foodIcon.currentFoodData.foodScrObj, null);
+        FoodData_Controller foodIcon = _controller.foodIcon;
+
+        if (foodIcon.hasFood == false) return; 
+
+        _controller.actionBubble.Update_Bubble(foodIcon.currentFoodData.foodScrObj, null);
     }
 
     // Toggle On Off StateBox
@@ -101,8 +105,14 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         if (foodIcon.hasFood == false)
         {
-            // set random food
-            foodIcon.Assign_Food(data.CookedFood(Random.Range(0, data.cookedFoods.Count)));
+            // set random food from bookmarks (vehicle arhive menu)
+            List<Food_ScrObj> bookmarkedFoods = new(_controller.mainController.currentVehicle.panel.archiveMenu.bookmarkedFoods);
+
+            if (bookmarkedFoods.Count <= 0) return;
+
+            Food_ScrObj randomFood = bookmarkedFoods[Random.Range(0, bookmarkedFoods.Count)];
+
+            foodIcon.Assign_Food(randomFood);
 
             // set random state
             List<StateBox_Sprite> allStates = foodIcon.stateBoxController.stateBoxSprites;

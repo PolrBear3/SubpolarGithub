@@ -114,7 +114,7 @@ public class Table : MonoBehaviour, IInteractable
 
         Food_ScrObj cookedFood = _mainController.dataController.CookedFood(ingredients);
 
-        // food archive
+        // add cookedFood to archive
         _mainController.AddFood_ToArhive(cookedFood);
 
         // change table food to cooked food

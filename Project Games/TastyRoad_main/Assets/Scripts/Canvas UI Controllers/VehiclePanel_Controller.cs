@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public interface IVehicleMenu
 {
     public List<VechiclePanel_ItemBox> ItemBoxes();
+
     public bool MenuInteraction_Active();
 
     public void Exit_MenuInteraction();
@@ -28,12 +29,7 @@ public class VehiclePanel_Controller : MonoBehaviour
     [SerializeField] private List<GameObject> _menuIcons = new();
 
     private int _currentMenuNum;
-
-    // UnityEngine
-    private void Awake()
-    {
-        Menu_Control(0);
-    }
+    public int currentMenuNum => _currentMenuNum;
 
     // InputSystem
     private void OnCursorControl(InputValue value)
@@ -99,11 +95,13 @@ public class VehiclePanel_Controller : MonoBehaviour
         int convertedDirection = (int)calculatedDirection;
         int nextBoxNum = currentItemBox.boxNum + convertedDirection;
 
-        // cursor moves up outside
         if (nextBoxNum < 0) return;
+        if (nextBoxNum >= itemBoxes.Count) return;
 
-        // cursor moves down outside
-        if (nextBoxNum > itemBoxes.Count - 1) return;
+        Vector2 currentNum = currentItemBox.gridNum;
+        Vector2 nextNum = itemBoxes[nextBoxNum].gridNum;
+
+        if (currentNum.x != nextNum.x && currentNum.y != nextNum.y) return;
 
         currentItemBox.BoxSelect_Toggle(false);
 
@@ -111,7 +109,7 @@ public class VehiclePanel_Controller : MonoBehaviour
         currentItemBox.BoxSelect_Toggle(true);
     }
 
-    private void Menu_Control(int controlNum)
+    public void Menu_Control(int controlNum)
     {
         if (currentItemBox != null) currentItemBox.BoxSelect_Toggle(false);
 

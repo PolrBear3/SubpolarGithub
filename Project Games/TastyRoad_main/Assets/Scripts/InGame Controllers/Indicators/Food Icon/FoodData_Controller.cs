@@ -66,11 +66,14 @@ public class FoodData_Controller : MonoBehaviour
         }
 
         // same food assigned
+
+        /*
         if (currentFoodData.foodScrObj == foodScrObj)
         {
             Update_Amount(1);
             return;
         }
+        */
 
         // new food update
         hasFood = true;

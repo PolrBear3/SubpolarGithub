@@ -8,7 +8,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
     [SerializeField] private VehiclePanel_Controller _controller;
 
     [Header("")]
-    [SerializeField] private Vector2 _layoutCount;
+    [SerializeField] private Vector2 _gridData;
     [SerializeField] private List<VechiclePanel_ItemBox> _itemBoxes = new();
 
     private bool _fridgeTargetMode;
@@ -21,6 +21,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
     // UnityEngine
     private void Start()
     {
+        Set_ItemBoxes_GridNum();
+
         // test function for demo
         Data_Controller data = _controller.vehicleController.mainController.dataController;
 
@@ -50,11 +52,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
     public List<VechiclePanel_ItemBox> ItemBoxes()
     {
         // add functions that needs to be run whenever menu is opened
-        
+
         //
 
         return _itemBoxes;
     }
+
     public bool MenuInteraction_Active()
     {
         return _fridgeTargetMode;
@@ -63,6 +66,24 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
     public void Exit_MenuInteraction()
     {
         Fridge_TargetSystem_Toggle(false);
+    }
+
+    // All Start Functions are Here
+    private void Set_ItemBoxes_GridNum()
+    {
+        Vector2 gridCount = Vector2.zero;
+
+        for (int i = 0; i < _itemBoxes.Count; i++)
+        {
+            _itemBoxes[i].gridNum = gridCount;
+
+            gridCount.x++;
+
+            if (gridCount.x != _gridData.x) continue;
+
+            gridCount.x = 0;
+            gridCount.y++;
+        }
     }
 
     // Food to Fridge Export System
