@@ -15,7 +15,10 @@ public class Main_Controller : MonoBehaviour
     [SerializeField] private Transform _characterFile;
     [SerializeField] private Transform _stationFile;
 
-    [HideInInspector] public int currentCoin;
+    public static bool orderOpen;
+    public static int currentCoin;
+
+
 
     // UnityEngine
     private void Awake()
@@ -28,7 +31,11 @@ public class Main_Controller : MonoBehaviour
         LeanTween.alpha(_openingCurtain, 0f, 1f);
     }
 
-    //
+
+
+    /// <summary>
+    /// (-1, 0, 1) horizontal(left, right), vertical(top bottom), position x and y(local position)
+    /// </summary>
     public Vector2 OuterCamera_Position(float horizontal, float vertical, float positionX, float positionY)
     {
         float horizontalPos = horizontal;
@@ -44,15 +51,61 @@ public class Main_Controller : MonoBehaviour
 
         return new Vector2(cameraPosition.x + positionX, cameraPosition.y + positionY);
     }
+    /// <summary>
+    /// left is -1, right is 1
+    /// </summary>
+    public Vector2 OuterCamera_Position(int leftRight)
+    {
+        // left
+        if (leftRight <= 0) return OuterCamera_Position(-1, 0, -2, -3);
+
+        // right
+        else return OuterCamera_Position(1, 0, 2, -3);
+    }
 
 
-
-    // public Statics
+    /// <summary>
+    /// Changes inserted sprite to target transparency
+    /// </summary>
     public static void Change_SpriteAlpha(SpriteRenderer sr, float alpha)
     {
         Color color = sr.color;
         color.a = alpha;
         sr.color = color;
+    }
+
+    /// <returns>
+    /// True if inserted percentage amount is activated, False if not activated
+    /// </returns>
+    public static bool Percentage_Activated(float percentage)
+    {
+        float comparePercentage = Mathf.Round(Random.Range(0f, 100f)) * 1f;
+
+        return percentage >= comparePercentage;
+    }
+
+    /// <returns>
+    /// Mathf Round floats of inserted vector x and y value
+    /// </returns>
+    public static Vector2 SnapPosition(Vector2 position)
+    {
+        float snapX = (float)Mathf.Round(position.x);
+        float snapY = (float)Mathf.Round(position.y);
+
+        return new Vector2(snapX, snapY);
+    }
+
+    /// <returns>
+    /// Random point inside the boundary of inserted sprite renderer
+    /// </returns>
+    public static Vector2 Random_AreaPoint(SpriteRenderer area)
+    {
+        Vector2 centerPosition = area.bounds.center;
+
+        float randX = Random.Range(centerPosition.x - area.bounds.extents.x, centerPosition.x + area.bounds.extents.x);
+        float randY = Random.Range(centerPosition.y - area.bounds.extents.y, centerPosition.y + area.bounds.extents.y);
+
+        return new Vector2(randX, randY);
     }
 
 
@@ -143,13 +196,23 @@ public class Main_Controller : MonoBehaviour
     {
         _currentStations.Remove(station);
     }
-    public Station_Controller Spawn_Station(int arrayNum, Vector2 spawnPosition)
+    public Station_Controller Spawn_Station(int id, Vector2 spawnPosition)
     {
-        GameObject station = Instantiate(dataController.stationPrefabs[arrayNum], spawnPosition, Quaternion.identity);
-        station.transform.parent = _stationFile;
+        List<Station_ScrObj> allStations = dataController.stations;
+        Station_Controller targetStation = null;
 
-        if (station.TryGetComponent(out Station_Controller stationController) == false) return null;
-        return stationController;
+        for (int i = 0; i < allStations.Count; i++)
+        {
+            if (id != allStations[i].id) continue;
+
+            GameObject spawnStation = Instantiate(allStations[i].prefab, spawnPosition, Quaternion.identity);
+            spawnStation.transform.parent = _stationFile;
+
+            if (!spawnStation.TryGetComponent(out Station_Controller stationController)) return null;
+            targetStation = stationController;
+        }
+
+        return targetStation;
     }
 
     /// <summary>
@@ -165,10 +228,18 @@ public class Main_Controller : MonoBehaviour
 
 
 
-
     // Current Archive and BookMark Foods Control
     private List<Food_ScrObj> _archiveFoods = new();
     public List<Food_ScrObj> archiveFoods => _archiveFoods;
+
+    public void AddFood_toArhive(Food_ScrObj food)
+    {
+        if (food == null) return;
+
+        if (Is_ArchivedFood(food) == true) return;
+
+        _archiveFoods.Add(food);
+    }
 
     public bool Is_ArchivedFood(Food_ScrObj food)
     {
@@ -180,28 +251,10 @@ public class Main_Controller : MonoBehaviour
         }
         return false;
     }
-    public void AddFood_toArhive(Food_ScrObj food)
-    {
-        if (food == null) return;
-
-        if (Is_ArchivedFood(food) == true) return;
-
-        _archiveFoods.Add(food);
-    }
 
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
 
-    public bool Is_BookmarkedFood(Food_ScrObj food)
-    {
-        if (food == null) return false;
-
-        for (int i = 0; i < _bookmarkedFoods.Count; i++)
-        {
-            if (food == _bookmarkedFoods[i]) return true;
-        }
-        return false;
-    }
     public void AddFood_toBookmark(Food_ScrObj food)
     {
         if (food == null) return;
@@ -213,5 +266,16 @@ public class Main_Controller : MonoBehaviour
         if (food == null) return;
 
         _bookmarkedFoods.Remove(food);
+    }
+
+    public bool Is_BookmarkedFood(Food_ScrObj food)
+    {
+        if (food == null) return false;
+
+        for (int i = 0; i < _bookmarkedFoods.Count; i++)
+        {
+            if (food == _bookmarkedFoods[i]) return true;
+        }
+        return false;
     }
 }

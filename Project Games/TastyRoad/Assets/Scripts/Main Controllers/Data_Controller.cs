@@ -13,18 +13,21 @@ public class Data_Controller : MonoBehaviour
     private Main_Controller _mainController;
 
     public List<GameObject> locations = new();
-    public List<GameObject> stationPrefabs = new();
+    public List<Station_ScrObj> stations = new();
     public List<GameObject> characters = new();
 
-    public List<Station_ScrObj> stations = new();
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
+
+
 
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Main_Controller mainController)) { _mainController = mainController; }
     }
+
+
 
     // Check if State Data Matches (checks if visitor data matches home data)
     public bool Food_StateData_Match(List<FoodState_Data> visitorData, List<FoodState_Data> homeData)
@@ -52,6 +55,8 @@ public class Data_Controller : MonoBehaviour
         else return true;
     }
 
+
+
     // Get Station
     public Station_ScrObj Station_ScrObj(int stationID)
     {
@@ -62,6 +67,8 @@ public class Data_Controller : MonoBehaviour
         }
         return null;
     }
+
+
 
     // Get All Food
     public List<Food_ScrObj> AllFoods()
@@ -83,6 +90,8 @@ public class Data_Controller : MonoBehaviour
         return allFoods;
     }
 
+
+
     // Get Raw Food
     public Food_ScrObj RawFood(int foodID)
     {
@@ -93,7 +102,6 @@ public class Data_Controller : MonoBehaviour
         }
         return null;
     }
-
     public Food_ScrObj RawFood(Food_ScrObj foodScrObj)
     {
         for (int i = 0; i < rawFoods.Count; i++)
@@ -115,6 +123,8 @@ public class Data_Controller : MonoBehaviour
         return false;
     }
 
+
+
     // Get Cooked Food
     public Food_ScrObj CookedFood(int foodID)
     {
@@ -125,7 +135,15 @@ public class Data_Controller : MonoBehaviour
         }
         return null;
     }
-
+    public Food_ScrObj CookedFood(Food_ScrObj foodScrObj)
+    {
+        for (int i = 0; i < cookedFoods.Count; i++)
+        {
+            if (foodScrObj != cookedFoods[i]) continue;
+            return cookedFoods[i];
+        }
+        return null;
+    }
     public Food_ScrObj CookedFood(List<Food_ScrObj> foods)
     {
         for (int i = 0; i < AllFoods().Count; i++)
@@ -157,7 +175,6 @@ public class Data_Controller : MonoBehaviour
 
         return null;
     }
-
     public Food_ScrObj CookedFood(List<FoodData> foodData)
     {
         // get cooked food

@@ -6,9 +6,16 @@ public class Location_Controller : MonoBehaviour
 {
     [HideInInspector] public Main_Controller _mainController;
 
-    [SerializeField] private List<SpriteRenderer> _roamAreas = new();
+    [SerializeField] private SpriteRenderer _roamArea;
+    public SpriteRenderer roamArea => _roamArea;
 
+    [Header("")]
     [SerializeField] private Vector2 _spawnIntervalTime;
+
+    // add breakfast lunch dinner max spawn amount
+    [SerializeField] private int _maxSpawn;
+
+
 
     // UnityEngine
     private void Awake()
@@ -20,47 +27,30 @@ public class Location_Controller : MonoBehaviour
     private void Start()
     {
         // Toggle Off All Roam Area Colors On Game Start
-        RoamAreas_ColorToggle(false);
+        _roamArea.color = Color.clear;
 
-        Spawn_NPCs(5);
+        NPC_Spawn_Control();
     }
 
-    // Get
-    public Vector2 Random_RoamArea(int arrayNum)
+
+
+    /// <summary>
+    /// Update function for npc spawn and amount control
+    /// </summary>
+    public void NPC_Spawn_Control()
     {
-        SpriteRenderer roamArea = _roamAreas[arrayNum];
-        Vector2 centerPosition = roamArea.bounds.center;
-
-        float randX = Random.Range(centerPosition.x - roamArea.bounds.extents.x, centerPosition.x + roamArea.bounds.extents.x);
-        float randY = Random.Range(centerPosition.y - roamArea.bounds.extents.y, centerPosition.y + roamArea.bounds.extents.y);
-
-        return new Vector2(randX, randY);
+        StartCoroutine(NPC_Spawn_Control_Coroutine());
     }
-
-    // Roam Areas Control
-    private void RoamAreas_ColorToggle(bool toggleOn)
+    private IEnumerator NPC_Spawn_Control_Coroutine()
     {
-        if (toggleOn == true) return;
-
-        for (int i = 0; i < _roamAreas.Count; i++)
+        while (true)
         {
-            _roamAreas[i].color = Color.clear;
-        }
-    }
-
-    // NPC Spawn
-    private IEnumerator Spawn_NPCs_Coroutine(int amount)
-    {
-        for (int i = 0; i < amount; i++)
-        {
-            _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(-1, 0, -2, -3));
+            while (_mainController.currentCharacters.Count >= _maxSpawn) yield return null;
 
             float randIntervalTime = Random.Range(_spawnIntervalTime.x, _spawnIntervalTime.y);
             yield return new WaitForSeconds(randIntervalTime);
+
+            _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(Random.Range(0, 2)));
         }
-    }
-    public void Spawn_NPCs(int amount)
-    {
-        StartCoroutine(Spawn_NPCs_Coroutine(amount));
     }
 }

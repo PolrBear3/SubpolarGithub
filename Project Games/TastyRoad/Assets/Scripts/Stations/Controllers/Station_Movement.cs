@@ -10,6 +10,8 @@ public class Station_Movement : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private Vector2 _currentDirection;
 
+    [SerializeField] private GameObject _movementArrows;
+
     // UnityEngine
     private void Awake()
     {
@@ -22,6 +24,8 @@ public class Station_Movement : MonoBehaviour
         Rigidbody_Move();
     }
 
+
+
     // InputSystem
     private void OnMovement(InputValue value)
     {
@@ -29,22 +33,15 @@ public class Station_Movement : MonoBehaviour
         _currentDirection = input;
     }
 
-    //
-    public Vector2 Current_SnapPosition()
-    {
-        float snapX = (float)Mathf.Round(transform.localPosition.x);
-        float snapY = (float)Mathf.Round(transform.localPosition.y);
 
-        Vector2 snapPosition = new(snapX, snapY);
-
-        return snapPosition;
-    }
 
     // for fixed update
     private void Rigidbody_Move()
     {
-        _rigidBody.velocity = new Vector2(_currentDirection.x * 2f, _currentDirection.y * 2f);
+        _rigidBody.velocity = new Vector2(_currentDirection.x * 3f, _currentDirection.y * 3f);
     }
+
+
 
     // set position restriction color toggle for detection controller event
     public void SetPosition_RestrictionToggle()
@@ -56,14 +53,16 @@ public class Station_Movement : MonoBehaviour
     public void Set_Position()
     {
         if (_stationController.detection.onInteractArea == false) return;
-        if (_stationController.mainController.Position_Claimed(Current_SnapPosition()) == true) return;
 
-        _stationController.PlayerInput_Toggle(false);
+        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+
+        if (_stationController.mainController.Position_Claimed(snapPosition) == true) return;
 
         _stationController.Interact_Event -= Set_Position;
         _stationController.detection.InteractArea_Event -= SetPosition_RestrictionToggle;
 
-        _stationController.Indicator_Toggle(false);
+        _stationController.TransparentBlink_Toggle(false);
+        _movementArrows.SetActive(false);
 
         MathRound_Snap_Position();
 
@@ -73,7 +72,7 @@ public class Station_Movement : MonoBehaviour
 
     private void MathRound_Snap_Position()
     {
-        Vector2 snapPosition = Current_SnapPosition();
+        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
 
         _stationController.mainController.Claim_Position(snapPosition);
         transform.localPosition = snapPosition;

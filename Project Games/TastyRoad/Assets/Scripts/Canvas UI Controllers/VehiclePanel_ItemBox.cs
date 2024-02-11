@@ -129,7 +129,7 @@ public class VechiclePanel_ItemBox : MonoBehaviour
             _hasItem = true;
             _currentStation = station;
 
-            _iconImage.sprite = station.sprite;
+            _iconImage.sprite = station.miniSprite;
 
             _iconImage.color = Color.white;
             _iconImage.transform.localPosition = station.centerPosition;

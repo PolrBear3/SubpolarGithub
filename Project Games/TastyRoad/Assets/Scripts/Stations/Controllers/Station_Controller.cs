@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class Station_Controller : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
-    private PlayerInput _input;
 
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
@@ -21,12 +20,14 @@ public class Station_Controller : MonoBehaviour
     public Station_ScrObj stationScrObj => _stationScrObj;
 
     public delegate void Action_Event();
+
     public event Action_Event Interact_Event;
+    public event Action_Event Action1_Event;
+    public event Action_Event Action2_Event;
 
     [Header("")]
-    [SerializeField] private Color _indicatorColor;
+    private Animator _stationAnimator;
     [SerializeField] private Color _restrictionColor;
-    private Coroutine _colorCoroutine;
 
     // UnityEngine
     private void Awake()
@@ -35,11 +36,9 @@ public class Station_Controller : MonoBehaviour
         _mainController.Track_CurrentStation(this);
 
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
-        if (gameObject.TryGetComponent(out PlayerInput input)) { _input = input; }
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
         if (gameObject.TryGetComponent(out Station_Movement movement)) { _movement = movement; }
-
-        PlayerInput_Toggle(false);
+        if (gameObject.TryGetComponent(out Animator stationAnimator)) { _stationAnimator = stationAnimator; }
     }
 
     // InputSystem
@@ -48,33 +47,42 @@ public class Station_Controller : MonoBehaviour
         Interact_Event?.Invoke();
     }
 
-    // Player Input Toggle
-    public void PlayerInput_Toggle(bool toggleOn)
+    private void OnAction1()
     {
-        _input.enabled = toggleOn;
+        Action1_Event?.Invoke();
+    }
+    private void OnAction2()
+    {
+        Action2_Event?.Invoke();
     }
 
     // Green Red Color Triggers
-    public void Indicator_Toggle(bool toggleOn)
+    public void TransparentBlink_Toggle(bool toggleOn)
     {
-        if (toggleOn == false)
+        if (toggleOn == true)
         {
-            _spriteRenderer.color = Color.white;
+            _stationAnimator.enabled = true;
+            _stationAnimator.Play("Station_transaprencyBlink");
             return;
         }
 
-        _spriteRenderer.color = _indicatorColor;
+        _stationAnimator.enabled = false;
+        _spriteRenderer.color = Color.white;
     }
     public void Restriction_Toggle(bool toggleOn)
     {
-        if (toggleOn == false)
+        if (toggleOn == true)
         {
-            _spriteRenderer.color = _indicatorColor;
+            _stationAnimator.enabled = false;
+            _spriteRenderer.color = _restrictionColor;
             return;
         }
 
-        _spriteRenderer.color = _restrictionColor;
+        _stationAnimator.enabled = true;
+        _stationAnimator.Play("Station_transaprencyBlink");
+        _spriteRenderer.color = Color.white;
     }
+
 
     /// <summary>
     /// Finds Food Icon if it is attached to this station prefab.
@@ -92,7 +100,8 @@ public class Station_Controller : MonoBehaviour
     // Main Station Controls
     public void Destroy_Station()
     {
-        _mainController.UnClaim_Position(movement.Current_SnapPosition());
+        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+        _mainController.UnClaim_Position(snapPosition);
 
         _mainController.UnTrack_CurrentStation(this);
         Destroy(gameObject);

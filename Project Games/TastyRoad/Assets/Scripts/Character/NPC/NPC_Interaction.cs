@@ -7,17 +7,32 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 {
     private NPC_Controller _controller;
 
+    [Header("")]
     [SerializeField] private GameObject _stateBoxes;
+
+    [Header("")]
+    [SerializeField] private SpriteRenderer _wakeSpriteRenderer;
     [SerializeField] private SpriteRenderer _eatAnimationSR;
-    [SerializeField] private Sprite _coinSprite;
+
+    [Header("")]
+    [SerializeField] private float animTransitionTime;
+    [SerializeField] private SpriteRenderer _coinAnimationSR;
+    [SerializeField] private Animator _coinAnimator;
 
     private bool _foodOrderServed;
+    public bool foodOrderServed => _foodOrderServed;
+
     private int _foodScore;
+    public int foodScore => _foodScore;
 
     [Header("Adjust Data")]
-    [SerializeField] private float animTransitionTime;
     [SerializeField] private Vector2 roamDelayTime;
-    [SerializeField] private Vector2 leaveTime;
+
+    [SerializeField] private int _defaultTimeLimit;
+    private Coroutine _timeLimitCoroutine;
+
+
+
 
     // UnityEngine
     private void Awake()
@@ -25,55 +40,73 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out NPC_Controller controller)) { _controller = controller; }
     }
 
+    private void Start()
+    {
+        Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
+    }
+
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
+        _controller.timer.Toggle_Transparency(false);
+
         _controller.actionBubble.Toggle_Off();
         StateBox_Toggle();
 
         _controller.Action1 -= Serve_FoodOrder;
-        _controller.Action1 -= ActionBubble_Toggle;
-        _controller.Action1 -= StateBox_Toggle;
     }
 
     // IInteractable
     public void Interact()
     {
+        Collect_Coin();
         Interact_FacePlayer();
 
-        Assign_FoodOrder();
+        if (Main_Controller.orderOpen == false) return;
+        if (_controller.foodIcon.hasFood == false) return;
+
+        Start_TimeLimit();
+        _controller.timer.Toggle_Transparency(!_controller.actionBubble.bubbleOn);
 
         ActionBubble_Toggle();
         StateBox_Toggle();
 
-        Collect_Coin();
-
         _controller.Action1 += Serve_FoodOrder;
-        _controller.Action1 += ActionBubble_Toggle;
-        _controller.Action1 += StateBox_Toggle;
     }
 
     public void UnInteract()
     {
         _controller.actionBubble.Toggle_Off();
-        LeanTween.alpha(_stateBoxes, 0f, 0.01f);
+        StateBox_Toggle();
+
+        _controller.timer.Toggle_Transparency(false);
 
         _controller.Action1 -= Serve_FoodOrder;
-        _controller.Action1 -= ActionBubble_Toggle;
-        _controller.Action1 -= StateBox_Toggle;
     }
+
+
 
     // Stop and Face Player if Interacted
     private void Interact_FacePlayer()
     {
         if (_controller.actionBubble.bubbleOn == true) return;
 
-        _controller.movement.Stop_FreeRoam();
-        _controller.movement.Free_Roam(4f);
-
         _controller.animationController.Flip_Sprite(_controller.detection.player.gameObject);
+
+        NPC_Movement movement = _controller.movement;
+
+        movement.Stop_FreeRoam();
+
+        if (movement.isLeaving == true)
+        {
+            movement.Leave(Random.Range(roamDelayTime.x, roamDelayTime.y));
+        }
+        else
+        {
+            movement.Free_Roam(movement.currentRoamArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
+        }
     }
 
     // Update Action Bubble
@@ -103,12 +136,97 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         }
     }
 
+    // wake animation for order open
+    public void Wake_Animation()
+    {
+        StartCoroutine(Wake_Animation_Coroutine());
+    }
+    private IEnumerator Wake_Animation_Coroutine()
+    {
+        Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 1f);
+
+        yield return new WaitForSeconds(animTransitionTime);
+
+        Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
+    }
+
+
+
+    /// <summary>
+    /// Start a time limit for food order
+    /// </summary>
+    private void Start_TimeLimit()
+    {
+        // set the time limit according to npc inpatient level
+        int extraTime = (int)_controller.characterData.inPatienceLevel;
+        int setTime = _defaultTimeLimit + extraTime;
+
+        // start the time
+        Clock_Timer timer = _controller.timer;
+
+        if (timer.timeRunning == true) return;
+
+        timer.Set_Time(setTime);
+        timer.Run_Time();
+
+        TimeLimit_Over();
+    }
+
+    /// <summary>
+    /// Checks if time is over and initiates player penalty
+    /// </summary>
+    private void TimeLimit_Over()
+    {
+        if (_timeLimitCoroutine != null) _timeLimitCoroutine = null;
+
+        _timeLimitCoroutine = StartCoroutine(TimeLimit_Over_Coroutine());
+    }
+    private IEnumerator TimeLimit_Over_Coroutine()
+    {
+        Clock_Timer timer = _controller.timer;
+
+        while (timer.timeRunning == true) yield return null;
+
+        //
+        timer.Toggle_Transparency(true);
+        // add unsatisfied icon or something ?
+
+        // clear food
+        FoodData_Controller icon = _controller.foodIcon;
+        icon.Clear_Food();
+        icon.Clear_State();
+
+        // hunger level to 0
+        Character_Data data = _controller.characterData;
+        data.Update_Hunger(-data.hungerLevel);
+
+        // return roam area to current location
+        SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
+        NPC_Movement move = _controller.movement;
+        move.Stop_FreeRoam();
+        move.Free_Roam(currentLocation, 0f);
+    }
+
+
+
+    /// <returns>
+    /// NPC will decide whether or not they should get in line for food order
+    /// </returns>
+    public bool Want_FoodOrder()
+    {
+        // current order open check
+        if (Main_Controller.orderOpen == false) return false;
+
+        // hunger percentage check
+        if (Main_Controller.Percentage_Activated(_controller.characterData.hungerLevel)) return true;
+        else return false;
+    }
+
     // Set Random Food Order and State
-    private void Assign_FoodOrder()
+    public void Assign_FoodOrder()
     {
         if (_foodOrderServed == true) return;
 
-        Data_Controller data = _controller.mainController.dataController;
         FoodData_Controller foodIcon = _controller.foodIcon;
 
         if (foodIcon.hasFood == false)
@@ -154,19 +272,29 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         // check if order food is correct
         if (playerFoodData.foodScrObj != foodIcon.currentFoodData.foodScrObj) return;
 
+        // stop time limit
+        StopCoroutine(_timeLimitCoroutine);
+        _controller.timer.Stop_Time();
+
         // save food score
         _foodScore = Calculated_FoodScore();
 
         playerFoodIcon.Clear_Food();
         playerFoodIcon.Clear_State();
 
+        // update data
         _foodOrderServed = true;
+        _controller.characterData.Update_Hunger(-_controller.characterData.hungerLevel);
 
         // food eat animation
         Eat_Animation();
     }
 
     // Eat Food Animation after Food Order is Served
+    private void Eat_Animation()
+    {
+        StartCoroutine(Eat_Animation_Coroutine());
+    }
     private IEnumerator Eat_Animation_Coroutine()
     {
         Detection_Controller detection = _controller.detection;
@@ -196,46 +324,54 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(animTransitionTime);
 
         // activate free roam
-        movement.Free_Roam(Random.Range(roamDelayTime.x, roamDelayTime.y));
+        movement.Free_Roam(movement.currentRoamArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
+
         // turn on collider
         detection.BoxCollider_Toggle(true);
-        // coin sprite
-        _eatAnimationSR.sprite = _coinSprite;
-    }
-    private void Eat_Animation()
-    {
-        StartCoroutine(Eat_Animation_Coroutine());
+
+        // activate coin sprite
+        _coinAnimationSR.color = Color.white;
     }
 
-    // Get Served Food Order Score
+    // Food Served 
     private int Calculated_FoodScore()
     {
         FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
         FoodData playerFoodData = playerFoodIcon.currentFoodData;
 
-        int foodScore = playerFoodData.foodScrObj.price;
+        int defaultScore = playerFoodData.foodScrObj.price;
 
-        if (_controller.foodIcon.Same_StateData(playerFoodData.stateData)) foodScore++;
+        // time left
+        defaultScore += _controller.timer.Current_TimeBlock_Amount();
 
-        return foodScore;
+        // state match
+        defaultScore += _controller.foodIcon.StateData_MatchCount(playerFoodData.stateData);
+
+        return defaultScore;
     }
 
-    // Interaction Finish
     private void Collect_Coin()
     {
         if (_foodOrderServed == false) return;
 
-        _controller.mainController.currentCoin += _foodScore;
-
-        _foodOrderServed = false;
+        Main_Controller.currentCoin += _foodScore;
         _foodScore = 0;
 
-        _eatAnimationSR.sprite = null;
+        // activate coin collect animation
+        _coinAnimator.Play("Coin_collectFade");
+
+        // update data
         _controller.foodIcon.Clear_Food();
 
-        Leave_Location(Random.Range(leaveTime.x, leaveTime.y));
+        // leave
+        NPC_Movement move = _controller.movement;
+        SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
+
+        move.Update_RoamArea(currentLocation);
+        move.Leave(Random.Range(roamDelayTime.x, roamDelayTime.y));
     }
 
+    /*
     // Leave Area
     private IEnumerator Leave_Location_Coroutine(float delayTime)
     {
@@ -289,4 +425,5 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         StartCoroutine(Leave_Location_Coroutine(delaytime));
     }
+    */
 }

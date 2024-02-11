@@ -9,8 +9,10 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private SpriteRenderer _icon;
 
     [Header("")]
+    [SerializeField] private float _displayTime;
     [SerializeField] private SpriteRenderer _amountBar;
     [SerializeField] private List<Sprite> _amountBarSprites = new();
+    private Coroutine _amountBarCoroutine;
 
     [HideInInspector] public FoodData currentFoodData;
 
@@ -19,19 +21,27 @@ public class FoodData_Controller : MonoBehaviour
 
     [Header("")]
     [Range(1, 6)]
-    [SerializeField] private int _maxAmount; 
+    [SerializeField] private int _maxAmount;
+    public int maxAmount => _maxAmount;
 
     [SerializeField] private bool _iconTransparent;
     [SerializeField] private bool _amountTransparent;
+
+
 
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out StateBox_Controller stateBoxController)) { this.stateBoxController = stateBoxController; }
+    }
 
+    private void Start()
+    {
         _icon.color = Color.clear;
         _amountBar.color = Color.clear;
     }
+
+
 
     // Transparency Toggle
     public void FoodIcon_Transparency(bool isTransparent)
@@ -51,7 +61,7 @@ public class FoodData_Controller : MonoBehaviour
     {
         _amountTransparent = isTransparent;
 
-        if (_amountTransparent == false && currentFoodData.currentAmount > 1)
+        if (_amountTransparent == false && currentFoodData.currentAmount > 0)
         {
             Update_AmountBar();
             _amountBar.color = Color.white;
@@ -61,6 +71,8 @@ public class FoodData_Controller : MonoBehaviour
             _amountBar.color = Color.clear;
         }
     }
+
+
 
     // Food Control
     public void Assign_Food(Food_ScrObj foodScrObj)
@@ -108,6 +120,8 @@ public class FoodData_Controller : MonoBehaviour
 
         _amountBar.color = Color.clear;
     }
+
+
 
     // Amount Control
     public int Assign_Amount(int assignAmount)
@@ -163,13 +177,34 @@ public class FoodData_Controller : MonoBehaviour
         return 0;
     }
 
+    // Amount Bar Control
     private void Update_AmountBar()
     {
-        if (currentFoodData.currentAmount <= 1) return;
-        if (currentFoodData.currentAmount > 6) return;
+        if (currentFoodData.currentAmount <= 0) return;
+        if (currentFoodData.currentAmount > _maxAmount) return;
 
-        _amountBar.sprite = _amountBarSprites[currentFoodData.currentAmount - 2];
+        _amountBar.sprite = _amountBarSprites[currentFoodData.currentAmount - 1];
     }
+
+    public void Show_AmountBar()
+    {
+        if (_amountBarCoroutine != null)
+        {
+            StopCoroutine(_amountBarCoroutine);
+        }
+
+        _amountBarCoroutine = StartCoroutine(Show_CurrentAmount_Coroutine());
+    }
+    private IEnumerator Show_CurrentAmount_Coroutine()
+    {
+        AmountBar_Transparency(false);
+
+        yield return new WaitForSeconds(_displayTime);
+
+        AmountBar_Transparency(true);
+    }
+
+
 
     // Check and Compare Other State Data with this State Data
     public bool Same_StateData(List<FoodState_Data> stateData)
@@ -193,6 +228,31 @@ public class FoodData_Controller : MonoBehaviour
 
         if (matchCount <= 0) return true;
         else return false;
+    }
+
+    public int StateData_MatchCount(List<FoodState_Data> stateData)
+    {
+        List<FoodState_Data> thisStateData = currentFoodData.stateData;
+
+        int matchCount = 0;
+
+        if (thisStateData.Count < stateData.Count)
+        {
+            matchCount = thisStateData.Count - stateData.Count;
+        }
+
+        for (int i = 0; i < stateData.Count; i++)
+        {
+            for (int j = 0; j < thisStateData.Count; j++)
+            {
+                if (stateData[i].stateType != thisStateData[j].stateType) continue;
+                if (stateData[i].stateLevel != thisStateData[j].stateLevel) continue;
+
+                matchCount++;
+            }
+        }
+
+        return matchCount;
     }
 
     // Get State Data

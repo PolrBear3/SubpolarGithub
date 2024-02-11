@@ -9,27 +9,33 @@ public class OrderStand : MonoBehaviour, IInteractable
     private SpriteRenderer _spriteRenderer;
 
     private Station_Controller _stationController;
-    private Detection_Controller _detection;
+
     [SerializeField] private Action_Bubble _actionBubble;
 
     [Header("Order Stand Sprites")]
     [SerializeField] private Sprite _openStand;
     [SerializeField] private Sprite _closedStand;
 
-    [Header ("NPC Control")]
-    [SerializeField] private Transform _lineStartPoint;
+    [Header ("Action Bubble Sprites")]
     [SerializeField] private Sprite _lineOpenSprite;
     [SerializeField] private Sprite _lineClosedSprite;
 
-    private bool _lineOpen;
-    [SerializeField] private float _lineWaitTime;
+    [Header("Order Control")]
+    [SerializeField] private SpriteRenderer _orderingArea;
+
+    [SerializeField] private int _maxWaitings;
+    private List<NPC_Controller> _waitingNPCs = new();
+
+    private Coroutine _attractCoroutine;
+    [SerializeField] private float _attractIntervalTime;
 
     [Header ("Current Coin Display")]
     [SerializeField] private GameObject _coinDisplay;
     [SerializeField] private TextMeshPro _coinText;
     [SerializeField] private Sprite _coinSprite;
+    [SerializeField] private Animator _coinAnimator;
 
-    private Coroutine coinCoroutine;
+    private Coroutine _coinCoroutine;
     [SerializeField] private float _displayTime;
 
     // UnityEngine
@@ -37,35 +43,23 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
         if (gameObject.TryGetComponent(out Station_Controller controller)) { _stationController = controller; }
-        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
 
     private void Start()
     {
+        _orderingArea.color = Color.clear;
         _coinDisplay.SetActive(false);
-    }
-
-    // InputSystem
-    private void OnAction1()
-    {
-        if (_stationController.movement.enabled == true) return;
-        Line_CurrentNPCs_Toggle();
-    }
-
-    private void OnAction2()
-    {
-        if (_stationController.movement.enabled == true) return;
-        Show_CurrentCoin();
     }
 
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_stationController.movement.enabled == true) return;
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _stationController.PlayerInput_Toggle(false);
         _actionBubble.Toggle_Off();
+
+        _stationController.Action1_Event -= Order_Toggle;
+        _stationController.Action2_Event -= Show_CurrentCoin;
     }
 
     // IInteractable
@@ -73,36 +67,52 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         _coinDisplay.SetActive(false);
 
-        _stationController.PlayerInput_Toggle(!_actionBubble.bubbleOn);
-        _actionBubble.Update_Bubble(LineToggle_Sprite(), _coinSprite);
+        _actionBubble.Update_Bubble(ActionBubble_Sprite(), _coinSprite);
+
+        _stationController.Action1_Event += Order_Toggle;
+        _stationController.Action2_Event += Show_CurrentCoin;
     }
 
     public void UnInteract()
     {
-        if (_stationController.movement.enabled == true) return;
-
-        _stationController.PlayerInput_Toggle(false);
         _actionBubble.Toggle_Off();
+
+        _stationController.Action1_Event -= Order_Toggle;
+        _stationController.Action2_Event -= Show_CurrentCoin;
     }
 
+
+
     // Get Line Toggle Sprite for Action Bubble
-    private Sprite LineToggle_Sprite()
+    private Sprite ActionBubble_Sprite()
     {
-        if (_lineOpen == false)
+        // order closed
+        if (Main_Controller.orderOpen == false)
         {
             return _lineOpenSprite;
         }
-        else
+
+        // order open
+        return _lineClosedSprite;
+    }
+    private Sprite Station_Sprite()
+    {
+        // order closed
+        if (Main_Controller.orderOpen == false)
         {
-            return _lineClosedSprite;
+            return _closedStand;
         }
+
+        // order open
+        return _openStand;
     }
 
     // Show Current Coin
     private IEnumerator Show_CurrentCoin_Coroutine()
     {
         _coinDisplay.SetActive(true);
-        _coinText.text = _stationController.mainController.currentCoin.ToString();
+        _coinText.text = Main_Controller.currentCoin.ToString();
+        _coinAnimator.Play("Coin_collectStay");
 
         yield return new WaitForSeconds(_displayTime);
 
@@ -112,59 +122,140 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         _actionBubble.Toggle_Off();
 
-        if (coinCoroutine != null)
+        if (_coinCoroutine != null)
         {
-            StopCoroutine(coinCoroutine);
+            StopCoroutine(_coinCoroutine);
         }
 
-        coinCoroutine = StartCoroutine(Show_CurrentCoin_Coroutine());
+        _coinCoroutine = StartCoroutine(Show_CurrentCoin_Coroutine());
+
+        // reset action
+        UnInteract();
     }
 
-    // Line Current NPCs
-    private void Line_CurrentNPCs_Toggle()
+    //
+    private void Order_Toggle()
     {
-        _actionBubble.Toggle_Off();
-
-        List<GameObject> characters = _stationController.mainController.currentCharacters;
-
-        if (_lineOpen == false)
+        // order open
+        if (Main_Controller.orderOpen == false)
         {
-            _lineOpen = true;
-            _spriteRenderer.sprite = _openStand;
+            Main_Controller.orderOpen = true;
+
+            Attract_allNPC();
         }
+
+        // order closed
         else
         {
-            _lineOpen = false;
-            _spriteRenderer.sprite = _closedStand;
+            Main_Controller.orderOpen = false;
+
+            SpriteRenderer location = _stationController.mainController.currentLocation.roamArea;
+
+            for (int i = 0; i < _waitingNPCs.Count; i++)
+            {
+                // return to current loaction free roam area
+                NPC_Movement move = _waitingNPCs[i].movement;
+
+                move.Stop_FreeRoam();
+                move.Free_Roam(location, 4f);
+            }
+
+            // reset waiting npc list
+            _waitingNPCs.Clear();
         }
 
-        // sort closest to farthest
-        characters.Sort((customerA, customerB) =>
-        Vector2.Distance(customerA.transform.position, transform.position)
-        .CompareTo(Vector2.Distance(customerB.transform.position, transform.position)));
+        // sprite update
+        _spriteRenderer.sprite = Station_Sprite();
 
-        float lineSpaceCount = 0;
+        // reset action
+        UnInteract();
+    }
 
-        for (int i = 0; i < characters.Count; i++)
+    /// <summary>
+    /// All current NPCc will decide every interval time wheather on they want to come and order food
+    /// </summary>
+    private void Attract_allNPC()
+    {
+        if (_attractCoroutine != null) StopCoroutine(_attractCoroutine);
+
+        _attractCoroutine = StartCoroutine(Attract_allNPC_Coroutine());
+    }
+    private IEnumerator Attract_allNPC_Coroutine()
+    {
+        while(Main_Controller.orderOpen == true)
         {
-            if (!characters[i].TryGetComponent(out NPC_Controller npc)) continue;
+            yield return new WaitForSeconds(_attractIntervalTime);
 
-            NPC_Movement movement = npc.movement;
-            movement.Stop_FreeRoam();
+            while (_stationController.mainController.bookmarkedFoods.Count <= 0) yield return null;
 
-            // line open
-            if (_lineOpen == true)
+            // all current npc
+            List<GameObject> allCharacters = _stationController.mainController.currentCharacters;
+
+            Refresh_WaitingNPCs();
+
+            for (int i = 0; i < allCharacters.Count; i++)
             {
-                Vector2 targetPosition = new Vector2(_lineStartPoint.position.x - lineSpaceCount, _lineStartPoint.position.y);
-                movement.Assign_TargetPosition(targetPosition, _lineWaitTime);
+                if (!allCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
 
-                lineSpaceCount += 0.75f;
-            }
-            // line closed
-            else
-            {
-                movement.Free_Roam(0f);
+                NPC_Interaction interaction = npc.interaction;
+                NPC_Movement move = npc.movement;
+
+                // check if already ordered food
+                if (npc.foodIcon.hasFood == true) continue;
+
+                // check if food is already served and left ordering area
+                if (interaction.foodOrderServed == true && move.currentRoamArea != _orderingArea)
+                {
+                    _waitingNPCs.Remove(npc);
+                    continue;
+                }
+
+                // check if they want to order food
+                if (interaction.Want_FoodOrder() == false) continue;
+
+                // check max waiting npc amount
+                if (_waitingNPCs.Count >= _maxWaitings) continue;
+
+                // attract wake animtion
+                interaction.Wake_Animation();
+
+                // assign food order
+                interaction.Assign_FoodOrder();
+
+                // refresh
+                interaction.UnInteract();
+
+                // attract npc > ordering area
+                move.Stop_FreeRoam();
+                move.Free_Roam(_orderingArea, 0f);
+
+                // keep track of currently waiting npc
+                _waitingNPCs.Add(npc);
             }
         }
+    }
+
+    /// <summary>
+    /// Removes items in list that are destroyed or missing
+    /// </summary>
+    private void Refresh_WaitingNPCs()
+    {
+        List<NPC_Controller> refreshList = new();
+
+        for (int i = 0; i < _waitingNPCs.Count; i++)
+        {
+            NPC_Controller target = _waitingNPCs[i];
+
+            // npc left current location
+            if (target == null) continue;
+
+            // waiting npc time expired
+            if (target.foodIcon.hasFood == false) continue;
+
+            refreshList.Add(_waitingNPCs[i]);
+        }
+
+        _waitingNPCs = refreshList;
+        // Debug.Log("waiting list refresh complete");
     }
 }

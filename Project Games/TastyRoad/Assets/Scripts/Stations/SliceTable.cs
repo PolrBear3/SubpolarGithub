@@ -12,19 +12,22 @@ public class SliceTable : MonoBehaviour, IInteractable
     private Coroutine _sliceCoroutine;
     [SerializeField] private float _sliceIncreaseTime;
 
+
+
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
 
+
+
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_detection.Has_Player() == true)
-        {
-            Slice_Food();
-        }
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
+
+        Slice_Food();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -32,6 +35,8 @@ public class SliceTable : MonoBehaviour, IInteractable
 
         Slice_Food();
     }
+
+
 
     // IInteractable
     public void Interact()
@@ -44,6 +49,8 @@ public class SliceTable : MonoBehaviour, IInteractable
     {
 
     }
+
+
 
     // Swap SliceTable and Player Food
     private void Swap_Food()
@@ -66,7 +73,7 @@ public class SliceTable : MonoBehaviour, IInteractable
     // Slice Food
     private IEnumerator Slice_Food_Coroutine()
     {
-        while (_foodIcon.hasFood == true && _detection.Has_Player() == true)
+        while (_foodIcon.hasFood == true && _detection.player != null)
         {
             _stateAnimation.Toggle_Transparency(true);
             _stateAnimation.Assign_Animation(FoodState_Type.sliced);

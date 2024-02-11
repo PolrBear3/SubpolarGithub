@@ -13,6 +13,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
     private int _targetNum;
 
+
+
     // UnityEngine
     private void Start()
     {
@@ -23,12 +25,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
         Add_StationItem(data.Station_ScrObj(0), 1);
 
-        Add_StationItem(data.Station_ScrObj(1), 5);
-
-        Add_StationItem(data.Station_ScrObj(2), 1);
         Add_StationItem(data.Station_ScrObj(3), 1);
-        Add_StationItem(data.Station_ScrObj(4), 1);
+        Add_StationItem(data.Station_ScrObj(301), 1);
+
         Add_StationItem(data.Station_ScrObj(5), 1);
+        Add_StationItem(data.Station_ScrObj(4), 1);
+
+        Add_StationItem(data.Station_ScrObj(1), 4);
+        Add_StationItem(data.Station_ScrObj(2), 1);
     }
 
     private void OnEnable()
@@ -40,6 +44,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
     {
         _controller.OnSelect_Input -= Export_StationPrefab;
     }
+
+
 
     // IVehicleMenu
     public List<VechiclePanel_ItemBox> ItemBoxes()
@@ -58,6 +64,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
         Cancel_Export();
     }
 
+
+
     // All Start Functions are Here
     private void Set_ItemBoxes_GridNum()
     {
@@ -75,6 +83,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
             gridCount.y++;
         }
     }
+
+
 
     // Station Export System
     public void Add_StationItem(Station_ScrObj station, int amount)
@@ -120,7 +130,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
             Main_Controller main = vehicle.mainController;
 
-            if (main.Position_Claimed(_interactStation.movement.Current_SnapPosition())) return;
+            Vector2 stationPosition = Main_Controller.SnapPosition(_interactStation.transform.position);
+
+            if (main.Position_Claimed(stationPosition)) return;
 
             _interactionMode = false;
             _interactStation = null;
@@ -141,8 +153,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
         Station_Movement movement = _interactStation.movement;
         movement.enabled = true;
-
-        _interactStation.PlayerInput_Toggle(true);
 
         _interactStation.Interact_Event += movement.Set_Position;
         _interactStation.detection.InteractArea_Event += movement.SetPosition_RestrictionToggle;
@@ -173,7 +183,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
         {
             // retrieve target off
             _interactionMode = false;
-            _interactStation.Indicator_Toggle(false);
+            _interactStation.TransparentBlink_Toggle(false);
             _interactStation = null;
 
             _controller.OnSelect_Input += Export_StationPrefab;
@@ -189,7 +199,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
         _targetNum = 0;
 
         _interactStation = currentStations[_targetNum];
-        _interactStation.Indicator_Toggle(true);
+        _interactStation.TransparentBlink_Toggle(true);
 
         _controller.OnSelect_Input -= Export_StationPrefab;
 
@@ -216,12 +226,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
             nextStationNum = 0;
         }
 
-        _interactStation.Indicator_Toggle(false);
+        _interactStation.TransparentBlink_Toggle(false);
 
         _targetNum = nextStationNum;
 
         _interactStation = currentStations[_targetNum];
-        _interactStation.Indicator_Toggle(true);
+        _interactStation.TransparentBlink_Toggle(true);
     }
 
     private void Retrieve_Station()
@@ -235,9 +245,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
             FoodData_Controller foodIcon = _interactStation.Food_Icon();
 
             Food_ScrObj currentFood = foodIcon.currentFoodData.foodScrObj;
-            int currentAmount = foodIcon.currentFoodData.currentAmount;
 
-            _controller.foodMenu.Add_FoodItem(currentFood, currentAmount);
+            // retrieve only raw foods
+            if (_controller.vehicleController.mainController.dataController.CookedFood(currentFood) == null)
+            {
+                int currentAmount = foodIcon.currentFoodData.currentAmount;
+
+                _controller.foodMenu.Add_FoodItem(currentFood, currentAmount);
+            }
         }
 
         // destroy current selected station

@@ -23,6 +23,8 @@ public class Detection_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out BoxCollider2D boxCollider)) { _boxCollider = boxCollider; }
     }
 
+
+
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -53,6 +55,8 @@ public class Detection_Controller : MonoBehaviour
 
         InteractArea_Event?.Invoke();
     }
+
+
 
     /// <returns>Closest Detected Object</returns>
     public GameObject Closest_Object()
@@ -116,6 +120,8 @@ public class Detection_Controller : MonoBehaviour
         return closestInteractable;
     }
 
+
+
     // Check Detected Object
     public bool Has_Object(GameObject specificObject)
     {
@@ -125,13 +131,6 @@ public class Detection_Controller : MonoBehaviour
         }
 
         return false;
-    }
-
-    // Check Player
-    public bool Has_Player()
-    {
-        if (player != null) return true;
-        else return false;
     }
 
     // Box Collider Toggle On Off

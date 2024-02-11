@@ -26,12 +26,10 @@ public class Oven : MonoBehaviour, IInteractable
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_detection.Has_Player() == true)
-        {
-            _foodIcon.FoodIcon_Transparency(false);
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-            Update_FoodIcon_Position(true);
-        }
+        _foodIcon.FoodIcon_Transparency(false);
+        Update_FoodIcon_Position(true);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

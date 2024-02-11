@@ -110,7 +110,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
             // toggle off
             _fridgeTargetMode = false;
 
-            _currentTargetFridge.stationController.Indicator_Toggle(false);
+            _currentTargetFridge.stationController.TransparentBlink_Toggle(false);
             _currentTargetFridge = null;
 
             _controller.OnCursorControl_Input -= Fridge_TargetDirection_Control;
@@ -128,7 +128,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
         _currentFridgeNum = 0;
         _currentTargetFridge = _currentFridges[_currentFridgeNum];
 
-        _currentTargetFridge.stationController.Indicator_Toggle(true);
+        _currentTargetFridge.stationController.TransparentBlink_Toggle(true);
 
         _controller.OnCursorControl_Input += Fridge_TargetDirection_Control;
     }
@@ -152,12 +152,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
             nextFridgeNum = 0;
         }
 
-        _currentFridges[_currentFridgeNum].stationController.Indicator_Toggle(false);
+        _currentFridges[_currentFridgeNum].stationController.TransparentBlink_Toggle(false);
 
         _currentFridgeNum = nextFridgeNum;
 
         _currentTargetFridge = _currentFridges[_currentFridgeNum];
-        _currentTargetFridge.stationController.Indicator_Toggle(true);
+        _currentTargetFridge.stationController.TransparentBlink_Toggle(true);
     }
 
     private void Export_FoodItem_toFridge()

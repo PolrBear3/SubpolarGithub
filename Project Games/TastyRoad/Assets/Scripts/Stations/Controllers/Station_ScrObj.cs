@@ -5,8 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "New Station!")]
 public class Station_ScrObj : ScriptableObject
 {
-    public Sprite sprite;
+    public GameObject prefab;
 
+    public Sprite miniSprite;
     public Vector2 centerPosition;
 
     public string stationName;
