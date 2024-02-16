@@ -12,8 +12,8 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     [HideInInspector] public Detection_Controller detection;
 
     [Header("Insert Vehicle Panel Prefab")]
-    [SerializeField] private VehiclePanel_Controller _panel;
-    public VehiclePanel_Controller panel => _panel;
+    [SerializeField] private VehicleMenu_Controller _menu;
+    public VehicleMenu_Controller menu => _menu;
 
     [Header("")]
     [SerializeField] private Action_Bubble _bubble;
@@ -40,7 +40,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        VehiclePanel_Toggle(false);
+        _menu.VehicleMenu_Toggle(false);
         _playerInput.enabled = false;
 
         Claim_Position();
@@ -61,20 +61,8 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         _bubble.Toggle_Off();
         _playerInput.enabled = false;
 
-        VehiclePanel_Toggle(true);
+        _menu.VehicleMenu_Toggle(true);
     }
-
-    /*
-    private void OnAction2()
-    {
-        Player_PlayerInput_Toggle(false);
-
-        // vehicle drive mode function
-
-        _bubble.Toggle_Off();
-        _playerInput.enabled = false;
-    }
-    */
 
 
 
@@ -130,20 +118,6 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         {
             Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
         }
-    }
-
-    // Panel Control
-    public void VehiclePanel_Toggle(bool toggleOn)
-    {
-        if (toggleOn == false)
-        {
-            _panel.gameObject.SetActive(false);
-
-            return;
-        }
-
-        _panel.gameObject.SetActive(true);
-        _panel.Menu_Control(_panel.currentMenuNum);
     }
 
     /// <summary>

@@ -9,12 +9,18 @@ public class Oven : MonoBehaviour, IInteractable
 
     [SerializeField] private FoodData_Controller _foodIcon;
 
+    [Header("")]
     [SerializeField] private Sprite inActiveSprite;
+    [SerializeField] private Material _lit;
+
+    [Header("")]
     [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Material _emissionGlow;
+    [SerializeField] private GameObject _light;
 
-    private Coroutine _heatCoroutine;
-
+    [Header("")]
     [SerializeField] private float _heatIncreaseTime;
+    private Coroutine _heatCoroutine;
 
     // UnityEngine
     private void Awake()
@@ -45,7 +51,7 @@ public class Oven : MonoBehaviour, IInteractable
         Swap_Food();
         Heat_Food();
 
-        Update_CurrentSprite();
+        Update_CurrentVisual();
     }
 
     public void UnInteract()
@@ -53,16 +59,20 @@ public class Oven : MonoBehaviour, IInteractable
 
     }
 
-    // Oven Sprite Update
-    private void Update_CurrentSprite()
+    // Oven Visual Update
+    private void Update_CurrentVisual()
     {
         if (_foodIcon.hasFood)
         {
             _spriteRenderer.sprite = activeSprite;
+            _spriteRenderer.material = _emissionGlow;
+            _light.SetActive(true);
         }
         else
         {
             _spriteRenderer.sprite = inActiveSprite;
+            _spriteRenderer.material = _lit;
+            _light.SetActive(false);
         }
     }
 

@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu
+public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
-    [SerializeField] private VehiclePanel_Controller _controller;
+    [SerializeField] private VehicleMenu_Controller _controller;
 
     [Header("")]
     [SerializeField] private Vector2 _gridData;
+
     [SerializeField] private List<VechiclePanel_ItemBox> _itemBoxes = new();
+    public List<VechiclePanel_ItemBox> itemBoxes => _itemBoxes;
 
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
@@ -22,10 +24,13 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu
 
     private Coroutine _bubbleCoroutine;
 
+
+
     // UnityEngine
     private void Start()
     {
         Set_ItemBoxes_GridNum();
+        Load_Data();
     }
 
     private void OnEnable()
@@ -42,16 +47,40 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu
         _controller.MenuOpen_Event -= Show_IngredientBubble;
     }
 
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        for (int i = 0; i < _itemBoxes.Count; i++)
+        {
+            _itemBoxes[i].Save_Data();
+        }
+    }
+
+    public void Load_Data()
+    {
+        for (int i = 0; i < _itemBoxes.Count; i++)
+        {
+            _itemBoxes[i].Load_Data();
+        }
+    }
+
+
+
     // InputSystem
     private void OnSelect()
     {
         Select_AvailableFood();
     }
+
     private void OnCursorControl()
     {
         _ingredientBubble.SetActive(false);
         Show_IngredientBubble();
     }
+
+
 
     // IVehicleMenu
     public List<VechiclePanel_ItemBox> ItemBoxes()
@@ -68,6 +97,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu
     {
 
     }
+
+
 
     // All Start Functions are Here
     private void Set_ItemBoxes_GridNum()

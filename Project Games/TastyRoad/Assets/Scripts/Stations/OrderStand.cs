@@ -11,6 +11,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     private Station_Controller _stationController;
 
     [SerializeField] private Action_Bubble _actionBubble;
+    [SerializeField] private Clock_Timer _timer;
 
     [Header("Order Stand Sprites")]
     [SerializeField] private Sprite _openStand;
@@ -38,6 +39,8 @@ public class OrderStand : MonoBehaviour, IInteractable
     private Coroutine _coinCoroutine;
     [SerializeField] private float _displayTime;
 
+
+
     // UnityEngine
     private void Awake()
     {
@@ -48,6 +51,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     private void Start()
     {
         _orderingArea.color = Color.clear;
+        _timer.Toggle_Transparency(true);
         _coinDisplay.SetActive(false);
     }
 
@@ -66,6 +70,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     public void Interact()
     {
         _coinDisplay.SetActive(false);
+        _timer.Toggle_Transparency(true);
 
         _actionBubble.Update_Bubble(ActionBubble_Sprite(), _coinSprite);
 
@@ -76,6 +81,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     public void UnInteract()
     {
         _actionBubble.Toggle_Off();
+        _timer.Toggle_Transparency(false);
 
         _stationController.Action1_Event -= Order_Toggle;
         _stationController.Action2_Event -= Show_CurrentCoin;
@@ -114,9 +120,13 @@ public class OrderStand : MonoBehaviour, IInteractable
         _coinText.text = Main_Controller.currentCoin.ToString();
         _coinAnimator.Play("Coin_collectStay");
 
+        _timer.Toggle_Transparency(true);
+
         yield return new WaitForSeconds(_displayTime);
 
         _coinDisplay.SetActive(false);
+
+        _timer.Toggle_Transparency(false);
     }
     private void Show_CurrentCoin()
     {
@@ -133,11 +143,14 @@ public class OrderStand : MonoBehaviour, IInteractable
         UnInteract();
     }
 
-    //
+
+
     private void Order_Toggle()
     {
+        bool hasBookMark = _stationController.mainController.bookmarkedFoods.Count > 0;
+
         // order open
-        if (Main_Controller.orderOpen == false)
+        if (Main_Controller.orderOpen == false && hasBookMark && _timer.timeRunning == false)
         {
             Main_Controller.orderOpen = true;
 
@@ -156,12 +169,22 @@ public class OrderStand : MonoBehaviour, IInteractable
                 // return to current loaction free roam area
                 NPC_Movement move = _waitingNPCs[i].movement;
 
+                _waitingNPCs[i].timer.Toggle_Transparency(true);
+
                 move.Stop_FreeRoam();
                 move.Free_Roam(location, 4f);
             }
 
             // reset waiting npc list
             _waitingNPCs.Clear();
+
+            if (hasBookMark && _timer.timeRunning == false)
+            {
+                // run cooltime
+                _timer.Set_Time(Mathf.RoundToInt(_attractIntervalTime));
+                _timer.Run_Time();
+                _timer.Toggle_Transparency(false);
+            }
         }
 
         // sprite update
@@ -184,9 +207,10 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         while(Main_Controller.orderOpen == true)
         {
-            yield return new WaitForSeconds(_attractIntervalTime);
-
-            while (_stationController.mainController.bookmarkedFoods.Count <= 0) yield return null;
+            while (_stationController.mainController.bookmarkedFoods.Count <= 0) 
+            {
+                yield return null;
+            }
 
             // all current npc
             List<GameObject> allCharacters = _stationController.mainController.currentCharacters;
@@ -232,9 +256,11 @@ public class OrderStand : MonoBehaviour, IInteractable
                 // keep track of currently waiting npc
                 _waitingNPCs.Add(npc);
             }
+
+            yield return new WaitForSeconds(_attractIntervalTime);
         }
     }
-
+    //
     /// <summary>
     /// Removes items in list that are destroyed or missing
     /// </summary>

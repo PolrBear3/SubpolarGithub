@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
 {
-    [SerializeField] private VehiclePanel_Controller _controller;
+    [SerializeField] private VehicleMenu_Controller _controller;
 
     [Header("")]
     [SerializeField] private Vector2 _gridData;

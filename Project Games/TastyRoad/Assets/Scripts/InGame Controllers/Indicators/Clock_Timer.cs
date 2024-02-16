@@ -75,6 +75,8 @@ public class Clock_Timer : MonoBehaviour
 
         _timeRunning = false;
         _spriteRenderer.sprite = _clockEmptySprite;
+
+        Toggle_Transparency(true);
     }
 
     public void Stop_Time()

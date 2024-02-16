@@ -10,7 +10,7 @@ public delegate void On_Event();
 public event On_Event onEvent;
 
 // constructor type
-public delegate void On_onstuctorEvent(bool eventTriggered);
+public delegate void On_ConstuctorEvent(bool eventTriggered);
 public event On_Event onConstuctorEvent;
 ```
 

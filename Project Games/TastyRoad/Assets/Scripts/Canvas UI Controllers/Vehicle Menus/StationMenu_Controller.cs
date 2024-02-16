@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 {
-    [SerializeField] private VehiclePanel_Controller _controller;
+    [SerializeField] private VehicleMenu_Controller _controller;
 
     [SerializeField] private Vector2 _gridData;
     [SerializeField] private List<VechiclePanel_ItemBox> _itemBoxes = new();

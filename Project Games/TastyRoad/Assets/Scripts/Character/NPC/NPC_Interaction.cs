@@ -50,7 +50,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _controller.timer.Toggle_Transparency(false);
+        if (Main_Controller.orderOpen) _controller.timer.Toggle_Transparency(false);
 
         _controller.actionBubble.Toggle_Off();
         StateBox_Toggle();
@@ -187,8 +187,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         while (timer.timeRunning == true) yield return null;
 
-        //
-        timer.Toggle_Transparency(true);
         // add unsatisfied icon or something ?
 
         // clear food

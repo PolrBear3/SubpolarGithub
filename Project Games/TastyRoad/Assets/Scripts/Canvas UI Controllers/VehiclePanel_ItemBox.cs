@@ -39,6 +39,8 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     [SerializeField] private List<StateBox_Sprite> stateBoxSprites = new();
     [SerializeField] private List<Image> stateBoxImages = new();
 
+
+
     // UnityEngine
     private void Awake()
     {
@@ -49,6 +51,35 @@ public class VechiclePanel_ItemBox : MonoBehaviour
 
         _stateIndicator.SetActive(false);
     }
+
+
+
+    // Save and Load
+    public void Save_Data()
+    {
+        if (_hasItem == false) return;
+
+        ES3.Save("ItemBox" + _boxNum + "_hasItem", _hasItem);
+        ES3.Save("ItemBox" + _boxNum + "_bookMarked", _bookMarked);
+        ES3.Save("ItemBox" + _boxNum + "_currentAmount", _currentAmount);
+        ES3.Save("ItemBox" + _boxNum + "_currentFood", _currentFood);
+    }
+
+    public void Load_Data()
+    {
+        _hasItem = ES3.Load("ItemBox" + _boxNum + "_hasItem", _hasItem);
+
+        _bookMarked = ES3.Load("ItemBox" + _boxNum + "_bookMarked", _bookMarked);
+        Toggle_BookMark(_bookMarked);
+
+        _currentAmount = ES3.Load("ItemBox" + _boxNum + "_currentAmount", _currentAmount);
+        Update_Amount(_currentAmount);
+
+        _currentFood = ES3.Load("ItemBox" + _boxNum + "_currentFood", _currentFood);
+        Assign_Item(_currentFood);
+    }
+
+
 
     // Mini Icon control
     public void BoxSelect_Toggle(bool isSelected)
@@ -78,6 +109,23 @@ public class VechiclePanel_ItemBox : MonoBehaviour
         _bookMarked = false;
         _bookmarkIcon.color = Color.clear;
     }
+    public void Toggle_BookMark(bool toggleOn)
+    {
+        if (_hasItem == false) return;
+
+        if (toggleOn)
+        {
+            _bookMarked = true;
+            _bookmarkIcon.color = Color.white;
+
+            return;
+        }
+
+        _bookMarked = false;
+        _bookmarkIcon.color = Color.clear;
+    }
+
+
 
     // Assign Data
     public void Assign_BoxNum(int setNum)
@@ -88,6 +136,8 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     {
         _gridNum = setNum;
     }
+
+
 
     //
     public void Empty_ItemBox()

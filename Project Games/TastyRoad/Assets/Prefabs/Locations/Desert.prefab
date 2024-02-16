@@ -103,7 +103,13 @@ MonoBehaviour:
   _mainController: {fileID: 0}
   _roamArea: {fileID: 620701033008239444}
   _spawnIntervalTime: {x: 1, y: 10}
-  _maxSpawn: 6
+  _maxSpawnPhase:
+  - timePoint: 30
+    maxSpawnAmount: 3
+  - timePoint: 50
+    maxSpawnAmount: 5
+  - timePoint: 80
+    maxSpawnAmount: 8
 --- !u!1 &3682427322221016570
 GameObject:
   m_ObjectHideFlags: 0

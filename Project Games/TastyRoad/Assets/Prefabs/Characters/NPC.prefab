@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -124,7 +124,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3850862145164036717}
+  - {fileID: 3004582541908958015}
   - {fileID: 2860891977526307164}
   - {fileID: 6212701211467358311}
   - {fileID: 148394703390997230}
@@ -173,7 +173,7 @@ SpriteRenderer:
   m_SortingLayerID: 1862457933
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 179707823, guid: 1e6974e7cf6814ad898194ed285e7776, type: 3}
+  m_Sprite: {fileID: -1015908546, guid: 8c99d34896b414ee9859f23993f0f708, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
   mainController: {fileID: 0}
   detection: {fileID: 0}
   animationController: {fileID: 0}
-  foodIcon: {fileID: 600854475878320379}
+  foodIcon: {fileID: 1483303474056452521}
   actionBubble: {fileID: 936463578848434098}
   _timer: {fileID: 5143084945135055206}
   movement: {fileID: 0}
@@ -390,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5b608fb3a2242b8b2a63bfbcd61c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateBoxes: {fileID: 310095952750188638}
+  _stateBoxes: {fileID: 1769571539367528716}
   _wakeSpriteRenderer: {fileID: 2264966909282092729}
   _eatAnimationSR: {fileID: 532419520745837338}
   animTransitionTime: 1
@@ -450,7 +450,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -535,7 +535,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -665,7 +665,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
   m_PrefabInstance: {fileID: 4692392363641812106}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &5369750837924792208
+--- !u!1001 &6216734122313750210
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -676,14 +676,6 @@ PrefabInstance:
     - target: {fileID: 797686271449595940, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_Name
       value: Food Icon
-      objectReference: {fileID: 0}
-    - target: {fileID: 797686271449595940, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-      propertyPath: _maxAmount
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: _iconTransparent
@@ -734,15 +726,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
---- !u!1 &310095952750188638 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5676929509273313230, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-  m_PrefabInstance: {fileID: 5369750837924792208}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &600854475878320379 stripped
+--- !u!114 &1483303474056452521 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-  m_PrefabInstance: {fileID: 5369750837924792208}
+  m_PrefabInstance: {fileID: 6216734122313750210}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -750,10 +737,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e5c44617d64486196e532775169a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &3850862145164036717 stripped
+--- !u!1 &1769571539367528716 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5676929509273313230, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+  m_PrefabInstance: {fileID: 6216734122313750210}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3004582541908958015 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-  m_PrefabInstance: {fileID: 5369750837924792208}
+  m_PrefabInstance: {fileID: 6216734122313750210}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8365741101089043324
 PrefabInstance:

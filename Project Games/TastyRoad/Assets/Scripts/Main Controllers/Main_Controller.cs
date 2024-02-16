@@ -6,6 +6,9 @@ public class Main_Controller : MonoBehaviour
 {
     [HideInInspector] public Data_Controller dataController;
 
+    public GlobalTime_Controller globalTime => _globalTime;
+    private GlobalTime_Controller _globalTime;
+
     [SerializeField] private Camera _mainCamera;
 
     [SerializeField] private RectTransform _openingCurtain;
@@ -24,6 +27,7 @@ public class Main_Controller : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Data_Controller dataController)) { this.dataController = dataController; }
+        if (gameObject.TryGetComponent(out GlobalTime_Controller globalTime)) { _globalTime = globalTime; }
     }
 
     private void Start()
@@ -62,6 +66,7 @@ public class Main_Controller : MonoBehaviour
         // right
         else return OuterCamera_Position(1, 0, 2, -3);
     }
+
 
 
     /// <summary>
@@ -126,7 +131,7 @@ public class Main_Controller : MonoBehaviour
     {
         for (int i = 0; i < _claimedPositions.Count; i++)
         {
-            if (checkPosition == _claimedPositions[i]) return true; 
+            if (checkPosition == _claimedPositions[i]) return true;
         }
         return false;
     }
