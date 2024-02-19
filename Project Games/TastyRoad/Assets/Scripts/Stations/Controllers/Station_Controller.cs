@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class Station_Controller : MonoBehaviour
 {
+    [SerializeField] private StationData _stationData;
+    public StationData stationData => _stationData;
+
     private SpriteRenderer _spriteRenderer;
 
     private Main_Controller _mainController;
@@ -16,9 +19,6 @@ public class Station_Controller : MonoBehaviour
     private Station_Movement _movement;
     public Station_Movement movement => _movement;
 
-    [SerializeField] private Station_ScrObj _stationScrObj;
-    public Station_ScrObj stationScrObj => _stationScrObj;
-
     public delegate void Action_Event();
 
     public event Action_Event Interact_Event;
@@ -28,6 +28,8 @@ public class Station_Controller : MonoBehaviour
     [Header("")]
     private Animator _stationAnimator;
     [SerializeField] private Color _restrictionColor;
+
+
 
     // UnityEngine
     private void Awake()
@@ -40,6 +42,8 @@ public class Station_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Station_Movement movement)) { _movement = movement; }
         if (gameObject.TryGetComponent(out Animator stationAnimator)) { _stationAnimator = stationAnimator; }
     }
+
+
 
     // InputSystem
     private void OnInteract()
@@ -55,6 +59,8 @@ public class Station_Controller : MonoBehaviour
     {
         Action2_Event?.Invoke();
     }
+
+
 
     // Green Red Color Triggers
     public void TransparentBlink_Toggle(bool toggleOn)
@@ -84,6 +90,7 @@ public class Station_Controller : MonoBehaviour
     }
 
 
+
     /// <summary>
     /// Finds Food Icon if it is attached to this station prefab.
     /// </summary>
@@ -96,6 +103,8 @@ public class Station_Controller : MonoBehaviour
         }
         return null;
     }
+
+
 
     // Main Station Controls
     public void Destroy_Station()

@@ -22,12 +22,16 @@ public class Oven : MonoBehaviour, IInteractable
     [SerializeField] private float _heatIncreaseTime;
     private Coroutine _heatCoroutine;
 
+
+
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
+
+
 
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
@@ -45,6 +49,8 @@ public class Oven : MonoBehaviour, IInteractable
         Update_FoodIcon_Position(false);
     }
 
+
+
     // IInteractable
     public void Interact()
     {
@@ -58,6 +64,8 @@ public class Oven : MonoBehaviour, IInteractable
     {
 
     }
+
+
 
     // Oven Visual Update
     private void Update_CurrentVisual()
@@ -75,6 +83,8 @@ public class Oven : MonoBehaviour, IInteractable
             _light.SetActive(false);
         }
     }
+
+
 
     // FoodIcon Position Update
     private void Update_FoodIcon_Position(bool playerDetected)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Main_Controller : MonoBehaviour
+public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
     [HideInInspector] public Data_Controller dataController;
 
@@ -33,6 +33,25 @@ public class Main_Controller : MonoBehaviour
     private void Start()
     {
         LeanTween.alpha(_openingCurtain, 0f, 1f);
+
+        Load_CurrentStations();
+    }
+
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        ES3.Save("_archiveFoods", _archiveFoods);
+        ES3.Save("_bookmarkedFoods", _bookmarkedFoods);
+
+        Save_CurrentStations();
+    }
+
+    public void Load_Data()
+    {
+        _archiveFoods = ES3.Load("_archiveFoods", _archiveFoods);
+        _bookmarkedFoods = ES3.Load("_bookmarkedFoods", _bookmarkedFoods);
     }
 
 
@@ -193,6 +212,15 @@ public class Main_Controller : MonoBehaviour
     private List<Station_Controller> _currentStations = new();
     public List<Station_Controller> currentStations => _currentStations;
 
+    private void Save_CurrentStations()
+    {
+
+    }
+    private void Load_CurrentStations()
+    {
+
+    }
+
     public void Track_CurrentStation(Station_Controller station)
     {
         _currentStations.Add(station);
@@ -201,6 +229,7 @@ public class Main_Controller : MonoBehaviour
     {
         _currentStations.Remove(station);
     }
+
     public Station_Controller Spawn_Station(int id, Vector2 spawnPosition)
     {
         List<Station_ScrObj> allStations = dataController.stations;

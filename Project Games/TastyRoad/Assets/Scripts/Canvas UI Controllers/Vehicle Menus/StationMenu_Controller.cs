@@ -237,7 +237,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
     private void Retrieve_Station()
     {
         // add current station to current empty item box
-        _controller.currentItemBox.Assign_Item(_interactStation.stationScrObj);
+        _controller.currentItemBox.Assign_Item(_interactStation.stationData.stationScrObj);
 
         // retrieve food
         if (_interactStation.Food_Icon() != null)

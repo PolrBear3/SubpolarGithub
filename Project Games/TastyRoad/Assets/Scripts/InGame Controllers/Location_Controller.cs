@@ -9,7 +9,7 @@ public struct MaxSpawn_Phase
     public int maxSpawnAmount;
 }
 
-public class Location_Controller : MonoBehaviour
+public class Location_Controller : MonoBehaviour, ISaveLoadable
 {
     [HideInInspector] public Main_Controller _mainController;
 
@@ -33,12 +33,27 @@ public class Location_Controller : MonoBehaviour
 
     private void Start()
     {
-
         // Toggle Off All Roam Area Colors On Game Start
         _roamArea.color = Color.clear;
 
+        Update_Current_MaxSpawn();
+
         _mainController.globalTime.TimeTik_Update += Update_Current_MaxSpawn;
+
         NPC_Spawn_Control();
+    }
+
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        ES3.Save("_currentMaxSpawn", _currentMaxSpawn);
+    }
+
+    public void Load_Data()
+    {
+        _currentMaxSpawn = ES3.Load("_currentMaxSpawn", _currentMaxSpawn);
     }
 
 
@@ -53,8 +68,9 @@ public class Location_Controller : MonoBehaviour
             if (_mainController.globalTime.currentTime != _maxSpawnPhase[i].timePoint) continue;
 
             _currentMaxSpawn = _maxSpawnPhase[i].maxSpawnAmount;
-
             Update_NPC_Population();
+
+            return;
         }
     }
     //
@@ -71,7 +87,7 @@ public class Location_Controller : MonoBehaviour
         }
 
         // if current npc amount is more than _currentMaxSpawn
-        int npcOverFlowCount = currentNPCs.Count - _currentMaxSpawn;
+        int npcOverFlowCount = currentCharacters.Count - _currentMaxSpawn;
         if (npcOverFlowCount <= 0) return;
 
         // current location roaming npc only leave
@@ -83,6 +99,9 @@ public class Location_Controller : MonoBehaviour
             if (move.isLeaving) continue;
 
             move.Leave(0f);
+
+            npcOverFlowCount--;
+            if (npcOverFlowCount <= 0) break;
         }
     }
 
