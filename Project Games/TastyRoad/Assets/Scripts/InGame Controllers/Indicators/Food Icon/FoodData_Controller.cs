@@ -14,7 +14,7 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private List<Sprite> _amountBarSprites = new();
     private Coroutine _amountBarCoroutine;
 
-    [HideInInspector] public FoodData currentFoodData;
+    public FoodData currentFoodData;
 
     private bool _hasFood;
     public bool hasFood => _hasFood;
@@ -37,6 +37,8 @@ public class FoodData_Controller : MonoBehaviour
 
     private void Start()
     {
+        if (_hasFood == true) return; 
+
         _icon.color = Color.clear;
         _amountBar.color = Color.clear;
     }
@@ -70,6 +72,28 @@ public class FoodData_Controller : MonoBehaviour
         {
             _amountBar.color = Color.clear;
         }
+    }
+
+
+
+    //
+    public void Load_FoodData()
+    {
+        // empty food assigned
+        if (currentFoodData.foodScrObj == null)
+        {
+            Clear_Food();
+            return;
+        }
+
+        _hasFood = true;
+
+        // food sprite update
+        _icon.transform.localPosition = currentFoodData.foodScrObj.centerPosition / 100;
+        _icon.sprite = currentFoodData.foodScrObj.sprite;
+
+        FoodIcon_Transparency(_iconTransparent);
+        AmountBar_Transparency(_amountTransparent);
     }
 
 

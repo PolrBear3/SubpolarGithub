@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
+public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
     [SerializeField] private VehicleMenu_Controller _controller;
 
     [SerializeField] private Vector2 _gridData;
-    [SerializeField] private List<VechiclePanel_ItemBox> _itemBoxes = new();
+    [SerializeField] private List<ItemSlot> _itemSlots = new();
 
     private bool _interactionMode;
     private Station_Controller _interactStation;
@@ -22,6 +22,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
         // test function for demo
         Data_Controller data = _controller.vehicleController.mainController.dataController;
+
+        Load_Data();
+
+        if (Main_Controller.gameSaved) return;
 
         Add_StationItem(data.Station_ScrObj(0), 1);
 
@@ -47,10 +51,39 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
 
 
-    // IVehicleMenu
-    public List<VechiclePanel_ItemBox> ItemBoxes()
+    // ISaveLoadable
+    public void Save_Data()
     {
-        return _itemBoxes;
+        List<ItemSlot_Data> saveSlots = new();
+
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            saveSlots.Add(_itemSlots[i].data);
+        }
+
+        ES3.Save("stationMenuSlots", saveSlots);
+    }
+
+    public void Load_Data()
+    {
+        List<ItemSlot_Data> loadSlots = ES3.Load("stationMenuSlots", new List<ItemSlot_Data>());
+
+        for (int i = 0; i < loadSlots.Count; i++)
+        {
+            _itemSlots[i].data = loadSlots[i];
+
+            if (_itemSlots[i].data.hasItem == false) continue;
+
+            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentStation);
+        }
+    }
+
+
+
+    // IVehicleMenu
+    public List<ItemSlot> ItemBoxes()
+    {
+        return _itemSlots;
     }
 
     public bool MenuInteraction_Active()
@@ -71,9 +104,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
     {
         Vector2 gridCount = Vector2.zero;
 
-        for (int i = 0; i < _itemBoxes.Count; i++)
+        for (int i = 0; i < _itemSlots.Count; i++)
         {
-            _itemBoxes[i].Assign_GridNum(gridCount);
+            _itemSlots[i].Assign_GridNum(gridCount);
 
             gridCount.x++;
 
@@ -89,13 +122,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
     // Station Export System
     public void Add_StationItem(Station_ScrObj station, int amount)
     {
-        List<VechiclePanel_ItemBox> itemBoxes = _controller.itemBoxes;
+        List<ItemSlot> itemBoxes = _controller.itemBoxes;
 
         int repeatAmount = amount;
 
         for (int i = 0; i < itemBoxes.Count; i++)
         {
-            if (itemBoxes[i].hasItem == true) continue;
+            if (itemBoxes[i].data.hasItem == true) continue;
 
             itemBoxes[i].Assign_Item(station);
             repeatAmount--;
@@ -107,9 +140,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
     private void Export_StationPrefab()
     {
-        VechiclePanel_ItemBox currentBox = _controller.currentItemBox;
+        ItemSlot currentBox = _controller.currentItemBox;
 
-        if (currentBox.hasItem == false)
+        if (currentBox.data.hasItem == false)
         {
             // updates to retrieve mode if item box is empty
             Retrieve_Station_Toggle();
@@ -146,13 +179,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
         _interactionMode = true;
 
-        int currentStationID = currentBox.currentStation.id;
+        int currentStationID = currentBox.data.currentStation.id;
 
         // instantiate selected station prefab at spawn position
         _interactStation = vehicle.mainController.Spawn_Station(currentStationID, vehicle.spawnPoint.position);
 
         Station_Movement movement = _interactStation.movement;
-        movement.enabled = true;
 
         _interactStation.Interact_Event += movement.Set_Position;
         _interactStation.detection.InteractArea_Event += movement.SetPosition_RestrictionToggle;
@@ -169,12 +201,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
         _interactStation = null;
     }
 
+
+
     // Station Retrieve System
     private void Retrieve_Station_Toggle()
     {
-        VechiclePanel_ItemBox currentBox = _controller.currentItemBox;
+        ItemSlot currentBox = _controller.currentItemBox;
 
-        if (currentBox.hasItem == true) return;
+        if (currentBox.data.hasItem == true) return;
 
         List<Station_Controller> currentStations = _controller.vehicleController.mainController.currentStations;
         if (currentStations.Count <= 0) return;
@@ -237,7 +271,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
     private void Retrieve_Station()
     {
         // add current station to current empty item box
-        _controller.currentItemBox.Assign_Item(_interactStation.stationData.stationScrObj);
+        _controller.currentItemBox.Assign_Item(_interactStation.stationScrObj);
 
         // retrieve food
         if (_interactStation.Food_Icon() != null)

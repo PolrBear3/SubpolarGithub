@@ -42,6 +42,7 @@ public class Trash : MonoBehaviour, IInteractable
     // Save Trashed Data
     private void Save_TrashedFood_Data(FoodData data)
     {
+        /*
         FoodData trashedData = new();
 
         trashedData.foodScrObj = data.foodScrObj;
@@ -54,5 +55,6 @@ public class Trash : MonoBehaviour, IInteractable
         {
             _trashedFoodData.RemoveAt(0);
         }
+        */
     }
 }

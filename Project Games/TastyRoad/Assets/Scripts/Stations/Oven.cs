@@ -31,6 +31,15 @@ public class Oven : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
 
+    private void Start()
+    {
+        Heat_Food();
+        Update_CurrentVisual();
+
+        _foodIcon.FoodIcon_Transparency(true);
+        Update_FoodIcon_Position(false);
+    }
+
 
 
     // OnTrigger

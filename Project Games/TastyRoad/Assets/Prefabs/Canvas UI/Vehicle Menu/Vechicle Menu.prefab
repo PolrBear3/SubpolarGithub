@@ -1523,6 +1523,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 1852238426014504443}
   _amountText: {fileID: 4602448859703405323}
   _selectIcon: {fileID: 8184877103335714271}
@@ -1682,6 +1688,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 1807270684341090774}
   _amountText: {fileID: 4575622922861348646}
   _selectIcon: {fileID: 8157787250952847858}
@@ -2184,6 +2196,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 1505325625895931542}
   _amountText: {fileID: 3641347752253223014}
   _selectIcon: {fileID: 8989469607155742386}
@@ -2493,6 +2511,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 1474939187326895671}
   _amountText: {fileID: 3608331848734079175}
   _selectIcon: {fileID: 8960745114130300435}
@@ -2731,7 +2755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 6659840972362914753}
   _gridData: {x: 5, y: 3}
-  _itemBoxes:
+  _itemSlots:
   - {fileID: 7655891059763584580}
   - {fileID: 7750071257134138923}
   - {fileID: 6014405626976071456}
@@ -3248,6 +3272,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 1303266661277299980}
   _amountText: {fileID: 3782308785782213628}
   _selectIcon: {fileID: 8805906486789868840}
@@ -5305,6 +5335,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 812717934910468364}
   _amountText: {fileID: 3254991428631449596}
   _selectIcon: {fileID: 7162313246497343784}
@@ -5793,6 +5829,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 691308074126733764}
   _amountText: {fileID: 3455196415293607732}
   _selectIcon: {fileID: 7042216201800321504}
@@ -8774,6 +8816,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 4137829557946575601}
   _amountText: {fileID: 2235986490367529985}
   _selectIcon: {fileID: 5858753599452320469}
@@ -8877,7 +8925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 6659840972362914753}
   _gridData: {x: 5, y: 2}
-  _itemBoxes:
+  _itemSlots:
   - {fileID: 8285752429958706766}
   - {fileID: 1873954249097714545}
   - {fileID: 349406246348956948}
@@ -9820,6 +9868,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 3848444956827031544}
   _amountText: {fileID: 1370004264985307400}
   _selectIcon: {fileID: 6722347127276597212}
@@ -11098,6 +11152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 3427108886891389506}
   _amountText: {fileID: 712939499530181810}
   _selectIcon: {fileID: 5164914317113367142}
@@ -11257,6 +11317,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 3177644800038348701}
   _amountText: {fileID: 752686965250234733}
   _selectIcon: {fileID: 4916730438980394937}
@@ -11341,6 +11407,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 3290930626577383410}
   _amountText: {fileID: 846936397493338370}
   _selectIcon: {fileID: 5010611569692297174}
@@ -12861,6 +12933,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 2840534606132130900}
   _amountText: {fileID: 72282985950087844}
   _selectIcon: {fileID: 5713208070831885424}
@@ -13245,6 +13323,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 2595379093933484732}
   _amountText: {fileID: 175627579905594444}
   _selectIcon: {fileID: 5487175296631214744}
@@ -13867,6 +13951,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 2440423112103731421}
   _amountText: {fileID: 555429506302680621}
   _selectIcon: {fileID: 5331383136120559865}
@@ -14130,6 +14220,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 6783773019706869476}
   _amountText: {fileID: 8669317459371128852}
   _selectIcon: {fileID: 3892854772346142400}
@@ -15014,6 +15110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 6637263327249831984}
   _amountText: {fileID: 8824552807406085824}
   _selectIcon: {fileID: 3764644801620074516}
@@ -15173,6 +15275,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 6743318929887247047}
   _amountText: {fileID: 8934652396306498615}
   _selectIcon: {fileID: 3870821348602888931}
@@ -15661,6 +15769,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 6386445214502853329}
   _amountText: {fileID: 9136222303506801697}
   _selectIcon: {fileID: 3495859017527223029}
@@ -15745,6 +15859,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 6353078643035044545}
   _amountText: {fileID: 9097830414085571633}
   _selectIcon: {fileID: 3461108713335063269}
@@ -16054,6 +16174,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 6428818743928024191}
   _amountText: {fileID: 9177376461594186383}
   _selectIcon: {fileID: 3536803188219974747}
@@ -17033,6 +17159,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 6026772641147987939}
   _amountText: {fileID: 8487088592542406931}
   _selectIcon: {fileID: 4287878323340238791}
@@ -17453,7 +17585,7 @@ GameObject:
   - component: {fileID: 4082479618014885759}
   - component: {fileID: 3421045530606216781}
   m_Layer: 5
-  m_Name: All Item Boxes
+  m_Name: All Item Slots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17603,7 +17735,7 @@ GameObject:
   - component: {fileID: 2639717880342736168}
   - component: {fileID: 6198467443706345289}
   m_Layer: 5
-  m_Name: All Item Boxes
+  m_Name: All Item Slots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18847,6 +18979,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 5411277463724631927}
   _amountText: {fileID: 7886911239409604999}
   _selectIcon: {fileID: 2538419929305309011}
@@ -20412,6 +20550,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 4923486628137778328}
   _amountText: {fileID: 7077665002762535528}
   _selectIcon: {fileID: 3202413740627084476}
@@ -20588,6 +20732,7 @@ MonoBehaviour:
   currentItemBox: {fileID: 0}
   _vehicleController: {fileID: 0}
   _foodMenu: {fileID: 4890725396764348385}
+  _stationMenu: {fileID: 8413640720331959169}
   _arhiveMenu: {fileID: 419257495148624526}
   _menus:
   - {fileID: 6944766528005259712}
@@ -21244,6 +21389,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 4790503619239855068}
   _amountText: {fileID: 7210296519573536044}
   _selectIcon: {fileID: 3051671423608306680}
@@ -21807,6 +21958,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 4849774824823424162}
   _amountText: {fileID: 7288666224879352402}
   _selectIcon: {fileID: 3129759671655234694}
@@ -21989,7 +22146,7 @@ GameObject:
   - component: {fileID: 807953488720841763}
   - component: {fileID: 852510921319759768}
   m_Layer: 5
-  m_Name: All Item Boxes
+  m_Name: All Item Slots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22430,7 +22587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 6659840972362914753}
   _gridData: {x: 5, y: 2}
-  _itemBoxes:
+  _itemSlots:
   - {fileID: 1851056677430028114}
   - {fileID: 7501592641669940212}
   - {fileID: 4224714405686220852}
@@ -22617,6 +22774,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 9085246450483236772}
   _amountText: {fileID: 6376552059789324628}
   _selectIcon: {fileID: 1600951422060296064}
@@ -22926,6 +23089,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 9169586647743003357}
   _amountText: {fileID: 6425437838557004845}
   _selectIcon: {fileID: 1684932497441489657}
@@ -23578,6 +23747,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 9022320826979072386}
   _amountText: {fileID: 6583962694361778034}
   _selectIcon: {fileID: 1519762193570316710}
@@ -24021,6 +24196,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 8874495550619575854}
   _amountText: {fileID: 6720458600744966366}
   _selectIcon: {fileID: 1372038761547243018}
@@ -24105,6 +24286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 8676301314632467737}
   _amountText: {fileID: 6774326163910556649}
   _selectIcon: {fileID: 1173914786158460221}
@@ -24264,6 +24451,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 8661829682783963911}
   _amountText: {fileID: 6799969136172365303}
   _selectIcon: {fileID: 1159676219472753443}
@@ -24602,6 +24795,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 8568784743793212660}
   _amountText: {fileID: 5800961233070653956}
   _selectIcon: {fileID: 2218180080565568720}
@@ -26687,6 +26886,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 8156243690426776155}
   _amountText: {fileID: 6294796147529680043}
   _selectIcon: {fileID: 1806562719932433023}
@@ -27550,6 +27755,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 7809711986908370131}
   _amountText: {fileID: 5335354327334726179}
   _selectIcon: {fileID: 307182625710763255}
@@ -28113,6 +28324,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 7536644748886396098}
   _amountText: {fileID: 5691667731200766514}
   _selectIcon: {fileID: 51075763982447846}
@@ -28901,6 +29118,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba96525bdae024118b07b7f8b71e1f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    hasItem: 0
+    bookMarked: 0
+    currentAmount: 0
+    currentFood: {fileID: 0}
+    currentStation: {fileID: 0}
   _iconImage: {fileID: 7233709609214218912}
   _amountText: {fileID: 4758082980354894928}
   _selectIcon: {fileID: 883184658734049924}

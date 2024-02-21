@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public interface IVehicleMenu
 {
-    public List<VechiclePanel_ItemBox> ItemBoxes();
+    public List<ItemSlot> ItemBoxes();
 
     public bool MenuInteraction_Active();
 
@@ -18,10 +18,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private GameObject _canvas;
 
-    private List<VechiclePanel_ItemBox> _itemBoxes = new();
-    public List<VechiclePanel_ItemBox> itemBoxes => _itemBoxes;
+    private List<ItemSlot> _itemBoxes = new();
+    public List<ItemSlot> itemBoxes => _itemBoxes;
 
-    [HideInInspector] public VechiclePanel_ItemBox currentItemBox;
+    [HideInInspector] public ItemSlot currentItemBox;
 
     [Header("Insert Vehicle Prefab")]
     [SerializeField] private Vehicle_Controller _vehicleController;
@@ -30,6 +30,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [Header("Menu Controllers")]
     [SerializeField] private FoodMenu_Controller _foodMenu;
     public FoodMenu_Controller foodMenu => _foodMenu;
+
+    [SerializeField] private StationMenu_Controller _stationMenu;
+    public StationMenu_Controller stationMenu => _stationMenu;
 
     [SerializeField] private ArchiveMenu_Controller _arhiveMenu;
     public ArchiveMenu_Controller arhiveMenu => _arhiveMenu;
@@ -61,6 +64,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        _foodMenu.gameObject.SetActive(true);
+        _foodMenu.Save_Data();
+
+        _stationMenu.gameObject.SetActive(true);
+        _stationMenu.Save_Data();
+
         _arhiveMenu.gameObject.SetActive(true);
         _arhiveMenu.Save_Data();
     }

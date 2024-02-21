@@ -4,14 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class VechiclePanel_ItemBox : MonoBehaviour
+public class ItemSlot : MonoBehaviour
 {
-    [SerializeField] private Image _iconImage;
-    [SerializeField] private TextMeshProUGUI _amountText;
-
-    [Header("")]
-    [SerializeField] private Image _selectIcon;
-    [SerializeField] private Image _bookmarkIcon;
+    public ItemSlot_Data data;
 
     private int _boxNum;
     public int boxNum => _boxNum;
@@ -19,20 +14,18 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
 
-    private bool _hasItem;
-    public bool hasItem => _hasItem;
 
-    private bool _bookMarked;
-    public bool bookMarked => _bookMarked;
 
-    private int _currentAmount;
-    public int currentAmount => _currentAmount;
+    [SerializeField] private Image _iconImage;
+    [SerializeField] private TextMeshProUGUI _amountText;
 
-    private Food_ScrObj _currentFood;
-    public Food_ScrObj currentFood => _currentFood;
 
-    private Station_ScrObj _currentStation;
-    public Station_ScrObj currentStation => _currentStation;
+
+    [Header("")]
+    [SerializeField] private Image _selectIcon;
+    [SerializeField] private Image _bookmarkIcon;
+
+
 
     [Header("")]
     [SerializeField] private GameObject _stateIndicator;
@@ -54,33 +47,6 @@ public class VechiclePanel_ItemBox : MonoBehaviour
 
 
 
-    // Save and Load
-    public void Save_Data()
-    {
-        if (_hasItem == false) return;
-
-        ES3.Save("ItemBox" + _boxNum + "_hasItem", _hasItem);
-        ES3.Save("ItemBox" + _boxNum + "_bookMarked", _bookMarked);
-        ES3.Save("ItemBox" + _boxNum + "_currentAmount", _currentAmount);
-        ES3.Save("ItemBox" + _boxNum + "_currentFood", _currentFood);
-    }
-
-    public void Load_Data()
-    {
-        _hasItem = ES3.Load("ItemBox" + _boxNum + "_hasItem", _hasItem);
-
-        _bookMarked = ES3.Load("ItemBox" + _boxNum + "_bookMarked", _bookMarked);
-        Toggle_BookMark(_bookMarked);
-
-        _currentAmount = ES3.Load("ItemBox" + _boxNum + "_currentAmount", _currentAmount);
-        Update_Amount(_currentAmount);
-
-        _currentFood = ES3.Load("ItemBox" + _boxNum + "_currentFood", _currentFood);
-        Assign_Item(_currentFood);
-    }
-
-
-
     // Mini Icon control
     public void BoxSelect_Toggle(bool isSelected)
     {
@@ -96,32 +62,32 @@ public class VechiclePanel_ItemBox : MonoBehaviour
 
     public void Toggle_BookMark()
     {
-        if (_hasItem == false) return;
+        if (data.hasItem == false) return;
 
-        if (_bookMarked == false)
+        if (data.bookMarked == false)
         {
-            _bookMarked = true;
+            data.bookMarked = true;
             _bookmarkIcon.color = Color.white;
 
             return;
         }
 
-        _bookMarked = false;
+        data.bookMarked = false;
         _bookmarkIcon.color = Color.clear;
     }
     public void Toggle_BookMark(bool toggleOn)
     {
-        if (_hasItem == false) return;
+        if (data.hasItem == false) return;
 
         if (toggleOn)
         {
-            _bookMarked = true;
+            data.bookMarked = true;
             _bookmarkIcon.color = Color.white;
 
             return;
         }
 
-        _bookMarked = false;
+        data.bookMarked = false;
         _bookmarkIcon.color = Color.clear;
     }
 
@@ -142,15 +108,15 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     //
     public void Empty_ItemBox()
     {
-        _hasItem = false;
+        data.hasItem = false;
 
-        _currentFood = null;
-        _currentStation = null;
+        data.currentFood = null;
+        data.currentStation = null;
 
         _iconImage.sprite = null;
         _iconImage.color = Color.clear;
 
-        _currentAmount = 0;
+        data.currentAmount = 0;
         _amountText.color = Color.clear;
     }
 
@@ -159,8 +125,8 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     {
         if (food != null)
         {
-            _hasItem = true;
-            _currentFood = food;
+            data.hasItem = true;
+            data.currentFood = food;
 
             _iconImage.sprite = food.sprite;
 
@@ -176,8 +142,8 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     {
         if (station != null)
         {
-            _hasItem = true;
-            _currentStation = station;
+            data.hasItem = true;
+            data.currentStation = station;
 
             _iconImage.sprite = station.miniSprite;
 
@@ -193,40 +159,40 @@ public class VechiclePanel_ItemBox : MonoBehaviour
     // text update included
     public void Assign_Amount(int assignAmount)
     {
-        _currentAmount = assignAmount;
+        data.currentAmount = assignAmount;
 
-        if (_currentAmount <= 0)
+        if (data.currentAmount <= 0)
         {
             Empty_ItemBox();
             return;
         }
 
-        if (_currentAmount == 1)
+        if (data.currentAmount == 1)
         {
             _amountText.color = Color.clear;
             return;
         }
 
-        _amountText.text = _currentAmount.ToString();
+        _amountText.text = data.currentAmount.ToString();
         _amountText.color = Color.black;
     }
     public void Update_Amount(int updateAmount)
     {
-        _currentAmount += updateAmount;
+        data.currentAmount += updateAmount;
 
-        if (_currentAmount <= 0)
+        if (data.currentAmount <= 0)
         {
             Empty_ItemBox();
             return;
         }
 
-        if (_currentAmount == 1)
+        if (data.currentAmount == 1)
         {
             _amountText.color = Color.clear;
             return;
         }
 
-        _amountText.text = _currentAmount.ToString();
+        _amountText.text = data.currentAmount.ToString();
         _amountText.color = Color.black;
     }
 

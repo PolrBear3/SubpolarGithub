@@ -29,6 +29,7 @@ public class StateBox_Controller : MonoBehaviour
 
     private void Start()
     {
+        if (_foodData.currentFoodData.stateData.Count > 0) return;
         Clear_StateBoxes();
     }
 

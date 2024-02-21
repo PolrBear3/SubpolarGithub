@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
+public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
     [SerializeField] private VehicleMenu_Controller _controller;
 
     [Header("")]
     [SerializeField] private Vector2 _gridData;
-    [SerializeField] private List<VechiclePanel_ItemBox> _itemBoxes = new();
+    [SerializeField] private List<ItemSlot> _itemSlots = new();
     [SerializeField] private int _boxCapacity;
 
     private bool _fridgeTargetMode;
@@ -26,12 +26,48 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
         // test function for demo
         Data_Controller data = _controller.vehicleController.mainController.dataController;
 
+        Load_Data();
+
+        if (Main_Controller.gameSaved) return;
+
         Add_FoodItem(data.RawFood(0), 98);
         Add_FoodItem(data.RawFood(1), 98);
         Add_FoodItem(data.RawFood(2), 98);
         Add_FoodItem(data.RawFood(3), 98);
         Add_FoodItem(data.RawFood(5), 98);
     }
+
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        List<ItemSlot_Data> saveSlots = new();
+
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            saveSlots.Add(_itemSlots[i].data);
+        }
+
+        ES3.Save("foodMenuSlots", saveSlots);
+    }
+
+    public void Load_Data()
+    {
+        List<ItemSlot_Data> loadSlots = ES3.Load("foodMenuSlots", new List<ItemSlot_Data>());
+
+        for (int i = 0; i < loadSlots.Count; i++)
+        {
+            _itemSlots[i].data = loadSlots[i];
+
+            if (_itemSlots[i].data.hasItem == false) continue;
+
+            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentFood);
+            _itemSlots[i].Assign_Amount(_itemSlots[i].data.currentAmount);
+        }
+    }
+
+
 
     private void OnEnable()
     {
@@ -45,10 +81,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
         _controller.OnSelect_Input -= Fridge_TargetSystem_Toggle;
     }
 
+
+
     // IVehicleMenu
-    public List<VechiclePanel_ItemBox> ItemBoxes()
+    public List<ItemSlot> ItemBoxes()
     {
-        return _itemBoxes;
+        return _itemSlots;
     }
 
     public bool MenuInteraction_Active()
@@ -61,14 +99,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
         Fridge_TargetSystem_Toggle();
     }
 
+
+
     // All Start Functions are Here
     private void Set_ItemBoxes_GridNum()
     {
         Vector2 gridCount = Vector2.zero;
 
-        for (int i = 0; i < _itemBoxes.Count; i++)
+        for (int i = 0; i < _itemSlots.Count; i++)
         {
-            _itemBoxes[i].Assign_GridNum(gridCount);
+            _itemSlots[i].Assign_GridNum(gridCount);
 
             gridCount.x++;
 
@@ -78,6 +118,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
             gridCount.y++;
         }
     }
+
+
 
     // Food to Fridge Export System
     private List<Fridge> CurrentFridges()
@@ -164,13 +206,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
     {
         if (_fridgeTargetMode == false) return;
 
-        Food_ScrObj prevFood = _controller.currentItemBox.currentFood;
-        int prevAmount = _controller.currentItemBox.currentAmount;
+        Food_ScrObj prevFood = _controller.currentItemBox.data.currentFood;
+        int prevAmount = _controller.currentItemBox.data.currentAmount;
 
         FoodData_Controller fridgeIcon = _currentTargetFridge.foodIcon;
         FoodData fridgeData = fridgeIcon.currentFoodData;
 
-        VechiclePanel_ItemBox box = _controller.currentItemBox;
+        ItemSlot box = _controller.currentItemBox;
 
         // current item box food = fridge food
         if (prevFood == fridgeData.foodScrObj)
@@ -195,25 +237,25 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu
 
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
-        for (int i = 0; i < _itemBoxes.Count; i++)
+        for (int i = 0; i < _itemSlots.Count; i++)
         {
-            if (_itemBoxes[i].hasItem == true && _itemBoxes[i].currentFood != food) continue;
-            if (_itemBoxes[i].currentAmount >= _boxCapacity) continue;
+            if (_itemSlots[i].data.hasItem == true && _itemSlots[i].data.currentFood != food) continue;
+            if (_itemSlots[i].data.currentAmount >= _boxCapacity) continue;
 
-            int calculatedAmount = _itemBoxes[i].currentAmount + amount;
+            int calculatedAmount = _itemSlots[i].data.currentAmount + amount;
             int leftOver = calculatedAmount - _boxCapacity;
 
-            _itemBoxes[i].Assign_Item(food);
+            _itemSlots[i].Assign_Item(food);
 
             if (leftOver <= 0)
             {
-                _itemBoxes[i].Update_Amount(amount);
+                _itemSlots[i].Update_Amount(amount);
                 return 0;
             }
 
-            _itemBoxes[i].Assign_Amount(_boxCapacity);
+            _itemSlots[i].Assign_Amount(_boxCapacity);
 
-            if (i == _itemBoxes.Count - 1) return leftOver;
+            if (i == _itemSlots.Count - 1) return leftOver;
 
             return Add_FoodItem(food, leftOver);
         }

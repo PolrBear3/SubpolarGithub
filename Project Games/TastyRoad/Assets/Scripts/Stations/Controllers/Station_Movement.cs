@@ -49,7 +49,9 @@ public class Station_Movement : MonoBehaviour
         _stationController.Restriction_Toggle(!_stationController.detection.onInteractArea);
     }
 
-    // Disables movement and set current station
+
+
+    // Disables movement and set current station when exported
     public void Set_Position()
     {
         if (_stationController.detection.onInteractArea == false) return;
@@ -70,11 +72,31 @@ public class Station_Movement : MonoBehaviour
         enabled = false;
     }
 
+    // Disables movement and set current station when game is loaded from save load system
+    public void Load_Position()
+    {
+        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+
+        _stationController.Interact_Event -= Set_Position;
+        _stationController.detection.InteractArea_Event -= SetPosition_RestrictionToggle;
+
+        _stationController.TransparentBlink_Toggle(false);
+        _movementArrows.SetActive(false);
+
+        MathRound_Snap_Position();
+
+        _rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        enabled = false;
+    }
+
+
+
+    //
     private void MathRound_Snap_Position()
     {
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
 
-        _stationController.mainController.Claim_Position(snapPosition);
         transform.localPosition = snapPosition;
+        _stationController.mainController.Claim_Position(snapPosition);
     }
 }

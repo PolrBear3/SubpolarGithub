@@ -5,9 +5,6 @@ using UnityEngine.InputSystem;
 
 public class Station_Controller : MonoBehaviour
 {
-    [SerializeField] private StationData _stationData;
-    public StationData stationData => _stationData;
-
     private SpriteRenderer _spriteRenderer;
 
     private Main_Controller _mainController;
@@ -19,11 +16,20 @@ public class Station_Controller : MonoBehaviour
     private Station_Movement _movement;
     public Station_Movement movement => _movement;
 
+
+
+    [SerializeField] private Station_ScrObj _stationScrObj;
+    public Station_ScrObj stationScrObj => _stationScrObj;
+
+
+
     public delegate void Action_Event();
 
     public event Action_Event Interact_Event;
     public event Action_Event Action1_Event;
     public event Action_Event Action2_Event;
+
+
 
     [Header("")]
     private Animator _stationAnimator;

@@ -11,16 +11,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Header("")]
     [SerializeField] private Vector2 _gridData;
 
-    [SerializeField] private List<VechiclePanel_ItemBox> _itemBoxes = new();
-    public List<VechiclePanel_ItemBox> itemBoxes => _itemBoxes;
+    [SerializeField] private List<ItemSlot> _itemSlots = new();
+    public List<ItemSlot> itemSlots => _itemSlots;
 
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
 
     [Header("")]
     [SerializeField] private GameObject _ingredientBubble;
-    [SerializeField] private VechiclePanel_ItemBox _ingredientIcon1;
-    [SerializeField] private VechiclePanel_ItemBox _ingredientIcon2;
+    [SerializeField] private ItemSlot _ingredientIcon1;
+    [SerializeField] private ItemSlot _ingredientIcon2;
 
     private Coroutine _bubbleCoroutine;
 
@@ -52,17 +52,28 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        for (int i = 0; i < _itemBoxes.Count; i++)
+        List<ItemSlot_Data> saveSlots = new();
+
+        for (int i = 0; i < _itemSlots.Count; i++)
         {
-            _itemBoxes[i].Save_Data();
+            saveSlots.Add(_itemSlots[i].data);
         }
+
+        ES3.Save("archiveMenuSlots", saveSlots);
     }
 
     public void Load_Data()
     {
-        for (int i = 0; i < _itemBoxes.Count; i++)
+        List<ItemSlot_Data> loadSlots = ES3.Load("archiveMenuSlots", new List<ItemSlot_Data>());
+
+        for (int i = 0; i < loadSlots.Count; i++)
         {
-            _itemBoxes[i].Load_Data();
+            _itemSlots[i].data = loadSlots[i];
+
+            if (_itemSlots[i].data.hasItem == false) continue;
+
+            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentFood);
+            _itemSlots[i].Toggle_BookMark(_itemSlots[i].data.bookMarked);
         }
     }
 
@@ -83,9 +94,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // IVehicleMenu
-    public List<VechiclePanel_ItemBox> ItemBoxes()
+    public List<ItemSlot> ItemBoxes()
     {
-        return _itemBoxes;
+        return _itemSlots;
     }
 
     public bool MenuInteraction_Active()
@@ -105,9 +116,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         Vector2 gridCount = Vector2.zero;
 
-        for (int i = 0; i < _itemBoxes.Count; i++)
+        for (int i = 0; i < _itemSlots.Count; i++)
         {
-            _itemBoxes[i].Assign_GridNum(gridCount);
+            _itemSlots[i].Assign_GridNum(gridCount);
 
             gridCount.x ++;
 
@@ -126,24 +137,24 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         for (int i = 0; i < archivedFoods.Count; i++)
         {
-            if (_itemBoxes[i].hasItem) continue;
+            if (_itemSlots[i].data.hasItem) continue;
 
-            _itemBoxes[i].Assign_Item(archivedFoods[i]);
+            _itemSlots[i].Assign_Item(archivedFoods[i]);
         }
     }
 
     private void Select_AvailableFood()
     {
-        VechiclePanel_ItemBox currentBox = _controller.currentItemBox;
+        ItemSlot currentBox = _controller.currentItemBox;
 
-        if (currentBox.hasItem == false) return;
+        if (currentBox.data.hasItem == false) return;
 
         currentBox.Toggle_BookMark();
 
-        Food_ScrObj currentFood = currentBox.currentFood;
+        Food_ScrObj currentFood = currentBox.data.currentFood;
         Main_Controller main = _controller.vehicleController.mainController;
 
-        if (currentBox.bookMarked == false)
+        if (currentBox.data.bookMarked == false)
         {
             main.RemoveFood_fromBookmark(currentFood);
             return;
@@ -168,16 +179,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Update_IngredientBubble()
     {
-        VechiclePanel_ItemBox currentBox = _controller.currentItemBox;
+        ItemSlot currentBox = _controller.currentItemBox;
 
-        if (currentBox.hasItem == false) return;
+        if (currentBox.data.hasItem == false) return;
 
         Vector2 itemBoxPos = new(currentBox.transform.localPosition.x, currentBox.transform.localPosition.y + 75f);
 
         _ingredientBubble.transform.localPosition = itemBoxPos;
         _ingredientBubble.SetActive(true);
 
-        Food_ScrObj currentFood = currentBox.currentFood;
+        Food_ScrObj currentFood = currentBox.data.currentFood;
 
         Food_ScrObj ingredient1 = currentFood.ingredients[0].foodScrObj;
         _ingredientIcon1.Assign_Item(ingredient1);

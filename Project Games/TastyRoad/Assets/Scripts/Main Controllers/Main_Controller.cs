@@ -18,6 +18,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Transform _characterFile;
     [SerializeField] private Transform _stationFile;
 
+    public static bool gameSaved;
     public static bool orderOpen;
     public static int currentCoin;
 
@@ -33,8 +34,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         LeanTween.alpha(_openingCurtain, 0f, 1f);
-
-        Load_CurrentStations();
     }
 
 
@@ -42,6 +41,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        gameSaved = true;
+        ES3.Save("gameSaved", gameSaved);
+
         ES3.Save("_archiveFoods", _archiveFoods);
         ES3.Save("_bookmarkedFoods", _bookmarkedFoods);
 
@@ -50,8 +52,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
+        gameSaved = ES3.Load("gameSaved", gameSaved);
+
         _archiveFoods = ES3.Load("_archiveFoods", _archiveFoods);
         _bookmarkedFoods = ES3.Load("_bookmarkedFoods", _bookmarkedFoods);
+
+        Load_CurrentStations();
     }
 
 
@@ -214,11 +220,42 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     private void Save_CurrentStations()
     {
+        List<StationData> saveData = new();
+        List<FoodData> foodData = new();
 
+        for (int i = 0; i < _currentStations.Count; i++)
+        {
+            saveData.Add(new StationData(_currentStations[i]));
+
+            if (_currentStations[i].Food_Icon() == null)
+            {
+                foodData.Add(null);
+                continue;
+            }
+            foodData.Add(new FoodData(_currentStations[i].Food_Icon().currentFoodData));
+        }
+
+        ES3.Save("_currentStations", saveData);
+        ES3.Save("_currentStations" + "foodData", foodData);
     }
     private void Load_CurrentStations()
     {
+        List<StationData> loadData = ES3.Load("_currentStations", new List<StationData>());
+        List<FoodData> foodData = ES3.Load("_currentStations" + "foodData", new List<FoodData>());
 
+        for (int i = 0; i < loadData.Count; i++)
+        {
+            Station_Controller station = Spawn_Station(loadData[i].stationID, loadData[i].position);
+            station.movement.Load_Position();
+
+            if (foodData[i] == null) continue;
+
+            FoodData_Controller foodIcon = station.Food_Icon();
+
+            foodIcon.currentFoodData = foodData[i];
+            foodIcon.Load_FoodData();
+            foodIcon.stateBoxController.Update_StateBoxes();
+        }
     }
 
     public void Track_CurrentStation(Station_Controller station)
