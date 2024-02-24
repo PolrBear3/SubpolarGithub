@@ -60,8 +60,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         {
             _itemSlots[i].data = loadSlots[i];
 
-            if (_itemSlots[i].data.hasItem == false) continue;
-
             _itemSlots[i].Assign_Item(_itemSlots[i].data.currentFood);
             _itemSlots[i].Assign_Amount(_itemSlots[i].data.currentAmount);
         }

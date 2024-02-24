@@ -27,6 +27,8 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     [SerializeField] private Transform _spawnPoint;
     public Transform spawnPoint => _spawnPoint;
 
+
+
     // UnityEngine
     private void Awake()
     {
@@ -56,7 +58,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     // InputSystem
     private void OnAction1()
     {
-        Player_PlayerInput_Toggle(false);
+        detection.player.Player_Input().enabled = false;
 
         _bubble.Toggle_Off();
         _playerInput.enabled = false;
@@ -77,6 +79,8 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     {
         _bubble.Toggle_Off();
     }
+
+
 
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
@@ -118,21 +122,5 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         {
             Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
         }
-    }
-
-    /// <summary>
-    /// Disables player movement for panel menu control.
-    /// </summary>
-    public void Player_PlayerInput_Toggle(bool toggleOn)
-    {
-        if (detection.player.gameObject.TryGetComponent(out PlayerInput playerInput) == false) return;
-
-        if (toggleOn == false)
-        {
-            playerInput.enabled = false;
-            return;
-        }
-
-        playerInput.enabled = true;
     }
 }

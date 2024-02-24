@@ -129,7 +129,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         }
 
         VehicleMenu_Toggle(false);
-        vehicleController.Player_PlayerInput_Toggle(true);
+        _vehicleController.detection.player.Player_Input().enabled = true;
     }
 
 
