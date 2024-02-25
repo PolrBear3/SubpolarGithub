@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Shop_Controller : MonoBehaviour, IInteractable
+public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 {
+    private Main_Controller _mainController;
+    public Main_Controller mainController => _mainController;
+
     private PlayerInput _playerInput;
 
     private Detection_Controller _detection;
@@ -22,6 +25,8 @@ public class Shop_Controller : MonoBehaviour, IInteractable
     // UnityEngine
     private void Awake()
     {
+        _mainController = FindObjectOfType<Main_Controller>();
+
         _playerInput = gameObject.GetComponent<PlayerInput>();
         _detection = gameObject.GetComponent<Detection_Controller>();
     }
@@ -38,7 +43,7 @@ public class Shop_Controller : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _bubble.Toggle_Off();
+        UnInteract();
     }
 
 
@@ -46,16 +51,25 @@ public class Shop_Controller : MonoBehaviour, IInteractable
     // InputSystem
     private void OnAction1()
     {
-        _bubble.Toggle_Off();
-
         Menu_Toggle(true);
+        _bubble.Toggle_Off();
     }
 
-    private void OnExit()
-    {
-        _bubble.Update_Bubble(_interactIcon, null);
 
-        Menu_Toggle(false);
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        if (!_menuPanel.TryGetComponent(out ISaveLoadable saveLoad)) return;
+
+        saveLoad.Save_Data();
+    }
+
+    public void Load_Data()
+    {
+        if (!_menuPanel.TryGetComponent(out ISaveLoadable saveLoad)) return;
+
+        saveLoad.Load_Data();
     }
 
 
@@ -63,11 +77,19 @@ public class Shop_Controller : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
+        if (_bubble.bubbleOn == true)
+        {
+            UnInteract();
+            return;
+        }
+
+        _playerInput.enabled = true;
         _bubble.Update_Bubble(_interactIcon, null);
     }
 
     public void UnInteract()
     {
+        _playerInput.enabled = false;
         _bubble.Toggle_Off();
     }
 
@@ -80,8 +102,8 @@ public class Shop_Controller : MonoBehaviour, IInteractable
     {
         _menuPanel.SetActive(toggleOn);
 
-        // shop player input
-        _playerInput.enabled = !toggleOn;
+        // player input
+        _playerInput.enabled = toggleOn;
 
         // player movement input
         if (_detection.player == null) return;

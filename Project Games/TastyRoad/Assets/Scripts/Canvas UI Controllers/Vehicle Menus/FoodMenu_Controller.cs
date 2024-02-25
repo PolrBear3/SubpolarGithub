@@ -18,23 +18,25 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private int _currentFridgeNum;
 
+
+
     // UnityEngine
     private void Start()
     {
-        Set_ItemBoxes_GridNum();
+        Set_Slots_GridNum();
+        Update_Slots();
+    }
 
-        // test function for demo
-        Data_Controller data = _controller.vehicleController.mainController.dataController;
+    private void OnEnable()
+    {
+        _controller.OnSelect_Input += Export_FoodItem_toFridge;
+        _controller.OnSelect_Input += Fridge_TargetSystem_Toggle;
+    }
 
-        Load_Data();
-
-        if (Main_Controller.gameSaved) return;
-
-        Add_FoodItem(data.RawFood(0), 98);
-        Add_FoodItem(data.RawFood(1), 98);
-        Add_FoodItem(data.RawFood(2), 98);
-        Add_FoodItem(data.RawFood(3), 98);
-        Add_FoodItem(data.RawFood(5), 98);
+    private void OnDisable()
+    {
+        _controller.OnSelect_Input -= Export_FoodItem_toFridge;
+        _controller.OnSelect_Input -= Fridge_TargetSystem_Toggle;
     }
 
 
@@ -54,6 +56,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Load_Data()
     {
+        if (!ES3.KeyExists("foodMenuSlots")) return;
+
         List<ItemSlot_Data> loadSlots = ES3.Load("foodMenuSlots", new List<ItemSlot_Data>());
 
         for (int i = 0; i < loadSlots.Count; i++)
@@ -63,20 +67,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             _itemSlots[i].Assign_Item(_itemSlots[i].data.currentFood);
             _itemSlots[i].Assign_Amount(_itemSlots[i].data.currentAmount);
         }
-    }
-
-
-
-    private void OnEnable()
-    {
-        _controller.OnSelect_Input += Export_FoodItem_toFridge;
-        _controller.OnSelect_Input += Fridge_TargetSystem_Toggle;
-    }
-
-    private void OnDisable()
-    {
-        _controller.OnSelect_Input -= Export_FoodItem_toFridge;
-        _controller.OnSelect_Input -= Fridge_TargetSystem_Toggle;
     }
 
 
@@ -100,7 +90,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // All Start Functions are Here
-    private void Set_ItemBoxes_GridNum()
+    private void Set_Slots_GridNum()
     {
         Vector2 gridCount = Vector2.zero;
 
@@ -114,6 +104,15 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
             gridCount.x = 0;
             gridCount.y++;
+        }
+    }
+
+    private void Update_Slots()
+    {
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentFood);
+            _itemSlots[i].Assign_Amount(_itemSlots[i].data.currentAmount);
         }
     }
 

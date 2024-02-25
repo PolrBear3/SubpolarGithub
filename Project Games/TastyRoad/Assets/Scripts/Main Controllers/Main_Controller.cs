@@ -18,7 +18,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Transform _characterFile;
     [SerializeField] private Transform _stationFile;
 
-    public static bool gameSaved;
     public static bool orderOpen;
     public static int currentCoin;
 
@@ -41,8 +40,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        gameSaved = true;
-        ES3.Save("gameSaved", gameSaved);
+        ES3.Save("currentCoin", currentCoin);
 
         ES3.Save("_archiveFoods", _archiveFoods);
         ES3.Save("_bookmarkedFoods", _bookmarkedFoods);
@@ -52,7 +50,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
-        gameSaved = ES3.Load("gameSaved", gameSaved);
+        currentCoin = ES3.Load("currentCoin", currentCoin);
 
         _archiveFoods = ES3.Load("_archiveFoods", _archiveFoods);
         _bookmarkedFoods = ES3.Load("_bookmarkedFoods", _bookmarkedFoods);

@@ -14,6 +14,9 @@ public class Player_Controller : MonoBehaviour
 
     public FoodData_Controller foodIcon;
 
+    [SerializeField] private ItemLauncher _itemLauncher;
+    public ItemLauncher itemLauncher => _itemLauncher;
+
     [HideInInspector] public Player_Movement movement;
     [HideInInspector] public Player_Interaction interaction;
 

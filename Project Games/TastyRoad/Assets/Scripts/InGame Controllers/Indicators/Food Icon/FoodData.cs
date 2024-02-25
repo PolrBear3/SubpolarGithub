@@ -18,6 +18,12 @@ public class FoodData
     public int currentAmount;
     public List<FoodState_Data> stateData;
 
+    public FoodData (Food_ScrObj food, int amount)
+    {
+        foodScrObj = food;
+        currentAmount = amount;
+    }
+
     public FoodData (FoodData currentData)
     {
         foodScrObj = currentData.foodScrObj;

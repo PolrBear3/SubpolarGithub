@@ -70,7 +70,6 @@ public class OrderStand : MonoBehaviour, IInteractable
     public void Interact()
     {
         _coinDisplay.SetActive(false);
-        _timer.Toggle_Transparency(true);
 
         _actionBubble.Update_Bubble(ActionBubble_Sprite(), _coinSprite);
 
@@ -81,7 +80,6 @@ public class OrderStand : MonoBehaviour, IInteractable
     public void UnInteract()
     {
         _actionBubble.Toggle_Off();
-        _timer.Toggle_Transparency(false);
 
         _stationController.Action1_Event -= Order_Toggle;
         _stationController.Action2_Event -= Show_CurrentCoin;
@@ -120,13 +118,9 @@ public class OrderStand : MonoBehaviour, IInteractable
         _coinText.text = Main_Controller.currentCoin.ToString();
         _coinAnimator.Play("Coin_collectStay");
 
-        _timer.Toggle_Transparency(true);
-
         yield return new WaitForSeconds(_displayTime);
 
         _coinDisplay.SetActive(false);
-
-        _timer.Toggle_Transparency(false);
     }
     private void Show_CurrentCoin()
     {
@@ -138,9 +132,6 @@ public class OrderStand : MonoBehaviour, IInteractable
         }
 
         _coinCoroutine = StartCoroutine(Show_CurrentCoin_Coroutine());
-
-        // reset action
-        UnInteract();
     }
 
 

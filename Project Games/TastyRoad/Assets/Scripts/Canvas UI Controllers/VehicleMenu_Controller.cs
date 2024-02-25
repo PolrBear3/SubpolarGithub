@@ -64,19 +64,20 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        _foodMenu.gameObject.SetActive(true);
-        _foodMenu.Save_Data();
-
-        _stationMenu.gameObject.SetActive(true);
-        _stationMenu.Save_Data();
-
-        _arhiveMenu.gameObject.SetActive(true);
-        _arhiveMenu.Save_Data();
+        for (int i = 0; i < _menus.Count; i++)
+        {
+            if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
+            saveLoad.Save_Data();
+        }
     }
 
     public void Load_Data()
     {
-
+        for (int i = 0; i < _menus.Count; i++)
+        {
+            if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
+            saveLoad.Load_Data();
+        }
     }
 
 

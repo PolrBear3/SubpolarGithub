@@ -20,23 +20,24 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         Set_ItemBoxes_GridNum();
 
-        // test function for demo
-        Data_Controller data = _controller.vehicleController.mainController.dataController;
+        // free station give test (remove when station shop update is added)
+        if (!ES3.KeyExists("stationMenuSlots"))
+        {
+            Data_Controller data = _controller.vehicleController.mainController.dataController;
 
-        Load_Data();
+            for (int i = 0; i < data.stations.Count; i++)
+            {
+                Add_StationItem(data.stations[i], 1);
+            }
 
-        if (Main_Controller.gameSaved) return;
+            Station_ScrObj fridge = data.Station_ScrObj(1);
 
-        Add_StationItem(data.Station_ScrObj(0), 1);
+            Add_StationItem(fridge, 1);
+            Add_StationItem(fridge, 1);
+            Add_StationItem(fridge, 1);
+        }
 
-        Add_StationItem(data.Station_ScrObj(3), 1);
-        Add_StationItem(data.Station_ScrObj(301), 1);
-
-        Add_StationItem(data.Station_ScrObj(5), 1);
-        Add_StationItem(data.Station_ScrObj(4), 1);
-
-        Add_StationItem(data.Station_ScrObj(1), 4);
-        Add_StationItem(data.Station_ScrObj(2), 1);
+        Update_Slots();
     }
 
     private void OnEnable()
@@ -66,6 +67,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Load_Data()
     {
+        if (!ES3.KeyExists("stationMenuSlots")) return;
+
         List<ItemSlot_Data> loadSlots = ES3.Load("stationMenuSlots", new List<ItemSlot_Data>());
 
         for (int i = 0; i < loadSlots.Count; i++)
@@ -112,6 +115,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
             gridCount.x = 0;
             gridCount.y++;
+        }
+    }
+
+    private void Update_Slots()
+    {
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentStation);
         }
     }
 
