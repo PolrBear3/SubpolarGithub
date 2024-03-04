@@ -10,6 +10,8 @@ public class Player_Movement : MonoBehaviour
     private Rigidbody2D _rigidBody;
 
     private Vector2 _currentDirection;
+    public Vector2 currentDirection => _currentDirection;
+
     [SerializeField] private float _moveSpeed;
 
     // UnityEngine

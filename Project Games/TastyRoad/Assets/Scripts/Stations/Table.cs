@@ -69,7 +69,7 @@ public class Table : MonoBehaviour, IInteractable
     {
         if (_detection.player.foodIcon.currentFoodData.foodScrObj == null || _foodIcon.currentFoodData.foodScrObj == null) return null;
 
-        FoodData playerFoodData = _detection.player.foodIcon.currentFoodData;
+        FoodData playerFoodData = _stationController.detection.player.foodIcon.currentFoodData;
 
         // search for cooked food
         List<FoodData> ingredients = new();
@@ -85,7 +85,7 @@ public class Table : MonoBehaviour, IInteractable
     // Swap Current and Player Food
     public void Basic_SwapFood()
     {
-        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
 
         Food_ScrObj ovenFood = _foodIcon.currentFoodData.foodScrObj;
         List<FoodState_Data> ovenStateData = new(_foodIcon.currentFoodData.stateData);

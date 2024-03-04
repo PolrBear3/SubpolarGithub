@@ -358,6 +358,9 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         // activate coin collect animation
         _coinAnimator.Play("Coin_collectFade");
 
+        // toss coin to player animation
+        _controller.itemLauncher.Parabola_CoinLaunch(_controller.detection.player.transform.position);
+
         // update data
         _controller.foodIcon.Clear_Food();
 

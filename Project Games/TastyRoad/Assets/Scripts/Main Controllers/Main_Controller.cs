@@ -143,6 +143,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public void Claim_Position(Vector2 position)
     {
+        if (Position_Claimed(position)) return;
         _claimedPositions.Add(position);
     }
     public void UnClaim_Position(Vector2 position)
@@ -223,6 +224,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _currentStations.Count; i++)
         {
+            if (_currentStations[i].movement.enabled == true) continue;
+
             saveData.Add(new StationData(_currentStations[i]));
 
             if (_currentStations[i].Food_Icon() == null)
@@ -282,6 +285,18 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
 
         return targetStation;
+    }
+    public Station_Controller Station(Vector2 searchPosition)
+    {
+        for (int i = 0; i < currentStations.Count; i++)
+        {
+            if (searchPosition.x != currentStations[i].transform.position.x) continue;
+            if (searchPosition.y != currentStations[i].transform.position.y) continue;
+
+            return currentStations[i];
+        }
+
+        return null;
     }
 
     /// <summary>

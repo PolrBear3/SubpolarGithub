@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3821725973953689430}
   - component: {fileID: 6538621288800812078}
-  - component: {fileID: 6619120531230469413}
+  - component: {fileID: 5549139569160229635}
+  - component: {fileID: 3529097674711566088}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: Food Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 1908127167
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 169430214, guid: 7b10f4ee19b254f2eb974ba11f55e47c, type: 3}
+  m_Sprite: {fileID: -285025870, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,7 +86,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6619120531230469413
+--- !u!50 &5549139569160229635
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7852751022235386187}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
+--- !u!114 &3529097674711566088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,9 +122,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7852751022235386187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c0f243e322f41349bc891908b729c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 97b0bce8cdd734343b0f61e377fac500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 0.5
-  _height: 0.5
-  _endTime: 1
+  _speed: 5
+  _angle: 80
+  _gravity: 10

@@ -10,7 +10,7 @@ public class Grocery : MonoBehaviour, ISaveLoadable
     [SerializeField] private Shop_Controller _controller;
 
     private int _hoverNum;
-    private List<FoodData> _availableFoods = new();
+    private List<FoodData> _purchasableFoods = new();
 
     [Header("Hover Item")]
     [SerializeField] private Image _itemImage;
@@ -23,9 +23,10 @@ public class Grocery : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Start()
     {
-        if (!ES3.KeyExists("Grocery_availableFoods"))
+        if (_purchasableFoods.Count <= 0)
         {
             Update_AvailableFoods();
+            Debug.Log("Grocery Food Refill Updated");
         }
 
         Update_HoverFood(0);
@@ -36,12 +37,12 @@ public class Grocery : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("Grocery_availableFoods", _availableFoods);
+        ES3.Save("Grocery_purchasableFoods", _purchasableFoods);
     }
 
     public void Load_Data()
     {
-        _availableFoods = ES3.Load("Grocery_availableFoods", _availableFoods);
+        _purchasableFoods = ES3.Load("Grocery_purchasableFoods", _purchasableFoods);
     }
 
 
@@ -74,21 +75,21 @@ public class Grocery : MonoBehaviour, ISaveLoadable
         for (int i = 0; i < dataFoods.Count; i++)
         {
             if (dataFoods[i].ingredients.Count > 0) continue;
-            _availableFoods.Add(new(dataFoods[i], 99));
+            _purchasableFoods.Add(new(dataFoods[i], 99));
         }
 
         // sort by price from lowest to highest
-        _availableFoods.Sort((x, y) => x.foodScrObj.price.CompareTo(y.foodScrObj.price));
+        _purchasableFoods.Sort((x, y) => x.foodScrObj.price.CompareTo(y.foodScrObj.price));
     }
 
     private void Update_HoverFood(int cursorDirection)
     {
         _hoverNum += cursorDirection;
 
-        if (_hoverNum < 0) _hoverNum = _availableFoods.Count - 1;
-        else if (_hoverNum > _availableFoods.Count - 1) _hoverNum = 0;
+        if (_hoverNum < 0) _hoverNum = _purchasableFoods.Count - 1;
+        else if (_hoverNum > _purchasableFoods.Count - 1) _hoverNum = 0;
 
-        FoodData currentFood = _availableFoods[_hoverNum];
+        FoodData currentFood = _purchasableFoods[_hoverNum];
 
         // update center position
         _itemImage.rectTransform.localPosition = currentFood.foodScrObj.centerPosition * 0.1f;
@@ -101,7 +102,7 @@ public class Grocery : MonoBehaviour, ISaveLoadable
     private void Purchase_HoverFood()
     {
         FoodMenu_Controller foodMenu = _controller.mainController.currentVehicle.menu.foodMenu;
-        FoodData currentFood = _availableFoods[_hoverNum];
+        FoodData currentFood = _purchasableFoods[_hoverNum];
 
         // current amount check
         if (currentFood.currentAmount <= 0)
@@ -123,8 +124,8 @@ public class Grocery : MonoBehaviour, ISaveLoadable
 
         Update_HoverFood(0);
 
-        // player coin launch animation
-        ItemLauncher playerLauncher = _controller.detection.player.itemLauncher;
-        playerLauncher.Parabola_Launch(transform.position.x - playerLauncher.transform.position.x);
+        // player coin parabola launch animation
+        Player_Controller player = _controller.detection.player;
+        player.itemLauncher.Parabola_CoinLaunch(transform.position - player.transform.position);
     }
 }

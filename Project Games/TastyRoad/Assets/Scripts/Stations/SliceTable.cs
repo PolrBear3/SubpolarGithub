@@ -2,15 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SliceTable : MonoBehaviour, IInteractable
+public class SliceTable : MonoBehaviour, IInteractable, ISignal
 {
     private Detection_Controller _detection;
 
     [SerializeField] private FoodData_Controller _foodIcon;
-    [SerializeField] private StateAnimationIcon_Controller _stateAnimation;
-
-    private Coroutine _sliceCoroutine;
-    [SerializeField] private float _sliceIncreaseTime;
+    [SerializeField] private Rhythm_HitBox _hitBox;
 
 
 
@@ -27,13 +24,14 @@ public class SliceTable : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        Slice_Food();
+        if (_foodIcon.hasFood == false) return;
+        _hitBox.Activate_HitBox();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        Slice_Food();
+        _hitBox.Deactivate_HitBox();
     }
 
 
@@ -42,12 +40,25 @@ public class SliceTable : MonoBehaviour, IInteractable
     public void Interact()
     {
         Swap_Food();
-        Slice_Food();
+
+        if (_foodIcon.hasFood == false)
+        {
+            _hitBox.Deactivate_HitBox();
+            return;
+        }
+
+        _hitBox.Activate_HitBox();
     }
 
     public void UnInteract()
     {
 
+    }
+
+    // ISignal
+    public void Signal()
+    {
+        _foodIcon.Update_State(FoodState_Type.sliced, 1);
     }
 
 
@@ -68,30 +79,5 @@ public class SliceTable : MonoBehaviour, IInteractable
 
         playerIcon.Assign_Food(ovenFood);
         playerIcon.Assign_State(ovenStateData);
-    }
-
-    // Slice Food
-    private IEnumerator Slice_Food_Coroutine()
-    {
-        while (_foodIcon.hasFood == true && _detection.player != null)
-        {
-            _stateAnimation.Toggle_Transparency(true);
-            _stateAnimation.Assign_Animation(FoodState_Type.sliced);
-
-            yield return new WaitForSeconds(_sliceIncreaseTime);
-
-            _foodIcon.Update_State(FoodState_Type.sliced, 1);
-        }
-    }
-    private void Slice_Food()
-    {
-        _stateAnimation.Toggle_Transparency(false);
-
-        if (_sliceCoroutine != null)
-        {
-            StopCoroutine(_sliceCoroutine);
-        }
-
-        _sliceCoroutine = StartCoroutine(Slice_Food_Coroutine());
     }
 }

@@ -34,7 +34,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
             Add_StationItem(fridge, 1);
             Add_StationItem(fridge, 1);
-            Add_StationItem(fridge, 1);
         }
 
         Update_Slots();
@@ -74,8 +73,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         for (int i = 0; i < loadSlots.Count; i++)
         {
             _itemSlots[i].data = loadSlots[i];
-
-            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentStation);
         }
     }
 
@@ -118,6 +115,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
+    /// <summary>
+    /// Render sprites or amounts according to slot's current loaded data
+    /// </summary>
     private void Update_Slots()
     {
         for (int i = 0; i < _itemSlots.Count; i++)

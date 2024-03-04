@@ -16,6 +16,9 @@ public class NPC_Controller : MonoBehaviour
     public FoodData_Controller foodIcon;
     public Action_Bubble actionBubble;
 
+    [SerializeField] private ItemLauncher _itemLauncher;
+    public ItemLauncher itemLauncher => _itemLauncher;
+
     [SerializeField] private Clock_Timer _timer;
     public Clock_Timer timer => _timer;
 

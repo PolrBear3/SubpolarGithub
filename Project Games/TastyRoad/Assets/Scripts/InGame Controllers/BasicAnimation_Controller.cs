@@ -5,7 +5,11 @@ using UnityEngine;
 public class BasicAnimation_Controller : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer spriteRenderer => _spriteRenderer;
+
     private Animator _animator;
+
+
 
     // UnityEngine
     private void Awake()
@@ -13,6 +17,8 @@ public class BasicAnimation_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out SpriteRenderer spriteRenderer)) { _spriteRenderer = spriteRenderer; }
         if (gameObject.TryGetComponent(out Animator animator)) { _animator = animator; }
     }
+
+
 
     // Sprite Flip Control
     public void Flip_Sprite(bool facingLeft)
@@ -41,6 +47,8 @@ public class BasicAnimation_Controller : MonoBehaviour
             Flip_Sprite(false);
         }
     }
+
+
 
     // Basic Animation Control
     public void Idle_Move(bool isMoving)

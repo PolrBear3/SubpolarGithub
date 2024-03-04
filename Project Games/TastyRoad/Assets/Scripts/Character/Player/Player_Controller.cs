@@ -20,6 +20,8 @@ public class Player_Controller : MonoBehaviour
     [HideInInspector] public Player_Movement movement;
     [HideInInspector] public Player_Interaction interaction;
 
+
+
     // UnityEngine
     private void Awake()
     {
@@ -33,6 +35,8 @@ public class Player_Controller : MonoBehaviour
 
         if (gameObject.TryGetComponent(out Player_Movement movement)) { this.movement = movement; }
     }
+
+
 
     //
     public PlayerInput Player_Input()

@@ -63,9 +63,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         for (int i = 0; i < loadSlots.Count; i++)
         {
             _itemSlots[i].data = loadSlots[i];
-
-            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentFood);
-            _itemSlots[i].Assign_Amount(_itemSlots[i].data.currentAmount);
         }
     }
 
@@ -107,6 +104,9 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
+    /// <summary>
+    /// Render sprites or amounts according to slot's current loaded data
+    /// </summary>
     private void Update_Slots()
     {
         for (int i = 0; i < _itemSlots.Count; i++)

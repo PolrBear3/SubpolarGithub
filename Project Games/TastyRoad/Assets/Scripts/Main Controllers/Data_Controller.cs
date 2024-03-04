@@ -8,24 +8,21 @@ public interface IInteractable
     void UnInteract();
 }
 
+public interface ISignal
+{
+    void Signal();
+}
+
 public class Data_Controller : MonoBehaviour
 {
-    private Main_Controller _mainController;
-
+    [Header("")] 
     public List<GameObject> locations = new();
     public List<Station_ScrObj> stations = new();
     public List<GameObject> characters = new();
 
+    [Header("")]
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
-
-
-
-    // UnityEngine
-    private void Awake()
-    {
-        if (gameObject.TryGetComponent(out Main_Controller mainController)) { _mainController = mainController; }
-    }
 
 
 

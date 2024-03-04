@@ -7,11 +7,15 @@ public class Player_Interaction : MonoBehaviour, IInteractable
 {
     private Player_Controller _controller;
 
+
+
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Player_Controller controller)) { _controller = controller; }
     }
+
+
 
     // Player Input
     private void OnInteract()
@@ -30,6 +34,8 @@ public class Player_Interaction : MonoBehaviour, IInteractable
 
         interactable.Interact();
     }
+
+
 
     // IInteractable
     public void Interact()
