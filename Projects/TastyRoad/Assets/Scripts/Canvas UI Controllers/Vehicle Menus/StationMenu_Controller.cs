@@ -123,6 +123,20 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return true;
     }
 
+    public int Station_Amount(Station_ScrObj station)
+    {
+        int count = 0;
+
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            if (_itemSlots[i].data.hasItem == false) continue;
+            if (_itemSlots[i].data.currentStation != station) continue;
+            count++;
+        }
+
+        return count;
+    }
+
 
 
     // Station Export System

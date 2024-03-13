@@ -54,7 +54,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
-        currentGoldCoin = ES3.Load("currentCoin", currentGoldCoin);
+        currentGoldCoin = ES3.Load("currentGoldCoin", currentGoldCoin);
         currentStationCoin = ES3.Load("currentStationCoin", currentStationCoin);
 
         _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);

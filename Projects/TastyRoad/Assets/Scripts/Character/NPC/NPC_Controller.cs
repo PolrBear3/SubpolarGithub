@@ -59,7 +59,6 @@ public class NPC_Controller : MonoBehaviour
     // InputSystem
     private void OnAction1()
     {
-        Debug.Log("check");
         Action1?.Invoke();
     }
 

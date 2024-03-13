@@ -12,6 +12,9 @@ public class StationShop : MonoBehaviour, ISaveLoadable
     private int _hoverNum;
     private List<Station_ScrObj> _purchasableStations = new();
 
+    [Header("Current Coin")]
+    [SerializeField] private TextMeshProUGUI _currentCoinText;
+
     [Header("Hover Item")]
     [SerializeField] private Image _itemImage;
     [SerializeField] private TextMeshProUGUI _priceText;
@@ -27,6 +30,11 @@ public class StationShop : MonoBehaviour, ISaveLoadable
         }
 
         Update_HoverStation(0);
+    }
+
+    private void OnEnable()
+    {
+        _currentCoinText.text = Main_Controller.currentStationCoin.ToString();
     }
 
 
@@ -110,6 +118,7 @@ public class StationShop : MonoBehaviour, ISaveLoadable
         stationMenu.Add_StationItem(hoveringStation, 1);
 
         Main_Controller.currentStationCoin -= hoveringStation.price;
+        _currentCoinText.text = Main_Controller.currentStationCoin.ToString();
 
         if (hoveringStation.price <= 0) return;
 

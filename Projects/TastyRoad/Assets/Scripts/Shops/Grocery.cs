@@ -12,6 +12,9 @@ public class Grocery : MonoBehaviour, ISaveLoadable
     private int _hoverNum;
     private List<FoodData> _purchasableFoods = new();
 
+    [Header("Current Coin")]
+    [SerializeField] private TextMeshProUGUI _currentCoinText;
+
     [Header("Hover Item")]
     [SerializeField] private Image _itemImage;
     [SerializeField] private TextMeshProUGUI _priceText;
@@ -27,6 +30,11 @@ public class Grocery : MonoBehaviour, ISaveLoadable
         }
 
         Update_HoverFood(0);
+    }
+
+    private void OnEnable()
+    {
+        _currentCoinText.text = Main_Controller.currentGoldCoin.ToString();
     }
 
 
@@ -113,6 +121,7 @@ public class Grocery : MonoBehaviour, ISaveLoadable
         foodMenu.Add_FoodItem(currentFood.foodScrObj, 1);
 
         Main_Controller.currentGoldCoin -= currentFood.foodScrObj.price;
+        _currentCoinText.text = Main_Controller.currentGoldCoin.ToString();
 
         Update_HoverFood(0);
 

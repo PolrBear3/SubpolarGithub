@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ScrapGrinder : MonoBehaviour
 {
@@ -9,17 +10,45 @@ public class ScrapGrinder : MonoBehaviour
     private Shop_Controller _controller;
     [SerializeField] private CoinLauncher _launcher;
 
+    [Header("Current Scrap Amount")]
+    [SerializeField]private GameObject _currentScrapIndicator;
+    [SerializeField] private TextMeshPro _amountText;
+
     [Header("")]
     [SerializeField] private float _grindDelayTime;
     
-    
-    
+
+
     // UnityEngine
     private void Awake()
     {
         _controller = gameObject.GetComponent<Shop_Controller>();
 
         _controller.Action1_Event += Grind_Scrap;
+        _controller.Interact_Event += CurrentScrapIndicator_Toggle;
+        _controller.UnInteract_Event += CurrentScrapIndicator_Toggle;
+    }
+
+
+
+    /// <summary>
+    /// Shows current scrap amount in vehcile when action bubble is active
+    /// </summary>
+    private void CurrentScrapIndicator_Toggle()
+    {
+        _currentScrapIndicator.SetActive(_controller.bubble.bubbleOn);
+
+        if (_controller.bubble.bubbleOn == false) return;
+
+        CurrentScrapText_Update();
+    }
+
+    private void CurrentScrapText_Update()
+    {
+        Station_ScrObj scrap = _controller.mainController.dataController.Station_ScrObj(6);
+        int scrapAmount = _controller.mainController.currentVehicle.menu.stationMenu.Station_Amount(scrap);
+
+        _amountText.text = scrapAmount.ToString();
     }
 
 
