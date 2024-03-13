@@ -15,11 +15,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     [SerializeField] private SpriteRenderer _eatAnimationSR;
 
     [Header("")]
-    [SerializeField] private float _animTransitionTime;
-    public float animTransitionTime => _animTransitionTime;
-
-    [SerializeField] private SpriteRenderer _coinAnimationSR;
-    [SerializeField] private Animator _coinAnimator;
+    [SerializeField] private SpriteRenderer _goldCoinSR;
 
     private bool _foodOrderServed;
     public bool foodOrderServed => _foodOrderServed;
@@ -28,6 +24,9 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     public int foodScore => _foodScore;
 
     [Header("Adjust Data")]
+    [SerializeField] private float _animTransitionTime;
+    public float animTransitionTime => _animTransitionTime;
+
     [SerializeField] private Vector2 roamDelayTime;
 
     [SerializeField] private int _defaultTimeLimit;
@@ -47,6 +46,8 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
     }
 
+
+
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -54,35 +55,46 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         if (Main_Controller.orderOpen) _controller.timer.Toggle_Transparency(false);
 
-        _controller.actionBubble.Toggle_Off();
-        StateBox_Toggle();
-
-        _controller.Action1 -= Serve_FoodOrder;
+        UnInteract();
     }
+
+
 
     // IInteractable
     public void Interact()
     {
-        Collect_Coin();
         Interact_FacePlayer();
+
+        if (_controller.foodIcon.hasFood && _controller.timer.timeRunning == false)
+        {
+            Collect_Coin();
+            return;
+        }
+
+        if (_controller.actionBubble.bubbleOn)
+        {
+            UnInteract();
+            return;
+        }
 
         if (Main_Controller.orderOpen == false) return;
         if (_controller.foodIcon.hasFood == false) return;
 
-        Start_TimeLimit();
+        _controller.PlayerInput_Toggle(true);
+
         _controller.timer.Toggle_Transparency(!_controller.actionBubble.bubbleOn);
 
         ActionBubble_Toggle();
         StateBox_Toggle();
-
-        if (_controller.actionBubble.bubbleOn == false) return;
 
         _controller.Action1 += Serve_FoodOrder;
     }
 
     public void UnInteract()
     {
-        _controller.actionBubble.Toggle_Off();
+        _controller.PlayerInput_Toggle(false);
+
+        _controller.actionBubble.Toggle(false);
         StateBox_Toggle();
 
         _controller.timer.Toggle_Transparency(false);
@@ -191,6 +203,8 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         while (timer.timeRunning == true) yield return null;
 
+        UnInteract();
+
         // add unsatisfied icon or something ?
 
         // clear food
@@ -269,10 +283,14 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
         FoodData playerFoodData = playerFoodIcon.currentFoodData;
 
-        _controller.actionBubble.Toggle_Off();
+        _controller.actionBubble.Toggle(false);
 
         // check if order food is correct
-        if (playerFoodData.foodScrObj != foodIcon.currentFoodData.foodScrObj) return;
+        if (playerFoodData.foodScrObj != foodIcon.currentFoodData.foodScrObj)
+        {
+            UnInteract();
+            return;
+        }
 
         // stop time limit
         StopCoroutine(_timeLimitCoroutine);
@@ -332,7 +350,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         detection.BoxCollider_Toggle(true);
 
         // activate coin sprite
-        _coinAnimationSR.color = Color.white;
+        _goldCoinSR.color = Color.white;
     }
 
     // Food Served 
@@ -354,16 +372,15 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
     private void Collect_Coin()
     {
-        if (_foodOrderServed == false) return;
-
-        Main_Controller.currentCoin += _foodScore;
+        Main_Controller.currentGoldCoin += _foodScore;
         _foodScore = 0;
 
-        // activate coin collect animation
-        _coinAnimator.Play("Coin_collectFade");
+        // hide coin sprite
+        _goldCoinSR.color = Color.clear;
 
         // toss coin to player animation
-        _controller.itemLauncher.Parabola_CoinLaunch(_controller.detection.player.transform.position);
+        Coin_ScrObj goldCoin = _controller.mainController.dataController.coinTypes[0];
+        _controller.itemLauncher.Parabola_CoinLaunch(goldCoin, -_controller.detection.player.transform.position);
 
         // update data
         _controller.foodIcon.Clear_Food();

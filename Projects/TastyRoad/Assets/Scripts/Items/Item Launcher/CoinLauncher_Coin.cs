@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemLauncher_Bullet : MonoBehaviour
+public class CoinLauncher_Coin : MonoBehaviour
 {
+    private SpriteRenderer _sr;
+    private Animator _anim;
     private Rigidbody2D _rb;
 
-    private ItemLauncher _itemLauncher;
+    private CoinLauncher _itemLauncher;
 
     [Header("Default Data")]
     [SerializeField] private float _speed;
@@ -19,8 +21,10 @@ public class ItemLauncher_Bullet : MonoBehaviour
 
 
     // UnityEngine
-    protected virtual void Awake()
+    private void Awake()
     {
+        _sr = gameObject.GetComponent<SpriteRenderer>();
+        _anim = gameObject.GetComponent<Animator>();
         _rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
@@ -32,13 +36,13 @@ public class ItemLauncher_Bullet : MonoBehaviour
 
 
     // Settings
-    public void Set_ItemLauncher(ItemLauncher launcher)
+    public void Set_Data(CoinLauncher launcher, Coin_ScrObj coinType, Vector2 direction)
     {
         _itemLauncher = launcher;
-    }
 
-    public void Set_Direction(Vector2 direction)
-    {
+        _sr.sprite = coinType.sprite;
+        _anim.runtimeAnimatorController = coinType.spinAnim;
+
         _direction = direction;
     }
 

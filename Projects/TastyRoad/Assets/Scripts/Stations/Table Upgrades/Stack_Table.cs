@@ -6,12 +6,12 @@ public class Stack_Table : Table, IInteractable
     // IInteractable
     public new void Interact()
     {
-        FoodData_Controller playerIcon = detection.player.foodIcon;
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
         FoodData playerData = playerIcon.currentFoodData;
 
         if (playerData.stateData.Count > 0) return;
 
-        if (playerIcon.hasFood == false || playerData.foodScrObj != foodIcon.currentFoodData.foodScrObj)
+        if (playerIcon.hasFood == false || playerData.foodScrObj != stationController.Food_Icon().currentFoodData.foodScrObj)
         {
             Swap_Food();
         }
@@ -26,21 +26,23 @@ public class Stack_Table : Table, IInteractable
     //
     private void Swap_Food()
     {
-        FoodData tableData = foodIcon.currentFoodData;
-        FoodData_Controller playerIcon = detection.player.foodIcon;
+        FoodData_Controller icon = stationController.Food_Icon();
+        FoodData tableData = icon.currentFoodData;
+
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
         if (playerIcon.hasFood == false && tableData.currentAmount > 1)
         {
             // give
-            foodIcon.Update_Amount(-1);
-            foodIcon.Show_AmountBar();
+            icon.Update_Amount(-1);
+            icon.Show_AmountBar();
 
             playerIcon.Assign_Food(tableData.foodScrObj);
         }
 
         if (tableData.currentAmount > 1)
         {
-            foodIcon.Show_AmountBar();
+            icon.Show_AmountBar();
             return;
         }
 
@@ -50,16 +52,18 @@ public class Stack_Table : Table, IInteractable
 
     private void Stack_Food()
     {
-        if (foodIcon.currentFoodData.currentAmount >= foodIcon.maxAmount)
+        FoodData_Controller icon = stationController.Food_Icon();
+
+        if (icon.currentFoodData.currentAmount >= icon.maxAmount)
         {
-            foodIcon.Show_AmountBar();
+            icon.Show_AmountBar();
             return;
         }
 
         // stack
-        foodIcon.Update_Amount(1);
-        foodIcon.Show_AmountBar();
+        icon.Update_Amount(1);
+        icon.Show_AmountBar();
 
-        detection.player.foodIcon.Clear_Food();
+        stationController.detection.player.foodIcon.Clear_Food();
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 {
+    private PlayerInput _playerInput;
+
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
-
-    private PlayerInput _playerInput;
 
     private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
@@ -16,8 +16,18 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     [SerializeField] private Action_Bubble _bubble;
     public Action_Bubble bubble => _bubble;
 
+
+
+    public delegate void InputSystem_Event();
+
+    public event InputSystem_Event Action1_Event;
+
+    public event InputSystem_Event Interact_Event;
+    public event InputSystem_Event UnInteract_Event;
+
+
+
     [Header("")]
-    [SerializeField] private Sprite _interactIcon;
     [SerializeField] private GameObject _menuPanel;
 
     [Header("")]
@@ -32,13 +42,14 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 
         _playerInput = gameObject.GetComponent<PlayerInput>();
         _detection = gameObject.GetComponent<Detection_Controller>();
+
+        Claim_Position();
     }
 
     private void Start()
     {
         Menu_Toggle(false);
-
-        Claim_Position();
+        UnInteract();
     }
 
 
@@ -57,7 +68,9 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     private void OnAction1()
     {
         Menu_Toggle(true);
-        _bubble.Toggle_Off();
+        UnInteract();
+
+        Action1_Event?.Invoke();
     }
 
 
@@ -65,6 +78,7 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        if (_menuPanel == null) return;
         if (!_menuPanel.TryGetComponent(out ISaveLoadable saveLoad)) return;
 
         saveLoad.Save_Data();
@@ -72,6 +86,7 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 
     public void Load_Data()
     {
+        if (_menuPanel == null) return;
         if (!_menuPanel.TryGetComponent(out ISaveLoadable saveLoad)) return;
 
         saveLoad.Load_Data();
@@ -82,20 +97,24 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     // IInteractable
     public void Interact()
     {
-        if (_bubble.bubbleOn == true)
+        if (_bubble.bubbleOn)
         {
             UnInteract();
             return;
         }
 
         _playerInput.enabled = true;
-        _bubble.Update_Bubble(_interactIcon, null);
+        _bubble.Toggle(true);
+
+        Interact_Event?.Invoke();
     }
 
     public void UnInteract()
     {
         _playerInput.enabled = false;
-        _bubble.Toggle_Off();
+        _bubble.Toggle(false);
+
+        UnInteract_Event?.Invoke();
     }
 
 
@@ -108,7 +127,7 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 
         for (int i = 0; i < claimRepeatNum; i++)
         {
-            mainController.Claim_Position(new(positionXNum, transform.position.y));
+            _mainController.Claim_Position(new(positionXNum, transform.position.y));
             positionXNum++;
         }
     }
@@ -120,10 +139,10 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     /// </summary>
     public void Menu_Toggle(bool toggleOn)
     {
-        _menuPanel.SetActive(toggleOn);
+        if (_menuPanel == null) return;
 
-        // player input
-        _playerInput.enabled = toggleOn;
+        // menu panel activation
+        _menuPanel.SetActive(toggleOn);
 
         // player movement input
         if (_detection.player == null) return;

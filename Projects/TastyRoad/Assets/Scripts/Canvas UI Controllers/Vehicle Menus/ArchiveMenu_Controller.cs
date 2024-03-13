@@ -94,7 +94,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // IVehicleMenu
-    public List<ItemSlot> ItemBoxes()
+    public List<ItemSlot> ItemSlots()
     {
         return _itemSlots;
     }

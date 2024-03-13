@@ -9,27 +9,31 @@ public class Action_Bubble : MonoBehaviour
     [SerializeField] private GameObject _leftBubble;
     [SerializeField] private GameObject _rightBubble;
 
-    private SpriteRenderer _leftIcon;
-    private SpriteRenderer _rightIcon;
+    [SerializeField] private SpriteRenderer _leftIcon;
+    [SerializeField] private SpriteRenderer _rightIcon;
 
     private bool _bubbleOn;
     public bool bubbleOn => _bubbleOn;
 
-    // UnityEngine
-    private void Awake()
-    {
-        if (_leftBubble.transform.GetChild(0).TryGetComponent(out SpriteRenderer leftIcon)) { _leftIcon = leftIcon; }
-        if (_rightBubble.transform.GetChild(0).TryGetComponent(out SpriteRenderer rightIcon)) { _rightIcon = rightIcon; }
-    }
 
+
+    // UnityEngine
     private void Start()
     {
-        Toggle_Off();
+        Toggle(false);
     }
 
-    // Hide Action Bubble
-    public void Toggle_Off()
+
+
+    // Show and Hide Action Bubble
+    public void Toggle(bool toggleOn)
     {
+        if (toggleOn)
+        {
+            Update_Bubble(_leftIcon.sprite, _rightIcon.sprite);
+            return;
+        }
+
         _bubbleOn = false;
         _toggle.SetActive(false);
     }
@@ -40,7 +44,7 @@ public class Action_Bubble : MonoBehaviour
         // turn off if bubble is on || no sprites are assigned
         if (_toggle.activeSelf == true || leftIcon == null)
         {
-            Toggle_Off();
+            Toggle(false);
             return;
         }
 
@@ -87,14 +91,17 @@ public class Action_Bubble : MonoBehaviour
     // Update Bubble Position
     private void Update_BubblePosition()
     {
+        Vector2 leftPos = _leftBubble.transform.localPosition;
+        Vector2 rightPos = _rightBubble.transform.localPosition;
+
         if (_rightIcon.sprite == null)
         {
-            _leftBubble.transform.localPosition = new Vector2(0f, 0.56f);
+            _leftBubble.transform.localPosition = new Vector2(0f, leftPos.y);
         }
         else
         {
-            _leftBubble.transform.localPosition = new Vector2(-0.4f, 0.56f);
-            _rightBubble.transform.localPosition = new Vector2(0.4f, 0.56f);
+            _leftBubble.transform.localPosition = new Vector2(-0.4f, leftPos.y);
+            _rightBubble.transform.localPosition = new Vector2(0.4f, rightPos.y);
         }
     }
 }

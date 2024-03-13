@@ -43,7 +43,9 @@ public class Station_Movement : MonoBehaviour
 
 
 
-    // set position restriction color toggle for detection controller event
+    /// <summary>
+    /// set position restriction color toggle for detection controller event
+    /// </summary>
     public void SetPosition_RestrictionToggle()
     {
         _stationController.Restriction_Toggle(!_stationController.detection.onInteractArea);
@@ -51,7 +53,9 @@ public class Station_Movement : MonoBehaviour
 
 
 
-    // Disables movement and set current station when exported
+    /// <summary>
+    /// Disables movement and set current station after movement is controlled
+    /// </summary>
     public void Set_Position()
     {
         if (_stationController.detection.onInteractArea == false) return;
@@ -60,25 +64,20 @@ public class Station_Movement : MonoBehaviour
 
         if (_stationController.mainController.Position_Claimed(snapPosition) == true) return;
 
-        _stationController.Interact_Event -= Set_Position;
-        _stationController.detection.InteractArea_Event -= SetPosition_RestrictionToggle;
-
-        _stationController.TransparentBlink_Toggle(false);
-        _movementArrows.SetActive(false);
-
-        MathRound_Snap_Position();
-
-        _rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
-        enabled = false;
+        Load_Position();
     }
 
-    // Disables movement and set current station when game is loaded from save load system
+    /// <summary>
+    /// Disables movement and set current station when game is loaded or spawned manually
+    /// </summary>
     public void Load_Position()
     {
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
 
         _stationController.Interact_Event -= Set_Position;
         _stationController.detection.InteractArea_Event -= SetPosition_RestrictionToggle;
+
+        _stationController.PlayerInput_Activation(false);
 
         _stationController.TransparentBlink_Toggle(false);
         _movementArrows.SetActive(false);

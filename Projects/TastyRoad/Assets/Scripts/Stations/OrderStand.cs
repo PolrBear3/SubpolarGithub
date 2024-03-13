@@ -10,7 +10,6 @@ public class OrderStand : MonoBehaviour, IInteractable
 
     private Station_Controller _stationController;
 
-    [SerializeField] private Action_Bubble _actionBubble;
     [SerializeField] private Clock_Timer _timer;
 
     [Header("Order Stand Sprites")]
@@ -30,15 +29,6 @@ public class OrderStand : MonoBehaviour, IInteractable
     [SerializeField] private float _attractIntervalTime;
     private Coroutine _attractCoroutine;
 
-    [Header ("Current Coin Display")]
-    [SerializeField] private GameObject _coinDisplay;
-    [SerializeField] private TextMeshPro _coinText;
-    [SerializeField] private Sprite _coinSprite;
-    [SerializeField] private Animator _coinAnimator;
-
-    private Coroutine _coinCoroutine;
-    [SerializeField] private float _displayTime;
-
 
 
     // UnityEngine
@@ -52,7 +42,6 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         _orderingArea.color = Color.clear;
         _timer.Toggle_Transparency(true);
-        _coinDisplay.SetActive(false);
     }
 
     // OnTrigger
@@ -60,45 +49,24 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _actionBubble.Toggle_Off();
-
-        _stationController.Action1_Event -= Order_Toggle;
-        _stationController.Action2_Event -= Show_CurrentCoin;
+        UnInteract();
     }
 
     // IInteractable
     public void Interact()
     {
-        _coinDisplay.SetActive(false);
+        if (_timer.timeRunning) return;
 
-        _actionBubble.Update_Bubble(ActionBubble_Sprite(), _coinSprite);
-
-        _stationController.Action1_Event += Order_Toggle;
-        _stationController.Action2_Event += Show_CurrentCoin;
+        Order_Toggle();
     }
 
     public void UnInteract()
     {
-        _actionBubble.Toggle_Off();
 
-        _stationController.Action1_Event -= Order_Toggle;
-        _stationController.Action2_Event -= Show_CurrentCoin;
     }
 
 
 
-    // Get Line Toggle Sprite for Action Bubble
-    private Sprite ActionBubble_Sprite()
-    {
-        // order closed
-        if (Main_Controller.orderOpen == false)
-        {
-            return _lineOpenSprite;
-        }
-
-        // order open
-        return _lineClosedSprite;
-    }
     private Sprite Station_Sprite()
     {
         // order closed
@@ -111,29 +79,6 @@ public class OrderStand : MonoBehaviour, IInteractable
         return _openStand;
     }
 
-    // Show Current Coin
-    private IEnumerator Show_CurrentCoin_Coroutine()
-    {
-        _coinDisplay.SetActive(true);
-        _coinText.text = Main_Controller.currentCoin.ToString();
-        _coinAnimator.Play("Coin_collectStay");
-
-        yield return new WaitForSeconds(_displayTime);
-
-        _coinDisplay.SetActive(false);
-    }
-    private void Show_CurrentCoin()
-    {
-        _actionBubble.Toggle_Off();
-
-        if (_coinCoroutine != null)
-        {
-            StopCoroutine(_coinCoroutine);
-        }
-
-        _coinCoroutine = StartCoroutine(Show_CurrentCoin_Coroutine());
-    }
-
 
 
     private void Order_Toggle()
@@ -141,7 +86,7 @@ public class OrderStand : MonoBehaviour, IInteractable
         bool hasBookMark = _stationController.mainController.bookmarkedFoods.Count > 0;
 
         // order open
-        if (Main_Controller.orderOpen == false && hasBookMark && _timer.timeRunning == false)
+        if (Main_Controller.orderOpen == false && hasBookMark)
         {
             Main_Controller.orderOpen = true;
 

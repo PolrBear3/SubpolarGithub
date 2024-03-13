@@ -11,15 +11,11 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     [HideInInspector] public Main_Controller mainController;
     [HideInInspector] public Detection_Controller detection;
 
+    [SerializeField] private Action_Bubble _bubble;
+
     [Header("Insert Vehicle Panel Prefab")]
     [SerializeField] private VehicleMenu_Controller _menu;
     public VehicleMenu_Controller menu => _menu;
-
-    [Header("")]
-    [SerializeField] private Action_Bubble _bubble;
-
-    [SerializeField] private Sprite _panelIcon;
-    [SerializeField] private Sprite _driveIcon;
 
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
@@ -38,14 +34,13 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _vehicleSprite = sr; }
         if (gameObject.TryGetComponent(out PlayerInput input)) { _playerInput = input; }
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { this.detection = detection; }
+
+        Claim_Position();
     }
 
     private void Start()
     {
-        _menu.VehicleMenu_Toggle(false);
-        _playerInput.enabled = false;
-
-        Claim_Position();
+        UnInteract();
     }
 
     private void Update()
@@ -60,7 +55,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     {
         detection.player.Player_Input().enabled = false;
 
-        _bubble.Toggle_Off();
+        _bubble.Toggle(false);
         _playerInput.enabled = false;
 
         _menu.VehicleMenu_Toggle(true);
@@ -71,13 +66,20 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-        _bubble.Update_Bubble(_panelIcon, null);
+        if (_bubble.bubbleOn)
+        {
+            UnInteract();
+            return;
+        }
+
         _playerInput.enabled = true;
+        _bubble.Toggle(true);
     }
 
     public void UnInteract()
     {
-        _bubble.Toggle_Off();
+        _playerInput.enabled = false;
+        _bubble.Toggle(false);
     }
 
 
@@ -89,8 +91,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
 
         Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
 
-        _bubble.Toggle_Off();
-        _playerInput.enabled = false;
+        UnInteract();
     }
 
 
@@ -99,10 +100,10 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     private void Claim_Position()
     {
         // this is the size of the vehicle (make list size for future vehicles)
-        Vector2 claim1 = new Vector2(transform.position.x + 1, transform.position.y);
-        Vector2 claim2 = new Vector2(transform.position.x - 1, transform.position.y);
+        Vector2 claim1 = new  (transform.position.x + 1, transform.position.y);
+        Vector2 claim2 = new (transform.position.x - 1, transform.position.y);
 
-        mainController.Claim_Position(transform.position);
+        mainController.Claim_Position(transform.localPosition);
         mainController.Claim_Position(claim1);
         mainController.Claim_Position(claim2);
     }

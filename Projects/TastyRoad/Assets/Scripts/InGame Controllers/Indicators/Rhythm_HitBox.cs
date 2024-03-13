@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Rhythm_HitBox : MonoBehaviour
 {
     private PlayerInput _playerInput;
+
     private SpriteRenderer _spriteRenderer;
 
     [Header("")]
@@ -23,6 +24,8 @@ public class Rhythm_HitBox : MonoBehaviour
     [Header("")]
     [SerializeField] private float _transitionTime;
     public float transitionTime => _transitionTime;
+
+    private bool _boxHit;
 
     private Coroutine _hitBoxCoroutine;
 
@@ -77,6 +80,8 @@ public class Rhythm_HitBox : MonoBehaviour
     {
         while (true)
         {
+            _boxHit = false;
+
             _spriteRenderer.sprite = _transitionBoxes[_transitionNum];
 
             // if hit ready, show hit key
@@ -104,7 +109,10 @@ public class Rhythm_HitBox : MonoBehaviour
     {
         if (_transitionNum >= _transitionBoxes.Count - 1)
         {
+            if (_boxHit) return;
             if (!transform.parent.TryGetComponent(out ISignal parent)) return;
+
+            _boxHit = true;
 
             Indicate_HitBox_Sprite(_boxHitSprite);
             parent.Signal();

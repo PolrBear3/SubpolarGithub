@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public interface IVehicleMenu
 {
-    public List<ItemSlot> ItemBoxes();
+    public List<ItemSlot> ItemSlots();
 
     public bool MenuInteraction_Active();
 
@@ -22,6 +23,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public List<ItemSlot> itemBoxes => _itemBoxes;
 
     [HideInInspector] public ItemSlot currentItemBox;
+
+    [Header("Coin Amounts")]
+    [SerializeField] private TextMeshProUGUI _goldCoinText;
+    [SerializeField] private TextMeshProUGUI _stationCoinText;
 
     [Header("Insert Vehicle Prefab")]
     [SerializeField] private Vehicle_Controller _vehicleController;
@@ -57,6 +62,11 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         if (gameObject.TryGetComponent(out PlayerInput input)) { _playerInput = input; }
+    }
+
+    private void Start()
+    {
+        VehicleMenu_Toggle(false);
     }
 
 
@@ -149,7 +159,19 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _canvas.gameObject.SetActive(true);
         _playerInput.enabled = true;
 
+        CoinText_Update();
         Menu_Control(currentMenuNum);
+    }
+
+
+
+    /// <summary>
+    /// Coin amount text update
+    /// </summary>
+    private void CoinText_Update()
+    {
+        _goldCoinText.text = Main_Controller.currentGoldCoin.ToString();
+        _stationCoinText.text = Main_Controller.currentStationCoin.ToString();
     }
 
 
@@ -207,7 +229,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _menuIcons[_currentMenuNum].SetActive(true);
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu newMenu) == false) return;
-        _itemBoxes = newMenu.ItemBoxes();
+        _itemBoxes = newMenu.ItemSlots();
 
         Assign_All_BoxNum();
 

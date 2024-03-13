@@ -19,7 +19,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Transform _stationFile;
 
     public static bool orderOpen;
-    public static int currentCoin;
+
+    public static int currentGoldCoin;
+    public static int currentStationCoin;
 
 
 
@@ -40,8 +42,10 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("currentCoin", currentCoin);
+        ES3.Save("currentGoldCoin", currentGoldCoin);
+        ES3.Save("currentStationCoin", currentStationCoin);
 
+        ES3.Save("_claimedPositions", _claimedPositions);
         ES3.Save("_archiveFoods", _archiveFoods);
         ES3.Save("_bookmarkedFoods", _bookmarkedFoods);
 
@@ -50,8 +54,10 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
-        currentCoin = ES3.Load("currentCoin", currentCoin);
+        currentGoldCoin = ES3.Load("currentCoin", currentGoldCoin);
+        currentStationCoin = ES3.Load("currentStationCoin", currentStationCoin);
 
+        _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);
         _archiveFoods = ES3.Load("_archiveFoods", _archiveFoods);
         _bookmarkedFoods = ES3.Load("_bookmarkedFoods", _bookmarkedFoods);
 
@@ -297,6 +303,22 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
 
         return null;
+    }
+
+    /// <returns>
+    /// Current stations that are retrievable by selecting from menu
+    /// </returns>
+    public List<Station_Controller> Retrievable_Stations()
+    {
+        List<Station_Controller> retrievableStations = new();
+
+        for (int i = 0; i < _currentStations.Count; i++)
+        {
+            if (_currentStations[i].stationScrObj.unRetrievable) continue;
+            retrievableStations.Add(_currentStations[i]);
+        }
+
+        return retrievableStations;
     }
 
     /// <summary>

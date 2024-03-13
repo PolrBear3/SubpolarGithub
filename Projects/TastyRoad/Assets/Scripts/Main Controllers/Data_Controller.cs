@@ -24,6 +24,14 @@ public class Data_Controller : MonoBehaviour
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
 
+    [Header("")]
+    [SerializeField] private List<Coin_ScrObj> _coinTypes = new();
+    public List<Coin_ScrObj> coinTypes => _coinTypes;
+
+    [Header("resurrect64")]
+    [SerializeField] private Color _restrictionColor;
+    public Color restrictionColor => _restrictionColor;
+
 
 
     // Check if State Data Matches (checks if visitor data matches home data)

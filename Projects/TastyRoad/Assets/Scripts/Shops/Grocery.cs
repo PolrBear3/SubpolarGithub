@@ -14,8 +14,6 @@ public class Grocery : MonoBehaviour, ISaveLoadable
 
     [Header("Hover Item")]
     [SerializeField] private Image _itemImage;
-
-    [SerializeField] private TextMeshProUGUI _amountText;
     [SerializeField] private TextMeshProUGUI _priceText;
 
 
@@ -23,26 +21,12 @@ public class Grocery : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Start()
     {
-        if (_purchasableFoods.Count <= 0)
+        if (ES3.KeyExists("Grocery_purchasableFoods") == false)
         {
             Update_AvailableFoods();
-            Debug.Log("Grocery Food Refill Updated");
         }
 
         Update_HoverFood(0);
-    }
-
-
-
-    // ISaveLoadable
-    public void Save_Data()
-    {
-        ES3.Save("Grocery_purchasableFoods", _purchasableFoods);
-    }
-
-    public void Load_Data()
-    {
-        _purchasableFoods = ES3.Load("Grocery_purchasableFoods", _purchasableFoods);
     }
 
 
@@ -55,8 +39,7 @@ public class Grocery : MonoBehaviour, ISaveLoadable
 
     private void OnCursorControl(InputValue value)
     {
-        Vector2 input = value.Get<Vector2>();
-        Update_HoverFood((int)input.x);
+        Update_HoverFood(value.Get<Vector2>().x);
     }
 
     private void OnExit()
@@ -66,7 +49,22 @@ public class Grocery : MonoBehaviour, ISaveLoadable
 
 
 
-    //
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        if (_purchasableFoods.Count <= 0) return;
+
+        ES3.Save("Grocery_purchasableFoods", _purchasableFoods);
+    }
+
+    public void Load_Data()
+    {
+        _purchasableFoods = ES3.Load("Grocery_purchasableFoods", _purchasableFoods);
+    }
+
+
+
+    // Menu Class
     private void Update_AvailableFoods()
     {
         List<Food_ScrObj> dataFoods = _controller.mainController.dataController.rawFoods;
@@ -82,9 +80,9 @@ public class Grocery : MonoBehaviour, ISaveLoadable
         _purchasableFoods.Sort((x, y) => x.foodScrObj.price.CompareTo(y.foodScrObj.price));
     }
 
-    private void Update_HoverFood(int cursorDirection)
+    private void Update_HoverFood(float cursorDirection)
     {
-        _hoverNum += cursorDirection;
+        _hoverNum += (int)cursorDirection;
 
         if (_hoverNum < 0) _hoverNum = _purchasableFoods.Count - 1;
         else if (_hoverNum > _purchasableFoods.Count - 1) _hoverNum = 0;
@@ -95,7 +93,7 @@ public class Grocery : MonoBehaviour, ISaveLoadable
         _itemImage.rectTransform.localPosition = currentFood.foodScrObj.centerPosition * 0.1f;
         _itemImage.sprite = currentFood.foodScrObj.sprite;
 
-        _amountText.text = currentFood.currentAmount.ToString();
+        // update text
         _priceText.text = currentFood.foodScrObj.price.ToString();
     }
 
@@ -104,15 +102,8 @@ public class Grocery : MonoBehaviour, ISaveLoadable
         FoodMenu_Controller foodMenu = _controller.mainController.currentVehicle.menu.foodMenu;
         FoodData currentFood = _purchasableFoods[_hoverNum];
 
-        // current amount check
-        if (currentFood.currentAmount <= 0)
-        {
-            // not enough amount animation
-            return;
-        }
-
         // player coin amount check
-        if (Main_Controller.currentCoin < currentFood.foodScrObj.price)
+        if (Main_Controller.currentGoldCoin < currentFood.foodScrObj.price)
         {
             // not enough coin animation
             return;
@@ -120,12 +111,14 @@ public class Grocery : MonoBehaviour, ISaveLoadable
 
         // update food menu and current menu
         foodMenu.Add_FoodItem(currentFood.foodScrObj, 1);
-        currentFood.currentAmount -= 1;
+
+        Main_Controller.currentGoldCoin -= currentFood.foodScrObj.price;
 
         Update_HoverFood(0);
 
         // player coin parabola launch animation
         Player_Controller player = _controller.detection.player;
-        player.itemLauncher.Parabola_CoinLaunch(transform.position - player.transform.position);
+        Coin_ScrObj goldCoin = _controller.mainController.dataController.coinTypes[0];
+        player.coinLauncher.Parabola_CoinLaunch(goldCoin, transform.position - player.transform.position);
     }
 }

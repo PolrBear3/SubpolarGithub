@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class NPC_Controller : MonoBehaviour
 {
+    private PlayerInput _playerInput;
+    public PlayerInput playerInput => _playerInput;
+
     [HideInInspector] public Main_Controller mainController;
 
     private Character_Data _characterData;
@@ -16,8 +19,8 @@ public class NPC_Controller : MonoBehaviour
     public FoodData_Controller foodIcon;
     public Action_Bubble actionBubble;
 
-    [SerializeField] private ItemLauncher _itemLauncher;
-    public ItemLauncher itemLauncher => _itemLauncher;
+    [SerializeField] private CoinLauncher _itemLauncher;
+    public CoinLauncher itemLauncher => _itemLauncher;
 
     [SerializeField] private Clock_Timer _timer;
     public Clock_Timer timer => _timer;
@@ -28,9 +31,13 @@ public class NPC_Controller : MonoBehaviour
     [HideInInspector] public NPC_Movement movement;
     [HideInInspector] public NPC_Interaction interaction;
 
+
+
     // UnityEngine
     private void Awake()
     {
+        _playerInput = gameObject.GetComponent<PlayerInput>();
+
         mainController = FindObjectOfType<Main_Controller>();
         mainController.Track_CurrentCharacter(gameObject);
 
@@ -42,9 +49,25 @@ public class NPC_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out NPC_Interaction interaction)) { this.interaction = interaction; }
     }
 
+    private void Start()
+    {
+        PlayerInput_Toggle(false);
+    }
+
+
+
     // InputSystem
     private void OnAction1()
     {
+        Debug.Log("check");
         Action1?.Invoke();
+    }
+
+
+
+    //
+    public void PlayerInput_Toggle(bool toggleOn)
+    {
+        _playerInput.enabled = toggleOn;
     }
 }

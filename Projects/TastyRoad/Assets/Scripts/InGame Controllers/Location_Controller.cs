@@ -16,7 +16,11 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
-    [Header("")]
+    [Header("Export Range")]
+    [SerializeField] private Vector2 _horizontalRange;
+    [SerializeField] private Vector2 _verticalRange;
+
+    [Header("Spawn")]
     [SerializeField] private Vector2 _spawnIntervalTime;
 
     [SerializeField] private List<MaxSpawn_Phase> _maxSpawnPhase;
@@ -41,6 +45,9 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
         _mainController.globalTime.TimeTik_Update += Update_Current_MaxSpawn;
 
         NPC_Spawn_Control();
+
+        if (ES3.KeyExists("_currentMaxSpawn")) return;
+        Spawn_Scraps(5);
     }
 
 
@@ -124,6 +131,29 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
             yield return new WaitForSeconds(randIntervalTime);
 
             _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(Random.Range(0, 2)));
+        }
+    }
+
+
+
+    // Scrap
+    private void Spawn_Scraps(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            int randX = Random.Range((int)_horizontalRange.x, (int)_horizontalRange.y);
+            int randY = Random.Range((int)_verticalRange.x, (int)_verticalRange.y);
+
+            Vector2 spawnPos = new(randX, randY);
+
+            if (_mainController.Position_Claimed(spawnPos))
+            {
+                i--;
+                continue;
+            }
+
+            Station_Controller scrap = _mainController.Spawn_Station(6, spawnPos);
+            scrap.movement.Load_Position();
         }
     }
 }

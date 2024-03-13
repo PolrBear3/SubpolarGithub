@@ -231,7 +231,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stationScrObj: {fileID: 11400000, guid: 0f31023eefe2544a0bd111e3e4514df6, type: 2}
-  _restrictionColor: {r: 0.9098039, g: 0.23137255, b: 0.23137255, a: 1}
 --- !u!114 &3609195736537386832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,7 +269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9bb058d8c78a44bdb2af3b860c2dc77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _foodIcon: {fileID: 6331317056316867110}
   _actionBubble: {fileID: 2546997982877371005}
 --- !u!1001 &1517393429545405773
 PrefabInstance:
@@ -337,17 +335,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
---- !u!114 &6331317056316867110 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-  m_PrefabInstance: {fileID: 1517393429545405773}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94e5c44617d64486196e532775169a9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &7708737667395846320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
@@ -428,6 +415,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3224405375533897282}
     m_Modifications:
+    - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4034252938134837271, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Name
       value: Action Bubble
@@ -438,7 +429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.95
+      value: 1.24
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.z

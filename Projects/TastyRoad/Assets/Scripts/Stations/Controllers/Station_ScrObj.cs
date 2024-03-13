@@ -10,6 +10,8 @@ public class Station_ScrObj : ScriptableObject
     public Sprite miniSprite;
     public Vector2 centerPosition;
 
+    public bool unRetrievable;
+
     public string stationName;
     public int id;
 

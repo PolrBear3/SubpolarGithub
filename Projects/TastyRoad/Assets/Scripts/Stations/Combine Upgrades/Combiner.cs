@@ -13,7 +13,7 @@ public class Combiner : Table, IInteractable
     // UnityEngine
     private void Start()
     {
-        foodIcon.AmountBar_Transparency(true);
+        stationController.Food_Icon().AmountBar_Transparency(true);
     }
 
 
@@ -21,12 +21,14 @@ public class Combiner : Table, IInteractable
     // IInteractable
     public new void Interact()
     {
-        FoodData_Controller playerIcon = detection.player.foodIcon;
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
         FoodData playerData = playerIcon.currentFoodData;
 
         if (playerData.stateData.Count > 0) return;
 
-        if (playerIcon.hasFood == false || playerData.foodScrObj != foodIcon.currentFoodData.foodScrObj)
+        FoodData_Controller icon = stationController.Food_Icon();
+
+        if (playerIcon.hasFood == false || playerData.foodScrObj != icon.currentFoodData.foodScrObj)
         {
             Swap_Food();
         }
@@ -35,7 +37,7 @@ public class Combiner : Table, IInteractable
             Stack_Food();
         }
 
-        if (foodIcon.hasFood == false) return;
+        if (icon.hasFood == false) return;
 
         Combine_Food();
     }
@@ -45,21 +47,23 @@ public class Combiner : Table, IInteractable
     //
     private void Swap_Food()
     {
-        FoodData tableData = foodIcon.currentFoodData;
-        FoodData_Controller playerIcon = detection.player.foodIcon;
+        FoodData_Controller icon = stationController.Food_Icon();
+        FoodData tableData = icon.currentFoodData;
+
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
         if (playerIcon.hasFood == false && tableData.currentAmount > 1)
         {
             // give
-            foodIcon.Update_Amount(-1);
-            foodIcon.Show_AmountBar();
+            icon.Update_Amount(-1);
+            icon.Show_AmountBar();
 
             playerIcon.Assign_Food(tableData.foodScrObj);
         }
 
         if (tableData.currentAmount > 1)
         {
-            foodIcon.Show_AmountBar();
+            icon.Show_AmountBar();
             return;
         }
 
@@ -69,17 +73,19 @@ public class Combiner : Table, IInteractable
 
     private void Stack_Food()
     {
-        if (foodIcon.currentFoodData.currentAmount >= foodIcon.maxAmount)
+        FoodData_Controller icon = stationController.Food_Icon();
+
+        if (icon.currentFoodData.currentAmount >= icon.maxAmount)
         {
-            foodIcon.Show_AmountBar();
+            icon.Show_AmountBar();
             return;
         }
 
         // stack
-        foodIcon.Update_Amount(1);
-        foodIcon.Show_AmountBar();
+        icon.Update_Amount(1);
+        icon.Show_AmountBar();
 
-        detection.player.foodIcon.Clear_Food();
+        stationController.detection.player.foodIcon.Clear_Food();
     }
 
 
@@ -93,8 +99,15 @@ public class Combiner : Table, IInteractable
         Vector2 leftPos = new(transform.position.x - 1, transform.position.y);
         Vector2 rightPos = new(transform.position.x + 1, transform.position.y);
 
-        icons.Add(main.Station(leftPos).Food_Icon());
-        icons.Add(main.Station(rightPos).Food_Icon());
+        if (main.Station(leftPos) != null)
+        {
+            icons.Add(main.Station(leftPos).Food_Icon());
+        }
+
+        if (main.Station(rightPos) != null)
+        {
+            icons.Add(main.Station(rightPos).Food_Icon());
+        }
 
         for (int i = icons.Count - 1; i >= 0; i--)
         {
@@ -116,7 +129,9 @@ public class Combiner : Table, IInteractable
         Main_Controller main = stationController.mainController;
         Data_Controller data = main.dataController;
 
-        while (foodIcon.hasFood)
+        FoodData_Controller icon = stationController.Food_Icon();
+
+        while (icon.hasFood)
         {
             // check food icons from side stations
             if (SideStation_FoodIcons().Count < 2) break;
@@ -137,7 +152,7 @@ public class Combiner : Table, IInteractable
             if (main.Is_ArchivedFood(combinedFood) == false) break;
 
             // check if current food match combine food
-            if (foodIcon.currentFoodData.foodScrObj != combinedFood) break;
+            if (icon.currentFoodData.foodScrObj != combinedFood) break;
 
             // update side food amounts
             for (int i = 0; i < SideStation_FoodIcons().Count; i++)
@@ -147,8 +162,8 @@ public class Combiner : Table, IInteractable
             }
 
             // combine amount update
-            foodIcon.Update_Amount(1);
-            foodIcon.Show_AmountBar();
+            icon.Update_Amount(1);
+            icon.Show_AmountBar();
 
             yield return new WaitForSeconds(_coolTime);
         }

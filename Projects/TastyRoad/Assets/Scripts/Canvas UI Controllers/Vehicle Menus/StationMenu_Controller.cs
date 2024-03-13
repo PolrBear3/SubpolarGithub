@@ -19,23 +19,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Start()
     {
         Set_ItemBoxes_GridNum();
-
-        // free station give test (remove when station shop update is added)
-        if (!ES3.KeyExists("stationMenuSlots"))
-        {
-            Data_Controller data = _controller.vehicleController.mainController.dataController;
-
-            for (int i = 0; i < data.stations.Count; i++)
-            {
-                Add_StationItem(data.stations[i], 1);
-            }
-
-            Station_ScrObj fridge = data.Station_ScrObj(1);
-
-            Add_StationItem(fridge, 1);
-            Add_StationItem(fridge, 1);
-        }
-
         Update_Slots();
     }
 
@@ -79,7 +62,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // IVehicleMenu
-    public List<ItemSlot> ItemBoxes()
+    public List<ItemSlot> ItemSlots()
     {
         return _itemSlots;
     }
@@ -97,7 +80,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
 
-    // All Start Functions are Here
+    // All Starting Functions are Here
     private void Set_ItemBoxes_GridNum()
     {
         Vector2 gridCount = Vector2.zero;
@@ -128,18 +111,30 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
 
+    // Check
+    public bool Slots_Full()
+    {
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            if (_itemSlots[i].data.hasItem) continue;
+            return false;
+        }
+
+        return true;
+    }
+
+
+
     // Station Export System
     public void Add_StationItem(Station_ScrObj station, int amount)
     {
-        List<ItemSlot> itemBoxes = _controller.itemBoxes;
-
         int repeatAmount = amount;
 
-        for (int i = 0; i < itemBoxes.Count; i++)
+        for (int i = 0; i < _itemSlots.Count; i++)
         {
-            if (itemBoxes[i].data.hasItem == true) continue;
+            if (_itemSlots[i].data.hasItem == true) continue;
 
-            itemBoxes[i].Assign_Item(station);
+            _itemSlots[i].Assign_Item(station);
             repeatAmount--;
 
             if (repeatAmount > 0) continue;
@@ -219,8 +214,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (currentBox.data.hasItem == true) return;
 
-        List<Station_Controller> currentStations = _controller.vehicleController.mainController.currentStations;
-        if (currentStations.Count <= 0) return;
+        List<Station_Controller> retrievableStations = _controller.vehicleController.mainController.Retrievable_Stations();
+        if (retrievableStations.Count <= 0) return;
 
         if (_interactionMode == true)
         {
@@ -241,7 +236,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactionMode = true;
         _targetNum = 0;
 
-        _interactStation = currentStations[_targetNum];
+        _interactStation = retrievableStations[_targetNum];
         _interactStation.TransparentBlink_Toggle(true);
 
         _controller.OnSelect_Input -= Export_StationPrefab;
@@ -252,7 +247,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Station_TargetDirection_Control(float xInputDirection)
     {
-        List<Station_Controller> currentStations = _controller.vehicleController.mainController.currentStations;
+        List<Station_Controller> retrievableStations = _controller.vehicleController.mainController.Retrievable_Stations();
 
         int convertedDireciton = (int)xInputDirection;
         int nextStationNum = _targetNum + convertedDireciton;
@@ -260,11 +255,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // less than min 
         if (nextStationNum < 0)
         {
-            nextStationNum = currentStations.Count - 1;
+            nextStationNum = retrievableStations.Count - 1;
         }
 
         // more than max
-        if (nextStationNum > currentStations.Count - 1)
+        if (nextStationNum > retrievableStations.Count - 1)
         {
             nextStationNum = 0;
         }
@@ -273,7 +268,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _targetNum = nextStationNum;
 
-        _interactStation = currentStations[_targetNum];
+        _interactStation = retrievableStations[_targetNum];
         _interactStation.TransparentBlink_Toggle(true);
     }
 

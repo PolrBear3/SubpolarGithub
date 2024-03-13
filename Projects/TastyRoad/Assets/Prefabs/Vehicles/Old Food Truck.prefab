@@ -194,10 +194,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainController: {fileID: 0}
   detection: {fileID: 0}
-  _menu: {fileID: 5034237652985656200}
   _bubble: {fileID: 4110360785583018332}
-  _panelIcon: {fileID: -738002346, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
-  _driveIcon: {fileID: 75145822, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  _menu: {fileID: 5034237652985656200}
   _transparencyPoint: {fileID: 1081486458950851603}
   _spawnPoint: {fileID: 1075718707391883764}
 --- !u!1 &8111214158233450994
@@ -351,9 +349,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5419941011623935099}
     m_Modifications:
+    - target: {fileID: 1775199335361529302, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4034252938134837271, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Name
       value: Action Bubble
+      objectReference: {fileID: 0}
+    - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1398750444, guid: aa56c1520b90e426282191b333978268, type: 3}
+    - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.x
@@ -361,7 +375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.z

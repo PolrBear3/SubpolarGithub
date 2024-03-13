@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Station_Controller : MonoBehaviour
 {
+    private PlayerInput _playerInput;
     private SpriteRenderer _spriteRenderer;
 
     private Main_Controller _mainController;
@@ -21,6 +22,7 @@ public class Station_Controller : MonoBehaviour
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
 
+    private Animator _stationAnimator;
 
 
     public delegate void Action_Event();
@@ -31,18 +33,13 @@ public class Station_Controller : MonoBehaviour
 
 
 
-    [Header("")]
-    private Animator _stationAnimator;
-    [SerializeField] private Color _restrictionColor;
-
-
-
     // UnityEngine
     private void Awake()
     {
         _mainController = FindObjectOfType<Main_Controller>();
         _mainController.Track_CurrentStation(this);
 
+        _playerInput = gameObject.GetComponent<PlayerInput>();
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
         if (gameObject.TryGetComponent(out Station_Movement movement)) { _movement = movement; }
@@ -86,7 +83,7 @@ public class Station_Controller : MonoBehaviour
         if (toggleOn == true)
         {
             _stationAnimator.enabled = false;
-            _spriteRenderer.color = _restrictionColor;
+            _spriteRenderer.color = _mainController.dataController.restrictionColor;
             return;
         }
 
@@ -113,6 +110,11 @@ public class Station_Controller : MonoBehaviour
 
 
     // Main Station Controls
+    public void PlayerInput_Activation(bool isEnabled)
+    {
+        _playerInput.enabled = isEnabled;
+    }
+
     public void Destroy_Station()
     {
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);

@@ -8,19 +8,12 @@ public class Table : MonoBehaviour, IInteractable
     private Station_Controller _stationController;
     public Station_Controller stationController => _stationController;
 
-    private Detection_Controller _detection;
-    public Detection_Controller detection => _detection;
-
-    [SerializeField] private FoodData_Controller _foodIcon;
-    public FoodData_Controller foodIcon => _foodIcon;
-
     [SerializeField] private Action_Bubble _actionBubble;
 
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Station_Controller controller)) { _stationController = controller; }
-        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
 
 
@@ -28,12 +21,10 @@ public class Table : MonoBehaviour, IInteractable
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (_stationController.movement.enabled) return;
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        if (_actionBubble != null) _actionBubble.Toggle_Off();
-
-        _stationController.Action1_Event -= Basic_SwapFood;
-        _stationController.Action2_Event -= Merge_Food;
+        UnInteract();
     }
 
 
@@ -48,16 +39,18 @@ public class Table : MonoBehaviour, IInteractable
             return;
         }
 
-        _actionBubble.Update_Bubble(_foodIcon.currentFoodData.foodScrObj, CookedFood());
+        _actionBubble.Update_Bubble(_stationController.Food_Icon().currentFoodData.foodScrObj, CookedFood());
 
+        _stationController.PlayerInput_Activation(true);
         _stationController.Action1_Event += Basic_SwapFood;
         _stationController.Action2_Event += Merge_Food;
     }
 
     public void UnInteract()
     {
-        if (_actionBubble != null) _actionBubble.Toggle_Off();
+        if (_actionBubble != null) _actionBubble.Toggle(false);
 
+        _stationController.PlayerInput_Activation(false);
         _stationController.Action1_Event -= Basic_SwapFood;
         _stationController.Action2_Event -= Merge_Food;
     }
@@ -67,7 +60,9 @@ public class Table : MonoBehaviour, IInteractable
     // Get Available Cooked Food Merged with Table and Player Food
     private Food_ScrObj CookedFood()
     {
-        if (_detection.player.foodIcon.currentFoodData.foodScrObj == null || _foodIcon.currentFoodData.foodScrObj == null) return null;
+        FoodData_Controller icon = _stationController.Food_Icon();
+
+        if (_stationController.detection.player.foodIcon.currentFoodData.foodScrObj == null || icon.currentFoodData.foodScrObj == null) return null;
 
         FoodData playerFoodData = _stationController.detection.player.foodIcon.currentFoodData;
 
@@ -75,7 +70,7 @@ public class Table : MonoBehaviour, IInteractable
         List<FoodData> ingredients = new();
 
         ingredients.Add(playerFoodData);
-        ingredients.Add(_foodIcon.currentFoodData);
+        ingredients.Add(icon.currentFoodData);
 
         Food_ScrObj cookedFood = _stationController.mainController.dataController.CookedFood(ingredients);
 
@@ -85,16 +80,17 @@ public class Table : MonoBehaviour, IInteractable
     // Swap Current and Player Food
     public void Basic_SwapFood()
     {
+        FoodData_Controller icon = _stationController.Food_Icon();
         FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
 
-        Food_ScrObj ovenFood = _foodIcon.currentFoodData.foodScrObj;
-        List<FoodState_Data> ovenStateData = new(_foodIcon.currentFoodData.stateData);
+        Food_ScrObj ovenFood = icon.currentFoodData.foodScrObj;
+        List<FoodState_Data> ovenStateData = new(icon.currentFoodData.stateData);
 
         Food_ScrObj playerFood = playerIcon.currentFoodData.foodScrObj;
         List<FoodState_Data> playerStateData = new(playerIcon.currentFoodData.stateData);
 
-        _foodIcon.Assign_Food(playerFood);
-        _foodIcon.Assign_State(playerStateData);
+        icon.Assign_Food(playerFood);
+        icon.Assign_State(playerStateData);
 
         playerIcon.Assign_Food(ovenFood);
         playerIcon.Assign_State(ovenStateData);
@@ -107,13 +103,15 @@ public class Table : MonoBehaviour, IInteractable
     private void Merge_Food()
     {
         Main_Controller main = _stationController.mainController;
-        FoodData_Controller playerIcon = _detection.player.foodIcon;
+
+        FoodData_Controller icon = _stationController.Food_Icon();
+        FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
 
         // get cooked food
         List<FoodData> ingredients = new();
 
         ingredients.Add(playerIcon.currentFoodData);
-        ingredients.Add(_foodIcon.currentFoodData);
+        ingredients.Add(icon.currentFoodData);
 
         Food_ScrObj cookedFood = main.dataController.CookedFood(ingredients);
 
@@ -121,8 +119,8 @@ public class Table : MonoBehaviour, IInteractable
         main.AddFood_toArhive(cookedFood);
 
         // change table food to cooked food
-        _foodIcon.Assign_Food(cookedFood);
-        _foodIcon.Clear_State();
+        icon.Assign_Food(cookedFood);
+        icon.Clear_State();
 
         // empty player food
         playerIcon.Clear_Food();
