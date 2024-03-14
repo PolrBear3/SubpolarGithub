@@ -41,10 +41,6 @@ public class NPC_Movement : MonoBehaviour
     private void Update()
     {
         _controller.animationController.Idle_Move(Is_Moving());
-    }
-
-    private void FixedUpdate()
-    {
         TargetPosition_Movement();
     }
 
@@ -79,7 +75,7 @@ public class NPC_Movement : MonoBehaviour
         return distance < threshold;
     }
 
-    // Movement Fixed Updates
+    // Movement Update
     private void TargetPosition_Movement()
     {
         if (At_TargetPosition() == false)
