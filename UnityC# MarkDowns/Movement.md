@@ -15,6 +15,10 @@ private float _speed
 private void Update()
 {
     transform.Translate(_direction * _speed * Time.deltaTime);
+
+    // move towards
+    Vector2 setPosition;
+    transform.position = Vector2.MoveTowards(transform.position, setPosition, _speed * Time.deltaTime);
 }
 ```
 

@@ -6,13 +6,14 @@ public class Game_Controller : MonoBehaviour
 {
     private Data_Controller _data;
 
-    private List<GameObject> _currentNPCs = new();
-    public List<GameObject> currentNPCs => _currentNPCs;
+    private List<NPC_Controller> _allCurrentNPCs = new();
+    public List<NPC_Controller> allCurrentNPCs => _allCurrentNPCs;
 
     [SerializeField] private List<Section_Controller> _sections = new();
     public List<Section_Controller> sections => _sections;
 
     [Header("")]
+    [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Vector2 _intervalTimeRange;
 
     // UnityEngine
@@ -35,12 +36,27 @@ public class Game_Controller : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            GameObject spawnNPC = Instantiate(_data.npcPrefab, _sections[0].waitPoint.position, Quaternion.identity);
-            _currentNPCs.Add(spawnNPC);
+            GameObject spawnNPC = Instantiate(_data.npcPrefab, _spawnPoint.position, Quaternion.identity);
+            NPC_Controller npc = spawnNPC.GetComponent<NPC_Controller>();
+
+            Track_NPC(npc);
+            _sections[npc.sectionNum].Track_NPC(npc);
+
+            _sections[npc.sectionNum].Line_NPCs();
 
             float timeRange = Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
-
             yield return new WaitForSeconds(timeRange);
         }
+    }
+
+    // All NPCs Tracking
+    private void Track_NPC(NPC_Controller npc)
+    {
+        _allCurrentNPCs.Add(npc);
+    }
+
+    public void UnTrack_NPC(NPC_Controller npc)
+    {
+        _allCurrentNPCs.Remove(npc);
     }
 }

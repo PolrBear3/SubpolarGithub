@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 4786409423926487987}
   - component: {fileID: 2676213898963939256}
   - component: {fileID: 76079344318828451}
+  - component: {fileID: 7286911703594979237}
   - component: {fileID: 4627391493120650045}
+  - component: {fileID: 3168935587068008540}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -107,6 +109,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7286911703594979237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004298907668634748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e268c700b02640859f2911e921aed07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4627391493120650045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,3 +134,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 0.5
+--- !u!114 &3168935587068008540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004298907668634748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cefd8544a6904f5586a8e1e084854ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
