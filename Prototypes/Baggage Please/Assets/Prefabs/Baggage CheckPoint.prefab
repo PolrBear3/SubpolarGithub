@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2137624498213837052}
   - component: {fileID: 2410132963737691118}
   - component: {fileID: 5695520714332842412}
-  - component: {fileID: 4456894666336961478}
+  - component: {fileID: 106183566418335051}
   m_Layer: 0
-  m_Name: Baggage Drop Point
+  m_Name: Baggage CheckPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
@@ -154,7 +154,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4456894666336961478
+--- !u!114 &106183566418335051
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,10 +163,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1914843883020428549}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d2dfd77544a74c64b79d29b66672a5c, type: 3}
+  m_Script: {fileID: 11500000, guid: e3d357e5f43c14b5ab53e276ce7a8cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baggagePosition: {fileID: 1755453113701698877}
+  _currentBaggages: []
 --- !u!1 &2769275280659602315
 GameObject:
   m_ObjectHideFlags: 0

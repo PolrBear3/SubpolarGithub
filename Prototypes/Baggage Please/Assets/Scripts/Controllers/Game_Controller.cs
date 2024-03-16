@@ -13,10 +13,16 @@ public class Game_Controller : MonoBehaviour
     [SerializeField] private List<Section_Controller> _sections = new();
     public List<Section_Controller> sections => _sections;
 
-    [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private List<Baggage_CheckPoint> _checkPoints = new();
+    public List<Baggage_CheckPoint> checkPoints => _checkPoints;
 
     [Header("")]
+    [SerializeField] private Transform _spawnPoint;
+    public Transform spawnPoint => _spawnPoint;
+
     [SerializeField] private Vector2 _intervalTimeRange;
+
+
 
     // UnityEngine
     private void Awake()
@@ -27,8 +33,12 @@ public class Game_Controller : MonoBehaviour
     private void Start()
     {
         SetAll_SectionNum();
+        SetAll_CheckPoints();
+
         Spawn_NPCs(5);
     }
+
+
 
     // Section Control
     private void SetAll_SectionNum()
@@ -38,6 +48,16 @@ public class Game_Controller : MonoBehaviour
             _sections[i].Set_SectionNum(i);
         }
     }
+
+    private void SetAll_CheckPoints()
+    {
+        for (int i = 0; i < _checkPoints.Count; i++)
+        {
+            _checkPoints[i].Set_CheckPointNum(i);
+        }
+    }
+
+
 
     // NPC Control
     private void Spawn_NPCs(int amount)
@@ -56,8 +76,8 @@ public class Game_Controller : MonoBehaviour
             GameObject baggagePrefab = Instantiate(_data.baggagePrefab, Vector2.zero, Quaternion.identity);
             Baggage setBaggage = baggagePrefab.GetComponent<Baggage>();
 
-            setBaggage.Set_DropPoint(npc.interaction.dropPoint);
             npc.interaction.Set_Baggage(setBaggage);
+            setBaggage.Set_OwnerNPC(npc);
 
             Track_NPC(npc);
             _sections[0].Track_NPC(npc);
@@ -68,6 +88,8 @@ public class Game_Controller : MonoBehaviour
             yield return new WaitForSeconds(timeRange);
         }
     }
+
+
 
     // Tracking
     private void Track_NPC(NPC_Controller npc)

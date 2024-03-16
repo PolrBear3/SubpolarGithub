@@ -9,8 +9,7 @@ public class NPC_Interaction : MonoBehaviour
     public delegate void Event();
     public event Event PointerClick_Event;
 
-    [SerializeField] private Transform _dropPoint;
-    public Transform dropPoint => _dropPoint;
+    private SpriteRenderer _sr;
 
     private Baggage _baggage;
     public Baggage baggage => _baggage;
@@ -18,17 +17,27 @@ public class NPC_Interaction : MonoBehaviour
     private bool _hasBaggage;
     public bool hasBaggage => _hasBaggage;
 
+    [SerializeField] private Transform _baggagePoint;
+    public Transform baggagePoint => _baggagePoint;
+
+
+
     // UnityEngine
     private void Awake()
     {
+        _sr = gameObject.GetComponent<SpriteRenderer>();
         _controller = gameObject.GetComponent<NPC_Controller>();
     }
 
     private void Start()
     {
+        Drop_Baggage();
+
         PointerClick_Event += Moveto_NextSection;
         PointerClick_Event += ReLine_CurrentSection;
     }
+
+
 
     // Event Trigger
     public void PointerClick()
@@ -36,7 +45,9 @@ public class NPC_Interaction : MonoBehaviour
         PointerClick_Event?.Invoke();
     }
 
-    //
+
+
+    // Section and Line Control
     public void Moveto_NextSection()
     {
         if (_controller.movement.Is_TargetPoint() == false) return;
@@ -62,22 +73,39 @@ public class NPC_Interaction : MonoBehaviour
         _controller.currentSection.Line_NPCs();
     }
 
-    //
-    public void HasBaggage_Update()
-    {
-        if (_baggage.dropPoint == _dropPoint)
-        {
-            _hasBaggage = true;
-        }
-        else
-        {
-            _hasBaggage = false;
-        }
-    }
 
+
+    // Baggage Control
     public void Set_Baggage(Baggage startBaggage)
     {
         _hasBaggage = true;
         _baggage = startBaggage;
+
+        _baggage.transform.parent = transform;
+        _baggage.transform.localPosition = _baggagePoint.localPosition;
+    }
+
+    public void Drop_Baggage()
+    {
+        StartCoroutine(Drop_Baggage_Coroutine());
+    }
+    private IEnumerator Drop_Baggage_Coroutine()
+    {
+        while (_hasBaggage)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (_controller.currentSection.At_WaitPoint(transform) == false) continue;
+
+            _hasBaggage = false;
+            _controller.gameController.checkPoints[_baggage.checkNum].Set_Baggage(_baggage);
+
+            break;
+        }
+    }
+
+    public void Collect_Baggage()
+    {
+        Set_Baggage(_baggage);
     }
 }
