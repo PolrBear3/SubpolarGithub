@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Game_Controller : MonoBehaviour
 {
@@ -55,8 +56,8 @@ public class Game_Controller : MonoBehaviour
             GameObject baggagePrefab = Instantiate(_data.baggagePrefab, Vector2.zero, Quaternion.identity);
             Baggage setBaggage = baggagePrefab.GetComponent<Baggage>();
 
+            setBaggage.Set_DropPoint(npc.interaction.dropPoint);
             npc.interaction.Set_Baggage(setBaggage);
-            npc.interaction.baggage.Set_Location(npc.interaction.baggagePoint);
 
             Track_NPC(npc);
             _sections[0].Track_NPC(npc);

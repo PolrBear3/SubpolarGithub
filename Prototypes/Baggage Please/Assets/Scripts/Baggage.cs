@@ -7,26 +7,22 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 {
     private SpriteRenderer _sr;
 
-    public delegate void Event();
-    public event Event PointerClick_Event;
+    private Game_Controller _gameController;
 
     [Header("")]
     [SerializeField] private List<Sprite> _baggageSprites = new();
 
-    private Transform _baggageLocation;
-    public Transform baggageLocation => _baggageLocation;
-
-    private Baggage_DropPoint _detectedDropPoint;
-    public Baggage_DropPoint detectedDropPoint => _detectedDropPoint;
+    [SerializeField] private Transform _dropPoint;
+    public Transform dropPoint => _dropPoint;
 
     [Header("")]
     [SerializeField] private float _speed;
 
-    private bool _moveable;
-    public bool moveable => _moveable;
-
     private bool _dragging;
     public bool dragging => _dragging;
+
+    private bool _moveable;
+    public bool moveable => _moveable;
 
     private bool _droppable;
     public bool droppable => _droppable;
@@ -35,6 +31,7 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
+        _gameController = FindObjectOfType<Game_Controller>();
     }
 
     private void Start()
@@ -51,20 +48,9 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (_droppable == false) return;
         if (!collision.TryGetComponent(out Baggage_DropPoint point)) return;
-        _detectedDropPoint = point;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Baggage_DropPoint point)) return;
-        _detectedDropPoint = null;
-    }
-
-    // Event Trigger
-    public void PointerClick()
-    {
-        PointerClick_Event?.Invoke();
+        _dropPoint = point.baggagePosition;
     }
 
     // EventSystems
@@ -75,28 +61,19 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (_moveable) return;
-
         _dragging = true;
 
+        transform.parent = _gameController.transform;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector2(mousePos.x, mousePos.y);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_moveable) return;
-
         _dragging = false;
 
-        if (_detectedDropPoint != null && _droppable)
-        {
-            _detectedDropPoint.RePosition_DroppedBaggages();
-        }
-        else
-        {
-            transform.localPosition = Vector2.zero;
-        }
+        transform.parent = _dropPoint;
+        transform.localPosition = Vector2.zero;
     }
 
     // Toggle Control
@@ -112,14 +89,14 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         }
     }
 
-    public void Droppable_Toggle(bool toggleOn)
-    {
-        _droppable = toggleOn;
-    }
-
     public void Movement_Toggle(bool toggleOn)
     {
         _moveable = toggleOn;
+    }
+
+    public void Droppable_Toggle(bool toggleOn)
+    {
+        _droppable = toggleOn;
     }
 
     //
@@ -129,8 +106,11 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         _sr.sprite = _baggageSprites[spriteNum];
     }
 
-    public void Set_Location(Transform location)
+    public void Set_DropPoint(Transform dropPoint)
     {
-        _baggageLocation = location;
+        _dropPoint = dropPoint;
+        transform.parent = dropPoint;
+
+        transform.localPosition = Vector2.zero;
     }
 }

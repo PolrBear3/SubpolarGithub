@@ -9,8 +9,8 @@ public class NPC_Interaction : MonoBehaviour
     public delegate void Event();
     public event Event PointerClick_Event;
 
-    [SerializeField] private Transform _baggagePoint;
-    public Transform baggagePoint => _baggagePoint;
+    [SerializeField] private Transform _dropPoint;
+    public Transform dropPoint => _dropPoint;
 
     private Baggage _baggage;
     public Baggage baggage => _baggage;
@@ -60,16 +60,8 @@ public class NPC_Interaction : MonoBehaviour
     }
 
     //
-    public void Set_Baggage(Baggage setBaggage)
+    public void Set_Baggage(Baggage startBaggage)
     {
-        setBaggage.transform.parent = _baggagePoint;
-        _baggage = setBaggage;
-        _baggage.transform.localPosition = Vector2.zero;
-    }
-
-    public void Drop_Baggage(Transform dropPoint)
-    {
-        _baggage.transform.parent = dropPoint;
-        _baggage.transform.localPosition = Vector2.zero;
+        _baggage = startBaggage;
     }
 }

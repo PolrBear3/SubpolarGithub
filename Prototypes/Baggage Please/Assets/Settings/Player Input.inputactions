@@ -1,0 +1,54 @@
+{
+    "name": "Player Input",
+    "maps": [
+        {
+            "name": "InGame",
+            "id": "6b1cac55-d3dd-4210-ac45-8376ca207dc6",
+            "actions": [
+                {
+                    "name": "Action1",
+                    "type": "Button",
+                    "id": "883f0697-80c8-4d4e-a003-666d30c94ac4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Action2",
+                    "type": "Button",
+                    "id": "1d2ebaae-63c7-4e47-b687-3b91d67e4e8d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "eb8f3ed3-2fdb-4aed-a5d4-0a0adec4b789",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42682405-d4d8-4eec-a173-416d337109a4",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
