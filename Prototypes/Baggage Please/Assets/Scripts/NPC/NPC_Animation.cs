@@ -16,4 +16,8 @@ public class NPC_Animation : MonoBehaviour
     }
 
     //
+    public void Play_AnimationState(string animationName)
+    {
+        _anim.Play(animationName);
+    }
 }

@@ -4,24 +4,27 @@ using UnityEngine;
 
 public class NPC_Movement : MonoBehaviour
 {
-    private Game_Controller _gameController;
     private NPC_Controller _controller;
 
     private Vector2 _targetPoint;
-    private float _threshold;
 
     [SerializeField] private float _moveSpeed;
 
     // UnityEngine
     private void Awake()
     {
-        _gameController = FindObjectOfType<Game_Controller>();
         _controller = gameObject.GetComponent<NPC_Controller>();
     }
 
     private void Update()
     {
-        if (Is_TargetPoint()) return;
+        if (Is_TargetPoint())
+        {
+            _controller.animationControl.Play_AnimationState("NPC_idle");
+            return;
+        }
+
+        _controller.animationControl.Play_AnimationState("NPC_walk");
         Move();
     }
 
@@ -29,13 +32,15 @@ public class NPC_Movement : MonoBehaviour
     public bool Is_TargetPoint()
     {
         float distance = Vector2.Distance(transform.position, _targetPoint);
-        if (distance < _threshold) return true;
+
+        if (distance < 0.1f) return true;
         else return false;
     }
 
     // Update Movement
     public void Move()
     {
+        // transform.Translate(_moveSpeed * Time.deltaTime * new Vector2(1f, 0f));
         transform.position = Vector2.MoveTowards(transform.position, _targetPoint, _moveSpeed * Time.deltaTime);
     }
 
