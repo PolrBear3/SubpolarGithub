@@ -15,6 +15,9 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     [SerializeField] private Transform _dropPoint;
     public Transform dropPoint => _dropPoint;
 
+    public delegate void Event();
+    public event Event EndDrag_Event;
+
     [Header("")]
     [SerializeField] private float _speed;
 
@@ -74,6 +77,8 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
         transform.parent = _dropPoint;
         transform.localPosition = Vector2.zero;
+
+        EndDrag_Event?.Invoke();
     }
 
     // Toggle Control
@@ -111,6 +116,7 @@ public class Baggage : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         _dropPoint = dropPoint;
         transform.parent = dropPoint;
 
+        if (dragging) return;
         transform.localPosition = Vector2.zero;
     }
 }

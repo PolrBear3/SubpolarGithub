@@ -47,8 +47,16 @@ public class MachineDetector : MonoBehaviour
             NPCbaggage.Droppable_Toggle(true);
 
             if (NPCbaggage.droppable == false) continue;
+            if (closestNPC.interaction.hasBaggage == false) continue;
 
             NPCbaggage.Set_DropPoint(_dropPoint.baggagePosition);
+            closestNPC.interaction.HasBaggage_Update();
         }
+    }
+
+    // Move Bags
+    private void Move_Baggages()
+    {
+
     }
 }

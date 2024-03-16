@@ -15,6 +15,9 @@ public class NPC_Interaction : MonoBehaviour
     private Baggage _baggage;
     public Baggage baggage => _baggage;
 
+    private bool _hasBaggage;
+    public bool hasBaggage => _hasBaggage;
+
     // UnityEngine
     private void Awake()
     {
@@ -60,8 +63,21 @@ public class NPC_Interaction : MonoBehaviour
     }
 
     //
+    public void HasBaggage_Update()
+    {
+        if (_baggage.dropPoint == _dropPoint)
+        {
+            _hasBaggage = true;
+        }
+        else
+        {
+            _hasBaggage = false;
+        }
+    }
+
     public void Set_Baggage(Baggage startBaggage)
     {
+        _hasBaggage = true;
         _baggage = startBaggage;
     }
 }

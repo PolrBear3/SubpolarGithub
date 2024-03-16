@@ -7,8 +7,10 @@ public class Baggage_DropPoint : MonoBehaviour
     private List<Baggage> _detectedBaggages = new();
     public List<Baggage> detectedBaggeges => _detectedBaggages;
 
+    /*
     public delegate void Event();
     public event Event Bag_DetectEvent;
+    */
 
     [SerializeField] private Transform _baggagePosition;
     public Transform baggagePosition => _baggagePosition;
@@ -21,7 +23,9 @@ public class Baggage_DropPoint : MonoBehaviour
 
         _detectedBaggages.Add(bag);
 
-        Bag_DetectEvent?.Invoke();
+        if (bag.dragging) return;
+
+        bag.Set_DropPoint(_baggagePosition);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
