@@ -31,6 +31,7 @@ public class Baggage_CheckPoint : MonoBehaviour
         if (!collision.TryGetComponent(out Baggage bag)) return;
         if (bag.dragging) return;
         if (bag.ownerNPC.interaction.hasBaggage) return;
+        if (bag.checkNum == bag.detectedCheckPoint.checkPointNum) return;
 
         _gameController.checkPoints[bag.checkNum].Remove_Baggage(bag);
 

@@ -179,7 +179,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1099781883333806911}
           m_TargetAssemblyTypeName: Baggage, Assembly-CSharp
-          m_MethodName: PointerClick
+          m_MethodName: Pointer_Click
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -201,7 +201,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fe8d0169f95944b4bc04f73c46fb8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baggageSprites:
-  - {fileID: -1065531537, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
-  - {fileID: -1298587603, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
   _speed: 2
+  _detectChanceRange: {x: 5, y: 30}

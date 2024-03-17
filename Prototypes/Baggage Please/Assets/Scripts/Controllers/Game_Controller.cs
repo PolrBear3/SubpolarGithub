@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Game_Controller : MonoBehaviour
 {
     private Data_Controller _data;
+    public Data_Controller data => _data;
 
     private List<NPC_Controller> _allCurrentNPCs = new();
     public List<NPC_Controller> allCurrentNPCs => _allCurrentNPCs;

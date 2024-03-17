@@ -7,8 +7,12 @@ public class InspectTable : MonoBehaviour
     private Game_Controller _gameController;
     public Game_Controller gameController => _gameController;
 
+    [Header("")]
     [SerializeField] private Baggage_CheckPoint _acceptPoint;
     [SerializeField] private Baggage_CheckPoint _denyPoint;
+
+    [Header("")]
+    [SerializeField] private float _acceptDelayTime;
 
 
 
@@ -29,8 +33,16 @@ public class InspectTable : MonoBehaviour
     //
     private void Accecpt_Baggage()
     {
+        StartCoroutine(Accecpt_Baggage_Coroutine());
+    }
+    private IEnumerator Accecpt_Baggage_Coroutine()
+    {
+        yield return new WaitForSeconds(_acceptDelayTime);
+
         for (int i = 0; i < _acceptPoint.currentBaggages.Count; i++)
         {
+            if (_acceptPoint.currentBaggages[i].ownerNPC.interaction.hasBaggage) continue;
+
             _acceptPoint.currentBaggages[i].ownerNPC.interaction.Collect_Baggage();
             _acceptPoint.Remove_Baggage(_acceptPoint.currentBaggages[i]);
         }

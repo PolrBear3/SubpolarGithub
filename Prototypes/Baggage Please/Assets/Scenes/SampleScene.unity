@@ -1017,6 +1017,7 @@ GameObject:
   - component: {fileID: 1507639645}
   - component: {fileID: 1507639643}
   - component: {fileID: 1507639642}
+  - component: {fileID: 1507639647}
   m_Layer: 0
   m_Name: Game Controller
   m_TagString: Untagged
@@ -1062,6 +1063,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _npcPrefab: {fileID: 5004298907668634748, guid: e6f60434a26a14ecbb570ec94666f462, type: 3}
   _baggagePrefab: {fileID: 5972874552729465163, guid: d5827ab5c09544438b0f99974001d55e, type: 3}
+  _bagSpriteDatas:
+  - _bagSprites:
+    - {fileID: -1065531537, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
+    - {fileID: -310643681, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
+    - {fileID: -489911597, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
+    - {fileID: -2070633045, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
+  - _bagSprites:
+    - {fileID: -1298587603, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
+    - {fileID: -139686428, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
+    - {fileID: -1400440713, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
+    - {fileID: -1322417802, guid: 6dc4ec2a6bd0d460c9f407685e0e5b34, type: 3}
 --- !u!4 &1507639644
 Transform:
   m_ObjectHideFlags: 0
@@ -1125,6 +1137,18 @@ MonoBehaviour:
   m_DefaultActionMap: InGame
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1507639647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507639641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 897559a4294a64e659d6e91fc432b673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1549528776 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4028491731152111696, guid: 819c6daad72214a7fa478f000b7cfbb4, type: 3}
