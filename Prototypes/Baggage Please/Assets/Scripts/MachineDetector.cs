@@ -8,6 +8,7 @@ public class MachineDetector : MonoBehaviour
     public Game_Controller gameController => _gameController;
 
     [SerializeField] private Baggage_CheckPoint _movePoint;
+    [SerializeField] private Sprite_ToggleBox _heatDetectPoint;
 
 
 
@@ -20,6 +21,7 @@ public class MachineDetector : MonoBehaviour
     private void Start()
     {
         _movePoint.SetBaggage_Event += Move_Baggage;
+        _heatDetectPoint.TriggerEnter_Event += BaggageCheck_HeatLevel;
     }
 
 
@@ -31,5 +33,10 @@ public class MachineDetector : MonoBehaviour
         {
             _movePoint.currentBaggages[i].Movement_Toggle(true);
         }
+    }
+
+    private void BaggageCheck_HeatLevel()
+    {
+        _heatDetectPoint.detectedBaggage.Check_HeatLevel();
     }
 }

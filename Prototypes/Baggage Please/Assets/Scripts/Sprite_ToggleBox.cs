@@ -8,6 +8,12 @@ public class Sprite_ToggleBox : MonoBehaviour
 
     [SerializeField] private bool _toggleOn;
 
+    public delegate void Event();
+    public event Event TriggerEnter_Event;
+
+    private Baggage _detectedBaggage;
+    public Baggage detectedBaggage => _detectedBaggage;
+
 
 
     // UnityEngine
@@ -29,6 +35,9 @@ public class Sprite_ToggleBox : MonoBehaviour
         if (!collision.TryGetComponent(out Baggage bag)) return;
         if (bag.dragging) return;
 
+        _detectedBaggage = bag;
+
         bag.Sprite_Toggle(_toggleOn);
+        TriggerEnter_Event?.Invoke();
     }
 }

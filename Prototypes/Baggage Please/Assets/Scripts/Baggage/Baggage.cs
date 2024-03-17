@@ -28,6 +28,9 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
     private bool _moveable;
     public bool moveable => _moveable;
 
+    private int _revealedHeatNum;
+    public int revealedHeatNum => _revealedHeatNum;
+
     private Baggage_Data _data;
     public Baggage_Data data => _data;
 
@@ -47,7 +50,7 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
         Set_Data();
         Set_Sprite();
 
-        PointerClick_Event += Check_HeatLevel;
+        PointerClick_Event += Click_Check_HeatLevel;
     }
 
     private void Update()
@@ -170,10 +173,27 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
 
 
     // Heat Check System
-    private void Check_HeatLevel()
+    public void Check_HeatLevel()
     {
         if (_data.heatLevel <= 0) return;
+        // if detect chance percentage
+        if (_revealedHeatNum + 1 > _data.heatLevel) return;
 
-        // if percentage
+        _revealedHeatNum++;
+        _sr.sprite = _gameController.data.BaggageSprite(_data.typeNum, _revealedHeatNum + 1);
+    }
+
+    private void Click_Check_HeatLevel()
+    {
+        // if hand detector attached
+
+        // use battery
+
+        if (_data.heatLevel <= 0) return;
+        // if detect chance percentage
+        if (_revealedHeatNum + 1 > _data.heatLevel) return;
+
+        _revealedHeatNum++;
+        _sr.sprite = _gameController.data.BaggageSprite(_data.typeNum, _revealedHeatNum + 1);
     }
 }
