@@ -37,6 +37,7 @@ public class MachineDetector : MonoBehaviour
 
     private void BaggageCheck_HeatLevel()
     {
+        if (Game_Controller.Percentage_Activated(_heatDetectPoint.detectedBaggage.data.detectChance) == false) return;
         _heatDetectPoint.detectedBaggage.Check_HeatLevel();
     }
 }

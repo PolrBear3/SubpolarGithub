@@ -34,6 +34,7 @@ public class Sprite_ToggleBox : MonoBehaviour
     {
         if (!collision.TryGetComponent(out Baggage bag)) return;
         if (bag.dragging) return;
+        if (bag.ownerNPC.interaction.hasBaggage) return;
 
         _detectedBaggage = bag;
 

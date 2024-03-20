@@ -74,6 +74,11 @@ public class Clock_Timer : MonoBehaviour
 
             int spriteIndexNum = _currentTime / timePerSprite - 1;
 
+            if (spriteIndexNum >= _clockSprites.Count)
+            {
+                spriteIndexNum = _clockSprites.Count;
+            }
+
             if (spriteIndexNum >= 0) 
             {
                 _spriteRenderer.sprite = _clockSprites[spriteIndexNum];

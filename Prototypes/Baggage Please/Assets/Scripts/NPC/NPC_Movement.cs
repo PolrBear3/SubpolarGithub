@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NPC_Movement : MonoBehaviour
 {
+    private SpriteRenderer _sr;
+
     private NPC_Controller _controller;
 
     private Vector2 _targetPoint;
@@ -13,6 +15,7 @@ public class NPC_Movement : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
+        _sr = gameObject.GetComponent<SpriteRenderer>();
         _controller = gameObject.GetComponent<NPC_Controller>();
     }
 
@@ -24,7 +27,15 @@ public class NPC_Movement : MonoBehaviour
             return;
         }
 
-        _controller.animationControl.Play_AnimationState("NPC_walk");
+        if (_controller.interaction.arrested)
+        {
+            _controller.animationControl.Play_AnimationState("NPC_arrest");
+        }
+        else
+        {
+            _controller.animationControl.Play_AnimationState("NPC_walk");
+        }
+
         Move();
     }
 
@@ -48,5 +59,33 @@ public class NPC_Movement : MonoBehaviour
     public void Set_TargetPoint(Vector2 point)
     {
         _targetPoint = point;
+    }
+
+
+
+    //
+    public void Leave()
+    {
+        StartCoroutine(Leave_Coroutine());
+    }
+    private IEnumerator Leave_Coroutine()
+    {
+        _sr.flipX = true;
+
+        Set_TargetPoint(_controller.gameController.spawnPoint.position);
+
+        _controller.gameController.UnTrack_NPC(_controller);
+        _controller.currentSection.UnTrack_NPC(_controller);
+
+        _controller.currentSection.Line_NPCs();
+
+        while (Is_TargetPoint() == false)
+        {
+            yield return null;
+        }
+
+        _controller.interaction.LeaveScore_Update();
+
+        Destroy(gameObject);
     }
 }

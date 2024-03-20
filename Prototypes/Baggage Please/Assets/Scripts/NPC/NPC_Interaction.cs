@@ -17,6 +17,9 @@ public class NPC_Interaction : MonoBehaviour
     private bool _hasBaggage;
     public bool hasBaggage => _hasBaggage;
 
+    private bool _arrested;
+    public bool arrested => _arrested;
+
     [SerializeField] private Transform _baggagePoint;
     public Transform baggagePoint => _baggagePoint;
 
@@ -56,8 +59,38 @@ public class NPC_Interaction : MonoBehaviour
         // current
         _controller.currentSection.UnTrack_NPC(_controller);
 
+        // go to end point
+        if (_controller.currentSection.sectionNum + 1 >= _controller.gameController.sections.Count)
+        {
+            _controller.gameController.UnTrack_NPC(_controller);
+            _controller.movement.Set_TargetPoint(_controller.gameController.endPoint.position);
+            return;
+        }
+
         // next
         Section_Controller nextSection = _controller.gameController.sections[_controller.currentSection.sectionNum + 1];
+
+        _controller.Update_CurrentSection(nextSection);
+
+        nextSection.Track_NPC(_controller);
+        nextSection.Line_NPCs();
+    }
+
+    public void Moveto_Section(int sectionNum)
+    {
+        // current
+        _controller.currentSection.UnTrack_NPC(_controller);
+
+        // go to end point
+        if (_controller.currentSection.sectionNum + 1 >= _controller.gameController.sections.Count)
+        {
+            _controller.gameController.UnTrack_NPC(_controller);
+            _controller.movement.Set_TargetPoint(_controller.gameController.endPoint.position);
+            return;
+        }
+
+        // next
+        Section_Controller nextSection = _controller.gameController.sections[sectionNum];
 
         _controller.Update_CurrentSection(nextSection);
 
@@ -107,5 +140,33 @@ public class NPC_Interaction : MonoBehaviour
     public void Collect_Baggage()
     {
         Set_Baggage(_baggage);
+    }
+
+
+
+    //
+    public void LeaveScore_Update()
+    {
+        int bagHeatLevel = _baggage.data.heatLevel;
+        int scoreCount = 0;
+
+        if (_arrested)
+        {
+            if (bagHeatLevel >= 3) scoreCount += 6;
+            else scoreCount -= 3 - bagHeatLevel;
+        }
+        else
+        {
+            if (bagHeatLevel <= 0) scoreCount--;
+            else scoreCount += bagHeatLevel;
+        }
+
+        Data_Controller.score += scoreCount;
+        _controller.gameController.data.ScoreText_Update();
+    }
+
+    public void Arrest_Toggle(bool toggleOn)
+    {
+        _arrested = toggleOn;
     }
 }

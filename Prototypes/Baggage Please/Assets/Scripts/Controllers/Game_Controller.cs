@@ -8,6 +8,9 @@ public class Game_Controller : MonoBehaviour
     private Data_Controller _data;
     public Data_Controller data => _data;
 
+    private Equipment_Controller _equipment;
+    public Equipment_Controller equipment => _equipment;
+
     private List<NPC_Controller> _allCurrentNPCs = new();
     public List<NPC_Controller> allCurrentNPCs => _allCurrentNPCs;
 
@@ -18,9 +21,17 @@ public class Game_Controller : MonoBehaviour
     public List<Baggage_CheckPoint> checkPoints => _checkPoints;
 
     [Header("")]
+    [SerializeField] private List<Texture2D> _cursorTextures = new();
+
+    [Header("")]
     [SerializeField] private Transform _spawnPoint;
     public Transform spawnPoint => _spawnPoint;
 
+    [SerializeField] private Transform _endPoint;
+    public Transform endPoint => _endPoint;
+
+    [Header("")]
+    [SerializeField] private int _npcMaxCount;
     [SerializeField] private Vector2 _intervalTimeRange;
 
 
@@ -29,14 +40,45 @@ public class Game_Controller : MonoBehaviour
     private void Awake()
     {
         _data = gameObject.GetComponent<Data_Controller>();
+        _equipment = gameObject.GetComponent<Equipment_Controller>();
     }
 
     private void Start()
     {
+        CursorSprite_Update(0);
+    }
+
+
+
+    // Menu Game Start
+    public void Start_Game()
+    {
+        FindObjectOfType<Sound_Controller>().Play_Sound("bgm");
+        _data.ScoreText_Update();
+
         SetAll_SectionNum();
         SetAll_CheckPoints();
 
-        Spawn_NPCs(5);
+        Spawn_NPCs();
+    }
+
+
+
+    // Static Fucntions
+    public static bool Percentage_Activated(float percentage)
+    {
+        float comparePercentage = Mathf.Round(Random.Range(0f, 100f)) * 1f;
+
+        return percentage >= comparePercentage;
+    }
+
+
+
+
+    // Cursor Sprite Control
+    public void CursorSprite_Update(int cursorNum)
+    {
+        Cursor.SetCursor(_cursorTextures[cursorNum], new Vector2(6, 6), CursorMode.ForceSoftware);
     }
 
 
@@ -61,14 +103,17 @@ public class Game_Controller : MonoBehaviour
 
 
     // NPC Control
-    private void Spawn_NPCs(int amount)
+    private void Spawn_NPCs()
     {
-        StartCoroutine(Spawn_NPCs_Coroutine(amount));
+        StartCoroutine(Spawn_NPCs_Coroutine());
     }
-    private IEnumerator Spawn_NPCs_Coroutine(int amount)
+    private IEnumerator Spawn_NPCs_Coroutine()
     {
-        for (int i = 0; i < amount; i++)
+        while (true)
         {
+            float timeRange = Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
+            yield return new WaitForSeconds(timeRange);
+
             GameObject spawnNPC = Instantiate(_data.npcPrefab, _spawnPoint.position, Quaternion.identity);
             NPC_Controller npc = spawnNPC.GetComponent<NPC_Controller>();
 
@@ -85,8 +130,10 @@ public class Game_Controller : MonoBehaviour
 
             _sections[0].Line_NPCs();
 
-            float timeRange = Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
-            yield return new WaitForSeconds(timeRange);
+            while (_allCurrentNPCs.Count >= _npcMaxCount)
+            {
+                yield return null;
+            }
         }
     }
 
@@ -101,5 +148,16 @@ public class Game_Controller : MonoBehaviour
     public void UnTrack_NPC(NPC_Controller npc)
     {
         _allCurrentNPCs.Remove(npc);
+    }
+
+
+
+    //
+    public void CheckPointsBlink_AnimationToggle(bool toggleOn)
+    {
+        for (int i = 0; i < _checkPoints.Count; i++)
+        {
+            _checkPoints[i].BlinkAnimation_Toggle(toggleOn);
+        }
     }
 }

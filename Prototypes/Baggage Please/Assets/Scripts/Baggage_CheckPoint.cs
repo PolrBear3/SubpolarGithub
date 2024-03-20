@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Baggage_CheckPoint : MonoBehaviour
 {
+    private Animator _anim;
+
     private Game_Controller _gameController;
 
     [SerializeField] private List<Baggage> _currentBaggages = new();
@@ -20,6 +22,7 @@ public class Baggage_CheckPoint : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
+        _anim = gameObject.GetComponent<Animator>();
         _gameController = FindObjectOfType<Game_Controller>();
     }
 
@@ -37,6 +40,21 @@ public class Baggage_CheckPoint : MonoBehaviour
 
         Set_Baggage(bag);
         bag.Movement_Toggle(false);
+    }
+
+
+
+    // Blink Animation Toggle
+    public void BlinkAnimation_Toggle(bool toggleOn)
+    {
+        if (toggleOn)
+        {
+            _anim.Play("BaggageDropPoint_blink");
+        }
+        else
+        {
+            _anim.Play("BaggageDropPoint_idle");
+        }
     }
 
 

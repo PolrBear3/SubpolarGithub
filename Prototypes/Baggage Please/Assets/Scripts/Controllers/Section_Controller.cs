@@ -46,6 +46,12 @@ public class Section_Controller : MonoBehaviour
     //
     public void Line_NPCs()
     {
+        // refresh
+        for (int i = _currentNPCs.Count - 1; i >= 0; i--)
+        {
+            if (_currentNPCs[i] == null) _currentNPCs.RemoveAt(i);
+        }
+
         for (int i = 0; i < _currentNPCs.Count; i++)
         {
             Vector2 setPoint = new(_waitPoint.transform.position.x - _seperateDistance * 0.1f * i, transform.position.y);

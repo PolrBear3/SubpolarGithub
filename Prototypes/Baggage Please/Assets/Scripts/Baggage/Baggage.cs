@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
+public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private SpriteRenderer _sr;
     private Game_Controller _gameController;
@@ -31,10 +31,11 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
     private int _revealedHeatNum;
     public int revealedHeatNum => _revealedHeatNum;
 
-    private Baggage_Data _data;
+    [SerializeField] private Baggage_Data _data;
     public Baggage_Data data => _data;
 
     [SerializeField] private Vector2 _detectChanceRange;
+    [SerializeField] private float _detectBonusRate;
 
 
 
@@ -50,7 +51,10 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
         Set_Data();
         Set_Sprite();
 
-        PointerClick_Event += Click_Check_HeatLevel;
+        PointerClick_Event += HandDetector_Check_HeatLevel;
+        PointerClick_Event += HeatLevel3_Arrest;
+
+        ownerNPC.interaction.PointerClick_Event += HeatLevel3_Arrest;
     }
 
     private void Update()
@@ -62,14 +66,29 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
 
 
     // EventSystems
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (Equipment_Controller.currentEquipment != Equipment.hand) return;
+        if (_ownerNPC.interaction.hasBaggage) return;
+
+        _gameController.CursorSprite_Update(1);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _gameController.CursorSprite_Update(0);
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
+        if (Equipment_Controller.currentEquipment != Equipment.hand) return;
         if (_ownerNPC.interaction.hasBaggage) return;
 
         _dragging = true;
 
-        Movement_Toggle(false);
+        _gameController.CheckPointsBlink_AnimationToggle(true);
 
+        Movement_Toggle(false);
         transform.parent = _gameController.transform;
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -78,9 +97,12 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (Equipment_Controller.currentEquipment != Equipment.hand) return;
         if (_ownerNPC.interaction.hasBaggage) return;
 
         _dragging = false;
+
+        _gameController.CheckPointsBlink_AnimationToggle(false);
 
         // give back to npc
         if (_ownerNPC.interaction.hasBaggage)
@@ -110,6 +132,22 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
     public void Pointer_Click()
     {
         PointerClick_Event?.Invoke();
+    }
+
+    public void Pointer_Down()
+    {
+        if (Equipment_Controller.currentEquipment != Equipment.hand) return;
+        if (_ownerNPC.interaction.hasBaggage) return;
+
+        FindObjectOfType<Sound_Controller>().Play_Sound("drag");
+    }
+
+    public void Pointer_Up()
+    {
+        if (Equipment_Controller.currentEquipment != Equipment.hand) return;
+        if (_ownerNPC.interaction.hasBaggage) return;
+
+        FindObjectOfType<Sound_Controller>().Play_Sound("drop");
     }
 
 
@@ -172,7 +210,7 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
 
 
 
-    // Heat Check System
+    // for Machine Detector
     public void Check_HeatLevel()
     {
         if (_data.heatLevel <= 0) return;
@@ -180,20 +218,42 @@ public class Baggage : MonoBehaviour, IDragHandler, IEndDragHandler
         if (_revealedHeatNum + 1 > _data.heatLevel) return;
 
         _revealedHeatNum++;
-        _sr.sprite = _gameController.data.BaggageSprite(_data.typeNum, _revealedHeatNum + 1);
+        _sr.sprite = _gameController.data.BaggageSprite(_data.typeNum, _revealedHeatNum);
     }
 
-    private void Click_Check_HeatLevel()
+    // for Hand Detector
+    private void HandDetector_Check_HeatLevel()
     {
         // if hand detector attached
+        if (Equipment_Controller.currentEquipment != Equipment.detector) return;
+
+        // battery count check
+        if (_gameController.equipment.batteryCount <= 0) return;
 
         // use battery
+        _gameController.equipment.BatteryCount_Update(-1);
 
         if (_data.heatLevel <= 0) return;
-        // if detect chance percentage
+
+        if (Game_Controller.Percentage_Activated(_data.detectChance + _detectBonusRate) == false) return;
+
         if (_revealedHeatNum + 1 > _data.heatLevel) return;
 
-        _revealedHeatNum++;
         _sr.sprite = _gameController.data.BaggageSprite(_data.typeNum, _revealedHeatNum + 1);
+        _revealedHeatNum++;
+    }
+
+    // for Cuff
+    private void HeatLevel3_Arrest()
+    {
+        if (Equipment_Controller.currentEquipment != Equipment.cuff) return;
+
+        Movement_Toggle(false);
+
+        _ownerNPC.interaction.Collect_Baggage();
+        _ownerNPC.movement.Leave();
+        _gameController.checkPoints[_checkNum].Remove_Baggage(this);
+
+        _ownerNPC.interaction.Arrest_Toggle(true);
     }
 }

@@ -176,6 +176,9 @@ public class OrderStand : MonoBehaviour, IInteractable
                 // check max waiting npc amount
                 if (_waitingNPCs.Count >= _maxWaitings) continue;
 
+                // keep track of currently waiting npc
+                _waitingNPCs.Add(npc);
+
                 // assign food
                 interaction.Assign_FoodOrder();
 
@@ -192,9 +195,6 @@ public class OrderStand : MonoBehaviour, IInteractable
                 // start waiting time limit
                 interaction.Start_TimeLimit();
                 npc.timer.Toggle_Transparency(false, interaction.animTransitionTime);
-
-                // keep track of currently waiting npc
-                _waitingNPCs.Add(npc);
             }
 
             yield return new WaitForSeconds(_attractIntervalTime);

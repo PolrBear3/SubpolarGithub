@@ -5,13 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public struct Baggage_Data
 {
-    private int _typeNum;
+    [SerializeField] private int _typeNum;
     public int typeNum => _typeNum;
 
-    private int _heatLevel;
+    [SerializeField] private int _heatLevel;
     public int heatLevel => _heatLevel;
 
-    private float _detectChance;
+    [SerializeField] private float _detectChance;
     public float detectChance => _detectChance;
 
     public Baggage_Data(int typeNum, float detectChance)
