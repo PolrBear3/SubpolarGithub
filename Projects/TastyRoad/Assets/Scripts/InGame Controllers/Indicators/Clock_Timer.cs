@@ -28,6 +28,14 @@ public class Clock_Timer : MonoBehaviour
 
 
 
+    public bool Is_Transparent()
+    {
+        if (_spriteRenderer.color == Color.clear) return true;
+        else return false;
+    }
+
+
+
     // clock transparency toggle
     public void Toggle_Transparency(bool isTransparent)
     {
@@ -37,7 +45,7 @@ public class Clock_Timer : MonoBehaviour
             return;
         }
 
-        if (_currentTime <= 0 || _timeRunning == false) return;
+        if (_currentTime <= 0) return;
 
         _spriteRenderer.color = Color.white;
     }
@@ -68,7 +76,7 @@ public class Clock_Timer : MonoBehaviour
     {
         int timePerSprite = _currentTime / _clockSprites.Count;
 
-        while(_currentTime > 0)
+        while(_currentTime > 0 && timeRunning)
         {
             _currentTime--;
 
@@ -97,10 +105,7 @@ public class Clock_Timer : MonoBehaviour
     {
         _timeRunning = false;
 
-        if (_timeCoroutine == null) return;
-
-        StopCoroutine(_timeCoroutine);
-        _timeCoroutine = null;
+        if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
     }
 
 

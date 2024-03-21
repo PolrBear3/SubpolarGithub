@@ -55,6 +55,8 @@ public class NPC_Movement : MonoBehaviour
         else return 1f;
     }
 
+
+
     // Check
     public bool Is_Moving()
     {
@@ -74,6 +76,13 @@ public class NPC_Movement : MonoBehaviour
         float distance = Vector2.Distance(transform.position, targetPosition);
         return distance < threshold;
     }
+
+    public bool At_CurrentRoamArea()
+    {
+        return currentRoamArea.bounds.Contains(transform.position);
+    }
+
+
 
     // Movement Update
     private void TargetPosition_Movement()

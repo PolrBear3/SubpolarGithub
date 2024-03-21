@@ -98,29 +98,16 @@ public class OrderStand : MonoBehaviour, IInteractable
         {
             Main_Controller.orderOpen = false;
 
-            SpriteRenderer location = _stationController.mainController.currentLocation.roamArea;
-
             for (int i = 0; i < _waitingNPCs.Count; i++)
             {
-                // return to current loaction free roam area
-                NPC_Movement move = _waitingNPCs[i].movement;
-
                 _waitingNPCs[i].timer.Toggle_Transparency(true);
+                _waitingNPCs[i].timer.Stop_Time();
 
-                move.Stop_FreeRoam();
-                move.Free_Roam(location, 4f);
+                _waitingNPCs[i].interaction.TimeLimit_Over();
             }
 
             // reset waiting npc list
             _waitingNPCs.Clear();
-
-            if (hasBookMark && _timer.timeRunning == false)
-            {
-                // run cooltime
-                _timer.Set_Time(Mathf.RoundToInt(_attractIntervalTime));
-                _timer.Run_Time();
-                _timer.Toggle_Transparency(false);
-            }
         }
 
         // sprite update

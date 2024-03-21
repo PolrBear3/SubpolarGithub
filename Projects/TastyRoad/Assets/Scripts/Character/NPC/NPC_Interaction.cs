@@ -30,6 +30,8 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     [SerializeField] private Vector2 roamDelayTime;
 
     [SerializeField] private int _defaultTimeLimit;
+
+    private Coroutine _startTimeCoroutine;
     private Coroutine _timeLimitCoroutine;
 
 
@@ -53,8 +55,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        if (Main_Controller.orderOpen) _controller.timer.Toggle_Transparency(false);
-
         UnInteract();
     }
 
@@ -65,7 +65,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         Interact_FacePlayer();
 
-        if (_controller.foodIcon.hasFood && _controller.timer.timeRunning == false)
+        if (_controller.foodIcon.hasFood && _foodOrderServed)
         {
             Collect_Coin();
             return;
@@ -97,7 +97,10 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         _controller.actionBubble.Toggle(false);
         StateBox_Toggle();
 
-        _controller.timer.Toggle_Transparency(false);
+        if (Main_Controller.orderOpen && _controller.foodIcon.hasFood && _foodOrderServed == false)
+        {
+            _controller.timer.Toggle_Transparency(false);
+        }
 
         _controller.Action1 -= Serve_FoodOrder;
     }
@@ -169,29 +172,38 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
 
     /// <summary>
-    /// Start a time limit for food order
+    /// Start a time limit for food order at roam area arrival
     /// </summary>
     public void Start_TimeLimit()
     {
-        // start the time
-        Clock_Timer timer = _controller.timer;
+        if (_controller.timer.timeRunning == true) return;
 
-        if (timer.timeRunning == true) return;
+        _startTimeCoroutine = StartCoroutine(Start_TimeLimit_Coroutine());
+    }
+    private IEnumerator Start_TimeLimit_Coroutine()
+    {
+        Clock_Timer timer = _controller.timer;
 
         // set the time limit according to npc inpatient level
         int extraTime = (int)_controller.characterData.inPatienceLevel;
         int setTime = _defaultTimeLimit + extraTime;
-
         timer.Set_Time(setTime);
-        timer.Run_Time();
 
+        // wait until npc at roam area
+        while (_controller.movement.At_CurrentRoamArea() == false)
+        {
+            yield return null;
+        }
+
+        // start time limit
+        timer.Run_Time();
         TimeLimit_Over();
     }
 
     /// <summary>
     /// Checks if time is over and initiates player penalty
     /// </summary>
-    private void TimeLimit_Over()
+    public void TimeLimit_Over()
     {
         if (_timeLimitCoroutine != null) _timeLimitCoroutine = null;
 
@@ -201,7 +213,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         Clock_Timer timer = _controller.timer;
 
-        while (timer.timeRunning == true) yield return null;
+        while (timer.timeRunning) yield return null;
 
         UnInteract();
 
@@ -220,7 +232,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
         NPC_Movement move = _controller.movement;
         move.Stop_FreeRoam();
-        move.Free_Roam(currentLocation, 0f);
+        move.Free_Roam(currentLocation, Random.Range(roamDelayTime.x, roamDelayTime.y));
     }
 
 
@@ -293,8 +305,13 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         }
 
         // stop time limit
-        StopCoroutine(_timeLimitCoroutine);
+        if (_startTimeCoroutine != null)
+        {
+            StopCoroutine(_startTimeCoroutine);
+        }
+
         _controller.timer.Stop_Time();
+        _controller.timer.Toggle_Transparency(true);
 
         // save food score
         _foodScore = Calculated_FoodScore();
@@ -323,10 +340,13 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         // stop free roam
         movement.Stop_FreeRoam();
+
         // turn off collider
         detection.BoxCollider_Toggle(false);
+
         // food sprite
         _eatAnimationSR.sprite = servedFood.sprite;
+
 
         // wait
         yield return new WaitForSeconds(animTransitionTime);
