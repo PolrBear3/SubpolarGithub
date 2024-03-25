@@ -21,8 +21,11 @@ public class Character_Data : MonoBehaviour
     //
     private void Set_RandomData()
     {
-        _hungerLevel = Mathf.Round(Random.Range(0f, 100f));
-        _inPatienceLevel = Mathf.Round(Random.Range(0f, 100f));
+        int hungerInt = Random.Range(0, 100);
+        int inPatientInt = Random.Range(0, 100);
+
+        _hungerLevel = hungerInt;
+        _inPatienceLevel = inPatientInt;
     }
 
 

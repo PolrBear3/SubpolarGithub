@@ -36,7 +36,7 @@ public class CoinLauncher_Coin : MonoBehaviour
 
 
     // Settings
-    public void Set_Data(CoinLauncher launcher, Coin_ScrObj coinType, Vector2 direction)
+    public void Set_CoinData(CoinLauncher launcher, Coin_ScrObj coinType, Vector2 direction)
     {
         _itemLauncher = launcher;
 
@@ -46,6 +46,15 @@ public class CoinLauncher_Coin : MonoBehaviour
         _direction = direction;
     }
 
+    public void Set_CustomData(CoinLauncher launcher, Sprite sprite, Vector2 direction)
+    {
+        _itemLauncher = launcher;
+
+        _sr.sprite = sprite;
+        _anim.enabled = false;
+
+        _direction = direction;
+    }
 
 
     // Movement Types

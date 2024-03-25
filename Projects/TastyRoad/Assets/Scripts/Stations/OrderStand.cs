@@ -101,9 +101,9 @@ public class OrderStand : MonoBehaviour, IInteractable
             for (int i = 0; i < _waitingNPCs.Count; i++)
             {
                 _waitingNPCs[i].timer.Toggle_Transparency(true);
-                _waitingNPCs[i].timer.Stop_Time();
 
-                _waitingNPCs[i].interaction.TimeLimit_Over();
+                // set time limit current time to 0 to activate TimeLimit_Over() from npc interaction
+                _waitingNPCs[i].timer.Update_CurrentTime(-_waitingNPCs[i].timer.currentTime);
             }
 
             // reset waiting npc list
@@ -142,6 +142,9 @@ public class OrderStand : MonoBehaviour, IInteractable
 
             for (int i = 0; i < allCharacters.Count; i++)
             {
+                // check max waiting npc amount
+                if (_waitingNPCs.Count >= _maxWaitings) continue;
+
                 if (!allCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
 
                 NPC_Interaction interaction = npc.interaction;
@@ -159,9 +162,6 @@ public class OrderStand : MonoBehaviour, IInteractable
 
                 // check if they want to order food
                 if (interaction.Want_FoodOrder() == false) continue;
-
-                // check max waiting npc amount
-                if (_waitingNPCs.Count >= _maxWaitings) continue;
 
                 // keep track of currently waiting npc
                 _waitingNPCs.Add(npc);

@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public struct MaxSpawn_Phase
 {
+    [Range(0, 12)]
     public int timePoint;
     public int maxSpawnAmount;
 }

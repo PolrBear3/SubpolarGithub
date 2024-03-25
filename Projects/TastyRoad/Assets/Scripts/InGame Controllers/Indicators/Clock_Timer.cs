@@ -10,6 +10,8 @@ public class Clock_Timer : MonoBehaviour
     [SerializeField] private Sprite _clockEmptySprite;
 
     private int _currentTime;
+    public int currentTime => _currentTime;
+
     private Coroutine _timeCoroutine;
 
     private bool _timeRunning;
@@ -24,14 +26,6 @@ public class Clock_Timer : MonoBehaviour
     private void Start()
     {
         _spriteRenderer.color = Color.clear;
-    }
-
-
-
-    public bool Is_Transparent()
-    {
-        if (_spriteRenderer.color == Color.clear) return true;
-        else return false;
     }
 
 
@@ -76,16 +70,11 @@ public class Clock_Timer : MonoBehaviour
     {
         int timePerSprite = _currentTime / _clockSprites.Count;
 
-        while(_currentTime > 0 && timeRunning)
+        while(_currentTime > 0)
         {
             _currentTime--;
 
             int spriteIndexNum = _currentTime / timePerSprite - 1;
-
-            if (spriteIndexNum >= _clockSprites.Count)
-            {
-                spriteIndexNum = _clockSprites.Count;
-            }
 
             if (spriteIndexNum >= 0) 
             {
@@ -106,6 +95,13 @@ public class Clock_Timer : MonoBehaviour
         _timeRunning = false;
 
         if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
+    }
+
+
+
+    public void Update_CurrentTime(int updateTime)
+    {
+        _currentTime += updateTime;
     }
 
 

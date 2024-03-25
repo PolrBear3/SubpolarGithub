@@ -71,7 +71,7 @@ public class Station_Controller : MonoBehaviour
         if (toggleOn == true)
         {
             _stationAnimator.enabled = true;
-            _stationAnimator.Play("Station_transaprencyBlink");
+            _stationAnimator.Play("TransparencyBlinker_blink");
             return;
         }
 
@@ -88,7 +88,7 @@ public class Station_Controller : MonoBehaviour
         }
 
         _stationAnimator.enabled = true;
-        _stationAnimator.Play("Station_transaprencyBlink");
+        _stationAnimator.Play("TransparencyBlinker_blink");
         _spriteRenderer.color = Color.white;
     }
 

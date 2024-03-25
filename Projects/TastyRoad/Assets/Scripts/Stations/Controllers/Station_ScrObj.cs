@@ -16,4 +16,5 @@ public class Station_ScrObj : ScriptableObject
     public int id;
 
     public int price;
+    public float buildTime;
 }

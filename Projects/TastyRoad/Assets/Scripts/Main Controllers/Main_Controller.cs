@@ -22,6 +22,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public static int currentGoldCoin;
     public static int currentStationCoin;
+    public static int currentGasCoin;
 
 
 

@@ -5,54 +5,130 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 
-public class Grocery : MonoBehaviour, ISaveLoadable
+public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
 {
-    [SerializeField] private Shop_Controller _controller;
+    private PlayerInput _input;
+
+    private Main_Controller _main;
+    private Detection_Controller _detection;
+
+    [SerializeField] private Action_Bubble _bubble;
+    [SerializeField] private CoinLauncher _launcher;
 
     private int _hoverNum;
     private List<FoodData> _purchasableFoods = new();
 
-    [Header("Current Coin")]
-    [SerializeField] private TextMeshProUGUI _currentCoinText;
+    [Header("")]
+    [SerializeField] private Vector2 _claimPositionRange;
 
-    [Header("Hover Item")]
-    [SerializeField] private Image _itemImage;
-    [SerializeField] private TextMeshProUGUI _priceText;
+    [Header("Hovering Food")]
+    [SerializeField] private GameObject _hoverControlKeys;
+    [SerializeField] private SpriteRenderer _hoveringFoodSR;
+    [SerializeField] private Animator _hoveringFoodAnim;
+
+    [Header("Price Indicator")]
+    [SerializeField] private GameObject _priceIndicator;
+    [SerializeField] private TextMeshPro _priceText;
 
 
 
     // UnityEngine
+    private void Awake()
+    {
+        _input = gameObject.GetComponent<PlayerInput>();
+
+        _main = FindObjectOfType<Main_Controller>();
+        _detection = gameObject.GetComponent<Detection_Controller>();
+
+        Claim_Position();
+    }
+
     private void Start()
     {
         if (ES3.KeyExists("Grocery_purchasableFoods") == false)
         {
-            Update_AvailableFoods();
+            Sort_AvailableFoods();
         }
 
-        Update_HoverFood(0);
+        Update_HoverFood();
+        UnInteract();
     }
 
-    private void OnEnable()
+
+
+    // OnTrigger
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        _currentCoinText.text = Main_Controller.currentGoldCoin.ToString();
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
+
+        _input.enabled = true;
+
+        _hoveringFoodAnim.Play("TransparencyBlinker_blink");
+        _hoverControlKeys.SetActive(true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
+
+        UnInteract();
     }
 
 
 
     // InputSystem
-    private void OnSelect()
+    private void OnAction1()
     {
-        Purchase_HoverFood();
+        if (_bubble.bubbleOn)
+        {
+            Purchase_HoverFood();
+            return;
+        }
+
+        _hoverNum--;
+        Update_HoverFood();
     }
 
-    private void OnCursorControl(InputValue value)
+    private void OnAction2()
     {
-        Update_HoverFood(value.Get<Vector2>().x);
+        if (_bubble.bubbleOn) return;
+
+        _hoverNum++;
+        Update_HoverFood();
     }
 
-    private void OnExit()
+
+
+    // IInteractable
+    public void Interact()
     {
-        _controller.Menu_Toggle(false);
+        if (_bubble.bubbleOn == false)
+        {
+            _bubble.Toggle(true);
+            _hoverControlKeys.SetActive(false);
+
+            Update_HoverFood();
+            _priceIndicator.SetActive(true);
+
+            return;
+        }
+
+        UnInteract();
+    }
+
+    public void UnInteract()
+    {
+        _bubble.Toggle(false);
+        _hoverControlKeys.SetActive(true);
+
+        _priceIndicator.SetActive(false);
+
+        if (_detection.player != null) return;
+
+        _input.enabled = false;
+
+        _hoveringFoodAnim.Play("TransparencyBlinker_hide");
+        _hoverControlKeys.SetActive(false);
     }
 
 
@@ -72,10 +148,25 @@ public class Grocery : MonoBehaviour, ISaveLoadable
 
 
 
-    // Menu Class
-    private void Update_AvailableFoods()
+    // Position Claim
+    private void Claim_Position()
     {
-        List<Food_ScrObj> dataFoods = _controller.mainController.dataController.rawFoods;
+        int claimRepeatNum = (int)_claimPositionRange.x * 2 + 1;
+        float positionXNum = transform.position.x - _claimPositionRange.x;
+
+        for (int i = 0; i < claimRepeatNum; i++)
+        {
+            _main.Claim_Position(new(positionXNum, transform.position.y));
+            positionXNum++;
+        }
+    }
+
+
+
+    //
+    private void Sort_AvailableFoods()
+    {
+        List<Food_ScrObj> dataFoods = _main.dataController.rawFoods;
 
         // remove all cook necessary raw foods
         for (int i = 0; i < dataFoods.Count; i++)
@@ -88,46 +179,46 @@ public class Grocery : MonoBehaviour, ISaveLoadable
         _purchasableFoods.Sort((x, y) => x.foodScrObj.price.CompareTo(y.foodScrObj.price));
     }
 
-    private void Update_HoverFood(float cursorDirection)
+    private void Update_HoverFood()
     {
-        _hoverNum += (int)cursorDirection;
-
         if (_hoverNum < 0) _hoverNum = _purchasableFoods.Count - 1;
         else if (_hoverNum > _purchasableFoods.Count - 1) _hoverNum = 0;
 
         FoodData currentFood = _purchasableFoods[_hoverNum];
 
-        // update center position
-        _itemImage.rectTransform.localPosition = currentFood.foodScrObj.centerPosition * 0.1f;
-        _itemImage.sprite = currentFood.foodScrObj.sprite;
-
-        // update text
+        // update price text
         _priceText.text = currentFood.foodScrObj.price.ToString();
+
+        // update center position
+        _hoveringFoodSR.transform.localPosition = currentFood.foodScrObj.centerPosition * 0.01f;
+
+        // update sprite
+        _hoveringFoodSR.sprite = currentFood.foodScrObj.sprite;
     }
 
     private void Purchase_HoverFood()
     {
-        FoodMenu_Controller foodMenu = _controller.mainController.currentVehicle.menu.foodMenu;
         FoodData currentFood = _purchasableFoods[_hoverNum];
 
-        // player coin amount check
+        // check gold coin
         if (Main_Controller.currentGoldCoin < currentFood.foodScrObj.price)
         {
-            // not enough coin animation
+            // not enough gold coins !!
             return;
         }
 
-        // update food menu and current menu
-        foodMenu.Add_FoodItem(currentFood.foodScrObj, 1);
-
+        // calculate gold coin
         Main_Controller.currentGoldCoin -= currentFood.foodScrObj.price;
-        _currentCoinText.text = Main_Controller.currentGoldCoin.ToString();
 
-        Update_HoverFood(0);
+        // add current hovering food to food menu
+        _main.currentVehicle.menu.foodMenu.Add_FoodItem(currentFood.foodScrObj, 1);
 
-        // player coin parabola launch animation
-        Player_Controller player = _controller.detection.player;
-        Coin_ScrObj goldCoin = _controller.mainController.dataController.coinTypes[0];
+        // player toss gold coin to grocery npc
+        Player_Controller player = _detection.player;
+        Coin_ScrObj goldCoin = _main.dataController.coinTypes[0];
         player.coinLauncher.Parabola_CoinLaunch(goldCoin, transform.position - player.transform.position);
+
+        // toss food to player
+        _launcher.Parabola_CoinLaunch(currentFood.foodScrObj.sprite, player.transform.position - transform.position);
     }
 }

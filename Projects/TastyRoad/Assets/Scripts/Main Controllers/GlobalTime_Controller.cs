@@ -5,13 +5,11 @@ using UnityEngine.Rendering.Universal;
 
 public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
 {
-    [SerializeField] private Light2D _globalLight;
-
     /// <summary>
-    /// Current time range is 30 ~ 100
+    /// Current time range is 0 ~ 12
     /// </summary>
-    public int currentTime => _currentTime;
     private int _currentTime;
+    public int currentTime => _currentTime;
 
     [Header("")]
     [SerializeField] private float _tikTime;
@@ -33,16 +31,12 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("_isIncrease", _isIncrease);
         ES3.Save("_currentTime", _currentTime);
-        ES3.Save("_globalLightIntensity", _globalLight.intensity);
     }
 
     public void Load_Data()
     {
-        _isIncrease = ES3.Load("_isIncrease", _isIncrease);
         _currentTime = ES3.Load("_currentTime", _currentTime);
-        _globalLight.intensity = ES3.Load("_globalLightIntensity", _globalLight.intensity);
     }
 
 
@@ -51,8 +45,6 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     private void GlobalTime_Update()
     {
         StartCoroutine(GlobalTime_Update_Coroutine());
-
-        _currentTime = (int)Mathf.Floor(_globalLight.intensity * 100);
     }
     private IEnumerator GlobalTime_Update_Coroutine()
     {
@@ -60,26 +52,11 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
         {
             yield return new WaitForSeconds(_tikTime);
 
-            if (_isIncrease == false)
-            {
-                if (_currentTime <= 30)
-                {
-                    _isIncrease = true;
-                    _globalLight.intensity += 0.01f;
-                }
-                else _globalLight.intensity -= 0.01f;
-            }
-            else
-            {
-                if (_currentTime >= 100)
-                {
-                    _isIncrease = false;
-                    _globalLight.intensity -= 0.01f;
-                }
-                else _globalLight.intensity += 0.01f;
-            }
+            if (_currentTime >= 12) _isIncrease = false;
+            else if (_currentTime <= 0) _isIncrease = true;
 
-            _currentTime = (int)Mathf.Floor(_globalLight.intensity * 100);
+            if (_isIncrease) _currentTime++;
+            else _currentTime--;
 
             TimeTik_Update?.Invoke();
         }

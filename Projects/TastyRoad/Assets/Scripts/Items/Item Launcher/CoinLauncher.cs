@@ -27,7 +27,17 @@ public class CoinLauncher : MonoBehaviour
         GameObject launchedBullet = Instantiate(_coin, transform.parent.position, Quaternion.identity);
         CoinLauncher_Coin bullet = launchedBullet.GetComponent<CoinLauncher_Coin>();
 
-        bullet.Set_Data(this, coinType, launchDirection);
+        bullet.Set_CoinData(this, coinType, launchDirection);
+        bullet.movementEvent += bullet.Parabola_Movement;
+    }
+
+    // Custom Sprite Launch
+    public void Parabola_CoinLaunch(Sprite sprite, Vector2 launchDirection)
+    {
+        GameObject launchedBullet = Instantiate(_coin, transform.parent.position, Quaternion.identity);
+        CoinLauncher_Coin bullet = launchedBullet.GetComponent<CoinLauncher_Coin>();
+
+        bullet.Set_CustomData(this, sprite, launchDirection);
         bullet.movementEvent += bullet.Parabola_Movement;
     }
 }

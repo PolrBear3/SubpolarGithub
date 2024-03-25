@@ -20,6 +20,14 @@ public class BasicAnimation_Controller : MonoBehaviour
 
 
 
+    // Custon Animation Play
+    public void Play_Animation(string animationName)
+    {
+        _animator.Play(animationName);
+    }
+
+
+
     // Sprite Flip Control
     public void Flip_Sprite(bool facingLeft)
     {

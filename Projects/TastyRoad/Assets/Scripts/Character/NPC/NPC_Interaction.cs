@@ -65,7 +65,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         Interact_FacePlayer();
 
-        if (_controller.foodIcon.hasFood && _foodOrderServed)
+        if (_foodOrderServed)
         {
             Collect_Coin();
             return;
@@ -186,8 +186,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         // set the time limit according to npc inpatient level
         int extraTime = (int)_controller.characterData.inPatienceLevel;
-        int setTime = _defaultTimeLimit + extraTime;
-        timer.Set_Time(setTime);
+        timer.Set_Time(_defaultTimeLimit + extraTime);
 
         // wait until npc at roam area
         while (_controller.movement.At_CurrentRoamArea() == false)
@@ -205,7 +204,11 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     /// </summary>
     public void TimeLimit_Over()
     {
-        if (_timeLimitCoroutine != null) _timeLimitCoroutine = null;
+        if (_timeLimitCoroutine != null)
+        {
+            _timeLimitCoroutine = null;
+            return;
+        }
 
         _timeLimitCoroutine = StartCoroutine(TimeLimit_Over_Coroutine());
     }
@@ -305,10 +308,8 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         }
 
         // stop time limit
-        if (_startTimeCoroutine != null)
-        {
-            StopCoroutine(_startTimeCoroutine);
-        }
+        if (_startTimeCoroutine != null) StopCoroutine(_startTimeCoroutine);
+        if (_timeLimitCoroutine != null) StopCoroutine(_timeLimitCoroutine);
 
         _controller.timer.Stop_Time();
         _controller.timer.Toggle_Transparency(true);
@@ -340,13 +341,13 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         // stop free roam
         movement.Stop_FreeRoam();
+        SpriteRenderer currentArea = _controller.movement.currentRoamArea;
 
         // turn off collider
         detection.BoxCollider_Toggle(false);
 
         // food sprite
         _eatAnimationSR.sprite = servedFood.sprite;
-
 
         // wait
         yield return new WaitForSeconds(animTransitionTime);
@@ -364,7 +365,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(animTransitionTime);
 
         // activate free roam
-        movement.Free_Roam(movement.currentRoamArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
+        movement.Free_Roam(currentArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
 
         // turn on collider
         detection.BoxCollider_Toggle(true);

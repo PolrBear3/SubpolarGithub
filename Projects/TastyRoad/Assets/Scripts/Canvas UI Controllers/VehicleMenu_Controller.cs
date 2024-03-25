@@ -27,6 +27,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [Header("Coin Amounts")]
     [SerializeField] private TextMeshProUGUI _goldCoinText;
     [SerializeField] private TextMeshProUGUI _stationCoinText;
+    [SerializeField] private TextMeshProUGUI _gasCoinText;
 
     [Header("Insert Vehicle Prefab")]
     [SerializeField] private Vehicle_Controller _vehicleController;
@@ -172,6 +173,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         _goldCoinText.text = Main_Controller.currentGoldCoin.ToString();
         _stationCoinText.text = Main_Controller.currentStationCoin.ToString();
+        _gasCoinText.text = Main_Controller.currentGasCoin.ToString();
     }
 
 
