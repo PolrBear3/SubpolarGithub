@@ -14,7 +14,7 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private List<Sprite> _amountBarSprites = new();
     private Coroutine _amountBarCoroutine;
 
-    public FoodData currentFoodData;
+    [HideInInspector] public FoodData currentFoodData;
 
     private bool _hasFood;
     public bool hasFood => _hasFood;

@@ -29,14 +29,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnEnable()
     {
-        _controller.OnSelect_Input += Export_FoodItem_toFridge;
-        _controller.OnSelect_Input += Fridge_TargetSystem_Toggle;
+        _controller.OnSelect_Input += Export_FoodItem;
     }
 
     private void OnDisable()
     {
-        _controller.OnSelect_Input -= Export_FoodItem_toFridge;
-        _controller.OnSelect_Input -= Fridge_TargetSystem_Toggle;
+        _controller.OnSelect_Input -= Export_FoodItem;
     }
 
 
@@ -258,5 +256,20 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         return amount;
+    }
+
+
+
+    // FoodBox Export System
+    private void Export_FoodItem()
+    {
+        // fix to current hold item data ??
+        ItemSlot_Data currentSlotData = _controller.currentItemBox.data; 
+
+        // spawn food box, nearest to vehicle
+
+        // assign food and amount to food box
+
+        // clear hold data
     }
 }
