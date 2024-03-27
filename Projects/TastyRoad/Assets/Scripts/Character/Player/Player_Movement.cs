@@ -34,6 +34,8 @@ public class Player_Movement : MonoBehaviour
     // Player Input
     private void OnMovement(InputValue value)
     {
+        if (Main_Controller.gamePaused) return;
+
         Vector2 input = value.Get<Vector2>();
         _currentDirection = input;
 

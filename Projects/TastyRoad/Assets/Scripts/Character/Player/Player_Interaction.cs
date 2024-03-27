@@ -20,6 +20,8 @@ public class Player_Interaction : MonoBehaviour, IInteractable
     // Player Input
     private void OnInteract()
     {
+        if (Main_Controller.gamePaused) return;
+
         Detection_Controller detection = _controller.detectionController;
 
         if (detection.Closest_Interactable() == null) return;

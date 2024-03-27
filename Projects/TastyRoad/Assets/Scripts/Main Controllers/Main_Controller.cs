@@ -18,6 +18,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Transform _characterFile;
     [SerializeField] private Transform _stationFile;
 
+    public static bool gamePaused;
     public static bool orderOpen;
 
     public static int currentGoldCoin;
