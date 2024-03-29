@@ -25,6 +25,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnEnable()
     {
         _controller.OnSelect_Input += Select_Slot;
+
         _controller.OnHoldSelect_Input += Export_StationPrefab;
         _controller.OnOption1_Input += Place_StationPrefab;
     }
@@ -32,8 +33,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnDisable()
     {
         _controller.OnSelect_Input -= Select_Slot;
+
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
-        _controller.OnOption1_Input += Place_StationPrefab;
+        _controller.OnOption1_Input -= Place_StationPrefab;
     }
 
 
@@ -78,8 +80,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Exit_MenuInteraction()
     {
-        Retrieve_Station_Toggle();
         Cancel_Export();
+        Cancel_Retrieve();
     }
 
 
@@ -284,43 +286,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Station Retrieve System
-    private void Retrieve_Station_Toggle()
-    {
-        ItemSlot currentSlot = _controller.cursor.currentSlot;
-
-        if (currentSlot.data.hasItem == true) return;
-
-        List<Station_Controller> retrievableStations = _controller.vehicleController.mainController.Retrievable_Stations();
-        if (retrievableStations.Count <= 0) return;
-
-        if (_interactionMode == true)
-        {
-            // retrieve target off
-            _interactionMode = false;
-            _interactStation.TransparentBlink_Toggle(false);
-            _interactStation = null;
-
-            _controller.OnSelect_Input += Export_StationPrefab;
-
-            _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
-            _controller.OnSelect_Input -= Retrieve_Station;
-
-            return;
-        }
-
-        // retrieve target on
-        _interactionMode = true;
-        _targetNum = 0;
-
-        _interactStation = retrievableStations[_targetNum];
-        _interactStation.TransparentBlink_Toggle(true);
-
-        _controller.OnSelect_Input -= Export_StationPrefab;
-
-        _controller.OnCursorControl_Input += Station_TargetDirection_Control;
-        _controller.OnSelect_Input += Retrieve_Station;
-    }
-
     private void Station_TargetDirection_Control(float xInputDirection)
     {
         List<Station_Controller> retrievableStations = _controller.vehicleController.mainController.Retrievable_Stations();
@@ -348,38 +313,18 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation.TransparentBlink_Toggle(true);
     }
 
-    private void Retrieve_Station()
+    private void Toggle_RetrieveStations()
     {
-        // add current station to current empty item box
-        _controller.cursor.currentSlot.Assign_Item(_interactStation.stationScrObj);
 
-        // retrieve food
-        if (_interactStation.Food_Icon() != null)
-        {
-            FoodData_Controller foodIcon = _interactStation.Food_Icon();
+    }
 
-            Food_ScrObj currentFood = foodIcon.currentFoodData.foodScrObj;
+    private void Retrieve_StationPrefab()
+    {
 
-            // retrieve only raw foods
-            if (_controller.vehicleController.mainController.dataController.CookedFood(currentFood) == null)
-            {
-                int currentAmount = foodIcon.currentFoodData.currentAmount;
+    }
 
-                _controller.foodMenu.Add_FoodItem(currentFood, currentAmount);
-            }
-        }
+    private void Cancel_Retrieve()
+    {
 
-        // destroy current selected station
-        _interactStation.Destroy_Station();
-
-        // retrieve target off
-        _interactionMode = false;
-        _interactStation = null;
-
-        // update event subscription
-        _controller.OnSelect_Input += Export_StationPrefab;
-
-        _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
-        _controller.OnSelect_Input -= Retrieve_Station;
     }
 }
