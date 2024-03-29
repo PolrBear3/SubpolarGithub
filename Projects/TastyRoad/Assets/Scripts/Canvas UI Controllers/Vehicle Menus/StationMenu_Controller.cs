@@ -27,7 +27,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input += Select_Slot;
 
         _controller.OnHoldSelect_Input += Export_StationPrefab;
-        _controller.OnOption1_Input += Place_StationPrefab;
+        _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
     }
 
     private void OnDisable()
@@ -35,7 +35,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input -= Select_Slot;
 
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
-        _controller.OnOption1_Input -= Place_StationPrefab;
+        _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
     }
 
 
@@ -239,6 +239,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _interactStation.Action1_Event += movement.Set_Position;
         _interactStation.detection.InteractArea_Event += movement.SetPosition_RestrictionToggle;
+
+        _controller.OnOption1_Input += Place_StationPrefab;
     }
 
     private void Place_StationPrefab()
@@ -266,21 +268,28 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation = null;
 
         main.Sort_CurrentStation_fromClosest(vehicle.transform);
+
+        _controller.OnOption1_Input -= Place_StationPrefab;
     }
 
     private void Cancel_Export()
     {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        if (cursor.data.hasItem == false) return;
+
         if (_interactStation == null) return;
 
         _interactionMode = false;
 
         // return exported station back to current slot
-        _controller.cursor.currentSlot.Assign_Item(_interactStation.stationScrObj);
-        _controller.cursor.Empty_Item();
+        cursor.currentSlot.Assign_Item(_interactStation.stationScrObj);
+        cursor.Empty_Item();
 
         // destroy current exported station
         _interactStation.Destroy_Station();
         _interactStation = null;
+
+        _controller.OnOption1_Input -= Place_StationPrefab;
     }
 
 
@@ -315,16 +324,70 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Toggle_RetrieveStations()
     {
+        if (_interactionMode) return;
 
+        ItemSlot_Cursor cursor = _controller.cursor;
+        if (cursor.data.hasItem) return;
+
+        List<Station_Controller> retrievableStations = _controller.vehicleController.mainController.Retrievable_Stations();
+        if (retrievableStations.Count <= 0) return;
+
+        // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
+        cursor.data.hasItem = true;
+
+        _interactionMode = true;
+        _controller.OnCursorControl_Input += Station_TargetDirection_Control;
+        _controller.OnOption1_Input += Retrieve_StationPrefab;
+
+        _interactStation = retrievableStations[0];
+        _interactStation.TransparentBlink_Toggle(true);
     }
 
     private void Retrieve_StationPrefab()
     {
+        if (_interactionMode == false) return;
 
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        // retrieve
+        if (currentSlot.data.hasItem == false)
+        {
+            currentSlot.Assign_Item(_interactStation.stationScrObj);
+        }
+
+        // swap
+        else
+        {
+            Add_StationItem(_interactStation.stationScrObj, 1);
+        }
+
+        // destroy selected station prefab after action 
+        _interactStation.Destroy_Station();
+
+        // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
+        cursor.data.hasItem = false;
+
+        _interactionMode = false;
+        _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
+        _controller.OnOption1_Input -= Retrieve_StationPrefab;
+
+        _interactStation = null;
     }
 
     private void Cancel_Retrieve()
     {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        if (cursor.data.hasItem) return;
 
+        // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
+        cursor.data.hasItem = false;
+
+        _interactionMode = false;
+        _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
+        _controller.OnOption1_Input -= Retrieve_StationPrefab;
+
+        _interactStation.TransparentBlink_Toggle(false);
+        _interactStation = null;
     }
 }
