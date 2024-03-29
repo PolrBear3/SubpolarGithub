@@ -9,8 +9,6 @@ public interface IVehicleMenu
     public List<ItemSlot> ItemSlots();
 
     public bool MenuInteraction_Active();
-
-    public void Exit_MenuInteraction();
 }
 
 public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
@@ -73,6 +71,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public event Menu_Event OnOption1_Input;
     public event Menu_Event OnOption2_Input;
 
+    public event Menu_Event OnExit_Input;
+
 
 
     // UnityEngine
@@ -93,7 +93,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         for (int i = 0; i < _menus.Count; i++)
         {
+            if (_menus[i].activeSelf == true) continue;
             if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
+
+            _menus[i].SetActive(true);
             saveLoad.Save_Data();
         }
     }
@@ -169,7 +172,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         if (currentMenu.MenuInteraction_Active() == true)
         {
-            currentMenu.Exit_MenuInteraction();
+            OnExit_Input?.Invoke();
             return;
         }
 

@@ -11,13 +11,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private List<ItemSlot> _itemSlots = new();
     [SerializeField] private int _boxCapacity;
 
-    private bool _fridgeTargetMode;
-
-    private List<Fridge> _currentFridges = new();
-    private Fridge _currentTargetFridge;
-
-    private int _currentFridgeNum;
-
 
 
     // UnityEngine
@@ -38,6 +31,15 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnDisable()
     {
+        // save current dragging item before menu close
+        ItemSlot_Data cursorData = _controller.cursor.data;
+
+        if (cursorData.hasItem)
+        {
+            Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
+            _controller.cursor.Empty_Item();
+        }
+
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_Food;
 
@@ -50,6 +52,14 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        // save current dragging item before game close
+        ItemSlot_Data cursorData = _controller.cursor.data;
+
+        if (cursorData.hasItem)
+        {
+            Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
+        }
+
         List<ItemSlot_Data> saveSlots = new();
 
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -82,12 +92,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public bool MenuInteraction_Active()
     {
-        return _fridgeTargetMode;
-    }
-
-    public void Exit_MenuInteraction()
-    {
-        // Fridge_TargetSystem_Toggle();
+        return false;
     }
 
 
@@ -337,7 +342,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         ItemSlot currentSlot = cursor.currentSlot;
         if (currentSlot.data.hasItem == false) return;
-
         if (cursor.data.currentFood != currentSlot.data.currentFood) return;
 
         cursor.Assign_Amount(cursor.data.currentAmount - 1);
