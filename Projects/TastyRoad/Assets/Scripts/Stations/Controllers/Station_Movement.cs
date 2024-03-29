@@ -74,7 +74,7 @@ public class Station_Movement : MonoBehaviour
     {
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
 
-        _stationController.Interact_Event -= Set_Position;
+        _stationController.Action1_Event -= Set_Position;
         _stationController.detection.InteractArea_Event -= SetPosition_RestrictionToggle;
 
         _stationController.PlayerInput_Activation(false);

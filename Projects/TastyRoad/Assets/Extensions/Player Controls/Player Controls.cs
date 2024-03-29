@@ -271,7 +271,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""f964ffd7-7696-4a67-8d2e-e88782e79151"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -299,6 +299,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoldSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""c5583446-0dd0-4fa8-8c02-019633f14a06"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -456,6 +465,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Option2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b3d526fc-d84b-4a6b-91f0-f9f0983381ae"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -476,6 +496,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_UIControl_Option1 = m_UIControl.FindAction("Option1", throwIfNotFound: true);
         m_UIControl_Option2 = m_UIControl.FindAction("Option2", throwIfNotFound: true);
         m_UIControl_Exit = m_UIControl.FindAction("Exit", throwIfNotFound: true);
+        m_UIControl_HoldSelect = m_UIControl.FindAction("HoldSelect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -620,6 +641,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIControl_Option1;
     private readonly InputAction m_UIControl_Option2;
     private readonly InputAction m_UIControl_Exit;
+    private readonly InputAction m_UIControl_HoldSelect;
     public struct UIControlActions
     {
         private @PlayerControls m_Wrapper;
@@ -629,6 +651,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Option1 => m_Wrapper.m_UIControl_Option1;
         public InputAction @Option2 => m_Wrapper.m_UIControl_Option2;
         public InputAction @Exit => m_Wrapper.m_UIControl_Exit;
+        public InputAction @HoldSelect => m_Wrapper.m_UIControl_HoldSelect;
         public InputActionMap Get() { return m_Wrapper.m_UIControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -653,6 +676,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
+            @HoldSelect.started += instance.OnHoldSelect;
+            @HoldSelect.performed += instance.OnHoldSelect;
+            @HoldSelect.canceled += instance.OnHoldSelect;
         }
 
         private void UnregisterCallbacks(IUIControlActions instance)
@@ -672,6 +698,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
+            @HoldSelect.started -= instance.OnHoldSelect;
+            @HoldSelect.performed -= instance.OnHoldSelect;
+            @HoldSelect.canceled -= instance.OnHoldSelect;
         }
 
         public void RemoveCallbacks(IUIControlActions instance)
@@ -704,5 +733,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOption1(InputAction.CallbackContext context);
         void OnOption2(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+        void OnHoldSelect(InputAction.CallbackContext context);
     }
 }

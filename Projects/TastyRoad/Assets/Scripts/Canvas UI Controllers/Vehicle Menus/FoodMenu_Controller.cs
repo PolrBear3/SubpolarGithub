@@ -29,12 +29,20 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnEnable()
     {
-        _controller.OnSelect_Input += Export_FoodItem;
+        _controller.OnSelect_Input += Select_Slot;
+        _controller.OnHoldSelect_Input += Export_Food;
+
+        _controller.OnOption1_Input += DropSingle_Food;
+        _controller.OnOption2_Input += DragSingle_Food;
     }
 
     private void OnDisable()
     {
-        _controller.OnSelect_Input -= Export_FoodItem;
+        _controller.OnSelect_Input -= Select_Slot;
+        _controller.OnHoldSelect_Input -= Export_Food;
+
+        _controller.OnOption1_Input -= DropSingle_Food;
+        _controller.OnOption2_Input -= DragSingle_Food;
     }
 
 
@@ -79,7 +87,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Exit_MenuInteraction()
     {
-        Fridge_TargetSystem_Toggle();
+        // Fridge_TargetSystem_Toggle();
     }
 
 
@@ -114,8 +122,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
-
-
+    /*
     // Food to Fridge Export System
     private List<Fridge> CurrentFridges()
     {
@@ -229,7 +236,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (leftOver <= 0) return;
         Add_FoodItem(prevFood, leftOver);
     }
+    */
 
+
+
+    // Menu Control
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -260,11 +271,111 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
 
-    // FoodBox Export System
-    private void Export_FoodItem()
+    // Slot and Cursor Control
+    private void Select_Slot()
     {
-        // fix to current hold item data ??
-        ItemSlot_Data currentSlotData = _controller.currentItemBox.data; 
+        ItemSlot_Cursor cursor = _controller.cursor;
+
+        if (cursor.data.hasItem == false)
+        {
+            Drag_Food();
+            return;
+        }
+
+        if (cursor.currentSlot.data.hasItem)
+        {
+            Swap_Food();
+            return;
+        }
+
+        Drop_Food();
+    }
+
+    // Drag
+    private void Drag_Food()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+        Food_ScrObj slotFood = currentSlot.data.currentFood;
+
+        cursor.Assign_Item(slotFood);
+        cursor.Assign_Amount(1);
+
+        currentSlot.Update_Amount(-1);
+    }
+
+    private void DragSingle_Food()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        if (cursor.data.hasItem == false) return;
+
+        ItemSlot currentSlot = cursor.currentSlot;
+        if (currentSlot.data.hasItem == false) return;
+
+        if (cursor.data.currentFood != currentSlot.data.currentFood) return;
+
+        cursor.Assign_Amount(cursor.data.currentAmount + 1);
+        currentSlot.Update_Amount(-1);
+    }
+
+    // Drop
+    private void Drop_Food()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        currentSlot.Assign_Item(cursor.data.currentFood);
+        currentSlot.Assign_Amount(cursor.data.currentAmount);
+
+        cursor.Empty_Item();
+    }
+
+    private void DropSingle_Food()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        if (cursor.data.hasItem == false) return;
+
+        ItemSlot currentSlot = cursor.currentSlot;
+        if (currentSlot.data.hasItem == false) return;
+
+        if (cursor.data.currentFood != currentSlot.data.currentFood) return;
+
+        cursor.Assign_Amount(cursor.data.currentAmount - 1);
+        currentSlot.Update_Amount(1);
+    }
+
+    // Swap
+    private void Swap_Food()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        // same food
+        if (cursor.data.currentFood == currentSlot.data.currentFood)
+        {
+            cursor.Assign_Amount(cursor.data.currentAmount + currentSlot.data.currentAmount);
+            currentSlot.Empty_ItemBox();
+
+            return;
+        }
+
+        // different food
+        Food_ScrObj cursorFood = cursor.data.currentFood;
+        int cursorAmount = cursor.data.currentAmount;
+
+        cursor.Assign_Item(currentSlot.data.currentFood);
+        cursor.Assign_Amount(currentSlot.data.currentAmount);
+
+        currentSlot.Assign_Item(cursorFood);
+        currentSlot.Assign_Amount(cursorAmount);
+    }
+
+
+
+    // FoodBox Export System
+    private void Export_Food()
+    {
+        ItemSlot_Data currentCursorData = _controller.cursor.currentSlot.data;
 
         // spawn food box, nearest to vehicle
 

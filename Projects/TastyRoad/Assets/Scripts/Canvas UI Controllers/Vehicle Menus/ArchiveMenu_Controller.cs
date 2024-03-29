@@ -145,16 +145,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Select_AvailableFood()
     {
-        ItemSlot currentBox = _controller.currentItemBox;
+        ItemSlot currentSlot = _controller.cursor.currentSlot;
 
-        if (currentBox.data.hasItem == false) return;
+        if (currentSlot.data.hasItem == false) return;
 
-        currentBox.Toggle_BookMark();
+        currentSlot.Toggle_BookMark();
 
-        Food_ScrObj currentFood = currentBox.data.currentFood;
+        Food_ScrObj currentFood = currentSlot.data.currentFood;
         Main_Controller main = _controller.vehicleController.mainController;
 
-        if (currentBox.data.bookMarked == false)
+        if (currentSlot.data.bookMarked == false)
         {
             main.RemoveFood_fromBookmark(currentFood);
             return;
@@ -179,16 +179,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Update_IngredientBubble()
     {
-        ItemSlot currentBox = _controller.currentItemBox;
+        ItemSlot currentSlot = _controller.cursor.currentSlot;
 
-        if (currentBox.data.hasItem == false) return;
+        if (currentSlot.data.hasItem == false) return;
 
-        Vector2 itemBoxPos = new(currentBox.transform.localPosition.x, currentBox.transform.localPosition.y + 75f);
+        Vector2 itemBoxPos = new(currentSlot.transform.localPosition.x, currentSlot.transform.localPosition.y + 75f);
 
         _ingredientBubble.transform.localPosition = itemBoxPos;
         _ingredientBubble.SetActive(true);
 
-        Food_ScrObj currentFood = currentBox.data.currentFood;
+        Food_ScrObj currentFood = currentSlot.data.currentFood;
 
         Food_ScrObj ingredient1 = currentFood.ingredients[0].foodScrObj;
         _ingredientIcon1.Assign_Item(ingredient1);

@@ -24,12 +24,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnEnable()
     {
-        _controller.OnSelect_Input += Export_StationPrefab;
+        _controller.OnSelect_Input += Select_Slot;
+        _controller.OnHoldSelect_Input += Export_StationPrefab;
+        _controller.OnOption1_Input += Place_StationPrefab;
     }
 
     private void OnDisable()
     {
-        _controller.OnSelect_Input -= Export_StationPrefab;
+        _controller.OnSelect_Input -= Select_Slot;
+        _controller.OnHoldSelect_Input -= Export_StationPrefab;
+        _controller.OnOption1_Input += Place_StationPrefab;
     }
 
 
@@ -139,7 +143,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
 
-    // Station Export System
+    // Menu Control
     public void Add_StationItem(Station_ScrObj station, int amount)
     {
         int repeatAmount = amount;
@@ -156,56 +160,110 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
+
+
+    // Slot and Cursor Control
+    private void Select_Slot()
+    {
+        if (_interactionMode) return;
+
+        ItemSlot_Cursor cursor = _controller.cursor;
+
+        if (cursor.data.hasItem == false)
+        {
+            Drag_Station();
+            return;
+        }
+
+        if (cursor.currentSlot.data.hasItem)
+        {
+            Swap_Station();
+            return;
+        }
+
+        Drop_Station();
+    }
+
+    //
+    private void Drag_Station()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+        Station_ScrObj slotStation = currentSlot.data.currentStation;
+
+        cursor.Assign_Item(slotStation);
+        currentSlot.Empty_ItemBox();
+    }
+
+    //
+    private void Drop_Station()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        currentSlot.Assign_Item(cursor.data.currentStation);
+        cursor.Empty_Item();
+    }
+
+    //
+    private void Swap_Station()
+    {
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        Station_ScrObj cursorStation = cursor.data.currentStation;
+
+        cursor.Assign_Item(currentSlot.data.currentStation);
+        currentSlot.Assign_Item(cursorStation);
+    }
+
+
+
+    // Station Export System
     private void Export_StationPrefab()
     {
-        ItemSlot currentBox = _controller.currentItemBox;
+        ItemSlot_Cursor cursor = _controller.cursor;
 
-        if (currentBox.data.hasItem == false)
-        {
-            // updates to retrieve mode if item box is empty
-            Retrieve_Station_Toggle();
-            return;
-        }
-
-        Vehicle_Controller vehicle = _controller.vehicleController;
-
-        if (_interactionMode == true)
-        {
-            if (_interactStation.detection.onInteractArea == false)
-            {
-                // return back to spawn position
-                _interactStation.transform.localPosition = vehicle.spawnPoint.position;
-
-                return;
-            }
-
-            Main_Controller main = vehicle.mainController;
-
-            Vector2 stationPosition = Main_Controller.SnapPosition(_interactStation.transform.position);
-
-            if (main.Position_Claimed(stationPosition)) return;
-
-            _interactionMode = false;
-            _interactStation = null;
-
-            currentBox.Update_Amount(-1);
-
-            main.Sort_CurrentStation_fromClosest(vehicle.transform);
-
-            return;
-        }
+        if (cursor.data.hasItem == false) return;
 
         _interactionMode = true;
 
-        int currentStationID = currentBox.data.currentStation.id;
+        Vehicle_Controller vehicle = _controller.vehicleController;
+        int cursorStationID = cursor.data.currentStation.id;
 
-        // instantiate selected station prefab at spawn position
-        _interactStation = vehicle.mainController.Spawn_Station(currentStationID, vehicle.spawnPoint.position);
+        _interactStation = vehicle.mainController.Spawn_Station(cursorStationID, vehicle.spawnPoint.position);
 
         Station_Movement movement = _interactStation.movement;
 
-        _interactStation.Interact_Event += movement.Set_Position;
+        _interactStation.Action1_Event += movement.Set_Position;
         _interactStation.detection.InteractArea_Event += movement.SetPosition_RestrictionToggle;
+    }
+
+    private void Place_StationPrefab()
+    {
+        if (_interactionMode == false) return;
+
+        Vehicle_Controller vehicle = _controller.vehicleController;
+
+        if (_interactStation.detection.onInteractArea == false)
+        {
+            // return back to spawn position
+            _interactStation.transform.localPosition = vehicle.spawnPoint.position;
+            return;
+        }
+
+        Main_Controller main = vehicle.mainController;
+
+        Vector2 stationPosition = Main_Controller.SnapPosition(_interactStation.transform.position);
+
+        if (main.Position_Claimed(stationPosition)) return;
+
+        _controller.cursor.Empty_Item();
+
+        _interactionMode = false;
+        _interactStation = null;
+
+        main.Sort_CurrentStation_fromClosest(vehicle.transform);
     }
 
     private void Cancel_Export()
@@ -213,6 +271,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (_interactStation == null) return;
 
         _interactionMode = false;
+
+        // return exported station back to current slot
+        _controller.cursor.currentSlot.Assign_Item(_interactStation.stationScrObj);
+        _controller.cursor.Empty_Item();
 
         // destroy current exported station
         _interactStation.Destroy_Station();
@@ -224,9 +286,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Station Retrieve System
     private void Retrieve_Station_Toggle()
     {
-        ItemSlot currentBox = _controller.currentItemBox;
+        ItemSlot currentSlot = _controller.cursor.currentSlot;
 
-        if (currentBox.data.hasItem == true) return;
+        if (currentSlot.data.hasItem == true) return;
 
         List<Station_Controller> retrievableStations = _controller.vehicleController.mainController.Retrievable_Stations();
         if (retrievableStations.Count <= 0) return;
@@ -289,7 +351,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Retrieve_Station()
     {
         // add current station to current empty item box
-        _controller.currentItemBox.Assign_Item(_interactStation.stationScrObj);
+        _controller.cursor.currentSlot.Assign_Item(_interactStation.stationScrObj);
 
         // retrieve food
         if (_interactStation.Food_Icon() != null)

@@ -249,7 +249,7 @@
                     "id": "f964ffd7-7696-4a67-8d2e-e88782e79151",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 },
                 {
@@ -277,6 +277,15 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HoldSelect",
+                    "type": "Button",
+                    "id": "c5583446-0dd0-4fa8-8c02-019633f14a06",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
                     "initialStateCheck": false
                 }
             ],
@@ -432,6 +441,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Option2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b3d526fc-d84b-4a6b-91f0-f9f0983381ae",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HoldSelect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

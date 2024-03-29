@@ -19,19 +19,26 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private GameObject _canvas;
 
-    private List<ItemSlot> _itemBoxes = new();
-    public List<ItemSlot> itemBoxes => _itemBoxes;
+    private List<ItemSlot> _itemSlots = new();
+    public List<ItemSlot> itemSlots => _itemSlots;
 
-    [HideInInspector] public ItemSlot currentItemBox;
+    [SerializeField] private ItemSlot_Cursor _cursor;
+    public ItemSlot_Cursor cursor => _cursor;
+
+
 
     [Header("Coin Amounts")]
     [SerializeField] private TextMeshProUGUI _goldCoinText;
     [SerializeField] private TextMeshProUGUI _stationCoinText;
     [SerializeField] private TextMeshProUGUI _gasCoinText;
 
+
+
     [Header("Insert Vehicle Prefab")]
     [SerializeField] private Vehicle_Controller _vehicleController;
     public Vehicle_Controller vehicleController => _vehicleController;
+
+
 
     [Header("Menu Controllers")]
     [SerializeField] private FoodMenu_Controller _foodMenu;
@@ -43,9 +50,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private ArchiveMenu_Controller _arhiveMenu;
     public ArchiveMenu_Controller arhiveMenu => _arhiveMenu;
 
+
+
     [Header("Menu Control")]
     [SerializeField] private List<GameObject> _menus = new();
     [SerializeField] private List<GameObject> _menuIcons = new();
+
+
 
     private int _currentMenuNum;
     public int currentMenuNum => _currentMenuNum;
@@ -55,7 +66,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     public delegate void Menu_Event();
     public event Menu_Event MenuOpen_Event;
+
     public event Menu_Event OnSelect_Input;
+    public event Menu_Event OnHoldSelect_Input;
+
+    public event Menu_Event OnOption1_Input;
+    public event Menu_Event OnOption2_Input;
 
 
 
@@ -114,8 +130,19 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         OnSelect_Input?.Invoke();
     }
 
+    private void OnHoldSelect()
+    {
+        OnHoldSelect_Input?.Invoke();
+    }
+
     private void OnOption1()
     {
+        if (_cursor.data.hasItem)
+        {
+            OnOption1_Input?.Invoke();
+            return;
+        }
+
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
         if (currentMenu.MenuInteraction_Active() == true) return;
 
@@ -124,6 +151,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnOption2()
     {
+        if (_cursor.data.hasItem)
+        {
+            OnOption2_Input?.Invoke();
+            return;
+        }
+
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
         if (currentMenu.MenuInteraction_Active() == true) return;
 
@@ -183,9 +216,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         int numCount = 0;
 
-        for (int i = 0; i < itemBoxes.Count; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
-            itemBoxes[i].Assign_BoxNum(numCount);
+            itemSlots[i].Assign_BoxNum(numCount);
 
             numCount++;
         }
@@ -199,25 +232,22 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         float calculatedDirection = inputDireciton.x + -(inputDireciton.y * 5);
 
         int convertedDirection = (int)calculatedDirection;
-        int nextBoxNum = currentItemBox.boxNum + convertedDirection;
+        int nextSlotNum = _cursor.currentSlot.boxNum + convertedDirection;
 
-        if (nextBoxNum < 0) return;
-        if (nextBoxNum >= itemBoxes.Count) return;
+        if (nextSlotNum < 0) return;
+        if (nextSlotNum >= itemSlots.Count) return;
 
-        Vector2 currentNum = currentItemBox.gridNum;
-        Vector2 nextNum = itemBoxes[nextBoxNum].gridNum;
+        Vector2 currentNum = _cursor.currentSlot.gridNum;
+        Vector2 nextNum = itemSlots[nextSlotNum].gridNum;
 
         if (currentNum.x != nextNum.x && currentNum.y != nextNum.y) return;
 
-        currentItemBox.BoxSelect_Toggle(false);
-
-        currentItemBox = itemBoxes[nextBoxNum];
-        currentItemBox.BoxSelect_Toggle(true);
+        _cursor.Assign_CurrentSlot(itemSlots[nextSlotNum]);
     }
 
     public void Menu_Control(int controlNum)
     {
-        if (currentItemBox != null) currentItemBox.BoxSelect_Toggle(false);
+        // if (currentItemBox != null) currentItemBox.BoxSelect_Toggle(false);
 
         _menus[_currentMenuNum].SetActive(false);
         _menuIcons[_currentMenuNum].SetActive(false);
@@ -231,7 +261,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _menuIcons[_currentMenuNum].SetActive(true);
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu newMenu) == false) return;
-        _itemBoxes = newMenu.ItemSlots();
+        _itemSlots = newMenu.ItemSlots();
 
         Assign_All_BoxNum();
 
@@ -239,7 +269,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         MenuOpen_Event?.Invoke();
 
         // set starting cursor at first box
-        currentItemBox = itemBoxes[0];
-        currentItemBox.BoxSelect_Toggle(true);
+        _cursor.Assign_CurrentSlot(itemSlots[0]);
     }
 }

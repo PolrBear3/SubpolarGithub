@@ -6,7 +6,7 @@ using TMPro;
 
 public class ItemSlot : MonoBehaviour
 {
-    public ItemSlot_Data data;
+    [HideInInspector] public ItemSlot_Data data;
 
     private int _boxNum;
     public int boxNum => _boxNum;
@@ -14,15 +14,15 @@ public class ItemSlot : MonoBehaviour
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
 
-
-
     [SerializeField] private Image _iconImage;
     [SerializeField] private TextMeshProUGUI _amountText;
 
 
 
     [Header("")]
-    [SerializeField] private Image _selectIcon;
+    [SerializeField] private Transform _cursorPoint;
+    public Transform cursorPoint => _cursorPoint;
+
     [SerializeField] private Image _bookmarkIcon;
 
 
@@ -39,7 +39,6 @@ public class ItemSlot : MonoBehaviour
     {
         _iconImage.color = Color.clear;
         _amountText.color = Color.clear;
-        _selectIcon.color = Color.clear;
         _bookmarkIcon.color = Color.clear;
 
         _stateIndicator.SetActive(false);
@@ -48,18 +47,6 @@ public class ItemSlot : MonoBehaviour
 
 
     // Mini Icon control
-    public void BoxSelect_Toggle(bool isSelected)
-    {
-        if (isSelected == true)
-        {
-            _selectIcon.color = Color.white;
-
-            return;
-        }
-
-        _selectIcon.color = Color.clear;
-    }
-
     public void Toggle_BookMark()
     {
         if (data.hasItem == false) return;
@@ -120,6 +107,8 @@ public class ItemSlot : MonoBehaviour
         _amountText.color = Color.clear;
     }
 
+
+
     // sprite update included
     public void Assign_Item(Food_ScrObj food)
     {
@@ -155,6 +144,8 @@ public class ItemSlot : MonoBehaviour
 
         Empty_ItemBox();
     }
+
+
 
     // text update included
     public void Assign_Amount(int assignAmount)
@@ -195,6 +186,8 @@ public class ItemSlot : MonoBehaviour
         _amountText.text = data.currentAmount.ToString();
         _amountText.color = Color.black;
     }
+
+
 
     // StateBox Image Control
     private Sprite StateBox_Sprite(FoodState_Type type, int level)
