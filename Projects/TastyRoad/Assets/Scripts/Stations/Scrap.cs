@@ -35,6 +35,7 @@ public class Scrap : MonoBehaviour, IInteractable
     {
         if (_stationController.movement.enabled) return;
         if (!collision.TryGetComponent(out Player_Controller player)) return;
+
         UnInteract();
     }
 

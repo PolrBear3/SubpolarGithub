@@ -7,15 +7,17 @@ public class Clock_Timer : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private List<Sprite> _clockSprites = new();
-    [SerializeField] private Sprite _clockEmptySprite;
 
-    private int _currentTime;
-    public int currentTime => _currentTime;
+    private float _currentTime;
+    public float currentTime => _currentTime;
 
     private Coroutine _timeCoroutine;
+    private Coroutine _timeSpriteCoroutine;
 
     private bool _timeRunning;
     public bool timeRunning => _timeRunning;
+
+
 
     // UnityEngine
     private void Awake()
@@ -61,40 +63,47 @@ public class Clock_Timer : MonoBehaviour
         _currentTime = setTime;
     }
 
+
+
     public void Run_Time()
     {
         _timeRunning = true;
+
         _timeCoroutine = StartCoroutine(Run_Time_Coroutine());
+        _timeSpriteCoroutine = StartCoroutine(TimeSprite_Update_Coroutine());
     }
+
     private IEnumerator Run_Time_Coroutine()
     {
-        int timePerSprite = _currentTime / _clockSprites.Count;
-
-        while(_currentTime > 0)
+        while (_currentTime > 1)
         {
             _currentTime--;
-
-            int spriteIndexNum = _currentTime / timePerSprite - 1;
-
-            if (spriteIndexNum >= 0) 
-            {
-                _spriteRenderer.sprite = _clockSprites[spriteIndexNum];
-            }
-
             yield return new WaitForSeconds(1);
         }
 
         _timeRunning = false;
-        _spriteRenderer.sprite = _clockEmptySprite;
-
         Toggle_Transparency(true);
     }
+
+    private IEnumerator TimeSprite_Update_Coroutine()
+    {
+        float spriteTransitionTime = _currentTime / _clockSprites.Count;
+
+        for (int i = 0; i < _clockSprites.Count; i++)
+        {
+            _spriteRenderer.sprite = _clockSprites[i];
+            yield return new WaitForSeconds(spriteTransitionTime);
+        }
+    }
+
+
 
     public void Stop_Time()
     {
         _timeRunning = false;
 
         if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
+        if (_timeSpriteCoroutine != null) StopCoroutine(_timeSpriteCoroutine);
     }
 
 

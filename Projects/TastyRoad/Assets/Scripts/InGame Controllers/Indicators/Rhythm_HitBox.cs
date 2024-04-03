@@ -85,7 +85,10 @@ public class Rhythm_HitBox : MonoBehaviour
             _spriteRenderer.sprite = _transitionBoxes[_transitionNum];
 
             // if hit ready, show hit key
-            if (_transitionNum >= _transitionBoxes.Count) _actionKeyText.SetActive(true);
+            if (_transitionNum >= _transitionBoxes.Count - 1)
+            {
+                _actionKeyText.SetActive(true);
+            }
 
             yield return new WaitForSeconds(_transitionTime);
 

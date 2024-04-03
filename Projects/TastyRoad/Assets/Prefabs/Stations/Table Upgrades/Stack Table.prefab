@@ -230,7 +230,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stationScrObj: {fileID: 11400000, guid: 8d1e6b36626de4a3ea7b9c6ec7712fc7, type: 2}
-  _restrictionColor: {r: 0.9098039, g: 0.23137255, b: 0.23137255, a: 1}
 --- !u!114 &1839000738827018954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,7 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479eb4cf660ef402b8de45b16d1a452a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _foodIcon: {fileID: 4603395647855119372}
   _actionBubble: {fileID: 0}
 --- !u!1001 &1841694555715027484
 PrefabInstance:
@@ -322,6 +320,10 @@ PrefabInstance:
     - target: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
       propertyPath: m_Name
       value: Movement Arrows
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -408,14 +410,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
   m_PrefabInstance: {fileID: 9021006827949163367}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4603395647855119372 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-  m_PrefabInstance: {fileID: 9021006827949163367}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94e5c44617d64486196e532775169a9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

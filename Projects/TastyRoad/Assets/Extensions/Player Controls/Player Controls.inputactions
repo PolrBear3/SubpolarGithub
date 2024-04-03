@@ -244,6 +244,24 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "SelectDown",
+                    "type": "Button",
+                    "id": "7b16b699-0e53-463e-9830-f87ef51ace71",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HoldSelect",
+                    "type": "Button",
+                    "id": "c5583446-0dd0-4fa8-8c02-019633f14a06",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Select",
                     "type": "Button",
                     "id": "f964ffd7-7696-4a67-8d2e-e88782e79151",
@@ -277,15 +295,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "HoldSelect",
-                    "type": "Button",
-                    "id": "c5583446-0dd0-4fa8-8c02-019633f14a06",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold(duration=1)",
                     "initialStateCheck": false
                 }
             ],
@@ -424,6 +433,17 @@
                 },
                 {
                     "name": "",
+                    "id": "47e436d2-ac48-4d7f-8180-c42579c2ed98",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Option2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ab6654fe-5947-49bd-b0d7-18795c87c3e0",
                     "path": "<Keyboard>/q",
                     "interactions": "",
@@ -435,12 +455,12 @@
                 },
                 {
                     "name": "",
-                    "id": "47e436d2-ac48-4d7f-8180-c42579c2ed98",
-                    "path": "<Keyboard>/e",
+                    "id": "eb944a9c-663a-47a1-9ea9-794af8351064",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Option2",
+                    "action": "SelectDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

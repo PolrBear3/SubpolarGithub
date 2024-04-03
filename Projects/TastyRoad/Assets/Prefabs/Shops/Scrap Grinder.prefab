@@ -12,11 +12,12 @@ GameObject:
   - component: {fileID: 7182161893801920667}
   - component: {fileID: 2955736112647724649}
   - component: {fileID: 1645532908833535207}
+  - component: {fileID: 4484661540243082052}
   - component: {fileID: 6855783613592528196}
   - component: {fileID: 4102035621542321501}
   m_Layer: 0
   m_Name: Scrap Grinder
-  m_TagString: Untagged
+  m_TagString: nonInteractArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,6 +129,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &4484661540243082052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2860305389758408441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _claimPositions:
+  - {x: 0, y: 0}
 --- !u!114 &6855783613592528196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +157,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bubble: {fileID: 5400589539467437719}
   _menuPanel: {fileID: 0}
-  _claimPositionRange: {x: 0, y: 0}
 --- !u!114 &4102035621542321501
 MonoBehaviour:
   m_ObjectHideFlags: 0

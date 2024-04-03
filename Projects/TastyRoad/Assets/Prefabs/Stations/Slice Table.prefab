@@ -231,7 +231,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stationScrObj: {fileID: 11400000, guid: a1ca9265c35084055ae852fb82aaf7cd, type: 2}
-  _restrictionColor: {r: 0.9098039, g: 0.23137255, b: 0.23137255, a: 1}
 --- !u!114 &-7660575948742224011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +271,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _foodIcon: {fileID: 6955015459816889664}
   _hitBox: {fileID: 9151360993743408321}
-  _sliceIncreaseTime: 2
 --- !u!1001 &285888966713677849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -324,6 +322,10 @@ PrefabInstance:
     - target: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
       propertyPath: m_Name
       value: Movement Arrows
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

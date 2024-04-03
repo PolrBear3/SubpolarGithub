@@ -44,6 +44,8 @@ public class OrderStand : MonoBehaviour, IInteractable
         _timer.Toggle_Transparency(true);
     }
 
+
+
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -51,6 +53,8 @@ public class OrderStand : MonoBehaviour, IInteractable
 
         UnInteract();
     }
+
+
 
     // IInteractable
     public void Interact()
@@ -96,6 +100,11 @@ public class OrderStand : MonoBehaviour, IInteractable
         // order closed
         else
         {
+            // order stand toggle cooltime
+            _timer.Set_Time((int)_attractIntervalTime);
+            _timer.Run_Time();
+            _timer.Toggle_Transparency(false);
+
             Main_Controller.orderOpen = false;
 
             for (int i = 0; i < _waitingNPCs.Count; i++)
@@ -103,7 +112,7 @@ public class OrderStand : MonoBehaviour, IInteractable
                 _waitingNPCs[i].timer.Toggle_Transparency(true);
 
                 // set time limit current time to 0 to activate TimeLimit_Over() from npc interaction
-                _waitingNPCs[i].timer.Update_CurrentTime(-_waitingNPCs[i].timer.currentTime);
+                _waitingNPCs[i].timer.Update_CurrentTime(-(int)_waitingNPCs[i].timer.currentTime);
             }
 
             // reset waiting npc list

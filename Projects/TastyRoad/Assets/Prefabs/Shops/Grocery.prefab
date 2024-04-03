@@ -578,10 +578,11 @@ GameObject:
   - component: {fileID: 6073058333627657542}
   - component: {fileID: 8224060690827938066}
   - component: {fileID: 9142469321704530693}
+  - component: {fileID: 3327283539733196719}
   - component: {fileID: 4486183828756316208}
   m_Layer: 0
   m_Name: Grocery
-  m_TagString: Untagged
+  m_TagString: nonInteractArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -691,7 +692,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -702,7 +703,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 0.5}
+  m_Size: {x: 1.6, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &8224060690827938066
 MonoBehaviour:
@@ -747,6 +748,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &3327283539733196719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8397131902407000111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _claimPositions:
+  - {x: -1, y: 0}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
 --- !u!114 &4486183828756316208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,7 +778,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bubble: {fileID: 9192818909141435233}
   _launcher: {fileID: 6441085278170609956}
-  _claimPositionRange: {x: 1, y: 0}
   _hoverControlKeys: {fileID: 321446554380682325}
   _hoveringFoodSR: {fileID: 263440292273236062}
   _hoveringFoodAnim: {fileID: 4639713129607490150}

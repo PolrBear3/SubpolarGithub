@@ -19,6 +19,11 @@ public class Station_Movement : MonoBehaviour
         if (gameObject.TryGetComponent(out Rigidbody2D rigidbody)) { _rigidBody = rigidbody; }
     }
 
+    private void Start()
+    {
+        _movementArrows.SetActive(true);
+    }
+
     private void FixedUpdate()
     {
         Rigidbody_Move();
@@ -61,7 +66,6 @@ public class Station_Movement : MonoBehaviour
         if (_stationController.detection.onInteractArea == false) return;
 
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
-
         if (_stationController.mainController.Position_Claimed(snapPosition) == true) return;
 
         Load_Position();

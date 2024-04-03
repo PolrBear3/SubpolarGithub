@@ -317,6 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultAnimation: 
 --- !u!114 &9094981842974887859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,6 +751,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _clockSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: -321259351, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _clockSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 1638288721, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _clockSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: 505139417, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _clockSprites.Array.data[4]
+      value: 
+      objectReference: {fileID: -2091510253, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - target: {fileID: 3788136335572471749, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: m_Name
       value: Clock_Timer

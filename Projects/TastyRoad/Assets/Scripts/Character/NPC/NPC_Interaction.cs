@@ -36,7 +36,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -65,7 +64,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         Interact_FacePlayer();
 
-        if (_foodOrderServed)
+        if (_foodOrderServed && _controller.foodIcon.hasFood)
         {
             Collect_Coin();
             return;
@@ -218,7 +217,16 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         while (timer.timeRunning) yield return null;
 
-        UnInteract();
+        // hide timer
+        _controller.timer.Toggle_Transparency(true);
+
+        // Uninteract functions
+        _controller.PlayerInput_Toggle(false);
+
+        _controller.actionBubble.Toggle(false);
+        StateBox_Toggle();
+
+        _controller.Action1 -= Serve_FoodOrder;
 
         // add unsatisfied icon or something ?
 

@@ -18,9 +18,6 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
     private int _hoverNum;
     private List<FoodData> _purchasableFoods = new();
 
-    [Header("")]
-    [SerializeField] private Vector2 _claimPositionRange;
-
     [Header("Hovering Food")]
     [SerializeField] private GameObject _hoverControlKeys;
     [SerializeField] private SpriteRenderer _hoveringFoodSR;
@@ -39,8 +36,6 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
 
         _main = FindObjectOfType<Main_Controller>();
         _detection = gameObject.GetComponent<Detection_Controller>();
-
-        Claim_Position();
     }
 
     private void Start()
@@ -144,21 +139,6 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
     public void Load_Data()
     {
         _purchasableFoods = ES3.Load("Grocery_purchasableFoods", _purchasableFoods);
-    }
-
-
-
-    // Position Claim
-    private void Claim_Position()
-    {
-        int claimRepeatNum = (int)_claimPositionRange.x * 2 + 1;
-        float positionXNum = transform.position.x - _claimPositionRange.x;
-
-        for (int i = 0; i < claimRepeatNum; i++)
-        {
-            _main.Claim_Position(new(positionXNum, transform.position.y));
-            positionXNum++;
-        }
     }
 
 

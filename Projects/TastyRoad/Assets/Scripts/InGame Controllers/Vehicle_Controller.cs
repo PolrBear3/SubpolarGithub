@@ -20,8 +20,11 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
 
-    [SerializeField] private Transform _spawnPoint;
-    public Transform spawnPoint => _spawnPoint;
+    [SerializeField] private Transform _foodBoxSpawnPoint;
+    public Transform foodBoxSpawnPoint => _foodBoxSpawnPoint;
+
+    [SerializeField] private Transform _stationSpawnPoint;
+    public Transform stationSpawnPoint => _stationSpawnPoint;
 
 
 
@@ -34,8 +37,6 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _vehicleSprite = sr; }
         if (gameObject.TryGetComponent(out PlayerInput input)) { _playerInput = input; }
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { this.detection = detection; }
-
-        Claim_Position();
     }
 
     private void Start()
@@ -92,20 +93,6 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
 
         UnInteract();
-    }
-
-
-
-    // Position Claim
-    private void Claim_Position()
-    {
-        // this is the size of the vehicle (make list size for future vehicles)
-        Vector2 claim1 = new  (transform.position.x + 1, transform.position.y);
-        Vector2 claim2 = new (transform.position.x - 1, transform.position.y);
-
-        mainController.Claim_Position(transform.localPosition);
-        mainController.Claim_Position(claim1);
-        mainController.Claim_Position(claim2);
     }
 
 

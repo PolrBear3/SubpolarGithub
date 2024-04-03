@@ -9,6 +9,8 @@ public class BasicAnimation_Controller : MonoBehaviour
 
     private Animator _animator;
 
+    [SerializeField] private string _defaultAnimation;
+
 
 
     // UnityEngine
@@ -18,9 +20,21 @@ public class BasicAnimation_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Animator animator)) { _animator = animator; }
     }
 
+    private void Start()
+    {
+        Set_DefaultAnimation();
+    }
+
 
 
     // Custon Animation Play
+    private void Set_DefaultAnimation()
+    {
+        if (_defaultAnimation == null) return;
+
+        _animator.Play(_defaultAnimation);
+    }
+
     public void Play_Animation(string animationName)
     {
         _animator.Play(animationName);

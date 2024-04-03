@@ -30,9 +30,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     [Header("")]
     [SerializeField] private GameObject _menuPanel;
 
-    [Header("")]
-    [SerializeField] private Vector2 _claimPositionRange;
-
 
 
     // UnityEngine
@@ -42,8 +39,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 
         _playerInput = gameObject.GetComponent<PlayerInput>();
         _detection = gameObject.GetComponent<Detection_Controller>();
-
-        Claim_Position();
     }
 
     private void Start()
@@ -115,21 +110,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
         _bubble.Toggle(false);
 
         UnInteract_Event?.Invoke();
-    }
-
-
-
-    // Position Claim
-    private void Claim_Position()
-    {
-        int claimRepeatNum = (int)_claimPositionRange.x * 2 + 1;
-        float positionXNum = transform.position.x - _claimPositionRange.x;
-
-        for (int i = 0; i < claimRepeatNum; i++)
-        {
-            _mainController.Claim_Position(new(positionXNum, transform.position.y));
-            positionXNum++;
-        }
     }
 
 

@@ -65,6 +65,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public delegate void Menu_Event();
     public event Menu_Event MenuOpen_Event;
 
+    public event Menu_Event OnCursor_Input;
+
     public event Menu_Event OnSelect_Input;
     public event Menu_Event OnHoldSelect_Input;
 
@@ -91,12 +93,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        // multiple save restriction
+        OnExit();
+
         for (int i = 0; i < _menus.Count; i++)
         {
-            if (_menus[i].activeSelf == true) continue;
             if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
-
-            _menus[i].SetActive(true);
             saveLoad.Save_Data();
         }
     }
@@ -120,6 +122,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         // only gets left and right input
         OnCursorControl_Input?.Invoke(input.x);
 
+        OnCursor_Input?.Invoke();
+
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu))
         {
             if (currentMenu.MenuInteraction_Active() == true) return;
@@ -130,7 +134,14 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnSelect()
     {
+        _cursor.holdTimer.Stop_ClockSpriteRun();
+
         OnSelect_Input?.Invoke();
+    }
+
+    private void OnSelectDown()
+    {
+        _cursor.holdTimer.Run_ClockSprite();
     }
 
     private void OnHoldSelect()
@@ -177,6 +188,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         }
 
         VehicleMenu_Toggle(false);
+
+        if (_vehicleController.detection.player == null) return;
+
         _vehicleController.detection.player.Player_Input().enabled = true;
     }
 

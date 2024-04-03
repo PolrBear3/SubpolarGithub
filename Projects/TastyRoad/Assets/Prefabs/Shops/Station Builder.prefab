@@ -237,11 +237,12 @@ GameObject:
   - component: {fileID: 1687553364878353284}
   - component: {fileID: 2955736112647724649}
   - component: {fileID: 1645532908833535207}
+  - component: {fileID: 3464169281094872160}
   - component: {fileID: 4984782188170072630}
   - component: {fileID: 2405579206946829032}
   m_Layer: 0
   m_Name: Station Builder
-  m_TagString: Untagged
+  m_TagString: nonInteractArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -428,6 +429,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &3464169281094872160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2860305389758408441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _claimPositions:
+  - {x: 0, y: 0}
 --- !u!114 &4984782188170072630
 MonoBehaviour:
   m_ObjectHideFlags: 0

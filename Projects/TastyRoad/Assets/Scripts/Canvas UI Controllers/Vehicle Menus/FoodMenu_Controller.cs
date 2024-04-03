@@ -6,6 +6,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
     [SerializeField] private VehicleMenu_Controller _controller;
 
+    private FoodBox _currentFoodBox;
+
     [Header("")]
     [SerializeField] private Vector2 _gridData;
     [SerializeField] private List<ItemSlot> _itemSlots = new();
@@ -32,13 +34,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnDisable()
     {
         // save current dragging item before menu close
-        ItemSlot_Data cursorData = _controller.cursor.data;
-
-        if (cursorData.hasItem)
-        {
-            Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
-            _controller.cursor.Empty_Item();
-        }
+        Drag_Cancel();
 
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_Food;
@@ -52,14 +48,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        // save current dragging item before game close
-        ItemSlot_Data cursorData = _controller.cursor.data;
-
-        if (cursorData.hasItem)
-        {
-            Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
-        }
-
         List<ItemSlot_Data> saveSlots = new();
 
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -72,8 +60,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Load_Data()
     {
-        if (!ES3.KeyExists("foodMenuSlots")) return;
-
         List<ItemSlot_Data> loadSlots = ES3.Load("foodMenuSlots", new List<ItemSlot_Data>());
 
         for (int i = 0; i < loadSlots.Count; i++)
@@ -323,6 +309,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Update_Amount(-1);
     }
 
+    private void Drag_Cancel()
+    {
+        ItemSlot_Data cursorData = _controller.cursor.data;
+
+        if (cursorData.hasItem == false) return;
+
+        Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
+        _controller.cursor.Empty_Item();
+    }
+
     // Drop
     private void Drop_Food()
     {
@@ -379,12 +375,33 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // FoodBox Export System
     private void Export_Food()
     {
-        ItemSlot_Data currentCursorData = _controller.cursor.currentSlot.data;
+        //
+        ItemSlot_Data currentCursorData = _controller.cursor.data;
+        if (currentCursorData.hasItem == false) return;
 
-        // spawn food box, nearest to vehicle
+        // check if food box is currently spawned
+        if (_currentFoodBox != null) return;
 
-        // assign food and amount to food box
+        //
+        Vehicle_Controller vehicle = _controller.vehicleController;
 
-        // clear hold data
+        // spawn food box
+        Station_Controller station = vehicle.mainController.Spawn_Station(7, vehicle.foodBoxSpawnPoint.position);
+        _currentFoodBox = station.GetComponent<FoodBox>();
+
+        // assign exported food to food box
+        station.Food_Icon().Assign_Food(currentCursorData.currentFood);
+
+        // assign exported food amount according to dragging amount
+        if (currentCursorData.currentAmount >= 6)
+        {
+            station.Food_Icon().Assign_Amount(6);
+            _controller.cursor.Assign_Amount(currentCursorData.currentAmount - 6);
+        }
+        else
+        {
+            station.Food_Icon().Assign_Amount(currentCursorData.currentAmount);
+            _controller.cursor.Empty_Item();
+        }
     }
 }

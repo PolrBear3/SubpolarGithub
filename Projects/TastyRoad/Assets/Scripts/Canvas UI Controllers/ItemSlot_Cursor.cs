@@ -9,6 +9,10 @@ public class ItemSlot_Cursor : MonoBehaviour
     [SerializeField] private Image _itemIcon;
     [SerializeField] private TextMeshProUGUI _amountText;
 
+    [Header("")]
+    [SerializeField] private UI_ClockTimer _holdTimer;
+    public UI_ClockTimer holdTimer => _holdTimer;
+
 
 
     [Header("")]

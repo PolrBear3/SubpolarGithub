@@ -232,7 +232,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _currentStations.Count; i++)
         {
-            if (_currentStations[i].movement.enabled == true) continue;
+            if (_currentStations[i].movement != null && _currentStations[i].movement.enabled == true) continue;
 
             saveData.Add(new StationData(_currentStations[i]));
 
@@ -255,7 +255,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         for (int i = 0; i < loadData.Count; i++)
         {
             Station_Controller station = Spawn_Station(loadData[i].stationID, loadData[i].position);
-            station.movement.Load_Position();
+
+            if (_currentStations[i].movement != null)
+            {
+                station.movement.Load_Position();
+            }
 
             if (foodData[i] == null) continue;
 
@@ -359,6 +363,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
         return false;
     }
+
+
 
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;

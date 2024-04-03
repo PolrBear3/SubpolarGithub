@@ -231,8 +231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9bdaefbdd1c543d9bba47e751d64aee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controller: {fileID: 0}
+  _disableInput: {fileID: 2331507576810310344}
   _tutorial: {fileID: 11400000, guid: b02ebf74ad36e4855b12643469eaebd5, type: 2}
+  _onEnableShow: 0
 --- !u!114 &-87010650432210433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,6 +407,10 @@ PrefabInstance:
     - target: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
       propertyPath: m_Name
       value: Movement Arrows
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

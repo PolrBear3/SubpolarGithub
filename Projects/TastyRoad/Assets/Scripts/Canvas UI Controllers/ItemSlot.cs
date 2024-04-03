@@ -6,7 +6,7 @@ using TMPro;
 
 public class ItemSlot : MonoBehaviour
 {
-    [HideInInspector] public ItemSlot_Data data;
+    public ItemSlot_Data data;
 
     private int _boxNum;
     public int boxNum => _boxNum;
@@ -95,6 +95,9 @@ public class ItemSlot : MonoBehaviour
     //
     public void Empty_ItemBox()
     {
+        data.bookMarked = false;
+
+        Toggle_BookMark(false);
         data.hasItem = false;
 
         data.currentFood = null;
