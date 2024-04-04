@@ -284,6 +284,9 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
             for (int i = 0; i < allStates.Count; i++)
             {
+                // food order rotten state restriction
+                if (allStates[i].type == FoodState_Type.rotten) continue;
+
                 bool setState = Random.value > 0.5f;
 
                 if (setState == false) continue;

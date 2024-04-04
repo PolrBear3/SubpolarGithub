@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum FoodState_Type { sliced, heated }
+public enum FoodState_Type { sliced, heated, rotten }
 
 [System.Serializable]
 public class FoodState_Data
 {
     public FoodState_Type stateType;
     public int stateLevel;
+
+    public FoodState_Data (FoodState_Type type, int level)
+    {
+        stateType = type;
+        stateLevel = level;
+    }
 }
 
 [System.Serializable]

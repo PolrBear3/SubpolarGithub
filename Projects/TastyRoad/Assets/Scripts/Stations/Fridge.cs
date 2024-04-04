@@ -2,53 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fridge : MonoBehaviour, IInteractable
+public class Fridge : Stack_Table, IInteractable
 {
-    private Station_Controller _stationController;
-    public Station_Controller stationController => _stationController;
-
-    [SerializeField] private FoodData_Controller _foodIcon;
-    public FoodData_Controller foodIcon => _foodIcon;
-
-
-
-    // UnityEngine
-    private void Awake()
-    {
-        if (gameObject.TryGetComponent(out Station_Controller station)) { _stationController = station; }
-    }
-
-    private void Start()
-    {
-        _foodIcon.AmountBar_Transparency(true);
-    }
-
-
-
     // IInteractable
-    public void Interact()
+    public new void Interact()
     {
-        Give_Food();
-    }
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
+        FoodData playerData = playerIcon.currentFoodData;
 
-    public void UnInteract()
-    {
+        if (playerData.stateData.Count > 0) return;
 
-    }
-
-
-
-    // Give Food to Player
-    private void Give_Food()
-    {
-        FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
-
-        if (playerIcon.hasFood == false)
+        if (playerIcon.hasFood == false || playerData.foodScrObj != stationController.Food_Icon().currentFoodData.foodScrObj)
         {
-            playerIcon.Assign_Food(_foodIcon.currentFoodData.foodScrObj);
+            Swap_Food();
 
-            _foodIcon.Update_Amount(-1);
-            _foodIcon.Show_AmountBar();
+            // restrict food decay
+            stationController.Food_Icon().rottenSystem.ResetDecay();
+        }
+        else
+        {
+            Stack_Food();
         }
     }
 }

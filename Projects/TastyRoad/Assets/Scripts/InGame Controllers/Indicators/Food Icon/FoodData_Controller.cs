@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class FoodData_Controller : MonoBehaviour
 {
-    public StateBox_Controller stateBoxController;
+    [SerializeField] private StateBox_Controller _stateBoxController;
+    public StateBox_Controller stateBoxController => _stateBoxController;
 
+    [SerializeField] private FoodData_RottenSystem _rottenSystem;
+    public FoodData_RottenSystem rottenSystem => _rottenSystem;
+
+    [Header("")]
     [SerializeField] private SpriteRenderer _icon;
 
     [Header("")]
@@ -14,7 +19,7 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private List<Sprite> _amountBarSprites = new();
     private Coroutine _amountBarCoroutine;
 
-    [HideInInspector] public FoodData currentFoodData;
+    public FoodData currentFoodData;
 
     private bool _hasFood;
     public bool hasFood => _hasFood;
@@ -89,6 +94,9 @@ public class FoodData_Controller : MonoBehaviour
 
         FoodIcon_Transparency(_iconTransparent);
         AmountBar_Transparency(_amountTransparent);
+
+        // food decay system
+        _rottenSystem.StartDecay();
     }
 
 
@@ -113,6 +121,9 @@ public class FoodData_Controller : MonoBehaviour
         _icon.transform.localPosition = foodScrObj.centerPosition / 100;
         _icon.sprite = currentFoodData.foodScrObj.sprite;
 
+        // food decay system
+        _rottenSystem.StartDecay();
+
         if (_iconTransparent == true) return;
 
         _icon.color = Color.white;
@@ -128,6 +139,9 @@ public class FoodData_Controller : MonoBehaviour
         _icon.sprite = null;
 
         _amountBar.color = Color.clear;
+
+        // food decay system
+        _rottenSystem.ResetDecay();
     }
 
 
@@ -216,6 +230,20 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Check and Compare Other State Data with this State Data
+    public bool Has_StateData(FoodState_Data stateData)
+    {
+        List<FoodState_Data> datas = currentFoodData.stateData;
+
+        for (int i = 0; i < datas.Count; i++)
+        {
+            if (datas[i].stateType != stateData.stateType) continue;
+            if (datas[i].stateLevel != stateData.stateLevel) continue;
+            return true;
+        }
+
+        return false;
+    }
+
     public bool Same_StateData(List<FoodState_Data> stateData)
     {
         int matchCount = currentFoodData.stateData.Count;
@@ -281,10 +309,13 @@ public class FoodData_Controller : MonoBehaviour
     public void Assign_State(List<FoodState_Data> data)
     {
         Clear_State();
-        currentFoodData.stateData = data;
 
+        if (data.Count <= 0) return;
+
+        currentFoodData.stateData = data;
         stateBoxController.Update_StateBoxes();
     }
+
     public void Update_State(FoodState_Type stateType, int level)
     {
         FoodState_Data targetState = Current_FoodState(stateType);
@@ -292,10 +323,7 @@ public class FoodData_Controller : MonoBehaviour
         // new state
         if (targetState == null)
         {
-            FoodState_Data newState = new();
-            newState.stateType = stateType;
-            newState.stateLevel = level;
-
+            FoodState_Data newState = new(stateType, level);
             currentFoodData.stateData.Add(newState);
         }
         // same state found

@@ -15,19 +15,22 @@ public class StateBox_Controller : MonoBehaviour
 {
     [SerializeField] private FoodData_Controller _foodData;
 
-    [SerializeField] private List<StateBox_Sprite> _stateBoxSprites;
-    public List<StateBox_Sprite> stateBoxSprites => _stateBoxSprites;
-
     [SerializeField] private List<SpriteRenderer> _currentStateBoxes = new();
     public List<SpriteRenderer> currentStateBoxes => _currentStateBoxes;
 
+    [SerializeField] private List<StateBox_Sprite> _stateBoxSprites;
+    public List<StateBox_Sprite> stateBoxSprites => _stateBoxSprites;
 
 
+
+    // UnityEngine
     private void Start()
     {
         if (_foodData.currentFoodData.stateData.Count > 0) return;
         Clear_StateBoxes();
     }
+
+
 
     // Get State Box Sprite
     private Sprite StateBox(FoodState_Type type, int level)
@@ -56,6 +59,8 @@ public class StateBox_Controller : MonoBehaviour
 
         return currentData;
     }
+
+
 
     // Clear All State Box
     public void Clear_StateBoxes()

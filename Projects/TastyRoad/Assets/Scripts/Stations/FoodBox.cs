@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FoodBox : MonoBehaviour, IInteractable
 {
-    private Animator _foodBoxAnim;
     private Station_Controller _controller;
 
 
@@ -12,7 +11,6 @@ public class FoodBox : MonoBehaviour, IInteractable
     // UnityEngine
     private void Awake()
     {
-        _foodBoxAnim = gameObject.GetComponent<Animator>();
         _controller = gameObject.GetComponent<Station_Controller>();
     }
 
@@ -68,6 +66,7 @@ public class FoodBox : MonoBehaviour, IInteractable
 
         // give player food
         playerIcon.Assign_Food(thisIcon.currentFoodData.foodScrObj);
+        playerIcon.Assign_State(thisIcon.currentFoodData.stateData);
 
         // decrease one amount
         thisIcon.Update_Amount(-1);
@@ -76,7 +75,6 @@ public class FoodBox : MonoBehaviour, IInteractable
     private void Empty_Destroy()
     {
         _controller.mainController.UnTrack_CurrentStation(_controller);
-        // destroy animation ??
         Destroy(gameObject);
     }
 }

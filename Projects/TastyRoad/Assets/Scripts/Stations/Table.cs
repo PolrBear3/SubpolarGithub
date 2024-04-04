@@ -84,16 +84,16 @@ public class Table : MonoBehaviour, IInteractable
         FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
 
         Food_ScrObj ovenFood = icon.currentFoodData.foodScrObj;
-        List<FoodState_Data> ovenStateData = new(icon.currentFoodData.stateData);
+        List<FoodState_Data> tableStateDatas = new(icon.currentFoodData.stateData);
 
         Food_ScrObj playerFood = playerIcon.currentFoodData.foodScrObj;
         List<FoodState_Data> playerStateData = new(playerIcon.currentFoodData.stateData);
 
-        icon.Assign_Food(playerFood);
         icon.Assign_State(playerStateData);
+        icon.Assign_Food(playerFood);
 
         playerIcon.Assign_Food(ovenFood);
-        playerIcon.Assign_State(ovenStateData);
+        playerIcon.Assign_State(tableStateDatas);
 
         // reset action
         UnInteract();

@@ -24,7 +24,7 @@ public class Stack_Table : Table, IInteractable
 
 
     //
-    private void Swap_Food()
+    public void Swap_Food()
     {
         FoodData_Controller icon = stationController.Food_Icon();
         FoodData tableData = icon.currentFoodData;
@@ -50,7 +50,7 @@ public class Stack_Table : Table, IInteractable
         Basic_SwapFood();
     }
 
-    private void Stack_Food()
+    public void Stack_Food()
     {
         FoodData_Controller icon = stationController.Food_Icon();
 

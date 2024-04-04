@@ -41,9 +41,7 @@ public class ItemSlot_Cursor : MonoBehaviour
     public void Assign_CurrentSlot(ItemSlot assignSlot)
     {
         _currentSlot = assignSlot;
-
-        transform.SetParent(assignSlot.cursorPoint);
-        transform.localPosition = Vector2.zero;
+        transform.position = assignSlot.cursorPoint.position;
     }
 
 

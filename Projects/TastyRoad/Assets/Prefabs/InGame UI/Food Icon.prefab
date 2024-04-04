@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9220044194110590461}
   - component: {fileID: 4815339870781394795}
   - component: {fileID: 5500143170264902413}
+  - component: {fileID: 8135166105143875241}
   m_Layer: 0
   m_Name: Food Icon
   m_TagString: Untagged
@@ -48,7 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e5c44617d64486196e532775169a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateBoxController: {fileID: 5500143170264902413}
+  _stateBoxController: {fileID: 5500143170264902413}
+  _rottenSystem: {fileID: 8135166105143875241}
   _icon: {fileID: 8499766286869677877}
   _displayTime: 1
   _amountBar: {fileID: 8719041818956365019}
@@ -63,6 +65,7 @@ MonoBehaviour:
     foodScrObj: {fileID: 0}
     currentAmount: 0
     stateData: []
+    decayTime: 0
   _maxAmount: 1
   _iconTransparent: 0
   _amountTransparent: 0
@@ -79,6 +82,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _foodData: {fileID: 4815339870781394795}
+  _currentStateBoxes:
+  - {fileID: 4956118352620606737}
+  - {fileID: 9000294280825195306}
+  - {fileID: 2277072323345159646}
   _stateBoxSprites:
   - isTransparent: 0
     type: 0
@@ -92,9 +99,25 @@ MonoBehaviour:
     - {fileID: 1619307443, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 671901877, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  _currentStateBoxes:
-  - {fileID: 4956118352620606737}
-  - {fileID: 9000294280825195306}
+  - isTransparent: 0
+    type: 2
+    boxSprites:
+    - {fileID: -453827715, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 237819038, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 1903159989, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+--- !u!114 &8135166105143875241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797686271449595940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc5a3f9fad6b4dc08b355839268820f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _updateIntervalTime: 5
 --- !u!1 &4778137241564889886
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,8 +317,93 @@ Transform:
   m_Children:
   - {fileID: 1113332150755329546}
   - {fileID: 3986676489799407665}
+  - {fileID: 6706809918676738686}
   m_Father: {fileID: 9220044194110590461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6894812061684192574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6706809918676738686}
+  - component: {fileID: 2277072323345159646}
+  m_Layer: 0
+  m_Name: Food State Box (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6706809918676738686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6894812061684192574}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4451342751331412046}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &2277072323345159646
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6894812061684192574}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 1908127167
+  m_SortingLayer: 3
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -618963761, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &9173081144842563155
 GameObject:
   m_ObjectHideFlags: 0

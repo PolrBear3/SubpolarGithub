@@ -32,7 +32,7 @@ public class Trash : MonoBehaviour, IInteractable
 
         if (playerFood.hasFood == true)
         {
-            Save_TrashedFood_Data(playerFood.currentFoodData);
+            // Save_TrashedFood_Data(playerFood.currentFoodData);
 
             playerFood.Clear_Food();
             playerFood.Clear_State();
