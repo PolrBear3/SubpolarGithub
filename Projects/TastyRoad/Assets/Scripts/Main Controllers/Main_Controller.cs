@@ -48,8 +48,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         ES3.Save("currentStationCoin", currentStationCoin);
 
         ES3.Save("_claimedPositions", _claimedPositions);
-        ES3.Save("_archiveFoods", _archiveFoods);
-        ES3.Save("_bookmarkedFoods", _bookmarkedFoods);
+
+        Save_ArchivedFood();
+        Save_BookmarkedFood();
 
         Save_CurrentStations();
     }
@@ -60,8 +61,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         currentStationCoin = ES3.Load("currentStationCoin", currentStationCoin);
 
         _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);
-        _archiveFoods = ES3.Load("_archiveFoods", _archiveFoods);
-        _bookmarkedFoods = ES3.Load("_bookmarkedFoods", _bookmarkedFoods);
+
+        Load_ArchivedFood();
+        Load_bookmarkedFood();
 
         Load_CurrentStations();
     }
@@ -344,6 +346,29 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private List<Food_ScrObj> _archiveFoods = new();
     public List<Food_ScrObj> archiveFoods => _archiveFoods;
 
+    private void Save_ArchivedFood()
+    {
+        List<int> foodIDs = new();
+
+        for (int i = 0; i < _archiveFoods.Count; i++)
+        {
+            foodIDs.Add(_archiveFoods[i].id);
+        }
+
+        ES3.Save("Main_Controller/_archiveFoods/foodIDs", foodIDs);
+    }
+    private void Load_ArchivedFood()
+    {
+        List<int> foodIDs = new();
+
+        ES3.Load("Main_Controller/_archiveFoods/foodIDs", foodIDs);
+
+        for (int i = 0; i < foodIDs.Count; i++)
+        {
+            _archiveFoods.Add(dataController.Food(foodIDs[i]));
+        }
+    }
+
     public void AddFood_toArhive(Food_ScrObj food)
     {
         if (food == null) return;
@@ -368,6 +393,29 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
+
+    private void Save_BookmarkedFood()
+    {
+        List<int> foodIDs = new();
+
+        for (int i = 0; i < _bookmarkedFoods.Count; i++)
+        {
+            foodIDs.Add(_bookmarkedFoods[i].id);
+        }
+
+        ES3.Save("Main_Controller/_bookmarkedFoods/foodIDs", foodIDs);
+    }
+    private void Load_bookmarkedFood()
+    {
+        List<int> foodIDs = new();
+
+        ES3.Load("Main_Controller/_bookmarkedFoods/foodIDs", foodIDs);
+
+        for (int i = 0; i < foodIDs.Count; i++)
+        {
+            _bookmarkedFoods.Add(dataController.Food(foodIDs[i]));
+        }
+    }
 
     public void AddFood_toBookmark(Food_ScrObj food)
     {

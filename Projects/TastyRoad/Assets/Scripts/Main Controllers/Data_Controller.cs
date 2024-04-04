@@ -94,7 +94,22 @@ public class Data_Controller : MonoBehaviour
 
         return allFoods;
     }
+    public Food_ScrObj Food(int foodID)
+    {
+        for (int i = 0; i < rawFoods.Count; i++)
+        {
+            if (foodID != rawFoods[i].id) continue;
+            return rawFoods[i];
+        }
 
+        for (int i = 0; i < cookedFoods.Count; i++)
+        {
+            if (foodID != cookedFoods[i].id) continue;
+            return cookedFoods[i];
+        }
+
+        return null;
+    }
 
 
     // Get Raw Food

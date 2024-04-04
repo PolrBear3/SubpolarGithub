@@ -164,12 +164,26 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     {
         if (_buildableStations.Count <= 0) return;
 
-        ES3.Save("StationShop_buildableStations", _buildableStations);
+        List<int> stationIDs = new();
+
+        for (int i = 0; i < _buildableStations.Count; i++)
+        {
+            stationIDs.Add(_buildableStations[i].id);
+        }
+
+        ES3.Save("StationBuilder/_buildableStations/stationIDs", stationIDs);
     }
 
     public void Load_Data()
     {
-        _buildableStations = ES3.Load("StationShop_buildableStations", _buildableStations);
+        List<int> stationIDs = new();
+
+        stationIDs = ES3.Load("StationBuilder/_buildableStations/stationIDs", stationIDs);
+
+        for (int i = 0; i < stationIDs.Count; i++)
+        {
+            _buildableStations.Add(_main.dataController.Station_ScrObj(stationIDs[i]));
+        }
     }
 
 
