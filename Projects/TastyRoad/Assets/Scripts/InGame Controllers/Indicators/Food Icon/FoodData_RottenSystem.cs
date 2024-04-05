@@ -36,6 +36,8 @@ public class FoodData_RottenSystem : MonoBehaviour
 
         while (_foodIcon.Has_StateData(maxRottenData) == false)
         {
+            if (_foodIcon.hasFood == false) break;
+
             _foodIcon.Update_State(FoodState_Type.rotten, 1);
 
             yield return new WaitForSeconds(_updateIntervalTime);
