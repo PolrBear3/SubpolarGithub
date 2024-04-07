@@ -244,7 +244,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Station_Movement movement = _interactStation.movement;
 
         _interactStation.Action1_Event += movement.Set_Position;
-        _interactStation.detection.InteractArea_Event += movement.SetPosition_RestrictionToggle;
 
         _controller.OnOption1_Input += Place_StationPrefab;
         _controller.OnExit_Input += Cancel_Export;
@@ -255,19 +254,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (_interactionMode == false) return;
 
         Vehicle_Controller vehicle = _controller.vehicleController;
+        Main_Controller main = vehicle.mainController;
 
-        if (_interactStation.detection.onInteractArea == false)
+        Vector2 stationPosition = Main_Controller.SnapPosition(_interactStation.transform.position);
+
+        if (main.Position_Claimed(stationPosition))
         {
             // return back to spawn position
             _interactStation.transform.localPosition = vehicle.stationSpawnPoint.position;
             return;
         }
-
-        Main_Controller main = vehicle.mainController;
-
-        Vector2 stationPosition = Main_Controller.SnapPosition(_interactStation.transform.position);
-
-        if (main.Position_Claimed(stationPosition)) return;
 
         _controller.cursor.Empty_Item();
 

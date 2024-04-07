@@ -27,6 +27,11 @@ public class Station_Movement : MonoBehaviour
         _movementArrows.SetActive(true);
     }
 
+    private void Update()
+    {
+        RestrictBlink_Update();
+    }
+
     private void FixedUpdate()
     {
         Rigidbody_Move();
@@ -52,14 +57,15 @@ public class Station_Movement : MonoBehaviour
 
 
     /// <summary>
-    /// set position restriction color toggle for detection controller event
+    /// Toggle active on claimed positions
     /// </summary>
-    public void SetPosition_RestrictionToggle()
+    private void RestrictBlink_Update()
     {
-        _stationController.Restriction_Toggle(!_stationController.detection.onInteractArea);
+        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+        bool positionClaimed = _stationController.mainController.Position_Claimed(snapPosition);
+
+        _stationController.RestrictionBlink_Toggle(positionClaimed);
     }
-
-
 
     /// <summary>
     /// Disables movement and set current station after movement is controlled
@@ -82,7 +88,6 @@ public class Station_Movement : MonoBehaviour
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
 
         _stationController.Action1_Event -= Set_Position;
-        _stationController.detection.InteractArea_Event -= SetPosition_RestrictionToggle;
 
         _stationController.PlayerInput_Activation(false);
 

@@ -18,6 +18,7 @@ public class Station_Controller : MonoBehaviour
     public Station_Movement movement => _movement;
 
     private Animator _stationAnimator;
+    public Animator stationAnmiator => _stationAnimator;
 
 
 
@@ -79,16 +80,14 @@ public class Station_Controller : MonoBehaviour
         _stationAnimator.enabled = false;
         _spriteRenderer.color = Color.white;
     }
-    public void Restriction_Toggle(bool toggleOn)
+    public void RestrictionBlink_Toggle(bool toggleOn)
     {
         if (toggleOn == true)
         {
-            _stationAnimator.enabled = false;
-            _spriteRenderer.color = _mainController.dataController.restrictionColor;
+            _stationAnimator.Play("TransparencyBlinker_restrictBlink");
             return;
         }
 
-        _stationAnimator.enabled = true;
         _stationAnimator.Play("TransparencyBlinker_blink");
         _spriteRenderer.color = Color.white;
     }
