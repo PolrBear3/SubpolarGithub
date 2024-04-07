@@ -17,11 +17,11 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
-    [Header("Export Range")]
-    [SerializeField] private Vector2 _horizontalRange;
-    [SerializeField] private Vector2 _verticalRange;
+    [Header("Spawn Range Min to Max")]
+    [SerializeField] private Vector2 _spawnXRange;
+    [SerializeField] private Vector2 _spawnYRange;
 
-    [Header("Spawn")]
+    [Header("Spawn Time")]
     [SerializeField] private Vector2 _spawnIntervalTime;
 
     [SerializeField] private List<MaxSpawn_Phase> _maxSpawnPhase;
@@ -62,6 +62,24 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     public void Load_Data()
     {
         _currentMaxSpawn = ES3.Load("_currentMaxSpawn", _currentMaxSpawn);
+    }
+
+
+
+    /// <returns>
+    /// True if checkPosition is in restricted range, False if not
+    /// </returns>
+    public bool Restricted_Position(Vector2 checkPosition)
+    {
+        bool restricted = false;
+
+        float xValue = checkPosition.x;
+        if (xValue < _spawnXRange.x || xValue > _spawnXRange.y) restricted = true;
+
+        float yValue = checkPosition.y;
+        if (yValue < _spawnYRange.x || yValue > _spawnYRange.y) restricted = true;
+
+        return restricted;
     }
 
 
@@ -142,8 +160,8 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     {
         for (int i = 0; i < amount; i++)
         {
-            int randX = Random.Range((int)_horizontalRange.x, (int)_horizontalRange.y);
-            int randY = Random.Range((int)_verticalRange.x, (int)_verticalRange.y);
+            int randX = Random.Range((int)_spawnXRange.x, (int)_spawnXRange.y + 1);
+            int randY = Random.Range((int)_spawnYRange.x, (int)_spawnYRange.y + 1);
 
             Vector2 spawnPos = new(randX, randY);
 

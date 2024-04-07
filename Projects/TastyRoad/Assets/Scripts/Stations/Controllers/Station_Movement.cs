@@ -56,15 +56,26 @@ public class Station_Movement : MonoBehaviour
 
 
 
+    /// <returns>
+    /// True if current snap position is not claimed and not in a location restricted area
+    /// </returns>
+    public bool PositionSet_Available()
+    {
+        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+        if (_stationController.mainController.Position_Claimed(snapPosition)) return false;
+
+        Location_Controller location = _stationController.mainController.currentLocation;
+        if (location.Restricted_Position(snapPosition)) return false;
+
+        return true;
+    }
+
     /// <summary>
     /// Toggle active on claimed positions
     /// </summary>
     private void RestrictBlink_Update()
     {
-        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
-        bool positionClaimed = _stationController.mainController.Position_Claimed(snapPosition);
-
-        _stationController.RestrictionBlink_Toggle(positionClaimed);
+        _stationController.RestrictionBlink_Toggle(!PositionSet_Available());
     }
 
     /// <summary>
@@ -72,10 +83,7 @@ public class Station_Movement : MonoBehaviour
     /// </summary>
     public void Set_Position()
     {
-        if (_stationController.detection.onInteractArea == false) return;
-
-        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
-        if (_stationController.mainController.Position_Claimed(snapPosition) == true) return;
+        if (PositionSet_Available() == false) return;
 
         Load_Position();
     }
