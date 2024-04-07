@@ -17,12 +17,13 @@ public class Station_Controller : MonoBehaviour
     private Station_Movement _movement;
     public Station_Movement movement => _movement;
 
+    private Animator _stationAnimator;
+
 
 
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
 
-    private Animator _stationAnimator;
 
 
     public delegate void Action_Event();

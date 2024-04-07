@@ -38,6 +38,7 @@ public class Stack_Table : Table, IInteractable
             icon.Show_AmountBar();
 
             playerIcon.Assign_Food(tableData.foodScrObj);
+            playerIcon.Assign_State(icon.currentFoodData.stateData);
         }
 
         if (tableData.currentAmount > 1)

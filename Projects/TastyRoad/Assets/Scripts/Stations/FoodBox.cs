@@ -74,7 +74,11 @@ public class FoodBox : MonoBehaviour, IInteractable
 
     private void Empty_Destroy()
     {
-        _controller.mainController.UnTrack_CurrentStation(_controller);
+        Main_Controller main = _controller.mainController;
+
+        main.UnTrack_CurrentStation(_controller);
+        main.UnClaim_Position(transform.position);
+
         Destroy(gameObject);
     }
 }

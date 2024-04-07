@@ -196,7 +196,7 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
 
 
 
-    //
+    // Action Bubble Control
     private void ActionBubble_Update()
     {
         if (_currentBuildStation == null)
@@ -222,6 +222,17 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
 
 
     // Hovering Station Control
+    private bool Has_BuildableStation(Station_ScrObj station)
+    {
+        for (int i = 0; i < _buildableStations.Count; i++)
+        {
+            if (station != _buildableStations[i]) continue;
+            return true;
+        }
+
+        return false;
+    }
+
     private void Sort_AvailableStations()
     {
         List<Station_ScrObj> allStations = _main.dataController.stations;
@@ -229,6 +240,8 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
         for (int i = 0; i < allStations.Count; i++)
         {
             if (allStations[i].unRetrievable) continue;
+            if (Has_BuildableStation(allStations[i])) continue;
+
             _buildableStations.Add(allStations[i]);
         }
 

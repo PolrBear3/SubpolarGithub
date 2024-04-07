@@ -11,6 +11,9 @@ public class Station_Movement : MonoBehaviour
     private Vector2 _currentDirection;
 
     [SerializeField] private GameObject _movementArrows;
+    public GameObject movementArrows => _movementArrows;
+
+
 
     // UnityEngine
     private void Awake()

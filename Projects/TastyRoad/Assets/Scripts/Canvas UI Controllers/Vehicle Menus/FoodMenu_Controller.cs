@@ -6,8 +6,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
     [SerializeField] private VehicleMenu_Controller _controller;
 
-    private FoodBox _currentFoodBox;
-
     [Header("")]
     [SerializeField] private Vector2 _gridData;
     [SerializeField] private List<ItemSlot> _itemSlots = new();
@@ -375,19 +373,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // FoodBox Export System
     private void Export_Food()
     {
-        //
+        // if no food to export on cursor
         ItemSlot_Data currentCursorData = _controller.cursor.data;
         if (currentCursorData.hasItem == false) return;
-
-        // check if food box is currently spawned
-        if (_currentFoodBox != null) return;
 
         //
         Vehicle_Controller vehicle = _controller.vehicleController;
 
         // spawn food box
-        Station_Controller station = vehicle.mainController.Spawn_Station(7, vehicle.foodBoxSpawnPoint.position);
-        _currentFoodBox = station.GetComponent<FoodBox>();
+        Station_Controller station = vehicle.mainController.Spawn_Station(7, FoodExport_Position());
+        vehicle.mainController.Claim_Position(station.transform.position);
 
         // assign exported food to food box
         station.Food_Icon().Assign_Food(currentCursorData.currentFood);
@@ -403,5 +398,20 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             station.Food_Icon().Assign_Amount(currentCursorData.currentAmount);
             _controller.cursor.Empty_Item();
         }
+    }
+
+    private Vector2 FoodExport_Position()
+    {
+        Main_Controller main = _controller.vehicleController.mainController;
+
+        Vector2 spawnPoint = _controller.vehicleController.foodBoxSpawnPoint.position;
+        float spawnPointX = spawnPoint.x;
+
+        while (main.Position_Claimed(new Vector2(spawnPointX, spawnPoint.y)))
+        {
+            spawnPointX ++;
+        }
+
+        return new Vector2(spawnPointX, spawnPoint.y);
     }
 }

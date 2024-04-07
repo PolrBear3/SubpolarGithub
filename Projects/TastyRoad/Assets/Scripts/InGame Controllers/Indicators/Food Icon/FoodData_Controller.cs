@@ -292,7 +292,9 @@ public class FoodData_Controller : MonoBehaviour
         return matchCount;
     }
 
-    // Get State Data
+    /// <returns>
+    /// Current State that is found
+    /// </returns>
     public FoodState_Data Current_FoodState(FoodState_Type stateType)
     {
         for (int i = 0; i < currentFoodData.stateData.Count; i++)

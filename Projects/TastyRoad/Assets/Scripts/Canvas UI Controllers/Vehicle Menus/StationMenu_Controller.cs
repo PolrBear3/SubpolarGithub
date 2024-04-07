@@ -322,11 +322,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         _interactStation.TransparentBlink_Toggle(false);
+        _interactStation.movement.movementArrows.SetActive(false);
 
         _targetNum = nextStationNum;
-
         _interactStation = retrievableStations[_targetNum];
+
         _interactStation.TransparentBlink_Toggle(true);
+        _interactStation.movement.movementArrows.SetActive(true);
     }
 
     private void Toggle_RetrieveStations()
@@ -348,7 +350,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnExit_Input += Cancel_Retrieve;
 
         _interactStation = retrievableStations[0];
+
         _interactStation.TransparentBlink_Toggle(true);
+        _interactStation.movement.movementArrows.SetActive(true);
     }
 
     private void Retrieve_StationPrefab()
@@ -405,6 +409,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnExit_Input -= Cancel_Retrieve;
 
         _interactStation.TransparentBlink_Toggle(false);
+        _interactStation.movement.movementArrows.SetActive(false);
+
         _interactStation = null;
     }
 }

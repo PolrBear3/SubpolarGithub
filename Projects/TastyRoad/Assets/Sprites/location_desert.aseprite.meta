@@ -95,7 +95,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638480238320867070
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -119,9 +119,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: backgrounds
+  - name: location_desert
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: 0.03125}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -129,8 +129,8 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 320
-      height: 180
-    spriteID: 29f0a72a00c6a494089af3c8d82ec3c2
+      height: 192
+    spriteID: b9a3fe541b4564c1d9c9fe766fac1a95
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,23 +142,71 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -2066743927
-    name: backgrounds
+    guid: -844218277
+    name: location_desert
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: backgrounds
+    - name: location_desert
       frameIndex: 0
       cellRect:
         x: 0
-        y: 0
+        y: -6
         width: 320
-        height: 180
-      spriteId: 29f0a72a00c6a494089af3c8d82ec3c2
+        height: 192
+      spriteId: b9a3fe541b4564c1d9c9fe766fac1a95
     linkedCells: []
     parentIndex: -1
-  platformSettings: []
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: WebGL
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 320, y: 180}
