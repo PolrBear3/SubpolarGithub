@@ -20,9 +20,6 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
 
-    [SerializeField] private Transform _foodBoxSpawnPoint;
-    public Transform foodBoxSpawnPoint => _foodBoxSpawnPoint;
-
     [SerializeField] private Transform _stationSpawnPoint;
     public Transform stationSpawnPoint => _stationSpawnPoint;
 

@@ -9,8 +9,10 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Header("")]
     [SerializeField] private Vector2 _gridData;
     [SerializeField] private List<ItemSlot> _itemSlots = new();
-    [SerializeField] private int _boxCapacity;
+    [SerializeField] private int _slotCapacity;
 
+    [Header("Food Box Export")]
+    [SerializeField] private Vector2 _exportRange;
 
 
     // UnityEngine
@@ -111,122 +113,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
-    /*
-    // Food to Fridge Export System
-    private List<Fridge> CurrentFridges()
-    {
-        Main_Controller mainContrller = _controller.vehicleController.mainController;
-        List<Station_Controller> currentStations = mainContrller.currentStations;
-
-        List<Fridge> currentFridges = new();
-
-        for (int i = 0; i < currentStations.Count; i++)
-        {
-            if (currentStations[i].gameObject.TryGetComponent(out Fridge fridge) == false) continue;
-            currentFridges.Add(fridge);
-        }
-
-        Transform playerTransForm = _controller.vehicleController.detection.player.gameObject.transform;
-
-        // sort closest to farthest
-        currentFridges.Sort((closestFridge, farthestFridge) =>
-        Vector2.Distance(closestFridge.transform.position, playerTransForm.position)
-        .CompareTo(Vector2.Distance(farthestFridge.transform.position, playerTransForm.position)));
-
-        return currentFridges;
-    }
-
-    private void Fridge_TargetSystem_Toggle()
-    {
-        if (_fridgeTargetMode == true)
-        {
-            // toggle off
-            _fridgeTargetMode = false;
-
-            _currentTargetFridge.stationController.TransparentBlink_Toggle(false);
-            _currentTargetFridge = null;
-
-            _controller.OnCursorControl_Input -= Fridge_TargetDirection_Control;
-
-            return;
-        }
-
-        _currentFridges = CurrentFridges();
-
-        if (_currentFridges.Count <= 0) return;
-
-        // toggle on
-        _fridgeTargetMode = true;
-
-        _currentFridgeNum = 0;
-        _currentTargetFridge = _currentFridges[_currentFridgeNum];
-
-        _currentTargetFridge.stationController.TransparentBlink_Toggle(true);
-
-        _controller.OnCursorControl_Input += Fridge_TargetDirection_Control;
-    }
-
-    private void Fridge_TargetDirection_Control(float xInputDirection)
-    {
-        if (_fridgeTargetMode == false) return;
-
-        int convertedDireciton = (int)xInputDirection;
-        int nextFridgeNum = _currentFridgeNum + convertedDireciton;
-
-        // less than min 
-        if (nextFridgeNum < 0)
-        {
-            nextFridgeNum = _currentFridges.Count - 1;
-        }
-
-        // more than max
-        if (nextFridgeNum > _currentFridges.Count - 1)
-        {
-            nextFridgeNum = 0;
-        }
-
-        _currentFridges[_currentFridgeNum].stationController.TransparentBlink_Toggle(false);
-
-        _currentFridgeNum = nextFridgeNum;
-
-        _currentTargetFridge = _currentFridges[_currentFridgeNum];
-        _currentTargetFridge.stationController.TransparentBlink_Toggle(true);
-    }
-
-    private void Export_FoodItem_toFridge()
-    {
-        if (_fridgeTargetMode == false) return;
-
-        Food_ScrObj prevFood = _controller.currentItemBox.data.currentFood;
-        int prevAmount = _controller.currentItemBox.data.currentAmount;
-
-        FoodData_Controller fridgeIcon = _currentTargetFridge.foodIcon;
-        FoodData fridgeData = fridgeIcon.currentFoodData;
-
-        ItemSlot box = _controller.currentItemBox;
-
-        // current item box food = fridge food
-        if (prevFood == fridgeData.foodScrObj)
-        {
-            Add_FoodItem(prevFood, fridgeData.currentAmount);
-            fridgeIcon.Clear_Food();
-            return;
-        }
-
-        box.Assign_Item(fridgeData.foodScrObj);
-        box.Assign_Amount(fridgeData.currentAmount);
-
-        // current item box > fridge
-        fridgeIcon.Assign_Food(prevFood);
-        fridgeIcon.FoodIcon_Transparency(false);
-
-        int leftOver = fridgeIcon.Assign_Amount(prevAmount);
-
-        if (leftOver <= 0) return;
-        Add_FoodItem(prevFood, leftOver);
-    }
-    */
-
 
 
     // Menu Control
@@ -235,10 +121,10 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         for (int i = 0; i < _itemSlots.Count; i++)
         {
             if (_itemSlots[i].data.hasItem == true && _itemSlots[i].data.currentFood != food) continue;
-            if (_itemSlots[i].data.currentAmount >= _boxCapacity) continue;
+            if (_itemSlots[i].data.currentAmount >= _slotCapacity) continue;
 
             int calculatedAmount = _itemSlots[i].data.currentAmount + amount;
-            int leftOver = calculatedAmount - _boxCapacity;
+            int leftOver = calculatedAmount - _slotCapacity;
 
             _itemSlots[i].Assign_Item(food);
 
@@ -248,7 +134,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 return 0;
             }
 
-            _itemSlots[i].Assign_Amount(_boxCapacity);
+            _itemSlots[i].Assign_Amount(_slotCapacity);
 
             if (i == _itemSlots.Count - 1) return leftOver;
 
@@ -400,18 +286,45 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
+    private bool FooedExport_PositionAvailable()
+    {
+        Main_Controller main = _controller.vehicleController.mainController;
+        Transform vehiclePoint = _controller.vehicleController.transform;
+
+        int loopAmount = (int)_exportRange.y - (int)_exportRange.x - 1;
+        float currentX = _exportRange.x;
+
+        for (int i = 0; i < loopAmount; i++)
+        {
+            if (main.Position_Claimed(new Vector2(vehiclePoint.position.x - currentX, vehiclePoint.position.y - 1))) continue;
+            return true;
+        }
+
+        return false;
+    }
+
     private Vector2 FoodExport_Position()
     {
         Main_Controller main = _controller.vehicleController.mainController;
 
-        Vector2 spawnPoint = _controller.vehicleController.foodBoxSpawnPoint.position;
-        float spawnPointX = spawnPoint.x;
+        Vector2 vehiclePos = _controller.vehicleController.transform.position;
 
-        while (main.Position_Claimed(new Vector2(spawnPointX, spawnPoint.y)))
+        int loopAmount = (int)_exportRange.y - (int)_exportRange.x - 1;
+        float currentX = vehiclePos.x - _exportRange.x;
+
+        for (int i = 0; i < loopAmount; i++)
         {
-            spawnPointX ++;
+            Debug.Log(currentX);
+
+            if (main.Position_Claimed(new Vector2(currentX, vehiclePos.y - 1)))
+            {
+                currentX++;
+                continue;
+            }
+
+            return new Vector2(currentX, vehiclePos.y - 1);
         }
 
-        return new Vector2(spawnPointX, spawnPoint.y);
+        return Vector2.zero;
     }
 }
