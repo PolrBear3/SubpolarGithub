@@ -12,6 +12,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private int _slotCapacity;
 
     [Header("Food Box Export")]
+    [SerializeField] private GameObject _exportIndicators; 
     [SerializeField] private Vector2 _exportRange;
 
 
@@ -29,6 +30,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnOption1_Input += DropSingle_Food;
         _controller.OnOption2_Input += DragSingle_Food;
+
+        _exportIndicators.SetActive(true);
     }
 
     private void OnDisable()
@@ -41,6 +44,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnOption1_Input -= DropSingle_Food;
         _controller.OnOption2_Input -= DragSingle_Food;
+
+        _exportIndicators.SetActive(false);
     }
 
 
@@ -263,6 +268,9 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data currentCursorData = _controller.cursor.data;
         if (currentCursorData.hasItem == false) return;
 
+        // if there are enough space to spawn food box
+        if (FoodExport_PositionAvailable() == false) return;
+
         //
         Vehicle_Controller vehicle = _controller.vehicleController;
 
@@ -286,17 +294,22 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
-    private bool FooedExport_PositionAvailable()
+    private bool FoodExport_PositionAvailable()
     {
         Main_Controller main = _controller.vehicleController.mainController;
-        Transform vehiclePoint = _controller.vehicleController.transform;
+        Vector2 vehiclePos = _controller.vehicleController.transform.position;
 
-        int loopAmount = (int)_exportRange.y - (int)_exportRange.x - 1;
-        float currentX = _exportRange.x;
+        int loopAmount = (int)_exportRange.y - (int)_exportRange.x + 1;
+        float currentX = vehiclePos.x + _exportRange.x;
 
         for (int i = 0; i < loopAmount; i++)
         {
-            if (main.Position_Claimed(new Vector2(vehiclePoint.position.x - currentX, vehiclePoint.position.y - 1))) continue;
+            if (main.Position_Claimed(new Vector2(currentX, vehiclePos.y - 1)))
+            {
+                currentX++;
+                continue;
+            }
+
             return true;
         }
 
@@ -306,16 +319,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private Vector2 FoodExport_Position()
     {
         Main_Controller main = _controller.vehicleController.mainController;
-
         Vector2 vehiclePos = _controller.vehicleController.transform.position;
 
-        int loopAmount = (int)_exportRange.y - (int)_exportRange.x - 1;
-        float currentX = vehiclePos.x - _exportRange.x;
+        int loopAmount = (int)_exportRange.y - (int)_exportRange.x + 1;
+        float currentX = vehiclePos.x + _exportRange.x;
 
         for (int i = 0; i < loopAmount; i++)
         {
-            Debug.Log(currentX);
-
             if (main.Position_Claimed(new Vector2(currentX, vehiclePos.y - 1)))
             {
                 currentX++;
