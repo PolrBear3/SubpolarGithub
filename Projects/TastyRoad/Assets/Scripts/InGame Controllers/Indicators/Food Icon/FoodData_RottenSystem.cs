@@ -6,9 +6,7 @@ public class FoodData_RottenSystem : MonoBehaviour
 {
     private FoodData_Controller _foodIcon;
 
-    [SerializeField] private float _updateIntervalTime;
-
-    private Coroutine _decayCoroutine;
+    [SerializeField] private int _updateTikTime;
 
 
 
@@ -21,37 +19,25 @@ public class FoodData_RottenSystem : MonoBehaviour
 
 
     //
-    public void StartDecay()
+    public void UpdateDecay_Toggle(bool toggleOn)
     {
-        ResetDecay();
-
-        _decayCoroutine = StartCoroutine(StartDecay_Coroutine());
+        if (toggleOn) GlobalTime_Controller.TimeTik_Update += Decay_TikTimeUpdate;
+        else GlobalTime_Controller.TimeTik_Update -= Decay_TikTimeUpdate;
     }
-    private IEnumerator StartDecay_Coroutine()
+
+
+
+    //
+    private void Decay_TikTimeUpdate()
     {
-        FoodState_Data maxRottenData = new(FoodState_Type.rotten, 3);
-
-        // waiting to get all game component on game load
-        yield return new WaitForSeconds(_updateIntervalTime);
-
-        while (_foodIcon.Has_StateData(maxRottenData) == false)
+        if (_foodIcon.currentFoodData.currentTikTime >= _updateTikTime)
         {
-            if (_foodIcon.hasFood == false) break;
-
             _foodIcon.Update_State(FoodState_Type.rotten, 1);
+            _foodIcon.currentFoodData.currentTikTime = 0;
 
-            yield return new WaitForSeconds(_updateIntervalTime);
+            return;
         }
-    }
 
-
-
-    public void ResetDecay()
-    {
-        if (_decayCoroutine != null)
-        {
-            StopCoroutine(_decayCoroutine);
-            _decayCoroutine = null;
-        }
+        _foodIcon.currentFoodData.currentTikTime++;
     }
 }

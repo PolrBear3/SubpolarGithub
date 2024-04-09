@@ -43,7 +43,7 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
 
         Update_Current_MaxSpawn();
 
-        _mainController.globalTime.TimeTik_Update += Update_Current_MaxSpawn;
+        GlobalTime_Controller.TimeTik_Update += Update_Current_MaxSpawn;
 
         NPC_Spawn_Control();
 

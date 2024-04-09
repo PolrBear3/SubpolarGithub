@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public enum FoodState_Type { sliced, heated, rotten }
 
@@ -23,6 +21,7 @@ public class FoodData
     public Food_ScrObj foodScrObj;
     public int currentAmount;
     public List<FoodState_Data> stateData;
+    public int currentTikTime;
 
     public FoodData (Food_ScrObj food, int amount)
     {
@@ -33,7 +32,8 @@ public class FoodData
     public FoodData (FoodData currentData)
     {
         foodScrObj = currentData.foodScrObj;
-        currentAmount = currentData.currentAmount;
         stateData = currentData.stateData;
+        currentAmount = currentData.currentAmount;
+        currentTikTime = currentData.currentTikTime;
     }
 }

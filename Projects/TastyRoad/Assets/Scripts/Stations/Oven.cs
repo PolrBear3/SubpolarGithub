@@ -5,9 +5,8 @@ using UnityEngine;
 public class Oven : MonoBehaviour, IInteractable
 {
     private SpriteRenderer _spriteRenderer;
-    private Detection_Controller _detection;
 
-    [SerializeField] private FoodData_Controller _foodIcon;
+    private Station_Controller _controller;
 
     [Header("")]
     [SerializeField] private Sprite inActiveSprite;
@@ -28,7 +27,7 @@ public class Oven : MonoBehaviour, IInteractable
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
-        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
+        if (gameObject.TryGetComponent(out Station_Controller station)) { _controller = station; }
     }
 
     private void Start()
@@ -36,7 +35,7 @@ public class Oven : MonoBehaviour, IInteractable
         Heat_Food();
         Update_CurrentVisual();
 
-        _foodIcon.FoodIcon_Transparency(true);
+        _controller.Food_Icon().FoodIcon_Transparency(true);
         Update_FoodIcon_Position(false);
     }
 
@@ -47,14 +46,14 @@ public class Oven : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _foodIcon.FoodIcon_Transparency(false);
+        _controller.Food_Icon().FoodIcon_Transparency(false);
         Update_FoodIcon_Position(true);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _foodIcon.FoodIcon_Transparency(true);
+        _controller.Food_Icon().FoodIcon_Transparency(true);
         Update_FoodIcon_Position(false);
     }
 
@@ -79,7 +78,7 @@ public class Oven : MonoBehaviour, IInteractable
     // Oven Visual Update
     private void Update_CurrentVisual()
     {
-        if (_foodIcon.hasFood)
+        if (_controller.Food_Icon().hasFood)
         {
             _spriteRenderer.sprite = activeSprite;
             _spriteRenderer.material = _emissionGlow;
@@ -100,40 +99,37 @@ public class Oven : MonoBehaviour, IInteractable
     {
         if (playerDetected == true)
         {
-            _foodIcon.transform.localPosition = new Vector2(0f, _foodIcon.transform.localPosition.y);
+            _controller.Food_Icon().transform.localPosition = new Vector2(0f, _controller.Food_Icon().transform.localPosition.y);
         }
         else
         {
-            _foodIcon.transform.localPosition = new Vector2(-0.5f, _foodIcon.transform.localPosition.y);
+            _controller.Food_Icon().transform.localPosition = new Vector2(-0.5f, _controller.Food_Icon().transform.localPosition.y);
         }
     }
 
     // Swap Oven and Player Food
     private void Swap_Food()
     {
-        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        FoodData_Controller ovenController = _controller.Food_Icon();
+        FoodData_Controller playerController = _controller.detection.player.foodIcon;
 
-        Food_ScrObj ovenFood = _foodIcon.currentFoodData.foodScrObj;
-        List<FoodState_Data> ovenStateData = new(_foodIcon.currentFoodData.stateData);
+        FoodData ovenData = ovenController.currentFoodData;
+        FoodData playerData = playerController.currentFoodData;
 
-        Food_ScrObj playerFood = playerIcon.currentFoodData.foodScrObj;
-        List<FoodState_Data> playerStateData = new(playerIcon.currentFoodData.stateData);
+        FoodData tempData = new(ovenData);
 
-        _foodIcon.Assign_Food(playerFood);
-        _foodIcon.Assign_State(playerStateData);
-
-        playerIcon.Assign_Food(ovenFood);
-        playerIcon.Assign_State(ovenStateData);
+        ovenController.Assign_Food(playerData);
+        playerController.Assign_Food(tempData);
     }
 
     // Food Heating System
     private IEnumerator Heat_Food_Coroutine()
     {
-        while (_foodIcon.hasFood == true)
+        while (_controller.Food_Icon().hasFood == true)
         {
             yield return new WaitForSeconds(_heatIncreaseTime);
 
-            _foodIcon.Update_State(FoodState_Type.heated, 1);
+            _controller.Food_Icon().Update_State(FoodState_Type.heated, 1);
         }
     }
     private void Heat_Food()
@@ -143,7 +139,7 @@ public class Oven : MonoBehaviour, IInteractable
             StopCoroutine(_heatCoroutine);
         }
 
-        if (_foodIcon.hasFood == true)
+        if (_controller.Food_Icon().hasFood == true)
         {
             _heatCoroutine = StartCoroutine(Heat_Food_Coroutine());
         }

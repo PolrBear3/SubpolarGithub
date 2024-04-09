@@ -80,20 +80,16 @@ public class Table : MonoBehaviour, IInteractable
     // Swap Current and Player Food
     public void Basic_SwapFood()
     {
-        FoodData_Controller icon = _stationController.Food_Icon();
-        FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
+        FoodData_Controller tableController = _stationController.Food_Icon();
+        FoodData_Controller playerController = _stationController.detection.player.foodIcon;
 
-        Food_ScrObj ovenFood = icon.currentFoodData.foodScrObj;
-        List<FoodState_Data> tableStateDatas = new(icon.currentFoodData.stateData);
+        FoodData tableData = tableController.currentFoodData;
+        FoodData playerData = playerController.currentFoodData;
 
-        Food_ScrObj playerFood = playerIcon.currentFoodData.foodScrObj;
-        List<FoodState_Data> playerStateData = new(playerIcon.currentFoodData.stateData);
+        FoodData tempData = new(tableData);
 
-        icon.Assign_State(playerStateData);
-        icon.Assign_Food(playerFood);
-
-        playerIcon.Assign_Food(ovenFood);
-        playerIcon.Assign_State(tableStateDatas);
+        tableController.Assign_Food(playerData);
+        playerController.Assign_Food(tempData);
 
         // reset action
         UnInteract();

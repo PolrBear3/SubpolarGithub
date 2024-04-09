@@ -16,7 +16,7 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     private bool _isIncrease;
 
     public delegate void OnEvent();
-    public event OnEvent TimeTik_Update;
+    public static event OnEvent TimeTik_Update;
 
 
 

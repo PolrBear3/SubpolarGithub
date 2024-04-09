@@ -19,6 +19,7 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private List<Sprite> _amountBarSprites = new();
     private Coroutine _amountBarCoroutine;
 
+    [Header("")]
     public FoodData currentFoodData;
 
     private bool _hasFood;
@@ -96,7 +97,7 @@ public class FoodData_Controller : MonoBehaviour
         AmountBar_Transparency(_amountTransparent);
 
         // food decay system
-        _rottenSystem.StartDecay();
+        rottenSystem.UpdateDecay_Toggle(true);
     }
 
 
@@ -114,20 +115,29 @@ public class FoodData_Controller : MonoBehaviour
         // new food update
         _hasFood = true;
 
-        currentFoodData.currentAmount = 1;
         currentFoodData.foodScrObj = foodScrObj;
+        currentFoodData.currentAmount = 1;
 
         // food sprite update
         _icon.transform.localPosition = foodScrObj.centerPosition / 100;
         _icon.sprite = currentFoodData.foodScrObj.sprite;
 
         // food decay system
-        _rottenSystem.StartDecay();
+        rottenSystem.UpdateDecay_Toggle(true);
 
         if (_iconTransparent == true) return;
 
         _icon.color = Color.white;
     }
+    public void Assign_Food(FoodData foodData) 
+    {
+        currentFoodData.currentTikTime = foodData.currentTikTime;
+
+        Assign_Food(foodData.foodScrObj);
+        Assign_Amount(foodData.currentAmount);
+        Assign_State(foodData.stateData);
+    }
+
     public void Clear_Food()
     {
         _hasFood = false;
@@ -141,7 +151,8 @@ public class FoodData_Controller : MonoBehaviour
         _amountBar.color = Color.clear;
 
         // food decay system
-        _rottenSystem.ResetDecay();
+        rottenSystem.UpdateDecay_Toggle(false);
+        currentFoodData.currentTikTime = 0;
     }
 
 
@@ -310,10 +321,6 @@ public class FoodData_Controller : MonoBehaviour
     // State Control
     public void Assign_State(List<FoodState_Data> data)
     {
-        Clear_State();
-
-        if (data.Count <= 0) return;
-
         currentFoodData.stateData = data;
         stateBoxController.Update_StateBoxes();
     }

@@ -17,7 +17,7 @@ public class Fridge : Stack_Table, IInteractable
             Swap_Food();
 
             // restrict food decay
-            stationController.Food_Icon().rottenSystem.ResetDecay();
+            stationController.Food_Icon().rottenSystem.UpdateDecay_Toggle(false);
         }
         else
         {

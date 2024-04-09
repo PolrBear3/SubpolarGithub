@@ -65,6 +65,7 @@ MonoBehaviour:
     foodScrObj: {fileID: 0}
     currentAmount: 0
     stateData: []
+    currentTikTime: 0
   _maxAmount: 1
   _iconTransparent: 0
   _amountTransparent: 0
@@ -116,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc5a3f9fad6b4dc08b355839268820f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _updateIntervalTime: 3
+  _updateTikTime: 4
 --- !u!1 &4778137241564889886
 GameObject:
   m_ObjectHideFlags: 0

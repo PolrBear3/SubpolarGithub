@@ -6,7 +6,6 @@ public class SliceTable : MonoBehaviour, IInteractable, ISignal
 {
     private Station_Controller _controller;
 
-    [SerializeField] private FoodData_Controller _foodIcon;
     [SerializeField] private Rhythm_HitBox _hitBox;
 
 
@@ -25,7 +24,7 @@ public class SliceTable : MonoBehaviour, IInteractable, ISignal
         if (_controller.movement.enabled) return;
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        if (_foodIcon.hasFood == false) return;
+        if (_controller.Food_Icon().hasFood == false) return;
 
         _controller.PlayerInput_Activation(true);
         _hitBox.Activate_HitBox();
@@ -46,7 +45,7 @@ public class SliceTable : MonoBehaviour, IInteractable, ISignal
     {
         Swap_Food();
 
-        if (_foodIcon.hasFood == false)
+        if (_controller.Food_Icon().hasFood == false)
         {
             _hitBox.Deactivate_HitBox();
             return;
@@ -63,7 +62,7 @@ public class SliceTable : MonoBehaviour, IInteractable, ISignal
     // ISignal
     public void Signal()
     {
-        _foodIcon.Update_State(FoodState_Type.sliced, 1);
+        _controller.Food_Icon().Update_State(FoodState_Type.sliced, 1);
     }
 
 
@@ -72,17 +71,14 @@ public class SliceTable : MonoBehaviour, IInteractable, ISignal
     private void Swap_Food()
     {
         FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
+        FoodData_Controller tableIcon = _controller.Food_Icon();
 
-        Food_ScrObj ovenFood = _foodIcon.currentFoodData.foodScrObj;
-        List<FoodState_Data> ovenStateData = new(_foodIcon.currentFoodData.stateData);
+        FoodData playerData = playerIcon.currentFoodData;
+        FoodData tableData = tableIcon.currentFoodData;
 
-        Food_ScrObj playerFood = playerIcon.currentFoodData.foodScrObj;
-        List<FoodState_Data> playerStateData = new(playerIcon.currentFoodData.stateData);
+        FoodData tempData = new(tableData);
 
-        _foodIcon.Assign_Food(playerFood);
-        _foodIcon.Assign_State(playerStateData);
-
-        playerIcon.Assign_Food(ovenFood);
-        playerIcon.Assign_State(ovenStateData);
+        tableIcon.Assign_Food(playerData);
+        playerIcon.Assign_Food(tempData);
     }
 }
