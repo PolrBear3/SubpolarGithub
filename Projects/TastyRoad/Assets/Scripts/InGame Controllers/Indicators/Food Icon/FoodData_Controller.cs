@@ -199,6 +199,8 @@ public class FoodData_Controller : MonoBehaviour
 
         currentFoodData.currentAmount = calculatedAmount;
 
+        Update_CurrentTikTime(updateAmount);
+
         if (currentFoodData.currentAmount <= 0)
         {
             Clear_Food();
@@ -353,5 +355,20 @@ public class FoodData_Controller : MonoBehaviour
         currentFoodData.stateData.Clear();
 
         stateBoxController.Clear_StateBoxes();
+    }
+
+
+
+    /// <summary>
+    /// Current tik time update for decrease only (food amount increase)
+    /// </summary>
+    public void Update_CurrentTikTime(int updateTime)
+    {
+        if (updateTime <= 0) return;
+
+        currentFoodData.currentTikTime -= updateTime;
+
+        if (currentFoodData.currentTikTime >= 0) return;
+        currentFoodData.currentTikTime = 0;
     }
 }

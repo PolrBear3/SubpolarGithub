@@ -25,8 +25,6 @@ public class FoodData_RottenSystem : MonoBehaviour
         else GlobalTime_Controller.TimeTik_Update -= Decay_TikTimeUpdate;
     }
 
-
-
     //
     private void Decay_TikTimeUpdate()
     {
