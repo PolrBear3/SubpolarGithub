@@ -44,9 +44,15 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
         {
             Sort_AvailableFoods();
         }
+        else
+        {
+            Load_Data();
+        }
 
         Update_HoverFood();
         UnInteract();
+
+        transform.parent = _main.shopFile;
     }
 
 

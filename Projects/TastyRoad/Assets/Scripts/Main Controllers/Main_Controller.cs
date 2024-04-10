@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
-    [HideInInspector] public Data_Controller dataController;
+    private Data_Controller _dataController;
+    public Data_Controller dataController => _dataController;
 
-    public GlobalTime_Controller globalTime => _globalTime;
+    [SerializeField] private WorldMap_Controller _worldMap;
+    public WorldMap_Controller worldMap => _worldMap;
+
     private GlobalTime_Controller _globalTime;
+    public GlobalTime_Controller globalTime => _globalTime;
 
+    [Header("")]
     [SerializeField] private Camera _mainCamera;
 
     [SerializeField] private RectTransform _openingCurtain;
@@ -17,6 +22,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Transform _locationFile;
     [SerializeField] private Transform _characterFile;
     [SerializeField] private Transform _stationFile;
+    [SerializeField] private Transform _shopFile;
+    public Transform shopFile => _shopFile;
 
     public static bool gamePaused;
     public static bool orderOpen;
@@ -30,8 +37,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out Data_Controller dataController)) { this.dataController = dataController; }
-        if (gameObject.TryGetComponent(out GlobalTime_Controller globalTime)) { _globalTime = globalTime; }
+        _dataController = gameObject.GetComponent<Data_Controller>();
+        _globalTime = gameObject.GetComponent<GlobalTime_Controller>();
     }
 
     private void Start()
@@ -184,9 +191,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         _currentLocation = null;
     }
-    public void Set_Location(int arrayNum)
+    public void Set_Location(GameObject locationGameObject)
     {
-        GameObject location = Instantiate(dataController.locations[arrayNum], Vector2.zero, Quaternion.identity);
+        GameObject location = Instantiate(locationGameObject, Vector2.zero, Quaternion.identity);
         location.transform.parent = _locationFile;
     }
 

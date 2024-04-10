@@ -2,35 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public struct MaxSpawn_Phase
-{
-    [Range(0, 12)]
-    public int timePoint;
-    public int maxSpawnAmount;
-}
-
 public class Location_Controller : MonoBehaviour, ISaveLoadable
 {
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
 
-    [SerializeField] private LocationData _data;
-    public LocationData data => _data;
+    [SerializeField] private LocationData _setData;
+    public LocationData setData => _setData;
+
+    private LocationData _currentData;
+    public LocationData currentData => _currentData;
 
     [Header("")]
     [SerializeField] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
-    [Header("Spawn Range Min to Max")]
-    [SerializeField] private Vector2 _spawnXRange;
-    [SerializeField] private Vector2 _spawnYRange;
-
-    [Header("Spawn Time")]
-    [SerializeField] private Vector2 _spawnIntervalTime;
-
-    [SerializeField] private List<MaxSpawn_Phase> _maxSpawnPhase;
-    private int _currentMaxSpawn;
+    private MaxSpawn_TimePoint _currentTimePoint;
 
 
 
@@ -38,6 +25,7 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         _mainController = FindObjectOfType<Main_Controller>();
+
         _mainController.Track_CurrentLocaiton(this);
     }
 
@@ -46,14 +34,12 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
         // Toggle Off All Roam Area Colors On Game Start
         _roamArea.color = Color.clear;
 
-        Update_Current_MaxSpawn();
+        Set_LocationData();
 
+        Update_Current_MaxSpawn();
         GlobalTime_Controller.TimeTik_Update += Update_Current_MaxSpawn;
 
         NPC_Spawn_Control();
-
-        if (ES3.KeyExists("_currentMaxSpawn")) return;
-        Spawn_Scraps(5);
     }
 
 
@@ -61,20 +47,20 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("_currentMaxSpawn", _currentMaxSpawn);
+        
     }
 
     public void Load_Data()
     {
-        _currentMaxSpawn = ES3.Load("_currentMaxSpawn", _currentMaxSpawn);
+        
     }
 
 
 
-    //
-    public void Set_LocationData(LocationData data)
+    // Current Data Control
+    private void Set_LocationData()
     {
-        _data = data;
+        _currentData = _setData;
     }
 
 
@@ -84,13 +70,15 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     /// </returns>
     public bool Restricted_Position(Vector2 checkPosition)
     {
+        LocationData d = _currentData;
+
         bool restricted = false;
 
         float xValue = checkPosition.x;
-        if (xValue < _spawnXRange.x || xValue > _spawnXRange.y) restricted = true;
+        if (xValue < d.spawnRangeX.x || xValue > d.spawnRangeX.y) restricted = true;
 
         float yValue = checkPosition.y;
-        if (yValue < _spawnYRange.x || yValue > _spawnYRange.y) restricted = true;
+        if (yValue < d.spawnRangeY.x || yValue > d.spawnRangeY.y) restricted = true;
 
         return restricted;
     }
@@ -102,11 +90,13 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     /// </summary>
     private void Update_Current_MaxSpawn()
     {
-        for (int i = 0; i < _maxSpawnPhase.Count; i++)
-        {
-            if (_mainController.globalTime.currentTime != _maxSpawnPhase[i].timePoint) continue;
+        LocationData d = _currentData;
 
-            _currentMaxSpawn = _maxSpawnPhase[i].maxSpawnAmount;
+        for (int i = 0; i < d.maxSpawnTimePoints.Count; i++)
+        {
+            if (_mainController.globalTime.currentTime != d.maxSpawnTimePoints[i].timePoint) continue;
+
+            _currentTimePoint = d.maxSpawnTimePoints[i];
             Update_NPC_Population();
 
             return;
@@ -126,7 +116,7 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
         }
 
         // if current npc amount is more than _currentMaxSpawn
-        int npcOverFlowCount = currentCharacters.Count - _currentMaxSpawn;
+        int npcOverFlowCount = currentCharacters.Count - _currentTimePoint.maxSpawnAmount;
         if (npcOverFlowCount <= 0) return;
 
         // current location roaming npc only leave
@@ -155,11 +145,13 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator NPC_Spawn_Control_Coroutine()
     {
+        LocationData d = _currentData;
+
         while (true)
         {
-            while (_mainController.currentCharacters.Count >= _currentMaxSpawn) yield return null;
+            while (_mainController.currentCharacters.Count >= _currentTimePoint.maxSpawnAmount) yield return null;
 
-            float randIntervalTime = Random.Range(_spawnIntervalTime.x, _spawnIntervalTime.y);
+            float randIntervalTime = Random.Range(d.spawnIntervalTimeRange.x, d.spawnIntervalTimeRange.y);
             yield return new WaitForSeconds(randIntervalTime);
 
             _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(Random.Range(0, 2)));
@@ -171,10 +163,12 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     // Scrap
     private void Spawn_Scraps(int amount)
     {
+        LocationData d = _currentData;
+
         for (int i = 0; i < amount; i++)
         {
-            int randX = Random.Range((int)_spawnXRange.x, (int)_spawnXRange.y + 1);
-            int randY = Random.Range((int)_spawnYRange.x, (int)_spawnYRange.y + 1);
+            int randX = Random.Range((int)d.spawnRangeX.x, (int)d.spawnRangeX.y + 1);
+            int randY = Random.Range((int)d.spawnRangeY.x, (int)d.spawnRangeY.y + 1);
 
             Vector2 spawnPos = new(randX, randY);
 

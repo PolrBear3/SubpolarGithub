@@ -57,9 +57,15 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
         {
             Sort_AvailableStations();
         }
+        else
+        {
+            Load_Data();
+        }
 
         Update_HoverStation();
         UnInteract();
+
+        transform.parent = _main.shopFile;
     }
 
 
