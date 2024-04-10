@@ -19,4 +19,8 @@ public class WorldMap_Controller : MonoBehaviour
 
 
     //
+    private void Set_Location()
+    {
+
+    }
 }

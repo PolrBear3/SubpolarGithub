@@ -12,8 +12,13 @@ public struct MaxSpawn_Phase
 
 public class Location_Controller : MonoBehaviour, ISaveLoadable
 {
-    [HideInInspector] public Main_Controller _mainController;
+    private Main_Controller _mainController;
+    public Main_Controller mainController => _mainController;
 
+    [SerializeField] private LocationData _data;
+    public LocationData data => _data;
+
+    [Header("")]
     [SerializeField] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
@@ -62,6 +67,14 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
     public void Load_Data()
     {
         _currentMaxSpawn = ES3.Load("_currentMaxSpawn", _currentMaxSpawn);
+    }
+
+
+
+    //
+    public void Set_LocationData(LocationData data)
+    {
+        _data = data;
     }
 
 
