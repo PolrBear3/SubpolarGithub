@@ -29,11 +29,6 @@ public class ScrapGrinder : MonoBehaviour
         _controller.UnInteract_Event += CurrentScrapIndicator_Toggle;
     }
 
-    private void Start()
-    {
-        transform.parent = _controller.mainController.shopFile;
-    }
-
 
 
     /// <summary>

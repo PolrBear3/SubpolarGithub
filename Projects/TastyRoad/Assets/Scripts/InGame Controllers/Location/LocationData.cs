@@ -14,6 +14,7 @@ public struct MaxSpawn_TimePoint
 public class LocationData
 {
     public int worldNum;
+    public int locationNum;
 
     [Header("")]
     public Vector2 spawnRangeX;

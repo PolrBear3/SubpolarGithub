@@ -22,8 +22,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Transform _locationFile;
     [SerializeField] private Transform _characterFile;
     [SerializeField] private Transform _stationFile;
-    [SerializeField] private Transform _shopFile;
-    public Transform shopFile => _shopFile;
 
     public static bool gamePaused;
     public static bool orderOpen;

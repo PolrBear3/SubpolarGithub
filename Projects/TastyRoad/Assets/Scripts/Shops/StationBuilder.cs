@@ -64,8 +64,6 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
 
         Update_HoverStation();
         UnInteract();
-
-        transform.parent = _main.shopFile;
     }
 
 

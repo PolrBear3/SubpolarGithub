@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Location_Controller : MonoBehaviour, ISaveLoadable
+public class Location_Controller : MonoBehaviour
 {
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
@@ -40,19 +40,6 @@ public class Location_Controller : MonoBehaviour, ISaveLoadable
         GlobalTime_Controller.TimeTik_Update += Update_Current_MaxSpawn;
 
         NPC_Spawn_Control();
-    }
-
-
-
-    // ISaveLoadable
-    public void Save_Data()
-    {
-        
-    }
-
-    public void Load_Data()
-    {
-        
     }
 
 

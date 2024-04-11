@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2074082356524549681}
   - component: {fileID: -4383346783892420963}
   m_Layer: 0
-  m_Name: Desert
+  m_Name: Desert 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _setData:
     worldNum: 0
+    locationNum: 1
     spawnRangeX: {x: -9, y: 9}
     spawnRangeY: {x: -4, y: -1}
     spawnIntervalTimeRange: {x: 5, y: 10}
@@ -494,7 +495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3104993410009853489, guid: f3678dbe763064e24947109555663ded, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 3104993410009853489, guid: f3678dbe763064e24947109555663ded, type: 3}
       propertyPath: m_LocalPosition.z
@@ -556,7 +557,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 230284688820260825, guid: 951d6e6cd664e4399b448333dee0147f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 230284688820260825, guid: 951d6e6cd664e4399b448333dee0147f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -618,7 +619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 230284688820260825, guid: 8d936c41b08da40e9a5f6f6dd6fcefa7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 230284688820260825, guid: 8d936c41b08da40e9a5f6f6dd6fcefa7, type: 3}
       propertyPath: m_LocalPosition.z
