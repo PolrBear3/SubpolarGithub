@@ -57,6 +57,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Save_ArchivedFood();
         Save_BookmarkedFood();
 
+        Save_CurrentLocation();
         Save_CurrentStations();
     }
 
@@ -70,6 +71,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Load_ArchivedFood();
         Load_bookmarkedFood();
 
+        Load_CurrentLocation();
         Load_CurrentStations();
     }
 
@@ -181,18 +183,34 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private Location_Controller _currentLocation;
     public Location_Controller currentLocation => _currentLocation;
 
+    private void Save_CurrentLocation()
+    {
+
+    }
+    private void Load_CurrentLocation()
+    {
+
+    }
+
     public void Track_CurrentLocaiton(Location_Controller location)
     {
         _currentLocation = location;
     }
-    public void UnTrack_CurrentLocation(Location_Controller location)
+
+    public void Set_Location(int worldNum, int locationNum)
     {
-        _currentLocation = null;
-    }
-    public void Set_Location(GameObject locationGameObject)
-    {
-        GameObject location = Instantiate(locationGameObject, Vector2.zero, Quaternion.identity);
-        location.transform.parent = _locationFile;
+        List<Location_ScrObj> allLocations = _dataController.locations;
+
+        for (int i = 0; i < allLocations.Count; i++)
+        {
+            if (worldNum != allLocations[i].worldNum) continue;
+            if (locationNum != allLocations[i].locationNum) continue;
+
+            GameObject location = Instantiate(allLocations[i].locationPrefab, Vector2.zero, Quaternion.identity);
+            location.transform.parent = _locationFile;
+
+            break;
+        }
     }
 
 

@@ -13,8 +13,7 @@ public struct MaxSpawn_TimePoint
 [System.Serializable]
 public class LocationData
 {
-    public int worldNum;
-    public int locationNum;
+    public Location_ScrObj locationScrObj;
 
     [Header("")]
     public Vector2 spawnRangeX;
@@ -26,8 +25,20 @@ public class LocationData
     [Header("")]
     public List<MaxSpawn_TimePoint> maxSpawnTimePoints;
 
+    public LocationData()
+    {
+
+    }
+
     public LocationData (LocationData data)
     {
-        worldNum = data.worldNum;
+        locationScrObj = data.locationScrObj;
+
+        spawnRangeX = data.spawnRangeX;
+        spawnRangeY = data.spawnRangeY;
+
+        spawnIntervalTimeRange = data.spawnIntervalTimeRange;
+
+        maxSpawnTimePoints = data.maxSpawnTimePoints;
     }
 }

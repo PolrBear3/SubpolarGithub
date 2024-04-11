@@ -16,7 +16,7 @@ public interface ISignal
 public class Data_Controller : MonoBehaviour
 {
     [Header("")] 
-    public List<GameObject> locations = new();
+    public List<Location_ScrObj> locations = new();
     public List<Station_ScrObj> stations = new();
     public List<GameObject> characters = new();
 

@@ -16,10 +16,4 @@ public class Food_ScrObj : ScriptableObject
     public int price;
 
     public List<FoodData> ingredients = new();
-    private Food_ScrObj currentFood;
-
-    public Food_ScrObj(Food_ScrObj currentFood)
-    {
-        this.currentFood = currentFood;
-    }
 }

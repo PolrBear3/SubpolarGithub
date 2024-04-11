@@ -18,35 +18,28 @@ public class WorldMap_Controller : MonoBehaviour
 
     private void Start()
     {
-        Set_Location(0);
+        
     }
 
 
 
     //
-    private void Set_Location(int worldNum)
+    public void Set_RandomLocation(int worldNum)
     {
-        List<GameObject> allLocations = _mainController.dataController.locations;
+        List<Location_ScrObj> allLocations = _mainController.dataController.locations;
+        List<Location_ScrObj> worldLocation = new();
 
         // get locations that are worldNum
-        List<GameObject> worldNumLocations = new();
-
         for (int i = 0; i < allLocations.Count; i++)
         {
-            Location_Controller controller = allLocations[i].GetComponent<Location_Controller>();
-
-            // differect location from current location
-            if (_mainController.currentLocation == controller) continue;
-            // same world num
-            if (worldNum != controller.currentData.worldNum) continue;
-
-            worldNumLocations.Add(allLocations[i]);
+            if (worldNum != allLocations[i].worldNum) continue;
+            worldLocation.Add(allLocations[i]);
         }
 
         // set random location num
-        int randArrayNum = Random.Range(0, worldNumLocations.Count);
+        int randLocationNum = Random.Range(0, worldLocation.Count);
 
         // set location
-        _mainController.Set_Location(worldNumLocations[randArrayNum]);
+        _mainController.Set_Location(worldNum, worldLocation[randLocationNum].locationNum);
     }
 }
