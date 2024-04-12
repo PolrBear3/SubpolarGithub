@@ -158,6 +158,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Position Control
     private List<Vector2> _claimedPositions = new();
 
+    public void ResetAll_ClaimedPositions()
+    {
+        _claimedPositions.Clear();
+    }
+
     public void Claim_Position(Vector2 position)
     {
         if (Position_Claimed(position)) return;
@@ -201,6 +206,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         _currentLocation = location;
         _savedLocationData = location.currentData;
+
+        Save_CurrentLocationData();
     }
 
     public Location_Controller Set_Location(int worldNum, int locationNum)
@@ -311,6 +318,16 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void UnTrack_CurrentStation(Station_Controller station)
     {
         _currentStations.Remove(station);
+    }
+
+    public int Destroy_AllStations()
+    {
+        for (int i = 0; i < _currentStations.Count; i++)
+        {
+            _currentStations[i].Destroy_Station();
+        }
+
+        return _currentStations.Count + 1;
     }
 
     public Station_Controller Spawn_Station(int id, Vector2 spawnPosition)

@@ -96,6 +96,7 @@ public class Location_Controller : MonoBehaviour
 
         for (int i = 0; i < currentCharacters.Count; i++)
         {
+            if (currentCharacters[i] == null) continue;
             if (!currentCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
             currentNPCs.Add(npc);
         }

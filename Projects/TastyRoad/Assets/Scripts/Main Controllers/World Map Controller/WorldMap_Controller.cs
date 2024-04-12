@@ -37,7 +37,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
         if (ES3.KeyExists("Main_Controller/_currentLocationData"))
         {
-            // set saved location
+            // set previous saved location
             Location_ScrObj loadScrObj = _mainController.savedLocationData.locationScrObj;
 
             Location_Controller location = _mainController.Set_Location(loadScrObj.worldNum, loadScrObj.locationNum);
@@ -46,9 +46,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        // set new starting location
+        // set new game starting location
         _currentTileNum = _cursorTileNum;
-        Set_RandomLocation(_tiles[_currentTileNum].worldNum);
+        Set_RandomLocation();
     }
 
 
@@ -60,6 +60,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         int xInput = (int)input.x;
 
         Update_CursorTile(xInput);
+        UpdateTiles_Animation();
     }
 
     private void OnSelect()
@@ -69,7 +70,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnExit()
     {
-
+        Map_Toggle(false);
     }
 
 
@@ -98,7 +99,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         if (toggleOn)
         {
             Update_CursorTile(_currentTileNum);
-            _tiles[_currentTileNum].Tile_Select();
+            UpdateTiles_Animation();
 
             LeanTween.alpha(_backgroundPanel, 95 * 0.01f, 0.25f);
         }
@@ -108,45 +109,109 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         }
     }
 
+
+
+    // Single Tile to Tile Control
     private void Update_CursorTile(int cursorDirection)
     {
+        // cursor postion
         _cursorTileNum += cursorDirection;
 
         if (_cursorTileNum < 0) _cursorTileNum = 0;
         else if (_cursorTileNum > _tiles.Length - 1) _cursorTileNum = _tiles.Length - 1;
 
         _cursor.transform.position = _tiles[_cursorTileNum].cursorPoint.position;
-
-        if (_cursorTileNum == _currentTileNum) return;
-        _tiles[_cursorTileNum].Tile_Hover();
     }
 
     private void Select_CursorTile()
     {
+        // check if new location tile is selected
+        if (_currentTileNum == _cursorTileNum) return;
+
+        // previous settings before moving on to new location
+        _mainController.Destroy_AllStations();
+        _mainController.ResetAll_ClaimedPositions();
+
         // previous tile location
         Destroy(_mainController.currentLocation.gameObject);
 
         // set selected tile location
         _currentTileNum = _cursorTileNum;
-        ES3.Save("WorldMap_Controller/_currentTileNum", _currentTileNum);
 
+        // set location
         Set_RandomLocation(_tiles[_currentTileNum].worldNum);
 
         // reload game scene
+        SaveLoad_Controller.SaveAll_All_ISaveLoadable();
         SceneManager.LoadScene(0);
     }
 
 
 
-    // Tile Control
-    private void UpdateTile_WorldNum()
+    // All Tile Control
+    private void UpdateTiles_WorldNum(int updateNum)
     {
+        for (int i = 0; i < _tiles.Length; i++)
+        {
+            _tiles[i].Update_WorldNum(updateNum);
+        }
+    }
 
+    private void UpdateTiles_Animation()
+    {
+        for (int i = 0; i < _tiles.Length; i++)
+        {
+            if (i == _currentTileNum)
+            {
+                _tiles[i].Tile_Press();
+                continue;
+            }
+
+            if (i != _cursorTileNum)
+            {
+                _tiles[i].Tile_Hover();
+                continue;
+            }
+
+            _tiles[i].Tile_UnPress();
+        }
     }
 
 
 
-    //
+
+    /// <summary>
+    /// Random location setting for new starting game
+    /// </summary>
+    private void Set_RandomLocation()
+    {
+        List<Location_ScrObj> allLocations = _mainController.dataController.locations;
+        List<Location_ScrObj> worldLocation = new();
+
+        int worldNum = _tiles[_currentTileNum].worldNum;
+
+        // get locations that are worldNum
+        for (int i = 0; i < allLocations.Count; i++)
+        {
+            // check if same world
+            if (worldNum != allLocations[i].worldNum) continue;
+
+            worldLocation.Add(allLocations[i]);
+        }
+
+        // set random location num
+        int randLocationNum = Random.Range(0, worldLocation.Count);
+
+        // set location
+        Location_Controller location = _mainController.Set_Location(worldNum, worldLocation[randLocationNum].locationNum);
+
+        // track location
+        _mainController.Track_CurrentLocaiton(location);
+    }
+
+    /// <summary>
+    /// Random location setting for selecting location tile
+    /// </summary>
     private void Set_RandomLocation(int worldNum)
     {
         List<Location_ScrObj> allLocations = _mainController.dataController.locations;
@@ -155,7 +220,12 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         // get locations that are worldNum
         for (int i = 0; i < allLocations.Count; i++)
         {
+            // check if same world
             if (worldNum != allLocations[i].worldNum) continue;
+
+            // check if different location
+            if (_mainController.currentLocation.setData.locationScrObj == allLocations[i]) continue;
+
             worldLocation.Add(allLocations[i]);
         }
 

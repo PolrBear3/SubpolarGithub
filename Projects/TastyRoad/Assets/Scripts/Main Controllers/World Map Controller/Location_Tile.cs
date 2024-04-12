@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Location_Tile : MonoBehaviour
 {
@@ -22,14 +23,29 @@ public class Location_Tile : MonoBehaviour
 
 
 
-    //
-    public void Tile_Select()
+    // Data Control
+    public void Update_WorldNum(int updateNum)
     {
+        _worldNum += updateNum;
 
+        // update tile sprite
+    }
+
+
+
+    // Animation Control
+    public void Tile_UnPress()
+    {
+        _anim.Play("LocationTile_hover");
+    }
+
+    public void Tile_Press()
+    {
+        _anim.Play("LocationTile_press");
     }
 
     public void Tile_Hover()
     {
-
+        _anim.Play("LocationTile_unpress");
     }
 }

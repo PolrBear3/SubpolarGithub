@@ -22,16 +22,23 @@ public class SaveLoad_Controller : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        for (int i = 0; i < All_ISaveLoadables().Count; i++)
-        {
-            All_ISaveLoadables()[i].Save_Data();
-        }
+        SaveAll_All_ISaveLoadable();
     }
 
 
 
     //
-    private List<ISaveLoadable> All_ISaveLoadables()
+    public static void SaveAll_All_ISaveLoadable()
+    {
+        for (int i = 0; i < All_ISaveLoadables().Count; i++)
+        {
+            All_ISaveLoadables()[i].Save_Data();
+        }
+
+        ES3.CreateBackup("TastyRoad_backup");
+    }
+
+    private static List<ISaveLoadable> All_ISaveLoadables()
     {
         IEnumerable<ISaveLoadable> saveLoadableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoadable>();
         return new (saveLoadableObjects);
