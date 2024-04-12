@@ -26,15 +26,13 @@ public class Location_Controller : MonoBehaviour
     {
         _mainController = FindObjectOfType<Main_Controller>();
 
-        _mainController.Track_CurrentLocaiton(this);
+        SetCurrent_LocationData();
     }
 
     private void Start()
     {
         // Toggle Off All Roam Area Colors On Game Start
         _roamArea.color = Color.clear;
-
-        Set_LocationData();
 
         Update_Current_MaxSpawn();
         GlobalTime_Controller.TimeTik_Update += Update_Current_MaxSpawn;
@@ -45,7 +43,7 @@ public class Location_Controller : MonoBehaviour
 
 
     // Current Data Control
-    private void Set_LocationData()
+    private void SetCurrent_LocationData()
     {
         _currentData = _setData;
     }

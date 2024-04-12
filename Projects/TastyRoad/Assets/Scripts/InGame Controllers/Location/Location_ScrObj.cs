@@ -8,5 +8,7 @@ public class Location_ScrObj : ScriptableObject
     public int worldNum;
     public int locationNum;
 
+    public string locationNickName;
+
     public GameObject locationPrefab;
 }

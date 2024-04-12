@@ -57,7 +57,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Save_ArchivedFood();
         Save_BookmarkedFood();
 
-        Save_CurrentLocation();
+        Save_CurrentLocationData();
         Save_CurrentStations();
     }
 
@@ -71,7 +71,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Load_ArchivedFood();
         Load_bookmarkedFood();
 
-        Load_CurrentLocation();
+        Load_CurrentLocationData();
         Load_CurrentStations();
     }
 
@@ -183,21 +183,27 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private Location_Controller _currentLocation;
     public Location_Controller currentLocation => _currentLocation;
 
-    private void Save_CurrentLocation()
-    {
+    private LocationData _savedLocationData;
+    public LocationData savedLocationData => _savedLocationData;
 
+    private void Save_CurrentLocationData()
+    {
+        ES3.Save("Main_Controller/_currentLocationData", _savedLocationData);
     }
-    private void Load_CurrentLocation()
+    public void Load_CurrentLocationData()
     {
+        if (ES3.KeyExists("Main_Controller/_currentLocationData") == false) return;
 
+        _savedLocationData = ES3.Load("Main_Controller/_currentLocationData", _savedLocationData);
     }
 
     public void Track_CurrentLocaiton(Location_Controller location)
     {
         _currentLocation = location;
+        _savedLocationData = location.currentData;
     }
 
-    public void Set_Location(int worldNum, int locationNum)
+    public Location_Controller Set_Location(int worldNum, int locationNum)
     {
         List<Location_ScrObj> allLocations = _dataController.locations;
 
@@ -209,8 +215,10 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             GameObject location = Instantiate(allLocations[i].locationPrefab, Vector2.zero, Quaternion.identity);
             location.transform.parent = _locationFile;
 
-            break;
+            return location.GetComponent<Location_Controller>();
         }
+
+        return null;
     }
 
 

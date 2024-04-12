@@ -10,6 +10,7 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     private PlayerInput _input;
     private PlayerInput _currentDisableInput;
 
+    [Header("")]
     [SerializeField] private RectTransform _background;
     [SerializeField] private GameObject _tutorialPanel;
     [SerializeField] private Animator _gifAnimator;
@@ -34,11 +35,6 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         _input = gameObject.GetComponent<PlayerInput>();
-    }
-
-    private void Start()
-    {
-        Hide_Tutorial();
     }
 
 
