@@ -7,6 +7,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private Data_Controller _dataController;
     public Data_Controller dataController => _dataController;
 
+    private MainEvent_Controller _eventController;
+    public MainEvent_Controller eventController => _eventController;
+
     [SerializeField] private WorldMap_Controller _worldMap;
     public WorldMap_Controller worldMap => _worldMap;
 
@@ -36,6 +39,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         _dataController = gameObject.GetComponent<Data_Controller>();
+        _eventController = gameObject.GetComponent<MainEvent_Controller>();
         _globalTime = gameObject.GetComponent<GlobalTime_Controller>();
     }
 
@@ -253,10 +257,34 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         _currentCharacters.Remove(character);
     }
+
     public void Spawn_Character(int arrayNum, Vector2 spawnPosition)
     {
         GameObject character = Instantiate(dataController.characters[arrayNum], spawnPosition, Quaternion.identity);
         character.transform.parent = _characterFile;
+    }
+
+    public Player_Controller Player()
+    {
+        for (int i = 0; i < _currentCharacters.Count; i++)
+        {
+            if (!_currentCharacters[i].TryGetComponent(out Player_Controller player)) continue;
+            return player;
+        }
+
+        return null;
+    }
+    public List<NPC_Controller> All_NPCs()
+    {
+        List<NPC_Controller> allNPCs = new();
+
+        for (int i = 0; i < _currentCharacters.Count; i++)
+        {
+            if (!_currentCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
+            allNPCs.Add(npc);
+        }
+
+        return allNPCs;
     }
 
 

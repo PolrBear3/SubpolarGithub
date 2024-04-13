@@ -15,6 +15,11 @@ public class Player_Interaction : MonoBehaviour, IInteractable
         if (gameObject.TryGetComponent(out Player_Controller controller)) { _controller = controller; }
     }
 
+    private void Start()
+    {
+        WorldMap_Controller.NewLocation_Event += Player_NewLocationEvents;
+    }
+
 
 
     // Player Input
@@ -48,5 +53,14 @@ public class Player_Interaction : MonoBehaviour, IInteractable
     public void UnInteract()
     {
 
+    }
+
+
+
+    // New Location Events
+    private void Player_NewLocationEvents()
+    {
+        // update food rotten state
+        _controller.foodIcon.Update_State(FoodState_Type.rotten, 1);
     }
 }

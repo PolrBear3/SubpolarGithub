@@ -42,12 +42,12 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         FoodData playerFoodData = new(foodIcon.currentFoodData);
-        ES3.Save("playerFoodData", playerFoodData);
+        ES3.Save("Player_Controller/foodIcon.currentFoodData", playerFoodData);
     }
 
     public void Load_Data()
     {
-        foodIcon.currentFoodData = ES3.Load("playerFoodData", foodIcon.currentFoodData);
+        foodIcon.currentFoodData = ES3.Load("Player_Controller/foodIcon.currentFoodData", foodIcon.currentFoodData);
         foodIcon.Load_FoodData();
         foodIcon.stateBoxController.Update_StateBoxes();
     }

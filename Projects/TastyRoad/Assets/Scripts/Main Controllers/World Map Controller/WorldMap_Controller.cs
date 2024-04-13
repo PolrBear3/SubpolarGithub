@@ -21,6 +21,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private int _currentTileNum;
     private int _cursorTileNum;
 
+    public delegate void Event();
+    public static event Event NewLocation_Event;
+
 
 
     // UnityEngine
@@ -131,6 +134,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         // previous settings before moving on to new location
         _mainController.Destroy_AllStations();
         _mainController.ResetAll_ClaimedPositions();
+
+        NewLocation_Event?.Invoke();
 
         // previous tile location
         Destroy(_mainController.currentLocation.gameObject);
