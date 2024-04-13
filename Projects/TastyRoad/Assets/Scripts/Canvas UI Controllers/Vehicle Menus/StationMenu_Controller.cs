@@ -237,9 +237,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactionMode = true;
 
         Vehicle_Controller vehicle = _controller.vehicleController;
-        int cursorStationID = cursor.data.currentStation.id;
 
-        _interactStation = vehicle.mainController.Spawn_Station(cursorStationID, vehicle.stationSpawnPoint.position);
+        _interactStation = vehicle.mainController.Spawn_Station(cursor.data.currentStation, vehicle.stationSpawnPoint.position);
 
         Station_Movement movement = _interactStation.movement;
 
@@ -373,7 +372,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             Main_Controller main = _controller.vehicleController.mainController;
 
             // exporting station
-            Station_Controller exportStation = main.Spawn_Station(currentSlot.data.currentStation.id, _interactStation.transform.position);
+            Station_Controller exportStation = main.Spawn_Station(currentSlot.data.currentStation, _interactStation.transform.position);
             exportStation.movement.Load_Position();
 
             // retrieving station

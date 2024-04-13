@@ -68,6 +68,24 @@ public class Data_Controller : MonoBehaviour
         }
         return null;
     }
+    public Station_ScrObj Station_ScrObj(Station_ScrObj stationScrObj)
+    {
+        for (int i = 0; i < stations.Count; i++)
+        {
+            if (stationScrObj != stations[i]) continue;
+            return stations[i];
+        }
+        return null;
+    }
+    public Station_ScrObj Station_ScrObj(string stationName)
+    {
+        for (int i = 0; i < stations.Count; i++)
+        {
+            if (stationName != stations[i].stationName) continue;
+            return stations[i];
+        }
+        return null;
+    }
 
 
 
@@ -90,6 +108,7 @@ public class Data_Controller : MonoBehaviour
 
         return allFoods;
     }
+
     public Food_ScrObj Food(int foodID)
     {
         for (int i = 0; i < rawFoods.Count; i++)
@@ -101,6 +120,22 @@ public class Data_Controller : MonoBehaviour
         for (int i = 0; i < cookedFoods.Count; i++)
         {
             if (foodID != cookedFoods[i].id) continue;
+            return cookedFoods[i];
+        }
+
+        return null;
+    }
+    public Food_ScrObj Food(Food_ScrObj foodScrObj)
+    {
+        for (int i = 0; i < rawFoods.Count; i++)
+        {
+            if (foodScrObj != rawFoods[i]) continue;
+            return rawFoods[i];
+        }
+
+        for (int i = 0; i < cookedFoods.Count; i++)
+        {
+            if (foodScrObj != cookedFoods[i]) continue;
             return cookedFoods[i];
         }
 

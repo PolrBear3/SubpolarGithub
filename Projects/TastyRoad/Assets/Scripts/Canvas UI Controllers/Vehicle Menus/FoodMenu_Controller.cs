@@ -275,7 +275,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Vehicle_Controller vehicle = _controller.vehicleController;
 
         // spawn food box
-        Station_Controller station = vehicle.mainController.Spawn_Station(7, FoodExport_Position());
+        Station_ScrObj foodbox = vehicle.mainController.dataController.Station_ScrObj("Food Box");
+        Station_Controller station = vehicle.mainController.Spawn_Station(foodbox, FoodExport_Position());
         vehicle.mainController.Claim_Position(station.transform.position);
 
         // assign exported food to food box

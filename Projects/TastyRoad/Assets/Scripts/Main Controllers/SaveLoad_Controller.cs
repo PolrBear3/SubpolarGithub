@@ -14,33 +14,39 @@ public class SaveLoad_Controller : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        for (int i = 0; i < All_ISaveLoadables().Count; i++)
-        {
-            All_ISaveLoadables()[i].Load_Data();
-        }
+        LoadAll_ISaveLoadable();
     }
 
     private void OnApplicationQuit()
     {
-        SaveAll_All_ISaveLoadable();
+        SaveAll_ISaveLoadable();
     }
 
 
 
     //
-    public static void SaveAll_All_ISaveLoadable()
+    private static List<ISaveLoadable> All_ISaveLoadables()
+    {
+        IEnumerable<ISaveLoadable> saveLoadableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoadable>();
+        return new(saveLoadableObjects);
+    }
+
+
+
+    public static void SaveAll_ISaveLoadable()
     {
         for (int i = 0; i < All_ISaveLoadables().Count; i++)
         {
             All_ISaveLoadables()[i].Save_Data();
         }
-
-        ES3.CreateBackup("TastyRoad_backup");
     }
 
-    private static List<ISaveLoadable> All_ISaveLoadables()
+
+    private void LoadAll_ISaveLoadable()
     {
-        IEnumerable<ISaveLoadable> saveLoadableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoadable>();
-        return new (saveLoadableObjects);
+        for (int i = 0; i < All_ISaveLoadables().Count; i++)
+        {
+            All_ISaveLoadables()[i].Load_Data();
+        }
     }
 }

@@ -142,7 +142,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Set_RandomLocation(_tiles[_currentTileNum].worldNum);
 
         // reload game scene
-        SaveLoad_Controller.SaveAll_All_ISaveLoadable();
+        SaveLoad_Controller.SaveAll_ISaveLoadable();
         SceneManager.LoadScene(0);
     }
 

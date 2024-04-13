@@ -272,6 +272,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _currentStations.Count; i++)
         {
+            // check if station is exported and not placed
             if (_currentStations[i].movement != null && _currentStations[i].movement.enabled == true) continue;
 
             saveData.Add(new StationData(_currentStations[i]));
@@ -294,7 +295,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < loadData.Count; i++)
         {
-            Station_Controller station = Spawn_Station(loadData[i].stationID, loadData[i].position);
+            Station_Controller station = Spawn_Station(loadData[i].stationScrObj, loadData[i].position);
+
+            if (loadData[i].stationID != loadData[i].stationScrObj.id) Debug.Log(loadData[i].stationScrObj.stationName + " updated");
 
             if (_currentStations[i].movement != null)
             {
@@ -330,23 +333,13 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return _currentStations.Count + 1;
     }
 
-    public Station_Controller Spawn_Station(int id, Vector2 spawnPosition)
+    public Station_Controller Spawn_Station(Station_ScrObj stationScrObj, Vector2 spawnPosition)
     {
-        List<Station_ScrObj> allStations = dataController.stations;
-        Station_Controller targetStation = null;
+        GameObject spawnStation = Instantiate(stationScrObj.prefab, spawnPosition, Quaternion.identity);
+        spawnStation.transform.parent = _stationFile;
 
-        for (int i = 0; i < allStations.Count; i++)
-        {
-            if (id != allStations[i].id) continue;
-
-            GameObject spawnStation = Instantiate(allStations[i].prefab, spawnPosition, Quaternion.identity);
-            spawnStation.transform.parent = _stationFile;
-
-            if (!spawnStation.TryGetComponent(out Station_Controller stationController)) return null;
-            targetStation = stationController;
-        }
-
-        return targetStation;
+        if (!spawnStation.TryGetComponent(out Station_Controller stationController)) return null;
+        return stationController;
     }
     public Station_Controller Station(Vector2 searchPosition)
     {

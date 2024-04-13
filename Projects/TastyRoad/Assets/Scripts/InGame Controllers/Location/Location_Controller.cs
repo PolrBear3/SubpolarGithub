@@ -164,7 +164,8 @@ public class Location_Controller : MonoBehaviour
                 continue;
             }
 
-            Station_Controller scrap = _mainController.Spawn_Station(6, spawnPos);
+            Station_ScrObj scrapScrObj = _mainController.dataController.Station_ScrObj("Scrap");
+            Station_Controller scrap = _mainController.Spawn_Station(scrapScrObj, spawnPos);
             scrap.movement.Load_Position();
         }
     }
