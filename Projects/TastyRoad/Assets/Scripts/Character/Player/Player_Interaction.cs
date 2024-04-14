@@ -61,6 +61,9 @@ public class Player_Interaction : MonoBehaviour, IInteractable
     private void Player_NewLocationEvents()
     {
         // update food rotten state
-        _controller.foodIcon.Update_State(FoodState_Type.rotten, 1);
+        if (_controller.foodIcon.hasFood)
+        {
+            _controller.foodIcon.Update_State(FoodState_Type.rotten, 1);
+        }
     }
 }
