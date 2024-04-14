@@ -126,7 +126,11 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private void Select_CursorTile()
     {
         // check if new location tile is selected
-        if (_currentTileNum == _cursorTileNum) return;
+        if (_currentTileNum == _cursorTileNum)
+        {
+            Map_Toggle(false);
+            return;
+        }
 
         // previous settings before moving on to new location
         _mainController.Destroy_AllStations();
