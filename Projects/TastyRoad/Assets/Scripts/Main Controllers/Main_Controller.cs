@@ -7,9 +7,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private Data_Controller _dataController;
     public Data_Controller dataController => _dataController;
 
-    private MainEvent_Controller _eventController;
-    public MainEvent_Controller eventController => _eventController;
-
     [SerializeField] private WorldMap_Controller _worldMap;
     public WorldMap_Controller worldMap => _worldMap;
 
@@ -39,7 +36,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         _dataController = gameObject.GetComponent<Data_Controller>();
-        _eventController = gameObject.GetComponent<MainEvent_Controller>();
         _globalTime = gameObject.GetComponent<GlobalTime_Controller>();
     }
 

@@ -59,6 +59,14 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         _menu.VehicleMenu_Toggle(true);
     }
 
+    private void OnAction2()
+    {
+        _bubble.Toggle(false);
+        _playerInput.enabled = false;
+
+        mainController.worldMap.Map_Toggle(true);
+    }
+
 
 
     // IInteractable

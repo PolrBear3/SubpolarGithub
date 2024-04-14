@@ -35,9 +35,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
-        // test
-        Map_Toggle(true);
-
         if (ES3.KeyExists("Main_Controller/_currentLocationData"))
         {
             // set previous saved location
@@ -147,6 +144,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Set_RandomLocation(_tiles[_currentTileNum].worldNum);
 
         // reload game scene
+        Main_Controller.gamePaused = false;
         SaveLoad_Controller.SaveAll_ISaveLoadable();
         SceneManager.LoadScene(0);
     }
@@ -169,16 +167,24 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             if (i == _currentTileNum)
             {
                 _tiles[i].Tile_Press();
+                _tiles[i].gasCoinIndicator.SetActive(false);
+                _tiles[i].currentTileIndicator.SetActive(true);
+
                 continue;
             }
 
-            if (i != _cursorTileNum)
+            if (i == _cursorTileNum)
             {
                 _tiles[i].Tile_Hover();
+                _tiles[i].GasCoin_ToggleOn(Mathf.Abs(_cursorTileNum - _currentTileNum));
+                _tiles[i].currentTileIndicator.SetActive(false);
+
                 continue;
             }
 
             _tiles[i].Tile_UnPress();
+            _tiles[i].gasCoinIndicator.SetActive(false);
+            _tiles[i].currentTileIndicator.SetActive(false);
         }
     }
 
