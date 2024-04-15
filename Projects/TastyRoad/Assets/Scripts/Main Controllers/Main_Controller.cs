@@ -30,7 +30,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public static int currentStationCoin;
     public static int currentGasCoin;
 
-
+    // GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
 
     // UnityEngine
     private void Awake()
