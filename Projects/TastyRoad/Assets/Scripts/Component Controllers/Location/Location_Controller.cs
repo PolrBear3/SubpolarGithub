@@ -24,7 +24,7 @@ public class Location_Controller : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        _mainController = FindObjectOfType<Main_Controller>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
 
         SetCurrent_LocationData();
     }
@@ -38,6 +38,11 @@ public class Location_Controller : MonoBehaviour
         GlobalTime_Controller.TimeTik_Update += Update_Current_MaxSpawn;
 
         NPC_Spawn_Control();
+    }
+
+    private void OnDestroy()
+    {
+        GlobalTime_Controller.TimeTik_Update -= Update_Current_MaxSpawn;
     }
 
 
@@ -96,7 +101,6 @@ public class Location_Controller : MonoBehaviour
 
         for (int i = 0; i < currentCharacters.Count; i++)
         {
-            if (currentCharacters[i] == null) continue;
             if (!currentCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
             currentNPCs.Add(npc);
         }
@@ -141,32 +145,6 @@ public class Location_Controller : MonoBehaviour
             yield return new WaitForSeconds(randIntervalTime);
 
             _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(Random.Range(0, 2)));
-        }
-    }
-
-
-
-    // Scrap
-    private void Spawn_Scraps(int amount)
-    {
-        LocationData d = _currentData;
-
-        for (int i = 0; i < amount; i++)
-        {
-            int randX = Random.Range((int)d.spawnRangeX.x, (int)d.spawnRangeX.y + 1);
-            int randY = Random.Range((int)d.spawnRangeY.x, (int)d.spawnRangeY.y + 1);
-
-            Vector2 spawnPos = new(randX, randY);
-
-            if (_mainController.Position_Claimed(spawnPos))
-            {
-                i--;
-                continue;
-            }
-
-            Station_ScrObj scrapScrObj = _mainController.dataController.Station_ScrObj("Scrap");
-            Station_Controller scrap = _mainController.Spawn_Station(scrapScrObj, spawnPos);
-            scrap.movement.Load_Position();
         }
     }
 }

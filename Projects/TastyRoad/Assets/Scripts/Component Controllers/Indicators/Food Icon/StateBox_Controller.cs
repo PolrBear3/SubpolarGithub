@@ -67,7 +67,6 @@ public class StateBox_Controller : MonoBehaviour
     {
         for (int i = 0; i < _currentStateBoxes.Count; i++)
         {
-            if (_currentStateBoxes[i] == null) continue;
             _currentStateBoxes[i].sprite = null;
         }
     }

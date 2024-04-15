@@ -20,6 +20,11 @@ public class Player_Interaction : MonoBehaviour, IInteractable
         WorldMap_Controller.NewLocation_Event += Player_NewLocationEvents;
     }
 
+    private void OnDestroy()
+    {
+        WorldMap_Controller.NewLocation_Event -= Player_NewLocationEvents;
+    }
+
 
 
     // Player Input

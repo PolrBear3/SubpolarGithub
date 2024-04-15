@@ -349,12 +349,15 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public int Destroy_AllStations()
     {
-        for (int i = 0; i < _currentStations.Count; i++)
+        int destroyCount = 0;
+
+        for (int i = _currentStations.Count - 1; i >= 0; i--)
         {
             _currentStations[i].Destroy_Station();
+            destroyCount++;
         }
 
-        return _currentStations.Count + 1;
+        return destroyCount;
     }
 
     public Station_Controller Spawn_Station(Station_ScrObj stationScrObj, Vector2 spawnPosition)

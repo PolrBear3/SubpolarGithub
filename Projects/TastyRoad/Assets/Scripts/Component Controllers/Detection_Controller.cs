@@ -12,12 +12,6 @@ public class Detection_Controller : MonoBehaviour
     private Player_Controller _player;
     public Player_Controller player => _player;
 
-    private bool _onInteractArea;
-    public bool onInteractArea => _onInteractArea;
-
-    public delegate void Event();
-    public event Event InteractArea_Event;
-
 
 
     // UnityEngine
@@ -34,14 +28,8 @@ public class Detection_Controller : MonoBehaviour
         if (collision.isTrigger == false) return;
 
         _detectedprefabs.Add(collision.gameObject);
+
         if (collision.TryGetComponent(out Player_Controller player)) { _player = player; }
-
-        if (!collision.gameObject.CompareTag("InteractArea")) return;
-
-        _onInteractArea = true;
-        _detectedprefabs.Remove(collision.gameObject);
-
-        InteractArea_Event?.Invoke();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -49,13 +37,8 @@ public class Detection_Controller : MonoBehaviour
         if (collision.isTrigger == false) return;
 
         _detectedprefabs.Remove(collision.gameObject);
+
         if (collision.TryGetComponent(out Player_Controller player)) { _player = null; }
-
-        if (!collision.gameObject.CompareTag("InteractArea")) return;
-
-        _onInteractArea = false;
-
-        InteractArea_Event?.Invoke();
     }
 
 
@@ -132,17 +115,6 @@ public class Detection_Controller : MonoBehaviour
             if (specificObject == _detectedprefabs[i]) return true;
         }
 
-        return false;
-    }
-
-    // Checks if current prefab is at non interact area
-    public bool On_NonInteractArea()
-    {
-        for (int i = 0; i < _detectedprefabs.Count; i++)
-        {
-            if (!_detectedprefabs[i].CompareTag("nonInteractArea")) continue;
-            return true;
-        }
         return false;
     }
 

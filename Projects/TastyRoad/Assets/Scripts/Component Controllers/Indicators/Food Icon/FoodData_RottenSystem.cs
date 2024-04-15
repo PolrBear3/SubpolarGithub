@@ -16,6 +16,11 @@ public class FoodData_RottenSystem : MonoBehaviour
         _foodIcon = gameObject.GetComponent<FoodData_Controller>();
     }
 
+    private void OnDestroy()
+    {
+        GlobalTime_Controller.TimeTik_Update -= Decay_TikTimeUpdate;
+    }
+
 
 
     //

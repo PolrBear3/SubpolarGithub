@@ -136,16 +136,16 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         _mainController.Destroy_AllStations();
         _mainController.ResetAll_ClaimedPositions();
 
-        NewLocation_Event?.Invoke();
-
-        // previous tile location
+        // destroy previous location
         Destroy(_mainController.currentLocation.gameObject);
 
         // set selected tile location
         _currentTileNum = _cursorTileNum;
 
-        // set location
+        // set new location
         Set_RandomLocation(_tiles[_currentTileNum].worldNum);
+
+        NewLocation_Event?.Invoke();
 
         // reload game scene
         Main_Controller.gamePaused = false;

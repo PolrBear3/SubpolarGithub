@@ -14,7 +14,7 @@ public class Environment_Movement : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        _mainController = FindObjectOfType<Main_Controller>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
     }
 
     private void Start()
