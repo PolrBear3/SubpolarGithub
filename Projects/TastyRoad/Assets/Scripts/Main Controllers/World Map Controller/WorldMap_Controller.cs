@@ -21,16 +21,13 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private int _currentTileNum;
     private int _cursorTileNum;
 
-    public delegate void Event();
-    public static event Event NewLocation_Event;
-
 
 
     // UnityEngine
     private void Awake()
     {
         _input = gameObject.GetComponent<PlayerInput>();
-        _mainController = FindObjectOfType<Main_Controller>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
     }
 
     private void Start()
@@ -132,12 +129,10 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        // previous settings before moving on to new location
+        // reset settings before moving on to new location
         _mainController.Destroy_AllStations();
+        _mainController.Destroy_AllCharacters();
         _mainController.ResetAll_ClaimedPositions();
-
-        // destroy previous location
-        Destroy(_mainController.currentLocation.gameObject);
 
         // set selected tile location
         _currentTileNum = _cursorTileNum;
@@ -145,7 +140,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         // set new location
         Set_RandomLocation(_tiles[_currentTileNum].worldNum);
 
-        NewLocation_Event?.Invoke();
+        _mainController.currentLocation.Activate_LocationSet_Events();
 
         // reload game scene
         Main_Controller.gamePaused = false;

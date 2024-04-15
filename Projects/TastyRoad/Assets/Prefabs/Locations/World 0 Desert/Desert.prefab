@@ -64,6 +64,8 @@ MonoBehaviour:
     - timePoint: 8
       maxSpawnAmount: 10
   _roamArea: {fileID: 620701033008239444}
+  locationSetEvents:
+  - {fileID: 6839711826539184302}
 --- !u!1 &1198399255841974587
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6261780587104662762}
   m_Layer: 0
-  m_Name: Events
+  m_Name: Location Set Events
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -701,6 +703,11 @@ PrefabInstance:
 --- !u!4 &6768867598616679906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
+  m_PrefabInstance: {fileID: 4055331443863969469}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6839711826539184302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7398543223013236243, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
   m_PrefabInstance: {fileID: 4055331443863969469}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9052646870279478594

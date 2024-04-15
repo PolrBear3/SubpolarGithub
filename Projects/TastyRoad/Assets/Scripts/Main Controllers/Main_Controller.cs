@@ -49,6 +49,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        gamePaused = false;
+        orderOpen = false;
+
         ES3.Save("currentGoldCoin", currentGoldCoin);
         ES3.Save("currentStationCoin", currentStationCoin);
 
@@ -252,6 +255,14 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void UnTrack_CurrentCharacter(GameObject character)
     {
         _currentCharacters.Remove(character);
+    }
+
+    public void Destroy_AllCharacters()
+    {
+        for (int i = _currentCharacters.Count - 1; i >= 0; i--)
+        {
+            Destroy(_currentCharacters[i]);
+        }
     }
 
     public void Spawn_Character(int arrayNum, Vector2 spawnPosition)

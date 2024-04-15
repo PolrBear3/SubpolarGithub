@@ -7,6 +7,7 @@ public class Location_Controller : MonoBehaviour
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
 
+    [Header("")]
     [SerializeField] private LocationData _setData;
     public LocationData setData => _setData;
 
@@ -18,6 +19,9 @@ public class Location_Controller : MonoBehaviour
     public SpriteRenderer roamArea => _roamArea;
 
     private MaxSpawn_TimePoint _currentTimePoint;
+
+    [Header("")]
+    [SerializeField] private List<GameObject> locationSetEvents = new();
 
 
 
@@ -145,6 +149,20 @@ public class Location_Controller : MonoBehaviour
             yield return new WaitForSeconds(randIntervalTime);
 
             _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(Random.Range(0, 2)));
+        }
+    }
+
+
+
+    /// <summary>
+    /// Activate all IInteractables in ingameEvents gameobject list
+    /// </summary>
+    public void Activate_LocationSet_Events()
+    {
+        for (int i = 0; i < locationSetEvents.Count; i++)
+        {
+            if (!locationSetEvents[i].TryGetComponent(out IInteractable ingameEvent)) continue;
+            ingameEvent.Interact();
         }
     }
 }

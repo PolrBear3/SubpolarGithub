@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScrapSpawner : MonoBehaviour
+public class ScrapSpawner : MonoBehaviour, IInteractable
 {
     private Main_Controller _mainController;
 
@@ -10,17 +10,24 @@ public class ScrapSpawner : MonoBehaviour
     [SerializeField] private int _spawnAmount;
 
 
+
     // UnityEngine
     private void Awake()
     {
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-
-        WorldMap_Controller.NewLocation_Event += Spawn_Scraps;
     }
 
-    private void OnDestroy()
+
+
+    // IInteractable
+    public void Interact()
     {
-        WorldMap_Controller.NewLocation_Event -= Spawn_Scraps;
+        Spawn_Scraps();
+    }
+
+    public void UnInteract()
+    {
+        
     }
 
 
