@@ -488,7 +488,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         List<int> foodIDs = new();
 
-        ES3.Load("Main_Controller/_bookmarkedFoods/foodIDs", foodIDs);
+        foodIDs = ES3.Load("Main_Controller/_bookmarkedFoods/foodIDs", foodIDs);
 
         for (int i = 0; i < foodIDs.Count; i++)
         {
