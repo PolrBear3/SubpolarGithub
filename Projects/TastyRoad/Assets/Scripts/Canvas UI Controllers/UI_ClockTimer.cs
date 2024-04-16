@@ -38,10 +38,10 @@ public class UI_ClockTimer : MonoBehaviour
 
         for (int i = 0; i < _clockSprites.Count; i++) 
         {
+            yield return new WaitForSeconds(transitionTime);
+
             _image.color = Color.white;
             _image.sprite = _clockSprites[i];
-
-            yield return new WaitForSeconds(transitionTime);
         }
 
         yield return new WaitForSeconds(transitionTime);

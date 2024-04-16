@@ -15,6 +15,9 @@ public class Location_Controller : MonoBehaviour
     public LocationData currentData => _currentData;
 
     [Header("")]
+    [SerializeField] private SpriteRenderer _environment;
+    public SpriteRenderer environment => _environment;
+
     [SerializeField] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
@@ -75,6 +78,28 @@ public class Location_Controller : MonoBehaviour
         if (yValue < d.spawnRangeY.x || yValue > d.spawnRangeY.y) restricted = true;
 
         return restricted;
+    }
+
+    /// <summary>
+    /// Excludes claimed positions and restricted positions
+    /// </summary>
+    /// <returns>
+    /// Random snap position of this location
+    /// </returns>
+    public Vector2 Location_Random_SnapPosition()
+    {
+        while (true)
+        {
+            Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_environment));
+            bool posAvailable = _mainController.Position_Claimed(randSnapPos) == false && Restricted_Position(randSnapPos) == false;
+
+            if (posAvailable)
+            {
+                return randSnapPos;
+            }
+
+            continue;
+        }
     }
 
 

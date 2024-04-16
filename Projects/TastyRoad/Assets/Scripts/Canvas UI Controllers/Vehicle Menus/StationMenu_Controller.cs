@@ -237,8 +237,21 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactionMode = true;
 
         Vehicle_Controller vehicle = _controller.vehicleController;
+        Station_ScrObj cursorStation = cursor.data.currentStation;
 
-        _interactStation = vehicle.mainController.Spawn_Station(cursor.data.currentStation, vehicle.stationSpawnPoint.position);
+        if (cursorStation.unRetrievable)
+        {
+            Vector2 randPos = vehicle.mainController.currentLocation.Location_Random_SnapPosition();
+
+            _interactStation = vehicle.mainController.Spawn_Station(cursorStation, randPos);
+            _interactStation.movement.Load_Position();
+
+            Complete_StationPlace();
+
+            return;
+        }
+
+        _interactStation = vehicle.mainController.Spawn_Station(cursorStation, vehicle.stationSpawnPoint.position);
 
         Station_Movement movement = _interactStation.movement;
 
@@ -261,12 +274,19 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             return;
         }
 
+        Complete_StationPlace();
+    }
+    //
+    private void Complete_StationPlace()
+    {
         _controller.cursor.Empty_Item();
 
         _interactionMode = false;
         _interactStation = null;
 
+        Vehicle_Controller vehicle = _controller.vehicleController;
         Main_Controller main = vehicle.mainController;
+
         main.Sort_CurrentStation_fromClosest(vehicle.transform);
 
         _controller.OnOption1_Input -= Place_StationPrefab;
