@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +14,10 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private RectTransform _backgroundPanel;
     [SerializeField] private GameObject _worldPanel;
-    [SerializeField] private GameObject _cursor;
+
+    [Header("")]
+    [SerializeField] private Image _cursorImage;
+    [SerializeField] private UI_ClockTimer _holdTimer;
 
     [Header("")]
     [SerializeField] private Location_Tile[] _tiles;
@@ -45,7 +49,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
         // set new game starting location
         _currentTileNum = _cursorTileNum;
+
         Set_RandomLocation();
+        _mainController.currentLocation.Activate_LocationSet_Events();
     }
 
 
@@ -61,6 +67,18 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     }
 
     private void OnSelect()
+    {
+        _cursorImage.color = Color.white;
+        _holdTimer.Stop_ClockSpriteRun();
+    }
+
+    private void OnSelectDown()
+    {
+        _cursorImage.color = Color.clear;
+        _holdTimer.Run_ClockSprite();
+    }
+
+    private void OnHoldSelect()
     {
         Select_CursorTile();
     }
@@ -102,6 +120,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         }
         else
         {
+            _cursorImage.color = Color.white;
+            _holdTimer.Stop_ClockSpriteRun();
+
             LeanTween.alpha(_backgroundPanel, 0f, 0.25f);
         }
     }
@@ -117,7 +138,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         if (_cursorTileNum < 0) _cursorTileNum = 0;
         else if (_cursorTileNum > _tiles.Length - 1) _cursorTileNum = _tiles.Length - 1;
 
-        _cursor.transform.position = _tiles[_cursorTileNum].cursorPoint.position;
+        _cursorImage.transform.position = _tiles[_cursorTileNum].cursorPoint.position;
     }
 
     private void Select_CursorTile()
@@ -139,7 +160,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
         // set new location
         Set_RandomLocation(_tiles[_currentTileNum].worldNum);
-
         _mainController.currentLocation.Activate_LocationSet_Events();
 
         // reload game scene
