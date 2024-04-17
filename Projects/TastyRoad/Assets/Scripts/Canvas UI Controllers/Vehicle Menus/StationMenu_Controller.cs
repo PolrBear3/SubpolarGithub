@@ -18,7 +18,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void Start()
     {
-        Set_ItemBoxes_GridNum();
+        Set_Slots_GridNum();
         Update_Slots();
     }
 
@@ -82,7 +82,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // All Starting Functions are Here
-    private void Set_ItemBoxes_GridNum()
+    private void Set_Slots_GridNum()
     {
         Vector2 gridCount = Vector2.zero;
 

@@ -45,8 +45,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private StationMenu_Controller _stationMenu;
     public StationMenu_Controller stationMenu => _stationMenu;
 
-    [SerializeField] private ArchiveMenu_Controller _arhiveMenu;
-    public ArchiveMenu_Controller arhiveMenu => _arhiveMenu;
+    [SerializeField] private ArchiveMenu_Controller _archiveMenu;
+    public ArchiveMenu_Controller archiveMenu => _archiveMenu;
 
 
 
@@ -228,17 +228,16 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
 
-    // Item Box Main Control
-    private void Assign_All_BoxNum()
+    // Item Slots Main Control
+    private ItemSlot Item_Slot(Vector2 gridNum)
     {
-        int numCount = 0;
-
-        for (int i = 0; i < itemSlots.Count; i++)
+        for (int i = 0; i < _itemSlots.Count; i++)
         {
-            itemSlots[i].Assign_BoxNum(numCount);
-
-            numCount++;
+            if (_itemSlots[i].gridNum != gridNum) continue;
+            return _itemSlots[i];
         }
+
+        return null;
     }
 
     private void CursorDirection_Control(Vector2 inputDireciton)
@@ -246,22 +245,30 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
         if (currentMenu.MenuInteraction_Active() == true) return;
 
-        float calculatedDirection = inputDireciton.x + -(inputDireciton.y * 5);
+        Vector2 currentGridNum = _cursor.currentSlot.gridNum;
+        Vector2 nexGridNum = new(currentGridNum.x + inputDireciton.x, currentGridNum.y + -inputDireciton.y);
 
-        int convertedDirection = (int)calculatedDirection;
-        int nextSlotNum = _cursor.currentSlot.boxNum + convertedDirection;
+        // top bottom slot endpoint
+        if (nexGridNum.y < 0 || nexGridNum.y > 1) return; // get current slots max y num
 
-        if (nextSlotNum < 0) return;
-        if (nextSlotNum >= itemSlots.Count) return;
+        // left right slot endpoint
+        if (nexGridNum.x < 0)
+        {
+            return;
+        }
 
-        Vector2 currentNum = _cursor.currentSlot.gridNum;
-        Vector2 nextNum = itemSlots[nextSlotNum].gridNum;
+        if (nexGridNum.x > 4) // get current slots max x num
+        {
+            return;
+        }
 
-        if (currentNum.x != nextNum.x && currentNum.y != nextNum.y) return;
-
-        _cursor.Assign_CurrentSlot(itemSlots[nextSlotNum]);
+        // update to next slot
+        _cursor.Assign_CurrentSlot(Item_Slot(nexGridNum));
     }
 
+
+
+    //
     public void Menu_Control(int controlNum)
     {
         // if (currentItemBox != null) currentItemBox.BoxSelect_Toggle(false);
@@ -279,8 +286,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu newMenu) == false) return;
         _itemSlots = newMenu.ItemSlots();
-
-        Assign_All_BoxNum();
 
         // all actions for current menu when it is opened
         MenuOpen_Event?.Invoke();
