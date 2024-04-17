@@ -318,6 +318,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""c52baca2-47a3-4f3b-8c85-833a59151115"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -496,6 +505,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""HoldSelect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a988eeb6-3605-4347-ab72-9509c54cfd48"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -518,6 +538,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_UIControl_Option1 = m_UIControl.FindAction("Option1", throwIfNotFound: true);
         m_UIControl_Option2 = m_UIControl.FindAction("Option2", throwIfNotFound: true);
         m_UIControl_Exit = m_UIControl.FindAction("Exit", throwIfNotFound: true);
+        m_UIControl_Test = m_UIControl.FindAction("Test", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -664,6 +685,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIControl_Option1;
     private readonly InputAction m_UIControl_Option2;
     private readonly InputAction m_UIControl_Exit;
+    private readonly InputAction m_UIControl_Test;
     public struct UIControlActions
     {
         private @PlayerControls m_Wrapper;
@@ -675,6 +697,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Option1 => m_Wrapper.m_UIControl_Option1;
         public InputAction @Option2 => m_Wrapper.m_UIControl_Option2;
         public InputAction @Exit => m_Wrapper.m_UIControl_Exit;
+        public InputAction @Test => m_Wrapper.m_UIControl_Test;
         public InputActionMap Get() { return m_Wrapper.m_UIControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -705,6 +728,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
+            @Test.started += instance.OnTest;
+            @Test.performed += instance.OnTest;
+            @Test.canceled += instance.OnTest;
         }
 
         private void UnregisterCallbacks(IUIControlActions instance)
@@ -730,6 +756,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
+            @Test.started -= instance.OnTest;
+            @Test.performed -= instance.OnTest;
+            @Test.canceled -= instance.OnTest;
         }
 
         public void RemoveCallbacks(IUIControlActions instance)
@@ -764,5 +793,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOption1(InputAction.CallbackContext context);
         void OnOption2(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+        void OnTest(InputAction.CallbackContext context);
     }
 }

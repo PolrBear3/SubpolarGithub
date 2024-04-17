@@ -228,7 +228,33 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
 
-    // Item Slots Main Control
+    // Cursor Control
+    private int Max_GridNumX()
+    {
+        int lastGridNumX = -1;
+
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            if ((int)_itemSlots[i].gridNum.y != 0) break;
+
+            lastGridNumX++;
+        }
+
+        return lastGridNumX;
+    }
+
+    private int Max_GridNumY()
+    {
+        int lastGridNumY = 0;
+
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            lastGridNumY = (int)_itemSlots[i].gridNum.y;
+        }
+
+        return lastGridNumY;
+    }
+
     private ItemSlot Item_Slot(Vector2 gridNum)
     {
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -249,16 +275,18 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Vector2 nexGridNum = new(currentGridNum.x + inputDireciton.x, currentGridNum.y + -inputDireciton.y);
 
         // top bottom slot endpoint
-        if (nexGridNum.y < 0 || nexGridNum.y > 1) return; // get current slots max y num
+        if (nexGridNum.y < 0 || nexGridNum.y > Max_GridNumY()) return;
 
         // left right slot endpoint
         if (nexGridNum.x < 0)
         {
+            // previous page slots update
             return;
         }
 
-        if (nexGridNum.x > 4) // get current slots max x num
+        if (nexGridNum.x > Max_GridNumX())
         {
+            // next page slots update
             return;
         }
 
@@ -268,11 +296,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
 
-    //
+    // Main Control
     public void Menu_Control(int controlNum)
     {
-        // if (currentItemBox != null) currentItemBox.BoxSelect_Toggle(false);
-
         _menus[_currentMenuNum].SetActive(false);
         _menuIcons[_currentMenuNum].SetActive(false);
 

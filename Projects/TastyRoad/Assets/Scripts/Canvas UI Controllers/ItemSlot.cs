@@ -8,8 +8,8 @@ public class ItemSlot : MonoBehaviour
 {
     public ItemSlot_Data data;
 
-    private int _slotNum;
-    public int slotNum => _slotNum;
+    private int _pageNum;
+    public int pageNum => _pageNum;
 
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
@@ -81,6 +81,11 @@ public class ItemSlot : MonoBehaviour
 
 
     // Assign Data
+    public void Assign_PageNum(int pageNum)
+    {
+        _pageNum = pageNum;
+    }
+
     public void Assign_GridNum(Vector2 setNum)
     {
         _gridNum = setNum;

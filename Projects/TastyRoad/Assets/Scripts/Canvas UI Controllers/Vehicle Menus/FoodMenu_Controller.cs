@@ -9,17 +9,18 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Header("")]
     [SerializeField] private Vector2 _gridData;
     [SerializeField] private List<ItemSlot> _itemSlots = new();
-    [SerializeField] private int _slotCapacity;
+    [SerializeField] private int _singleSlotCapacity;
 
     [Header("Food Box Export")]
     [SerializeField] private GameObject _exportIndicators; 
     [SerializeField] private Vector2 _exportRange;
 
 
+
     // UnityEngine
     private void Start()
     {
-        Set_Slots_GridNum();
+        Set_Slots_Data();
         Update_Slots();
     }
 
@@ -89,7 +90,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // All Start Functions are Here
-    private void Set_Slots_GridNum()
+    private void Set_Slots_Data()
     {
         Vector2 gridCount = Vector2.zero;
 
@@ -126,10 +127,10 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         for (int i = 0; i < _itemSlots.Count; i++)
         {
             if (_itemSlots[i].data.hasItem == true && _itemSlots[i].data.currentFood != food) continue;
-            if (_itemSlots[i].data.currentAmount >= _slotCapacity) continue;
+            if (_itemSlots[i].data.currentAmount >= _singleSlotCapacity) continue;
 
             int calculatedAmount = _itemSlots[i].data.currentAmount + amount;
-            int leftOver = calculatedAmount - _slotCapacity;
+            int leftOver = calculatedAmount - _singleSlotCapacity;
 
             _itemSlots[i].Assign_Item(food);
 
@@ -139,7 +140,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 return 0;
             }
 
-            _itemSlots[i].Assign_Amount(_slotCapacity);
+            _itemSlots[i].Assign_Amount(_singleSlotCapacity);
 
             if (i == _itemSlots.Count - 1) return leftOver;
 
@@ -147,6 +148,15 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         return amount;
+    }
+
+    public void Add_ItemSlots_Page()
+    {
+        // instantiate item slots prefab in All Item Slots
+
+        // add instantiated item slots to _itemSlots
+
+        // assign instantiated item slots page number to current page num + 1
     }
 
 
