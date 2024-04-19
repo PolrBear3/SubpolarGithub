@@ -5,8 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Vehicle_Controller : MonoBehaviour, IInteractable
 {
-    private SpriteRenderer _vehicleSprite;
     private PlayerInput _playerInput;
+
+    [Header("")]
+    [SerializeField] private Vehicle_Customizer _customizer;
 
     [HideInInspector] public Main_Controller mainController;
     [HideInInspector] public Detection_Controller detection;
@@ -31,7 +33,6 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         mainController = FindObjectOfType<Main_Controller>();
         mainController.Track_CurrentVehicle(this);
 
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _vehicleSprite = sr; }
         if (gameObject.TryGetComponent(out PlayerInput input)) { _playerInput = input; }
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { this.detection = detection; }
     }
@@ -39,11 +40,6 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     private void Start()
     {
         UnInteract();
-    }
-
-    private void Update()
-    {
-        Transparency_Update();
     }
 
 
@@ -95,7 +91,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
+        // Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
 
         UnInteract();
     }
@@ -105,6 +101,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     // Vehicle Prefab Control
     private void Transparency_Update()
     {
+        /*
         if (detection.player == null) return;
 
         if (detection.player.transform.position.y > _transparencyPoint.position.y)
@@ -115,5 +112,6 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         {
             Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
         }
+        */
     }
 }
