@@ -6,13 +6,12 @@ using UnityEngine.InputSystem;
 
 public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
+    [Header("")]
     [SerializeField] private VehicleMenu_Controller _controller;
 
     [Header("")]
-    [SerializeField] private Vector2 _gridData;
-
-    [SerializeField] private List<ItemSlot> _itemSlots = new();
-    public List<ItemSlot> itemSlots => _itemSlots;
+    [SerializeField] private ItemSlots_Controller _slotsController;
+    public ItemSlots_Controller slotsController => _slotsController;
 
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
@@ -25,16 +24,12 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // UnityEngine
-    private void Start()
-    {
-        Set_ItemBoxes_GridNum();
-        Load_Data();
-    }
-
     private void OnEnable()
     {
         _controller.MenuOpen_Event += UpdateNew_ArchivedFoods;
         _controller.MenuOpen_Event += Update_BookMarkFoods;
+
+        _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
 
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnCursor_Input += IngredientBubble_UpdatePosition;
@@ -61,65 +56,46 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnOption2_Input -= CurrentFood_BookmarkToggle;
     }
 
+    private void OnDestroy()
+    {
+        OnDisable();
+    }
+
 
 
     // ISaveLoadable
     public void Save_Data()
     {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
         List<ItemSlot_Data> saveSlots = new();
 
-        for (int i = 0; i < _itemSlots.Count; i++)
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            saveSlots.Add(_itemSlots[i].data);
+            saveSlots.Add(currentSlots[i].data);
         }
 
-        ES3.Save("archiveMenuSlots", saveSlots);
+        ES3.Save("ArchiveMenu_Controller/_itemSlotDatas", saveSlots);
     }
 
     public void Load_Data()
     {
-        List<ItemSlot_Data> loadSlots = ES3.Load("archiveMenuSlots", new List<ItemSlot_Data>());
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        List<ItemSlot_Data> loadSlots = ES3.Load("ArchiveMenu_Controller/_itemSlotDatas", new List<ItemSlot_Data>());
+
+        _slotsController.Add_Slot(15);
 
         for (int i = 0; i < loadSlots.Count; i++)
         {
-            _itemSlots[i].data = loadSlots[i];
-            ItemSlot_Data data = _itemSlots[i].data;
-
-            _itemSlots[i].Assign_Item(data.currentFood);
+            currentSlots[i].data = loadSlots[i];
         }
     }
 
 
 
     // IVehicleMenu
-    public List<ItemSlot> ItemSlots()
-    {
-        return _itemSlots;
-    }
-
     public bool MenuInteraction_Active()
     {
         return false;
-    }
-
-
-
-    // All Start Functions are Here
-    private void Set_ItemBoxes_GridNum()
-    {
-        Vector2 gridCount = Vector2.zero;
-
-        for (int i = 0; i < _itemSlots.Count; i++)
-        {
-            _itemSlots[i].Assign_GridNum(gridCount);
-
-            gridCount.x ++;
-
-            if (gridCount.x != _gridData.x) continue;
-
-            gridCount.x = 0;
-            gridCount.y ++;
-        }
     }
 
 
@@ -202,14 +178,15 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // BookMark Toggle Update
     private void Update_BookMarkFoods()
     {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
         Main_Controller main = _controller.vehicleController.mainController;
 
-        for (int i = 0; i < _itemSlots.Count; i++)
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            if (_itemSlots[i].data.hasItem == false) continue;
-            if (!main.Is_BookmarkedFood(_itemSlots[i].data.currentFood)) continue;
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (!main.Is_BookmarkedFood(currentSlots[i].data.currentFood)) continue;
 
-            _itemSlots[i].Toggle_BookMark(true);
+            currentSlots[i].Toggle_BookMark(true);
         }
     }
 
@@ -257,10 +234,12 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     //
     private bool Food_InMenu(Food_ScrObj food)
     {
-        for (int i = 0; i < _itemSlots.Count; i++)
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            if (_itemSlots[i].data.hasItem == false) continue;
-            if (_itemSlots[i].data.currentFood != food) continue;
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (currentSlots[i].data.currentFood != food) continue;
             return true;
         }
 
@@ -270,11 +249,13 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     //
     private void AddFoodto_EmptySlot(Food_ScrObj food)
     {
-        for (int i = 0; i < _itemSlots.Count; i++)
-        {
-            if (_itemSlots[i].data.hasItem) continue;
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
 
-            _itemSlots[i].Assign_Item(food);
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.hasItem) continue;
+
+            currentSlots[i].Assign_Item(food);
             break;
         }
     }

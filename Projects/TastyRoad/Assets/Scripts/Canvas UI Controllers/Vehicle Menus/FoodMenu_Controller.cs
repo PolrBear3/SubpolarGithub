@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
+    [Header("")]
     [SerializeField] private VehicleMenu_Controller _controller;
 
     [Header("")]
-    [SerializeField] private Vector2 _gridData;
-    [SerializeField] private List<ItemSlot> _itemSlots = new();
-    [SerializeField] private int _singleSlotCapacity;
+    [SerializeField] private ItemSlots_Controller _slotsController;
+    public ItemSlots_Controller slotsController => _slotsController;
 
     [Header("Food Box Export")]
     [SerializeField] private GameObject _exportIndicators; 
@@ -18,14 +18,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // UnityEngine
-    private void Start()
-    {
-        Set_Slots_Data();
-        Update_Slots();
-    }
-
     private void OnEnable()
     {
+        _controller.MenuOpen_Event += Update_Slots_Data;
+        _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
+
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnHoldSelect_Input += Export_Food;
 
@@ -40,6 +37,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // save current dragging item before menu close
         Drag_Cancel();
 
+        _controller.MenuOpen_Event -= Update_Slots_Data;
+
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_Food;
 
@@ -49,73 +48,64 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _exportIndicators.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        OnDisable();
+    }
+
 
 
     // ISaveLoadable
     public void Save_Data()
     {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
         List<ItemSlot_Data> saveSlots = new();
 
-        for (int i = 0; i < _itemSlots.Count; i++)
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            saveSlots.Add(_itemSlots[i].data);
+            saveSlots.Add(currentSlots[i].data);
         }
 
-        ES3.Save("foodMenuSlots", saveSlots);
+        ES3.Save("FoodMenu_Controller/_itemSlotDatas", saveSlots);
     }
 
     public void Load_Data()
     {
-        List<ItemSlot_Data> loadSlots = ES3.Load("foodMenuSlots", new List<ItemSlot_Data>());
+        List<ItemSlot_Data> loadSlots = ES3.Load("FoodMenu_Controller/_itemSlotDatas", new List<ItemSlot_Data>());
+
+        _slotsController.Add_Slot(loadSlots.Count);
 
         for (int i = 0; i < loadSlots.Count; i++)
         {
-            _itemSlots[i].data = loadSlots[i];
+            _slotsController.itemSlots[i].data = loadSlots[i];
         }
+
+        // default slots amount
+        if (ES3.KeyExists("FoodMenu_Controller/_itemSlotDatas")) return;
+
+        _slotsController.Add_Slot(5);
     }
 
 
 
     // IVehicleMenu
-    public List<ItemSlot> ItemSlots()
-    {
-        return _itemSlots;
-    }
-
     public bool MenuInteraction_Active()
     {
         return false;
     }
 
 
-
-    // All Start Functions are Here
-    private void Set_Slots_Data()
-    {
-        Vector2 gridCount = Vector2.zero;
-
-        for (int i = 0; i < _itemSlots.Count; i++)
-        {
-            _itemSlots[i].Assign_GridNum(gridCount);
-
-            gridCount.x++;
-
-            if (gridCount.x != _gridData.x) continue;
-
-            gridCount.x = 0;
-            gridCount.y++;
-        }
-    }
-
     /// <summary>
     /// Render sprites or amounts according to slot's current loaded data
     /// </summary>
-    private void Update_Slots()
+    private void Update_Slots_Data()
     {
-        for (int i = 0; i < _itemSlots.Count; i++)
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentFood);
-            _itemSlots[i].Assign_Amount(_itemSlots[i].data.currentAmount);
+            currentSlots[i].Assign_Item(currentSlots[i].data.currentFood);
+            currentSlots[i].Assign_Amount(currentSlots[i].data.currentAmount);
         }
     }
 
@@ -124,39 +114,33 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Menu Control
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
-        for (int i = 0; i < _itemSlots.Count; i++)
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        int slotCapacity = _slotsController.singleSlotCapacity;
+
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            if (_itemSlots[i].data.hasItem == true && _itemSlots[i].data.currentFood != food) continue;
-            if (_itemSlots[i].data.currentAmount >= _singleSlotCapacity) continue;
+            if (currentSlots[i].data.hasItem == true && currentSlots[i].data.currentFood != food) continue;
+            if (currentSlots[i].data.currentAmount >= slotCapacity) continue;
 
-            int calculatedAmount = _itemSlots[i].data.currentAmount + amount;
-            int leftOver = calculatedAmount - _singleSlotCapacity;
+            int calculatedAmount = currentSlots[i].data.currentAmount + amount;
+            int leftOver = calculatedAmount - slotCapacity;
 
-            _itemSlots[i].Assign_Item(food);
+            currentSlots[i].Assign_Item(food);
 
             if (leftOver <= 0)
             {
-                _itemSlots[i].Update_Amount(amount);
+                currentSlots[i].Update_Amount(amount);
                 return 0;
             }
 
-            _itemSlots[i].Assign_Amount(_singleSlotCapacity);
+            currentSlots[i].Assign_Amount(slotCapacity);
 
-            if (i == _itemSlots.Count - 1) return leftOver;
+            if (i == currentSlots.Count - 1) return leftOver;
 
             return Add_FoodItem(food, leftOver);
         }
 
         return amount;
-    }
-
-    public void Add_ItemSlots_Page()
-    {
-        // instantiate item slots prefab in All Item Slots
-
-        // add instantiated item slots to _itemSlots
-
-        // assign instantiated item slots page number to current page num + 1
     }
 
 

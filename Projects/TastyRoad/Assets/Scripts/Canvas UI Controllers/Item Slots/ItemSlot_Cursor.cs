@@ -6,6 +6,11 @@ using TMPro;
 
 public class ItemSlot_Cursor : MonoBehaviour
 {
+    [Header("")]
+    [SerializeField] private VehicleMenu_Controller _vehicleMenu;
+    public VehicleMenu_Controller vehicleMenu => _vehicleMenu;
+
+    [Header("")]
     [SerializeField] private Image _itemIcon;
     [SerializeField] private TextMeshProUGUI _amountText;
 
@@ -41,7 +46,9 @@ public class ItemSlot_Cursor : MonoBehaviour
     public void Assign_CurrentSlot(ItemSlot assignSlot)
     {
         _currentSlot = assignSlot;
-        transform.position = assignSlot.cursorPoint.position;
+
+        transform.SetParent(_currentSlot.cursorPoint);
+        transform.localPosition = Vector2.zero;
     }
 
 

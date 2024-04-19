@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
+    [Header("")]
     [SerializeField] private VehicleMenu_Controller _controller;
 
-    [SerializeField] private Vector2 _gridData;
-    [SerializeField] private List<ItemSlot> _itemSlots = new();
+    [Header("")]
+    [SerializeField] private ItemSlots_Controller _slotsController;
+    public ItemSlots_Controller slotsController => _slotsController;
 
     private bool _interactionMode;
     private Station_Controller _interactStation;
@@ -16,14 +18,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // UnityEngine
-    private void Start()
-    {
-        Set_Slots_GridNum();
-        Update_Slots();
-    }
-
     private void OnEnable()
     {
+        _controller.MenuOpen_Event += Update_Slots_Data;
+        _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
+
         _controller.OnSelect_Input += Select_Slot;
 
         _controller.OnHoldSelect_Input += Export_StationPrefab;
@@ -35,10 +34,17 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // save current dragging item before menu close
         Drag_Cancel();
 
+        _controller.MenuOpen_Event -= Update_Slots_Data;
+
         _controller.OnSelect_Input -= Select_Slot;
 
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
         _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
+    }
+
+    private void OnDestroy()
+    {
+        OnDisable();
     }
 
 
@@ -46,34 +52,37 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
         List<ItemSlot_Data> saveSlots = new();
 
-        for (int i = 0; i < _itemSlots.Count; i++)
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            saveSlots.Add(_itemSlots[i].data);
+            saveSlots.Add(currentSlots[i].data);
         }
 
-        ES3.Save("stationMenuSlots", saveSlots);
+        ES3.Save("StationMenu_Controller/_itemSlotDatas", saveSlots);
     }
 
     public void Load_Data()
     {
-        List<ItemSlot_Data> loadSlots = ES3.Load("stationMenuSlots", new List<ItemSlot_Data>());
+        List<ItemSlot_Data> loadSlots = ES3.Load("StationMenu_Controller/_itemSlotDatas", new List<ItemSlot_Data>());
+
+        _slotsController.Add_Slot(loadSlots.Count);
 
         for (int i = 0; i < loadSlots.Count; i++)
         {
-            _itemSlots[i].data = loadSlots[i];
+            _slotsController.itemSlots[i].data = loadSlots[i];
         }
+
+        // default slots amount
+        if (ES3.KeyExists("StationMenu_Controller/_itemSlotDatas")) return;
+
+        _slotsController.Add_Slot(5);
     }
 
 
 
     // IVehicleMenu
-    public List<ItemSlot> ItemSlots()
-    {
-        return _itemSlots;
-    }
-
     public bool MenuInteraction_Active()
     {
         return _interactionMode;
@@ -81,57 +90,31 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
 
-    // All Starting Functions are Here
-    private void Set_Slots_GridNum()
-    {
-        Vector2 gridCount = Vector2.zero;
-
-        for (int i = 0; i < _itemSlots.Count; i++)
-        {
-            _itemSlots[i].Assign_GridNum(gridCount);
-
-            gridCount.x++;
-
-            if (gridCount.x != _gridData.x) continue;
-
-            gridCount.x = 0;
-            gridCount.y++;
-        }
-    }
-
     /// <summary>
     /// Render sprites or amounts according to slot's current loaded data
     /// </summary>
-    private void Update_Slots()
+    private void Update_Slots_Data()
     {
-        for (int i = 0; i < _itemSlots.Count; i++)
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            _itemSlots[i].Assign_Item(_itemSlots[i].data.currentStation);
+            currentSlots[i].Assign_Item(currentSlots[i].data.currentStation);
         }
     }
 
 
 
     // Check
-    public bool Slots_Full()
-    {
-        for (int i = 0; i < _itemSlots.Count; i++)
-        {
-            if (_itemSlots[i].data.hasItem) continue;
-            return false;
-        }
-
-        return true;
-    }
-
     public int Station_Amount(Station_ScrObj station)
     {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
         int count = 0;
 
-        for (int i = 0; i < _itemSlots.Count; i++)
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            if (_itemSlots[i].data.hasItem == false) continue;
-            if (_itemSlots[i].data.currentStation != station) continue;
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (currentSlots[i].data.currentStation != station) continue;
             count++;
         }
 
@@ -143,13 +126,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Menu Control
     public void Add_StationItem(Station_ScrObj station, int amount)
     {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
         int repeatAmount = amount;
 
-        for (int i = 0; i < _itemSlots.Count; i++)
+        for (int i = 0; i < currentSlots.Count; i++)
         {
-            if (_itemSlots[i].data.hasItem == true) continue;
+            if (currentSlots[i].data.hasItem == true) continue;
 
-            _itemSlots[i].Assign_Item(station);
+            currentSlots[i].Assign_Item(station);
             repeatAmount--;
 
             if (repeatAmount > 0) continue;

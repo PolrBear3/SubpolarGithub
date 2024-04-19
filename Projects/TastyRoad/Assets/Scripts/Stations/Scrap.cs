@@ -78,7 +78,7 @@ public class Scrap : MonoBehaviour, IInteractable
         StationMenu_Controller menu = _stationController.mainController.currentVehicle.menu.stationMenu;
 
         // check if station slots are all full
-        if (menu.Slots_Full())
+        if (menu.slotsController.Slots_Full())
         {
             // slots all full animation ?
 

@@ -6,8 +6,6 @@ using TMPro;
 
 public interface IVehicleMenu
 {
-    public List<ItemSlot> ItemSlots();
-
     public bool MenuInteraction_Active();
 }
 
@@ -15,13 +13,21 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 {
     private PlayerInput _playerInput;
 
-    [SerializeField] private GameObject _canvas;
 
+
+    [Header("")]
+    [SerializeField] private GameObject _menuToggleFile;
+    public GameObject menuToggleFile => _menuToggleFile;
+
+    [Header("")]
     private List<ItemSlot> _itemSlots = new();
     public List<ItemSlot> itemSlots => _itemSlots;
 
     [SerializeField] private ItemSlot_Cursor _cursor;
     public ItemSlot_Cursor cursor => _cursor;
+
+    [SerializeField] private GameObject _newItemSlot;
+    public GameObject newItemSlot => _newItemSlot;
 
 
 
@@ -194,6 +200,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _vehicleController.detection.player.Player_Input().enabled = true;
     }
 
+    private void OnTest()
+    {
+        if (!_menus[currentMenuNum].TryGetComponent(out ItemSlots_Controller slotsController)) return;
+        slotsController.Add_Slot(1);
+    }
+
 
 
     // Canvas Toggle on off
@@ -201,17 +213,18 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         if (toggleOn == false)
         {
-            _canvas.gameObject.SetActive(false);
+            _menuToggleFile.gameObject.SetActive(false);
             _playerInput.enabled = false;
 
             return;
         }
 
-        _canvas.gameObject.SetActive(true);
+        _menuToggleFile.gameObject.SetActive(true);
         _playerInput.enabled = true;
 
         CoinText_Update();
-        Menu_Control(currentMenuNum);
+
+        Menu_Control();
     }
 
 
@@ -229,32 +242,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Cursor Control
-    private int Max_GridNumX()
-    {
-        int lastGridNumX = -1;
-
-        for (int i = 0; i < _itemSlots.Count; i++)
-        {
-            if ((int)_itemSlots[i].gridNum.y != 0) break;
-
-            lastGridNumX++;
-        }
-
-        return lastGridNumX;
-    }
-
-    private int Max_GridNumY()
-    {
-        int lastGridNumY = 0;
-
-        for (int i = 0; i < _itemSlots.Count; i++)
-        {
-            lastGridNumY = (int)_itemSlots[i].gridNum.y;
-        }
-
-        return lastGridNumY;
-    }
-
     private ItemSlot Item_Slot(Vector2 gridNum)
     {
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -272,31 +259,36 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (currentMenu.MenuInteraction_Active() == true) return;
 
         Vector2 currentGridNum = _cursor.currentSlot.gridNum;
-        Vector2 nexGridNum = new(currentGridNum.x + inputDireciton.x, currentGridNum.y + -inputDireciton.y);
+        Vector2 nextGridNum = new(currentGridNum.x + inputDireciton.x, currentGridNum.y + -inputDireciton.y);
 
-        // top bottom slot endpoint
-        if (nexGridNum.y < 0 || nexGridNum.y > Max_GridNumY()) return;
-
-        // left right slot endpoint
-        if (nexGridNum.x < 0)
-        {
-            // previous page slots update
-            return;
-        }
-
-        if (nexGridNum.x > Max_GridNumX())
-        {
-            // next page slots update
-            return;
-        }
+        if (Item_Slot(nextGridNum) == null) return;
 
         // update to next slot
-        _cursor.Assign_CurrentSlot(Item_Slot(nexGridNum));
+        _cursor.Assign_CurrentSlot(Item_Slot(nextGridNum));
     }
 
 
 
     // Main Control
+    public void AssignMain_ItemSlots(List<ItemSlot> menuItemSlots)
+    {
+        _itemSlots = menuItemSlots;
+    }
+
+
+
+    private void Menu_Control()
+    {
+        _menus[_currentMenuNum].SetActive(true);
+        _menuIcons[_currentMenuNum].SetActive(true);
+
+        // all actions for current menu when it is opened
+        MenuOpen_Event?.Invoke();
+
+        // set starting cursor at first box
+        _cursor.Assign_CurrentSlot(Item_Slot(new Vector2(0, 0)));
+    }
+
     public void Menu_Control(int controlNum)
     {
         _menus[_currentMenuNum].SetActive(false);
@@ -310,13 +302,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _menus[_currentMenuNum].SetActive(true);
         _menuIcons[_currentMenuNum].SetActive(true);
 
-        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu newMenu) == false) return;
-        _itemSlots = newMenu.ItemSlots();
-
         // all actions for current menu when it is opened
         MenuOpen_Event?.Invoke();
 
         // set starting cursor at first box
-        _cursor.Assign_CurrentSlot(itemSlots[0]);
+        _cursor.Assign_CurrentSlot(Item_Slot(new Vector2(0, 0)));
     }
 }

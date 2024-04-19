@@ -57,12 +57,13 @@ public class ScrapGrinder : MonoBehaviour
     private ItemSlot Scrap_ItemSlot()
     {
         StationMenu_Controller menu = _controller.mainController.currentVehicle.menu.stationMenu;
+        List<ItemSlot> stationMenuSlots = menu.slotsController.itemSlots;
 
-        for (int i = 0; i < menu.ItemSlots().Count; i++)
+        for (int i = 0; i < stationMenuSlots.Count; i++)
         {
-            if (menu.ItemSlots()[i].data.hasItem == false) continue;
-            if (menu.ItemSlots()[i].data.currentStation.id != 6) continue;
-            return menu.ItemSlots()[i];
+            if (stationMenuSlots[i].data.hasItem == false) continue;
+            if (stationMenuSlots[i].data.currentStation.id != 6) continue;
+            return stationMenuSlots[i];
         }
 
         return null;
