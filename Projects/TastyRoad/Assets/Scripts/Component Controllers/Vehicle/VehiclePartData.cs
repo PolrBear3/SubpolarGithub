@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehiclePartData : MonoBehaviour
+[System.Serializable]
+public class VehiclePartData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private VehiclePart_ScrObj _partScrObj;
+    public VehiclePart_ScrObj partScrObj => _partScrObj;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private bool _unlocked;
+    public bool unlocked => _unlocked;
+
+    public VehiclePartData (VehiclePartData data)
     {
-        
+        _partScrObj = data._partScrObj;
+        _unlocked = data._unlocked;
     }
 }

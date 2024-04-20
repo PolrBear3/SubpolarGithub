@@ -588,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d10412744f34be5b68b338c945d7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _customizer: {fileID: 0}
+  _customizer: {fileID: 4156666212345247569}
   mainController: {fileID: 0}
   detection: {fileID: 0}
   _bubble: {fileID: 4110360785583018332}
@@ -3278,8 +3278,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bodySR: {fileID: 9108086270281051666}
+  _bodyData:
+  - _partScrObj: {fileID: 11400000, guid: e1a8ca4e54e7e42be8a2ef055ec41cd8, type: 2}
+    _unlocked: 0
   _headSR: {fileID: 7862138554168826428}
+  _headData:
+  - _partScrObj: {fileID: 11400000, guid: 14fb1257ac50d4c08af1b21cc311325f, type: 2}
+    _unlocked: 0
   _wheelsSR: {fileID: 849942250446988615}
+  _wheelsData:
+  - _partScrObj: {fileID: 11400000, guid: 99c62f45a34eb4dc7869517d8ccd3532, type: 2}
+    _unlocked: 0
 --- !u!1 &6960936059249372760
 GameObject:
   m_ObjectHideFlags: 0
