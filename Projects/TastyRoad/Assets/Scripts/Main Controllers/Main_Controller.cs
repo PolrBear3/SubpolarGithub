@@ -30,6 +30,13 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public static int currentStationCoin;
     public static int currentGasCoin;
 
+    public delegate void Event();
+    public static event Event TestButton1Event;
+    public static event Event TestButton2Event;
+    public static event Event TestButton3Event;
+
+
+
     // GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
 
     // UnityEngine
@@ -76,6 +83,24 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         Load_CurrentLocationData();
         Load_CurrentStations();
+    }
+
+
+
+    // Test Buttons
+    public void TestButton1()
+    {
+        TestButton1Event?.Invoke();
+    }
+
+    public void TestButton2()
+    {
+        TestButton2Event?.Invoke();
+    }
+
+    public void TestButton3()
+    {
+        TestButton3Event?.Invoke();
     }
 
 

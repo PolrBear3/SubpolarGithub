@@ -2,21 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Vehicle_Customizer : MonoBehaviour
+public class Vehicle_Customizer : MonoBehaviour, ISaveLoadable
 {
     [Header("Body")]
     [SerializeField] private SpriteRenderer _bodySR;
-    [SerializeField] private List<VehiclePartData> _bodyData;
+    public SpriteRenderer bodySR => _bodySR;
+
+    [SerializeField] private List<VehiclePartData> _bodyDatas;
+
     private VehiclePartData _currentBody;
 
     [Header("Head")]
     [SerializeField] private SpriteRenderer _headSR;
-    [SerializeField] private List<VehiclePartData> _headData;
+    public SpriteRenderer headSR => _headSR;
+
+    [SerializeField] private List<VehiclePartData> _headDatas;
+
     private VehiclePartData _currentHead;
 
     [Header("Wheels")]
     [SerializeField] private SpriteRenderer _wheelsSR;
-    [SerializeField] private List<VehiclePartData> _wheelsData;
+    public SpriteRenderer wheelsSR => _wheelsSR;
+
+    [SerializeField] private List<VehiclePartData> _wheelsDatas;
+
     private VehiclePartData _currentWheels;
 
 
@@ -24,49 +33,103 @@ public class Vehicle_Customizer : MonoBehaviour
     // UnityEngine
     private void Start()
     {
-        Customize_All(0, 0, 0);
+        Update_CurrentBody(0);
+
+        Update_CurrentHead(0);
+
+        Update_CurrentWheels(0);
     }
 
 
 
-    //
-    private void Customize_All(int bodyID, int headID, int wheelsID)
+    // ISaveLoadable
+    public void Save_Data()
     {
-        _bodySR.sprite = BodyData(bodyID).partScrObj.sprite;
-        _headSR.sprite = HeadData(headID).partScrObj.sprite;
-        _wheelsSR.sprite = WheelsData(wheelsID).partScrObj.sprite;
+        
+    }
+
+    public void Load_Data()
+    {
+        
     }
 
 
 
-    // Search
-    private VehiclePartData BodyData(int id)
+    // Customize
+    public void Update_CurrentBody(int updateNum)
     {
-        for (int i = 0; i < _bodyData.Count; i++)
+        _currentBody = BodyData(BodyData_ArrayNum(_currentBody) + updateNum);
+        _bodySR.sprite = _currentBody.partScrObj.sprite;
+    }
+
+    public void Update_CurrentHead(int updateNum)
+    {
+        _currentHead = HeadData(HeadData_ArrayNum(_currentHead) + updateNum);
+        _headSR.sprite = _currentHead.partScrObj.sprite;
+    }
+
+    public void Update_CurrentWheels(int updateNum)
+    {
+        _currentWheels = WheelsData(WheelsData_ArrayNum(_currentWheels) + updateNum);
+        _wheelsSR.sprite = _currentWheels.partScrObj.sprite;
+    }
+
+
+
+    // Body Search
+    private int BodyData_ArrayNum(VehiclePartData data)
+    {
+        for (int i = 0; i < _bodyDatas.Count; i++)
         {
-            if (id != _bodyData[i].partScrObj.id) continue;
-            return _bodyData[i];
+            if (data != _bodyDatas[i]) continue;
+            return i;
         }
-        return null;
+        return 0;
     }
 
-    private VehiclePartData HeadData(int id)
+    private VehiclePartData BodyData(int arrayNum)
     {
-        for (int i = 0; i < _headData.Count; i++)
-        {
-            if (id != _headData[i].partScrObj.id) continue;
-            return _headData[i];
-        }
-        return null;
+        if (arrayNum > _bodyDatas.Count - 1) arrayNum = 0;
+        else if (arrayNum < -1) arrayNum = _bodyDatas.Count - 1;
+
+        return _bodyDatas[arrayNum];
     }
 
-    private VehiclePartData WheelsData(int id)
+    // Head Search
+    private int HeadData_ArrayNum(VehiclePartData data)
     {
-        for (int i = 0; i < _wheelsData.Count; i++)
+        for (int i = 0; i < _headDatas.Count; i++)
         {
-            if (id != _wheelsData[i].partScrObj.id) continue;
-            return _wheelsData[i];
+            if (data != _headDatas[i]) continue;
+            return i;
         }
-        return null;
+        return 0;
+    }
+
+    private VehiclePartData HeadData(int arrayNum)
+    {
+        if (arrayNum > _headDatas.Count - 1) arrayNum = 0;
+        else if (arrayNum < -1) arrayNum = _headDatas.Count - 1;
+
+        return _headDatas[arrayNum];
+    }
+
+    // Wheels Search
+    private int WheelsData_ArrayNum(VehiclePartData data)
+    {
+        for (int i = 0; i < _wheelsDatas.Count; i++)
+        {
+            if (data != _wheelsDatas[i]) continue;
+            return i;
+        }
+        return 0;
+    }
+
+    private VehiclePartData WheelsData(int arrayNum)
+    {
+        if (arrayNum > _wheelsDatas.Count - 1) arrayNum = 0;
+        else if (arrayNum < -1) arrayNum = _wheelsDatas.Count - 1;
+
+        return _wheelsDatas[arrayNum];
     }
 }

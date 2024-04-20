@@ -42,6 +42,11 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
         UnInteract();
     }
 
+    private void Update()
+    {
+        Transparency_Update();
+    }
+
 
 
     // InputSystem
@@ -98,20 +103,22 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
 
 
 
-    // Vehicle Prefab Control
+    // Vehicle Sprite Control
     private void Transparency_Update()
     {
-        /*
         if (detection.player == null) return;
 
         if (detection.player.transform.position.y > _transparencyPoint.position.y)
         {
-            Main_Controller.Change_SpriteAlpha(_vehicleSprite, 0.3f);
+            Main_Controller.Change_SpriteAlpha(_customizer.bodySR, 0.3f);
+            Main_Controller.Change_SpriteAlpha(_customizer.headSR, 0.3f);
+            Main_Controller.Change_SpriteAlpha(_customizer.wheelsSR, 0.3f);
         }
         else
         {
-            Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
+            Main_Controller.Change_SpriteAlpha(_customizer.bodySR, 1f);
+            Main_Controller.Change_SpriteAlpha(_customizer.headSR, 1f);
+            Main_Controller.Change_SpriteAlpha(_customizer.wheelsSR, 1f);
         }
-        */
     }
 }
