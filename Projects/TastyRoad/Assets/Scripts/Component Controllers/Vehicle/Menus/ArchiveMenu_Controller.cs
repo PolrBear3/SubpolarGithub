@@ -26,6 +26,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
+        _controller.MenuOpen_Event += Update_Slots_Data;
         _controller.MenuOpen_Event += UpdateNew_ArchivedFoods;
         _controller.MenuOpen_Event += Update_BookMarkFoods;
 
@@ -46,6 +47,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _ingredientBubble.SetActive(false);
 
+        _controller.MenuOpen_Event -= Update_Slots_Data;
         _controller.MenuOpen_Event -= UpdateNew_ArchivedFoods;
         _controller.MenuOpen_Event -= Update_BookMarkFoods;
 
@@ -174,6 +176,19 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
+
+    /// <summary>
+    /// Render sprites or amounts according to slot's current loaded data
+    /// </summary>
+    private void Update_Slots_Data()
+    {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            currentSlots[i].Assign_Item(currentSlots[i].data.currentFood);
+        }
+    }
 
     // BookMark Toggle Update
     private void Update_BookMarkFoods()
