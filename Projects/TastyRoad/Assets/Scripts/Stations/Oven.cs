@@ -137,6 +137,7 @@ public class Oven : MonoBehaviour, IInteractable
         if (_heatCoroutine != null)
         {
             StopCoroutine(_heatCoroutine);
+            _heatCoroutine = null;
         }
 
         if (_controller.Food_Icon().hasFood == true)

@@ -200,12 +200,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _vehicleController.detection.player.Player_Input().enabled = true;
     }
 
-    private void OnTest()
-    {
-        if (!_menus[currentMenuNum].TryGetComponent(out ItemSlots_Controller slotsController)) return;
-        slotsController.Add_Slot(1);
-    }
-
 
 
     // Canvas Toggle on off

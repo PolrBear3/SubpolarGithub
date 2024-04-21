@@ -329,6 +329,12 @@ public class FoodData_Controller : MonoBehaviour
 
     public void Update_State(FoodState_Type stateType, int level)
     {
+        if (_hasFood == false)
+        {
+            Clear_State();
+            return;
+        }
+
         FoodState_Data targetState = Current_FoodState(stateType);
 
         // new state

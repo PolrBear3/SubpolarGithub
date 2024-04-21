@@ -27,6 +27,9 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private float _transitionTime;
 
     [Header("")]
+    [SerializeField] private bool _tutorialSystemActive;
+
+    [Header("")]
     [SerializeField] private List<Tutorial_ScrObj> _allTutorials = new();
 
 
@@ -126,6 +129,8 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     // Check
     public bool Tutorial_Shown(Tutorial_ScrObj tutorial)
     {
+        if (_tutorialSystemActive) return true;
+
         for (int i = 0; i < _shownTutorials.Count; i++)
         {
             if (tutorial != _shownTutorials[i]) continue;

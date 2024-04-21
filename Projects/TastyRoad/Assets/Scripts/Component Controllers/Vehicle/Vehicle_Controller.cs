@@ -96,7 +96,7 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        // Main_Controller.Change_SpriteAlpha(_vehicleSprite, 1f);
+        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
 
         UnInteract();
     }
@@ -110,15 +110,11 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
 
         if (detection.player.transform.position.y > _transparencyPoint.position.y)
         {
-            Main_Controller.Change_SpriteAlpha(_customizer.bodySR, 0.3f);
-            Main_Controller.Change_SpriteAlpha(_customizer.headSR, 0.3f);
-            Main_Controller.Change_SpriteAlpha(_customizer.wheelsSR, 0.3f);
+            LeanTween.alpha(_customizer.gameObject, 0.3f, 0f);
         }
         else
         {
-            Main_Controller.Change_SpriteAlpha(_customizer.bodySR, 1f);
-            Main_Controller.Change_SpriteAlpha(_customizer.headSR, 1f);
-            Main_Controller.Change_SpriteAlpha(_customizer.wheelsSR, 1f);
+            LeanTween.alpha(_customizer.gameObject, 1f, 0f);
         }
     }
 }
