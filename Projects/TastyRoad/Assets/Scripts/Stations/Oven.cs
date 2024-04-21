@@ -117,12 +117,9 @@ public class Oven : MonoBehaviour, IInteractable
         FoodData playerData = playerController.currentFoodData;
 
         FoodData tempData = new(ovenData);
-        List<FoodState_Data> tempStates = new(tempData.stateData);
 
         ovenController.Assign_Food(playerData);
-
         playerController.Assign_Food(tempData);
-        playerController.Assign_State(tempStates);
     }
 
     // Food Heating System
