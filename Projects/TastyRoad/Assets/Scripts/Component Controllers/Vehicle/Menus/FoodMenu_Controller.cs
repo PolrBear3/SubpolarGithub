@@ -258,6 +258,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // FoodBox Export System
     private void Export_Food()
     {
+        /*
         // if no food to export on cursor
         ItemSlot_Data currentCursorData = _controller.cursor.data;
         if (currentCursorData.hasItem == false) return;
@@ -287,6 +288,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             station.Food_Icon().Assign_Amount(currentCursorData.currentAmount);
             _controller.cursor.Empty_Item();
         }
+        */
     }
 
     private bool FoodExport_PositionAvailable()

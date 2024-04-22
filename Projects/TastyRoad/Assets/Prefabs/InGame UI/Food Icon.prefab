@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9220044194110590461}
   - component: {fileID: 4815339870781394795}
-  - component: {fileID: 5500143170264902413}
-  - component: {fileID: 8135166105143875241}
   m_Layer: 0
   m_Name: Food Icon
   m_TagString: Untagged
@@ -49,75 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e5c44617d64486196e532775169a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateBoxController: {fileID: 5500143170264902413}
-  _rottenSystem: {fileID: 8135166105143875241}
-  _icon: {fileID: 8499766286869677877}
-  _displayTime: 1
+  _foodIcon: {fileID: 8499766286869677877}
   _amountBar: {fileID: 8719041818956365019}
-  _amountBarSprites:
-  - {fileID: 75145822, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: -867606345, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: -616274501, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: -1489473475, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: 329415081, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - {fileID: -360950683, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  currentFoodData:
-    foodScrObj: {fileID: 0}
-    currentAmount: 0
-    stateData: []
-    currentTikTime: 0
-  _maxAmount: 1
-  _iconTransparent: 0
-  _amountTransparent: 0
---- !u!114 &5500143170264902413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797686271449595940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60624c813ea614b58b6f5781ec03fc07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _foodData: {fileID: 4815339870781394795}
-  _currentStateBoxes:
-  - {fileID: 4956118352620606737}
-  - {fileID: 9000294280825195306}
-  - {fileID: 2277072323345159646}
-  _stateBoxSprites:
-  - isTransparent: 0
-    type: 0
-    boxSprites:
-    - {fileID: 953033817, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    - {fileID: 1426449461, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    - {fileID: 1807355862, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - isTransparent: 0
-    type: 1
-    boxSprites:
-    - {fileID: 1619307443, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    - {fileID: 671901877, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - isTransparent: 0
-    type: 2
-    boxSprites:
-    - {fileID: -453827715, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    - {fileID: 237819038, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    - {fileID: 1903159989, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
---- !u!114 &8135166105143875241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797686271449595940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fc5a3f9fad6b4dc08b355839268820f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _updateTikTime: 12
 --- !u!1 &4778137241564889886
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4451342751331412046
 Transform:
   m_ObjectHideFlags: 0

@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class Combiner : Table, IInteractable
 {
+
     [SerializeField] private float _coolTime;
 
     private Coroutine _combineCoroutine;
@@ -22,13 +24,13 @@ public class Combiner : Table, IInteractable
     public new void Interact()
     {
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
-        FoodData playerData = playerIcon.currentFoodData;
+        FoodData playerData = playerIcon.currentData;
 
         if (playerData.stateData.Count > 0) return;
 
         FoodData_Controller icon = stationController.Food_Icon();
 
-        if (playerIcon.hasFood == false || playerData.foodScrObj != icon.currentFoodData.foodScrObj)
+        if (playerIcon.hasFood == false || playerData.foodScrObj != icon.currentData.foodScrObj)
         {
             Swap_Food();
         }
@@ -48,7 +50,7 @@ public class Combiner : Table, IInteractable
     private void Swap_Food()
     {
         FoodData_Controller icon = stationController.Food_Icon();
-        FoodData tableData = icon.currentFoodData;
+        FoodData tableData = icon.currentData;
 
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
@@ -75,7 +77,7 @@ public class Combiner : Table, IInteractable
     {
         FoodData_Controller icon = stationController.Food_Icon();
 
-        if (icon.currentFoodData.currentAmount >= icon.maxAmount)
+        if (icon.currentData.currentAmount >= icon.maxAmount)
         {
             icon.Show_AmountBar();
             return;
@@ -124,6 +126,7 @@ public class Combiner : Table, IInteractable
 
         _combineCoroutine = StartCoroutine(Combine_Food_Coroutine());
     }
+
     private IEnumerator Combine_Food_Coroutine()
     {
         Main_Controller main = stationController.mainController;
@@ -143,7 +146,7 @@ public class Combiner : Table, IInteractable
             {
                 if (SideStation_FoodIcons()[i].hasFood == false) break;
 
-                ingredients.Add(SideStation_FoodIcons()[i].currentFoodData.foodScrObj);
+                ingredients.Add(SideStation_FoodIcons()[i].currentData.foodScrObj);
             }
 
             Food_ScrObj combinedFood = data.CookedFood(ingredients);
@@ -152,7 +155,7 @@ public class Combiner : Table, IInteractable
             if (main.Is_ArchivedFood(combinedFood) == false) break;
 
             // check if current food match combine food
-            if (icon.currentFoodData.foodScrObj != combinedFood) break;
+            if (icon.currentData.foodScrObj != combinedFood) break;
 
             // update side food amounts
             for (int i = 0; i < SideStation_FoodIcons().Count; i++)
@@ -169,3 +172,4 @@ public class Combiner : Table, IInteractable
         }
     }
 }
+*/

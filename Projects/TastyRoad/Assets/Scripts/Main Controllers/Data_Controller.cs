@@ -31,7 +31,7 @@ public class Data_Controller : MonoBehaviour
 
 
     // Check if State Data Matches (checks if visitor data matches home data)
-    public bool Food_StateData_Match(List<FoodState_Data> visitorData, List<FoodState_Data> homeData)
+    public bool Food_StateData_Match(List<FoodCondition_Data> visitorData, List<FoodCondition_Data> homeData)
     {
         // state count match check
         if (visitorData.Count != homeData.Count) return false;
@@ -248,7 +248,7 @@ public class Data_Controller : MonoBehaviour
             for (int j = 0; j < ingredientsData.Count; j++)
             {
                 if (foodData[i].foodScrObj != cookedFood.ingredients[j].foodScrObj) continue;
-                if (Food_StateData_Match(foodData[i].stateData, cookedFood.ingredients[j].stateData) == false) return null;
+                if (Food_StateData_Match(foodData[i].conditionData, cookedFood.ingredients[j].conditionData) == false) return null;
             }
         }
 

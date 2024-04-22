@@ -20,8 +20,10 @@ public class Station_Controller : MonoBehaviour
     private Animator _stationAnimator;
     public Animator stationAnmiator => _stationAnimator;
 
+    [Header("")]
+    [SerializeField] private FoodData_Controller _foodIcon;
 
-
+    [Header("")]
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
 

@@ -29,7 +29,9 @@ public class NPC_Controller : MonoBehaviour
     public event Action_Event Action1;
 
     [HideInInspector] public NPC_Movement movement;
-    [HideInInspector] public NPC_Interaction interaction;
+
+    private NPC_Interaction _interaction;
+    public NPC_Interaction interaction => _interaction;
 
 
 
@@ -46,7 +48,7 @@ public class NPC_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { this.animationController = animationController; }
 
         if (gameObject.TryGetComponent(out NPC_Movement movement)) { this.movement = movement; }
-        if (gameObject.TryGetComponent(out NPC_Interaction interaction)) { this.interaction = interaction; }
+        if (gameObject.TryGetComponent(out NPC_Interaction interaction)) { _interaction = interaction; }
     }
 
     private void Start()

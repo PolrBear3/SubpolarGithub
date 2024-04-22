@@ -296,7 +296,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         Food_ScrObj ingredient1 = currentFood.ingredients[0].foodScrObj;
         _ingredientIcon1.Assign_Item(ingredient1);
-        _ingredientIcon1.Assign_State(currentFood.ingredients[0].stateData);
+        _ingredientIcon1.Assign_State(currentFood.ingredients[0].conditionData);
 
         if (currentFood.ingredients.Count <= 1)
         {
@@ -306,7 +306,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         Food_ScrObj ingredient2 = currentFood.ingredients[1].foodScrObj;
         _ingredientIcon2.Assign_Item(ingredient2);
-        _ingredientIcon2.Assign_State(currentFood.ingredients[1].stateData);
+        _ingredientIcon2.Assign_State(currentFood.ingredients[1].conditionData);
     }
 
     //

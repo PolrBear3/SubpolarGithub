@@ -39,14 +39,16 @@ public class FoodData_RottenSystem : MonoBehaviour
     //
     private void Decay_TikTimeUpdate()
     {
-        if (_foodIcon.currentFoodData.currentTikTime >= _updateTikTime)
+        /*
+        if (_foodIcon.currentData.currentTikTime >= _updateTikTime)
         {
-            _foodIcon.Update_State(FoodState_Type.rotten, 1);
-            _foodIcon.currentFoodData.currentTikTime = 0;
+            // _foodIcon.Update_State(FoodState_Type.rotten, 1); //
+            _foodIcon.currentData.currentTikTime = 0;
 
             return;
         }
 
-        _foodIcon.currentFoodData.currentTikTime++;
+        _foodIcon.currentData.currentTikTime++;
+        */
     }
 }

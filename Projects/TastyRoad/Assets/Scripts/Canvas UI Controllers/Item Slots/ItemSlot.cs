@@ -186,7 +186,7 @@ public class ItemSlot : MonoBehaviour
 
 
     // StateBox Image Control
-    private Sprite StateBox_Sprite(FoodState_Type type, int level)
+    private Sprite StateBox_Sprite(FoodCondition_Type type, int level)
     {
         for (int i = 0; i < stateBoxSprites.Count; i++)
         {
@@ -197,7 +197,7 @@ public class ItemSlot : MonoBehaviour
         }
         return null;
     }
-    public void Assign_State(List<FoodState_Data> stateData)
+    public void Assign_State(List<FoodCondition_Data> stateData)
     {
         if (stateData.Count <= 0) return;
 

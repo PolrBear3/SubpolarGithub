@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Stack_Table : Table, IInteractable
+public class Stack_Table : Table//, IInteractable
 {
+    /*
     // IInteractable
     public new void Interact()
     {
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
-        FoodData playerData = playerIcon.currentFoodData;
+        FoodData playerData = playerIcon.currentData;
 
         if (playerData.stateData.Count > 0) return;
 
-        if (playerIcon.hasFood == false || playerData.foodScrObj != stationController.Food_Icon().currentFoodData.foodScrObj)
+        if (playerIcon.hasFood == false || playerData.foodScrObj != stationController.Food_Icon().currentData.foodScrObj)
         {
             Swap_Food();
         }
@@ -27,7 +28,7 @@ public class Stack_Table : Table, IInteractable
     public void Swap_Food()
     {
         FoodData_Controller icon = stationController.Food_Icon();
-        FoodData tableData = icon.currentFoodData;
+        FoodData tableData = icon.currentData;
 
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
@@ -38,7 +39,7 @@ public class Stack_Table : Table, IInteractable
             icon.Show_AmountBar();
 
             playerIcon.Assign_Food(tableData.foodScrObj);
-            playerIcon.Assign_State(icon.currentFoodData.stateData);
+            // playerIcon.Assign_State(icon.currentData.stateData); //
         }
 
         if (tableData.currentAmount > 1)
@@ -55,7 +56,7 @@ public class Stack_Table : Table, IInteractable
     {
         FoodData_Controller icon = stationController.Food_Icon();
 
-        if (icon.currentFoodData.currentAmount >= icon.maxAmount)
+        if (icon.currentData.currentAmount >= icon.maxAmount)
         {
             icon.Show_AmountBar();
             return;
@@ -67,4 +68,5 @@ public class Stack_Table : Table, IInteractable
 
         stationController.detection.player.foodIcon.Clear_Food();
     }
+    */
 }

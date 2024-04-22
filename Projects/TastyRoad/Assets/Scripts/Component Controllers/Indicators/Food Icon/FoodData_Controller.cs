@@ -4,373 +4,53 @@ using UnityEngine;
 
 public class FoodData_Controller : MonoBehaviour
 {
-    [SerializeField] private StateBox_Controller _stateBoxController;
-    public StateBox_Controller stateBoxController => _stateBoxController;
-
-    [SerializeField] private FoodData_RottenSystem _rottenSystem;
-    public FoodData_RottenSystem rottenSystem => _rottenSystem;
+    private FoodData _currentData;
+    public FoodData currentData => _currentData;
 
     [Header("")]
-    [SerializeField] private SpriteRenderer _icon;
-
-    [Header("")]
-    [SerializeField] private float _displayTime;
+    [SerializeField] private SpriteRenderer _foodIcon;
     [SerializeField] private SpriteRenderer _amountBar;
-    [SerializeField] private List<Sprite> _amountBarSprites = new();
-    private Coroutine _amountBarCoroutine;
-
-    [Header("")]
-    public FoodData currentFoodData;
-
-    private bool _hasFood;
-    public bool hasFood => _hasFood;
-
-    [Header("")]
-    [Range(1, 6)]
-    [SerializeField] private int _maxAmount;
-    public int maxAmount => _maxAmount;
-
-    [SerializeField] private bool _iconTransparent;
-    [SerializeField] private bool _amountTransparent;
 
 
 
     // UnityEngine
     private void Start()
     {
-        if (_hasFood == true) return; 
-
-        _icon.color = Color.clear;
-        _amountBar.color = Color.clear;
+        Hide_Icon();
     }
 
 
 
-    // Transparency Toggle
-    public void FoodIcon_Transparency(bool isTransparent)
+    // Current Data
+    public void Set_CurrentData(FoodData data)
     {
-        _iconTransparent = isTransparent;
-
-        if (_iconTransparent == false && _hasFood == true)
-        {
-            _icon.color = Color.white;
-
-            return;
-        }
-
-        _icon.color = Color.clear;
+        _currentData = data;
     }
-    public void AmountBar_Transparency(bool isTransparent)
-    {
-        _amountTransparent = isTransparent;
 
-        if (_amountTransparent == false && currentFoodData.currentAmount > 0)
-        {
-            Update_AmountBar();
-            _amountBar.color = Color.white;
-        }
-        else
-        {
-            _amountBar.color = Color.clear;
-        }
+    public void Swap_Data(FoodData_Controller otherController)
+    {
+        FoodData otherData = otherController.currentData;
+
+        // other controller data
+        otherController.Set_CurrentData(_currentData);
+
+        // this controller data
+        Set_CurrentData(otherData);
     }
 
 
 
-    //
-    public void Load_FoodData()
+    // Icon Control
+    public void Show_Icon()
     {
-        // empty food assigned
-        if (currentFoodData.foodScrObj == null)
-        {
-            Clear_Food();
-            return;
-        }
-
-        _hasFood = true;
-
-        // food sprite update
-        _icon.transform.localPosition = currentFoodData.foodScrObj.centerPosition / 100;
-        _icon.sprite = currentFoodData.foodScrObj.sprite;
-
-        FoodIcon_Transparency(_iconTransparent);
-        AmountBar_Transparency(_amountTransparent);
-
-        // food decay system
-        rottenSystem.UpdateDecay_Toggle(true);
+        _foodIcon.sprite = _currentData.foodScrObj.sprite;
+        _foodIcon.transform.localPosition = _currentData.foodScrObj.centerPosition / 100f;
+        _foodIcon.color = Color.white;
     }
 
-
-
-    // Food Control
-    public void Assign_Food(Food_ScrObj foodScrObj)
+    public void Hide_Icon()
     {
-        // empty food assigned
-        if (foodScrObj == null)
-        {
-            Clear_Food();
-            return;
-        }
-
-        // new food update
-        _hasFood = true;
-
-        currentFoodData.foodScrObj = foodScrObj;
-        currentFoodData.currentAmount = 1;
-
-        // food sprite update
-        _icon.transform.localPosition = foodScrObj.centerPosition / 100;
-        _icon.sprite = currentFoodData.foodScrObj.sprite;
-
-        // food decay system
-        rottenSystem.UpdateDecay_Toggle(true);
-
-        if (_iconTransparent == true) return;
-
-        _icon.color = Color.white;
-    }
-    public void Assign_Food(FoodData foodData) 
-    {
-        currentFoodData.currentTikTime = foodData.currentTikTime;
-
-        Assign_Food(foodData.foodScrObj);
-        Assign_Amount(foodData.currentAmount);
-        Assign_State(foodData.stateData);
-    }
-
-    public void Clear_Food()
-    {
-        _hasFood = false;
-
-        currentFoodData.foodScrObj = null;
-        currentFoodData.currentAmount = 0;
-
-        _icon.color = Color.clear;
-        _icon.sprite = null;
-
-        _amountBar.color = Color.clear;
-
-        // food decay system
-        rottenSystem.UpdateDecay_Toggle(false);
-        currentFoodData.currentTikTime = 0;
-    }
-
-
-
-    // Amount Control
-    public int Assign_Amount(int assignAmount)
-    {
-        if (_hasFood == false) return assignAmount;
-
-        if (assignAmount > _maxAmount)
-        {
-            int leftOver = assignAmount - _maxAmount;
-            currentFoodData.currentAmount = _maxAmount;
-
-            return leftOver;
-        }
-
-        currentFoodData.currentAmount = assignAmount;
-
-        if (currentFoodData.currentAmount <= 0)
-        {
-            Clear_Food();
-
-            return 0;
-        }
-
-        AmountBar_Transparency(_amountTransparent);
-
-        return 0;
-    }
-    public int Update_Amount(int updateAmount)
-    {
-        if (_hasFood == false) return updateAmount;
-
-        int calculatedAmount = currentFoodData.currentAmount + updateAmount;
-        int leftOver = calculatedAmount - _maxAmount;
-
-        if (leftOver >= 1)
-        {
-            currentFoodData.currentAmount = _maxAmount;
-
-            return leftOver;
-        }
-
-        currentFoodData.currentAmount = calculatedAmount;
-
-        Update_CurrentTikTime(updateAmount);
-
-        if (currentFoodData.currentAmount <= 0)
-        {
-            Clear_Food();
-
-            return 0;
-        }
-
-        AmountBar_Transparency(_amountTransparent);
-
-        return 0;
-    }
-
-    // Amount Bar Control
-    private void Update_AmountBar()
-    {
-        if (currentFoodData.currentAmount <= 0) return;
-        if (currentFoodData.currentAmount > _maxAmount) return;
-
-        _amountBar.sprite = _amountBarSprites[currentFoodData.currentAmount - 1];
-    }
-
-    public void Show_AmountBar()
-    {
-        if (_amountBarCoroutine != null)
-        {
-            StopCoroutine(_amountBarCoroutine);
-        }
-
-        _amountBarCoroutine = StartCoroutine(Show_CurrentAmount_Coroutine());
-    }
-    private IEnumerator Show_CurrentAmount_Coroutine()
-    {
-        AmountBar_Transparency(false);
-
-        yield return new WaitForSeconds(_displayTime);
-
-        AmountBar_Transparency(true);
-    }
-
-
-
-    // Check and Compare Other State Data with this State Data
-    public bool Has_StateData(FoodState_Data stateData)
-    {
-        List<FoodState_Data> datas = currentFoodData.stateData;
-
-        for (int i = 0; i < datas.Count; i++)
-        {
-            if (datas[i].stateType != stateData.stateType) continue;
-            if (datas[i].stateLevel != stateData.stateLevel) continue;
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool Same_StateData(List<FoodState_Data> stateData)
-    {
-        int matchCount = currentFoodData.stateData.Count;
-
-        if (matchCount != stateData.Count) return false;
-
-        for (int i = 0; i < stateData.Count; i++)
-        {
-            List<FoodState_Data> thisStateData = currentFoodData.stateData;
-
-            for (int j = 0; j < thisStateData.Count; j++)
-            {
-                if (stateData[i].stateType != thisStateData[j].stateType) continue;
-                if (stateData[i].stateLevel != thisStateData[j].stateLevel) return false;
-
-                matchCount--;
-            }
-        }
-
-        if (matchCount <= 0) return true;
-        else return false;
-    }
-
-    public int StateData_MatchCount(List<FoodState_Data> stateData)
-    {
-        List<FoodState_Data> thisStateData = currentFoodData.stateData;
-
-        int matchCount = 0;
-
-        if (thisStateData.Count < stateData.Count)
-        {
-            matchCount = thisStateData.Count - stateData.Count;
-        }
-
-        for (int i = 0; i < stateData.Count; i++)
-        {
-            for (int j = 0; j < thisStateData.Count; j++)
-            {
-                if (stateData[i].stateType != thisStateData[j].stateType) continue;
-                if (stateData[i].stateLevel != thisStateData[j].stateLevel) continue;
-
-                matchCount++;
-            }
-        }
-
-        return matchCount;
-    }
-
-    /// <returns>
-    /// Current State that is found
-    /// </returns>
-    public FoodState_Data Current_FoodState(FoodState_Type stateType)
-    {
-        for (int i = 0; i < currentFoodData.stateData.Count; i++)
-        {
-            if (currentFoodData.stateData[i].stateType != stateType) continue;
-
-            return currentFoodData.stateData[i];
-        }
-
-        return null;
-    }
-
-
-
-    // State Control
-    public void Assign_State(List<FoodState_Data> data)
-    {
-        currentFoodData.stateData = data;
-        stateBoxController.Update_StateBoxes();
-    }
-
-    public void Update_State(FoodState_Type stateType, int level)
-    {
-        FoodState_Data targetState = Current_FoodState(stateType);
-
-        // new state
-        if (targetState == null)
-        {
-            FoodState_Data newState = new(stateType, level);
-            currentFoodData.stateData.Add(newState);
-        }
-        // same state found
-        else
-        {
-            // set maximum state level according to boxsprites
-            if (targetState.stateLevel < stateBoxController.stateBoxSprites[0].boxSprites.Count)
-            {
-                targetState.stateLevel += level;
-            }
-        }
-
-        stateBoxController.Update_StateBoxes();
-    }
-
-    public void Clear_State()
-    {
-        currentFoodData.stateData.Clear();
-
-        stateBoxController.Clear_StateBoxes();
-    }
-
-
-
-    /// <summary>
-    /// Current tik time update for decrease only (food amount increase)
-    /// </summary>
-    public void Update_CurrentTikTime(int updateTime)
-    {
-        if (updateTime <= 0) return;
-
-        currentFoodData.currentTikTime -= updateTime;
-
-        if (currentFoodData.currentTikTime >= 0) return;
-        currentFoodData.currentTikTime = 0;
+        _foodIcon.color = Color.clear;
+        _foodIcon.sprite = null;
     }
 }

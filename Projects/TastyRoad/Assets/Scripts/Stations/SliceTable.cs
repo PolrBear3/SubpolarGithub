@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SliceTable : MonoBehaviour, IInteractable, ISignal
+public class SliceTable : MonoBehaviour//, IInteractable, ISignal
 {
+    /*
     private Station_Controller _controller;
 
     [SerializeField] private Rhythm_HitBox _hitBox;
@@ -62,7 +63,7 @@ public class SliceTable : MonoBehaviour, IInteractable, ISignal
     // ISignal
     public void Signal()
     {
-        _controller.Food_Icon().Update_State(FoodState_Type.sliced, 1);
+        // _controller.Food_Icon().Update_State(FoodState_Type.sliced, 1); //
     }
 
 
@@ -73,12 +74,13 @@ public class SliceTable : MonoBehaviour, IInteractable, ISignal
         FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
         FoodData_Controller tableIcon = _controller.Food_Icon();
 
-        FoodData playerData = playerIcon.currentFoodData;
-        FoodData tableData = tableIcon.currentFoodData;
+        FoodData playerData = playerIcon.currentData;
+        FoodData tableData = tableIcon.currentData;
 
         FoodData tempData = new(tableData);
 
         tableIcon.Assign_Food(playerData);
         playerIcon.Assign_Food(tempData);
     }
+    */
 }

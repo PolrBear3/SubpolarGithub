@@ -156,7 +156,7 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
         for (int i = 0; i < dataFoods.Count; i++)
         {
             if (dataFoods[i].ingredients.Count > 0) continue;
-            _purchasableFoods.Add(new(dataFoods[i], 99));
+            // _purchasableFoods.Add(new(dataFoods[i], 99)); //
         }
 
         // sort by price from lowest to highest
@@ -165,6 +165,7 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
 
     private void Update_HoverFood()
     {
+        /*
         if (_hoverNum < 0) _hoverNum = _purchasableFoods.Count - 1;
         else if (_hoverNum > _purchasableFoods.Count - 1) _hoverNum = 0;
 
@@ -178,6 +179,7 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
 
         // update sprite
         _hoveringFoodSR.sprite = currentFood.foodScrObj.sprite;
+        */
     }
 
     private void Purchase_HoverFood()

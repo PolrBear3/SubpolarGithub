@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 
-public enum FoodState_Type { sliced, heated, rotten }
+public enum FoodCondition_Type { sliced, heated, rotten }
 
 [System.Serializable]
-public class FoodState_Data
+public class FoodCondition_Data
 {
-    public FoodState_Type stateType;
+    public FoodCondition_Type stateType;
     public int stateLevel;
 
-    public FoodState_Data (FoodState_Type type, int level)
+    public FoodCondition_Data (FoodCondition_Type type, int level)
     {
         stateType = type;
         stateLevel = level;
@@ -18,22 +18,39 @@ public class FoodState_Data
 [System.Serializable]
 public class FoodData
 {
-    public Food_ScrObj foodScrObj;
-    public int currentAmount;
-    public List<FoodState_Data> stateData;
-    public int currentTikTime;
+    private Food_ScrObj _foodScrObj;
+    public Food_ScrObj foodScrObj => _foodScrObj;
 
-    public FoodData (Food_ScrObj food, int amount)
+    private int _currentAmount;
+    public int currentAmount => _currentAmount;
+
+    private List<FoodCondition_Data> _conditionDatas;
+    public List<FoodCondition_Data> conditionDatas => _conditionDatas;
+
+
+
+    // Constructors
+    public FoodData(Food_ScrObj food)
     {
-        foodScrObj = food;
-        currentAmount = amount;
+        _foodScrObj = food;
+        _currentAmount = 1;
+        _conditionDatas = new();
     }
 
-    public FoodData (FoodData currentData)
+
+
+    // Methods
+    public void Update_Condition(List<FoodCondition_Data> conditionDatas)
     {
-        foodScrObj = currentData.foodScrObj;
-        stateData = currentData.stateData;
-        currentAmount = currentData.currentAmount;
-        currentTikTime = currentData.currentTikTime;
+        _conditionDatas = conditionDatas;
+    }
+
+    public void Update_Condition(FoodCondition_Data newCondition)
+    {
+        // check if condition exists
+
+        // if so level +1
+
+        // if not add new
     }
 }

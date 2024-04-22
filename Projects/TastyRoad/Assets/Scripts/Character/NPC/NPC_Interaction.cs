@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPC_Interaction : MonoBehaviour, IInteractable
+public class NPC_Interaction : MonoBehaviour //, IInteractable
 {
+    /*
     private NPC_Controller _controller;
 
     [Header("")]
@@ -136,7 +137,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         if (foodIcon.hasFood == false) return;
 
-        _controller.actionBubble.Update_Bubble(foodIcon.currentFoodData.foodScrObj, null);
+        _controller.actionBubble.Update_Bubble(foodIcon.currentData.foodScrObj, null);
     }
 
     // Toggle On Off StateBox
@@ -233,7 +234,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         // clear food
         FoodData_Controller icon = _controller.foodIcon;
         icon.Clear_Food();
-        icon.Clear_State();
+        // icon.Clear_State(); //
 
         // hunger level to 0
         Character_Data data = _controller.characterData;
@@ -307,12 +308,12 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         if (_controller.detection.player == null) return;
 
         FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
-        FoodData playerFoodData = playerFoodIcon.currentFoodData;
+        FoodData playerFoodData = playerFoodIcon.currentData;
 
         _controller.actionBubble.Toggle(false);
 
         // check if order food is correct
-        if (playerFoodData.foodScrObj != foodIcon.currentFoodData.foodScrObj)
+        if (playerFoodData.foodScrObj != foodIcon.currentData.foodScrObj)
         {
             UnInteract();
             return;
@@ -329,7 +330,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         _foodScore = Calculated_FoodScore();
 
         playerFoodIcon.Clear_Food();
-        playerFoodIcon.Clear_State();
+        // playerFoodIcon.Clear_State(); //
 
         // update data
         _foodOrderServed = true;
@@ -348,7 +349,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         Detection_Controller detection = _controller.detection;
         NPC_Movement movement = _controller.movement;
-        Food_ScrObj servedFood = _controller.foodIcon.currentFoodData.foodScrObj;
+        Food_ScrObj servedFood = _controller.foodIcon.currentData.foodScrObj;
 
         // stop free roam
         movement.Stop_FreeRoam();
@@ -389,7 +390,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     private int Calculated_FoodScore()
     {
         FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
-        FoodData playerFoodData = playerFoodIcon.currentFoodData;
+        FoodData playerFoodData = playerFoodIcon.currentData;
 
         int defaultScore = playerFoodData.foodScrObj.price;
 
@@ -397,7 +398,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         defaultScore += _controller.timer.Current_TimeBlock_Amount();
 
         // state match
-        defaultScore += _controller.foodIcon.StateData_MatchCount(playerFoodData.stateData);
+        // defaultScore += _controller.foodIcon.StateData_MatchCount(playerFoodData.stateData); //
 
         return defaultScore;
     }
@@ -423,61 +424,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         move.Update_RoamArea(currentLocation);
         move.Leave(Random.Range(roamDelayTime.x, roamDelayTime.y));
-    }
-
-    /*
-    // Leave Area
-    private IEnumerator Leave_Location_Coroutine(float delayTime)
-    {
-        // get components
-        Detection_Controller detection = _controller.detection;
-        NPC_Movement movement = _controller.movement;
-
-        // stop free roam
-        movement.Stop_FreeRoam();
-
-        // collider toggle off
-        detection.BoxCollider_Toggle(false);
-
-        // wait until time pass
-        yield return new WaitForSeconds(delayTime);
-
-        // set target position to outer camera
-        float randDirection = Random.Range(-1, 1);
-        float posX;
-
-        if (randDirection >= 0)
-        {
-            randDirection = 1f;
-            posX = 2f;
-        }
-        else
-        {
-            randDirection = -1f;
-            posX = -2f;
-        }
-
-        Vector2 targetPos = _controller.mainController.OuterCamera_Position(randDirection, 0f, posX, -3f);
-        movement.Assign_TargetPosition(targetPos);
-
-        // if npc reaches target position
-        while (movement.At_TargetPosition() == false)
-        {
-            yield return null;
-        }
-
-        // spawn another new customer
-        _controller.mainController.currentLocation.Spawn_NPCs(1);
-
-        // untrack this npc
-        _controller.mainController.UnTrack_CurrentCharacter(gameObject);
-
-        // remove this npc
-        Destroy(gameObject);
-    }
-    private void Leave_Location(float delaytime)
-    {
-        StartCoroutine(Leave_Location_Coroutine(delaytime));
     }
     */
 }
