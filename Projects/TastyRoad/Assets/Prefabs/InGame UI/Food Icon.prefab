@@ -49,6 +49,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _foodIcon: {fileID: 8499766286869677877}
   _amountBar: {fileID: 8719041818956365019}
+  _conditionBoxes:
+  - {fileID: 4956118352620606737}
+  - {fileID: 9000294280825195306}
+  - {fileID: 2277072323345159646}
+  _amountBarSprites:
+  - {fileID: 75145822, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - {fileID: -867606345, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - {fileID: -616274501, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - {fileID: -1489473475, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - {fileID: 329415081, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - {fileID: -360950683, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  _conditionSprites:
+  - _type: 0
+    _sprites:
+    - {fileID: 953033817, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 1426449461, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 1807355862, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - _type: 1
+    _sprites:
+    - {fileID: 1619307443, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 671901877, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - _type: 2
+    _sprites:
+    - {fileID: -453827715, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 237819038, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 1903159989, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  _iconShowLocked: 0
+  _barShowLocked: 0
+  _durationTime: 1
 --- !u!1 &4778137241564889886
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +262,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4451342751331412046
 Transform:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_Controller : MonoBehaviour
+public class Player_Controller : MonoBehaviour, ISaveLoadable
 {
     private PlayerInput _playerInput;
 
@@ -39,27 +39,27 @@ public class Player_Controller : MonoBehaviour
 
     private void Start()
     {
-        Main_Controller.TestButton1Event += Set_Food;
+        Main_Controller.TestButton1Event += Set_Apple;
+        Main_Controller.TestButton2Event += Set_Bread;
+        Main_Controller.TestButton3Event += Update_Apple;
     }
 
 
 
     // ISaveLoadable
-    /*
     public void Save_Data()
     {
-        FoodData playerFoodData = new(foodIcon.currentData);
-        ES3.Save("Player_Controller/foodIcon.currentFoodData", playerFoodData);
+        if (_foodIcon.currentData == null) return;
+
+        ES3.Save("Player_Controller/_foodIcon.currentData", _foodIcon.currentData);
     }
 
     public void Load_Data()
     {
-        foodIcon.Assign_Food(ES3.Load("Player_Controller/foodIcon.currentFoodData", foodIcon.currentData));
-        foodIcon.Load_FoodData();
+        if (ES3.KeyExists("Player_Controller/_foodIcon.currentData") == false) return;
 
-        // foodIcon.stateBoxController.Update_StateBoxes();
+        _foodIcon.Set_CurrentData(ES3.Load<FoodData>("Player_Controller/_foodIcon.currentData"));
     }
-    */
 
 
 
@@ -72,11 +72,30 @@ public class Player_Controller : MonoBehaviour
 
 
     //
-    private void Set_Food()
+    private void Set_Apple()
     {
         Food_ScrObj apple = mainController.dataController.rawFoods[0];
 
         _foodIcon.Set_CurrentData(new FoodData(apple));
         _foodIcon.Show_Icon();
+
+        _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced, 1));
+        _foodIcon.Show_Condition();
+    }
+    private void Update_Apple()
+    {
+        _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated, 1));
+        _foodIcon.Show_Condition();
+    }
+
+    private void Set_Bread()
+    {
+        Food_ScrObj bread = mainController.dataController.rawFoods[1];
+
+        _foodIcon.Set_CurrentData(new FoodData(bread));
+        _foodIcon.Show_Icon();
+
+        _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated, 1));
+        _foodIcon.Show_Condition();
     }
 }

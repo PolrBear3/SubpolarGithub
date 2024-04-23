@@ -349,12 +349,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
 
         ES3.Save("_currentStations", saveData);
-        // ES3.Save("_currentStations" + "foodData", foodData);
+        // ES3.Save("_currentStations" + "foodData", foodData); //
     }
     private void Load_CurrentStations()
     {
         List<StationData> loadData = ES3.Load("_currentStations", new List<StationData>());
-        List<FoodData> foodData = ES3.Load("_currentStations" + "foodData", new List<FoodData>());
+        // List<FoodData> foodData = ES3.Load("_currentStations" + "foodData", new List<FoodData>()); //
 
         for (int i = 0; i < loadData.Count; i++)
         {
@@ -367,11 +367,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
                 station.movement.Load_Position();
             }
 
+            /*
             if (foodData[i] == null) continue;
 
             FoodData_Controller foodIcon = station.Food_Icon();
 
-            /*
             foodIcon.Assign_Food(foodData[i]);
             foodIcon.Load_FoodData();
             foodIcon.stateBoxController.Update_StateBoxes();

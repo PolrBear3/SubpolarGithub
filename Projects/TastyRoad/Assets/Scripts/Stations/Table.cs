@@ -32,6 +32,8 @@ public class Table : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
+        Basic_SwapFood();
+
         // if cooked food is not available, swap only
         /*
         if (CookedFood() == null)
@@ -43,9 +45,11 @@ public class Table : MonoBehaviour, IInteractable
 
         // _actionBubble.Update_Bubble(_stationController.Food_Icon().currentData.foodScrObj, CookedFood());
 
+        /*
         _stationController.PlayerInput_Activation(true);
         _stationController.Action1_Event += Basic_SwapFood;
         _stationController.Action2_Event += Merge_Food;
+        */
     }
 
     public void UnInteract()
@@ -84,7 +88,14 @@ public class Table : MonoBehaviour, IInteractable
     // Swap Current and Player Food
     public void Basic_SwapFood()
     {
+        FoodData_Controller playerController = _stationController.detection.player.foodIcon;
+        _stationController.Food_Icon().Swap_Data(playerController);
 
+        playerController.Show_Icon();
+        playerController.Show_Condition();
+
+        _stationController.Food_Icon().Show_Icon();
+        _stationController.Food_Icon().Show_Condition();
     }
 
     // Merge Current and Player Food

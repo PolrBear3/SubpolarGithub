@@ -43,9 +43,9 @@ public class Data_Controller : MonoBehaviour
             for (int j = 0; j < homeData.Count; j++)
             {
                 // type check 
-                if (visitorData[i].stateType != homeData[j].stateType) continue;
+                if (visitorData[i].type != homeData[j].type) continue;
                 // level check
-                if (visitorData[i].stateLevel != homeData[j].stateLevel) continue;
+                if (visitorData[i].level != homeData[j].level) continue;
 
                 // match found !
                 matchCount--;
@@ -248,7 +248,7 @@ public class Data_Controller : MonoBehaviour
             for (int j = 0; j < ingredientsData.Count; j++)
             {
                 if (foodData[i].foodScrObj != cookedFood.ingredients[j].foodScrObj) continue;
-                if (Food_StateData_Match(foodData[i].conditionData, cookedFood.ingredients[j].conditionData) == false) return null;
+                // if (Food_StateData_Match(foodData[i].conditionData, cookedFood.ingredients[j].conditionData) == false) return null;
             }
         }
 

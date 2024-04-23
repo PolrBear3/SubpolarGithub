@@ -215,7 +215,7 @@ public class ItemSlot : MonoBehaviour
             {
                 if (stateBoxImages[j].sprite != null) continue;
 
-                stateBoxImages[j].sprite = StateBox_Sprite(stateData[i].stateType, stateData[i].stateLevel);
+                stateBoxImages[j].sprite = StateBox_Sprite(stateData[i].type, stateData[i].level);
                 stateBoxImages[i].color = Color.white;
             }
         }
