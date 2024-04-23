@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum FoodCondition_Type { sliced, heated, rotten }
 
@@ -26,13 +27,13 @@ public class FoodCondition_Data
 [System.Serializable]
 public class FoodData
 {
-    private Food_ScrObj _foodScrObj;
+    [SerializeField] [ES3Serializable] private Food_ScrObj _foodScrObj;
     public Food_ScrObj foodScrObj => _foodScrObj;
 
-    private int _currentAmount;
+    [SerializeField] [ES3Serializable] private int _currentAmount;
     public int currentAmount => _currentAmount;
 
-    private List<FoodCondition_Data> _conditionDatas;
+    [SerializeField] [ES3Serializable] private List<FoodCondition_Data> _conditionDatas;
     public List<FoodCondition_Data> conditionDatas => _conditionDatas;
 
 

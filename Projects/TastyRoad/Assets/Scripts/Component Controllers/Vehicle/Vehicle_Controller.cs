@@ -7,13 +7,16 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
 {
     private PlayerInput _playerInput;
 
+    private Main_Controller _mainController;
+    public Main_Controller mainController => _mainController;
+
+    private Detection_Controller _detection;
+    public Detection_Controller detection => _detection;
+
     [Header("")]
-    [SerializeField] private Vehicle_Customizer _customizer;
-
-    [HideInInspector] public Main_Controller mainController;
-    [HideInInspector] public Detection_Controller detection;
-
     [SerializeField] private Action_Bubble _bubble;
+
+    [SerializeField] private Vehicle_Customizer _customizer;
 
     [Header("Insert Vehicle Panel Prefab")]
     [SerializeField] private VehicleMenu_Controller _menu;
@@ -30,11 +33,11 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     // UnityEngine
     private void Awake()
     {
-        mainController = FindObjectOfType<Main_Controller>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
         mainController.Track_CurrentVehicle(this);
 
         if (gameObject.TryGetComponent(out PlayerInput input)) { _playerInput = input; }
-        if (gameObject.TryGetComponent(out Detection_Controller detection)) { this.detection = detection; }
+        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
     }
 
     private void Start()

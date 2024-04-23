@@ -40,7 +40,7 @@ public class Station_Controller : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        _mainController = FindObjectOfType<Main_Controller>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
         _mainController.Track_CurrentStation(this);
 
         _playerInput = gameObject.GetComponent<PlayerInput>();

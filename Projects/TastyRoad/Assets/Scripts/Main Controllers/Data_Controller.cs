@@ -195,6 +195,7 @@ public class Data_Controller : MonoBehaviour
         }
         return null;
     }
+
     public Food_ScrObj CookedFood(List<Food_ScrObj> foods)
     {
         for (int i = 0; i < AllFoods().Count; i++)
@@ -225,6 +226,21 @@ public class Data_Controller : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Food_ScrObj CookedFood(FoodData_Controller dataController1, FoodData_Controller dataController2)
+    {
+        if (dataController1.hasFood == false || dataController2.hasFood == false) return null;
+
+        // search for cooked food
+        List<FoodData> ingredients = new();
+
+        ingredients.Add(dataController1.currentData);
+        ingredients.Add(dataController2.currentData);
+
+        Food_ScrObj cookedFood = CookedFood(ingredients);
+
+        return cookedFood;
     }
     public Food_ScrObj CookedFood(List<FoodData> foodData)
     {

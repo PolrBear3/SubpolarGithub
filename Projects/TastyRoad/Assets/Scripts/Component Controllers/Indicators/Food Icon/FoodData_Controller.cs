@@ -17,6 +17,9 @@ public class FoodData_Controller : MonoBehaviour
     private FoodData _currentData;
     public FoodData currentData => _currentData;
 
+    private bool _hasFood;
+    public bool hasFood => _hasFood;
+
     [Header("")]
     [SerializeField] private SpriteRenderer _foodIcon;
     [SerializeField] private SpriteRenderer _amountBar;
@@ -40,12 +43,9 @@ public class FoodData_Controller : MonoBehaviour
     // UnityEngine
     private void Start()
     {
+        Show_Icon();
         Show_AmountBar();
         Show_Condition();
-
-        if (_currentData != null) return;
-
-        Hide_Icon();
     }
 
 
@@ -57,6 +57,7 @@ public class FoodData_Controller : MonoBehaviour
         if (data == null)
         {
             _currentData = null;
+            _hasFood = false;
             return;
         }
 
@@ -69,6 +70,7 @@ public class FoodData_Controller : MonoBehaviour
 
         // set data
         _currentData = data;
+        _hasFood = true;
     }
 
     public void Swap_Data(FoodData_Controller otherController)
@@ -108,7 +110,7 @@ public class FoodData_Controller : MonoBehaviour
     // Icon
     public void Show_Icon()
     {
-        if (_iconShowLocked == true || _currentData == null)
+        if (_iconShowLocked == true || _hasFood == false)
         {
             Hide_Icon();
             return;
@@ -131,7 +133,7 @@ public class FoodData_Controller : MonoBehaviour
     public void Show_AmountBar()
     {
         // empty
-        if (_barShowLocked == true || _currentData == null)
+        if (_barShowLocked == true || _hasFood == false)
         {
             _amountBar.color = Color.clear;
             return;
@@ -176,7 +178,7 @@ public class FoodData_Controller : MonoBehaviour
     // Food Condition
     public void Show_Condition()
     {
-        bool conditionEmpty = _currentData == null || _currentData.conditionDatas == null;
+        bool conditionEmpty = _hasFood == false || _currentData.conditionDatas == null;
 
         for (int i = 0; i < _conditionBoxes.Length; i++)
         {

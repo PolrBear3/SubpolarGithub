@@ -25,12 +25,7 @@ public class Vehicle_Customizer : MonoBehaviour, ISaveLoadable
 
 
     // UnityEngine
-    private void Start()
-    {
-        Main_Controller.TestButton1Event += Set_Body;
-        Main_Controller.TestButton2Event += Set_Head;
-        Main_Controller.TestButton3Event += Set_Wheels;
-    }
+
 
 
 
