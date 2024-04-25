@@ -1,24 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Stack_Table : Table//, IInteractable
+public class Stack_Table : Table, IInteractable
 {
-    /*
     // IInteractable
     public new void Interact()
     {
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
         FoodData playerData = playerIcon.currentData;
 
-        if (playerData.stateData.Count > 0) return;
+        FoodData_Controller tableIcon = stationController.Food_Icon();
+        FoodData tableData = tableIcon.currentData;
 
-        if (playerIcon.hasFood == false || playerData.foodScrObj != stationController.Food_Icon().currentData.foodScrObj)
+        // if player food has a condition
+        if (playerIcon.hasFood == true && playerData.conditionDatas.Count > 0) return;
+
+        bool bothHaveFood = playerIcon.hasFood && tableIcon.hasFood;
+
+        if (bothHaveFood && playerData.foodScrObj == tableData.foodScrObj)
         {
-            Swap_Food();
+            Stack_Food();
         }
         else
         {
-            Stack_Food();
+            Swap_Food();
         }
     }
 
@@ -27,24 +32,32 @@ public class Stack_Table : Table//, IInteractable
     //
     public void Swap_Food()
     {
-        FoodData_Controller icon = stationController.Food_Icon();
-        FoodData tableData = icon.currentData;
+        FoodData_Controller tableIcon = stationController.Food_Icon();
+        FoodData tableData = tableIcon.currentData;
 
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
+        // decrease amount
         if (playerIcon.hasFood == false && tableData.currentAmount > 1)
         {
-            // give
-            icon.Update_Amount(-1);
-            icon.Show_AmountBar();
+            // update table data
+            tableData.Update_Amount(-1);
 
-            playerIcon.Assign_Food(tableData.foodScrObj);
-            // playerIcon.Assign_State(icon.currentData.stateData); //
-        }
+            if (tableData.currentAmount <= 0)
+            {
+                tableIcon.Set_CurrentData(null);
+            }
 
-        if (tableData.currentAmount > 1)
-        {
-            icon.Show_AmountBar();
+            tableIcon.Show_Icon();
+            tableIcon.Show_AmountBar();
+
+            // give player
+            playerIcon.Set_CurrentData(new FoodData(tableData.foodScrObj));
+            playerIcon.currentData.Set_Condition(tableData.conditionDatas);
+
+            playerIcon.Show_Icon();
+            playerIcon.Show_Condition();
+
             return;
         }
 
@@ -52,21 +65,26 @@ public class Stack_Table : Table//, IInteractable
         Basic_SwapFood();
     }
 
+
+
     public void Stack_Food()
     {
-        FoodData_Controller icon = stationController.Food_Icon();
+        FoodData_Controller tableIcon = stationController.Food_Icon();
+        FoodData tableData = tableIcon.currentData;
 
-        if (icon.currentData.currentAmount >= icon.maxAmount)
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
+
+        if (tableIcon.currentData.currentAmount >= 6)
         {
-            icon.Show_AmountBar();
+            // tableIcon.Show_AmountBar();
             return;
         }
 
         // stack
-        icon.Update_Amount(1);
-        icon.Show_AmountBar();
+        tableData.Update_Amount(1);
+        tableIcon.Show_AmountBar();
 
-        stationController.detection.player.foodIcon.Clear_Food();
+        playerIcon.Set_CurrentData(null);
+        playerIcon.Show_Icon();
     }
-    */
 }

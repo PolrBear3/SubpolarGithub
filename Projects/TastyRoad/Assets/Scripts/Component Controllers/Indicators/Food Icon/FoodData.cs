@@ -39,6 +39,13 @@ public class FoodData
 
 
     // Constructors
+    public FoodData(FoodData data)
+    {
+        _foodScrObj = data.foodScrObj;
+        _currentAmount = data.currentAmount;
+        _conditionDatas = data.conditionDatas;
+    }
+
     public FoodData(Food_ScrObj food)
     {
         _foodScrObj = food;
@@ -48,7 +55,12 @@ public class FoodData
 
 
 
-    // Methods
+    // Functions
+    public void Set_Amount(int setAmount)
+    {
+        _currentAmount = setAmount;
+    }
+
     public void Update_Amount(int updateAmount)
     {
         _currentAmount += updateAmount;
@@ -56,8 +68,10 @@ public class FoodData
 
 
 
-    public void Update_Condition(List<FoodCondition_Data> conditionDatas)
+    public void Set_Condition(List<FoodCondition_Data> conditionDatas)
     {
+        if (conditionDatas == null) return;
+
         _conditionDatas = conditionDatas;
     }
 

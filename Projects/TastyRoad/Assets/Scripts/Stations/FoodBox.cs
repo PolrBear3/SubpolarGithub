@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodBox : MonoBehaviour //, IInteractable
+public class FoodBox : MonoBehaviour, IInteractable
 {
-    /*
     private Station_Controller _controller;
 
 
@@ -17,7 +16,7 @@ public class FoodBox : MonoBehaviour //, IInteractable
 
     private void Start()
     {
-        _controller.Food_Icon().AmountBar_Transparency(true);
+        _controller.Food_Icon().Show_AmountBar_Duration();
     }
 
 
@@ -27,14 +26,14 @@ public class FoodBox : MonoBehaviour //, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _controller.Food_Icon().AmountBar_Transparency(false);
+        _controller.Food_Icon().ShowAmountBar_LockToggle(false);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        _controller.Food_Icon().AmountBar_Transparency(true);
+        _controller.Food_Icon().ShowAmountBar_LockToggle(true);
     }
 
 
@@ -44,9 +43,13 @@ public class FoodBox : MonoBehaviour //, IInteractable
     {
         Give_Food();
 
-        if (_controller.Food_Icon().currentData.currentAmount > 0) return;
+        if (_controller.Food_Icon().currentData.currentAmount <= 0)
+        {
+            Empty_Destroy();
+            return;
+        }
 
-        Empty_Destroy();
+        _controller.Food_Icon().Show_AmountBar();
     }
 
     public void UnInteract()
@@ -66,15 +69,22 @@ public class FoodBox : MonoBehaviour //, IInteractable
         FoodData_Controller thisIcon = _controller.Food_Icon();
 
         // give player food
-        playerIcon.Assign_Food(thisIcon.currentData.foodScrObj);
-        // playerIcon.Assign_State(thisIcon.currentData.stateData); //
+        playerIcon.Set_CurrentData(new FoodData(thisIcon.currentData.foodScrObj));
+        playerIcon.Show_Icon();
+
+        playerIcon.currentData.Set_Condition(thisIcon.currentData.conditionDatas);
+        playerIcon.Show_Condition();
 
         // decrease one amount
-        thisIcon.Update_Amount(-1);
+        thisIcon.currentData.Update_Amount(-1);
     }
 
     private void Empty_Destroy()
     {
+        // clear current food data
+        _controller.Food_Icon().Set_CurrentData(null);
+
+        // station control
         Main_Controller main = _controller.mainController;
 
         main.UnTrack_CurrentStation(_controller);
@@ -82,5 +92,4 @@ public class FoodBox : MonoBehaviour //, IInteractable
 
         Destroy(gameObject);
     }
-    */
 }

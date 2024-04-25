@@ -5,11 +5,11 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
 
-public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
+public class Grocery : MonoBehaviour, IInteractable
 {
     private PlayerInput _input;
 
-    private Main_Controller _main;
+    private Main_Controller _mainController;
     private Detection_Controller _detection;
 
     [SerializeField] private Action_Bubble _bubble;
@@ -34,20 +34,13 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
     {
         _input = gameObject.GetComponent<PlayerInput>();
 
-        _main = FindObjectOfType<Main_Controller>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
         _detection = gameObject.GetComponent<Detection_Controller>();
     }
 
     private void Start()
     {
-        if (ES3.KeyExists("Grocery_purchasableFoods") == false)
-        {
-            Sort_AvailableFoods();
-        }
-        else
-        {
-            Load_Data();
-        }
+        Sort_AvailableFoods();
 
         Update_HoverFood();
         UnInteract();
@@ -132,31 +125,18 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
 
 
 
-    // ISaveLoadable
-    public void Save_Data()
-    {
-        if (_purchasableFoods.Count <= 0) return;
-
-        ES3.Save("Grocery_purchasableFoods", _purchasableFoods);
-    }
-
-    public void Load_Data()
-    {
-        _purchasableFoods = ES3.Load("Grocery_purchasableFoods", _purchasableFoods);
-    }
-
-
-
     //
     private void Sort_AvailableFoods()
     {
-        List<Food_ScrObj> dataFoods = _main.dataController.rawFoods;
+        List<Food_ScrObj> dataFoods = _mainController.dataController.rawFoods;
 
         // remove all cook necessary raw foods
         for (int i = 0; i < dataFoods.Count; i++)
         {
+            // add raw foods with no ingredients
             if (dataFoods[i].ingredients.Count > 0) continue;
-            // _purchasableFoods.Add(new(dataFoods[i], 99)); //
+
+            _purchasableFoods.Add(new(dataFoods[i]));
         }
 
         // sort by price from lowest to highest
@@ -165,10 +145,17 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
 
     private void Update_HoverFood()
     {
-        /*
-        if (_hoverNum < 0) _hoverNum = _purchasableFoods.Count - 1;
-        else if (_hoverNum > _purchasableFoods.Count - 1) _hoverNum = 0;
+        // check if _hoverNum is outside of _purchasableFoods list range
+        if (_hoverNum > _purchasableFoods.Count - 1)
+        {
+            _hoverNum = 0;
+        }
+        else if (_hoverNum < 0)
+        {
+            _hoverNum = _purchasableFoods.Count - 1;
+        }
 
+        // set hover food
         FoodData currentFood = _purchasableFoods[_hoverNum];
 
         // update price text
@@ -179,7 +166,6 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
 
         // update sprite
         _hoveringFoodSR.sprite = currentFood.foodScrObj.sprite;
-        */
     }
 
     private void Purchase_HoverFood()
@@ -189,7 +175,7 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
         // check gold coin
         if (Main_Controller.currentGoldCoin < currentFood.foodScrObj.price)
         {
-            // not enough gold coins !!
+            Debug.Log("Not enough gold coins!");
             return;
         }
 
@@ -197,11 +183,11 @@ public class Grocery : MonoBehaviour, IInteractable, ISaveLoadable
         Main_Controller.currentGoldCoin -= currentFood.foodScrObj.price;
 
         // add current hovering food to food menu
-        _main.currentVehicle.menu.foodMenu.Add_FoodItem(currentFood.foodScrObj, 1);
+        _mainController.currentVehicle.menu.foodMenu.Add_FoodItem(currentFood.foodScrObj, 1);
 
         // player toss gold coin to grocery npc
         Player_Controller player = _detection.player;
-        Coin_ScrObj goldCoin = _main.dataController.coinTypes[0];
+        Coin_ScrObj goldCoin = _mainController.dataController.coinTypes[0];
         player.coinLauncher.Parabola_CoinLaunch(goldCoin, transform.position - player.transform.position);
 
         // toss food to player

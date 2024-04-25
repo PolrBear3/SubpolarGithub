@@ -327,55 +327,54 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     private void Save_CurrentStations()
     {
-
-        List<StationData> saveData = new();
-        // List<FoodData> foodData = new();
+        List<StationData> stationDatas = new();
+        List<FoodData> stationFoodDatas = new();
 
         for (int i = 0; i < _currentStations.Count; i++)
         {
             // check if station is exported and not placed
             if (_currentStations[i].movement != null && _currentStations[i].movement.enabled == true) continue;
 
-            saveData.Add(new StationData(_currentStations[i]));
+            stationDatas.Add(new StationData(_currentStations[i]));
 
-            /*
-            if (_currentStations[i].Food_Icon() == null)
+            // food data save
+            if (_currentStations[i].Food_Icon() == null || _currentStations[i].Food_Icon().hasFood == false)
             {
-                foodData.Add(null);
+
+                stationFoodDatas.Add(null);
                 continue;
             }
-            foodData.Add(new FoodData(_currentStations[i].Food_Icon().currentData));
-            */
+
+            stationFoodDatas.Add(new FoodData(_currentStations[i].Food_Icon().currentData));
         }
 
-        ES3.Save("_currentStations", saveData);
-        // ES3.Save("_currentStations" + "foodData", foodData); //
+        ES3.Save("Main_Controller/stationDatas", stationDatas);
+        ES3.Save("Main_Controller/stationFoodDatas", stationFoodDatas);
     }
     private void Load_CurrentStations()
     {
-        List<StationData> loadData = ES3.Load("_currentStations", new List<StationData>());
-        // List<FoodData> foodData = ES3.Load("_currentStations" + "foodData", new List<FoodData>()); //
+        if (ES3.KeyExists("Main_Controller/stationDatas") == false) return; 
 
-        for (int i = 0; i < loadData.Count; i++)
+        List<StationData> stationDatas = ES3.Load<List<StationData>>("Main_Controller/stationDatas");
+        List<FoodData> stationFoodDatas = ES3.Load<List<FoodData>>("Main_Controller/stationFoodDatas");
+
+        for (int i = 0; i < stationDatas.Count; i++)
         {
-            Station_Controller station = Spawn_Station(loadData[i].stationScrObj, loadData[i].position);
+            // spawn saved stations
+            Station_Controller station = Spawn_Station(stationDatas[i].stationScrObj, stationDatas[i].position);
 
-            if (loadData[i].stationID != loadData[i].stationScrObj.id) Debug.Log(loadData[i].stationScrObj.stationName + " updated");
-
-            if (_currentStations[i].movement != null)
+            // deactivate and set station if is has a movement script attached
+            if (station.movement != null)
             {
                 station.movement.Load_Position();
             }
 
-            /*
-            if (foodData[i] == null) continue;
+            // food data load
+            if (_currentStations[i].Food_Icon() == null) continue;
 
-            FoodData_Controller foodIcon = station.Food_Icon();
-
-            foodIcon.Assign_Food(foodData[i]);
-            foodIcon.Load_FoodData();
-            foodIcon.stateBoxController.Update_StateBoxes();
-            */
+            _currentStations[i].Food_Icon().Set_CurrentData(stationFoodDatas[i]);
+            _currentStations[i].Food_Icon().Show_Icon();
+            _currentStations[i].Food_Icon().Show_Condition();
         }
     }
 

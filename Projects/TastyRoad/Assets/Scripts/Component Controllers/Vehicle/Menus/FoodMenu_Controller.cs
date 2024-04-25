@@ -258,7 +258,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // FoodBox Export System
     private void Export_Food()
     {
-        /*
         // if no food to export on cursor
         ItemSlot_Data currentCursorData = _controller.cursor.data;
         if (currentCursorData.hasItem == false) return;
@@ -266,29 +265,36 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // if there are enough space to spawn food box
         if (FoodExport_PositionAvailable() == false) return;
 
-        //
+        // get vehicle 
         Vehicle_Controller vehicle = _controller.vehicleController;
 
-        // spawn food box
+        // get food box
         Station_ScrObj foodbox = vehicle.mainController.dataController.Station_ScrObj("Food Box");
+
+        // spawn and track food box
         Station_Controller station = vehicle.mainController.Spawn_Station(foodbox, FoodExport_Position());
         vehicle.mainController.Claim_Position(station.transform.position);
 
         // assign exported food to food box
-        station.Food_Icon().Assign_Food(currentCursorData.currentFood);
+        FoodData cursorFood = new(currentCursorData.currentFood);
+        station.Food_Icon().Set_CurrentData(cursorFood);
+
+        // show food icon
+        station.Food_Icon().Show_Icon();
 
         // assign exported food amount according to dragging amount
         if (currentCursorData.currentAmount >= 6)
         {
-            station.Food_Icon().Assign_Amount(6);
+            // max amount
+            station.Food_Icon().currentData.Set_Amount(6);
             _controller.cursor.Assign_Amount(currentCursorData.currentAmount - 6);
         }
         else
         {
-            station.Food_Icon().Assign_Amount(currentCursorData.currentAmount);
+            // bellow max amount
+            station.Food_Icon().currentData.Set_Amount(currentCursorData.currentAmount);
             _controller.cursor.Empty_Item();
         }
-        */
     }
 
     private bool FoodExport_PositionAvailable()

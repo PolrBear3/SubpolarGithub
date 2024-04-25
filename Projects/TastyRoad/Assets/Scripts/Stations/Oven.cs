@@ -35,7 +35,6 @@ public class Oven : MonoBehaviour, IInteractable
         Heat_Food();
         Update_CurrentVisual();
 
-        // _controller.Food_Icon().FoodIcon_Transparency(true);
         Update_FoodIcon_Position(false);
     }
 
@@ -46,14 +45,14 @@ public class Oven : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        // _controller.Food_Icon().FoodIcon_Transparency(false);
+        _controller.Food_Icon().ShowIcon_LockToggle(false);
         Update_FoodIcon_Position(true);
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        // _controller.Food_Icon().FoodIcon_Transparency(true);
+        _controller.Food_Icon().ShowIcon_LockToggle(true);
         Update_FoodIcon_Position(false);
     }
 
@@ -62,7 +61,7 @@ public class Oven : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-        Swap_Food();
+        Basic_SwapFood();
         Heat_Food();
 
         Update_CurrentVisual();
@@ -78,7 +77,6 @@ public class Oven : MonoBehaviour, IInteractable
     // Oven Visual Update
     private void Update_CurrentVisual()
     {
-        /*
         if (_controller.Food_Icon().hasFood)
         {
             _spriteRenderer.sprite = activeSprite;
@@ -91,7 +89,6 @@ public class Oven : MonoBehaviour, IInteractable
             _spriteRenderer.material = _lit;
             _light.SetActive(false);
         }
-        */
     }
 
 
@@ -109,15 +106,51 @@ public class Oven : MonoBehaviour, IInteractable
         }
     }
 
-    // Swap Oven and Player Food
-    private void Swap_Food()
-    {
 
+
+    // Swap Current and Player Food
+    public void Basic_SwapFood()
+    {
+        // swap data with player
+        FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
+        _controller.Food_Icon().Swap_Data(playerFoodIcon);
+
+        // show player food data
+        playerFoodIcon.Show_Icon();
+        playerFoodIcon.Show_Condition();
+
+        // show table food data
+        _controller.Food_Icon().Show_Icon();
+        _controller.Food_Icon().Show_Condition();
+
+        UnInteract();
     }
+
+
 
     // Food Heating System
     private void Heat_Food()
     {
+        if (_heatCoroutine != null)
+        {
+            StopCoroutine(_heatCoroutine);
+            _heatCoroutine = null;
+        }
 
+        if (_controller.Food_Icon().hasFood == false) return;
+
+        _heatCoroutine = StartCoroutine(Heat_Food_Coroutine());
+    }
+    private IEnumerator Heat_Food_Coroutine()
+    {
+        FoodData_Controller foodIcon = _controller.Food_Icon();
+
+        while (foodIcon.hasFood)
+        {
+            yield return new WaitForSeconds(_heatIncreaseTime);
+
+            foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
+            foodIcon.Show_Condition();
+        }
     }
 }

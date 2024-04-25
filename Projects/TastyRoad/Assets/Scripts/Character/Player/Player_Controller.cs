@@ -37,18 +37,23 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
         if (gameObject.TryGetComponent(out Player_Movement movement)) { this.movement = movement; }
     }
 
+    private void Start()
+    {
+        Main_Controller.TestButton1Event += Set_Apple_forTest;
+    }
+
 
 
     // ISaveLoadable
     public void Save_Data()
     {
-        if (_foodIcon.currentData == null) return;
         ES3.Save("Player_Controller/_foodIcon.currentData", _foodIcon.currentData);
     }
 
     public void Load_Data()
     {
         if (ES3.KeyExists("Player_Controller/_foodIcon.currentData") == false) return;
+
         _foodIcon.Set_CurrentData(ES3.Load<FoodData>("Player_Controller/_foodIcon.currentData"));
     }
 
@@ -58,5 +63,14 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public PlayerInput Player_Input()
     {
         return _playerInput;
+    }
+
+    private void Set_Apple_forTest()
+    {
+        _foodIcon.Set_CurrentData(new FoodData(mainController.dataController.rawFoods[0]));
+        _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
+
+        _foodIcon.Show_Icon();
+        _foodIcon.Show_Condition();
     }
 }

@@ -77,10 +77,14 @@ public class FoodData_Controller : MonoBehaviour
     {
         FoodData otherData = otherController.currentData;
 
+        // set to null before swap to restrict amount increase in Set_CurrentData(FoodData data)
+
         // other controller data
+        otherController.Set_CurrentData(null);
         otherController.Set_CurrentData(_currentData);
 
         // this controller data
+        Set_CurrentData(null);
         Set_CurrentData(otherData);
     }
 
@@ -91,16 +95,12 @@ public class FoodData_Controller : MonoBehaviour
     {
         _iconShowLocked = isLock;
 
-        if (isLock == true) return;
-
         Show_Icon();
     }
 
     public void ShowAmountBar_LockToggle(bool isLock)
     {
         _barShowLocked = isLock;
-
-        if (isLock == true) return;
 
         Show_AmountBar();
     }

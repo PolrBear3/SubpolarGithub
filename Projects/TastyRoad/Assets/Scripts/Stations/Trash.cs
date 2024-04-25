@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trash : MonoBehaviour//, IInteractable
+public class Trash : MonoBehaviour, IInteractable
 {
-    /*
     private Detection_Controller _detection;
 
     private List<FoodData> _trashedFoodData = new();
@@ -26,35 +25,33 @@ public class Trash : MonoBehaviour//, IInteractable
 
     }
 
+
+
     // Trash Food
     private void Trash_Food()
     {
-        FoodData_Controller playerFood = _detection.player.foodIcon;
+        FoodData_Controller playerFoodIcon = _detection.player.foodIcon;
 
-        if (playerFood.hasFood == true)
+        if (playerFoodIcon.hasFood == true)
         {
-            // Save_TrashedFood_Data(playerFood.currentFoodData);
+            Save_TrashedFood_Data(playerFoodIcon.currentData);
 
-            playerFood.Clear_Food();
-            // playerFood.Clear_State(); //
+            playerFoodIcon.Set_CurrentData(null);
+            playerFoodIcon.Show_Icon();
+            playerFoodIcon.Show_Condition();
         }
     }
+
+
 
     // Save Trashed Data
     private void Save_TrashedFood_Data(FoodData data)
     {
-        FoodData trashedData = new();
-
-        trashedData.foodScrObj = data.foodScrObj;
-        trashedData.currentAmount = data.currentAmount;
-        trashedData.stateData = new(data.stateData);
-
-        _trashedFoodData.Add(trashedData);
+        _trashedFoodData.Add(data);
         
         if (_trashedFoodData.Count >= 11)
         {
             _trashedFoodData.RemoveAt(0);
         }
     }
-    */
 }
