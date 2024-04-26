@@ -42,7 +42,7 @@ public class FoodData_RottenSystem : MonoBehaviour
         /*
         if (_foodIcon.currentData.currentTikTime >= _updateTikTime)
         {
-            // _foodIcon.Update_State(FoodState_Type.rotten, 1); //
+            _foodIcon.Update_State(FoodState_Type.rotten, 1);
             _foodIcon.currentData.currentTikTime = 0;
 
             return;

@@ -8,8 +8,6 @@ public class Table : MonoBehaviour, IInteractable
     private Station_Controller _stationController;
     public Station_Controller stationController => _stationController;
 
-    [SerializeField] private Action_Bubble _actionBubble;
-
 
 
     // UnityEngine
@@ -46,7 +44,9 @@ public class Table : MonoBehaviour, IInteractable
             return;
         }
 
-        _actionBubble.Update_Bubble(_stationController.Food_Icon().currentData.foodScrObj, cookedFood);
+        Action_Bubble bubble = _stationController.ActionBubble();
+
+        bubble.Update_Bubble(_stationController.Food_Icon().currentData.foodScrObj, cookedFood);
 
         _stationController.PlayerInput_Activation(true);
         _stationController.Action1_Event += Basic_SwapFood;
@@ -55,7 +55,9 @@ public class Table : MonoBehaviour, IInteractable
 
     public void UnInteract()
     {
-        if (_actionBubble != null) _actionBubble.Toggle(false);
+        Action_Bubble bubble = _stationController.ActionBubble();
+
+        if (bubble != null) bubble.Toggle(false);
 
         _stationController.PlayerInput_Activation(false);
         _stationController.Action1_Event -= Basic_SwapFood;

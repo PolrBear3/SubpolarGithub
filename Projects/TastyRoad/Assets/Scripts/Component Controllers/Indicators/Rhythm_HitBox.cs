@@ -106,7 +106,7 @@ public class Rhythm_HitBox : MonoBehaviour
 
 
     /// <summary>
-    /// Signals only the parent of this object. Move this object as secondary child of parent.
+    /// Signals the parent of this prefab
     /// </summary>
     private void Hit_Box()
     {

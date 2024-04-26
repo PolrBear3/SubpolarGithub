@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f07c58c9915204ddd9cfbcea4ae0a14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionBubble: {fileID: 0}
   _hitBox: {fileID: 9151360993743408321}
 --- !u!1001 &285888966713677849
 PrefabInstance:
@@ -356,6 +357,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: _maxAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: _barShowLocked
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}

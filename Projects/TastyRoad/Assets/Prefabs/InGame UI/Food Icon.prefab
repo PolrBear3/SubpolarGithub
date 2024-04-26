@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9220044194110590461}
   - component: {fileID: 4815339870781394795}
+  - component: {fileID: 8321784128123913411}
   m_Layer: 0
   m_Name: Food Icon
   m_TagString: Untagged
@@ -79,6 +80,19 @@ MonoBehaviour:
   _iconShowLocked: 0
   _barShowLocked: 0
   _durationTime: 1
+--- !u!114 &8321784128123913411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797686271449595940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc5a3f9fad6b4dc08b355839268820f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _updateTikTime: 1
 --- !u!1 &4778137241564889886
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,9 +21,6 @@ public class Station_Controller : MonoBehaviour
     public Animator stationAnmiator => _stationAnimator;
 
     [Header("")]
-    [SerializeField] private FoodData_Controller _foodIcon;
-
-    [Header("")]
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
 
@@ -105,6 +102,19 @@ public class Station_Controller : MonoBehaviour
         {
             if (!transform.GetChild(i).TryGetComponent(out FoodData_Controller foodIcon)) continue;
             return foodIcon;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Finds Action Bubble if it is attached to this station prefab.
+    /// </summary>
+    public Action_Bubble ActionBubble()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (!transform.GetChild(i).TryGetComponent(out Action_Bubble bubble)) continue;
+            return bubble;
         }
         return null;
     }

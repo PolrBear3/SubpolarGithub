@@ -20,6 +20,7 @@ public class FoodCondition_Data
         this.type = type;
 
         if (level > 3) level = 3;
+
         this.level = level;
     }
 }
@@ -83,6 +84,7 @@ public class FoodData
             // if so +level
             if (newCondition.type != _conditionDatas[i].type) continue;
 
+            // set max level
             int calculatedLevel = _conditionDatas[i].level + newCondition.level;
             if (calculatedLevel > 3) return;
 

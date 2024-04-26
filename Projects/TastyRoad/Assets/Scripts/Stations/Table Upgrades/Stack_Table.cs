@@ -3,6 +3,30 @@ using System.Collections;
 
 public class Stack_Table : Table, IInteractable
 {
+    // UnityEngine
+    private void Start()
+    {
+        stationController.Food_Icon().Show_AmountBar_Duration();
+    }
+
+
+    // OnTrigger
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
+
+        stationController.Food_Icon().ShowAmountBar_LockToggle(false);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
+
+        stationController.Food_Icon().ShowAmountBar_LockToggle(true);
+    }
+
+
+
     // IInteractable
     public new void Interact()
     {
@@ -37,6 +61,9 @@ public class Stack_Table : Table, IInteractable
 
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
+        // if both does not have food, don't swap
+        if (tableIcon.hasFood == false && playerIcon.hasFood == false) return;
+
         // decrease amount
         if (playerIcon.hasFood == false && tableData.currentAmount > 1)
         {
@@ -63,6 +90,7 @@ public class Stack_Table : Table, IInteractable
 
         // swap
         Basic_SwapFood();
+        tableIcon.Show_AmountBar();
     }
 
 
