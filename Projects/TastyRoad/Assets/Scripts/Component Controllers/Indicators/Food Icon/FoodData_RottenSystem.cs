@@ -6,7 +6,8 @@ public class FoodData_RottenSystem : MonoBehaviour
 {
     private FoodData_Controller _foodIcon;
 
-    [SerializeField] private int _updateTikTime;
+    [SerializeField] private int _updateTikCount;
+    private int _currentTikCount;
 
 
 
@@ -16,17 +17,14 @@ public class FoodData_RottenSystem : MonoBehaviour
         _foodIcon = gameObject.GetComponent<FoodData_Controller>();
     }
 
-    private void OnDestroy()
+    private void Start()
     {
-        
+        _foodIcon.TimeTikEvent += Decay_TikTimeUpdate;
     }
 
-
-
-    //
-    public void UpdateDecay_Toggle(bool toggleOn)
+    private void OnDestroy()
     {
-
+        _foodIcon.TimeTikEvent -= Decay_TikTimeUpdate;
     }
 
 
@@ -34,16 +32,17 @@ public class FoodData_RottenSystem : MonoBehaviour
     //
     private void Decay_TikTimeUpdate()
     {
-        /*
-        if (_foodIcon.currentData.currentTikTime >= _updateTikTime)
-        {
-            _foodIcon.Update_State(FoodState_Type.rotten, 1);
-            _foodIcon.currentData.currentTikTime = 0;
+        if (_foodIcon.hasFood == false) return;
 
+        if (_currentTikCount >= _updateTikCount)
+        {
+            _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten));
+            _foodIcon.Show_Condition();
+
+            _currentTikCount = 0;
             return;
         }
 
-        _foodIcon.currentData.currentTikTime++;
-        */
+        _currentTikCount++;
     }
 }

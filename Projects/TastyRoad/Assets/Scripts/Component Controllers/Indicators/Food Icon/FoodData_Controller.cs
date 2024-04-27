@@ -20,6 +20,9 @@ public class FoodData_Controller : MonoBehaviour
     private bool _hasFood;
     public bool hasFood => _hasFood;
 
+    public delegate void Event();
+    public event Event TimeTikEvent;
+
     [Header("")]
     [SerializeField] private SpriteRenderer _foodIcon;
     [SerializeField] private SpriteRenderer _amountBar;
@@ -51,7 +54,7 @@ public class FoodData_Controller : MonoBehaviour
 
     private void OnDestroy()
     {
-        GlobalTime_Controller.TimeTik_Update -= Increase_TimeTikCount;
+        GlobalTime_Controller.TimeTik_Update -= Invoke_TimeTikEvent;
     }
 
 
@@ -65,7 +68,7 @@ public class FoodData_Controller : MonoBehaviour
             _currentData = null;
             _hasFood = false;
 
-            GlobalTime_Controller.TimeTik_Update -= Increase_TimeTikCount;
+            GlobalTime_Controller.TimeTik_Update -= Invoke_TimeTikEvent;
 
             return;
         }
@@ -81,7 +84,7 @@ public class FoodData_Controller : MonoBehaviour
         _currentData = data;
         _hasFood = true;
 
-        GlobalTime_Controller.TimeTik_Update += Increase_TimeTikCount;
+        GlobalTime_Controller.TimeTik_Update += Invoke_TimeTikEvent;
     }
 
     public void Swap_Data(FoodData_Controller otherController)
@@ -221,9 +224,9 @@ public class FoodData_Controller : MonoBehaviour
 
 
 
-    // Time Tik
-    private void Increase_TimeTikCount()
+    // Time Tik Event
+    private void Invoke_TimeTikEvent()
     {
-        _currentData.Set_TimeTikCount(_currentData.timeTikCount + 1);
+        TimeTikEvent?.Invoke();
     }
 }
