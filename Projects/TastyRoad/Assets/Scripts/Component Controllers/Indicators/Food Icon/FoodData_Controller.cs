@@ -30,6 +30,7 @@ public class FoodData_Controller : MonoBehaviour
 
     [Header("")]
     [SerializeField] private ConditionSprites[] _conditionSprites;
+    public ConditionSprites[] conditionSprites => _conditionSprites;
 
     [Header("")]
     [SerializeField] private bool _iconShowLocked;
@@ -48,6 +49,11 @@ public class FoodData_Controller : MonoBehaviour
         Show_Condition();
     }
 
+    private void OnDestroy()
+    {
+        GlobalTime_Controller.TimeTik_Update -= Increase_TimeTikCount;
+    }
+
 
 
     // Current Data
@@ -58,6 +64,9 @@ public class FoodData_Controller : MonoBehaviour
         {
             _currentData = null;
             _hasFood = false;
+
+            GlobalTime_Controller.TimeTik_Update -= Increase_TimeTikCount;
+
             return;
         }
 
@@ -71,6 +80,8 @@ public class FoodData_Controller : MonoBehaviour
         // set data
         _currentData = data;
         _hasFood = true;
+
+        GlobalTime_Controller.TimeTik_Update += Increase_TimeTikCount;
     }
 
     public void Swap_Data(FoodData_Controller otherController)
@@ -133,7 +144,7 @@ public class FoodData_Controller : MonoBehaviour
     public void Show_AmountBar()
     {
         // empty
-        if (_barShowLocked == true || _hasFood == false)
+        if (_barShowLocked == true || _hasFood == false || _currentData.currentAmount <= 0)
         {
             _amountBar.color = Color.clear;
             return;
@@ -206,5 +217,13 @@ public class FoodData_Controller : MonoBehaviour
             return _conditionSprites[i];
         }
         return null;
+    }
+
+
+
+    // Time Tik
+    private void Increase_TimeTikCount()
+    {
+        _currentData.Set_TimeTikCount(_currentData.timeTikCount + 1);
     }
 }

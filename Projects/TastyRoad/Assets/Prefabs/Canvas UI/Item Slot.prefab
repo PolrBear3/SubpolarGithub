@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 508884860205325093}
   - component: {fileID: 5406450882927502325}
   m_Layer: 5
-  m_Name: State Indicator
+  m_Name: Condition Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -546,7 +546,7 @@ GameObject:
   - component: {fileID: 7932010357058031938}
   - component: {fileID: 8075309175869499245}
   m_Layer: 5
-  m_Name: State Box (1)
+  m_Name: Condition Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -682,23 +682,21 @@ MonoBehaviour:
   _amountText: {fileID: 6058830900394938288}
   _cursorPoint: {fileID: 5595108486440019536}
   _bookmarkIcon: {fileID: 2991239021167290621}
-  _stateIndicator: {fileID: 5068696389206241653}
-  stateBoxSprites:
-  - isTransparent: 0
-    type: 0
-    boxSprites:
+  _conditionIndicator: {fileID: 5068696389206241653}
+  _conditionSprites:
+  - _type: 0
+    _sprites:
     - {fileID: 953033817, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 1426449461, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 1807355862, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - isTransparent: 0
-    type: 1
-    boxSprites:
+  - _type: 1
+    _sprites:
     - {fileID: 1619307443, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 671901877, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  stateBoxImages:
-  - {fileID: 9015586222992259629}
+  _conditionBoxes:
   - {fileID: 8075309175869499245}
+  - {fileID: 9015586222992259629}
 --- !u!1 &8591896018537490083
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,7 +709,7 @@ GameObject:
   - component: {fileID: 1056746413251579403}
   - component: {fileID: 9015586222992259629}
   m_Layer: 5
-  m_Name: State Box
+  m_Name: Condition Box (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

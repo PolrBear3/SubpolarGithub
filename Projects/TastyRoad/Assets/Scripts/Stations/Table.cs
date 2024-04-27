@@ -106,6 +106,9 @@ public class Table : MonoBehaviour, IInteractable
         playerFoodIcon.Show_Icon();
         playerFoodIcon.Show_Condition();
 
+        // save to archive
+        _stationController.mainController.AddFood_toArhive(cookedFood);
+
         UnInteract();
     }
 }

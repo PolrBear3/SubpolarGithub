@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPC_Interaction : MonoBehaviour //, IInteractable
+public class NPC_Interaction : MonoBehaviour, IInteractable
 {
-    /*
     private NPC_Controller _controller;
 
     [Header("")]
@@ -138,6 +137,7 @@ public class NPC_Interaction : MonoBehaviour //, IInteractable
         if (foodIcon.hasFood == false) return;
 
         _controller.actionBubble.Update_Bubble(foodIcon.currentData.foodScrObj, null);
+        _controller.foodIcon.Show_Condition();
     }
 
     // Toggle On Off StateBox
@@ -229,12 +229,10 @@ public class NPC_Interaction : MonoBehaviour //, IInteractable
 
         _controller.Action1 -= Serve_FoodOrder;
 
-        // add unsatisfied icon or something ?
-
-        // clear food
-        FoodData_Controller icon = _controller.foodIcon;
-        icon.Clear_Food();
-        // icon.Clear_State(); //
+        // clear food data
+        _controller.foodIcon.Set_CurrentData(null);
+        _controller.foodIcon.Show_Icon();
+        _controller.foodIcon.Show_Condition();
 
         // hunger level to 0
         Character_Data data = _controller.characterData;
@@ -278,21 +276,23 @@ public class NPC_Interaction : MonoBehaviour //, IInteractable
 
             Food_ScrObj randomFood = bookmarkedFoods[Random.Range(0, bookmarkedFoods.Count)];
 
-            foodIcon.Assign_Food(randomFood);
+            foodIcon.Set_CurrentData(new FoodData(randomFood));
 
             // set random state
-            List<StateBox_Sprite> allStates = foodIcon.stateBoxController.stateBoxSprites;
+            ConditionSprites[] allConditions = foodIcon.conditionSprites;
 
-            for (int i = 0; i < allStates.Count; i++)
+            for (int i = 0; i < allConditions.Length; i++)
             {
                 // food order rotten state restriction
-                if (allStates[i].type == FoodState_Type.rotten) continue;
+                if (allConditions[i].type == FoodCondition_Type.rotten) continue;
 
                 bool setState = Random.value > 0.5f;
 
                 if (setState == false) continue;
 
-                foodIcon.Update_State(allStates[i].type, Random.Range(1, allStates[i].boxSprites.Count + 1));
+                int randLevel = Random.Range(1, allConditions[i].sprites.Length + 1);
+
+                foodIcon.currentData.Update_Condition(new FoodCondition_Data(allConditions[i].type, randLevel));
             }
         }
     }
@@ -305,14 +305,19 @@ public class NPC_Interaction : MonoBehaviour //, IInteractable
         FoodData_Controller foodIcon = _controller.foodIcon;
 
         if (foodIcon.hasFood == false) return;
-        if (_controller.detection.player == null) return;
 
+        // check if player has food
         FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
-        FoodData playerFoodData = playerFoodIcon.currentData;
+        if (playerFoodIcon.hasFood == false)
+        {
+            UnInteract();
+            return;
+        }
 
         _controller.actionBubble.Toggle(false);
 
         // check if order food is correct
+        FoodData playerFoodData = playerFoodIcon.currentData;
         if (playerFoodData.foodScrObj != foodIcon.currentData.foodScrObj)
         {
             UnInteract();
@@ -329,8 +334,10 @@ public class NPC_Interaction : MonoBehaviour //, IInteractable
         // save food score
         _foodScore = Calculated_FoodScore();
 
-        playerFoodIcon.Clear_Food();
-        // playerFoodIcon.Clear_State(); //
+        // clear player food data
+        playerFoodIcon.Set_CurrentData(null);
+        playerFoodIcon.Show_Icon();
+        playerFoodIcon.Show_Condition();
 
         // update data
         _foodOrderServed = true;
@@ -415,8 +422,10 @@ public class NPC_Interaction : MonoBehaviour //, IInteractable
         Coin_ScrObj goldCoin = _controller.mainController.dataController.coinTypes[0];
         _controller.itemLauncher.Parabola_CoinLaunch(goldCoin, -_controller.detection.player.transform.position);
 
-        // update data
-        _controller.foodIcon.Clear_Food();
+        // clear data
+        _controller.foodIcon.Set_CurrentData(null);
+        _controller.foodIcon.Show_Icon();
+        _controller.foodIcon.Show_Condition();
 
         // leave
         NPC_Movement move = _controller.movement;
@@ -425,5 +434,4 @@ public class NPC_Interaction : MonoBehaviour //, IInteractable
         move.Update_RoamArea(currentLocation);
         move.Leave(Random.Range(roamDelayTime.x, roamDelayTime.y));
     }
-    */
 }

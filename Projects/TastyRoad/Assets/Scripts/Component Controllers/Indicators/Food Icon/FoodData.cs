@@ -37,6 +37,9 @@ public class FoodData
     [SerializeField] [ES3Serializable] private List<FoodCondition_Data> _conditionDatas;
     public List<FoodCondition_Data> conditionDatas => _conditionDatas;
 
+    [SerializeField] [ES3Serializable] private int _timeTikCount;
+    public int timeTikCount => _timeTikCount;
+
 
 
     // Constructors
@@ -45,6 +48,7 @@ public class FoodData
         _foodScrObj = data.foodScrObj;
         _currentAmount = data.currentAmount;
         _conditionDatas = data.conditionDatas;
+        _timeTikCount = data.timeTikCount;
     }
 
     public FoodData(Food_ScrObj food)
@@ -52,6 +56,7 @@ public class FoodData
         _foodScrObj = food;
         _currentAmount = 1;
         _conditionDatas = new();
+        _timeTikCount = 0;
     }
 
 
@@ -65,6 +70,13 @@ public class FoodData
     public void Update_Amount(int updateAmount)
     {
         _currentAmount += updateAmount;
+    }
+
+
+
+    public void Set_TimeTikCount(int setCount)
+    {
+        _timeTikCount = setCount;
     }
 
 

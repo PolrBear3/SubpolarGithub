@@ -4,9 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 
-public class OrderStand : MonoBehaviour //, IInteractable
+public class OrderStand : MonoBehaviour, IInteractable
 {
-    /*
     private SpriteRenderer _spriteRenderer;
 
     private Station_Controller _stationController;
@@ -221,5 +220,4 @@ public class OrderStand : MonoBehaviour //, IInteractable
         _waitingNPCs = refreshList;
         // Debug.Log("waiting list refresh complete");
     }
-    */
 }

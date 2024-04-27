@@ -66,17 +66,18 @@ public class FoodBox : MonoBehaviour, IInteractable
 
         if (playerIcon.hasFood) return;
 
-        FoodData_Controller thisIcon = _controller.Food_Icon();
-
         // give player food
-        playerIcon.Set_CurrentData(new FoodData(thisIcon.currentData.foodScrObj));
+        playerIcon.Set_CurrentData(new FoodData(_controller.Food_Icon().currentData.foodScrObj));
         playerIcon.Show_Icon();
 
-        playerIcon.currentData.Set_Condition(thisIcon.currentData.conditionDatas);
-        playerIcon.Show_Condition();
-
         // decrease one amount
-        thisIcon.currentData.Update_Amount(-1);
+        _controller.Food_Icon().currentData.Update_Amount(-1);
+
+        // if has condition, transfer condition as well
+        if (_controller.Food_Icon().currentData.conditionDatas.Count <= 0) return;
+
+        playerIcon.currentData.Set_Condition(_controller.Food_Icon().currentData.conditionDatas);
+        playerIcon.Show_Condition();
     }
 
     private void Empty_Destroy()

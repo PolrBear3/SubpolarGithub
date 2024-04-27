@@ -25,9 +25,10 @@ public class ItemSlot : MonoBehaviour
 
 
     [Header("")]
-    [SerializeField] private GameObject _stateIndicator;
-    [SerializeField] private List<StateBox_Sprite> stateBoxSprites = new();
-    [SerializeField] private List<Image> stateBoxImages = new();
+    [SerializeField] private GameObject _conditionIndicator;
+
+    [SerializeField] private ConditionSprites[] _conditionSprites;
+    [SerializeField] private Image[] _conditionBoxes;
 
 
 
@@ -38,7 +39,7 @@ public class ItemSlot : MonoBehaviour
         _amountText.color = Color.clear;
         _bookmarkIcon.color = Color.clear;
 
-        _stateIndicator.SetActive(false);
+        _conditionIndicator.SetActive(false);
     }
 
 
@@ -185,38 +186,38 @@ public class ItemSlot : MonoBehaviour
 
 
 
-    // StateBox Image Control
-    private Sprite StateBox_Sprite(FoodCondition_Type type, int level)
+    // Condition Indication Control
+    private Sprite ConditionBox_Sprite(FoodCondition_Type type, int level)
     {
-        for (int i = 0; i < stateBoxSprites.Count; i++)
+        for (int i = 0; i < _conditionSprites.Length; i++)
         {
-            if (stateBoxSprites[i].type == type)
+            if (_conditionSprites[i].type == type)
             {
-                return stateBoxSprites[i].boxSprites[level - 1];
+                return _conditionSprites[i].sprites[level - 1];
             }
         }
         return null;
     }
-    public void Assign_State(List<FoodCondition_Data> stateData)
+    public void Assign_State(List<FoodCondition_Data> conditionData)
     {
-        if (stateData.Count <= 0) return;
+        if (conditionData.Count <= 0) return;
 
-        _stateIndicator.SetActive(true);
+        _conditionIndicator.SetActive(true);
 
-        for (int i = 0; i < stateBoxImages.Count; i++)
+        for (int i = 0; i < _conditionBoxes.Length; i++)
         {
-            stateBoxImages[i].sprite = null;
-            stateBoxImages[i].color = Color.clear;
+            _conditionBoxes[i].sprite = null;
+            _conditionBoxes[i].color = Color.clear;
         }
 
-        for (int i = 0; i < stateData.Count; i++)
+        for (int i = 0; i < conditionData.Count; i++)
         {
-            for (int j = 0; j < stateBoxImages.Count; j++)
+            for (int j = 0; j < _conditionBoxes.Length; j++)
             {
-                if (stateBoxImages[j].sprite != null) continue;
+                if (_conditionBoxes[j].sprite != null) continue;
 
-                stateBoxImages[j].sprite = StateBox_Sprite(stateData[i].type, stateData[i].level);
-                stateBoxImages[i].color = Color.white;
+                _conditionBoxes[j].sprite = ConditionBox_Sprite(conditionData[i].type, conditionData[i].level);
+                _conditionBoxes[i].color = Color.white;
             }
         }
     }

@@ -49,11 +49,9 @@ public class SliceTable : Table, IInteractable, ISignal
     // ISignal
     public void Signal()
     {
-        FoodData_Controller icon = stationController.Food_Icon();
+        if (stationController.Food_Icon().hasFood == false) return;
 
-        if (icon.hasFood == false) return;
-
-        icon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced));
-        icon.Show_Condition();
+        stationController.Food_Icon().currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced));
+        stationController.Food_Icon().Show_Condition();
     }
 }

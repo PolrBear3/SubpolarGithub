@@ -40,6 +40,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Main_Controller.TestButton1Event += Set_Apple_forTest;
+        Main_Controller.TestButton2Event += Debug_FoodData;
     }
 
 
@@ -72,5 +73,11 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
         _foodIcon.Show_Icon();
         _foodIcon.Show_Condition();
+        _foodIcon.Show_AmountBar();
+    }
+
+    private void Debug_FoodData()
+    {
+        Debug.Log(_foodIcon.currentData == null);
     }
 }
