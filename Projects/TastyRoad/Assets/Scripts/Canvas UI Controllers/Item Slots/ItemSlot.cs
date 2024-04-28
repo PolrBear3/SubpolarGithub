@@ -206,19 +206,14 @@ public class ItemSlot : MonoBehaviour
 
         for (int i = 0; i < _conditionBoxes.Length; i++)
         {
-            _conditionBoxes[i].sprite = null;
-            _conditionBoxes[i].color = Color.clear;
-        }
-
-        for (int i = 0; i < conditionData.Count; i++)
-        {
-            for (int j = 0; j < _conditionBoxes.Length; j++)
+            if (i > conditionData.Count - 1)
             {
-                if (_conditionBoxes[j].sprite != null) continue;
-
-                _conditionBoxes[j].sprite = ConditionBox_Sprite(conditionData[i].type, conditionData[i].level);
-                _conditionBoxes[i].color = Color.white;
+                _conditionBoxes[i].color = Color.clear;
+                continue;
             }
+
+            _conditionBoxes[i].color = Color.white;
+            _conditionBoxes[i].sprite = ConditionBox_Sprite(conditionData[i].type, conditionData[i].level);
         }
     }
 }

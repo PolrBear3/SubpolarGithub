@@ -5,13 +5,17 @@ using TMPro;
 
 public class ScrapGrinder : MonoBehaviour
 {
+    [Header("")]
     [SerializeField] private Animator _anim;
 
     private Shop_Controller _controller;
     [SerializeField] private CoinLauncher _launcher;
 
+    [Header("")]
+    [SerializeField] private Station_ScrObj _scrap;
+
     [Header("Current Scrap Amount")]
-    [SerializeField]private GameObject _currentScrapIndicator;
+    [SerializeField] private GameObject _currentScrapIndicator;
     [SerializeField] private TextMeshPro _amountText;
 
     [Header("")]
@@ -45,8 +49,7 @@ public class ScrapGrinder : MonoBehaviour
 
     private void CurrentScrapText_Update()
     {
-        Station_ScrObj scrap = _controller.mainController.dataController.Station_ScrObj(6);
-        int scrapAmount = _controller.mainController.currentVehicle.menu.stationMenu.Station_Amount(scrap);
+        int scrapAmount = _controller.mainController.currentVehicle.menu.stationMenu.Station_Amount(_scrap);
 
         _amountText.text = scrapAmount.ToString();
     }
@@ -62,7 +65,7 @@ public class ScrapGrinder : MonoBehaviour
         for (int i = 0; i < stationMenuSlots.Count; i++)
         {
             if (stationMenuSlots[i].data.hasItem == false) continue;
-            if (stationMenuSlots[i].data.currentStation.id != 6) continue;
+            if (stationMenuSlots[i].data.currentStation != _scrap) continue;
             return stationMenuSlots[i];
         }
 

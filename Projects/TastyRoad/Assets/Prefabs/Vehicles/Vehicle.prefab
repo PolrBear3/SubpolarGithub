@@ -588,10 +588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d10412744f34be5b68b338c945d7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _customizer: {fileID: 4156666212345247569}
-  mainController: {fileID: 0}
-  detection: {fileID: 0}
   _bubble: {fileID: 4110360785583018332}
+  _customizer: {fileID: 4156666212345247569}
   _menu: {fileID: 5034237652985656200}
   _transparencyPoint: {fileID: 1081486458950851603}
   _stationSpawnPoint: {fileID: 1075718707391883764}
@@ -2938,7 +2936,7 @@ GameObject:
   - component: {fileID: 1510191333133797675}
   - component: {fileID: 6412344663582257659}
   m_Layer: 5
-  m_Name: State Indicator
+  m_Name: Condition Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3042,7 +3040,7 @@ GameObject:
   - component: {fileID: 1488489309487613749}
   - component: {fileID: 6386195911308525541}
   m_Layer: 5
-  m_Name: State Indicator
+  m_Name: Condition Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3597,7 +3595,7 @@ GameObject:
   - component: {fileID: 2093488237747261979}
   - component: {fileID: 7978701583758059069}
   m_Layer: 5
-  m_Name: State Box
+  m_Name: Condition Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3672,7 +3670,7 @@ GameObject:
   - component: {fileID: 2112463456367795205}
   - component: {fileID: 7991462676038903843}
   m_Layer: 5
-  m_Name: State Box
+  m_Name: Condition Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4328,7 +4326,7 @@ GameObject:
   - component: {fileID: 9057838716953611602}
   - component: {fileID: 7185075251141835645}
   m_Layer: 5
-  m_Name: State Box (1)
+  m_Name: Condition Box (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4403,7 +4401,7 @@ GameObject:
   - component: {fileID: 9074333739452285772}
   - component: {fileID: 7200105683619673443}
   m_Layer: 5
-  m_Name: State Box (1)
+  m_Name: Condition Box (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4693,21 +4691,24 @@ MonoBehaviour:
   _amountText: {fileID: 5166345294066373536}
   _cursorPoint: {fileID: 0}
   _bookmarkIcon: {fileID: 4189690418827605229}
-  _stateIndicator: {fileID: 6192556916495117669}
-  stateBoxSprites:
-  - isTransparent: 0
-    type: 0
-    boxSprites:
+  _conditionIndicator: {fileID: 6192556916495117669}
+  _conditionSprites:
+  - _type: 0
+    _sprites:
     - {fileID: 953033817, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 1426449461, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 1807355862, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - isTransparent: 0
-    type: 1
-    boxSprites:
+  - _type: 1
+    _sprites:
     - {fileID: 1619307443, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 671901877, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  stateBoxImages:
+  - _type: 2
+    _sprites:
+    - {fileID: -453827715, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 237819038, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 1903159989, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  _conditionBoxes:
   - {fileID: 7978701583758059069}
   - {fileID: 7185075251141835645}
 --- !u!1 &9186537136541358572
@@ -4783,21 +4784,24 @@ MonoBehaviour:
   _amountText: {fileID: 5183609687446117822}
   _cursorPoint: {fileID: 0}
   _bookmarkIcon: {fileID: 4213591457698298611}
-  _stateIndicator: {fileID: 6173603391906636667}
-  stateBoxSprites:
-  - isTransparent: 0
-    type: 0
-    boxSprites:
+  _conditionIndicator: {fileID: 6173603391906636667}
+  _conditionSprites:
+  - _type: 0
+    _sprites:
     - {fileID: 953033817, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 1426449461, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 1807355862, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  - isTransparent: 0
-    type: 1
-    boxSprites:
+  - _type: 1
+    _sprites:
     - {fileID: 1619307443, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 55543271, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - {fileID: 671901877, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-  stateBoxImages:
+  - _type: 2
+    _sprites:
+    - {fileID: -453827715, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 237819038, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - {fileID: 1903159989, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  _conditionBoxes:
   - {fileID: 7991462676038903843}
   - {fileID: 7200105683619673443}
 --- !u!1001 &4277271066020168953

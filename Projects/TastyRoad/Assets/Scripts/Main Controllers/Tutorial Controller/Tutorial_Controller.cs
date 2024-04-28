@@ -17,7 +17,7 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private TextMeshProUGUI _explanationText;
     [SerializeField] private TextMeshProUGUI _pageNumText;
 
-    private List<Tutorial_ScrObj> _shownTutorials = new();
+    private List<int> _showntutorialIDs = new();
 
     private Tutorial_ScrObj _currentTutorial;
     private int _currentArrayNum;
@@ -84,28 +84,14 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        List<int> tutorialIDs = new();
-
-        for (int i = 0; i < _shownTutorials.Count; i++)
-        {
-            if (_shownTutorials[i] == null) continue;
-
-            tutorialIDs.Add(_shownTutorials[i].id);
-        }
-
-        ES3.Save("Tutorial_Controller/tutorialIDs", tutorialIDs);
+        ES3.Save("Tutorial_Controller/_showntutorialIDs", _showntutorialIDs);
     }
 
     public void Load_Data()
     {
-        List<int> tutorialIDs = new();
+        _showntutorialIDs = ES3.Load("Tutorial_Controller/_showntutorialIDs", _showntutorialIDs);
 
-        tutorialIDs = ES3.Load("Tutorial_Controller/tutorialIDs", tutorialIDs);
-
-        for (int i = 0; i < tutorialIDs.Count; i++)
-        {
-            _shownTutorials.Add(Tutorial_ScrObj(tutorialIDs[i]));
-        }
+        Refresh_ShowTutorialIDs();
     }
 
 
@@ -129,11 +115,11 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     // Check
     public bool Tutorial_Shown(Tutorial_ScrObj tutorial)
     {
-        if (_tutorialSystemActive) return true;
+        if (_tutorialSystemActive == false) return true;
 
-        for (int i = 0; i < _shownTutorials.Count; i++)
+        for (int i = 0; i < _showntutorialIDs.Count; i++)
         {
-            if (tutorial != _shownTutorials[i]) continue;
+            if (tutorial.id != _showntutorialIDs[i]) continue;
             return true;
         }
 
@@ -147,7 +133,7 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
     {
         if (Tutorial_Shown(tutorial) == false)
         {
-            _shownTutorials.Add(tutorial);
+            _showntutorialIDs.Add(tutorial.id);
         }
 
         // input system control
@@ -196,5 +182,20 @@ public class Tutorial_Controller : MonoBehaviour, ISaveLoadable
 
         // panel off
         _tutorialPanel.SetActive(false);
+    }
+
+
+
+    /// <summary>
+    /// remove saved shown tutorial ids that are updated
+    /// </summary>
+    private void Refresh_ShowTutorialIDs()
+    {
+        for (int i = _showntutorialIDs.Count - 1; i >= 0; i--)
+        {
+            if (Tutorial_ScrObj(_showntutorialIDs[i]) != null) continue;
+
+            _showntutorialIDs.RemoveAt(i);
+        }
     }
 }

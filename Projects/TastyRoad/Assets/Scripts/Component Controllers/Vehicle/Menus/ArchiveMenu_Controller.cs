@@ -280,9 +280,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Ingredient Bubble Control
     private void IngredientBubble_Toggle()
     {
+        // check if curosr has item
         ItemSlot_Cursor cursor = _controller.cursor;
         if (cursor.data.hasItem == false) return;
 
+        // toggle on off
         if (_ingredientBubble.activeSelf)
         {
             _ingredientBubble.SetActive(false);
@@ -292,17 +294,12 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         IngredientBubble_UpdatePosition();
         _ingredientBubble.SetActive(true);
 
+        // update bubble
         Food_ScrObj currentFood = cursor.data.currentFood;
 
         Food_ScrObj ingredient1 = currentFood.ingredients[0].foodScrObj;
         _ingredientIcon1.Assign_Item(ingredient1);
         _ingredientIcon1.Assign_State(currentFood.ingredients[0].conditionDatas);
-
-        if (currentFood.ingredients.Count <= 1)
-        {
-            _ingredientBubble.SetActive(false);
-            return;
-        }
 
         Food_ScrObj ingredient2 = currentFood.ingredients[1].foodScrObj;
         _ingredientIcon2.Assign_Item(ingredient2);
