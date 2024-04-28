@@ -200,8 +200,6 @@ public class ItemSlot : MonoBehaviour
     }
     public void Assign_State(List<FoodCondition_Data> conditionData)
     {
-        if (conditionData.Count <= 0) return;
-
         _conditionIndicator.SetActive(true);
 
         for (int i = 0; i < _conditionBoxes.Length; i++)

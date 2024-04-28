@@ -35,7 +35,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnCursor_Input += IngredientBubble_UpdatePosition;
 
-        _controller.OnOption1_Input += IngredientBubble_Toggle;
         _controller.OnOption2_Input += CurrentFood_BookmarkToggle;
 
     }
@@ -54,7 +53,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnCursor_Input -= IngredientBubble_UpdatePosition;
 
-        _controller.OnOption1_Input -= IngredientBubble_Toggle;
         _controller.OnOption2_Input -= CurrentFood_BookmarkToggle;
     }
 
@@ -135,6 +133,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.data.bookMarked = currentSlot.data.bookMarked;
 
         currentSlot.Empty_ItemBox();
+
+        IngredientBubble_Toggle(true);
     }
 
     private void Drag_Cancel()
@@ -145,6 +145,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         AddFoodto_EmptySlot(cursor.data.currentFood);
         cursor.Empty_Item();
+
+        IngredientBubble_Toggle(false);
     }
 
     //
@@ -157,6 +159,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_BookMark(cursor.data.bookMarked);
 
         cursor.Empty_Item();
+
+        IngredientBubble_Toggle(false);
     }
 
     //
@@ -173,6 +177,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         currentSlot.Assign_Item(cursorFood);
         currentSlot.Toggle_BookMark(cursorBookMarked);
+
+        IngredientBubble_Toggle(true);
     }
 
 
@@ -278,14 +284,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Ingredient Bubble Control
-    private void IngredientBubble_Toggle()
+    private void IngredientBubble_Toggle(bool toggleOn)
     {
-        // check if curosr has item
-        ItemSlot_Cursor cursor = _controller.cursor;
-        if (cursor.data.hasItem == false) return;
+        ItemSlot_Data cursorData = _controller.cursor.data;
 
-        // toggle on off
-        if (_ingredientBubble.activeSelf)
+        if (toggleOn == false || cursorData.hasItem == false)
         {
             _ingredientBubble.SetActive(false);
             return;
@@ -295,7 +298,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _ingredientBubble.SetActive(true);
 
         // update bubble
-        Food_ScrObj currentFood = cursor.data.currentFood;
+        Food_ScrObj currentFood = cursorData.currentFood;
 
         Food_ScrObj ingredient1 = currentFood.ingredients[0].foodScrObj;
         _ingredientIcon1.Assign_Item(ingredient1);

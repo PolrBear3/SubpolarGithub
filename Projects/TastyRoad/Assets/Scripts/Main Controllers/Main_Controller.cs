@@ -48,6 +48,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
+
         LeanTween.alpha(_openingCurtain, 0f, 1f);
     }
 

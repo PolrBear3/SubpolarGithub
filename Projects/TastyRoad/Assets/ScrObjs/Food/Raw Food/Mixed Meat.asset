@@ -19,13 +19,11 @@ MonoBehaviour:
   id: 50574
   price: 0
   ingredients:
-  - foodScrObj: {fileID: 11400000, guid: 861a45623bd8946e5bade040b7c65e72, type: 2}
-    currentAmount: 0
-    stateData:
-    - stateType: 0
-      stateLevel: 3
-  - foodScrObj: {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
-    currentAmount: 0
-    stateData:
-    - stateType: 0
-      stateLevel: 3
+  - _foodScrObj: {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
+    _conditionDatas:
+    - type: 0
+      level: 3
+  - _foodScrObj: {fileID: 11400000, guid: 861a45623bd8946e5bade040b7c65e72, type: 2}
+    _conditionDatas:
+    - type: 0
+      level: 3
