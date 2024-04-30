@@ -13,3 +13,13 @@ myInts.Sort((x, y) => x.CompareTo(y));
 ```C#
 myInts.Sort((x, y) => y.CompareTo(x));
 ```
+
+### Going through list +1 inside list length boundary
+```C#
+private List<Item> _items;
+private Item currentItem;
+
+private int currentArrayNum;
+
+currentItem = _items[(currentArrayNum + 1) % _items.Length];
+```

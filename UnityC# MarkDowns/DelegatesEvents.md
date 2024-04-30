@@ -29,6 +29,13 @@ private void OnDisable()
     onEvent -= Function;
 }
 
+// always unsubscribe on destroy for reload scene
+private void OnDestroy()
+{
+    // unsubscribe
+    onEvent -= Function;
+}
+
 //
 private void Function()
 {

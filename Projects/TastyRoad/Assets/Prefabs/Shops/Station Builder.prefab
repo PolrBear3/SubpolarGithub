@@ -191,7 +191,7 @@ SpriteRenderer:
   m_SortingLayerID: 1908127167
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -820203131, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  m_Sprite: {fileID: 1200724779, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
   m_FlipX: 0
   m_FlipY: 0
@@ -455,6 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultAnimation: 
 --- !u!114 &2405579206946829032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,9 +474,9 @@ MonoBehaviour:
   _hoverControlKeys: {fileID: 6887059880569602168}
   _hoveringStationSR: {fileID: 1043240750486481229}
   _hoveringStationAnim: {fileID: 6648562143448693815}
-  _menuIcon: {fileID: 2084686620, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
-  _cancelIcon: {fileID: 793991438, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
-  _collectIcon: {fileID: -820203131, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  _menuIcon: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+  _cancelIcon: {fileID: -242371015, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+  _collectIcon: {fileID: 1200724779, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
   _priceIndicator: {fileID: 1352480243999594423}
   _priceText: {fileID: 8674638077791941632}
 --- !u!1 &4394495175675471820
@@ -733,7 +734,7 @@ PrefabInstance:
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2084686620, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+      objectReference: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
