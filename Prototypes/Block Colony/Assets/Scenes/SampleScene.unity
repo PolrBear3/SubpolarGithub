@@ -434,9 +434,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1438864658}
-        m_TargetAssemblyTypeName: CardsController, Assembly-CSharp
-        m_MethodName: DrawCard_fromDeck
+      - m_Target: {fileID: 501426729}
+        m_TargetAssemblyTypeName: MainController, Assembly-CSharp
+        m_MethodName: NextTurn_Invoke
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2389,6 +2389,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2cb94d787af1140a39b8175dbc1f734f, type: 2}
   - {fileID: 11400000, guid: f25719a138a904d5a8d272cdc770d15b, type: 2}
   - {fileID: 11400000, guid: fffccb166cd7a40dab54611da9596407, type: 2}
+  - {fileID: 11400000, guid: 80568cd98a75d44cea99f7fceaef361f, type: 2}
 --- !u!4 &1225799719
 Transform:
   m_ObjectHideFlags: 0
@@ -2857,6 +2858,7 @@ MonoBehaviour:
   - {fileID: 2800851}
   - {fileID: 1141131185}
   - {fileID: 1508800231}
+  _deckCountText: {fileID: 1504368693}
 --- !u!1 &1439057257
 GameObject:
   m_ObjectHideFlags: 0
@@ -3122,7 +3124,7 @@ GameObject:
   - component: {fileID: 1504368694}
   - component: {fileID: 1504368693}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Card Amount Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3144,7 +3146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26, y: 0}
+  m_AnchoredPosition: {x: 60, y: -5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1504368693
@@ -3167,7 +3169,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Deck Card Count
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

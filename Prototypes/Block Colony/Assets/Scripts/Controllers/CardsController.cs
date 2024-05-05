@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CardsController : MonoBehaviour
 {
@@ -17,15 +18,34 @@ public class CardsController : MonoBehaviour
     private List<CardScrObj> _deckCards = new();
     private List<Card> _drawnCards = new();
 
+    [Header("")]
+    [SerializeField] private TextMeshProUGUI _deckCountText;
+
+
+    // UnityEngine
+    private void Start()
+    {
+        DeckCount_TextUpdate();
+    }
+
 
     // Deck Control
     public void AddCard_toDeck()
     {
         _deckCards.Add(_main.data.Card_ScrObj());
+
+        DeckCount_TextUpdate();
     }
     public void AddCard_toDeck(CardScrObj addCard)
     {
         _deckCards.Add(addCard);
+
+        DeckCount_TextUpdate();
+    }
+
+    private void DeckCount_TextUpdate()
+    {
+        _deckCountText.text = _deckCards.Count.ToString();
     }
 
 
@@ -55,6 +75,8 @@ public class CardsController : MonoBehaviour
             // remove card on top of the deck
             _deckCards.RemoveAt(_deckCards.Count - 1);
 
+            DeckCount_TextUpdate();
+
             return;
         }
     }
@@ -72,6 +94,7 @@ public class CardsController : MonoBehaviour
             _snapPoints[i].Set_CurrentCard(_drawnCards[i]);
         }
     }
+
 
     public void Remove_DrawnCard(Card removeCard)
     {

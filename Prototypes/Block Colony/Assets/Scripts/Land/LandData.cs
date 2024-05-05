@@ -13,11 +13,32 @@ public class LandData
     [SerializeField] private int _population;
     public int population => _population;
 
+    [SerializeField] private List<GameObject> _landBuffPrefabs = new();
+    public List<GameObject> landBuffPrefabs => _landBuffPrefabs;
+
 
     // Constructors
     public LandData(LandType type)
     {
         _type = type;
         _population = 1;
+    }
+
+
+    // Functions
+    public void Update_Population(int updateAmount)
+    {
+        _population += updateAmount;
+    }
+
+
+    public void Add_LandBuff(GameObject buffPrefab)
+    {
+        _landBuffPrefabs.Add(buffPrefab);
+    }
+
+    public void Clear_LandBuffs()
+    {
+        _landBuffPrefabs.Clear();
     }
 }

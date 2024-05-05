@@ -9,6 +9,8 @@ public interface ISnapPointInteractable
 
 public class Land_SnapPoint : MonoBehaviour
 {
+    private BoxCollider2D _bc;
+
     private MainController _main;
 
     private SnapPointData _currentData;
@@ -18,6 +20,7 @@ public class Land_SnapPoint : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
+        _bc = gameObject.GetComponent<BoxCollider2D>();
         _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<MainController>();
     }
 
@@ -34,6 +37,12 @@ public class Land_SnapPoint : MonoBehaviour
         if (!cursor.dragCardGameObject.TryGetComponent(out ISnapPointInteractable interactable)) return;
 
         interactable.Interact();
+
+        // card
+        cursor.dragCard.Use();
+
+        // cursor
+        cursor.Clear_Card();
     }
 
     public void OnPointerEnter()
@@ -44,6 +53,12 @@ public class Land_SnapPoint : MonoBehaviour
     public void OnPointerExit()
     {
         _main.cursor.Update_HoverObject(null);
+    }
+
+
+    public void BoxCollider_Toggle(bool toggleOn)
+    {
+        _bc.enabled = toggleOn;
     }
 
 

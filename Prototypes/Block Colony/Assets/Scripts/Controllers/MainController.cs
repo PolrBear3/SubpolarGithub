@@ -19,10 +19,21 @@ public class MainController : MonoBehaviour
     public Land_SnapPoint[] snapPoints => _snapPoints;
 
 
+    public delegate void Event();
+    public event Event NextTurn;
+
+
     // UnityEngine
     private void Start()
     {
         Set_SnapPoint_Datas();
+
+        for (int i = 0; i < 6; i++)
+        {
+            cards.AddCard_toDeck();
+
+            _cards.DrawCard_fromDeck();
+        }
     }
 
 
@@ -46,5 +57,14 @@ public class MainController : MonoBehaviour
             xCount = 0;
             yCount++;
         }
+    }
+
+
+    // Turn Control
+    public void NextTurn_Invoke()
+    {
+        NextTurn?.Invoke();
+
+        _cards.DrawCard_fromDeck();
     }
 }

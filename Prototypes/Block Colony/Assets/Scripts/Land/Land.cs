@@ -27,6 +27,13 @@ public class Land : MonoBehaviour, ISnapPointInteractable
     private void Start()
     {
         Set_CurrentData(_setData);
+
+        _main.NextTurn += Activate_LandBuffs;
+    }
+
+    private void OnDestroy()
+    {
+        _main.NextTurn -= Activate_LandBuffs;
     }
 
 
@@ -38,7 +45,31 @@ public class Land : MonoBehaviour, ISnapPointInteractable
 
     public void OnPointerClick()
     {
+        Cursor cursor = _main.cursor;
 
+        // if card not dragging, return
+        if (!cursor.isDragging) return;
+
+        // get cursor gameobject > get ISnapPointInteractable
+        if (!cursor.dragCardGameObject.TryGetComponent(out ILandInteractable interactable)) return;
+
+        interactable.Interact();
+
+        // card
+        cursor.dragCard.Use();
+
+        // cursor
+        cursor.Clear_Card();
+    }
+
+    public void OnPointerEnter()
+    {
+        _main.cursor.Update_HoverObject(gameObject);
+    }
+
+    public void OnPointerExit()
+    {
+        _main.cursor.Update_HoverObject(null);
     }
 
 
@@ -60,14 +91,24 @@ public class Land : MonoBehaviour, ISnapPointInteractable
 
         snapPoint.currentData.Update_CurrentLand(this);
 
+        // deactivate pointer enter exit event for snappoint
+        snapPoint.BoxCollider_Toggle(false);
+
         // set land on snappoint
         GameObject land = Instantiate(gameObject, snapPoint.transform.position, Quaternion.identity);
         land.transform.SetParent(snapPoint.transform);
+    }
 
-        // card
-        cursor.dragCard.Use();
 
-        // cursor
-        cursor.Clear_Card();
+    // Next Turn Events
+    private void Activate_LandBuffs()
+    {
+        for (int i = 0; i < _currentData.landBuffPrefabs.Count; i++)
+        {
+            if (!_currentData.landBuffPrefabs[i].TryGetComponent(out ILandInteractable interactable)) continue;
+            interactable.Interact();
+        }
+
+        _currentData.Clear_LandBuffs();
     }
 }
