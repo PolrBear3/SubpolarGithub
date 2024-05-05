@@ -59,9 +59,15 @@ public class Land : MonoBehaviour, ISnapPointInteractable
         Land_SnapPoint snapPoint = cursor.hoveringObject.GetComponent<Land_SnapPoint>();
 
         snapPoint.currentData.Update_CurrentLand(this);
-        Instantiate(gameObject, snapPoint.transform.position, Quaternion.identity);
 
-        // cursor update
+        // set land on snappoint
+        GameObject land = Instantiate(gameObject, snapPoint.transform.position, Quaternion.identity);
+        land.transform.SetParent(snapPoint.transform);
+
+        // card
+        cursor.dragCard.Use();
+
+        // cursor
         cursor.Clear_Card();
     }
 }

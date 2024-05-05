@@ -18,6 +18,8 @@ public class Card_SnapPoint : MonoBehaviour
         {
             _currentCard = null;
             _hasCard = false;
+
+            return;
         }
 
         _currentCard = setCard;

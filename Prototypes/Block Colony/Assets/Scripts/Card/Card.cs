@@ -27,7 +27,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
     // UnityEngine.EventSystems
     public void OnPointerClick(PointerEventData eventData)
     {
-        _main.cursor.Drag_Card(_currentData.scrObj.cardPrefab);
+        Drag();
     }
 
 
@@ -46,5 +46,40 @@ public class Card : MonoBehaviour, IPointerClickHandler
             _iconImage.color = Color.white;
         }
         else _iconImage.color = Color.clear;
+    }
+
+    public void Drag()
+    {
+        // if same card
+        if (_main.cursor.dragCard == this)
+        {
+            Return();
+            return;
+        }
+
+        // if another card dragging
+        if (_main.cursor.isDragging)
+        {
+            _main.cursor.dragCard.Return();
+        }
+
+        // get this current card's prefab
+        _main.cursor.Drag_Card(this);
+
+        // selected animation
+        LeanTween.moveLocal(gameObject, new Vector2(transform.localPosition.x, transform.localPosition.y + 25f), 0.1f);
+    }
+
+    public void Return()
+    {
+        _main.cursor.Clear_Card();
+
+        // selected animation
+        LeanTween.moveLocal(gameObject, new Vector2(transform.localPosition.x, transform.localPosition.y - 25f), 0.1f);
+    }
+
+    public void Use()
+    {
+        _main.cards.Remove_DrawnCard(this);
     }
 }

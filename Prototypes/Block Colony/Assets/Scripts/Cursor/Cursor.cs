@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Cursor : MonoBehaviour
 {
+    private Card _dragCard;
+    public Card dragCard => _dragCard;
+
     private GameObject _dragCardGameObject;
     public GameObject dragCardGameObject => _dragCardGameObject;
 
@@ -14,25 +17,30 @@ public class Cursor : MonoBehaviour
     public bool isDragging => _isDragging;
 
 
-    // Hover
+    // Hover Update
     public void Update_HoverObject(GameObject hoverObject)
     {
         _hoveringObject = hoverObject;
     }
 
-    // Drag
-    public void Drag_Card(GameObject dragCardPrefab)
-    {
-        GameObject spawnedPrefab = Instantiate(dragCardPrefab, transform.position, Quaternion.identity);
 
+    // Drag
+    public void Drag_Card(Card dragCard)
+    {
+        GameObject spawnedPrefab = Instantiate(dragCard.currentData.scrObj.cardPrefab, transform.position, Quaternion.identity);
+
+        _dragCard = dragCard;
         _dragCardGameObject = spawnedPrefab;
+
         _isDragging = true;
     }
 
     // Drop
     public void Drop_Card()
     {
+        _dragCard = null;
         _dragCardGameObject = null;
+
         _isDragging = false;
     }
 

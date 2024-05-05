@@ -33,7 +33,7 @@ public class CardsController : MonoBehaviour
     }
 
 
-    //
+    // All Card Control Functions
     private void DrawCard_toEmpty(CardScrObj cardScrObj)
     {
         for (int i = 0; i < _snapPoints.Length; i++)
@@ -56,5 +56,27 @@ public class CardsController : MonoBehaviour
 
             return;
         }
+    }
+
+    private void Reorder_DrawnCards()
+    {
+        for (int i = 0; i < _snapPoints.Length; i++)
+        {
+            if (i > _drawnCards.Count - 1)
+            {
+                _snapPoints[i].Set_CurrentCard(null);
+                continue;
+            }
+
+            _snapPoints[i].Set_CurrentCard(_drawnCards[i]);
+        }
+    }
+
+    public void Remove_DrawnCard(Card removeCard)
+    {
+        _drawnCards.Remove(removeCard);
+        Destroy(removeCard.gameObject);
+
+        Reorder_DrawnCards();
     }
 }
