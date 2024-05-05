@@ -18,24 +18,22 @@ public class CardsController : MonoBehaviour
     private List<Card> _drawnCards = new();
 
 
-    // UnityEngine
-    private void Start()
+    // Deck Control
+    public void AddCard_toDeck()
     {
-        _main.TestEvent += Draw_RandomCard;
+        _deckCards.Add(_main.data.Card_ScrObj());
+    }
+    public void AddCard_toDeck(CardScrObj addCard)
+    {
+        _deckCards.Add(addCard);
     }
 
 
-    // test button
-    private void Draw_RandomCard()
+    // Draw Card Control
+    public void DrawCard_fromDeck()
     {
-        CardScrObj randCard = _main.data.Card_ScrObj();
-        DrawCard_toEmpty(randCard);
-    }
+        if (_deckCards.Count <= 0) return;
 
-
-    // All Card Control Functions
-    private void DrawCard_toEmpty(CardScrObj cardScrObj)
-    {
         for (int i = 0; i < _snapPoints.Length; i++)
         {
             if (_snapPoints[i].hasCard) continue;
@@ -43,7 +41,7 @@ public class CardsController : MonoBehaviour
             GameObject spawnCard = Instantiate(_main.data.cardPrefab, _spawnPoint);
 
             Card card = spawnCard.GetComponent<Card>();
-            CardData cardData = new(cardScrObj);
+            CardData cardData = new(_deckCards[_deckCards.Count - 1]);
 
             // new data set to drawn card
             card.Set_CurrentData(cardData);
@@ -53,6 +51,9 @@ public class CardsController : MonoBehaviour
 
             // controller data update
             _drawnCards.Add(card);
+
+            // remove card on top of the deck
+            _deckCards.RemoveAt(_deckCards.Count - 1);
 
             return;
         }

@@ -18,9 +18,6 @@ public class MainController : MonoBehaviour
     [SerializeField] private Land_SnapPoint[] _snapPoints;
     public Land_SnapPoint[] snapPoints => _snapPoints;
 
-    public delegate void Event();
-    public event Event TestEvent;
-
 
     // UnityEngine
     private void Start()
@@ -49,12 +46,5 @@ public class MainController : MonoBehaviour
             xCount = 0;
             yCount++;
         }
-    }
-
-
-    //
-    public void TestButton_Invoke()
-    {
-        TestEvent?.Invoke();
     }
 }
