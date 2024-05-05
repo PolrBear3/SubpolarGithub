@@ -16,6 +16,10 @@ public class DataController : MonoBehaviour
     public CardScrObj[] allCardScrObj => _allCardScrObjs;
 
 
+    //
+
+
+
     /// <returns>
     /// A Random Card ScrObj
     /// </returns>

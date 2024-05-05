@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class Card : MonoBehaviour, IPointerClickHandler
 {
+    private MainController _main;
+
     [Header("")]
     private Image _cardImage;
     [SerializeField] private Image _iconImage;
@@ -17,6 +19,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
     // UnityEngine
     private void Awake()
     {
+        _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<MainController>();
         _cardImage = gameObject.GetComponent<Image>();
     }
 
@@ -24,7 +27,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
     // UnityEngine.EventSystems
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        _main.cursor.Drag_Card(_currentData.scrObj.cardPrefab);
     }
 
 

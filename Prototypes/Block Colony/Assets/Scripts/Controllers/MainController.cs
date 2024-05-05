@@ -8,6 +8,12 @@ public class MainController : MonoBehaviour
     [SerializeField] private DataController _data;
     public DataController data => _data;
 
+    [SerializeField] private CardsController _cards;
+    public CardsController cards => _cards;
+
+    [SerializeField] private Cursor _cursor;
+    public Cursor cursor => _cursor;
+
     [Header("")]
     [SerializeField] private Land_SnapPoint[] _snapPoints;
     public Land_SnapPoint[] snapPoints => _snapPoints;

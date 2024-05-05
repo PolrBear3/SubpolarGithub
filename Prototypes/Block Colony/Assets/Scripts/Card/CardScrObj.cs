@@ -13,4 +13,6 @@ public class CardScrObj : ScriptableObject
 
     [TextArea(3, 10)]
     public string description;
+
+    public GameObject cardPrefab;
 }

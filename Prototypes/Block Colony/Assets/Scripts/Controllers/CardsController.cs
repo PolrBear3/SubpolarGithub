@@ -15,7 +15,7 @@ public class CardsController : MonoBehaviour
     public Card_SnapPoint[] snapPoints => _snapPoints;
 
     private List<CardScrObj> _deckCards = new();
-    private List<Card> _handCards = new();
+    private List<Card> _drawnCards = new();
 
 
     // UnityEngine
@@ -31,6 +31,7 @@ public class CardsController : MonoBehaviour
         CardScrObj randCard = _main.data.Card_ScrObj();
         DrawCard_toEmpty(randCard);
     }
+
 
     //
     private void DrawCard_toEmpty(CardScrObj cardScrObj)
@@ -51,7 +52,7 @@ public class CardsController : MonoBehaviour
             _snapPoints[i].Set_CurrentCard(card);
 
             // controller data update
-            _handCards.Add(card);
+            _drawnCards.Add(card);
 
             return;
         }
