@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+public interface IInteractCheck
+{
+    bool InteractAvailable();
+}
+
 public class MainController : MonoBehaviour
 {
     private CurrentGameData _gameData = new();
@@ -30,12 +35,22 @@ public class MainController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _updatePopulationText;
 
 
+    [Header("New Game Data")]
+    [SerializeField] private int _startingCardAmount;
+
+
     // UnityEngine
     private void Start()
     {
         Set_SnapPoint_Datas();
 
-        CurrentPopulation_TextUpdate();
+        // new game
+
+        // set land on random point
+        Set_StartingLand();
+
+        // start with _startingCardAmount of land cards in deck
+        _cards.AddCard_toDeck(_data.AllLandCard_ScrObjs(_startingCardAmount));
     }
 
 
@@ -52,6 +67,35 @@ public class MainController : MonoBehaviour
         return null;
     }
 
+
+    public List<Land> CrossSurrounding_Lands(Land_SnapPoint snapPoint)
+    {
+        Vector2 gridSize = _snapPoints[_snapPoints.Length - 1].currentData.gridNum;
+        List<Land> surroundingLands = new();
+
+        float[] xOffset = { -1, 0, 1, 0 };
+        float[] yOffset = { 0, 1, 0, -1 };
+
+        for (int i = 0; i < xOffset.Length; i++)
+        {
+            float xNum = snapPoint.currentData.gridNum.x + xOffset[i];
+            float yNum = snapPoint.currentData.gridNum.y + yOffset[i];
+
+            // check if grid is inside grid
+            if (xNum < 0 && xNum > gridSize.x) continue;
+            if (yNum < 0 && yNum > gridSize.y) continue;
+
+            Land searchLand = Get_Land(new Vector2(xNum, yNum));
+
+            // check if land exists
+            if (searchLand == null) continue;
+
+            // condition success
+            surroundingLands.Add(searchLand);
+        }
+
+        return surroundingLands;
+    }
     public List<Land> CrossSurrounding_Lands(Land land)
     {
         Vector2 gridSize = _snapPoints[_snapPoints.Length - 1].currentData.gridNum;
@@ -104,7 +148,24 @@ public class MainController : MonoBehaviour
         }
     }
 
+    private void Set_StartingLand()
+    {
+        Land_SnapPoint randSnapPoint = _snapPoints[Random.Range(0, _snapPoints.Length)];
 
+        GameObject spawn = Instantiate(_data.landPrefab, randSnapPoint.transform.position, Quaternion.identity);
+        Land spawnLand = spawn.GetComponent<Land>();
+
+        spawnLand.Set_CurrentData(new LandData(randSnapPoint, LandType.plain));
+        randSnapPoint.currentData.Update_CurrentLand(spawnLand);
+
+        spawn.transform.SetParent(randSnapPoint.transform);
+
+        // current population update
+        Update_UpdatePopulation();
+    }
+
+
+    // Current Game Data Population control
     /// <summary>
     /// Calculates all current land populations
     /// </summary>
@@ -131,7 +192,11 @@ public class MainController : MonoBehaviour
 
         CurrentPopulation_TextUpdate();
     }
-
+    public void Update_OverallPopulation(int updateAmount)
+    {
+        _gameData.overallPopulation += updateAmount;
+        CurrentPopulation_TextUpdate();
+    }
 
     public void CurrentPopulation_TextUpdate()
     {
@@ -140,7 +205,7 @@ public class MainController : MonoBehaviour
     }
 
 
-    // Current Placed Land Control
+    // Land Control
     private void Activate_LandEvents()
     {
         for (int i = 0; i < _snapPoints.Length; i++)
@@ -176,11 +241,12 @@ public class MainController : MonoBehaviour
         Activate_LandEvents();
         NegativePopulation_LandEvents();
 
-        // population calculation update
+        // population
         Update_UpdatePopulation();
         Update_OverallPopulation();
 
-        // draw card
+        // current cards control
+        _cards.ReturnDrawnCards_toDeck();
         _cards.DrawCard_fromDeck(6);
 
         //

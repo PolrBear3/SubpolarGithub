@@ -33,12 +33,16 @@ public class Land_SnapPoint : MonoBehaviour
         // get cursor gameobject > get ISnapPointInteractable
         if (!cursor.dragCardGameObject.TryGetComponent(out ISnapPointInteractable interactable)) return;
 
+        // check if interact available
+        if (cursor.dragCardGameObject.TryGetComponent(out IInteractCheck check))
+        {
+            if (check.InteractAvailable() == false) return;
+        }
+
         interactable.Interact();
 
-        // card
-        cursor.dragCard.Use();
-
         // cursor
+        cursor.dragCard.Use();
         cursor.Clear_Card();
     }
 

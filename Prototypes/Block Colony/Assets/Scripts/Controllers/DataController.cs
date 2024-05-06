@@ -15,25 +15,47 @@ public class DataController : MonoBehaviour
     [SerializeField] private CardScrObj[] _allCardScrObjs;
     public CardScrObj[] allCardScrObj => _allCardScrObjs;
 
+    [SerializeField] private CardScrObj[] _allLandCardsScrObj;
+    public CardScrObj[] allLandCardsScrObj => _allLandCardsScrObj;
 
-    /// <returns>
-    /// A Random Card ScrObj
-    /// </returns>
-    public CardScrObj Card_ScrObj()
+    [SerializeField] private CardScrObj[] _allBuffCardScrObjs;
+    public CardScrObj[] allBuffCardScrObjs => _allBuffCardScrObjs;
+
+
+    // Get Cards
+    public List<CardScrObj> AllCard_ScrObjs(int amount)
     {
-        return _allCardScrObjs[Random.Range(0, _allCardScrObjs.Length)];
+        List<CardScrObj> allCards = new();
+
+        for (int i = 0; i < amount; i++)
+        {
+            allCards.Add(_allCardScrObjs[Random.Range(0, _allCardScrObjs.Length)]);
+        }
+
+        return allCards;
     }
 
-    /// <returns>
-    /// A Card ScrObj according to id
-    /// </returns>
-    public CardScrObj Card_ScrObj(int id)
+    public List<CardScrObj> AllLandCard_ScrObjs(int amount)
     {
-        for (int i = 0; i < _allCardScrObjs.Length; i++)
+        List<CardScrObj> allCards = new();
+
+        for (int i = 0; i < amount; i++)
         {
-            if (_allCardScrObjs[i].id != id) continue;
-            return _allCardScrObjs[i];
+            allCards.Add(_allLandCardsScrObj[Random.Range(0, _allLandCardsScrObj.Length)]);
         }
-        return null;
+
+        return allCards;
+    }
+
+    public List<CardScrObj> AllBuffCard_ScrObjs(int amount)
+    {
+        List<CardScrObj> allCards = new();
+
+        for (int i = 0; i < amount; i++)
+        {
+            allCards.Add(_allBuffCardScrObjs[Random.Range(0, _allBuffCardScrObjs.Length)]);
+        }
+
+        return allCards;
     }
 }

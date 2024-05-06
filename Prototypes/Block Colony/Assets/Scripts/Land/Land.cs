@@ -12,7 +12,7 @@ public interface ILandEventable
     void Activate();
 }
 
-public class Land : MonoBehaviour, ISnapPointInteractable
+public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
 {
     private MainController _main;
     public MainController main => _main;
@@ -31,12 +31,27 @@ public class Land : MonoBehaviour, ISnapPointInteractable
     }
 
 
-    // ISnapPointInteractable and EventTrigger
+    // ISnapPointInteractable
     public void Interact()
     {
         Place_CurrentLand();
     }
 
+    public bool InteractAvailable()
+    {
+        MainController main = GameObject.FindGameObjectWithTag("MainController").GetComponent<MainController>();
+
+        Cursor cursor = main.cursor;
+        Land_SnapPoint cursorSnapPoint = cursor.hoveringObject.GetComponent<Land_SnapPoint>();
+
+        // check if there are surrounding lands on current snappoint
+        if (main.CrossSurrounding_Lands(cursorSnapPoint).Count <= 0) return false;
+
+        return true;
+    }
+
+
+    // EventTrigger
     public void OnPointerClick()
     {
         Cursor cursor = _main.cursor;
@@ -46,6 +61,12 @@ public class Land : MonoBehaviour, ISnapPointInteractable
 
         // activate buff interactable
         if (!cursor.dragCardGameObject.TryGetComponent(out ILandInteractable interactable)) return;
+
+        // check if interact available
+        if (cursor.dragCardGameObject.TryGetComponent(out IInteractCheck check))
+        {
+            if (check.InteractAvailable() == false) return;
+        }
 
         interactable.Interact();
 
@@ -92,8 +113,5 @@ public class Land : MonoBehaviour, ISnapPointInteractable
 
         // current population update
         _main.Update_UpdatePopulation();
-
-        // land find check
-        _main.CrossSurrounding_Lands(spawnLand);
     }
 }

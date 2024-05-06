@@ -21,6 +21,14 @@ public class CardsController : MonoBehaviour
     [Header("")]
     [SerializeField] private TextMeshProUGUI _deckCountText;
 
+    [Header("")]
+    [SerializeField] [Range(0, 10)] private int _randCardPrice;
+    [SerializeField] [Range(0, 10)] private int _landCardPrice;
+    [SerializeField] [Range(0, 10)] private int _buffCardPrice;
+
+    [Header("")]
+    [SerializeField] [Range(0, 10)] private int _cardBundleAmount;
+
 
     // UnityEngine
     private void Start()
@@ -30,29 +38,51 @@ public class CardsController : MonoBehaviour
 
 
     // Deck Control
-    public void AddCard_toDeck()
-    {
-        _deckCards.Add(_main.data.Card_ScrObj());
-
-        DeckCount_TextUpdate();
-    }
-    public void AddCard_toDeck(int addAmount)
-    {
-        for (int i = 0; i < addAmount; i++)
-        {
-            AddCard_toDeck();
-        }
-    }
     public void AddCard_toDeck(CardScrObj addCard)
     {
         _deckCards.Add(addCard);
-
         DeckCount_TextUpdate();
+    }
+    public void AddCard_toDeck(List<CardScrObj> addCards)
+    {
+        for (int i = 0; i < addCards.Count; i++)
+        {
+            AddCard_toDeck(addCards[i]);
+        }
     }
 
     private void DeckCount_TextUpdate()
     {
         _deckCountText.text = _deckCards.Count.ToString();
+    }
+
+
+    // Shop
+    public void Buy_RandomCard()
+    {
+        if (_main.gameData.overallPopulation < _randCardPrice) return;
+
+        AddCard_toDeck(_main.data.AllCard_ScrObjs(_cardBundleAmount));
+
+        _main.Update_OverallPopulation(-_randCardPrice);
+    }
+
+    public void Buy_LandCard()
+    {
+        if (_main.gameData.overallPopulation < _landCardPrice) return;
+
+        AddCard_toDeck(_main.data.AllLandCard_ScrObjs(_cardBundleAmount));
+
+        _main.Update_OverallPopulation(-_landCardPrice);
+    }
+
+    public void Buy_BuffCard()
+    {
+        if (_main.gameData.overallPopulation < _buffCardPrice) return;
+
+        AddCard_toDeck(_main.data.AllBuffCard_ScrObjs(_cardBundleAmount));
+
+        _main.Update_OverallPopulation(-_buffCardPrice);
     }
 
 
@@ -67,8 +97,10 @@ public class CardsController : MonoBehaviour
 
             GameObject spawnCard = Instantiate(_main.data.cardPrefab, _spawnPoint);
 
+            int randCardArrayNum = Random.Range(0, _deckCards.Count - 1);
+
             Card card = spawnCard.GetComponent<Card>();
-            CardData cardData = new(_deckCards[_deckCards.Count - 1]);
+            CardData cardData = new(_deckCards[randCardArrayNum]);
 
             // new data set to drawn card
             card.Set_CurrentData(cardData);
@@ -80,7 +112,7 @@ public class CardsController : MonoBehaviour
             _drawnCards.Add(card);
 
             // remove card on top of the deck
-            _deckCards.RemoveAt(_deckCards.Count - 1);
+            _deckCards.RemoveAt(randCardArrayNum);
 
             DeckCount_TextUpdate();
 
@@ -95,6 +127,25 @@ public class CardsController : MonoBehaviour
         }
     }
 
+    public void Remove_DrawnCard(Card removeCard)
+    {
+        _drawnCards.Remove(removeCard);
+        Destroy(removeCard.gameObject);
+
+        Reorder_DrawnCards();
+    }
+
+
+    public void ReturnDrawnCards_toDeck()
+    {
+        for (int i = 0; i < _drawnCards.Count; i++)
+        {
+            AddCard_toDeck(_drawnCards[i].currentData.scrObj);
+            Remove_DrawnCard(_drawnCards[i]);
+        }
+    }
+
+
     private void Reorder_DrawnCards()
     {
         for (int i = 0; i < _snapPoints.Length; i++)
@@ -107,13 +158,5 @@ public class CardsController : MonoBehaviour
 
             _snapPoints[i].Set_CurrentCard(_drawnCards[i]);
         }
-    }
-
-    public void Remove_DrawnCard(Card removeCard)
-    {
-        _drawnCards.Remove(removeCard);
-        Destroy(removeCard.gameObject);
-
-        Reorder_DrawnCards();
     }
 }
