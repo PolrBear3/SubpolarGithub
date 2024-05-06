@@ -7,33 +7,27 @@ public interface ILandInteractable
     void Interact();
 }
 
+public interface ILandEventable
+{
+    void Activate();
+}
+
 public class Land : MonoBehaviour, ISnapPointInteractable
 {
     private MainController _main;
+    public MainController main => _main;
 
-    [SerializeField] private LandData _setData;
-    public LandData setData => _setData;
-
-    private LandData _currentData;
+    [SerializeField] private LandData _currentData;
     public LandData currentData => _currentData;
+
+    [SerializeField] private LandEvents _events;
+    public LandEvents events => _events;
 
 
     // UnityEngine
     private void Awake()
     {
         _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<MainController>();
-    }
-
-    private void Start()
-    {
-        Set_CurrentData(_setData);
-
-        _main.NextTurn += Activate_LandBuffs;
-    }
-
-    private void OnDestroy()
-    {
-        _main.NextTurn -= Activate_LandBuffs;
     }
 
 
@@ -50,15 +44,12 @@ public class Land : MonoBehaviour, ISnapPointInteractable
         // if card not dragging, return
         if (!cursor.isDragging) return;
 
-        // get cursor gameobject > get ISnapPointInteractable
+        // activate buff interactable
         if (!cursor.dragCardGameObject.TryGetComponent(out ILandInteractable interactable)) return;
 
         interactable.Interact();
 
-        // card
         cursor.dragCard.Use();
-
-        // cursor
         cursor.Clear_Card();
     }
 
@@ -73,7 +64,7 @@ public class Land : MonoBehaviour, ISnapPointInteractable
     }
 
 
-    // Set Functions
+    // Data Control
     public void Set_CurrentData(LandData setData)
     {
         _currentData = setData;
@@ -85,30 +76,24 @@ public class Land : MonoBehaviour, ISnapPointInteractable
     {
         MainController main = GameObject.FindGameObjectWithTag("MainController").GetComponent<MainController>();
 
-        // set current tile to snappoint
         Cursor cursor = main.cursor;
+        Land setLand = cursor.dragCardGameObject.GetComponent<Land>();
+
         Land_SnapPoint snapPoint = cursor.hoveringObject.GetComponent<Land_SnapPoint>();
 
-        snapPoint.currentData.Update_CurrentLand(this);
-
-        // deactivate pointer enter exit event for snappoint
-        snapPoint.BoxCollider_Toggle(false);
-
         // set land on snappoint
-        GameObject land = Instantiate(gameObject, snapPoint.transform.position, Quaternion.identity);
-        land.transform.SetParent(snapPoint.transform);
-    }
+        GameObject spawn = Instantiate(setLand.gameObject, snapPoint.transform.position, Quaternion.identity);
+        Land spawnLand = spawn.GetComponent<Land>();
 
+        spawnLand.Set_CurrentData(new LandData(snapPoint, _currentData.type));
+        snapPoint.currentData.Update_CurrentLand(spawnLand);
 
-    // Next Turn Events
-    private void Activate_LandBuffs()
-    {
-        for (int i = 0; i < _currentData.landBuffPrefabs.Count; i++)
-        {
-            if (!_currentData.landBuffPrefabs[i].TryGetComponent(out ILandInteractable interactable)) continue;
-            interactable.Interact();
-        }
+        spawn.transform.SetParent(snapPoint.transform);
 
-        _currentData.Clear_LandBuffs();
+        // current population update
+        _main.Update_UpdatePopulation();
+
+        // land find check
+        _main.CrossSurrounding_Lands(spawnLand);
     }
 }

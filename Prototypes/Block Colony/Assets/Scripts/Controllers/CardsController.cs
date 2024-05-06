@@ -36,6 +36,13 @@ public class CardsController : MonoBehaviour
 
         DeckCount_TextUpdate();
     }
+    public void AddCard_toDeck(int addAmount)
+    {
+        for (int i = 0; i < addAmount; i++)
+        {
+            AddCard_toDeck();
+        }
+    }
     public void AddCard_toDeck(CardScrObj addCard)
     {
         _deckCards.Add(addCard);
@@ -80,6 +87,13 @@ public class CardsController : MonoBehaviour
             return;
         }
     }
+    public void DrawCard_fromDeck(int drawAmount)
+    {
+        for (int i = 0; i < drawAmount; i++)
+        {
+            DrawCard_fromDeck();
+        }
+    }
 
     private void Reorder_DrawnCards()
     {
@@ -94,7 +108,6 @@ public class CardsController : MonoBehaviour
             _snapPoints[i].Set_CurrentCard(_drawnCards[i]);
         }
     }
-
 
     public void Remove_DrawnCard(Card removeCard)
     {

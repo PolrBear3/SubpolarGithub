@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Population_Increaser : MonoBehaviour, ILandInteractable
+public class LandEvent_Updater : MonoBehaviour, ILandInteractable
 {
     private MainController _main;
 
-    [SerializeField] private int _overallIncrease;
-    [SerializeField] private int _updateIncrease;
-
+    [SerializeField] private EventScrObj updateEventScrObj;
 
     // UnityEngine
     private void Awake()
@@ -21,6 +19,8 @@ public class Population_Increaser : MonoBehaviour, ILandInteractable
     public void Interact()
     {
         Land hoverLand = _main.cursor.hoveringObject.GetComponent<Land_SnapPoint>().currentData.currentLand;
-        hoverLand.currentData.Update_Population(_overallIncrease);
+        hoverLand.currentData.Update_Event(updateEventScrObj);
+
+        // update landSprite on hoverLand //
     }
 }

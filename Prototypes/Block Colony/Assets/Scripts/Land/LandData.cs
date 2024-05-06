@@ -7,38 +7,81 @@ public enum LandType { plain, water, desert, mountain }
 [System.Serializable]
 public class LandData
 {
+    [SerializeField] private Land_SnapPoint _snapPoint;
+    public Land_SnapPoint snapPoint => _snapPoint;
+
     [SerializeField] private LandType _type;
     public LandType type => _type;
 
     [SerializeField] private int _population;
     public int population => _population;
 
-    [SerializeField] private List<GameObject> _landBuffPrefabs = new();
-    public List<GameObject> landBuffPrefabs => _landBuffPrefabs;
+    [SerializeField] private int _bonusPopulation;
+    public int bonusPopulation => _bonusPopulation;
+
+    [SerializeField] private List<EventScrObj> _currentEvents = new();
+    public List<EventScrObj> currentEvents => _currentEvents;
 
 
     // Constructors
-    public LandData(LandType type)
+    public LandData(Land_SnapPoint setSnapPoint, LandType type)
     {
+        _snapPoint = setSnapPoint;
         _type = type;
+
         _population = 1;
+        _bonusPopulation = 0;
     }
 
 
-    // Functions
+    // Population Functions
     public void Update_Population(int updateAmount)
     {
         _population += updateAmount;
     }
 
-
-    public void Add_LandBuff(GameObject buffPrefab)
+    // for events
+    public void Update_BonusPopulation(int updateAmount)
     {
-        _landBuffPrefabs.Add(buffPrefab);
+        _population -= _bonusPopulation;
+
+        _bonusPopulation = updateAmount;
+
+        _population += _bonusPopulation;
     }
 
-    public void Clear_LandBuffs()
+
+    // Current Event Functions
+    public bool Has_Event(EventScrObj findEvent)
     {
-        _landBuffPrefabs.Clear();
+        for (int i = 0; i < _currentEvents.Count; i++)
+        {
+            if (findEvent != _currentEvents[i]) continue;
+            return true;
+        }
+        return false;
+    }
+
+    public int Event_Count(EventScrObj findEvent)
+    {
+        int findCount = 0;
+
+        for (int i = 0; i < _currentEvents.Count; i++)
+        {
+            if (findEvent != _currentEvents[i]) continue;
+            findCount++;
+        }
+        return findCount;
+    }
+
+
+    public void Update_Event(EventScrObj updateEvent)
+    {
+        _currentEvents.Add(updateEvent);
+    }
+
+    public void Clear_Events()
+    {
+        _currentEvents.Clear();
     }
 }

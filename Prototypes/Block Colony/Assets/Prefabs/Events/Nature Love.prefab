@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2444485159778110807
+--- !u!1 &4411707286271870871
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6052802991506358907}
-  - component: {fileID: 7993275282176729686}
+  - component: {fileID: 6514872935534351299}
+  - component: {fileID: 3186603801477263363}
   m_Layer: 0
-  m_Name: Population Increaser
+  m_Name: Nature Love
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6052802991506358907
+--- !u!4 &6514872935534351299
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2444485159778110807}
+  m_GameObject: {fileID: 4411707286271870871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,16 +32,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7993275282176729686
+--- !u!114 &3186603801477263363
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2444485159778110807}
+  m_GameObject: {fileID: 4411707286271870871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f596150155c84e87b0206223647d959, type: 3}
+  m_Script: {fileID: 11500000, guid: ffdcfd6aa13574072ac2f34fbe3f6a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _increaseAmount: 5
+  _eventScrObj: {fileID: 11400000, guid: 863aeaf607b9240df9eeb08e41b809bb, type: 2}
+  _overallAmount: 0
+  _updateAmount: 0
