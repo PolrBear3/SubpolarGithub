@@ -25,8 +25,10 @@ public class Card_SnapPoint : MonoBehaviour
         _currentCard = setCard;
         _hasCard = true;
 
-        // move card to current snappoint (add animation)
+        CardsController controller = setCard.main.cards;
+
+        // move card to current snappoint
         setCard.transform.SetParent(transform);
-        setCard.transform.localPosition = Vector2.zero;
+        LeanTween.moveLocal(setCard.gameObject, Vector2.zero, controller.movementTime).setEase(controller.moveType);
     }
 }

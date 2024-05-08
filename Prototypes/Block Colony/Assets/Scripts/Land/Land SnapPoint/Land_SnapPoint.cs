@@ -25,19 +25,34 @@ public class Land_SnapPoint : MonoBehaviour
     // EventTrigger
     public void OnPointerClick()
     {
+        if (MainController.actionAvailable == false) return;
+
         Cursor cursor = _main.cursor;
 
         // if card not dragging, return
         if (!cursor.isDragging) return;
 
         // get cursor gameobject > get ISnapPointInteractable
-        if (!cursor.dragCardGameObject.TryGetComponent(out ISnapPointInteractable interactable)) return;
+        if (!cursor.dragCardGameObject.TryGetComponent(out ISnapPointInteractable interactable))
+        {
+            cursor.dragCard.Return();
+            cursor.Clear_Card();
+            return;
+        }
 
         // check if interact available
         if (cursor.dragCardGameObject.TryGetComponent(out IInteractCheck check))
         {
-            if (check.InteractAvailable() == false) return;
+            if (check.InteractAvailable() == false)
+            {
+                cursor.dragCard.Return();
+                cursor.Clear_Card();
+                return;
+            }
         }
+
+        // update order layer
+        if (cursor.dragCardGameObject.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder--;
 
         interactable.Interact();
 

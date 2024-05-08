@@ -13,6 +13,8 @@ public class MainController : MonoBehaviour
     private CurrentGameData _gameData = new();
     public CurrentGameData gameData => _gameData;
 
+    public static bool actionAvailable = true;
+
 
     [Header("")]
     [SerializeField] private DataController _data;
@@ -50,7 +52,7 @@ public class MainController : MonoBehaviour
         Set_StartingLand();
 
         // start with _startingCardAmount of land cards in deck
-        _cards.AddCard_toDeck(_data.AllLandCard_ScrObjs(_startingCardAmount));
+        _cards.AddCards_toDeck(_data.AllLandCard_ScrObjs(_startingCardAmount));
     }
 
 
@@ -237,6 +239,22 @@ public class MainController : MonoBehaviour
     // Turn Control
     public void NextTurn_Invoke()
     {
+        if (actionAvailable == false) return;
+
+        StartCoroutine(NextTurn_Invoke_Coroutine());
+    }
+    private IEnumerator NextTurn_Invoke_Coroutine()
+    {
+        actionAvailable = false;
+
+        _cursor.Clear_Card();
+        _cards.ReturnDrawnCards_toDeck();
+
+        // wait until drawn cards are empty for animation (check if first drawn card is empty)
+        while (_cards.snapPoints[0].hasCard != false) yield return null;
+
+        _cards.DrawCard_fromDeck(_cards.maxDrawCardAmount);
+
         // land events
         Activate_LandEvents();
         NegativePopulation_LandEvents();
@@ -245,11 +263,9 @@ public class MainController : MonoBehaviour
         Update_UpdatePopulation();
         Update_OverallPopulation();
 
-        // current cards control
-        _cards.ReturnDrawnCards_toDeck();
-        _cards.DrawCard_fromDeck(6);
-
         //
         _gameData.turnCount++;
+
+        actionAvailable = true;
     }
 }
