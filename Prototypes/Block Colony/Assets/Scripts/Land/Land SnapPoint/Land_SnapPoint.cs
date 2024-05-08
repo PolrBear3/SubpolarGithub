@@ -64,11 +64,21 @@ public class Land_SnapPoint : MonoBehaviour
     public void OnPointerEnter()
     {
         _main.cursor.Update_HoverObject(gameObject);
+
+        // tooltip
+        if (_main.cursor.isDragging) return;
+        if (_currentData.hasLand == false) return;
+
+        _main.toolTip.Toggle(true);
+        _main.toolTip.DescriptionText_Update(_currentData.currentLand.CurrentEvents_Description());
     }
 
     public void OnPointerExit()
     {
         _main.cursor.Update_HoverObject(null);
+
+        // tooltip
+        _main.toolTip.Toggle(false);
     }
 
 

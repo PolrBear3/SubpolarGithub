@@ -11,10 +11,6 @@ public class Oasis : PopulationEvent, ILandEventable
 
         // event activation
         SurroundingDesert_PopulationEvent();
-
-        // multiple activation restriction
-        if (CurrentLand().currentData.Has_Event(eventScrObj)) return;
-        CurrentLand().currentData.Update_Event(eventScrObj);
     }
 
 
@@ -46,7 +42,10 @@ public class Oasis : PopulationEvent, ILandEventable
 
         for (int i = 0; i < surroundingLands.Count; i++)
         {
-            surroundingLands[i].currentData.Update_BonusPopulation(1);
+            if (surroundingLands[i].currentData.Has_Event(eventScrObj)) continue;
+
+            surroundingLands[i].currentData.Update_Population(increaseAmount);
+            surroundingLands[i].currentData.Update_Event(eventScrObj);
         }
     }
 }

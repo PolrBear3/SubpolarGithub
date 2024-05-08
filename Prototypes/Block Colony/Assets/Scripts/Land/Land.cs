@@ -91,11 +91,13 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
 
     public void OnPointerEnter()
     {
+        // cursor
         _main.cursor.Update_HoverObject(gameObject);
     }
 
     public void OnPointerExit()
     {
+        // cursor
         _main.cursor.Update_HoverObject(null);
     }
 
@@ -104,6 +106,31 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
     public void Set_CurrentData(LandData setData)
     {
         _currentData = setData;
+    }
+
+
+    // ToolTip Current Events Description
+    public string CurrentEvents_Description()
+    {
+        List<EventScrObj> nonDuplicateEvents = new();
+
+        for (int i = 0; i < _currentData.currentEvents.Count; i++)
+        {
+            if (nonDuplicateEvents.Contains(_currentData.currentEvents[i])) continue;
+            nonDuplicateEvents.Add(_currentData.currentEvents[i]);
+        }
+
+        List<string> allDescriptions = new();
+
+        // current population
+        allDescriptions.Add("<sprite=3>" + _currentData.population.ToString());
+
+        for (int i = 0; i < nonDuplicateEvents.Count; i++)
+        {
+            allDescriptions.Add(_currentData.currentEvents[i].description + "  (x" + _currentData.Event_Count(nonDuplicateEvents[i]) + ")");
+        }
+
+        return string.Join("\n\n", allDescriptions);
     }
 
 

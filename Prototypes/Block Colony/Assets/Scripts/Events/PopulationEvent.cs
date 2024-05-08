@@ -9,6 +9,7 @@ public class PopulationEvent : MonoBehaviour, ILandEventable
 
     [Header("current population increase amount data")]
     [SerializeField] private int _increaseAmount;
+    public int increaseAmount => _increaseAmount;
 
 
     // ILandEventable
@@ -29,7 +30,7 @@ public class PopulationEvent : MonoBehaviour, ILandEventable
 
     public void Increase_Population(int increaseAmount)
     {
-        CurrentLand().currentData.Update_BonusPopulation(increaseAmount);
+        CurrentLand().currentData.Update_Population(increaseAmount);
         CurrentLand().main.Update_UpdatePopulation();
     }
 }

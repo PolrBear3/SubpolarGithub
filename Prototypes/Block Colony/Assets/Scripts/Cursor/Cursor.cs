@@ -76,6 +76,9 @@ public class Cursor : MonoBehaviour
         _dragCardGameObject = spawnedPrefab;
 
         _isDragging = true;
+
+        // tooltip
+        _dragCard.main.toolTip.Toggle(false);
     }
 
     // Drop

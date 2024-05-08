@@ -43,6 +43,13 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // tooltip
+        if (_main.cursor.isDragging == false)
+        {
+            _main.toolTip.Toggle(true);
+            _main.toolTip.DescriptionText_Update(currentData.scrObj.description);
+        }
+
         if (MainController.actionAvailable == false) return;
 
         Tilt_QuarterRotate(0);
@@ -50,7 +57,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        
+        _main.toolTip.Toggle(false);
     }
 
 

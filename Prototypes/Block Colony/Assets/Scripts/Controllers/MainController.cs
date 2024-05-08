@@ -26,6 +26,9 @@ public class MainController : MonoBehaviour
     [SerializeField] private Cursor _cursor;
     public Cursor cursor => _cursor;
 
+    [SerializeField] private ToolTip _toolTip;
+    public ToolTip toolTip => _toolTip;
+
 
     [Header("")]
     [SerializeField] private Land_SnapPoint[] _snapPoints;
@@ -178,12 +181,14 @@ public class MainController : MonoBehaviour
         for (int i = 0; i < _snapPoints.Length; i++)
         {
             if (_snapPoints[i].currentData.hasLand == false) continue;
-            calculateCount += _snapPoints[i].currentData.currentLand.currentData.population;
-        }
-        _gameData.updatePopulation = calculateCount;
 
-        CurrentPopulation_TextUpdate();
+            calculateCount += _snapPoints[i].currentData.currentLand.currentData.population;
+
+            _gameData.updatePopulation = calculateCount;
+            CurrentPopulation_TextUpdate();
+        }
     }
+
 
     /// <summary>
     /// overall population += update population
