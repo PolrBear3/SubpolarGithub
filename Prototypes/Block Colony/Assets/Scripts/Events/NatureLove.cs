@@ -8,7 +8,7 @@ public class NatureLove : PopulationEvent, ILandEventable
     public new void Activate()
     {
         // event activation
-        Increase_Population(TreeCount());
+        Increase_BonusPopulaiton(TreeCount());
     }
 
 

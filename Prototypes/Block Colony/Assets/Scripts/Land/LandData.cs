@@ -16,6 +16,9 @@ public class LandData
     [SerializeField] private int _population;
     public int population => _population;
 
+    [SerializeField] private int _bonusPopulation;
+    public int bonusPopulation => _bonusPopulation;
+
     [SerializeField] private List<EventScrObj> _currentEvents = new();
     public List<EventScrObj> currentEvents => _currentEvents;
 
@@ -34,6 +37,15 @@ public class LandData
     public void Update_Population(int updateAmount)
     {
         _population += updateAmount;
+    }
+
+    public void Update_BonusPopulation(int updateAmount)
+    {
+        _population -= _bonusPopulation;
+        _bonusPopulation = 0;
+        _bonusPopulation += updateAmount;
+
+        Update_Population(_bonusPopulation);
     }
 
 

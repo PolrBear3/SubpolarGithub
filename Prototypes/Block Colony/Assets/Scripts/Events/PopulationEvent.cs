@@ -33,4 +33,10 @@ public class PopulationEvent : MonoBehaviour, ILandEventable
         CurrentLand().currentData.Update_Population(increaseAmount);
         CurrentLand().main.Update_UpdatePopulation();
     }
+
+    public void Increase_BonusPopulaiton(int increaseAmount)
+    {
+        CurrentLand().currentData.Update_BonusPopulation(increaseAmount);
+        CurrentLand().main.Update_UpdatePopulation();
+    }
 }
