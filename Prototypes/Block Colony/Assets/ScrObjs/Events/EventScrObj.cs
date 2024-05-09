@@ -8,8 +8,7 @@ public class EventScrObj : ScriptableObject
     public int id;
     public string eventName;
 
-    public Sprite icon;
-    public Sprite landSprite;
+    public AnimatorOverrideController eventAnimation;
 
     [TextArea(3, 10)]
     public string description;

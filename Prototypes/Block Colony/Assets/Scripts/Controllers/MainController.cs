@@ -218,13 +218,25 @@ public class MainController : MonoBehaviour
         for (int i = 0; i < _snapPoints.Length; i++)
         {
             if (snapPoints[i].currentData.hasLand == false) continue;
-            Land currentLand = snapPoints[i].currentData.currentLand;
 
+            Land currentLand = snapPoints[i].currentData.currentLand;
             currentLand.events.Activate_AllEvents();
         }
     }
 
-    private void NegativePopulation_LandEvents()
+    public void Play_LandEvents_Animation()
+    {
+        for (int i = 0; i < _snapPoints.Length; i++)
+        {
+            if (snapPoints[i].currentData.hasLand == false) continue;
+
+            Land currentLand = snapPoints[i].currentData.currentLand;
+            currentLand.events.Play_CurrentEvents_Animation();
+        }
+    }
+
+
+    private void NoPopulation_LandEvents()
     {
         for (int i = 0; i < _snapPoints.Length; i++)
         {
@@ -262,7 +274,8 @@ public class MainController : MonoBehaviour
 
         // land events
         Activate_LandEvents();
-        NegativePopulation_LandEvents();
+        NoPopulation_LandEvents();
+        Play_LandEvents_Animation();
 
         // population
         Update_UpdatePopulation();
