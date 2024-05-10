@@ -18,9 +18,16 @@ public class Cursor : MonoBehaviour
     public bool isDragging => _isDragging;
 
     [SerializeField] private Transform _dragPoint;
+    [SerializeField] private SpriteRenderer _cursorIcon;
 
 
     // MonoBehaviour
+    private void Start()
+    {
+        // cursor icon
+        _cursorIcon.color = Color.clear;
+    }
+
     private void Update()
     {
         if (isDragging == false) return;
@@ -77,6 +84,9 @@ public class Cursor : MonoBehaviour
 
         _isDragging = true;
 
+        // cursor icon
+        _cursorIcon.color = Color.white;
+
         // tooltip
         _dragCard.main.toolTip.Toggle(false);
     }
@@ -88,6 +98,9 @@ public class Cursor : MonoBehaviour
         _dragCardGameObject = null;
 
         _isDragging = false;
+
+        // cursor icon
+        _cursorIcon.color = Color.clear;
     }
 
     // Clear
