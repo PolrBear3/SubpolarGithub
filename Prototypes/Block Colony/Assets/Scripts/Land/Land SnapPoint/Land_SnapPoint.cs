@@ -52,7 +52,7 @@ public class Land_SnapPoint : MonoBehaviour
         }
 
         // update order layer
-        if (cursor.dragCardGameObject.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder--;
+        if (cursor.dragCardGameObject.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder -= 2;
 
         interactable.Interact();
 

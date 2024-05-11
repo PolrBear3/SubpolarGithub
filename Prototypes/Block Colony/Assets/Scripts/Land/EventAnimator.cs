@@ -22,8 +22,10 @@ public class EventAnimator : MonoBehaviour
     public void Play_EventAnimation(EventScrObj playEvent)
     {
         _currentEvent = playEvent;
-        _anim.runtimeAnimatorController = playEvent.eventAnimation;
 
+        if (playEvent.eventAnimation == null) return; 
+
+        _anim.runtimeAnimatorController = playEvent.eventAnimation;
         _anim.Play("EventAnimator_play");
     }
 }

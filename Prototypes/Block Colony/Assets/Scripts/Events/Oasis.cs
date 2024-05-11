@@ -5,7 +5,7 @@ using UnityEngine;
 public class Oasis : PopulationEvent, ILandEventable
 {
     // ILandEventable
-    public new void Activate()
+    public void Activate()
     {
         if (ConditionCheck() == false) return;
 

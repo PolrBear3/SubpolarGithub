@@ -5,8 +5,10 @@ using UnityEngine;
 public class NatureLove : PopulationEvent, ILandEventable
 {
     // ILandEventable
-    public new void Activate()
+    public void Activate()
     {
+        if (TreeCount() <= 0) return;
+
         // event activation
         Increase_BonusPopulaiton(TreeCount());
     }

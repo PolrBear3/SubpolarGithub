@@ -38,6 +38,7 @@ public class MainController : MonoBehaviour
     [Header("")]
     [SerializeField] private TextMeshProUGUI _overallPopulationText;
     [SerializeField] private TextMeshProUGUI _updatePopulationText;
+    [SerializeField] private TextMeshProUGUI _turnsText;
 
 
     [Header("New Game Data")]
@@ -53,6 +54,9 @@ public class MainController : MonoBehaviour
 
         // set land on random point
         Set_StartingLand();
+
+        //
+        _turnsText.text = _gameData.turnCount.ToString();
 
         // start with _startingCardAmount of land cards in deck
         _cards.AddCards_toDeck(_data.AllLandCard_ScrObjs(_startingCardAmount));
@@ -72,6 +76,31 @@ public class MainController : MonoBehaviour
         return null;
     }
 
+    public List<Land> OffSet_Lands(Land land, List<Vector2> positions)
+    {
+        Vector2 gridSize = _snapPoints[_snapPoints.Length - 1].currentData.gridNum;
+        List<Land> surroundingLands = new();
+
+        foreach (Vector2 position in positions)
+        {
+            float xNum = land.currentData.snapPoint.currentData.gridNum.x + position.x;
+            float yNum = land.currentData.snapPoint.currentData.gridNum.y + position.y;
+
+            // check if grid is inside grid
+            if (xNum < 0 && xNum > gridSize.x) continue;
+            if (yNum < 0 && yNum > gridSize.y) continue;
+
+            Land searchLand = Get_Land(new Vector2(xNum, yNum));
+
+            // Check if the land exists
+            if (searchLand == null) continue;
+
+            // condition success
+            surroundingLands.Add(searchLand);
+        }
+
+        return surroundingLands;
+    }
 
     public List<Land> CrossSurrounding_Lands(Land_SnapPoint snapPoint)
     {
@@ -283,6 +312,7 @@ public class MainController : MonoBehaviour
 
         //
         _gameData.turnCount++;
+        _turnsText.text = _gameData.turnCount.ToString();
 
         actionAvailable = true;
     }

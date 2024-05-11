@@ -77,7 +77,7 @@ public class Cursor : MonoBehaviour
         spawnedPrefab.transform.SetParent(_dragPoint);
 
         // update order layer
-        if (spawnedPrefab.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder++;
+        if (spawnedPrefab.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder += 2;
 
         _dragCard = dragCard;
         _dragCardGameObject = spawnedPrefab;

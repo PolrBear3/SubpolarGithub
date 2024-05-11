@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopulationEvent : MonoBehaviour, ILandEventable
+public class PopulationEvent : MonoBehaviour
 {
     [SerializeField] private EventScrObj _eventScrObj;
     public EventScrObj eventScrObj => _eventScrObj;
@@ -12,14 +12,7 @@ public class PopulationEvent : MonoBehaviour, ILandEventable
     public int increaseAmount => _increaseAmount;
 
 
-    // ILandEventable
-    public void Activate()
-    {
-        Increase_Population(_increaseAmount);
-    }
-
-
-    //
+    // Get
     public Land CurrentLand()
     {
         LandEvents eventController = transform.parent.GetComponent<LandEvents>();
@@ -28,6 +21,8 @@ public class PopulationEvent : MonoBehaviour, ILandEventable
         return currentLand;
     }
 
+
+    // Functions
     public void Increase_Population(int increaseAmount)
     {
         CurrentLand().currentData.Update_Population(increaseAmount);

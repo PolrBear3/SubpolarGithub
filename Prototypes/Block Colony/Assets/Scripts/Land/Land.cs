@@ -81,7 +81,7 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
         }
 
         // update order layer
-        if (cursor.dragCardGameObject.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder--;
+        if (cursor.dragCardGameObject.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder -= 2;
 
         interactable.Interact();
 
@@ -155,5 +155,10 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
 
         // current population update
         _main.Update_UpdatePopulation();
+    }
+
+    public void Remove_CurrentLand()
+    {
+
     }
 }

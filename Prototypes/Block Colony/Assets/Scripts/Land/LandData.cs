@@ -82,4 +82,13 @@ public class LandData
     {
         _currentEvents.Clear();
     }
+    public void Clear_Events(EventScrObj clearEvent)
+    {
+        for (int i = _currentEvents.Count - 1; i >= 0; i--)
+        {
+            if (clearEvent != _currentEvents[i]) continue;
+
+            _currentEvents.RemoveAt(i);
+        }
+    }
 }
