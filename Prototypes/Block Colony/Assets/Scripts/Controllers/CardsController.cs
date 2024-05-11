@@ -21,6 +21,8 @@ public class CardsController : MonoBehaviour
     private List<Card> _drawnCards = new();
 
     [Header("")]
+    [SerializeField] private TextMeshProUGUI _landCardPriceText;
+    [SerializeField] private TextMeshProUGUI _buffCardPriceText;
     [SerializeField] private TextMeshProUGUI _deckCountText;
 
     [Header("")]
@@ -56,6 +58,9 @@ public class CardsController : MonoBehaviour
     // UnityEngine
     private void Start()
     {
+        _landCardPriceText.text = "-" + _landCardPrice.ToString();
+        _buffCardPriceText.text = "-" + _buffCardPrice.ToString();
+
         DeckCount_TextUpdate();
         Deck_SpriteUpdate();
     }

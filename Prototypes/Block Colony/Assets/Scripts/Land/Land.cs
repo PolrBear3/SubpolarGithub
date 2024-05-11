@@ -159,6 +159,10 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
 
     public void Remove_CurrentLand()
     {
+        // reset snappoint data
+        _currentData.snapPoint.currentData.Update_CurrentLand(null);
 
+        // remove
+        Destroy(gameObject);
     }
 }

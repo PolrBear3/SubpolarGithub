@@ -36,6 +36,7 @@ public class TripleMountain : PopulationEvent, ILandEventable
         foreach (var land in sideLands)
         {
             if (land.currentData.type != LandType.mountain) return false;
+            if (land.currentData.Has_Event(eventScrObj)) return false;
         }
 
         return true;

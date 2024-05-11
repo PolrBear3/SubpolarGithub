@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public interface IInteractCheck
@@ -42,7 +43,8 @@ public class MainController : MonoBehaviour
 
 
     [Header("New Game Data")]
-    [SerializeField] private int _startingCardAmount;
+    [SerializeField] [Range(0, 6)] private int _startingCardAmount;
+    [SerializeField] private int _overallPopulationGoal;
 
 
     // UnityEngine
@@ -283,6 +285,16 @@ public class MainController : MonoBehaviour
 
 
     // Turn Control
+    private void Check_GameOver()
+    {
+        if (_gameData.overallPopulation < _overallPopulationGoal) return;
+
+        // end game menu
+
+        // test
+        SceneManager.LoadScene(0);
+    }
+
     public void NextTurn_Invoke()
     {
         if (actionAvailable == false) return;
@@ -313,6 +325,8 @@ public class MainController : MonoBehaviour
         //
         _gameData.turnCount++;
         _turnsText.text = _gameData.turnCount.ToString();
+
+        Check_GameOver();
 
         actionAvailable = true;
     }
