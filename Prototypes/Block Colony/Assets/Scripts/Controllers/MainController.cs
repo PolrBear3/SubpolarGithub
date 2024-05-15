@@ -18,6 +18,12 @@ public class MainController : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private GlobalVolume_Controller _postProcessing;
+    public GlobalVolume_Controller postProcessing => _postProcessing;
+
+    [SerializeField] private MenuController _menu;
+    public MenuController menu => _menu;
+
     [SerializeField] private DataController _data;
     public DataController data => _data;
 
@@ -44,7 +50,9 @@ public class MainController : MonoBehaviour
 
     [Header("New Game Data")]
     [SerializeField] [Range(0, 6)] private int _startingCardAmount;
+
     [SerializeField] private int _overallPopulationGoal;
+    public int overallPopulationGoal => _overallPopulationGoal;
 
 
     // UnityEngine
@@ -76,6 +84,19 @@ public class MainController : MonoBehaviour
             return _snapPoints[i].currentData.currentLand;
         }
         return null;
+    }
+
+    public List<Land> Lands()
+    {
+        List<Land> lands = new();
+
+        for (int i = 0; i < _snapPoints.Length; i++)
+        {
+            if (_snapPoints[i].currentData.hasLand == false) continue;
+            lands.Add(_snapPoints[i].currentData.currentLand);
+        }
+
+        return lands;
     }
 
     public List<Land> OffSet_Lands(Land land, List<Vector2> positions)
@@ -202,6 +223,23 @@ public class MainController : MonoBehaviour
 
 
     // Current Game Data Population control
+    private void Update_BonusPopulation(bool isReset)
+    {
+        for (int i = 0; i < Lands().Count; i++)
+        {
+            LandData data = Lands()[i].currentData;
+
+            if (isReset)
+            {
+                data.Update_Population(-data.bonusPopulation);
+                data.Update_BonusPopulation(-data.bonusPopulation);
+                continue;
+            }
+
+            data.Update_Population(data.bonusPopulation);
+        }
+    }
+
     /// <summary>
     /// Calculates all current land populations
     /// </summary>
@@ -209,11 +247,9 @@ public class MainController : MonoBehaviour
     {
         int calculateCount = 0;
 
-        for (int i = 0; i < _snapPoints.Length; i++)
+        for (int i = 0; i < Lands().Count; i++)
         {
-            if (_snapPoints[i].currentData.hasLand == false) continue;
-
-            calculateCount += _snapPoints[i].currentData.currentLand.currentData.population;
+            calculateCount += Lands()[i].currentData.population;
 
             _gameData.updatePopulation = calculateCount;
             CurrentPopulation_TextUpdate();
@@ -246,40 +282,17 @@ public class MainController : MonoBehaviour
     // Land Control
     private void Activate_LandEvents()
     {
-        for (int i = 0; i < _snapPoints.Length; i++)
+        foreach (var land in Lands())
         {
-            if (snapPoints[i].currentData.hasLand == false) continue;
-
-            Land currentLand = snapPoints[i].currentData.currentLand;
-            currentLand.events.Activate_AllEvents();
+            land.events.Activate_AllEvents();
         }
     }
 
     public void Play_LandEvents_Animation()
     {
-        for (int i = 0; i < _snapPoints.Length; i++)
+        foreach (var land in Lands())
         {
-            if (snapPoints[i].currentData.hasLand == false) continue;
-
-            Land currentLand = snapPoints[i].currentData.currentLand;
-            currentLand.events.Play_CurrentEvents_Animation();
-        }
-    }
-
-
-    private void NoPopulation_LandEvents()
-    {
-        for (int i = 0; i < _snapPoints.Length; i++)
-        {
-            if (snapPoints[i].currentData.hasLand == false) continue;
-            Land currentLand = snapPoints[i].currentData.currentLand;
-
-            // check if population is bellow 0
-            if (currentLand.currentData.population >= 0) continue;
-
-            // destroy land
-            snapPoints[i].currentData.Update_CurrentLand(null);
-            Destroy(currentLand.gameObject);
+            land.events.Play_CurrentEvents_Animation();
         }
     }
 
@@ -287,12 +300,11 @@ public class MainController : MonoBehaviour
     // Turn Control
     private void Check_GameOver()
     {
+        if (_menu.isContinuePlay) return;
         if (_gameData.overallPopulation < _overallPopulationGoal) return;
 
         // end game menu
-
-        // test
-        SceneManager.LoadScene(0);
+        _menu.EndGame();
     }
 
     public void NextTurn_Invoke()
@@ -313,10 +325,15 @@ public class MainController : MonoBehaviour
 
         _cards.DrawCard_fromDeck(_cards.maxDrawCardAmount);
 
+        // bonud population reset
+        Update_BonusPopulation(true);
+
         // land events
         Activate_LandEvents();
-        NoPopulation_LandEvents();
         Play_LandEvents_Animation();
+
+        // bonud population update
+        Update_BonusPopulation(false);
 
         // population
         Update_UpdatePopulation();

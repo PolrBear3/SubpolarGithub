@@ -5,8 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "New Event")]
 public class EventScrObj : ScriptableObject
 {
-    public int id;
-    public string eventName;
+    public int sortingLayerNum;
 
     public AnimatorOverrideController eventAnimation;
 

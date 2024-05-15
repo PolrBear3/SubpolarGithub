@@ -17,12 +17,11 @@ public class Action_Bubble : MonoBehaviour
 
 
 
-    // UnityEngine
+    // MonoBehaviour
     private void Start()
     {
         Toggle(false);
     }
-
 
 
     // Show and Hide Action Bubble
@@ -37,6 +36,7 @@ public class Action_Bubble : MonoBehaviour
         _bubbleOn = false;
         _toggle.SetActive(false);
     }
+
 
     // Update Bubble Icon Sprite
     public void Update_Bubble(Sprite leftIcon, Sprite rightIcon)
@@ -87,6 +87,7 @@ public class Action_Bubble : MonoBehaviour
         //
         Update_Bubble(leftFood.sprite, rightFoodSprite);
     }
+
 
     // Update Bubble Position
     private void Update_BubblePosition()

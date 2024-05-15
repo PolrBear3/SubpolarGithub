@@ -80,13 +80,11 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
             }
         }
 
-        // update order layer
-        if (cursor.dragCardGameObject.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder -= 2;
-
         interactable.Interact();
 
         cursor.dragCard.Use();
         cursor.Clear_Card();
+
     }
 
     public void OnPointerEnter()
@@ -123,11 +121,11 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
         List<string> allDescriptions = new();
 
         // current population
-        allDescriptions.Add("<sprite=3>" + _currentData.population.ToString());
+        allDescriptions.Add("<sprite=6>" + _currentData.population.ToString());
 
         for (int i = 0; i < nonDuplicateEvents.Count; i++)
         {
-            allDescriptions.Add(_currentData.currentEvents[i].description + "  (x" + _currentData.Event_Count(nonDuplicateEvents[i]) + ")");
+            allDescriptions.Add(nonDuplicateEvents[i].description + "  (x" + _currentData.Event_Count(nonDuplicateEvents[i]) + ")");
         }
 
         return string.Join("\n\n", allDescriptions);
@@ -152,6 +150,9 @@ public class Land : MonoBehaviour, ISnapPointInteractable, IInteractCheck
         snapPoint.currentData.Update_CurrentLand(spawnLand);
 
         spawn.transform.SetParent(snapPoint.transform);
+
+        // update order layer
+        if (spawn.TryGetComponent(out SpriteRenderer sr)) sr.sortingOrder -= 98;
 
         // current population update
         _main.Update_UpdatePopulation();

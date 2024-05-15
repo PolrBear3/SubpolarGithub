@@ -6,7 +6,8 @@ public class LandEvent_Updater : MonoBehaviour, ILandInteractable, IInteractChec
 {
     private MainController _main;
 
-    [SerializeField] private EventScrObj updateEventScrObj;
+    [SerializeField] private EventScrObj _updateEventScrObj;
+    public EventScrObj updateEventScrObj => _updateEventScrObj;
 
     [SerializeField] private LandType[] _uninteractableLands;
 
@@ -34,6 +35,6 @@ public class LandEvent_Updater : MonoBehaviour, ILandInteractable, IInteractChec
     public void Interact()
     {
         Land hoverLand = _main.cursor.hoveringObject.GetComponent<Land_SnapPoint>().currentData.currentLand;
-        hoverLand.currentData.Update_Event(updateEventScrObj);
+        hoverLand.currentData.Update_Event(_updateEventScrObj);
     }
 }

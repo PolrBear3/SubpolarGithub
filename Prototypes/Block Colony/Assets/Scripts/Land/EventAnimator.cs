@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EventAnimator : MonoBehaviour
 {
+    private SpriteRenderer _sr;
+    public SpriteRenderer sr => _sr;
+
     private Animator _anim;
     public Animator anim => _anim;
 
@@ -14,6 +17,7 @@ public class EventAnimator : MonoBehaviour
     // MonoBehaviour
     private void Awake()
     {
+        _sr = gameObject.GetComponent<SpriteRenderer>();
         _anim = gameObject.GetComponent<Animator>();
     }
 

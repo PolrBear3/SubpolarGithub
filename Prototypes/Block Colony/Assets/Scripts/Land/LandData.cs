@@ -41,11 +41,7 @@ public class LandData
 
     public void Update_BonusPopulation(int updateAmount)
     {
-        _population -= _bonusPopulation;
-        _bonusPopulation = 0;
         _bonusPopulation += updateAmount;
-
-        Update_Population(_bonusPopulation);
     }
 
 
@@ -81,6 +77,17 @@ public class LandData
     public void Clear_Events()
     {
         _currentEvents.Clear();
+    }
+
+    public void Clear_Event(EventScrObj clearEvent)
+    {
+        for (int i = _currentEvents.Count - 1; i >= 0; i--)
+        {
+            if (clearEvent != _currentEvents[i]) continue;
+
+            _currentEvents.RemoveAt(i);
+            return;
+        }
     }
     public void Clear_Events(EventScrObj clearEvent)
     {

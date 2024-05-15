@@ -6,7 +6,9 @@ public class Population_Increaser : MonoBehaviour, ILandInteractable
 {
     private MainController _main;
 
-    [SerializeField] private int _overallIncrease;
+    [SerializeField] private EventScrObj _updateEventScrObj;
+    public EventScrObj updateEventScrObj => _updateEventScrObj;
+
     [SerializeField] private int _updateIncrease;
 
 
@@ -21,6 +23,6 @@ public class Population_Increaser : MonoBehaviour, ILandInteractable
     public void Interact()
     {
         Land hoverLand = _main.cursor.hoveringObject.GetComponent<Land_SnapPoint>().currentData.currentLand;
-        hoverLand.currentData.Update_Population(_overallIncrease);
+        hoverLand.currentData.Update_Population(_updateIncrease);
     }
 }

@@ -12,6 +12,7 @@ public class LandEvents : MonoBehaviour
     [SerializeField] private Transform _eventAnimatorFilePoint;
 
     private List<EventAnimator> _currentAnimators = new();
+    public List<EventAnimator> currentAnimators => _currentAnimators;
 
     [Header("")]
     [SerializeField] private GameObject[] _allEvents;
@@ -59,6 +60,8 @@ public class LandEvents : MonoBehaviour
             _currentAnimators.Add(eventAnimator);
             eventAnimator.Play_EventAnimation(nonDuplicateEvents[i]);
 
+            eventAnimator.sr.sortingOrder += nonDuplicateEvents[i].sortingLayerNum;
+
             while (!AnimationClipFinished(eventAnimator.anim.GetCurrentAnimatorStateInfo(0)))
             {
                 yield return null;
@@ -66,7 +69,7 @@ public class LandEvents : MonoBehaviour
         }
     }
 
-    private void Update_RemovedEvents_Animation()
+    public void Update_RemovedEvents_Animation()
     {
         for (int i = _currentAnimators.Count - 1; i >= 0; i--)
         {

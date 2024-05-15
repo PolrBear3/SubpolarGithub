@@ -10,7 +10,7 @@ public class NatureLove : PopulationEvent, ILandEventable
         if (TreeCount() <= 0) return;
 
         // event activation
-        Increase_BonusPopulaiton(TreeCount());
+        CurrentLand().currentData.Update_BonusPopulation(TreeCount());
     }
 
 
