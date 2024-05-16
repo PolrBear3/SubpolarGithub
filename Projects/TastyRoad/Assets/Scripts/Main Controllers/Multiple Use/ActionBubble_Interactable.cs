@@ -29,6 +29,11 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
     }
 
+    private void Start()
+    {
+        UnInteract();
+    }
+
 
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
@@ -81,5 +86,12 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         // bubble off
         _input.enabled = false;
         _bubble.Toggle(false);
+    }
+
+
+    //
+    public void InputToggle(bool toggleOn)
+    {
+        _input.enabled = toggleOn;
     }
 }

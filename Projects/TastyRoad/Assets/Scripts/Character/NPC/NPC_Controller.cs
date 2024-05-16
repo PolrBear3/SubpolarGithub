@@ -5,57 +5,61 @@ using UnityEngine.InputSystem;
 
 public class NPC_Controller : MonoBehaviour
 {
-    private PlayerInput _playerInput;
-    public PlayerInput playerInput => _playerInput;
+    private PlayerInput _input;
 
-    [HideInInspector] public Main_Controller mainController;
+    private Main_Controller _mainController;
+    public Main_Controller mainController => _mainController;
 
-    private Character_Data _characterData;
+
+    [Header("")]
+    [SerializeField] private Character_Data _characterData;
     public Character_Data characterData => _characterData;
 
-    [HideInInspector] public Detection_Controller detection;
-    [HideInInspector] public BasicAnimation_Controller animationController;
+    [SerializeField] private Detection_Controller _detection;
+    public Detection_Controller detection => _detection;
 
-    public FoodData_Controller foodIcon;
-    public Action_Bubble actionBubble;
+    [SerializeField] private BasicAnimation_Controller _basicAnim;
+    public BasicAnimation_Controller basicAnim => _basicAnim;
 
+    [SerializeField] private FoodData_Controller _foodIcon;
+    public FoodData_Controller foodIcon => _foodIcon;
+
+    [SerializeField] private Action_Bubble _actionBubble;
+    public Action_Bubble actionBubble => _actionBubble;
+
+
+    [Header("")]
     [SerializeField] private CoinLauncher _itemLauncher;
     public CoinLauncher itemLauncher => _itemLauncher;
 
     [SerializeField] private Clock_Timer _timer;
     public Clock_Timer timer => _timer;
 
-    public delegate void Action_Event();
-    public event Action_Event Action1;
 
-    [HideInInspector] public NPC_Movement movement;
+    [Header("")]
+    [SerializeField] private NPC_Movement _movement;
+    public NPC_Movement movement => _movement;
 
-    private NPC_Interaction _interaction;
+    [SerializeField] private NPC_Interaction _interaction;
     public NPC_Interaction interaction => _interaction;
 
+    public delegate void Action_Event();
+    public event Action_Event Action1;
 
 
     // UnityEngine
     private void Awake()
     {
-        _playerInput = gameObject.GetComponent<PlayerInput>();
+        _input = gameObject.GetComponent<PlayerInput>();
 
-        mainController = FindObjectOfType<Main_Controller>();
-        mainController.Track_CurrentCharacter(gameObject);
-
-        if (gameObject.TryGetComponent(out Character_Data characterData)) { _characterData = characterData; }
-        if (gameObject.TryGetComponent(out Detection_Controller detectionController)) { detection = detectionController; }
-        if (gameObject.TryGetComponent(out BasicAnimation_Controller animationController)) { this.animationController = animationController; }
-
-        if (gameObject.TryGetComponent(out NPC_Movement movement)) { this.movement = movement; }
-        if (gameObject.TryGetComponent(out NPC_Interaction interaction)) { _interaction = interaction; }
+        _mainController = FindObjectOfType<Main_Controller>();
+        _mainController.Track_CurrentCharacter(gameObject);
     }
 
     private void Start()
     {
-        PlayerInput_Toggle(false);
+        InputToggle(false);
     }
-
 
 
     // InputSystem
@@ -65,10 +69,9 @@ public class NPC_Controller : MonoBehaviour
     }
 
 
-
     //
-    public void PlayerInput_Toggle(bool toggleOn)
+    public void InputToggle(bool toggleOn)
     {
-        _playerInput.enabled = toggleOn;
+        _input.enabled = toggleOn;
     }
 }

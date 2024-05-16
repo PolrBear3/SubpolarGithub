@@ -330,15 +330,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844ad3abbeead4c2eb1bfabbe9a4282c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainController: {fileID: 0}
-  detection: {fileID: 0}
-  animationController: {fileID: 0}
-  foodIcon: {fileID: 1483303474056452521}
-  actionBubble: {fileID: 936463578848434098}
+  _characterData: {fileID: 8903583041108868457}
+  _detection: {fileID: -2268305881826384539}
+  _basicAnim: {fileID: -7268301005637499790}
+  _foodIcon: {fileID: 1483303474056452521}
+  _actionBubble: {fileID: 936463578848434098}
   _itemLauncher: {fileID: 6755566805421460070}
   _timer: {fileID: 5143084945135055206}
-  movement: {fileID: 0}
-  interaction: {fileID: 0}
+  _movement: {fileID: 2978574373251596411}
+  _interaction: {fileID: 1602899645111724261}
 --- !u!114 &2978574373251596411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25de9cea393c64e72951c69275d66ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 9094981842974887859}
   _moveSpeed: 5
   _intervalTimeRange: {x: 5, y: 10}
 --- !u!114 &1602899645111724261
@@ -365,6 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b5b608fb3a2242b8b2a63bfbcd61c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 9094981842974887859}
   _stateBoxes: {fileID: 1769571539367528716}
   _wakeSpriteRenderer: {fileID: 2264966909282092729}
   _eatAnimationSR: {fileID: 532419520745837338}

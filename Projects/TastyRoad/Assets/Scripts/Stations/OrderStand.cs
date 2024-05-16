@@ -89,8 +89,11 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         bool hasBookMark = _stationController.mainController.bookmarkedFoods.Count > 0;
 
+        // if no bookmarked foods
+        if (hasBookMark == false) return;
+
         // order open
-        if (Main_Controller.orderOpen == false && hasBookMark)
+        if (Main_Controller.orderOpen == false)
         {
             Main_Controller.orderOpen = true;
 

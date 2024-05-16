@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class NPC_Movement : MonoBehaviour
 {
-    private NPC_Controller _controller;
+    [Header("")]
+    [SerializeField] private NPC_Controller _controller;
 
     private Vector2 _targetPosition;
 
@@ -19,6 +20,7 @@ public class NPC_Movement : MonoBehaviour
     private SpriteRenderer _currentRoamArea;
     public SpriteRenderer currentRoamArea => _currentRoamArea;
 
+    [Header("")]
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Vector2 _intervalTimeRange;
 
@@ -40,7 +42,7 @@ public class NPC_Movement : MonoBehaviour
 
     private void Update()
     {
-        _controller.animationController.Idle_Move(Is_Moving());
+        _controller.basicAnim.Idle_Move(Is_Moving());
         TargetPosition_Movement();
     }
 
@@ -110,7 +112,7 @@ public class NPC_Movement : MonoBehaviour
     {
         _targetPosition = assignPosition;
 
-        _controller.animationController.Flip_Sprite(Move_Direction());
+        _controller.basicAnim.Flip_Sprite(Move_Direction());
     }
 
     /// <summary>

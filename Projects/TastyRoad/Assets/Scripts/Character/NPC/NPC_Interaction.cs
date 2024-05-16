@@ -5,7 +5,8 @@ using UnityEngine.InputSystem;
 
 public class NPC_Interaction : MonoBehaviour, IInteractable
 {
-    private NPC_Controller _controller;
+    [Header("")]
+    [SerializeField] private NPC_Controller _controller;
 
     [Header("")]
     [SerializeField] private GameObject _stateBoxes;
@@ -79,7 +80,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         if (Main_Controller.orderOpen == false) return;
         if (_controller.foodIcon.hasFood == false) return;
 
-        _controller.PlayerInput_Toggle(true);
+        _controller.InputToggle(true);
 
         _controller.timer.Toggle_Transparency(!_controller.actionBubble.bubbleOn);
 
@@ -91,7 +92,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
     public void UnInteract()
     {
-        _controller.PlayerInput_Toggle(false);
+        _controller.InputToggle(false);
 
         _controller.actionBubble.Toggle(false);
         StateBox_Toggle();
@@ -111,7 +112,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     {
         if (_controller.actionBubble.bubbleOn == true) return;
 
-        _controller.animationController.Flip_Sprite(_controller.detection.player.gameObject);
+        _controller.basicAnim.Flip_Sprite(_controller.detection.player.gameObject);
 
         NPC_Movement movement = _controller.movement;
 
@@ -222,7 +223,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         _controller.timer.Toggle_Transparency(true);
 
         // Uninteract functions
-        _controller.PlayerInput_Toggle(false);
+        _controller.InputToggle(false);
 
         _controller.actionBubble.Toggle(false);
         StateBox_Toggle();

@@ -3,24 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Vehicle_Controller : MonoBehaviour, IInteractable
+public class Vehicle_Controller : ActionBubble_Interactable
 {
-    private PlayerInput _playerInput;
-
-    private Main_Controller _mainController;
-    public Main_Controller mainController => _mainController;
-
-    private Detection_Controller _detection;
-    public Detection_Controller detection => _detection;
-
     [Header("")]
-    [SerializeField] private Action_Bubble _bubble;
-
-    [SerializeField] private Vehicle_Customizer _customizer;
-
-    [Header("Insert Vehicle Panel Prefab")]
     [SerializeField] private VehicleMenu_Controller _menu;
     public VehicleMenu_Controller menu => _menu;
+
+    [SerializeField] private Vehicle_Customizer _customizer;
 
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
@@ -29,20 +18,17 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     public Transform stationSpawnPoint => _stationSpawnPoint;
 
 
-
     // UnityEngine
-    private void Awake()
-    {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-        mainController.Track_CurrentVehicle(this);
-
-        if (gameObject.TryGetComponent(out PlayerInput input)) { _playerInput = input; }
-        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
-    }
-
     private void Start()
     {
-        UnInteract();
+        Action1 += Open_VehicleMenu;
+        Action2 += Open_WorldMap;
+    }
+
+    private void OnDestroy()
+    {
+        Action1 -= Open_VehicleMenu;
+        Action2 -= Open_WorldMap;
     }
 
     private void Update()
@@ -51,47 +37,18 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     }
 
 
-
-    // InputSystem
-    private void OnAction1()
+    // Action Options
+    private void Open_VehicleMenu()
     {
         detection.player.Player_Input().enabled = false;
-
-        _bubble.Toggle(false);
-        _playerInput.enabled = false;
 
         _menu.VehicleMenu_Toggle(true);
     }
 
-    private void OnAction2()
+    private void Open_WorldMap()
     {
-        _bubble.Toggle(false);
-        _playerInput.enabled = false;
-
         mainController.worldMap.Map_Toggle(true);
     }
-
-
-
-    // IInteractable
-    public void Interact()
-    {
-        if (_bubble.bubbleOn)
-        {
-            UnInteract();
-            return;
-        }
-
-        _playerInput.enabled = true;
-        _bubble.Toggle(true);
-    }
-
-    public void UnInteract()
-    {
-        _playerInput.enabled = false;
-        _bubble.Toggle(false);
-    }
-
 
 
     // OnTrigger
@@ -99,9 +56,8 @@ public class Vehicle_Controller : MonoBehaviour, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
-
         UnInteract();
+        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
     }
 
 
