@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
-    private Data_Controller _dataController;
+    [Header("")]
+    [SerializeField] private Data_Controller _dataController;
     public Data_Controller dataController => _dataController;
 
     [SerializeField] private WorldMap_Controller _worldMap;
     public WorldMap_Controller worldMap => _worldMap;
 
-    private GlobalTime_Controller _globalTime;
+    [SerializeField] private GlobalTime_Controller _globalTime;
     public GlobalTime_Controller globalTime => _globalTime;
 
     [Header("")]
     [SerializeField] private Camera _mainCamera;
-
-    [SerializeField] private RectTransform _openingCurtain;
 
     [Header("File Locations")]
     [SerializeField] private Transform _locationFile;
@@ -36,23 +35,14 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public static event Event TestButton3Event;
 
 
-
     // GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
 
-    // UnityEngine
-    private void Awake()
-    {
-        _dataController = gameObject.GetComponent<Data_Controller>();
-        _globalTime = gameObject.GetComponent<GlobalTime_Controller>();
-    }
 
+    // MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = 60;
-
-        LeanTween.alpha(_openingCurtain, 0f, 1f);
     }
-
 
 
     // ISaveLoadable
@@ -88,7 +78,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // Test Buttons
     public void TestButton1()
     {
@@ -104,7 +93,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         TestButton3Event?.Invoke();
     }
-
 
 
     /// <summary>
@@ -136,7 +124,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         // right
         else return OuterCamera_Position(1, 0, 2, -3);
     }
-
 
 
     /// <summary>
@@ -184,7 +171,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // Position Control
     private List<Vector2> _claimedPositions = new();
 
@@ -211,7 +197,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
         return false;
     }
-
 
 
     // Current Location Control
@@ -259,7 +244,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // Current Vechicle Control
     private Vehicle_Controller _currentVehicle;
     public Vehicle_Controller currentVehicle => _currentVehicle;
@@ -268,7 +252,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         _currentVehicle = vehicle;
     }
-
 
 
     // Current Characters Control
@@ -320,7 +303,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         return allNPCs;
     }
-
 
 
     // Current Stations Control
@@ -451,7 +433,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // Current Archive and BookMark Foods Control
     private List<Food_ScrObj> _archiveFoods = new();
     public List<Food_ScrObj> archiveFoods => _archiveFoods;
@@ -498,7 +479,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
         return false;
     }
-
 
 
     private List<Food_ScrObj> _bookmarkedFoods = new();
