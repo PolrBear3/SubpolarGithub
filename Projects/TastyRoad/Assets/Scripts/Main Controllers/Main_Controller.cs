@@ -8,6 +8,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Data_Controller _dataController;
     public Data_Controller dataController => _dataController;
 
+    [SerializeField] private TransitionCanvas_Controller _transitionCanvas;
+    public TransitionCanvas_Controller transitionCanvas => _transitionCanvas;
+
     [SerializeField] private WorldMap_Controller _worldMap;
     public WorldMap_Controller worldMap => _worldMap;
 
@@ -17,10 +20,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private Camera _mainCamera;
 
-    [Header("File Locations")]
+    [Header("")]
     [SerializeField] private Transform _locationFile;
     [SerializeField] private Transform _characterFile;
     [SerializeField] private Transform _stationFile;
+
 
     public static bool gamePaused;
     public static bool orderOpen;
@@ -29,7 +33,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public static int currentStationCoin;
     public static int currentGasCoin;
 
+
     public delegate void Event();
+
     public static event Event TestButton1Event;
     public static event Event TestButton2Event;
     public static event Event TestButton3Event;

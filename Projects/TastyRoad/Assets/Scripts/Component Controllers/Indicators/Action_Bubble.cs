@@ -5,16 +5,20 @@ using UnityEngine.InputSystem;
 
 public class Action_Bubble : MonoBehaviour
 {
+    [Header("")]
     [SerializeField] private GameObject _toggle;
     [SerializeField] private GameObject _leftBubble;
     [SerializeField] private GameObject _rightBubble;
 
+    [Header("")]
     [SerializeField] private SpriteRenderer _leftIcon;
+    public SpriteRenderer leftIcon => _leftIcon;
+
     [SerializeField] private SpriteRenderer _rightIcon;
+    public SpriteRenderer rightIcon => _rightIcon;
 
     private bool _bubbleOn;
     public bool bubbleOn => _bubbleOn;
-
 
 
     // MonoBehaviour

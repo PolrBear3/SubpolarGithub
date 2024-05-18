@@ -19,6 +19,12 @@ public class Vehicle_Controller : ActionBubble_Interactable
 
 
     // UnityEngine
+    private new void Awake()
+    {
+        base.Awake();
+        mainController.Track_CurrentVehicle(this);
+    }
+
     private void Start()
     {
         Action1 += Open_VehicleMenu;

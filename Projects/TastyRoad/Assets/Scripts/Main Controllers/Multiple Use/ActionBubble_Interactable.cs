@@ -24,7 +24,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
 
     // MonoBehaviour
-    private void Awake()
+    public void Awake()
     {
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
     }

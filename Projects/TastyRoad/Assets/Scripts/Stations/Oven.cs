@@ -5,17 +5,19 @@ using UnityEngine;
 public class Oven : MonoBehaviour, IInteractable
 {
     private SpriteRenderer _spriteRenderer;
+    private Material _material;
 
     private Station_Controller _controller;
 
     [Header("")]
     [SerializeField] private Sprite inActiveSprite;
-    [SerializeField] private Material _lit;
+    [SerializeField] private Sprite activeSprite;
 
     [Header("")]
-    [SerializeField] private Sprite activeSprite;
-    [SerializeField] private Material _emissionGlow;
+    [SerializeField] private GameObject _heatEmission; 
     [SerializeField] private GameObject _light;
+
+    private Coroutine _emissionCoroutine;
 
     [Header("")]
     [SerializeField] private float _heatIncreaseTime;
@@ -27,6 +29,8 @@ public class Oven : MonoBehaviour, IInteractable
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
+        _material = _spriteRenderer.material;
+
         if (gameObject.TryGetComponent(out Station_Controller station)) { _controller = station; }
     }
 
@@ -77,20 +81,40 @@ public class Oven : MonoBehaviour, IInteractable
     // Oven Visual Update
     private void Update_CurrentVisual()
     {
+        if (_emissionCoroutine != null)
+        {
+            StopCoroutine(_emissionCoroutine);
+        }
+
+        _emissionCoroutine = StartCoroutine(Update_CurrentVisual_Coroutine());
+    }
+    private IEnumerator Update_CurrentVisual_Coroutine()
+    {
+        // active
         if (_controller.Food_Icon().hasFood)
         {
-            _spriteRenderer.sprite = activeSprite;
-            _spriteRenderer.material = _emissionGlow;
-            _light.SetActive(true);
+            //_light.SetActive(true);
+            _heatEmission.SetActive(true);
+
+            LeanTween.value(gameObject, 0f, 5f, 2f).setOnUpdate((float val) =>
+            {
+                _heatEmission.GetComponent<SpriteRenderer>().material.SetFloat("_Glow", val);
+            });
         }
+        // inactive
         else
         {
-            _spriteRenderer.sprite = inActiveSprite;
-            _spriteRenderer.material = _lit;
-            _light.SetActive(false);
+            LeanTween.value(gameObject, 5f, 0f, 2f).setOnUpdate((float val) =>
+            {
+                _heatEmission.GetComponent<SpriteRenderer>().material.SetFloat("_Glow", val);
+            });
+
+            yield return new WaitForSeconds(2f);
+
+            //_light.SetActive(false);
+            _heatEmission.SetActive(false);
         }
     }
-
 
 
     // FoodIcon Position Update

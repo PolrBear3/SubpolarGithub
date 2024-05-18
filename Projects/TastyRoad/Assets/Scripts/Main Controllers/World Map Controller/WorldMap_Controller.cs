@@ -7,9 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 {
-    private PlayerInput _input;
+    [SerializeField] private PlayerInput _input;
 
-    private Main_Controller _mainController;
+    [Header("")]
+    [SerializeField] private Main_Controller _mainController;
 
     [Header("")]
     [SerializeField] private RectTransform _backgroundPanel;
@@ -20,6 +21,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private UI_ClockTimer _holdTimer;
 
     [Header("")]
+    [SerializeField] private Sprite _loadIconSprite;
+
+    [Header("")]
     [SerializeField] private Location_Tile[] _tiles;
 
     private int _currentTileNum;
@@ -28,12 +32,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
 
     // UnityEngine
-    private void Awake()
-    {
-        _input = gameObject.GetComponent<PlayerInput>();
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
-
     private void Start()
     {
         if (ES3.KeyExists("Main_Controller/_currentLocationData"))
@@ -150,6 +148,18 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
+        StartCoroutine(Select_CursorTile_Coroutine());
+    }
+    private IEnumerator Select_CursorTile_Coroutine()
+    {
+        _input.enabled = false;
+
+        // transition curtain animation
+        _mainController.transitionCanvas.Set_LoadIcon(_loadIconSprite);
+        _mainController.transitionCanvas.CloseScene_Transition();
+
+        while (_mainController.transitionCanvas.transitionPlaying) yield return null;
+
         // reset settings before moving on to new location
         _mainController.Destroy_AllStations();
         _mainController.Destroy_AllCharacters();
@@ -165,9 +175,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         // reload game scene
         Main_Controller.gamePaused = false;
         SaveLoad_Controller.SaveAll_ISaveLoadable();
+
         SceneManager.LoadScene(0);
     }
-
 
 
     // All Tile Control
