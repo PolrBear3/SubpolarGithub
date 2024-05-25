@@ -23,7 +23,6 @@ public class Vehicle_Customizer : MonoBehaviour, ISaveLoadable
     private VehiclePartData _currentWheels;
 
 
-
     // UnityEngine
     private void Start()
     {
@@ -32,6 +31,12 @@ public class Vehicle_Customizer : MonoBehaviour, ISaveLoadable
         Main_Controller.TestButton3Event += Set_Wheels;
     }
 
+    private void OnDestroy()
+    {
+        Main_Controller.TestButton1Event -= Set_Body;
+        Main_Controller.TestButton2Event -= Set_Head;
+        Main_Controller.TestButton3Event -= Set_Wheels;
+    }
 
 
     // ISaveLoadable
@@ -48,7 +53,6 @@ public class Vehicle_Customizer : MonoBehaviour, ISaveLoadable
         Set_Head(HeadData_ArrayNum(ES3.Load("Vehicle_Customizer/_currentHead", _currentHead)));
         Set_Wheels(WheelsData_ArrayNum(ES3.Load("Vehicle_Customizer/_currentWheels", _currentWheels)));
     }
-
 
 
     // Test Buttons
@@ -69,7 +73,6 @@ public class Vehicle_Customizer : MonoBehaviour, ISaveLoadable
         int arrayNum = WheelsData_ArrayNum(_currentWheels) + 1;
         Set_Wheels(arrayNum);
     }
-
 
 
     // Customize
@@ -96,7 +99,6 @@ public class Vehicle_Customizer : MonoBehaviour, ISaveLoadable
         _currentWheels = _wheelsDatas[indexNum];
         _wheelsSR.sprite = _currentWheels.partScrObj.sprite;
     }
-
 
 
     // Search

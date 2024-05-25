@@ -52,7 +52,6 @@ public class Stack_Table : Table, IInteractable
     }
 
 
-
     //
     public void Swap_Food()
     {
@@ -92,7 +91,6 @@ public class Stack_Table : Table, IInteractable
         Basic_SwapFood();
         tableIcon.Show_AmountBar();
     }
-
 
 
     public void Stack_Food()

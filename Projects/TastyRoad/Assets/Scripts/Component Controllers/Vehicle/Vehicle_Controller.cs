@@ -25,8 +25,10 @@ public class Vehicle_Controller : ActionBubble_Interactable
         mainController.Track_CurrentVehicle(this);
     }
 
-    private void Start()
+    private new void Start()
     {
+        base.Start();
+
         Action1 += Open_VehicleMenu;
         Action2 += Open_WorldMap;
     }

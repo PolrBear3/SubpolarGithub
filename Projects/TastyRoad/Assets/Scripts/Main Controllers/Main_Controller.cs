@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
+    [SerializeField] private Camera_Controller _cameraController;
+    public Camera_Controller cameraController => _cameraController;
+
     [Header("")]
     [SerializeField] private Data_Controller _dataController;
     public Data_Controller dataController => _dataController;
@@ -17,8 +20,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private GlobalTime_Controller _globalTime;
     public GlobalTime_Controller globalTime => _globalTime;
 
-    [Header("")]
-    [SerializeField] private Camera _mainCamera;
+    [SerializeField] private SubLocations_Controller _subLocation;
+    public SubLocations_Controller subLocation => _subLocation;
 
     [Header("")]
     [SerializeField] private Transform _locationFile;
@@ -88,6 +91,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void TestButton1()
     {
         TestButton1Event?.Invoke();
+
+        Player().foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
     }
 
     public void TestButton2()
@@ -115,7 +120,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         if (verticalPos == 0) verticalPos = 0.5f;
         else if (verticalPos == -1f) verticalPos = 0f;
 
-        Vector2 cameraPosition = _mainCamera.ViewportToWorldPoint(new Vector2(horizontalPos, verticalPos));
+        Vector2 cameraPosition = cameraController.mainCamera.ViewportToWorldPoint(new Vector2(horizontalPos, verticalPos));
 
         return new Vector2(cameraPosition.x + positionX, cameraPosition.y + positionY);
     }

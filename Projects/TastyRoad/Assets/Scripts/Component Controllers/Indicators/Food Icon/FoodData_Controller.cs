@@ -43,7 +43,6 @@ public class FoodData_Controller : MonoBehaviour
     private Coroutine _amountBarCoroutine;
 
 
-
     // UnityEngine
     private void Start()
     {
@@ -56,7 +55,6 @@ public class FoodData_Controller : MonoBehaviour
     {
         GlobalTime_Controller.TimeTik_Update -= Invoke_TimeTikEvent;
     }
-
 
 
     // Current Data
@@ -74,14 +72,14 @@ public class FoodData_Controller : MonoBehaviour
         }
 
         // increase amount if same food
-        if (_currentData != null && data.foodScrObj == _currentData.foodScrObj)
+        if (hasFood == true && data.foodScrObj == _currentData.foodScrObj)
         {
             _currentData.Update_Amount(data.currentAmount);
             return;
         }
 
         // set data
-        _currentData = data;
+        _currentData = new FoodData(data);
         _hasFood = true;
 
         GlobalTime_Controller.TimeTik_Update += Invoke_TimeTikEvent;

@@ -38,7 +38,6 @@ public class FoodData
     public List<FoodCondition_Data> conditionDatas => _conditionDatas;
 
 
-
     // Constructors
     public FoodData(FoodData data)
     {
@@ -55,7 +54,6 @@ public class FoodData
     }
 
 
-
     // Functions
     public void Set_Amount(int setAmount)
     {
@@ -68,10 +66,9 @@ public class FoodData
     }
 
 
-
     public void Set_Condition(List<FoodCondition_Data> conditionDatas)
     {
-        if (conditionDatas == null) return;
+        if (conditionDatas.Count <= 0) return;
 
         _conditionDatas = conditionDatas;
     }
@@ -94,5 +91,10 @@ public class FoodData
 
         // if not add new type
         _conditionDatas.Add(new(newCondition.type, newCondition.level));
+    }
+
+    public void Clear_Condition()
+    {
+        _conditionDatas.Clear();
     }
 }

@@ -29,7 +29,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
     }
 
-    private void Start()
+    public void Start()
     {
         UnInteract();
     }

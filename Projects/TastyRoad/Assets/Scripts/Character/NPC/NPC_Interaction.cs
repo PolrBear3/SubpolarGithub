@@ -36,7 +36,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     private Coroutine _timeLimitCoroutine;
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -49,7 +48,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     }
 
 
-
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -57,7 +55,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         UnInteract();
     }
-
 
 
     // IInteractable
@@ -104,7 +101,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         _controller.Action1 -= Serve_FoodOrder;
     }
-
 
 
     // Stop and Face Player if Interacted
@@ -169,7 +165,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
 
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
     }
-
 
 
     /// <summary>
@@ -245,7 +240,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         move.Stop_FreeRoam();
         move.Free_Roam(currentLocation, Random.Range(roamDelayTime.x, roamDelayTime.y));
     }
-
 
 
     /// <returns>

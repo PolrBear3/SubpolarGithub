@@ -7,7 +7,7 @@ public class Oven : MonoBehaviour, IInteractable
     private SpriteRenderer _spriteRenderer;
     private Material _material;
 
-    private Station_Controller _controller;
+    [SerializeField] private Station_Controller _controller;
 
     [Header("")]
     [SerializeField] private Sprite inActiveSprite;
@@ -24,14 +24,11 @@ public class Oven : MonoBehaviour, IInteractable
     private Coroutine _heatCoroutine;
 
 
-
     // UnityEngine
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
         _material = _spriteRenderer.material;
-
-        if (gameObject.TryGetComponent(out Station_Controller station)) { _controller = station; }
     }
 
     private void Start()
@@ -41,7 +38,6 @@ public class Oven : MonoBehaviour, IInteractable
 
         Update_FoodIcon_Position(false);
     }
-
 
 
     // OnTrigger
@@ -61,13 +57,12 @@ public class Oven : MonoBehaviour, IInteractable
     }
 
 
-
     // IInteractable
     public void Interact()
     {
         Basic_SwapFood();
-        Heat_Food();
 
+        Heat_Food();
         Update_CurrentVisual();
     }
 
@@ -75,7 +70,6 @@ public class Oven : MonoBehaviour, IInteractable
     {
 
     }
-
 
 
     // Oven Visual Update
@@ -93,7 +87,7 @@ public class Oven : MonoBehaviour, IInteractable
         // active
         if (_controller.Food_Icon().hasFood)
         {
-            //_light.SetActive(true);
+            _light.SetActive(true);
             _heatEmission.SetActive(true);
 
             LeanTween.value(gameObject, 0f, 5f, 2f).setOnUpdate((float val) =>
@@ -111,7 +105,7 @@ public class Oven : MonoBehaviour, IInteractable
 
             yield return new WaitForSeconds(2f);
 
-            //_light.SetActive(false);
+            _light.SetActive(false);
             _heatEmission.SetActive(false);
         }
     }
@@ -131,8 +125,7 @@ public class Oven : MonoBehaviour, IInteractable
     }
 
 
-
-    // Swap Current and Player Food
+    //
     public void Basic_SwapFood()
     {
         // swap data with player
@@ -146,8 +139,6 @@ public class Oven : MonoBehaviour, IInteractable
         // show table food data
         _controller.Food_Icon().Show_Icon();
         _controller.Food_Icon().Show_Condition();
-
-        UnInteract();
     }
 
 

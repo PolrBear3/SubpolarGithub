@@ -61,7 +61,7 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-
+    // Gets
     /// <returns>
     /// True if checkPosition is in restricted range, False if not
     /// </returns>
@@ -103,7 +103,41 @@ public class Location_Controller : MonoBehaviour
     }
 
 
+    /*
+    /// <summary>
+    /// (-1, 0, 1) horizontal(left, right), vertical(top bottom), position x and y(local position)
+    /// </summary>
+    public Vector2 OuterLocation_Position(float horizontal, float vertical, float positionX, float positionY)
+    {
+        float horizontalPos = horizontal;
+        float verticalPos = vertical;
 
+        if (horizontalPos == 0) horizontalPos = 0.5f;
+        else if (horizontalPos == -1f) horizontalPos = 0f;
+
+        if (verticalPos == 0) verticalPos = 0.5f;
+        else if (verticalPos == -1f) verticalPos = 0f;
+
+        Vector2 cameraPosition = cameraController.mainCamera.ViewportToWorldPoint(new Vector2(horizontalPos, verticalPos));
+
+        return new Vector2(cameraPosition.x + positionX, cameraPosition.y + positionY);
+    }
+
+    /// <summary>
+    /// left is -1, right is 1
+    /// </summary>
+    public Vector2 OuterLocation_Position(int leftRight)
+    {
+        // left
+        if (leftRight <= 0) return OuterLocation_Position(-1, 0, -2, -3);
+
+        // right
+        else return OuterLocation_Position(1, 0, 2, -3);
+    }
+    */
+
+
+    // NPC Control
     /// <summary>
     /// Also updates current npc population (global time tik update event)
     /// </summary>
@@ -154,7 +188,6 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-
     /// <summary>
     /// Update function for npc spawn and amount control
     /// </summary>
@@ -176,7 +209,6 @@ public class Location_Controller : MonoBehaviour
             _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(Random.Range(0, 2)));
         }
     }
-
 
 
     /// <summary>

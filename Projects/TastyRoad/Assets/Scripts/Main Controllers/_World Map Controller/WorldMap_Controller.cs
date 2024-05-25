@@ -158,7 +158,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         _mainController.transitionCanvas.Set_LoadIcon(_loadIconSprite);
         _mainController.transitionCanvas.CloseScene_Transition();
 
-        while (_mainController.transitionCanvas.transitionPlaying) yield return null;
+        while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 
         // reset settings before moving on to new location
         _mainController.Destroy_AllStations();

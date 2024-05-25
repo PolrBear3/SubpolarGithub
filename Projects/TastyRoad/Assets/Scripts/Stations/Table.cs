@@ -16,6 +16,11 @@ public class Table : MonoBehaviour, IInteractable
         _stationController = gameObject.GetComponent<Station_Controller>();
     }
 
+    private void OnDestroy()
+    {
+        _stationController.Action1_Event -= Basic_SwapFood;
+        _stationController.Action2_Event -= Merge_Food;
+    }
 
 
     // OnTrigger
@@ -26,7 +31,6 @@ public class Table : MonoBehaviour, IInteractable
 
         UnInteract();
     }
-
 
 
     // IInteractable
@@ -65,7 +69,6 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-
     // Swap Current and Player Food
     public void Basic_SwapFood()
     {
@@ -85,7 +88,6 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-
     // Merge Current and Player Food
     private void Merge_Food()
     {
@@ -94,17 +96,17 @@ public class Table : MonoBehaviour, IInteractable
 
         Food_ScrObj cookedFood = data.CookedFood(_stationController.Food_Icon(), playerFoodIcon);
 
-        // assign new cooked food to this table
-        _stationController.Food_Icon().Set_CurrentData(new FoodData(cookedFood));
-
-        _stationController.Food_Icon().Show_Icon();
-        _stationController.Food_Icon().Show_Condition();
-
         // clear player food
         playerFoodIcon.Set_CurrentData(null);
 
         playerFoodIcon.Show_Icon();
         playerFoodIcon.Show_Condition();
+
+        // assign new cooked food to this table
+        _stationController.Food_Icon().Set_CurrentData(new FoodData(cookedFood));
+
+        _stationController.Food_Icon().Show_Icon();
+        _stationController.Food_Icon().Show_Condition();
 
         // save to archive
         _stationController.mainController.AddFood_toArhive(cookedFood);
