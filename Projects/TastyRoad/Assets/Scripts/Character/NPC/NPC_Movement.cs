@@ -193,7 +193,7 @@ public class NPC_Movement : MonoBehaviour
         Main_Controller main = _controller.mainController;
 
         // random left or right side of camera
-        Vector2 targetPosition = main.OuterCamera_Position(Random.Range(0, 2));
+        Vector2 targetPosition = main.currentLocation.OuterLocation_Position(Random.Range(0, 2));
 
         // assign target position
         Assign_TargetPosition(targetPosition);

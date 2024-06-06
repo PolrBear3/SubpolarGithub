@@ -15,6 +15,10 @@ public class Location_Controller : MonoBehaviour
     public LocationData currentData => _currentData;
 
     [Header("")]
+    [SerializeField] private Sprite _locationIcon;
+    public Sprite locationIcon => _locationIcon;
+
+    [Header("")]
     [SerializeField] private SpriteRenderer _environment;
     public SpriteRenderer environment => _environment;
 
@@ -25,7 +29,6 @@ public class Location_Controller : MonoBehaviour
 
     [Header("")]
     [SerializeField] private List<GameObject> locationSetEvents = new();
-
 
 
     // UnityEngine
@@ -51,7 +54,6 @@ public class Location_Controller : MonoBehaviour
     {
         GlobalTime_Controller.TimeTik_Update -= Update_Current_MaxSpawn;
     }
-
 
 
     // Current Data Control
@@ -103,24 +105,34 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-    /*
     /// <summary>
     /// (-1, 0, 1) horizontal(left, right), vertical(top bottom), position x and y(local position)
     /// </summary>
     public Vector2 OuterLocation_Position(float horizontal, float vertical, float positionX, float positionY)
     {
-        float horizontalPos = horizontal;
-        float verticalPos = vertical;
+        // Get the sprite's bounds
+        Bounds bounds = _environment.bounds;
 
+        // Calculate the horizontal position
+        float horizontalPos = horizontal;
         if (horizontalPos == 0) horizontalPos = 0.5f;
         else if (horizontalPos == -1f) horizontalPos = 0f;
+        else if (horizontalPos == 1f) horizontalPos = 1f;
 
+        // Calculate the vertical position
+        float verticalPos = vertical;
         if (verticalPos == 0) verticalPos = 0.5f;
         else if (verticalPos == -1f) verticalPos = 0f;
+        else if (verticalPos == 1f) verticalPos = 1f;
 
-        Vector2 cameraPosition = cameraController.mainCamera.ViewportToWorldPoint(new Vector2(horizontalPos, verticalPos));
+        // Calculate the world position based on the bounds and the local position
+        Vector2 spritePosition = new Vector2(
+            Mathf.Lerp(bounds.min.x, bounds.max.x, horizontalPos),
+            Mathf.Lerp(bounds.min.y, bounds.max.y, verticalPos)
+        );
 
-        return new Vector2(cameraPosition.x + positionX, cameraPosition.y + positionY);
+        // Apply the additional local position offsets
+        return new Vector2(spritePosition.x + positionX, spritePosition.y + positionY);
     }
 
     /// <summary>
@@ -134,7 +146,6 @@ public class Location_Controller : MonoBehaviour
         // right
         else return OuterLocation_Position(1, 0, 2, -3);
     }
-    */
 
 
     // NPC Control
@@ -206,7 +217,7 @@ public class Location_Controller : MonoBehaviour
             float randIntervalTime = Random.Range(d.spawnIntervalTimeRange.x, d.spawnIntervalTimeRange.y);
             yield return new WaitForSeconds(randIntervalTime);
 
-            _mainController.Spawn_Character(1, _mainController.OuterCamera_Position(Random.Range(0, 2)));
+            _mainController.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
         }
     }
 

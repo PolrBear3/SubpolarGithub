@@ -14,7 +14,6 @@ public class Station_Movement : MonoBehaviour
     public GameObject movementArrows => _movementArrows;
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -38,7 +37,6 @@ public class Station_Movement : MonoBehaviour
     }
 
 
-
     // InputSystem
     private void OnMovement(InputValue value)
     {
@@ -47,13 +45,11 @@ public class Station_Movement : MonoBehaviour
     }
 
 
-
     // for fixed update
     private void Rigidbody_Move()
     {
         _rigidBody.velocity = new Vector2(_currentDirection.x * 3f, _currentDirection.y * 3f);
     }
-
 
 
     /// <returns>
@@ -107,7 +103,6 @@ public class Station_Movement : MonoBehaviour
         _rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         enabled = false;
     }
-
 
 
     //

@@ -9,8 +9,10 @@ public class UI_ClockTimer : MonoBehaviour
 
     [SerializeField] private List<Sprite> _clockSprites = new();
 
-    private const float _inputHoldTime = 1f;
+    private bool _onHold;
+    public bool onHold => _onHold;
 
+    private const float _inputHoldTime = 1f;
     private Coroutine _timeCoroutine;
 
 
@@ -34,6 +36,8 @@ public class UI_ClockTimer : MonoBehaviour
     }
     private IEnumerator Run_ClockSprite_Coroutine()
     {
+        _onHold = true;
+
         float transitionTime = _inputHoldTime / _clockSprites.Count;
 
         for (int i = 0; i < _clockSprites.Count; i++) 
@@ -51,6 +55,8 @@ public class UI_ClockTimer : MonoBehaviour
 
     public void Stop_ClockSpriteRun()
     {
+        _onHold = false;
+
         if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
 
         _image.color = Color.clear;

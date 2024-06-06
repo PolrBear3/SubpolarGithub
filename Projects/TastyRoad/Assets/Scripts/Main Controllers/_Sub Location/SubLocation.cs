@@ -10,6 +10,8 @@ public class SubLocation : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     public Transform spawnPoint => _spawnPoint;
 
+
+
     private Vector2 _returnPoint;
 
 
@@ -34,6 +36,9 @@ public class SubLocation : MonoBehaviour
     }
     private IEnumerator Exit_Coroutine()
     {
+        // set load icon
+        _mainController.transitionCanvas.Set_LoadIcon(_mainController.currentLocation.locationIcon);
+
         // curtain scene transition
         _mainController.transitionCanvas.CurrentScene_Transition();
 

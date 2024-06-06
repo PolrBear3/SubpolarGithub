@@ -91,8 +91,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void TestButton1()
     {
         TestButton1Event?.Invoke();
-
-        Player().foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
     }
 
     public void TestButton2()

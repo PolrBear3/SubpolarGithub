@@ -9,7 +9,6 @@ public class Custom_PositionClaimer : MonoBehaviour
     [SerializeField] private List<Vector2> _claimPositions = new();
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -18,6 +17,10 @@ public class Custom_PositionClaimer : MonoBehaviour
         Claim_CustomPositions();
     }
 
+    private void OnDestroy()
+    {
+        _main.UnClaim_Position(transform.position);
+    }
 
 
     //

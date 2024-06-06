@@ -87,6 +87,24 @@ public class Data_Controller : MonoBehaviour
         return null;
     }
 
+    /// <returns>
+    /// Random Station
+    /// </returns>
+    public Station_ScrObj Station_ScrObj(bool onlyRetrievable)
+    {
+        List<Station_ScrObj> stations = new List<Station_ScrObj>();
+
+        for (int i = 0; i < this.stations.Count; i++)
+        {
+            if (onlyRetrievable == true && this.stations[i].unRetrievable) continue;
+            stations.Add(this.stations[i]);
+        }
+
+        Station_ScrObj randStation = stations[Random.Range(0, stations.Count)];
+
+        return randStation;
+    }
+
 
 
     // Get All Food

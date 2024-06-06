@@ -57,6 +57,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     // InputSystem
     private void OnCursorControl(InputValue value)
     {
+        if (_holdTimer.onHold) return;
+
         Vector2 input = value.Get<Vector2>();
         int xInput = (int)input.x;
 
@@ -83,6 +85,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnExit()
     {
+        if (_holdTimer.onHold) return;
+
         Map_Toggle(false);
     }
 

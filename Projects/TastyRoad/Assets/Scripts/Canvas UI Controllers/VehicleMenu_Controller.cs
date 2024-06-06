@@ -82,7 +82,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public event Menu_Event OnExit_Input;
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -93,7 +92,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         VehicleMenu_Toggle(false);
     }
-
 
 
     // ISaveLoadable
@@ -119,10 +117,11 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // InputSystem
     private void OnCursorControl(InputValue value)
     {
+        if (_cursor.holdTimer.onHold) return;
+
         Vector2 input = value.Get<Vector2>();
 
         // only gets left and right input
@@ -157,6 +156,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnOption1()
     {
+        if (_cursor.holdTimer.onHold) return;
+
         if (_cursor.data.hasItem)
         {
             OnOption1_Input?.Invoke();
@@ -171,6 +172,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnOption2()
     {
+        if (_cursor.holdTimer.onHold) return;
+
         if (_cursor.data.hasItem)
         {
             OnOption2_Input?.Invoke();
@@ -185,6 +188,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnExit()
     {
+        if (_cursor.holdTimer.onHold) return;
+
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
 
         if (currentMenu.MenuInteraction_Active() == true)
@@ -199,7 +204,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         _vehicleController.detection.player.Player_Input().enabled = true;
     }
-
 
 
     // Canvas Toggle on off
@@ -222,7 +226,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     /// <summary>
     /// Coin amount text update
     /// </summary>
@@ -232,7 +235,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _stationCoinText.text = Main_Controller.currentStationCoin.ToString();
         _gasCoinText.text = Main_Controller.currentGasCoin.ToString();
     }
-
 
 
     // Cursor Control
@@ -262,13 +264,11 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // Main Control
     public void AssignMain_ItemSlots(List<ItemSlot> menuItemSlots)
     {
         _itemSlots = menuItemSlots;
     }
-
 
 
     private void Menu_Control()

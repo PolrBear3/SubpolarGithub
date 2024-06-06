@@ -7,9 +7,10 @@ public class Station_ScrObj : ScriptableObject
 {
     public GameObject prefab;
 
+    public Sprite sprite;
     public Sprite miniSprite;
-    public Vector2 centerPosition;
 
+    public Vector2 centerPosition;
     public bool unRetrievable;
 
     public string stationName;
