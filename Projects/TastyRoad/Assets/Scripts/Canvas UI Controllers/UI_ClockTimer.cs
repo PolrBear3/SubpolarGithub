@@ -12,6 +12,9 @@ public class UI_ClockTimer : MonoBehaviour
     private bool _onHold;
     public bool onHold => _onHold;
 
+    private bool _holdFinished;
+    public bool holdFinished => _holdFinished;
+
     private const float _inputHoldTime = 1f;
     private Coroutine _timeCoroutine;
 
@@ -26,7 +29,6 @@ public class UI_ClockTimer : MonoBehaviour
     {
         Stop_ClockSpriteRun();
     }
-
 
 
     //
@@ -50,12 +52,15 @@ public class UI_ClockTimer : MonoBehaviour
 
         yield return new WaitForSeconds(transitionTime);
 
+        _holdFinished = true;
+
         _image.color = Color.clear;
     }
 
     public void Stop_ClockSpriteRun()
     {
         _onHold = false;
+        _holdFinished = false;
 
         if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
 

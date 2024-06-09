@@ -17,7 +17,7 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
 
     public delegate void OnEvent();
     public static event OnEvent TimeTik_Update;
-
+    public static event OnEvent DayTik_Update;
 
 
     // UnityEngine
@@ -25,7 +25,6 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     {
         GlobalTime_Update();
     }
-
 
 
     // ISaveLoadable
@@ -40,7 +39,6 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     //
     private void GlobalTime_Update()
     {
@@ -52,13 +50,17 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
         {
             yield return new WaitForSeconds(_tikTime);
 
+            //
             if (_currentTime >= 12) _isIncrease = false;
             else if (_currentTime <= 0) _isIncrease = true;
 
             if (_isIncrease) _currentTime++;
             else _currentTime--;
 
+            //
             TimeTik_Update?.Invoke();
+
+            if (_currentTime == 0) DayTik_Update?.Invoke();
         }
     }
 }

@@ -9,7 +9,10 @@ public class WaySign : ActionBubble_Interactable
 
     [Header("")]
     [SerializeField] private GameObject _subLocationPrefab;
-    private SubLocation _subLocation;
+
+    [Header("Exit Settings")]
+    [SerializeField] private bool _isExit;
+    [SerializeField] private SubLocation _subLocation;
 
 
     // MonoBehaviour
@@ -30,6 +33,9 @@ public class WaySign : ActionBubble_Interactable
     // Set Functions
     private void Set_SubLocation()
     {
+        // return if current sign is exit
+        if (_subLocation != null) return;
+
         // instantiate sub location
         GameObject locationObj = Instantiate(_subLocationPrefab);
         SubLocation subLocation = locationObj.GetComponent<SubLocation>();
@@ -48,6 +54,14 @@ public class WaySign : ActionBubble_Interactable
     // Interact Functions
     private void Moveto_SubLocation()
     {
+        // exit sub location
+        if (_isExit)
+        {
+            _subLocation.Exit();
+            return;
+        }
+
+        // enter sub location
         StartCoroutine(Moveto_SubLocation_Coroutine());
     }
     private IEnumerator Moveto_SubLocation_Coroutine()

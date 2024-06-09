@@ -19,10 +19,8 @@ public class ItemSlot_Cursor : MonoBehaviour
     public UI_ClockTimer holdTimer => _holdTimer;
 
 
-
     [Header("")]
     [SerializeField] private Sprite _defaultCursor;
-
 
 
     [HideInInspector] public ItemSlot_Data data;
@@ -31,13 +29,11 @@ public class ItemSlot_Cursor : MonoBehaviour
     public ItemSlot currentSlot => _currentSlot;
 
 
-
     // UnityEngine
     private void Start()
     {
         Empty_Item();
     }
-
 
 
     /// <summary>
@@ -50,7 +46,6 @@ public class ItemSlot_Cursor : MonoBehaviour
         transform.SetParent(_currentSlot.cursorPoint);
         transform.localPosition = Vector2.zero;
     }
-
 
 
     // Cursor item Control

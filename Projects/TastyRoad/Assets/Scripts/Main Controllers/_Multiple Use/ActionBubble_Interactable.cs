@@ -17,6 +17,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     [SerializeField] private Action_Bubble _bubble;
     public Action_Bubble bubble => _bubble;
 
+    private bool _interactLocked;
+
     public delegate void Event();
 
     public event Event Action1;
@@ -64,6 +66,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
+        if (_interactLocked) return;
+
         // bubble empty
         if (_bubble == null) return;
 
@@ -93,5 +97,10 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public void InputToggle(bool toggleOn)
     {
         _input.enabled = toggleOn;
+    }
+
+    public void LockInteract(bool toggleLock)
+    {
+        _interactLocked = toggleLock;
     }
 }

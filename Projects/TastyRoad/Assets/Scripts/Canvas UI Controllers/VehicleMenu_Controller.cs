@@ -139,9 +139,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnSelect()
     {
-        _cursor.holdTimer.Stop_ClockSpriteRun();
+        if (_cursor.holdTimer.holdFinished == false)
+        {
+            OnSelect_Input?.Invoke();
+        }
 
-        OnSelect_Input?.Invoke();
+        _cursor.holdTimer.Stop_ClockSpriteRun();
     }
 
     private void OnSelectDown()

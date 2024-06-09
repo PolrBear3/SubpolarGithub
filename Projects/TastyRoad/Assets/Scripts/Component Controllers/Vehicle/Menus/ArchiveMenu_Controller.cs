@@ -35,7 +35,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnCursor_Input += IngredientBubble_UpdatePosition;
 
-        _controller.OnOption2_Input += CurrentFood_BookmarkToggle;
+        _controller.OnHoldSelect_Input += CurrentFood_BookmarkToggle;
 
     }
 
@@ -53,7 +53,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnCursor_Input -= IngredientBubble_UpdatePosition;
 
-        _controller.OnOption2_Input -= CurrentFood_BookmarkToggle;
+        _controller.OnHoldSelect_Input -= CurrentFood_BookmarkToggle;
     }
 
     private void OnDestroy()
@@ -221,7 +221,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         cursor.data.bookMarked = !cursor.data.bookMarked;
 
-        Select_Slot();
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
 
         Food_ScrObj currentFood = currentSlot.data.currentFood;

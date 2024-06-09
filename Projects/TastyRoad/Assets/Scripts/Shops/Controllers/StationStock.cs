@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class StationStock : MonoBehaviour
 {
@@ -8,14 +9,21 @@ public class StationStock : MonoBehaviour
 
     [Header("")]
     [SerializeField] private ActionBubble_Interactable _interactable;
+    [SerializeField] private CoinLauncher _launcher;
 
     private Station_ScrObj _station;
     private bool _sold;
 
     [Header("")]
+    [SerializeField] private Sprite _emptyStation;
+
+    [Header("")]
     [SerializeField] private SpriteRenderer _statusSign;
     [SerializeField] private Sprite _sellSign;
     [SerializeField] private Sprite _soldSign;
+
+    [Header("")]
+    [SerializeField] private TextMeshPro _priceText;
 
 
     // MonoBehaviour
@@ -26,26 +34,35 @@ public class StationStock : MonoBehaviour
 
     private void Start()
     {
-        _interactable.Action1 += Purchase;
-
         Set_Station();
+
+        _interactable.Action1 += Purchase;
     }
 
     private void OnDestroy()
     {
         _interactable.Action1 -= Purchase;
+
+        GlobalTime_Controller.DayTik_Update -= Restock;
     }
 
 
     // Set
     private void Set_Station()
     {
+        GlobalTime_Controller.DayTik_Update -= Restock;
+
         // get random station
         Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj(true);
 
         // set data and sprite
         _station = randStation;
+
         _sr.sprite = _station.sprite;
+        _statusSign.sprite = _sellSign;
+
+        // price text
+        _priceText.text = _station.price.ToString();
     }
 
 
@@ -56,8 +73,12 @@ public class StationStock : MonoBehaviour
 
         // check if player has enough coins
 
+
         // add to vehicle
         _interactable.mainController.currentVehicle.menu.stationMenu.Add_StationItem(_station, 1);
+
+        // station coin launch animation
+        _launcher.Parabola_CoinLaunch(_station.miniSprite, _interactable.detection.player.transform.position - transform.position);
 
         // 
         Update_toSold();
@@ -65,11 +86,37 @@ public class StationStock : MonoBehaviour
 
     private void Update_toSold()
     {
+        GlobalTime_Controller.DayTik_Update += Restock;
+
         // set data
         _sold = true;
         _interactable.Action1 -= Purchase;
 
         // set sprite
-        _sr.sprite = _soldSign;
+        _sr.sortingLayerName = "Background";
+        _sr.sortingOrder += 1;
+
+        _sr.sprite = _emptyStation;
+        _statusSign.sprite = _soldSign;
+
+        //
+        _interactable.LockInteract(true);
+    }
+
+    private void Restock()
+    {
+        if (_sold == false) return;
+
+        Set_Station();
+
+        // set data
+        _sold = false;
+        _interactable.Action1 += Purchase;
+
+        _sr.sortingLayerName = "Prefabs";
+        _sr.sortingOrder -= 1;
+
+        //
+        _interactable.LockInteract(false);
     }
 }

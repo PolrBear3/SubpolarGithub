@@ -185,12 +185,8 @@ public class Grocery : MonoBehaviour, IInteractable
         // add current hovering food to food menu
         _mainController.currentVehicle.menu.foodMenu.Add_FoodItem(currentFood.foodScrObj, 1);
 
-        // player toss gold coin to grocery npc
-        Player_Controller player = _detection.player;
-        Coin_ScrObj goldCoin = _mainController.dataController.coinTypes[0];
-        player.coinLauncher.Parabola_CoinLaunch(goldCoin, transform.position - player.transform.position);
-
         // toss food to player
+        Player_Controller player = _detection.player;
         _launcher.Parabola_CoinLaunch(currentFood.foodScrObj.sprite, player.transform.position - transform.position);
     }
 }
