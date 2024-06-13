@@ -97,4 +97,24 @@ public class FoodData
     {
         _conditionDatas.Clear();
     }
+
+
+    public int Conditions_MatchCount(List<FoodCondition_Data> conditionsToCompare)
+    {
+        int matchCount = 0;
+
+        foreach (var condition in conditionsToCompare)
+        {
+            foreach (var currentCondition in _conditionDatas)
+            {
+                if (condition.type == currentCondition.type && condition.level == currentCondition.level)
+                {
+                    matchCount++;
+                    break;
+                }
+            }
+        }
+
+        return matchCount;
+    }
 }

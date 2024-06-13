@@ -9,8 +9,8 @@ public class BasicAnimation_Controller : MonoBehaviour
 
     private Animator _animator;
 
+    [SerializeField] private AnimatorOverrideController _animOverride;
     [SerializeField] private string _defaultAnimation;
-
 
 
     // UnityEngine
@@ -22,12 +22,19 @@ public class BasicAnimation_Controller : MonoBehaviour
 
     private void Start()
     {
+        Set_OverrideController();
         Set_DefaultAnimation();
     }
 
 
-
     // Custon Animation Play
+    private void Set_OverrideController()
+    {
+        if (_animOverride == null) return;
+
+        _animator.runtimeAnimatorController = _animOverride;
+    }
+
     private void Set_DefaultAnimation()
     {
         if (_defaultAnimation == null) return;
@@ -39,7 +46,6 @@ public class BasicAnimation_Controller : MonoBehaviour
     {
         _animator.Play(animationName);
     }
-
 
 
     // Sprite Flip Control
@@ -69,7 +75,6 @@ public class BasicAnimation_Controller : MonoBehaviour
             Flip_Sprite(false);
         }
     }
-
 
 
     // Basic Animation Control

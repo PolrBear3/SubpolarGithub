@@ -25,6 +25,9 @@ public class NPC_Movement : MonoBehaviour
     [SerializeField] private Vector2 _intervalTimeRange;
 
 
+    public delegate void Event();
+    public Event TargetPosition_UpdateEvent;
+
 
     // UnityEngine
     private void Awake()
@@ -35,9 +38,6 @@ public class NPC_Movement : MonoBehaviour
     private void Start()
     {
         _targetPosition = transform.position;
-
-        // start roam at current location
-        Free_Roam(_controller.mainController.currentLocation.roamArea, 0f);
     }
 
     private void Update()
@@ -45,7 +45,6 @@ public class NPC_Movement : MonoBehaviour
         _controller.basicAnim.Idle_Move(Is_Moving());
         TargetPosition_Movement();
     }
-
 
 
     // Get
@@ -56,7 +55,6 @@ public class NPC_Movement : MonoBehaviour
         // return right
         else return 1f;
     }
-
 
 
     // Check
@@ -85,7 +83,6 @@ public class NPC_Movement : MonoBehaviour
     }
 
 
-
     // Movement Update
     private void TargetPosition_Movement()
     {
@@ -94,7 +91,6 @@ public class NPC_Movement : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, _targetPosition, _moveSpeed * 0.1f * Time.deltaTime);
         }
     }
-
 
 
     /// <summary>
@@ -111,8 +107,9 @@ public class NPC_Movement : MonoBehaviour
     public void Assign_TargetPosition(Vector2 assignPosition)
     {
         _targetPosition = assignPosition;
-
         _controller.basicAnim.Flip_Sprite(Move_Direction());
+
+        TargetPosition_UpdateEvent?.Invoke();
     }
 
     /// <summary>
@@ -176,7 +173,6 @@ public class NPC_Movement : MonoBehaviour
         _roamActive = false;
         _targetPosition = transform.position;
     }
-
 
 
     public void Leave(float startDelayTime)

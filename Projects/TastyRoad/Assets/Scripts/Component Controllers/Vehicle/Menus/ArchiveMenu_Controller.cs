@@ -62,7 +62,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     // ISaveLoadable
     public void Save_Data()
     {
@@ -91,13 +90,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     // IVehicleMenu
     public bool MenuInteraction_Active()
     {
         return false;
     }
-
 
 
     // Slot and Cursor Control
@@ -182,7 +179,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     /// <summary>
     /// Render sprites or amounts according to slot's current loaded data
     /// </summary>
@@ -236,7 +232,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     // Slots Update
     private void UpdateNew_ArchivedFoods()
     {
@@ -279,7 +274,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             break;
         }
     }
-
 
 
     // Ingredient Bubble Control

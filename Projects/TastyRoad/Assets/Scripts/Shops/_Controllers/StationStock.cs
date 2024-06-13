@@ -12,7 +12,9 @@ public class StationStock : MonoBehaviour
     [SerializeField] private CoinLauncher _launcher;
 
     private Station_ScrObj _station;
+
     private bool _sold;
+    public bool sold => _sold;
 
     [Header("")]
     [SerializeField] private Sprite _emptyStation;
@@ -21,9 +23,6 @@ public class StationStock : MonoBehaviour
     [SerializeField] private SpriteRenderer _statusSign;
     [SerializeField] private Sprite _sellSign;
     [SerializeField] private Sprite _soldSign;
-
-    [Header("")]
-    [SerializeField] private TextMeshPro _priceText;
 
 
     // MonoBehaviour
@@ -42,16 +41,12 @@ public class StationStock : MonoBehaviour
     private void OnDestroy()
     {
         _interactable.Action1 -= Purchase;
-
-        GlobalTime_Controller.DayTik_Update -= Restock;
     }
 
 
     // Set
     private void Set_Station()
     {
-        GlobalTime_Controller.DayTik_Update -= Restock;
-
         // get random station
         Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj(true);
 
@@ -60,9 +55,6 @@ public class StationStock : MonoBehaviour
 
         _sr.sprite = _station.sprite;
         _statusSign.sprite = _sellSign;
-
-        // price text
-        _priceText.text = _station.price.ToString();
     }
 
 
@@ -86,8 +78,6 @@ public class StationStock : MonoBehaviour
 
     private void Update_toSold()
     {
-        GlobalTime_Controller.DayTik_Update += Restock;
-
         // set data
         _sold = true;
         _interactable.Action1 -= Purchase;
@@ -103,7 +93,7 @@ public class StationStock : MonoBehaviour
         _interactable.LockInteract(true);
     }
 
-    private void Restock()
+    public void Restock()
     {
         if (_sold == false) return;
 

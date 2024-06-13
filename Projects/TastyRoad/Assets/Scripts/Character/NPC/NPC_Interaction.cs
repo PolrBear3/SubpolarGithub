@@ -400,7 +400,10 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         defaultScore += _controller.timer.Current_TimeBlock_Amount();
 
         // state match
-        // defaultScore += _controller.foodIcon.StateData_MatchCount(playerFoodData.stateData); //
+        defaultScore += _controller.foodIcon.currentData.Conditions_MatchCount(playerFoodData.conditionDatas);
+
+        // bookmark count
+        defaultScore += _controller.mainController.currentVehicle.menu.archiveMenu.bookmarkedFoods.Count;
 
         return defaultScore;
     }

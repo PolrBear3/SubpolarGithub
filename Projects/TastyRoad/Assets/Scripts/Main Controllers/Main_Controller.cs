@@ -284,10 +284,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
     }
 
-    public void Spawn_Character(int arrayNum, Vector2 spawnPosition)
+    public GameObject Spawn_Character(int arrayNum, Vector2 spawnPosition)
     {
         GameObject character = Instantiate(dataController.characters[arrayNum], spawnPosition, Quaternion.identity);
         character.transform.parent = _characterFile;
+
+        return character;
     }
 
     public Player_Controller Player()

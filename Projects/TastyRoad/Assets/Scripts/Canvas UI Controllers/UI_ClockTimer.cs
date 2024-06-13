@@ -38,13 +38,13 @@ public class UI_ClockTimer : MonoBehaviour
     }
     private IEnumerator Run_ClockSprite_Coroutine()
     {
-        _onHold = true;
-
         float transitionTime = _inputHoldTime / _clockSprites.Count;
 
         for (int i = 0; i < _clockSprites.Count; i++) 
         {
             yield return new WaitForSeconds(transitionTime);
+
+            _onHold = true;
 
             _image.color = Color.white;
             _image.sprite = _clockSprites[i];

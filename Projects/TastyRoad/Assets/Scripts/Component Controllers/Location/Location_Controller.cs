@@ -217,7 +217,12 @@ public class Location_Controller : MonoBehaviour
             float randIntervalTime = Random.Range(d.spawnIntervalTimeRange.x, d.spawnIntervalTimeRange.y);
             yield return new WaitForSeconds(randIntervalTime);
 
-            _mainController.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
+            // spawn
+            GameObject spawnNPC = _mainController.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
+
+            // set npc free roam location
+            NPC_Movement npcMovement = spawnNPC.GetComponent<NPC_Movement>();
+            npcMovement.Free_Roam(roamArea, 0f);
         }
     }
 

@@ -10,7 +10,8 @@ public class SubLocation : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     public Transform spawnPoint => _spawnPoint;
 
-
+    [SerializeField] private SpriteRenderer _roamArea;
+    public SpriteRenderer roamArea => _roamArea;
 
     private Vector2 _returnPoint;
 

@@ -30,7 +30,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private int _cursorTileNum;
 
 
-
     // UnityEngine
     private void Start()
     {
@@ -51,7 +50,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Set_RandomLocation();
         _mainController.currentLocation.Activate_LocationSet_Events();
     }
-
 
 
     // InputSystem
@@ -91,7 +89,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // ISaveLoadable
     public void Save_Data()
     {
@@ -102,7 +99,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     {
         _currentTileNum = ES3.Load("WorldMap_Controller/_currentTileNum", _currentTileNum);
     }
-
 
 
     // Menu Control
@@ -128,7 +124,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             LeanTween.alpha(_backgroundPanel, 0f, 0.25f);
         }
     }
-
 
 
     // Single Tile to Tile Control
@@ -220,8 +215,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             _tiles[i].currentTileIndicator.SetActive(false);
         }
     }
-
-
 
 
     /// <summary>

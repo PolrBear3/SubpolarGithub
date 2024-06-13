@@ -139,7 +139,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnSelect()
     {
-        if (_cursor.holdTimer.holdFinished == false)
+        if (_cursor.holdTimer.onHold == false)
         {
             OnSelect_Input?.Invoke();
         }

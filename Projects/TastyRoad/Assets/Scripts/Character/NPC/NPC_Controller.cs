@@ -52,7 +52,7 @@ public class NPC_Controller : MonoBehaviour
     {
         _input = gameObject.GetComponent<PlayerInput>();
 
-        _mainController = FindObjectOfType<Main_Controller>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
         _mainController.Track_CurrentCharacter(gameObject);
     }
 
