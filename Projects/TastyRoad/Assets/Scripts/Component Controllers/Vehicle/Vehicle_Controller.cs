@@ -29,14 +29,14 @@ public class Vehicle_Controller : ActionBubble_Interactable
     {
         base.Start();
 
-        Action1 += Open_VehicleMenu;
-        Action2 += Open_WorldMap;
+        Action1Event += Open_VehicleMenu;
+        Action2Event += Open_WorldMap;
     }
 
     private void OnDestroy()
     {
-        Action1 -= Open_VehicleMenu;
-        Action2 -= Open_WorldMap;
+        Action1Event -= Open_VehicleMenu;
+        Action2Event -= Open_WorldMap;
     }
 
     private void Update()

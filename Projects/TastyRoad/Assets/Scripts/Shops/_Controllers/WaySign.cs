@@ -21,12 +21,12 @@ public class WaySign : ActionBubble_Interactable
         base.Start();
 
         Set_SubLocation();
-        Action1 += Moveto_SubLocation;
+        Action1Event += Moveto_SubLocation;
     }
 
     private void OnDestroy()
     {
-        Action1 -= Moveto_SubLocation;
+        Action1Event -= Moveto_SubLocation;
     }
 
 

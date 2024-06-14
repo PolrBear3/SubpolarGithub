@@ -35,12 +35,14 @@ public class StationStock : MonoBehaviour
     {
         Set_Station();
 
-        _interactable.Action1 += Purchase;
+        _interactable.InteractEvent += Set_Dialog;
+        _interactable.Action1Event += Purchase;
     }
 
     private void OnDestroy()
     {
-        _interactable.Action1 -= Purchase;
+        _interactable.InteractEvent -= Set_Dialog;
+        _interactable.Action1Event -= Purchase;
     }
 
 
@@ -55,6 +57,13 @@ public class StationStock : MonoBehaviour
 
         _sr.sprite = _station.sprite;
         _statusSign.sprite = _sellSign;
+    }
+
+    private void Set_Dialog()
+    {
+        DialogData dialog = new(_station.miniSprite, "");
+
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(_interactable.mainController, dialog);
     }
 
 
@@ -80,7 +89,7 @@ public class StationStock : MonoBehaviour
     {
         // set data
         _sold = true;
-        _interactable.Action1 -= Purchase;
+        _interactable.Action1Event -= Purchase;
 
         // set sprite
         _sr.sortingLayerName = "Background";
@@ -101,7 +110,7 @@ public class StationStock : MonoBehaviour
 
         // set data
         _sold = false;
-        _interactable.Action1 += Purchase;
+        _interactable.Action1Event += Purchase;
 
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;

@@ -305,6 +305,60 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "NumKey1",
+                    "type": "Button",
+                    "id": "d24a02e5-1064-4672-bee8-a27aed44f364",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.5)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NumKey2",
+                    "type": "Button",
+                    "id": "bb5545b0-5356-43ed-957b-bca5990dadba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.5)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NumKey3",
+                    "type": "Button",
+                    "id": "b5a86fd7-ce99-4690-b06a-74b2a144ba6b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.5)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NumKey1Release",
+                    "type": "Button",
+                    "id": "99ebd647-99c7-4899-82bb-471dac1e6b4f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NumKey2Release",
+                    "type": "Button",
+                    "id": "519baf54-9fb0-400b-9b3d-7a08d6130c2d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NumKey3Release",
+                    "type": "Button",
+                    "id": "7c1b3391-ca32-4d1a-8f3d-b8d80b838eef",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -492,6 +546,72 @@
                     "processors": "",
                     "groups": "",
                     "action": "Test",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d942b88-808a-41d6-839b-788b4e4fd559",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NumKey1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "10fc85f7-cc18-4073-8b4f-0302f5339a18",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NumKey2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f928ac8e-8532-4268-b467-194f5e114b76",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NumKey3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7849ff2-8b68-4d2e-96c0-707607c559bd",
+                    "path": "<Keyboard>/1",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NumKey1Release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42e8d180-6a6e-4f39-a2c2-d344148e7f19",
+                    "path": "<Keyboard>/2",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NumKey2Release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9f1636a4-f20b-4e7d-ab37-4067cc5df344",
+                    "path": "<Keyboard>/3",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "NumKey3Release",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

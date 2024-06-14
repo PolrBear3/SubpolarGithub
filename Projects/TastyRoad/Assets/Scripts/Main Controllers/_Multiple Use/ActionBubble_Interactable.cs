@@ -21,8 +21,9 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public delegate void Event();
 
-    public event Event Action1;
-    public event Event Action2;
+    public event Event InteractEvent;
+    public event Event Action1Event;
+    public event Event Action2Event;
 
 
     // MonoBehaviour
@@ -49,15 +50,15 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     // InputSystem
     private void OnAction1()
     {
-        Action1?.Invoke();
+        Action1Event?.Invoke();
 
         UnInteract();
     }
 
     private void OnAction2()
     {
-        if (Action2 == null) return;
-        Action2?.Invoke();
+        if (Action2Event == null) return;
+        Action2Event?.Invoke();
 
         UnInteract();
     }
@@ -81,6 +82,9 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         // bubble on
         _input.enabled = true;
         _bubble.Toggle(true);
+
+        //
+        InteractEvent?.Invoke();
     }
 
     public void UnInteract()

@@ -14,6 +14,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private TransitionCanvas_Controller _transitionCanvas;
     public TransitionCanvas_Controller transitionCanvas => _transitionCanvas;
 
+    [SerializeField] private DialogSystem _dialogSystem;
+    public DialogSystem dialogSystem => _dialogSystem;
+
     [SerializeField] private WorldMap_Controller _worldMap;
     public WorldMap_Controller worldMap => _worldMap;
 
