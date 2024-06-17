@@ -19,20 +19,18 @@ public class DialogBox : MonoBehaviour
 
 
     // MonoBehaviour
-    private void Start()
-    {
-        _defaultPosition = _infoPanel.rectTransform.localPosition;
-
-        InfoPanel_RepositionUpdate();
-        InfoPanel_Toggle(false);
-    }
 
 
     // Data Set
     public void Update_Box(DialogData data)
     {
+        _defaultPosition = _infoPanel.rectTransform.localPosition;
+
         _iconImage.sprite = data.icon;
         _infoText.text = data.info;
+
+        InfoPanel_RepositionUpdate();
+        InfoPanel_Toggle(false);
     }
 
 
@@ -46,7 +44,7 @@ public class DialogBox : MonoBehaviour
         _newIndication.gameObject.SetActive(false);
     }
 
-    private void InfoPanel_RepositionUpdate()
+    public void InfoPanel_RepositionUpdate()
     {
         _infoText.ForceMeshUpdate();
         Canvas.ForceUpdateCanvases();
