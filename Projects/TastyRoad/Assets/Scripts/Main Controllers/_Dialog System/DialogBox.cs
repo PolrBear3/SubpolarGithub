@@ -8,22 +8,51 @@ public class DialogBox : MonoBehaviour
 {
     [Header("")]
     [SerializeField] private Image _iconImage;
+    [SerializeField] private RectTransform _newIndication;
 
     [Header("")]
-    [SerializeField] private GameObject _infoPanel;
-    //[SerializeField] private TextMeshProUGUI _infoText;
+    [SerializeField] private Image _infoPanel;
+    [SerializeField] private TextMeshProUGUI _infoText;
+
+    private Vector2 _defaultPosition;
+    private bool _panelOpened;
 
 
-    // Functions
-    public void Update_Box(DialogData data)
+    // MonoBehaviour
+    private void Start()
     {
-        _iconImage.sprite = data.icon;
-        //_infoText.text = data.info;
+        _defaultPosition = _infoPanel.rectTransform.localPosition;
+
+        InfoPanel_RepositionUpdate();
+        InfoPanel_Toggle(false);
     }
 
 
+    // Data Set
+    public void Update_Box(DialogData data)
+    {
+        _iconImage.sprite = data.icon;
+        _infoText.text = data.info;
+    }
+
+
+    // Basic Panel Control
     public void InfoPanel_Toggle(bool toggleOn)
     {
-        _infoPanel.SetActive(toggleOn);
+        _infoPanel.gameObject.SetActive(toggleOn);
+        _panelOpened = toggleOn;
+
+        if (_panelOpened == false) return;
+        _newIndication.gameObject.SetActive(false);
+    }
+
+    private void InfoPanel_RepositionUpdate()
+    {
+        _infoText.ForceMeshUpdate();
+        Canvas.ForceUpdateCanvases();
+
+        float yPos = _infoText.textInfo.lineCount * -12.5f;
+
+        _infoPanel.rectTransform.localPosition = new Vector2(_defaultPosition.x, _defaultPosition.y + yPos);
     }
 }

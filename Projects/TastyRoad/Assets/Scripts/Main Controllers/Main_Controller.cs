@@ -33,11 +33,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
 
     public static bool gamePaused;
-    public static bool orderOpen;
 
+    public static bool orderOpen;
     public static int currentGoldCoin;
-    public static int currentStationCoin;
-    public static int currentGasCoin;
 
 
     public delegate void Event();
@@ -64,8 +62,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         orderOpen = false;
 
         ES3.Save("currentGoldCoin", currentGoldCoin);
-        ES3.Save("currentStationCoin", currentStationCoin);
-
         ES3.Save("_claimedPositions", _claimedPositions);
 
         Save_ArchivedFood();
@@ -78,8 +74,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void Load_Data()
     {
         currentGoldCoin = ES3.Load("currentGoldCoin", currentGoldCoin);
-        currentStationCoin = ES3.Load("currentStationCoin", currentStationCoin);
-
         _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);
 
         Load_ArchivedFood();
@@ -521,17 +515,38 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
     }
 
+    private void RemoveDuplicates_fromBookmark()
+    {
+        HashSet<Food_ScrObj> hashFoods = new();
+        List<Food_ScrObj> nonDuplicateFoods = new();
+
+        for (int i = 0; i < _bookmarkedFoods.Count; i++)
+        {
+            // if _bookmarkedFoods[i] is not in hashFoods, add & return true
+            if (!hashFoods.Add(_bookmarkedFoods[i])) continue;
+
+            // also add to nonDuplicateFoods
+            nonDuplicateFoods.Add(_bookmarkedFoods[i]);
+        }
+
+        _bookmarkedFoods = nonDuplicateFoods;
+    }
+
     public void AddFood_toBookmark(Food_ScrObj food)
     {
         if (food == null) return;
 
         _bookmarkedFoods.Add(food);
+
+        RemoveDuplicates_fromBookmark();
     }
     public void RemoveFood_fromBookmark(Food_ScrObj food)
     {
         if (food == null) return;
 
         _bookmarkedFoods.Remove(food);
+
+        RemoveDuplicates_fromBookmark();
     }
 
     public bool Is_BookmarkedFood(Food_ScrObj food)

@@ -211,24 +211,22 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void CurrentFood_BookmarkToggle()
     {
         ItemSlot_Cursor cursor = _controller.cursor;
-        if (cursor.data.hasItem == false) return;
-
         ItemSlot currentSlot = cursor.currentSlot;
 
-        cursor.data.bookMarked = !cursor.data.bookMarked;
+        if (currentSlot.data.hasItem == false) return;
 
-        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
 
-        Food_ScrObj currentFood = currentSlot.data.currentFood;
         Main_Controller main = _controller.vehicleController.mainController;
+        Food_ScrObj slotFood = currentSlot.data.currentFood;
 
         if (currentSlot.data.bookMarked == false)
         {
-            main.RemoveFood_fromBookmark(currentFood);
+            main.RemoveFood_fromBookmark(slotFood);
             return;
         }
 
-        main.AddFood_toBookmark(currentFood);
+        main.AddFood_toBookmark(slotFood);
     }
 
 

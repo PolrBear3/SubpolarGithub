@@ -147,6 +147,23 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
+        StationMenu_Controller menu = _mainController.currentVehicle.menu.stationMenu;
+
+        Station_ScrObj oilDrum = _mainController.dataController.Station_ScrObj(79025);
+        int oilAmount = Mathf.Abs(_cursorTileNum - _currentTileNum);
+
+        // check if has enough oil drum in station menu
+        if (menu.Station_Amount(oilDrum) < oilAmount)
+        {
+            Map_Toggle(false);
+            // not enough oil drum dialog
+            return;
+        }
+
+        // use oil drum
+        menu.Remove_StationItem(oilDrum, oilAmount);
+
+        //
         StartCoroutine(Select_CursorTile_Coroutine());
     }
     private IEnumerator Select_CursorTile_Coroutine()

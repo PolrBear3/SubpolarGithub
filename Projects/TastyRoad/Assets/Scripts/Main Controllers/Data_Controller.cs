@@ -29,7 +29,6 @@ public class Data_Controller : MonoBehaviour
     public List<Coin_ScrObj> coinTypes => _coinTypes;
 
 
-
     // Check if State Data Matches (checks if visitor data matches home data)
     public bool FoodCondition_DataMatch(List<FoodCondition_Data> visitorData, List<FoodCondition_Data> homeData)
     {
@@ -55,7 +54,6 @@ public class Data_Controller : MonoBehaviour
         if (matchCount > 0) return false;
         else return true;
     }
-
 
 
     // Get Station
@@ -104,7 +102,6 @@ public class Data_Controller : MonoBehaviour
 
         return randStation;
     }
-
 
 
     // Get All Food
@@ -191,7 +188,6 @@ public class Data_Controller : MonoBehaviour
         }
         return false;
     }
-
 
 
     // Get Cooked Food

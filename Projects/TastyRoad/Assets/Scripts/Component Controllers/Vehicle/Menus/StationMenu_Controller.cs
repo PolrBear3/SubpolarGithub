@@ -141,6 +141,23 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
+    public void Remove_StationItem(Station_ScrObj station, int amount)
+    {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        int repeatAmount = amount;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (station != currentSlots[i].data.currentStation) continue;
+
+            currentSlots[i].Empty_ItemBox();
+            repeatAmount--;
+
+            if (repeatAmount > 0) continue;
+            break;
+        }
+    }
 
 
     // Slot and Cursor Control

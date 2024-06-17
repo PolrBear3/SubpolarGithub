@@ -394,18 +394,24 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
         FoodData playerFoodData = playerFoodIcon.currentData;
 
+        //
         int defaultScore = playerFoodData.foodScrObj.price;
 
-        // time left
-        defaultScore += _controller.timer.Current_TimeBlock_Amount();
+        //
+        int timeBlock = _controller.timer.timeBlockCount;
 
-        // state match
-        defaultScore += _controller.foodIcon.currentData.Conditions_MatchCount(playerFoodData.conditionDatas);
+        int stateMatch = _controller.foodIcon.currentData.Conditions_MatchCount(playerFoodData.conditionDatas);
 
-        // bookmark count
-        defaultScore += _controller.mainController.currentVehicle.menu.archiveMenu.bookmarkedFoods.Count;
+        int bookMarkCount = _controller.mainController.bookmarkedFoods.Count;
 
-        return defaultScore;
+        // dialog update
+        string dialogInfo = "Time bonus: " + timeBlock + "\nCook bonus: " + stateMatch + "\nBookmark bonus: " + bookMarkCount;
+
+        DialogTrigger dialogTrigger = gameObject.GetComponent<DialogTrigger>();
+        dialogTrigger.Set_DefaultDialog(new DialogData(dialogTrigger.defaultData.icon, dialogInfo));
+
+        //
+        return defaultScore + timeBlock + stateMatch + bookMarkCount;
     }
 
     private void Collect_Coin()
@@ -419,6 +425,9 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         // toss coin to player animation
         Coin_ScrObj goldCoin = _controller.mainController.dataController.coinTypes[0];
         _controller.itemLauncher.Parabola_CoinLaunch(goldCoin, -_controller.detection.player.transform.position);
+
+        // dialog update
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog();
 
         // clear data
         _controller.foodIcon.Set_CurrentData(null);

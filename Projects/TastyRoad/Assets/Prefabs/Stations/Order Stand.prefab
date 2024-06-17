@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: -8110685917489673981}
   - component: {fileID: 8111960285723048442}
   - component: {fileID: 4891559847948586382}
+  - component: {fileID: 8450629839311239787}
   m_Layer: 0
   m_Name: Order Stand
   m_TagString: Untagged
@@ -362,6 +363,28 @@ MonoBehaviour:
   _orderingArea: {fileID: 2985785251230923003}
   _maxWaitings: 3
   _attractIntervalTime: 10
+--- !u!114 &8450629839311239787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587925294155870417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: 0}
+    info: 
+  _datas:
+  - icon: {fileID: -1869322842, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Food order "Open" !
+  - icon: {fileID: -1869322842, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Food order "Closed" !
+  - icon: {fileID: -1869322842, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: No food currently Bookmarked
 --- !u!1001 &1516621449351040894
 PrefabInstance:
   m_ObjectHideFlags: 0

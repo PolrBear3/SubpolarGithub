@@ -7,9 +7,14 @@ public class DialogSystem : MonoBehaviour
 {
     [Header("")]
     [SerializeField] private GameObject _dialogBox;
+    [SerializeField] private RectTransform _spawnPoint;
     [SerializeField] private RectTransform[] _snapPoints;
 
     private List<DialogBox> _currentDialogs = new();
+
+    [Header("")]
+    [SerializeField] private LeanTweenType _tweenType;
+    [Range(0, 1)][SerializeField] private float _transitionTime;
 
 
     // InputSystem
@@ -56,7 +61,7 @@ public class DialogSystem : MonoBehaviour
     //
     public void Add_DialogBox(DialogData data)
     {
-        GameObject addDialog = Instantiate(_dialogBox, transform);
+        GameObject addDialog = Instantiate(_dialogBox, _spawnPoint);
         DialogBox dialogBox = addDialog.GetComponent<DialogBox>();
 
         _currentDialogs.Insert(0, dialogBox);
@@ -74,11 +79,13 @@ public class DialogSystem : MonoBehaviour
                 Destroy(_currentDialogs[i].gameObject);
                 _currentDialogs.RemoveAt(i);
 
-                break;
+                return;
             }
 
+            _currentDialogs[i].InfoPanel_Toggle(false);
+
             _currentDialogs[i].transform.SetParent(_snapPoints[i]);
-            _currentDialogs[i].transform.localPosition = Vector2.zero;
+            LeanTween.moveLocal(_currentDialogs[i].gameObject, Vector2.zero, _transitionTime).setEase(_tweenType);
         }
     }
 }

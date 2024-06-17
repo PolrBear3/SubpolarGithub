@@ -38,7 +38,6 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     [SerializeField] private TextMeshPro _priceText;
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -67,7 +66,6 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     }
 
 
-
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -87,7 +85,6 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
 
         UnInteract();
     }
-
 
 
     // InputSystem
@@ -128,7 +125,6 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     }
 
 
-
     // IInteractable
     public void Interact()
     {
@@ -162,7 +158,6 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     }
 
 
-
     // ISaveLoadable
     public void Save_Data()
     {
@@ -191,13 +186,11 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     }
 
 
-
     // Position Claim
     private void Claim_Position()
     {
         _main.Claim_Position(transform.position);
     }
-
 
 
     // Action Bubble Control
@@ -222,7 +215,6 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
             _bubble.Update_Bubble(_collectIcon, null);
         }
     }
-
 
 
     // Hovering Station Control
@@ -269,21 +261,20 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     }
 
 
-
     // Build Time Control
     private void Build_HoverStation()
     {
         Station_ScrObj hoverStation = _buildableStations[_hoverNum];
 
         // player coin amount check
-        if (Main_Controller.currentStationCoin < hoverStation.price)
+        if (Main_Controller.currentGoldCoin < hoverStation.price)
         {
             // not enough station coins !!
             return;
         }
 
         // current coin calculation
-        Main_Controller.currentStationCoin -= hoverStation.price;
+        Main_Controller.currentGoldCoin -= hoverStation.price;
 
         // player toss coin to builder
         Player_Controller player = _detection.player;
@@ -315,7 +306,7 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     private void Cancel_BuildingStaion()
     {
         // refund station coin
-        Main_Controller.currentStationCoin += _currentBuildStation.price;
+        Main_Controller.currentGoldCoin += _currentBuildStation.price;
 
         // refund toss coin to player
         Player_Controller player = _detection.player;

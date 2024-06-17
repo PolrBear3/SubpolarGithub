@@ -11,12 +11,14 @@ public class Clock_Timer : MonoBehaviour
     private float _currentTime;
     public float currentTime => _currentTime;
 
+    private int _timeBlockCount;
+    public int timeBlockCount => _timeBlockCount;
+
     private Coroutine _timeCoroutine;
     private Coroutine _timeSpriteCoroutine;
 
     private bool _timeRunning;
     public bool timeRunning => _timeRunning;
-
 
 
     // UnityEngine
@@ -29,7 +31,6 @@ public class Clock_Timer : MonoBehaviour
     {
         _spriteRenderer.color = Color.clear;
     }
-
 
 
     // clock transparency toggle
@@ -61,8 +62,8 @@ public class Clock_Timer : MonoBehaviour
     public void Set_Time(int setTime)
     {
         _currentTime = setTime;
+        _timeBlockCount = _clockSprites.Count;
     }
-
 
 
     public void Run_Time()
@@ -92,10 +93,11 @@ public class Clock_Timer : MonoBehaviour
         for (int i = 0; i < _clockSprites.Count; i++)
         {
             _spriteRenderer.sprite = _clockSprites[i];
+            _timeBlockCount--;
+
             yield return new WaitForSeconds(spriteTransitionTime);
         }
     }
-
 
 
     public void Stop_Time()
@@ -107,24 +109,8 @@ public class Clock_Timer : MonoBehaviour
     }
 
 
-
     public void Update_CurrentTime(int updateTime)
     {
         _currentTime += updateTime;
-    }
-
-
-
-    /// <returns>
-    /// Current sprite array number for time limit score.
-    /// </returns>
-    public int Current_TimeBlock_Amount()
-    {
-        for (int i = 0; i < _clockSprites.Count; i++)
-        {
-            if (_clockSprites[i] != _spriteRenderer.sprite) continue;
-            return i + 1;
-        }
-        return 0;
     }
 }

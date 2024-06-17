@@ -30,7 +30,6 @@ public class OrderStand : MonoBehaviour, IInteractable
     private Coroutine _attractCoroutine;
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -45,7 +44,6 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
 
 
-
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -53,7 +51,6 @@ public class OrderStand : MonoBehaviour, IInteractable
 
         UnInteract();
     }
-
 
 
     // IInteractable
@@ -70,7 +67,6 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
 
 
-
     private Sprite Station_Sprite()
     {
         // order closed
@@ -84,18 +80,24 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
 
 
-
     private void Order_Toggle()
     {
         bool hasBookMark = _stationController.mainController.bookmarkedFoods.Count > 0;
 
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
         // if no bookmarked foods
-        if (hasBookMark == false) return;
+        if (hasBookMark == false)
+        {
+            dialog.Update_Dialog(2);
+            return;
+        }
 
         // order open
         if (Main_Controller.orderOpen == false)
         {
             Main_Controller.orderOpen = true;
+            dialog.Update_Dialog(0);
 
             Attract();
         }
@@ -109,6 +111,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             _timer.Toggle_Transparency(false);
 
             Main_Controller.orderOpen = false;
+            dialog.Update_Dialog(1);
 
             for (int i = 0; i < _waitingNPCs.Count; i++)
             {

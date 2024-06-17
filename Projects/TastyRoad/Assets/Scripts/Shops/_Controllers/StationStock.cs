@@ -61,9 +61,10 @@ public class StationStock : MonoBehaviour
 
     private void Set_Dialog()
     {
-        DialogData dialog = new(_station.miniSprite, "");
+        Sprite stationIcon = _station.dialogIcon;
+        string dialogInfo = _station.price + " gold\nto purchase";
 
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(_interactable.mainController, dialog);
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
     }
 
 
