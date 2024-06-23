@@ -31,32 +31,32 @@ public class DialogTrigger : MonoBehaviour
 
 
     // Default
-    public void Update_Dialog()
+    public DialogBox Update_Dialog()
     {
-        _main.dialogSystem.Add_DialogBox(_defaultData);
+        return _main.dialogSystem.Add_DialogBox(_defaultData);
     }
 
     // Array
-    public void Update_Dialog(int dataArrayNum)
+    public DialogBox Update_Dialog(int dataArrayNum)
     {
-        _main.dialogSystem.Add_DialogBox(_datas[dataArrayNum]);
+        return _main.dialogSystem.Add_DialogBox(_datas[dataArrayNum]);
     }
 
     // RunTime String
-    public void Update_Dialog(string info)
+    public DialogBox Update_Dialog(string info)
     {
-        _main.dialogSystem.Add_DialogBox(new DialogData(_defaultData.icon, info));
+        return _main.dialogSystem.Add_DialogBox(new DialogData(_defaultData.icon, info));
     }
 
     // RunTime Icon
-    public void Update_Dialog(Sprite icon)
+    public DialogBox Update_Dialog(Sprite icon)
     {
-        _main.dialogSystem.Add_DialogBox(new DialogData(icon, _defaultData.info));
+        return _main.dialogSystem.Add_DialogBox(new DialogData(icon, _defaultData.info));
     }
 
     // RunTime Data
-    public void Update_Dialog(DialogData newData)
+    public DialogBox Update_Dialog(DialogData newData)
     {
-        _main.dialogSystem.Add_DialogBox(newData);
+        return _main.dialogSystem.Add_DialogBox(newData);
     }
 }

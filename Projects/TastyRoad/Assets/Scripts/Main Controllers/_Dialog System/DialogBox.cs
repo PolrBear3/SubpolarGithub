@@ -33,6 +33,11 @@ public class DialogBox : MonoBehaviour
         InfoPanel_Toggle(false);
     }
 
+    public void UpdateIcon_CenterPosition(Vector2 centerPosition)
+    {
+        _iconImage.rectTransform.localPosition = centerPosition;
+    }
+
 
     // Basic Panel Control
     public void InfoPanel_Toggle(bool toggleOn)

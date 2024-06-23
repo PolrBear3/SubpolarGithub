@@ -18,6 +18,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public Action_Bubble bubble => _bubble;
 
     private bool _interactLocked;
+    private bool _unInteractLocked;
 
     public delegate void Event();
 
@@ -52,6 +53,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     {
         Action1Event?.Invoke();
 
+        if (_unInteractLocked) return;
+
         UnInteract();
     }
 
@@ -59,6 +62,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     {
         if (Action2Event == null) return;
         Action2Event?.Invoke();
+
+        if (_unInteractLocked) return;
 
         UnInteract();
     }
@@ -106,5 +111,10 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public void LockInteract(bool toggleLock)
     {
         _interactLocked = toggleLock;
+    }
+
+    public void LockUnInteract(bool toggleLock)
+    {
+        _unInteractLocked = toggleLock;
     }
 }

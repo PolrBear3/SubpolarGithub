@@ -124,6 +124,10 @@ public class Data_Controller : MonoBehaviour
         return allFoods;
     }
 
+    public Food_ScrObj Food()
+    {
+        return AllFoods()[Random.Range(0, AllFoods().Count)];
+    }
     public Food_ScrObj Food(int foodID)
     {
         for (int i = 0; i < rawFoods.Count; i++)
@@ -159,6 +163,10 @@ public class Data_Controller : MonoBehaviour
 
 
     // Get Raw Food
+    public Food_ScrObj RawFood()
+    {
+        return rawFoods[Random.Range(0, rawFoods.Count)];
+    }
     public Food_ScrObj RawFood(int foodID)
     {
         for (int i = 0; i < rawFoods.Count; i++)
@@ -191,6 +199,10 @@ public class Data_Controller : MonoBehaviour
 
 
     // Get Cooked Food
+    public Food_ScrObj CookedFood()
+    {
+        return cookedFoods[Random.Range(0, cookedFoods.Count)];
+    }
     public Food_ScrObj CookedFood(int foodID)
     {
         for (int i = 0; i < cookedFoods.Count; i++)

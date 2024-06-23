@@ -59,7 +59,7 @@ public class DialogSystem : MonoBehaviour
 
 
     //
-    public void Add_DialogBox(DialogData data)
+    public DialogBox Add_DialogBox(DialogData data)
     {
         GameObject addDialog = Instantiate(_dialogBox, _spawnPoint);
         DialogBox dialogBox = addDialog.GetComponent<DialogBox>();
@@ -68,6 +68,8 @@ public class DialogSystem : MonoBehaviour
         dialogBox.Update_Box(data);
 
         ReOrder_CurrentDialogs();
+
+        return dialogBox;
     }
 
     private void ReOrder_CurrentDialogs()

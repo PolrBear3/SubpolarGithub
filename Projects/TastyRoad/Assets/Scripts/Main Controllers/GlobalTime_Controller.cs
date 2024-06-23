@@ -57,9 +57,10 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
             if (_isIncrease) _currentTime++;
             else _currentTime--;
 
-            //
+            // Time Tik
             TimeTik_Update?.Invoke();
 
+            // Day Tik
             if (_currentTime == 0) DayTik_Update?.Invoke();
         }
     }

@@ -117,7 +117,7 @@ public class ItemSlot : MonoBehaviour
             _iconImage.sprite = food.sprite;
 
             _iconImage.color = Color.white;
-            _iconImage.transform.localPosition = food.centerPosition;
+            _iconImage.transform.localPosition = food.centerPosition * 100;
 
             return;
         }
