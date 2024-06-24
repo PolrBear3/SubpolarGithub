@@ -61,6 +61,11 @@ public class NPC_Controller : MonoBehaviour
         InputToggle(false);
     }
 
+    private void OnDestroy()
+    {
+        _mainController.UnTrack_CurrentCharacter(gameObject);
+    }
+
 
     // InputSystem
     private void OnAction1()

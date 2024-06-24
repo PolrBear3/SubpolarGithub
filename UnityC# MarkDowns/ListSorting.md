@@ -1,4 +1,4 @@
-# List.Sort
+# List Sorting
 This list contians mixed integers.
 ```C#
 List<int> myInts = new();

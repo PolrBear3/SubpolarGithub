@@ -17,6 +17,9 @@ public class GroceryNPC : MonoBehaviour
     [SerializeField] private FoodStock[] _foodStocks;
     [SerializeField] private Transform _storagePoint;
 
+    [Header("")]
+    [Range(0, 1)] [SerializeField] private float _actionSpeed;
+
     private Coroutine _actionCoroutine;
 
 
@@ -53,6 +56,18 @@ public class GroceryNPC : MonoBehaviour
     }
 
 
+    // Food Stocks Control
+    private void SortFoodStocks_byDistance()
+    {
+        System.Array.Sort(_foodStocks, (a, b) =>
+        {
+            float distanceA = Vector3.Distance(a.transform.position, transform.position);
+            float distanceB = Vector3.Distance(b.transform.position, transform.position);
+            return distanceA.CompareTo(distanceB);
+        });
+    }
+
+
     // Actions
     private void Refill_Amount()
     {
@@ -75,6 +90,8 @@ public class GroceryNPC : MonoBehaviour
     {
         NPC_Movement movement = _npcController.movement;
 
+        SortFoodStocks_byDistance();
+
         for (int i = 0; i < _foodStocks.Length; i++)
         {
             // if food stock current amount is not max amount
@@ -93,7 +110,7 @@ public class GroceryNPC : MonoBehaviour
             for (int j = 0; j < refillAmount; j++)
             {
                 _foodStocks[i].Update_Amount(1);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(_actionSpeed);
             }
         }
 
@@ -101,7 +118,7 @@ public class GroceryNPC : MonoBehaviour
         _foodBox.color = Color.clear;
 
         // return to free roam
-        movement.Free_Roam(_currentSubLocation.roamArea, 0f);
+        movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
     }
 
     private void Restock()
@@ -124,6 +141,8 @@ public class GroceryNPC : MonoBehaviour
     private IEnumerator Restock_Coroutine()
     {
         NPC_Movement movement = _npcController.movement;
+
+        SortFoodStocks_byDistance();
 
         for (int i = 0; i < _foodStocks.Length; i++)
         {
@@ -150,12 +169,12 @@ public class GroceryNPC : MonoBehaviour
             for (int j = 0; j < deceraseAmount; j++)
             {
                 _foodStocks[i].Update_Amount(-1);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(_actionSpeed);
             }
 
             _foodStocks[i].Set_Data();
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_actionSpeed);
 
             // action bubble interaction control
             _foodStocks[i].interactable.LockInteract(false);
@@ -168,6 +187,6 @@ public class GroceryNPC : MonoBehaviour
         _foodBox.color = Color.clear;
 
         // return to free roam
-        movement.Free_Roam(_currentSubLocation.roamArea, 0f);
+        movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
     }
 }

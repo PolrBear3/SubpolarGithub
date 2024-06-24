@@ -46,21 +46,52 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator GlobalTime_Update_Coroutine()
     {
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
         while (true)
         {
             yield return new WaitForSeconds(_tikTime);
 
-            //
-            if (_currentTime >= 12) _isIncrease = false;
-            else if (_currentTime <= 0) _isIncrease = true;
+            // increase check
+            if (_currentTime >= 12)
+            {
+                _isIncrease = false;
 
-            if (_isIncrease) _currentTime++;
-            else _currentTime--;
+                // day tik dialog
+                DialogData dayDialog = new DialogData(dialog.datas[0].icon, "Current day time is before noon");
+                dialog.Update_Dialog(dayDialog);
+            }
+            else if (_currentTime <= 0)
+            {
+                _isIncrease = true;
 
-            // Time Tik
+                // night tik dialog
+                DialogData nightDialog = new DialogData(dialog.datas[2].icon, "Current day time is after noon");
+                dialog.Update_Dialog(nightDialog);
+            }
+
+            // value update
+            if (_isIncrease)
+            {
+                _currentTime++;
+
+                // day time tik dialog
+                DialogData dayDialog = new DialogData(dialog.datas[1].icon, "Current time is " + _currentTime + " before noon");
+                dialog.Update_Dialog(dayDialog);
+            }
+            else
+            {
+                _currentTime--;
+
+                // night time tik dialog
+                DialogData nightDialog = new DialogData(dialog.datas[3].icon, "Current time is " + (12 - _currentTime) + " after noon");
+                dialog.Update_Dialog(nightDialog);
+            }
+
+            // Time Tik Event
             TimeTik_Update?.Invoke();
 
-            // Day Tik
+            // Day Tik Event
             if (_currentTime == 0) DayTik_Update?.Invoke();
         }
     }
