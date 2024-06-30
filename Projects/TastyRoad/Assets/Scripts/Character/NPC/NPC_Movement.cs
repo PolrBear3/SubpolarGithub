@@ -8,6 +8,7 @@ public class NPC_Movement : MonoBehaviour
     [SerializeField] private NPC_Controller _controller;
 
     private Vector2 _targetPosition;
+    public Vector2 targetPosition => _targetPosition;
 
     private Coroutine _moveCoroutine;
 

@@ -25,6 +25,10 @@ public class LocationData
     [Header("")]
     public List<MaxSpawn_TimePoint> maxSpawnTimePoints;
 
+    [SerializeField] private AnimatorOverrideController[] _npcSkinOverrides;
+    public AnimatorOverrideController[] npcSkinOverrides => _npcSkinOverrides;
+
+
     public LocationData()
     {
 

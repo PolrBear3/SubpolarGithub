@@ -50,7 +50,7 @@ public class StationStock : MonoBehaviour
     private void Set_Station()
     {
         // get random station
-        Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj(true);
+        Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj();
 
         // set data and sprite
         _station = randStation;
@@ -73,11 +73,23 @@ public class StationStock : MonoBehaviour
     {
         if (_sold) return;
 
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
         // check if player has enough coins
 
+        StationMenu_Controller stationMenu = _interactable.mainController.currentVehicle.menu.stationMenu;
+
+        // check if station menu slot is available
+        if (stationMenu.AvailableSlots_Count() <= 0)
+        {
+            DialogData data = new(_station.dialogIcon, "Not enough space in station storage!");
+            dialog.Update_Dialog(data);
+
+            return;
+        }
 
         // add to vehicle
-        _interactable.mainController.currentVehicle.menu.stationMenu.Add_StationItem(_station, 1);
+        stationMenu.Add_StationItem(_station, 1);
 
         // station coin launch animation
         _launcher.Parabola_CoinLaunch(_station.miniSprite, _interactable.detection.player.transform.position - transform.position);

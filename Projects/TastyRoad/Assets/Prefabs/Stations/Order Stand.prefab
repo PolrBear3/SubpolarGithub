@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.5686275, g: 0.85882354, b: 0.4117647, a: 0.101960786}
+  m_Color: {r: 0.5686275, g: 0.85882354, b: 0.4117647, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -379,12 +379,14 @@ MonoBehaviour:
     icon: {fileID: 0}
     info: 
   _datas:
-  - icon: {fileID: -1869322842, guid: f311721b981194c6ba14962d17b64207, type: 3}
+  - icon: {fileID: -847429947, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     info: Food order "Open" !
-  - icon: {fileID: -1869322842, guid: f311721b981194c6ba14962d17b64207, type: 3}
+  - icon: {fileID: 1976312001, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     info: Food order "Closed" !
-  - icon: {fileID: -1869322842, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: No food currently Bookmarked
+  - icon: {fileID: 900435712, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: No food currently Bookmarked!
+  - icon: {fileID: 900435712, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: Another 'Order Stand' is currenlty opened!
 --- !u!1001 &1516621449351040894
 PrefabInstance:
   m_ObjectHideFlags: 0

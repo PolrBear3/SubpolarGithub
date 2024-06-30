@@ -19,7 +19,6 @@ public class CoinLauncher_Coin : MonoBehaviour
     public event MovementEvent movementEvent;
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -34,19 +33,8 @@ public class CoinLauncher_Coin : MonoBehaviour
     }
 
 
-
     // Settings
-    public void Set_CoinData(CoinLauncher launcher, Coin_ScrObj coinType, Vector2 direction)
-    {
-        _itemLauncher = launcher;
-
-        _sr.sprite = coinType.sprite;
-        _anim.runtimeAnimatorController = coinType.spinAnim;
-
-        _direction = direction;
-    }
-
-    public void Set_CustomData(CoinLauncher launcher, Sprite sprite, Vector2 direction)
+    public void SetData(CoinLauncher launcher, Sprite sprite, Vector2 direction)
     {
         _itemLauncher = launcher;
 

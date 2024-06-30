@@ -235,9 +235,7 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
 
         for (int i = 0; i < allStations.Count; i++)
         {
-            if (allStations[i].unRetrievable) continue;
             if (Has_BuildableStation(allStations[i])) continue;
-
             _buildableStations.Add(allStations[i]);
         }
 
@@ -266,6 +264,7 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     {
         Station_ScrObj hoverStation = _buildableStations[_hoverNum];
 
+        /*
         // player coin amount check
         if (Main_Controller.currentGoldCoin < hoverStation.price)
         {
@@ -275,11 +274,7 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
 
         // current coin calculation
         Main_Controller.currentGoldCoin -= hoverStation.price;
-
-        // player toss coin to builder
-        Player_Controller player = _detection.player;
-        Coin_ScrObj stationCoin = _main.dataController.coinTypes[1];
-        player.coinLauncher.Parabola_CoinLaunch(stationCoin, transform.position - player.transform.position);
+        */
 
         // start timer
         _timer.Set_Time((int)hoverStation.buildTime);
@@ -306,12 +301,7 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     private void Cancel_BuildingStaion()
     {
         // refund station coin
-        Main_Controller.currentGoldCoin += _currentBuildStation.price;
-
-        // refund toss coin to player
-        Player_Controller player = _detection.player;
-        Coin_ScrObj stationCoin = _main.dataController.coinTypes[1];
-        _launcher.Parabola_CoinLaunch(stationCoin, player.transform.position - transform.position);
+        // Main_Controller.currentGoldCoin += _currentBuildStation.price;
 
         // current build station cancel
         _currentBuildStation = null;

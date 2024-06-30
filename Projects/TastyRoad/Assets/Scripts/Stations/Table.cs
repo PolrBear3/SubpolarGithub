@@ -9,7 +9,6 @@ public class Table : MonoBehaviour, IInteractable
     public Station_Controller stationController => _stationController;
 
 
-
     // UnityEngine
     private void Awake()
     {

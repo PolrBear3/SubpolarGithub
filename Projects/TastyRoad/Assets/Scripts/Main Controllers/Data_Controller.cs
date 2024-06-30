@@ -24,9 +24,8 @@ public class Data_Controller : MonoBehaviour
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
 
-    [Header("")]
-    [SerializeField] private List<Coin_ScrObj> _coinTypes = new();
-    public List<Coin_ScrObj> coinTypes => _coinTypes;
+    [SerializeField] private Food_ScrObj _goldenNugget;
+    public Food_ScrObj goldenNugget => _goldenNugget;
 
 
     // Check if State Data Matches (checks if visitor data matches home data)
@@ -88,18 +87,9 @@ public class Data_Controller : MonoBehaviour
     /// <returns>
     /// Random Station
     /// </returns>
-    public Station_ScrObj Station_ScrObj(bool onlyRetrievable)
+    public Station_ScrObj Station_ScrObj()
     {
-        List<Station_ScrObj> stations = new List<Station_ScrObj>();
-
-        for (int i = 0; i < this.stations.Count; i++)
-        {
-            if (onlyRetrievable == true && this.stations[i].unRetrievable) continue;
-            stations.Add(this.stations[i]);
-        }
-
         Station_ScrObj randStation = stations[Random.Range(0, stations.Count)];
-
         return randStation;
     }
 

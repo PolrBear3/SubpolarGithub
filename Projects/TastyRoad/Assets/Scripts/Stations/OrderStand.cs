@@ -22,12 +22,16 @@ public class OrderStand : MonoBehaviour, IInteractable
 
     [Header("Order Control")]
     [SerializeField] private SpriteRenderer _orderingArea;
+    public SpriteRenderer orderingArea => _orderingArea;
 
     [SerializeField] private int _maxWaitings;
     private List<NPC_Controller> _waitingNPCs = new();
 
     [SerializeField] private float _attractIntervalTime;
     private Coroutine _attractCoroutine;
+
+    private bool _orderOpen;
+    public bool orderOpen => _orderOpen;
 
 
     // UnityEngine
@@ -58,7 +62,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     {
         if (_timer.timeRunning) return;
 
-        Order_Toggle();
+        OrderToggle();
     }
 
     public void UnInteract()
@@ -67,6 +71,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
 
 
+    // Gets
     private Sprite Station_Sprite()
     {
         // order closed
@@ -80,26 +85,35 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
 
 
-    private void Order_Toggle()
+    // Functions
+    private void OrderToggle()
     {
         bool hasBookMark = _stationController.mainController.bookmarkedFoods.Count > 0;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        // if no bookmarked foods
+        // if no bookmarked foods, return
         if (hasBookMark == false)
         {
             dialog.Update_Dialog(2);
             return;
         }
 
+        // if other order stand currenlty toggled on, return
+        if (Main_Controller.orderOpen == true && _orderOpen == false)
+        {
+            dialog.Update_Dialog(3);
+            return;
+        }
+
         // order open
         if (Main_Controller.orderOpen == false)
         {
-            Main_Controller.orderOpen = true;
-            dialog.Update_Dialog(0);
+            Main_Controller.OrderOpen_Toggle(true);
+            _orderOpen = true;
 
-            Attract();
+            GlobalTime_Controller.TimeTik_Update += TimeTik_Attract;
+            dialog.Update_Dialog(0);
         }
 
         // order closed
@@ -110,7 +124,10 @@ public class OrderStand : MonoBehaviour, IInteractable
             _timer.Run_Time();
             _timer.Toggle_Transparency(false);
 
-            Main_Controller.orderOpen = false;
+            Main_Controller.OrderOpen_Toggle(false);
+            _orderOpen = false;
+
+            GlobalTime_Controller.TimeTik_Update -= TimeTik_Attract;
             dialog.Update_Dialog(1);
 
             for (int i = 0; i < _waitingNPCs.Count; i++)
@@ -130,6 +147,65 @@ public class OrderStand : MonoBehaviour, IInteractable
 
         // reset action
         UnInteract();
+    }
+
+
+    private void TimeTik_Attract()
+    {
+        // check if order is open
+        if (Main_Controller.orderOpen == false) return;
+
+        // check if there is at least 1 food bookmarked
+        if (_stationController.mainController.bookmarkedFoods.Count <= 0) return;
+
+        // all current npc
+        List<GameObject> allCharacters = _stationController.mainController.currentCharacters;
+
+        Refresh_WaitingNPCs();
+
+        for (int i = 0; i < allCharacters.Count; i++)
+        {
+            // check max waiting npc amount
+            if (_waitingNPCs.Count >= _maxWaitings) continue;
+
+            if (!allCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
+
+            NPC_Interaction interaction = npc.interaction;
+            NPC_Movement move = npc.movement;
+
+            // check if already ordered food
+            if (npc.foodIcon.hasFood) continue;
+
+            // check if food is already served and left ordering area
+            if (interaction.servedFoodData != null && move.currentRoamArea != _orderingArea)
+            {
+                _waitingNPCs.Remove(npc);
+                continue;
+            }
+
+            // check if npc want to order food
+            if (interaction.Want_FoodOrder() == false) continue;
+
+            // keep track of currently waiting npc
+            _waitingNPCs.Add(npc);
+
+            // assign food
+            interaction.Assign_FoodOrder();
+
+            // attract wake animtion
+            interaction.Wake_Animation();
+
+            // refresh
+            interaction.UnInteract();
+
+            // attract npc > ordering area
+            move.Stop_FreeRoam();
+            move.Free_Roam(_orderingArea, 0f);
+
+            // start waiting time limit
+            interaction.Start_TimeLimit();
+            npc.timer.Toggle_Transparency(false, interaction.animTransitionTime);
+        }
     }
 
     /// <summary>
@@ -169,13 +245,13 @@ public class OrderStand : MonoBehaviour, IInteractable
                 if (npc.foodIcon.hasFood) continue;
 
                 // check if food is already served and left ordering area
-                if (interaction.foodOrderServed && move.currentRoamArea != _orderingArea)
+                if (interaction.servedFoodData != null && move.currentRoamArea != _orderingArea)
                 {
                     _waitingNPCs.Remove(npc);
                     continue;
                 }
 
-                // check if they want to order food
+                // check if npc want to order food
                 if (interaction.Want_FoodOrder() == false) continue;
 
                 // keep track of currently waiting npc
@@ -202,9 +278,10 @@ public class OrderStand : MonoBehaviour, IInteractable
             yield return new WaitForSeconds(_attractIntervalTime);
         }
     }
-    //
+
+
     /// <summary>
-    /// Removes items in list that are destroyed or missing
+    /// Removes npcs in list that are destroyed or missing
     /// </summary>
     private void Refresh_WaitingNPCs()
     {

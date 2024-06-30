@@ -45,6 +45,16 @@ public class Vehicle_Controller : ActionBubble_Interactable
     }
 
 
+    // OnTrigger
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
+
+        UnInteract();
+        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+    }
+
+
     // Action Options
     private void Open_VehicleMenu()
     {
@@ -57,17 +67,6 @@ public class Vehicle_Controller : ActionBubble_Interactable
     {
         mainController.worldMap.Map_Toggle(true);
     }
-
-
-    // OnTrigger
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        UnInteract();
-        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
-    }
-
 
 
     // Vehicle Sprite Control

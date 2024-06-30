@@ -22,7 +22,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private ItemSlot _ingredientIcon2;
 
 
-
     // UnityEngine
     private void OnEnable()
     {

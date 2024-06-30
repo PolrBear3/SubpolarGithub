@@ -12,9 +12,9 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public ItemSlots_Controller slotsController => _slotsController;
 
     [Header("Food Box Export")]
+    [SerializeField] private Station_ScrObj _foodBox;
     [SerializeField] private GameObject _exportIndicators; 
     [SerializeField] private Vector2 _exportRange;
-
 
 
     // UnityEngine
@@ -54,7 +54,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     // ISaveLoadable
     public void Save_Data()
     {
@@ -87,7 +86,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     // IVehicleMenu
     public bool MenuInteraction_Active()
     {
@@ -110,8 +108,24 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     // Menu Control
+    public int FoodAmount(Food_ScrObj food)
+    {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        int count = 0;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (currentSlots[i].data.currentFood != food) continue;
+
+            count += currentSlots[i].data.currentAmount;
+        }
+
+        return count;
+    }
+
+
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
@@ -143,6 +157,27 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return amount;
     }
 
+    public void Remove_FoodItem(Food_ScrObj food, int amount)
+    {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        int removeAmount = amount;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (currentSlots[i].data.currentFood != food) continue;
+
+            if (currentSlots[i].data.currentAmount <= removeAmount)
+            {
+                removeAmount -= currentSlots[i].data.currentAmount;
+                currentSlots[i].Empty_ItemBox();
+                continue;
+            }
+
+            currentSlots[i].Update_Amount(-removeAmount);
+            return;
+        }
+    }
 
 
     // Slot and Cursor Control
@@ -254,7 +289,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-
     // FoodBox Export System
     private void Export_Food()
     {
@@ -268,11 +302,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // get vehicle 
         Vehicle_Controller vehicle = _controller.vehicleController;
 
-        // get food box
-        Station_ScrObj foodbox = vehicle.mainController.dataController.Station_ScrObj("Food Box");
-
         // spawn and track food box
-        Station_Controller station = vehicle.mainController.Spawn_Station(foodbox, FoodExport_Position());
+        Station_Controller station = vehicle.mainController.Spawn_Station(_foodBox, FoodExport_Position());
         vehicle.mainController.Claim_Position(station.transform.position);
 
         // assign exported food to food box

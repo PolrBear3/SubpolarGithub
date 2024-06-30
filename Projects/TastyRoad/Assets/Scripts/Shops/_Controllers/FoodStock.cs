@@ -62,9 +62,30 @@ public class FoodStock : MonoBehaviour
         _interactable.bubble.Update_Bubble(_currentFood, null);
     }
 
+    public void Update_Data()
+    {
+        Data_Controller data = _interactable.mainController.dataController;
+
+        if (data.Is_RawFood(_currentFood))
+        {
+            _currentFood = data.RawFood();
+        }
+        else
+        {
+            _currentFood = data.CookedFood();
+        }
+
+        // set amount
+        Update_Amount(_maxAmount);
+
+        // action bubble update
+        _interactable.bubble.Update_Bubble(_currentFood, null);
+    }
+
+
     private void Set_Dialog()
     {
-        string dialog = _currentFood.price + " coin to purchase\nyour current coin is " + Main_Controller.currentGoldCoin;
+        string dialog = _currentFood.price + " coin to purchase\nyour current coin is " + _interactable.mainController.GoldenNugget_Amount();
 
         DialogData data = new DialogData(_currentFood.sprite, dialog);
         DialogBox dialogBox = gameObject.GetComponent<DialogTrigger>().Update_Dialog(data);
@@ -101,6 +122,7 @@ public class FoodStock : MonoBehaviour
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
+        // not enough amount
         if (_currentAmount <= 0)
         {
             _interactable.UnInteract();
@@ -111,23 +133,39 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        if (Main_Controller.currentGoldCoin < _currentFood.price)
+        Food_ScrObj goldenNugget = _interactable.mainController.dataController.goldenNugget;
+
+        // not enough golden nuggets
+        if (_interactable.mainController.GoldenNugget_Amount() < _currentFood.price)
         {
             _interactable.UnInteract();
-            dialog.Update_Dialog("Not enough coin!\nyour current coin is " + Main_Controller.currentGoldCoin);
+
+            DialogData data = new DialogData(goldenNugget.sprite, "Not enough amount to purchase!");
+            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(goldenNugget.uiCenterPosition);
 
             return;
         }
 
         // current coin calculation
-        Main_Controller.currentGoldCoin -= _currentFood.price;
+        _interactable.mainController.Remove_GoldenNugget(_currentFood.price);
+
+        // not enough slots
+        FoodMenu_Controller menu = _interactable.mainController.currentVehicle.menu.foodMenu;
+        if (menu.Add_FoodItem(_currentFood, 1) > 0)
+        {
+            _interactable.UnInteract();
+
+            // return golden nuggets
+            _interactable.mainController.Add_GoldenNugget(_currentFood.price);
+
+            DialogData data = new DialogData(_currentFood.sprite, "Not enough space in food storage!");
+            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(_currentFood.uiCenterPosition);
+
+            return;
+        }
 
         //
         Update_Amount(-1);
-
-        // add food to vehicle
-        FoodMenu_Controller menu = _interactable.mainController.currentVehicle.menu.foodMenu;
-        menu.Add_FoodItem(_currentFood, 1);
 
         // coin launch animation
         Vector2 launchDirection = _interactable.detection.player.transform.position - transform.position;

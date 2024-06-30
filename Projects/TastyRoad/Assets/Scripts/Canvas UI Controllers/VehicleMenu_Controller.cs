@@ -13,7 +13,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 {
     private PlayerInput _playerInput;
 
-
     [Header("")]
     [SerializeField] private GameObject _menuToggleFile;
     public GameObject menuToggleFile => _menuToggleFile;
@@ -27,10 +26,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private GameObject _newItemSlot;
     public GameObject newItemSlot => _newItemSlot;
-
-
-    [Header("Coin Amounts")]
-    [SerializeField] private TextMeshProUGUI _goldCoinText;
 
 
     [Header("Insert Vehicle Prefab")]
@@ -214,8 +209,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         _menuToggleFile.gameObject.SetActive(true);
         _playerInput.enabled = true;
-
-        _goldCoinText.text = Main_Controller.currentGoldCoin.ToString();
 
         Menu_Control();
     }

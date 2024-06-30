@@ -101,7 +101,6 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
-
     // Lock Toggles
     public void ShowIcon_LockToggle(bool isLock)
     {
@@ -116,7 +115,6 @@ public class FoodData_Controller : MonoBehaviour
 
         Show_AmountBar();
     }
-
 
 
     // Icon
@@ -138,7 +136,6 @@ public class FoodData_Controller : MonoBehaviour
         _foodIcon.color = Color.clear;
         _foodIcon.sprite = null;
     }
-
 
 
     // Amount Bar
@@ -186,7 +183,6 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
-
     // Food Condition
     public void Show_Condition()
     {
@@ -219,7 +215,6 @@ public class FoodData_Controller : MonoBehaviour
         }
         return null;
     }
-
 
 
     // Time Tik Event

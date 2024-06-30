@@ -33,12 +33,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
 
     public static bool gamePaused;
-
     public static bool orderOpen;
-    public static int currentGoldCoin;
 
 
     public delegate void Event();
+
+    public static event Event OrderOpen_ToggleEvent;
 
     public static event Event TestButton1Event;
     public static event Event TestButton2Event;
@@ -61,7 +61,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         gamePaused = false;
         orderOpen = false;
 
-        ES3.Save("currentGoldCoin", currentGoldCoin);
         ES3.Save("_claimedPositions", _claimedPositions);
 
         Save_ArchivedFood();
@@ -73,7 +72,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
-        currentGoldCoin = ES3.Load("currentGoldCoin", currentGoldCoin);
         _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);
 
         Load_ArchivedFood();
@@ -202,6 +200,35 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             if (checkPosition == _claimedPositions[i]) return true;
         }
         return false;
+    }
+
+
+    // Current Golden Nugget Control
+    public int GoldenNugget_Amount()
+    {
+        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
+        return foodMenu.FoodAmount(dataController.goldenNugget);
+    }
+
+
+    public int Add_GoldenNugget(int addAmount)
+    {
+        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
+        return foodMenu.Add_FoodItem(dataController.goldenNugget, addAmount);
+    }
+
+    public void Remove_GoldenNugget(int removeAmount)
+    {
+        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
+        foodMenu.Remove_FoodItem(dataController.goldenNugget, removeAmount);
+    }
+
+
+    // Order Open Control
+    public static void OrderOpen_Toggle(bool toggleOn)
+    {
+        orderOpen = toggleOn;
+        OrderOpen_ToggleEvent?.Invoke();
     }
 
 
@@ -414,19 +441,36 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
     /// <returns>
-    /// Current stations that are retrievable by selecting from menu
+    /// only stations that have movement controller, if false
     /// </returns>
-    public List<Station_Controller> Retrievable_Stations()
+    public List<Station_Controller> CurrentStations(bool allStations)
     {
-        List<Station_Controller> retrievableStations = new();
+        if (allStations == true) return _currentStations;
+
+        List<Station_Controller> retrievables = new();
 
         for (int i = 0; i < _currentStations.Count; i++)
         {
-            if (_currentStations[i].stationScrObj.unRetrievable) continue;
-            retrievableStations.Add(_currentStations[i]);
+            if (_currentStations[i].movement == null) continue;
+            retrievables.Add(_currentStations[i]);
         }
 
-        return retrievableStations;
+        return retrievables;
+    }
+    /// <returns>
+    /// All searchStations in _currentStations
+    /// </returns>
+    public List<Station_Controller> CurrentStations(Station_ScrObj searchStation)
+    {
+        List<Station_Controller> searchStations = new();
+
+        for (int i = 0; i < _currentStations.Count; i++)
+        {
+            if (searchStation != _currentStations[i].stationScrObj) continue;
+            searchStations.Add(_currentStations[i]);
+        }
+
+        return searchStations;
     }
 
     /// <summary>

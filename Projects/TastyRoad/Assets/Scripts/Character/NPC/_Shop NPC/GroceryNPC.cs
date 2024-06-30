@@ -42,6 +42,15 @@ public class GroceryNPC : MonoBehaviour
         GlobalTime_Controller.TimeTik_Update += Refill_Amount;
     }
 
+    private void OnDestroy()
+    {
+        // action subscription
+        _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
+
+        GlobalTime_Controller.DayTik_Update -= Restock;
+        GlobalTime_Controller.TimeTik_Update -= Refill_Amount;
+    }
+
 
     // Food Box Control
     private void FoodBox_DirectionUpdate()
@@ -172,7 +181,7 @@ public class GroceryNPC : MonoBehaviour
                 yield return new WaitForSeconds(_actionSpeed);
             }
 
-            _foodStocks[i].Set_Data();
+            _foodStocks[i].Update_Data();
 
             yield return new WaitForSeconds(_actionSpeed);
 

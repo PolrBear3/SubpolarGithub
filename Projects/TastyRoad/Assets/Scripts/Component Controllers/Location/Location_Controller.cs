@@ -166,7 +166,7 @@ public class Location_Controller : MonoBehaviour
             return;
         }
     }
-    //
+
     private void Update_NPC_Population()
     {
         // get current npc and amount
@@ -220,13 +220,19 @@ public class Location_Controller : MonoBehaviour
             // spawn
             GameObject spawnNPC = _mainController.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
 
+            // get npc controller
+            NPC_Controller npcController = spawnNPC.GetComponent<NPC_Controller>();
+
+            // set random theme skin for current location
+            npcController.basicAnim.Set_OverrideController(_setData.npcSkinOverrides[Random.Range(0, _setData.npcSkinOverrides.Length)]);
+
             // set npc free roam location
-            NPC_Movement npcMovement = spawnNPC.GetComponent<NPC_Movement>();
-            npcMovement.Free_Roam(roamArea, 0f);
+            npcController.movement.Free_Roam(roamArea, 0f);
         }
     }
 
 
+    // Location Control
     /// <summary>
     /// Activate all IInteractables in ingameEvents gameobject list
     /// </summary>

@@ -7,6 +7,7 @@ public class ScrapSpawner : MonoBehaviour, IInteractable
     private Main_Controller _mainController;
 
     [Header("")]
+    [SerializeField] private Station_ScrObj _scrapScrObj;
     [SerializeField] private int _spawnAmount;
 
 
@@ -50,8 +51,7 @@ public class ScrapSpawner : MonoBehaviour, IInteractable
                 continue;
             }
 
-            Station_ScrObj scrapScrObj = _mainController.dataController.Station_ScrObj("Scrap");
-            Station_Controller scrap = _mainController.Spawn_Station(scrapScrObj, spawnPos);
+            Station_Controller scrap = _mainController.Spawn_Station(_scrapScrObj, spawnPos);
             scrap.movement.Load_Position();
         }
     }

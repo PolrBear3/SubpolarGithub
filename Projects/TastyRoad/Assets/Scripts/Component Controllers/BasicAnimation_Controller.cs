@@ -34,6 +34,12 @@ public class BasicAnimation_Controller : MonoBehaviour
 
         _animator.runtimeAnimatorController = _animOverride;
     }
+    public void Set_OverrideController(AnimatorOverrideController setOverrider)
+    {
+        _animOverride = setOverrider;
+
+        Set_OverrideController();
+    }
 
     private void Set_DefaultAnimation()
     {
