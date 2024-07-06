@@ -19,8 +19,10 @@ public class Serve_Table : Table, IInteractable
         Main_Controller.OrderOpen_ToggleEvent += CloseOrder;
     }
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
+        base.OnDestroy();
+
         Main_Controller.OrderOpen_ToggleEvent -= Find_AttractedNPC;
         Main_Controller.OrderOpen_ToggleEvent -= CloseOrder;
     }

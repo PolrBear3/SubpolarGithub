@@ -15,7 +15,7 @@ public class Table : MonoBehaviour, IInteractable
         _stationController = gameObject.GetComponent<Station_Controller>();
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
         _stationController.Action1_Event -= Basic_SwapFood;
         _stationController.Action2_Event -= Merge_Food;
@@ -83,6 +83,12 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.Food_Icon().Show_Icon();
         _stationController.Food_Icon().Show_Condition();
 
+        // play sound on non empty food swap
+        if (playerFoodIcon.hasFood || _stationController.Food_Icon().hasFood)
+        {
+            Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+        }
+
         UnInteract();
     }
 
@@ -109,6 +115,9 @@ public class Table : MonoBehaviour, IInteractable
 
         // save to archive
         _stationController.mainController.AddFood_toArhive(cookedFood);
+
+        // sound
+        Audio_Controller.instance.Play_OneShot("FoodInteract_merge", transform.position);
 
         UnInteract();
     }
