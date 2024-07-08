@@ -34,7 +34,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnCursor_Input += IngredientBubble_UpdatePosition;
 
-        _controller.OnHoldSelect_Input += CurrentFood_BookmarkToggle;
+        _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
 
     }
 
@@ -52,7 +52,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnCursor_Input -= IngredientBubble_UpdatePosition;
 
-        _controller.OnHoldSelect_Input -= CurrentFood_BookmarkToggle;
+        _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
     }
 
     private void OnDestroy()
@@ -209,23 +209,34 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Archive Cooked Foods to Available Orders Export System
     private void CurrentFood_BookmarkToggle()
     {
+        //
         ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Data cursorData = cursor.data;
+
+        // check if cursor has item
+        if (cursorData.hasItem == false) return;
+
+        // drop current item
+        Drop_Food();
+
+        //
         ItemSlot currentSlot = cursor.currentSlot;
 
-        if (currentSlot.data.hasItem == false) return;
+        // toggle
+        currentSlot.Toggle_BookMark(!cursorData.bookMarked);
 
-        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
-
+        //
         Main_Controller main = _controller.vehicleController.mainController;
-        Food_ScrObj slotFood = currentSlot.data.currentFood;
+        Food_ScrObj currentFood = currentSlot.data.currentFood;
 
+        // bookmark data track
         if (currentSlot.data.bookMarked == false)
         {
-            main.RemoveFood_fromBookmark(slotFood);
+            main.RemoveFood_fromBookmark(currentFood);
             return;
         }
 
-        main.AddFood_toBookmark(slotFood);
+        main.AddFood_toBookmark(currentFood);
     }
 
 

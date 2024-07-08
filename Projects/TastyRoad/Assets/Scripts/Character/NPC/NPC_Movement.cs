@@ -23,7 +23,9 @@ public class NPC_Movement : MonoBehaviour
 
     [Header("")]
     [SerializeField] private float _moveSpeed;
+
     [SerializeField] private Vector2 _intervalTimeRange;
+    public Vector2 intervalTimeRange => _intervalTimeRange;
 
 
     public delegate void Event();

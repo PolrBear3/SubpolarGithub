@@ -26,6 +26,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnHoldSelect_Input += Export_Food;
 
+        _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
+
         _controller.OnOption1_Input += DropSingle_Food;
         _controller.OnOption2_Input += DragSingle_Food;
 
@@ -41,6 +43,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_Food;
+
+        _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
 
         _controller.OnOption1_Input -= DropSingle_Food;
         _controller.OnOption2_Input -= DragSingle_Food;
@@ -200,7 +204,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
     }
 
-    // Drag
+    //
     private void Drag_Food()
     {
         ItemSlot_Cursor cursor = _controller.cursor;
@@ -237,7 +241,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.cursor.Empty_Item();
     }
 
-    // Drop
+    //
     private void Drop_Food()
     {
         ItemSlot_Cursor cursor = _controller.cursor;
@@ -262,7 +266,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Update_Amount(1);
     }
 
-    // Swap
+    //
     private void Swap_Food()
     {
         ItemSlot_Cursor cursor = _controller.cursor;
@@ -286,6 +290,44 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         currentSlot.Assign_Item(cursorFood);
         currentSlot.Assign_Amount(cursorAmount);
+    }
+
+
+    // BookMark Control
+    private void CurrentFood_BookmarkToggle()
+    {
+        //
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Data cursorData = cursor.data;
+
+        // check if cursor has item
+        if (cursorData.hasItem == false) return;
+
+        //
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        // check if current hover slot has no item
+        if (currentSlot.data.hasItem) return;
+
+        // drop current item
+        Drop_Food();
+
+        // toggle
+        currentSlot.Toggle_BookMark();
+    }
+
+    public List<ItemSlot_Data> BookMarked_SlotDatas()
+    {
+        List<ItemSlot_Data> slotDatas = new();
+        List<ItemSlot> allSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < allSlots.Count; i++)
+        {
+            if (allSlots[i].data.bookMarked == false) continue;
+            slotDatas.Add(allSlots[i].data);
+        }
+
+        return slotDatas;
     }
 
 

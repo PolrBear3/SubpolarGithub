@@ -280,6 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _npcController: {fileID: 9094981842974887859}
   _currentSubLocation: {fileID: 0}
+  _boxStackPoints: []
   _stationStocks: []
   _carryBox: {fileID: 3467676747412569844}
 --- !u!1 &6140207368992471877
@@ -384,6 +385,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4034252938134837271, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1425840332, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+    - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}

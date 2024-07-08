@@ -26,6 +26,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnHoldSelect_Input += Export_StationPrefab;
         _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
+
+        _controller.OnOption1_Input += CurrentStation_BookmarkToggle;
     }
 
     private void OnDisable()
@@ -39,6 +41,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
         _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
+
+        _controller.OnOption1_Input -= CurrentStation_BookmarkToggle;
     }
 
     private void OnDestroy()
@@ -231,6 +235,44 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         cursor.Assign_Item(currentSlot.data.currentStation);
         currentSlot.Assign_Item(cursorStation);
+    }
+
+
+    // BookMark Control
+    private void CurrentStation_BookmarkToggle()
+    {
+        //
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Data cursorData = cursor.data;
+
+        // check if cursor is dragging item
+        if (cursorData.hasItem == false) return;
+
+        //
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        // check if current hover slot has no item
+        if (currentSlot.data.hasItem) return;
+
+        // drop current item
+        Drop_Station();
+
+        // toggle
+        currentSlot.Toggle_BookMark();
+    }
+
+    public List<ItemSlot_Data> BookMarked_SlotDatas()
+    {
+        List<ItemSlot_Data> slotDatas = new();
+        List<ItemSlot> allSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < allSlots.Count; i++)
+        {
+            if (allSlots[i].data.bookMarked == false) continue;
+            slotDatas.Add(allSlots[i].data);
+        }
+
+        return slotDatas;
     }
 
 

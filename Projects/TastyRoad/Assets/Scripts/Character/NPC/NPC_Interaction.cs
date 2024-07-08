@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPC_Interaction : MonoBehaviour, IInteractable
+public class NPC_Interaction : MonoBehaviour
 {
     [Header("")]
     [SerializeField] private NPC_Controller _controller;
@@ -28,8 +28,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     [SerializeField] private int _defaultTimeLimit;
 
 
-    private bool _interactLocked;
-
     private FoodData _servedFoodData;
     public FoodData servedFoodData => _servedFoodData;
 
@@ -49,6 +47,13 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     private void Start()
     {
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
+
+        _controller.InteractEvent += Interact;
+    }
+
+    private void OnDestroy()
+    {
+        _controller.InteractEvent -= Interact;
     }
 
 
@@ -61,11 +66,9 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     }
 
 
-    // IInteractable
+    // IInteractable Subscription
     public void Interact()
     {
-        if (_interactLocked == true) return;
-
         Interact_FacePlayer();
 
         if (_servedFoodData != null && _controller.foodIcon.hasFood)
@@ -90,7 +93,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         ActionBubble_Toggle();
         StateBox_Toggle();
 
-        _controller.Action1 += Serve_FoodOrder;
+        _controller.Action1Event += Serve_FoodOrder;
     }
 
     public void UnInteract()
@@ -105,7 +108,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
             _controller.timer.Toggle_Transparency(false);
         }
 
-        _controller.Action1 -= Serve_FoodOrder;
+        _controller.Action1Event -= Serve_FoodOrder;
     }
 
 
@@ -113,13 +116,6 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
     public float Random_RoamDelayTime()
     {
         return Random.Range(roamDelayTime.x, roamDelayTime.y);
-    }
-
-
-    // Interact Function Control
-    public void InteractLock_Toggle(bool toggleLock)
-    {
-        _interactLocked = toggleLock;
     }
 
 
@@ -204,7 +200,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         timer.Set_Time(_defaultTimeLimit + extraTime);
 
         // lock interaction until npc reaches roam area
-        InteractLock_Toggle(true);
+        _controller.InteractLock_Toggle(true);
 
         // wait until npc at roam area
         while (_controller.movement.At_CurrentRoamArea() == false)
@@ -217,7 +213,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         TimeLimit_Over();
 
         // unlock interaction
-        InteractLock_Toggle(false);
+        _controller.InteractLock_Toggle(false);
     }
 
     /// <summary>
@@ -243,7 +239,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         _controller.timer.Toggle_Transparency(true);
 
         // unlock interaction
-        InteractLock_Toggle(false);
+        _controller.InteractLock_Toggle(false);
 
         // Uninteract functions
         _controller.InputToggle(false);
@@ -251,7 +247,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         _controller.actionBubble.Toggle(false);
         StateBox_Toggle();
 
-        _controller.Action1 -= Serve_FoodOrder;
+        _controller.Action1Event -= Serve_FoodOrder;
 
         // clear food data
         _controller.foodIcon.Set_CurrentData(null);
@@ -414,7 +410,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         SpriteRenderer currentArea = _controller.movement.currentRoamArea;
 
         // lock interaction
-        InteractLock_Toggle(true);
+        _controller.InteractLock_Toggle(true);
 
         // food sprite
         _eatAnimationSR.sprite = servedFood.sprite;
@@ -438,7 +434,7 @@ public class NPC_Interaction : MonoBehaviour, IInteractable
         movement.Free_Roam(currentArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
 
         // unlock interaction
-        InteractLock_Toggle(false);
+        _controller.InteractLock_Toggle(false);
 
         // activate coin sprite
         _goldCoinSR.color = Color.white;

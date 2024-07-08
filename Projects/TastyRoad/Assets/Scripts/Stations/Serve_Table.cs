@@ -184,11 +184,11 @@ public class Serve_Table : Table, IInteractable
     }
     private IEnumerator Serve_FoodOrder_toNPC_Coroutine()
     {
-        NPC_Interaction interaction = _currentNPC.interaction;
+        NPC_Controller npc = _currentNPC;
         NPC_Movement movement = _currentNPC.movement;
 
         // interact lock
-        interaction.InteractLock_Toggle(true);
+        npc.InteractLock_Toggle(true);
 
         // set npc destination to this serve table
         movement.Stop_FreeRoam();
@@ -198,7 +198,7 @@ public class Serve_Table : Table, IInteractable
         while (movement.At_TargetPosition(transform.position) == false) yield return null;
 
         // interact unlock
-        interaction.InteractLock_Toggle(false);
+        npc.InteractLock_Toggle(false);
 
         // set npc roam area to opened order stand
         movement.Free_Roam(Opened_OrderStand().orderingArea, 0f);
@@ -211,7 +211,7 @@ public class Serve_Table : Table, IInteractable
         }
 
         // serve npc food
-        interaction.Serve_FoodOrder(stationController.Food_Icon().currentData);
+        npc.interaction.Serve_FoodOrder(stationController.Food_Icon().currentData);
 
         // empty current food
         stationController.Food_Icon().Set_CurrentData(null);

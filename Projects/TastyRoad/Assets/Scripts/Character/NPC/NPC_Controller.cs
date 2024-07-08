@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPC_Controller : MonoBehaviour
+public class NPC_Controller : MonoBehaviour, IInteractable
 {
     private PlayerInput _input;
 
@@ -43,8 +43,16 @@ public class NPC_Controller : MonoBehaviour
     [SerializeField] private NPC_Interaction _interaction;
     public NPC_Interaction interaction => _interaction;
 
+
+    private bool _interactLocked;
+
+
     public delegate void Action_Event();
-    public event Action_Event Action1;
+
+    public event Action_Event InteractEvent;
+    public event Action_Event UnInteractEvent;
+
+    public event Action_Event Action1Event;
 
 
     // UnityEngine
@@ -67,10 +75,24 @@ public class NPC_Controller : MonoBehaviour
     }
 
 
+    // IInteractable
+    public void Interact()
+    {
+        if (_interactLocked == true) return;
+
+        InteractEvent?.Invoke();
+    }
+
+    public void UnInteract()
+    {
+        UnInteractEvent?.Invoke();
+    }
+
+
     // InputSystem
     private void OnAction1()
     {
-        Action1?.Invoke();
+        Action1Event?.Invoke();
     }
 
 
@@ -78,5 +100,10 @@ public class NPC_Controller : MonoBehaviour
     public void InputToggle(bool toggleOn)
     {
         _input.enabled = toggleOn;
+    }
+
+    public void InteractLock_Toggle(bool toggleOn)
+    {
+        _interactLocked = toggleOn;
     }
 }

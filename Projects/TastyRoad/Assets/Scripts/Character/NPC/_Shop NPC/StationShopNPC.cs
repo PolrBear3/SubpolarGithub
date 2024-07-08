@@ -7,7 +7,7 @@ public class StationShopNPC : MonoBehaviour
     [Header("")]
     [SerializeField] private NPC_Controller _npcController;
 
-    [Header("Sub Location Properties")]
+    [Header("")]
     [SerializeField] private SubLocation _currentSubLocation;
 
     [SerializeField] private Transform[] _boxStackPoints;
@@ -26,8 +26,11 @@ public class StationShopNPC : MonoBehaviour
         _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
 
         // event subscriptions
-        GlobalTime_Controller.DayTik_Update += Restock_StationStocks;
+        GlobalTime_Controller.TimeTik_Update += Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent += CarryBox_DirectionUpdate;
+
+        _npcController.InteractEvent += Interact;
+        _npcController.Action1Event += Merge_BookmarkedStations;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -38,13 +41,44 @@ public class StationShopNPC : MonoBehaviour
 
     private void OnDestroy()
     {
+        // event subscriptions
         GlobalTime_Controller.DayTik_Update -= Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent -= CarryBox_DirectionUpdate;
+
+        _npcController.InteractEvent -= Interact;
+        _npcController.Action1Event -= Merge_BookmarkedStations;
     }
 
 
-    // Event Actions
+    // OnTrigger
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!collision.TryGetComponent(out Player_Controller player)) return;
 
+        UnInteract();
+    }
+
+
+    // IInteractable Subscription
+    private void Interact()
+    {
+        Interact_FacePlayer();
+
+        if (_npcController.actionBubble.bubbleOn)
+        {
+            UnInteract();
+            return;
+        }
+
+        _npcController.InputToggle(true);
+        _npcController.actionBubble.Toggle(true);
+    }
+
+    private void UnInteract()
+    {
+        _npcController.InputToggle(false);
+        _npcController.actionBubble.Toggle(false);
+    }
 
 
     // Carry Box Sprite Control
@@ -63,6 +97,19 @@ public class StationShopNPC : MonoBehaviour
 
         // right
         else _carryBox.flipX = false;
+    }
+
+
+    // Basic Actions
+    private void Interact_FacePlayer()
+    {
+        // facing to player direction
+        _npcController.basicAnim.Flip_Sprite(_npcController.detection.player.gameObject);
+
+        NPC_Movement movement = _npcController.movement;
+
+        movement.Stop_FreeRoam();
+        movement.Free_Roam(_currentSubLocation.roamArea, Random.Range(movement.intervalTimeRange.x, movement.intervalTimeRange.y));
     }
 
 
@@ -95,6 +142,12 @@ public class StationShopNPC : MonoBehaviour
     {
         NPC_Movement move = _npcController.movement;
 
+        UnInteract();
+
+        // interact toggle off
+        _npcController.InteractLock_Toggle(true);
+
+        //
         move.Stop_FreeRoam();
 
         for (int i = 0; i < _stationStocks.Length; i++)
@@ -128,6 +181,19 @@ public class StationShopNPC : MonoBehaviour
             CarryBox_SpriteToggle(false);
         }
 
+        // interact toggle off
+        _npcController.InteractLock_Toggle(false);
+
+        // return to free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
+    }
+
+
+    // Merge Station Control
+    private void Merge_BookmarkedStations()
+    {
+        UnInteract();
+
+        //
     }
 }
