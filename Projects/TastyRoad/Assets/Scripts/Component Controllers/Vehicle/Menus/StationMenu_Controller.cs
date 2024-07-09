@@ -241,6 +241,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // BookMark Control
     private void CurrentStation_BookmarkToggle()
     {
+        // check if it is not interaction mode
+        if (_interactionMode == true) return;
+
         //
         ItemSlot_Cursor cursor = _controller.cursor;
         ItemSlot_Data cursorData = cursor.data;

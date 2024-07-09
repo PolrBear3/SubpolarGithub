@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: -2268305881826384539}
   - component: {fileID: -7268301005637499790}
   - component: {fileID: 8199780205900472995}
+  - component: {fileID: 2630561444930076325}
   - component: {fileID: 9094981842974887859}
   - component: {fileID: 2978574373251596411}
   - component: {fileID: 1602899645111724261}
@@ -336,6 +337,21 @@ MonoBehaviour:
     icon: {fileID: -739041566, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: 
   _datas: []
+--- !u!114 &2630561444930076325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6680efb1d64c94cb481bd828ccf7fe4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _input: {fileID: 4272241710382912556}
+  _detection: {fileID: -2268305881826384539}
+  _bubble: {fileID: 936463578848434098}
 --- !u!114 &9094981842974887859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -349,10 +365,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterData: {fileID: 8903583041108868457}
-  _detection: {fileID: -2268305881826384539}
   _basicAnim: {fileID: -7268301005637499790}
   _foodIcon: {fileID: 1483303474056452521}
-  _actionBubble: {fileID: 936463578848434098}
+  _interactable: {fileID: 2630561444930076325}
   _itemLauncher: {fileID: 6755566805421460070}
   _timer: {fileID: 5143084945135055206}
   _movement: {fileID: 2978574373251596411}

@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: -7268301005637499790}
   - component: {fileID: 9094981842974887859}
   - component: {fileID: 2978574373251596411}
+  - component: {fileID: 494314912932873177}
   - component: {fileID: 9076807665472467565}
   m_Layer: 0
   m_Name: StationShop NPC
@@ -266,6 +267,21 @@ MonoBehaviour:
   _controller: {fileID: 9094981842974887859}
   _moveSpeed: 5
   _intervalTimeRange: {x: 5, y: 10}
+--- !u!114 &494314912932873177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6680efb1d64c94cb481bd828ccf7fe4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _input: {fileID: 4272241710382912556}
+  _detection: {fileID: -2268305881826384539}
+  _bubble: {fileID: 936463578848434098}
 --- !u!114 &9076807665472467565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,6 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _npcController: {fileID: 9094981842974887859}
+  _interactable: {fileID: 494314912932873177}
   _currentSubLocation: {fileID: 0}
   _boxStackPoints: []
   _stationStocks: []

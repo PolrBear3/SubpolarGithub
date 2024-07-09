@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class NPC_Controller : MonoBehaviour, IInteractable
+public class NPC_Controller : MonoBehaviour
 {
-    private PlayerInput _input;
-
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
 
@@ -15,17 +13,14 @@ public class NPC_Controller : MonoBehaviour, IInteractable
     [SerializeField] private Character_Data _characterData;
     public Character_Data characterData => _characterData;
 
-    [SerializeField] private Detection_Controller _detection;
-    public Detection_Controller detection => _detection;
-
     [SerializeField] private BasicAnimation_Controller _basicAnim;
     public BasicAnimation_Controller basicAnim => _basicAnim;
 
     [SerializeField] private FoodData_Controller _foodIcon;
     public FoodData_Controller foodIcon => _foodIcon;
 
-    [SerializeField] private Action_Bubble _actionBubble;
-    public Action_Bubble actionBubble => _actionBubble;
+    [SerializeField] private ActionBubble_Interactable _interactable;
+    public ActionBubble_Interactable interactable => _interactable;
 
 
     [Header("")]
@@ -44,66 +39,15 @@ public class NPC_Controller : MonoBehaviour, IInteractable
     public NPC_Interaction interaction => _interaction;
 
 
-    private bool _interactLocked;
-
-
-    public delegate void Action_Event();
-
-    public event Action_Event InteractEvent;
-    public event Action_Event UnInteractEvent;
-
-    public event Action_Event Action1Event;
-
-
     // UnityEngine
     private void Awake()
     {
-        _input = gameObject.GetComponent<PlayerInput>();
-
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
         _mainController.Track_CurrentCharacter(gameObject);
-    }
-
-    private void Start()
-    {
-        InputToggle(false);
     }
 
     private void OnDestroy()
     {
         _mainController.UnTrack_CurrentCharacter(gameObject);
-    }
-
-
-    // IInteractable
-    public void Interact()
-    {
-        if (_interactLocked == true) return;
-
-        InteractEvent?.Invoke();
-    }
-
-    public void UnInteract()
-    {
-        UnInteractEvent?.Invoke();
-    }
-
-
-    // InputSystem
-    private void OnAction1()
-    {
-        Action1Event?.Invoke();
-    }
-
-
-    //
-    public void InputToggle(bool toggleOn)
-    {
-        _input.enabled = toggleOn;
-    }
-
-    public void InteractLock_Toggle(bool toggleOn)
-    {
-        _interactLocked = toggleOn;
     }
 }

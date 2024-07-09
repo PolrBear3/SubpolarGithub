@@ -23,6 +23,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public delegate void Event();
 
     public event Event InteractEvent;
+    public event Event UnInteractEvent;
     public event Event Action1Event;
     public event Event Action2Event;
 
@@ -99,6 +100,9 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         // bubble off
         _input.enabled = false;
         _bubble.Toggle(false);
+
+        //
+        UnInteractEvent?.Invoke();
     }
 
 

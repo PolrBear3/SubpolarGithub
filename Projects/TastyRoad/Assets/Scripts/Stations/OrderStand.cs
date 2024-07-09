@@ -196,7 +196,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             interaction.Wake_Animation();
 
             // refresh
-            interaction.UnInteract();
+            npc.interactable.UnInteract();
 
             // attract npc > ordering area
             move.Stop_FreeRoam();
@@ -264,7 +264,7 @@ public class OrderStand : MonoBehaviour, IInteractable
                 interaction.Wake_Animation();
 
                 // refresh
-                interaction.UnInteract();
+                npc.interactable.UnInteract();
 
                 // attract npc > ordering area
                 move.Stop_FreeRoam();

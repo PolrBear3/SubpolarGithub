@@ -6,6 +6,7 @@ public class StationShopNPC : MonoBehaviour
 {
     [Header("")]
     [SerializeField] private NPC_Controller _npcController;
+    [SerializeField] private ActionBubble_Interactable _interactable;
 
     [Header("")]
     [SerializeField] private SubLocation _currentSubLocation;
@@ -29,8 +30,8 @@ public class StationShopNPC : MonoBehaviour
         GlobalTime_Controller.TimeTik_Update += Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent += CarryBox_DirectionUpdate;
 
-        _npcController.InteractEvent += Interact;
-        _npcController.Action1Event += Merge_BookmarkedStations;
+        _interactable.InteractEvent += Interact_FacePlayer;
+        _interactable.Action1Event += Merge_BookmarkedStations;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -45,39 +46,8 @@ public class StationShopNPC : MonoBehaviour
         GlobalTime_Controller.DayTik_Update -= Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent -= CarryBox_DirectionUpdate;
 
-        _npcController.InteractEvent -= Interact;
-        _npcController.Action1Event -= Merge_BookmarkedStations;
-    }
-
-
-    // OnTrigger
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        UnInteract();
-    }
-
-
-    // IInteractable Subscription
-    private void Interact()
-    {
-        Interact_FacePlayer();
-
-        if (_npcController.actionBubble.bubbleOn)
-        {
-            UnInteract();
-            return;
-        }
-
-        _npcController.InputToggle(true);
-        _npcController.actionBubble.Toggle(true);
-    }
-
-    private void UnInteract()
-    {
-        _npcController.InputToggle(false);
-        _npcController.actionBubble.Toggle(false);
+        _interactable.InteractEvent -= Interact_FacePlayer;
+        _interactable.Action1Event -= Merge_BookmarkedStations;
     }
 
 
@@ -104,7 +74,7 @@ public class StationShopNPC : MonoBehaviour
     private void Interact_FacePlayer()
     {
         // facing to player direction
-        _npcController.basicAnim.Flip_Sprite(_npcController.detection.player.gameObject);
+        _npcController.basicAnim.Flip_Sprite(_npcController.interactable.detection.player.gameObject);
 
         NPC_Movement movement = _npcController.movement;
 
@@ -142,10 +112,10 @@ public class StationShopNPC : MonoBehaviour
     {
         NPC_Movement move = _npcController.movement;
 
-        UnInteract();
+        _interactable.UnInteract();
 
         // interact toggle off
-        _npcController.InteractLock_Toggle(true);
+        _interactable.LockInteract(true);
 
         //
         move.Stop_FreeRoam();
@@ -182,7 +152,7 @@ public class StationShopNPC : MonoBehaviour
         }
 
         // interact toggle off
-        _npcController.InteractLock_Toggle(false);
+        _interactable.LockInteract(false);
 
         // return to free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -192,7 +162,7 @@ public class StationShopNPC : MonoBehaviour
     // Merge Station Control
     private void Merge_BookmarkedStations()
     {
-        UnInteract();
+        _interactable.UnInteract();
 
         //
     }

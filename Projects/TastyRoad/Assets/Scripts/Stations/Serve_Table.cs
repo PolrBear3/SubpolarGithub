@@ -188,7 +188,7 @@ public class Serve_Table : Table, IInteractable
         NPC_Movement movement = _currentNPC.movement;
 
         // interact lock
-        npc.InteractLock_Toggle(true);
+        npc.interactable.LockInteract(true);
 
         // set npc destination to this serve table
         movement.Stop_FreeRoam();
@@ -198,7 +198,7 @@ public class Serve_Table : Table, IInteractable
         while (movement.At_TargetPosition(transform.position) == false) yield return null;
 
         // interact unlock
-        npc.InteractLock_Toggle(false);
+        npc.interactable.LockInteract(false);
 
         // set npc roam area to opened order stand
         movement.Free_Roam(Opened_OrderStand().orderingArea, 0f);

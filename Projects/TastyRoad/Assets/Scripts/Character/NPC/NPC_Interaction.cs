@@ -48,26 +48,21 @@ public class NPC_Interaction : MonoBehaviour
     {
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
 
-        _controller.InteractEvent += Interact;
+        _controller.interactable.InteractEvent += Interact;
+        _controller.interactable.UnInteractEvent += UnInteract;
     }
 
     private void OnDestroy()
     {
-        _controller.InteractEvent -= Interact;
+        _controller.interactable.InteractEvent -= Interact;
+        _controller.interactable.UnInteractEvent -= UnInteract;
+
+        _controller.interactable.Action1Event -= Serve_FoodOrder;
     }
 
 
-    // OnTrigger
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        UnInteract();
-    }
-
-
-    // IInteractable Subscription
-    public void Interact()
+    // ActionBubble_Interactable Subscription
+    private void Interact()
     {
         Interact_FacePlayer();
 
@@ -77,30 +72,19 @@ public class NPC_Interaction : MonoBehaviour
             return;
         }
 
-        if (_controller.actionBubble.bubbleOn)
-        {
-            UnInteract();
-            return;
-        }
-
         if (Main_Controller.orderOpen == false) return;
         if (_controller.foodIcon.hasFood == false) return;
 
-        _controller.InputToggle(true);
+        _controller.timer.Toggle_Transparency(_controller.interactable.bubble.bubbleOn);
 
-        _controller.timer.Toggle_Transparency(!_controller.actionBubble.bubbleOn);
-
-        ActionBubble_Toggle();
+        _controller.foodIcon.Show_Condition();
         StateBox_Toggle();
 
-        _controller.Action1Event += Serve_FoodOrder;
+        _controller.interactable.Action1Event += Serve_FoodOrder;
     }
 
-    public void UnInteract()
+    private void UnInteract()
     {
-        _controller.InputToggle(false);
-
-        _controller.actionBubble.Toggle(false);
         StateBox_Toggle();
 
         if (Main_Controller.orderOpen && _controller.foodIcon.hasFood && _servedFoodData == null)
@@ -108,7 +92,7 @@ public class NPC_Interaction : MonoBehaviour
             _controller.timer.Toggle_Transparency(false);
         }
 
-        _controller.Action1Event -= Serve_FoodOrder;
+        _controller.interactable.Action1Event -= Serve_FoodOrder;
     }
 
 
@@ -122,9 +106,9 @@ public class NPC_Interaction : MonoBehaviour
     // Stop and Face Player if Interacted
     private void Interact_FacePlayer()
     {
-        if (_controller.actionBubble.bubbleOn == true) return;
+        if (_controller.interactable.bubble.bubbleOn == true) return;
 
-        _controller.basicAnim.Flip_Sprite(_controller.detection.player.gameObject);
+        _controller.basicAnim.Flip_Sprite(_controller.interactable.detection.player.gameObject);
 
         NPC_Movement movement = _controller.movement;
         movement.Stop_FreeRoam();
@@ -139,24 +123,12 @@ public class NPC_Interaction : MonoBehaviour
         }
     }
 
-    // Update Action Bubble
-    private void ActionBubble_Toggle()
-    {
-        if (_servedFoodData != null) return;
-
-        FoodData_Controller foodIcon = _controller.foodIcon;
-
-        if (foodIcon.hasFood == false) return;
-
-        _controller.actionBubble.Update_Bubble(foodIcon.currentData.foodScrObj, null);
-        _controller.foodIcon.Show_Condition();
-    }
 
     // Toggle On Off StateBox
     private void StateBox_Toggle()
     {
         // on
-        if (_controller.actionBubble.bubbleOn == true)
+        if (_controller.interactable.bubble.bubbleOn == true)
         {
             LeanTween.alpha(_stateBoxes, 1f, 0.01f);
         }
@@ -200,7 +172,7 @@ public class NPC_Interaction : MonoBehaviour
         timer.Set_Time(_defaultTimeLimit + extraTime);
 
         // lock interaction until npc reaches roam area
-        _controller.InteractLock_Toggle(true);
+        _controller.interactable.LockInteract(true);
 
         // wait until npc at roam area
         while (_controller.movement.At_CurrentRoamArea() == false)
@@ -213,7 +185,7 @@ public class NPC_Interaction : MonoBehaviour
         TimeLimit_Over();
 
         // unlock interaction
-        _controller.InteractLock_Toggle(false);
+        _controller.interactable.LockInteract(false);
     }
 
     /// <summary>
@@ -239,15 +211,15 @@ public class NPC_Interaction : MonoBehaviour
         _controller.timer.Toggle_Transparency(true);
 
         // unlock interaction
-        _controller.InteractLock_Toggle(false);
+        _controller.interactable.LockInteract(false);
 
-        // Uninteract functions
-        _controller.InputToggle(false);
-
-        _controller.actionBubble.Toggle(false);
+        // bubble update
+        _controller.interactable.bubble.Empty_Bubble();
+        _controller.interactable.bubble.Toggle(false);
         StateBox_Toggle();
 
-        _controller.Action1Event -= Serve_FoodOrder;
+        //
+        _controller.interactable.Action1Event -= Serve_FoodOrder;
 
         // clear food data
         _controller.foodIcon.Set_CurrentData(null);
@@ -299,6 +271,9 @@ public class NPC_Interaction : MonoBehaviour
 
             foodIcon.Set_CurrentData(new FoodData(randomFood));
 
+            // action bubble sprite update
+            _controller.interactable.bubble.Set_Bubble(_controller.foodIcon.currentData.foodScrObj, null);
+
             // set random state
             ConditionSprites[] allConditions = foodIcon.conditionSprites;
 
@@ -329,20 +304,18 @@ public class NPC_Interaction : MonoBehaviour
         if (foodIcon.hasFood == false) return;
 
         // check if player has food
-        FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
+        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
         if (playerFoodIcon.hasFood == false)
         {
-            UnInteract();
+            _controller.interactable.UnInteract();
             return;
         }
-
-        _controller.actionBubble.Toggle(false);
 
         // check if order food is correct
         FoodData playerFoodData = playerFoodIcon.currentData;
         if (playerFoodData.foodScrObj != foodIcon.currentData.foodScrObj)
         {
-            UnInteract();
+            _controller.interactable.UnInteract();
             return;
         }
 
@@ -401,7 +374,7 @@ public class NPC_Interaction : MonoBehaviour
     }
     private IEnumerator Eat_Animation_Coroutine()
     {
-        Detection_Controller detection = _controller.detection;
+        Detection_Controller detection = _controller.interactable.detection;
         NPC_Movement movement = _controller.movement;
         Food_ScrObj servedFood = _controller.foodIcon.currentData.foodScrObj;
 
@@ -410,7 +383,7 @@ public class NPC_Interaction : MonoBehaviour
         SpriteRenderer currentArea = _controller.movement.currentRoamArea;
 
         // lock interaction
-        _controller.InteractLock_Toggle(true);
+        _controller.interactable.LockInteract(true);
 
         // food sprite
         _eatAnimationSR.sprite = servedFood.sprite;
@@ -434,7 +407,10 @@ public class NPC_Interaction : MonoBehaviour
         movement.Free_Roam(currentArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
 
         // unlock interaction
-        _controller.InteractLock_Toggle(false);
+        _controller.interactable.LockInteract(false);
+
+        // lock action bubble
+        _controller.interactable.bubble.Empty_Bubble();
 
         // activate coin sprite
         _goldCoinSR.color = Color.white;
@@ -483,7 +459,7 @@ public class NPC_Interaction : MonoBehaviour
 
         // toss coin to player animation
         Sprite coinSprite = _controller.mainController.dataController.goldenNugget.sprite;
-        _controller.itemLauncher.Parabola_CoinLaunch(coinSprite, -_controller.detection.player.transform.position);
+        _controller.itemLauncher.Parabola_CoinLaunch(coinSprite, -_controller.interactable.detection.player.transform.position);
 
         // dialog update
         gameObject.GetComponent<DialogTrigger>().Update_Dialog();
