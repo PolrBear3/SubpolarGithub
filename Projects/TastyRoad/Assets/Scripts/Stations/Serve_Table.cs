@@ -8,6 +8,7 @@ public class Serve_Table : Table, IInteractable
     public NPC_Controller currentNPC => _currentNPC;
 
     private Coroutine _coroutine;
+    private Coroutine _checkCoroutine;
 
     [SerializeField] private FoodData_Controller _foodOrderPreview;
 
@@ -100,7 +101,37 @@ public class Serve_Table : Table, IInteractable
     }
 
 
-    // Functions
+    // OrderOpen_ToggleEvent Functions
+    private void Find_AttractedNPC()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _currentNPC = null;
+
+        if (Main_Controller.orderOpen == false) return;
+
+        _coroutine = StartCoroutine(Find_AttractedNPC_Coroutine());
+    }
+    private IEnumerator Find_AttractedNPC_Coroutine()
+    {
+        FoodOrder_PreviewUpdate();
+
+        while (_currentNPC == null)
+        {
+            Set_AttractedNPC();
+            yield return null;
+        }
+
+        FoodOrder_PreviewUpdate();
+
+        _coroutine = null;
+        yield break;
+    }
+
     private void Set_AttractedNPC()
     {
         List<NPC_Controller> allNPCs = stationController.mainController.All_NPCs();
@@ -113,9 +144,6 @@ public class Serve_Table : Table, IInteractable
 
             // set current npc
             _currentNPC = allNPCs[i];
-
-            //
-            FoodOrder_PreviewUpdate();
 
             return;
         }
@@ -137,34 +165,30 @@ public class Serve_Table : Table, IInteractable
         _foodOrderPreview.Show_Condition();
 
         LeanTween.alpha(_foodOrderPreview.gameObject, 0.3f, 0f);
+
+        //
+        Check_FoodServe();
     }
 
-
-    private void Find_AttractedNPC()
+    private void Check_FoodServe()
     {
-        if (_coroutine != null)
+        if (_checkCoroutine != null)
         {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
+            StopCoroutine(_checkCoroutine);
+            _checkCoroutine = null;
         }
 
-        if (Main_Controller.orderOpen == false) return;
-
-        _coroutine = StartCoroutine(Find_AttractedNPC_Coroutine());
+        _checkCoroutine = StartCoroutine(Check_FoodServe_Coroutine());
     }
-    private IEnumerator Find_AttractedNPC_Coroutine()
+    private IEnumerator Check_FoodServe_Coroutine()
     {
-        while (_currentNPC == null)
-        {
-            Set_AttractedNPC();
+        while (_currentNPC.interaction.servedFoodData == null) yield return null;
 
-            yield return null;
-        }
-
-        _coroutine = null;
-        yield break;
+        Find_AttractedNPC();
     }
 
+
+    // Interact Functions
     private void Serve_FoodOrder_toNPC()
     {
         //
@@ -219,12 +243,8 @@ public class Serve_Table : Table, IInteractable
         stationController.Food_Icon().Show_Condition();
 
         // reset data
-        _currentNPC = null;
-
-        //
-        FoodOrder_PreviewUpdate();
-
         Find_AttractedNPC();
+        FoodOrder_PreviewUpdate();
     }
 
 
@@ -234,6 +254,13 @@ public class Serve_Table : Table, IInteractable
         if (_currentNPC == null) return;
 
         SpriteRenderer locationRoamArea = stationController.mainController.currentLocation.roamArea;
+
+        // stop coroutine
+        if (_checkCoroutine != null)
+        {
+            StopCoroutine(_checkCoroutine);
+            _checkCoroutine = null;
+        }
 
         // npc returns to current location roam area
         _currentNPC.movement.Free_Roam(locationRoamArea, _currentNPC.interaction.Random_RoamDelayTime());
