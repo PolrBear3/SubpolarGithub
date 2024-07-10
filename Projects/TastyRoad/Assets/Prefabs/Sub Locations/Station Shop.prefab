@@ -1233,6 +1233,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Station Stock
       objectReference: {fileID: 0}
+    - target: {fileID: 3569663137575501159, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 793991438, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
     - target: {fileID: 3989022576964105059, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5
@@ -1273,6 +1277,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4805186301662882457, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -820203131, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+    - target: {fileID: 6578831391503598057, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
+      propertyPath: _sellSign
+      value: 
+      objectReference: {fileID: 2084686620, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+    - target: {fileID: 6578831391503598057, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
+      propertyPath: _soldSign
+      value: 
+      objectReference: {fileID: 793991438, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+    - target: {fileID: 6578831391503598057, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
+      propertyPath: _emptyStation
+      value: 
+      objectReference: {fileID: -820203131, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1283,6 +1303,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3989022576964105059, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
   m_PrefabInstance: {fileID: 3241253763975920074}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8626516904060418083 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6578831391503598057, guid: 5fbcd00b3d9244f6b8514cf233630635, type: 3}
+  m_PrefabInstance: {fileID: 3241253763975920074}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19003fb099e5244ffad52dd421c12226, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4394699896827952351
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1295,6 +1326,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StationShop NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
+      propertyPath: _mergeStationStock
+      value: 
+      objectReference: {fileID: 8626516904060418083}
     - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
       propertyPath: _currentSubLocation
       value: 

@@ -13,6 +13,7 @@ public class StationShopNPC : MonoBehaviour
 
     [SerializeField] private Transform[] _boxStackPoints;
     [SerializeField] private StationStock[] _stationStocks;
+    [SerializeField] private StationStock _mergeStationStock;
 
     [Header("")]
     [SerializeField] private SpriteRenderer _carryBox;
@@ -31,7 +32,7 @@ public class StationShopNPC : MonoBehaviour
         _npcController.movement.TargetPosition_UpdateEvent += CarryBox_DirectionUpdate;
 
         _interactable.InteractEvent += Interact_FacePlayer;
-        _interactable.Action1Event += Merge_BookmarkedStations;
+        _interactable.Action1Event += Merge_BookMarkedStations;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -47,7 +48,7 @@ public class StationShopNPC : MonoBehaviour
         _npcController.movement.TargetPosition_UpdateEvent -= CarryBox_DirectionUpdate;
 
         _interactable.InteractEvent -= Interact_FacePlayer;
-        _interactable.Action1Event -= Merge_BookmarkedStations;
+        _interactable.Action1Event -= Merge_BookMarkedStations;
     }
 
 
@@ -160,10 +161,42 @@ public class StationShopNPC : MonoBehaviour
 
 
     // Merge Station Control
-    private void Merge_BookmarkedStations()
+    private void Merge_BookMarkedStations()
     {
-        _interactable.UnInteract();
+        // check if _mergeStationStock is empty
+
+        // check if more there are more than 2 bookmarked stations
+
+        // empty bookmarked stations
+
+        if (_restockCoroutine != null)
+        {
+            StopCoroutine(_restockCoroutine);
+            _restockCoroutine = null;
+        }
+
+        _restockCoroutine = StartCoroutine(Merge_BookMarkedStations_Coroutine());
+    }
+    private IEnumerator Merge_BookMarkedStations_Coroutine()
+    {
+        //
+        CarryBox_SpriteToggle(true);
+
+        // move to _mergeStationStock
+
+
+        // wait until arrival
+
+
+        // restock _mergeStationStock
+
+
+        // set _mergeStationStock price to 0
+
 
         //
+        CarryBox_SpriteToggle(false);
+
+        yield return null;
     }
 }

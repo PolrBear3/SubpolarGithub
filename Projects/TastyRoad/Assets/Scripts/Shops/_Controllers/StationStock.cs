@@ -13,6 +13,9 @@ public class StationStock : MonoBehaviour
 
     private Station_ScrObj _station;
 
+    private int _price;
+    public int price => _price;
+
     private bool _sold;
     public bool sold => _sold;
 
@@ -45,16 +48,20 @@ public class StationStock : MonoBehaviour
         _interactable.Action1Event -= Purchase;
     }
 
-
+     
     // Set
     private void Set_Station()
     {
         // get random station
         Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj();
 
-        // set data and sprite
+        // set station scrobj
         _station = randStation;
 
+        // set initial price
+        _price = _station.price;
+
+        // set sprite
         _sr.sprite = _station.sprite;
         _statusSign.sprite = _sellSign;
     }
@@ -68,6 +75,12 @@ public class StationStock : MonoBehaviour
     }
 
 
+    public void Update_Price(int price)
+    {
+        _price = price;
+    }
+
+
     // Functions
     private void Purchase()
     {
@@ -76,6 +89,11 @@ public class StationStock : MonoBehaviour
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // check if player has enough coins
+        if (_interactable.mainController.GoldenNugget_Amount() < _price)
+        {
+            dialog.Update_Dialog(0);
+            return;
+        }
 
         StationMenu_Controller stationMenu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
