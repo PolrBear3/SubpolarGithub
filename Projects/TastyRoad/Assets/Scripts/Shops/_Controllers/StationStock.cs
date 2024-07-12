@@ -36,7 +36,7 @@ public class StationStock : MonoBehaviour
 
     private void Start()
     {
-        Set_Station();
+        Update_toSold();
 
         _interactable.InteractEvent += Set_Dialog;
         _interactable.Action1Event += Purchase;
@@ -69,7 +69,7 @@ public class StationStock : MonoBehaviour
     private void Set_Dialog()
     {
         Sprite stationIcon = _station.dialogIcon;
-        string dialogInfo = _station.price + " coint\nto purchase";
+        string dialogInfo = _station.price + " coin\nto purchase";
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
     }

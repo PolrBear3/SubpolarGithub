@@ -13,8 +13,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private ItemSlots_Controller _slotsController;
     public ItemSlots_Controller slotsController => _slotsController;
 
-    private List<Food_ScrObj> _bookmarkedFoods = new();
-    public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
+    private List<Food_ScrObj> _ingredientUnlocks = new();
 
     [Header("")]
     [SerializeField] private GameObject _ingredientBubble;
@@ -64,6 +63,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        // slots
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
         List<ItemSlot_Data> saveSlots = new();
 
@@ -73,19 +73,41 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         ES3.Save("ArchiveMenu_Controller/_itemSlotDatas", saveSlots);
+
+        // ingredient unlcoks
+        List<int> foodIDs = new();
+
+        foreach (var foods in _ingredientUnlocks)
+        {
+            foodIDs.Add(foods.id);
+        }
+
+        ES3.Save("ArchiveMenu_Controller/_ingredientUnlocks", foodIDs);
     }
 
     public void Load_Data()
     {
+        // slots
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
         List<ItemSlot_Data> loadSlots = ES3.Load("ArchiveMenu_Controller/_itemSlotDatas", new List<ItemSlot_Data>());
 
+        // ingredient unlcoks
+        List<int> foodIDs = new();
+        foodIDs = ES3.Load("ArchiveMenu_Controller/_ingredientUnlocks", foodIDs);
+
+        // load
         _slotsController.Add_Slot(15);
 
         for (int i = 0; i < loadSlots.Count; i++)
         {
             currentSlots[i].data = loadSlots[i];
+
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (foodIDs.Contains(currentSlots[i].data.currentFood.id) == false) continue;
+
+            _ingredientUnlocks.Add(currentSlots[i].data.currentFood);
         }
+
     }
 
 
@@ -139,7 +161,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (cursor.data.hasItem == false) return;
 
-        AddFoodto_EmptySlot(cursor.data.currentFood);
+        AddFood(cursor.data.currentFood);
         cursor.Empty_Item();
 
         IngredientBubble_Toggle(false);
@@ -191,7 +213,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
-    // BookMark Toggle Update
+
+    // BookMark Control
     private void Update_BookMarkFoods()
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
@@ -206,7 +229,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
-    // Archive Cooked Foods to Available Orders Export System
     private void CurrentFood_BookmarkToggle()
     {
         //
@@ -239,6 +261,20 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         main.AddFood_toBookmark(currentFood);
     }
 
+    public List<ItemSlot> BookMarked_Slots()
+    {
+        List<ItemSlot> allSlots = _slotsController.itemSlots;
+        List<ItemSlot> bookMarkedSlots = new();
+
+        for (int i = 0; i < allSlots.Count; i++)
+        {
+            if (allSlots[i].data.bookMarked == false) continue;
+            bookMarkedSlots.Add(allSlots[i]);
+        }
+
+        return bookMarkedSlots;
+    }
+
 
     // Slots Update
     private void UpdateNew_ArchivedFoods()
@@ -250,11 +286,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         {
             if (Food_InMenu(archivedFoods[i])) continue;
 
-            AddFoodto_EmptySlot(archivedFoods[i]);
+            AddFood(archivedFoods[i]);
         }
     }
 
-    //
     private bool Food_InMenu(Food_ScrObj food)
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
@@ -269,9 +304,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return false;
     }
 
-    //
-    private void AddFoodto_EmptySlot(Food_ScrObj food)
+    public void AddFood(Food_ScrObj food)
     {
+        // check if non duplicate food
+        if (Food_InMenu(food)) return;
+
+        // check if current food have ingredients
+        if (food.ingredients.Count <= 0) return;
+
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)
@@ -284,12 +324,24 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
+    // Food Ingredient Control
+    private bool Ingredient_Unlocked(Food_ScrObj checkFood)
+    {
+        return _ingredientUnlocks.Contains(checkFood);
+    }
+
+    public void UnLock_Ingredient(Food_ScrObj unlockFood)
+    {
+        _ingredientUnlocks.Add(unlockFood);
+    }
+
+
     // Ingredient Bubble Control
     private void IngredientBubble_Toggle(bool toggleOn)
     {
         ItemSlot_Data cursorData = _controller.cursor.data;
 
-        if (toggleOn == false || cursorData.hasItem == false)
+        if (toggleOn == false || cursorData.hasItem == false || Ingredient_Unlocked(cursorData.currentFood) == false)
         {
             _ingredientBubble.SetActive(false);
             return;
@@ -310,7 +362,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _ingredientIcon2.Assign_State(currentFood.ingredients[1].conditionDatas);
     }
 
-    //
     private void IngredientBubble_UpdatePosition()
     {
         ItemSlot_Cursor cursor = _controller.cursor;

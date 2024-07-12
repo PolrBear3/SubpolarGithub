@@ -124,28 +124,37 @@ public class OrderStand : MonoBehaviour, IInteractable
             _timer.Run_Time();
             _timer.Toggle_Transparency(false);
 
+            // order close
             Main_Controller.OrderOpen_Toggle(false);
             _orderOpen = false;
 
+            // subscription update
             GlobalTime_Controller.TimeTik_Update -= TimeTik_Attract;
             dialog.Update_Dialog(1);
 
+            //
+            SpriteRenderer location = _stationController.mainController.currentLocation.roamArea;
+
+            // waiting npc update
             for (int i = 0; i < _waitingNPCs.Count; i++)
             {
                 _waitingNPCs[i].timer.Toggle_Transparency(true);
 
                 // set time limit current time to 0 to activate TimeLimit_Over() from npc interaction
                 _waitingNPCs[i].timer.Update_CurrentTime(-(int)_waitingNPCs[i].timer.currentTime);
+
+                // reset all npc roam area (just in case for if not updating on order close)
+                _waitingNPCs[i].movement.Free_Roam(location);
             }
 
-            // reset waiting npc list
+            //
             _waitingNPCs.Clear();
         }
 
         // sprite update
         _spriteRenderer.sprite = Station_Sprite();
 
-        // reset action
+        //
         UnInteract();
     }
 

@@ -182,7 +182,7 @@ public class Serve_Table : Table, IInteractable
     }
     private IEnumerator Check_FoodServe_Coroutine()
     {
-        while (_currentNPC.interaction.servedFoodData == null) yield return null;
+        while (_currentNPC != null && _currentNPC.interaction.servedFoodData == null) yield return null;
 
         Find_AttractedNPC();
     }
@@ -263,7 +263,7 @@ public class Serve_Table : Table, IInteractable
         }
 
         // npc returns to current location roam area
-        _currentNPC.movement.Free_Roam(locationRoamArea, _currentNPC.interaction.Random_RoamDelayTime());
+        _currentNPC.movement.Free_Roam(locationRoamArea);
 
         // reset
         _currentNPC = null;

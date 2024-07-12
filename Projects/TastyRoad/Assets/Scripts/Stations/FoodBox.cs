@@ -73,6 +73,9 @@ public class FoodBox : MonoBehaviour, IInteractable
         // decrease one amount
         _controller.Food_Icon().currentData.Update_Amount(-1);
 
+        // sound
+        Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+
         // if has condition, transfer condition as well
         if (_controller.Food_Icon().currentData.conditionDatas.Count <= 0) return;
 
@@ -90,6 +93,9 @@ public class FoodBox : MonoBehaviour, IInteractable
 
         main.UnTrack_CurrentStation(_controller);
         main.UnClaim_Position(transform.position);
+
+        // sound
+        //
 
         Destroy(gameObject);
     }

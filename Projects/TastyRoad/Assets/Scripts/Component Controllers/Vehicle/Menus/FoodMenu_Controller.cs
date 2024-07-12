@@ -145,6 +145,9 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
             currentSlots[i].Assign_Item(food);
 
+            // add ingredients needed food to archive
+            _controller.archiveMenu.AddFood(food);
+
             if (leftOver <= 0)
             {
                 currentSlots[i].Update_Amount(amount);

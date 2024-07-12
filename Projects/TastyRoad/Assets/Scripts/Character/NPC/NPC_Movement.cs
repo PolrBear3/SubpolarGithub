@@ -59,6 +59,11 @@ public class NPC_Movement : MonoBehaviour
         else return 1f;
     }
 
+    public float Random_IntervalTime()
+    {
+        return Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
+    }
+
 
     // Check
     public bool Is_Moving()
@@ -137,6 +142,10 @@ public class NPC_Movement : MonoBehaviour
     /// <summary>
     /// Updates and moves to a random target position inside roam area on every interval time
     /// </summary>
+    public void Free_Roam(SpriteRenderer roamArea)
+    {
+        Free_Roam(roamArea, Random_IntervalTime());
+    }
     public void Free_Roam(SpriteRenderer roamArea, float startDelayTime)
     {
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);

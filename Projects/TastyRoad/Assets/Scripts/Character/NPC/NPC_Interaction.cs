@@ -23,8 +23,6 @@ public class NPC_Interaction : MonoBehaviour
     [SerializeField] private float _animTransitionTime;
     public float animTransitionTime => _animTransitionTime;
 
-    [SerializeField] private Vector2 roamDelayTime;
-
     [SerializeField] private int _defaultTimeLimit;
 
 
@@ -96,13 +94,6 @@ public class NPC_Interaction : MonoBehaviour
     }
 
 
-    // Gets
-    public float Random_RoamDelayTime()
-    {
-        return Random.Range(roamDelayTime.x, roamDelayTime.y);
-    }
-
-
     // Stop and Face Player if Interacted
     private void Interact_FacePlayer()
     {
@@ -115,11 +106,11 @@ public class NPC_Interaction : MonoBehaviour
 
         if (movement.isLeaving == true)
         {
-            movement.Leave(Random.Range(roamDelayTime.x, roamDelayTime.y));
+            movement.Leave(movement.Random_IntervalTime());
         }
         else
         {
-            movement.Free_Roam(movement.currentRoamArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
+            movement.Free_Roam(movement.currentRoamArea, movement.Random_IntervalTime());
         }
     }
 
@@ -234,7 +225,7 @@ public class NPC_Interaction : MonoBehaviour
         SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
         NPC_Movement move = _controller.movement;
         move.Stop_FreeRoam();
-        move.Free_Roam(currentLocation, Random.Range(roamDelayTime.x, roamDelayTime.y));
+        move.Free_Roam(currentLocation);
     }
 
 
@@ -374,7 +365,6 @@ public class NPC_Interaction : MonoBehaviour
     }
     private IEnumerator Eat_Animation_Coroutine()
     {
-        Detection_Controller detection = _controller.interactable.detection;
         NPC_Movement movement = _controller.movement;
         Food_ScrObj servedFood = _controller.foodIcon.currentData.foodScrObj;
 
@@ -393,18 +383,22 @@ public class NPC_Interaction : MonoBehaviour
 
         // eat food sprite
         _eatAnimationSR.sprite = servedFood.eatSprite;
+        // sound
+        Audio_Controller.instance.Play_OneShot("FoodInteract_eat", transform.position);
 
         // wait
         yield return new WaitForSeconds(animTransitionTime);
 
         // no sprite
         _eatAnimationSR.sprite = null;
+        // sound
+        Audio_Controller.instance.Play_OneShot("FoodInteract_eat", transform.position);
 
         // wait
         yield return new WaitForSeconds(animTransitionTime);
 
         // activate free roam
-        movement.Free_Roam(currentArea, Random.Range(roamDelayTime.x, roamDelayTime.y));
+        movement.Free_Roam(currentArea);
 
         // unlock interaction
         _controller.interactable.LockInteract(false);
@@ -476,6 +470,6 @@ public class NPC_Interaction : MonoBehaviour
         SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
 
         move.Update_RoamArea(currentLocation);
-        move.Leave(Random.Range(roamDelayTime.x, roamDelayTime.y));
+        move.Leave(move.Random_IntervalTime());
     }
 }

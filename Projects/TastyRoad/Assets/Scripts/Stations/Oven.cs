@@ -139,6 +139,9 @@ public class Oven : MonoBehaviour, IInteractable
         // show table food data
         _controller.Food_Icon().Show_Icon();
         _controller.Food_Icon().Show_Condition();
+
+        // sound
+        Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
     }
 
 

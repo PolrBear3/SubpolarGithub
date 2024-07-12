@@ -113,8 +113,9 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.Food_Icon().Show_Icon();
         _stationController.Food_Icon().Show_Condition();
 
-        // save to archive
+        // save to archive and ingredient
         _stationController.mainController.AddFood_toArhive(cookedFood);
+        _stationController.mainController.currentVehicle.menu.archiveMenu.UnLock_Ingredient(cookedFood);
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_merge", transform.position);

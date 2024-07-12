@@ -84,6 +84,9 @@ public class Stack_Table : Table, IInteractable
             playerIcon.Show_Icon();
             playerIcon.Show_Condition();
 
+            // sound
+            Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+
             return;
         }
 
@@ -100,11 +103,7 @@ public class Stack_Table : Table, IInteractable
 
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
-        if (tableIcon.currentData.currentAmount >= 6)
-        {
-            // tableIcon.Show_AmountBar();
-            return;
-        }
+        if (tableIcon.currentData.currentAmount >= 6) return;
 
         // stack
         tableData.Update_Amount(1);
@@ -112,5 +111,8 @@ public class Stack_Table : Table, IInteractable
 
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
+
+        // sound
+        Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
     }
 }
