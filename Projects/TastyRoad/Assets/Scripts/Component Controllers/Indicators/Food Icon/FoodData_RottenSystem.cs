@@ -19,12 +19,12 @@ public class FoodData_RottenSystem : MonoBehaviour
 
     private void Start()
     {
-        _foodIcon.TimeTikEvent += Decay_TikTimeUpdate;
+        
     }
 
     private void OnDestroy()
     {
-        _foodIcon.TimeTikEvent -= Decay_TikTimeUpdate;
+        
     }
 
 

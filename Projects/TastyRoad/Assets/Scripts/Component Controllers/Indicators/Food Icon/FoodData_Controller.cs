@@ -53,7 +53,7 @@ public class FoodData_Controller : MonoBehaviour
 
     private void OnDestroy()
     {
-        GlobalTime_Controller.TimeTik_Update -= Invoke_TimeTikEvent;
+        GlobalTime_Controller.TimeTik_Update -= TimeTik_Update;
     }
 
 
@@ -66,7 +66,7 @@ public class FoodData_Controller : MonoBehaviour
             _currentData = null;
             _hasFood = false;
 
-            GlobalTime_Controller.TimeTik_Update -= Invoke_TimeTikEvent;
+            GlobalTime_Controller.TimeTik_Update -= TimeTik_Update;
 
             return;
         }
@@ -75,6 +75,7 @@ public class FoodData_Controller : MonoBehaviour
         if (hasFood == true && data.foodScrObj == _currentData.foodScrObj)
         {
             _currentData.Update_Amount(data.currentAmount);
+
             return;
         }
 
@@ -82,7 +83,7 @@ public class FoodData_Controller : MonoBehaviour
         _currentData = new FoodData(data);
         _hasFood = true;
 
-        GlobalTime_Controller.TimeTik_Update += Invoke_TimeTikEvent;
+        GlobalTime_Controller.TimeTik_Update += TimeTik_Update;
     }
 
     public void Swap_Data(FoodData_Controller otherController)
@@ -183,6 +184,15 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
+    // Time Tik
+    private void TimeTik_Update()
+    {
+        TimeTikEvent?.Invoke();
+
+        _currentData.Update_TikCount(1);
+    }
+
+
     // Food Condition
     public void Show_Condition()
     {
@@ -214,12 +224,5 @@ public class FoodData_Controller : MonoBehaviour
             return _conditionSprites[i];
         }
         return null;
-    }
-
-
-    // Time Tik Event
-    private void Invoke_TimeTikEvent()
-    {
-        TimeTikEvent?.Invoke();
     }
 }

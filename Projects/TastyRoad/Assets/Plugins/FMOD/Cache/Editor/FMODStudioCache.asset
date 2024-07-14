@@ -42,11 +42,39 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638564913159524560
+  lastModified: 638561369278227295
   FileSizes:
   - Name: Desktop
-    Value: 9952
+    Value: 10176
   Exists: 1
+--- !u!114 &-4154352481743933459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Station SFX/Oven_heat
+  m_EditorClassIdentifier: 
+  Path: event:/Station SFX/Oven_heat
+  Guid:
+    Data1: -2013507183
+    Data2: 1322177193
+    Data3: -344410724
+    Data4: 1782283318
+  Banks:
+  - {fileID: -5831155940130558466}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 5457084416174898779}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 296
 --- !u!114 &-4010477259269481693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,38 +117,11 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638563799709566391
+  lastModified: 638561369277898231
   FileSizes:
   - Name: Desktop
-    Value: 9408
+    Value: 7680
   Exists: 1
---- !u!114 &-3727272848604454080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/Oven_switch
-  m_EditorClassIdentifier: 
-  Path: event:/Station SFX/Oven_switch
-  Guid:
-    Data1: -405792680
-    Data2: 1241036917
-    Data3: 808444331
-    Data4: -2073641631
-  Banks:
-  - {fileID: -5831155940130558466}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-2088351255270994832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,14 +170,14 @@ MonoBehaviour:
   - {fileID: -4010477259269481693}
   - {fileID: -2088351255270994832}
   - {fileID: -7366365442869570914}
-  - {fileID: 5696702888782777593}
-  - {fileID: -3727272848604454080}
+  - {fileID: 4710736687227284282}
+  - {fileID: -4154352481743933459}
   EditorParameters: []
   MasterBanks:
   - {fileID: 3878220415652670247}
   StringsBanks:
   - {fileID: 6601575054717938182}
-  cacheTime: 638564913159524560
+  cacheTime: 638561369278227295
   cacheVersion: 131618
 --- !u!114 &3878220415652670247
 MonoBehaviour:
@@ -193,12 +194,12 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638564911307315534
+  lastModified: 638561369275515784
   FileSizes:
   - Name: Desktop
     Value: 1036
   Exists: 1
---- !u!114 &5696702888782777593
+--- !u!114 &4710736687227284282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,14 +209,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/FoodInteract_eat
+  m_Name: event:/Basic SFX/FoodInteract_swap1
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/FoodInteract_eat
+  Path: event:/Basic SFX/FoodInteract_swap1
   Guid:
-    Data1: 2088776602
-    Data2: 1222638691
-    Data3: -637841019
-    Data4: 1565476813
+    Data1: 160023467
+    Data2: 1289084721
+    Data3: -2021319020
+    Data4: -227617006
   Banks:
   - {fileID: -3891778134319067157}
   IsStream: 0
@@ -225,6 +226,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &5457084416174898779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Oven_heat/Value_intensity
+  m_EditorClassIdentifier: 
+  Name: Value_intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1104856012
+    data2: 3748696620
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &6601575054717938182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,8 +265,8 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638564911307330378
+  lastModified: 638561369275529719
   FileSizes:
   - Name: Desktop
-    Value: 1084
+    Value: 1150
   Exists: 1

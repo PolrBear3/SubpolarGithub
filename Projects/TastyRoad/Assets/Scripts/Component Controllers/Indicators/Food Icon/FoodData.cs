@@ -34,6 +34,9 @@ public class FoodData
     [ES3Serializable] private int _currentAmount;
     public int currentAmount => _currentAmount;
 
+    [SerializeField] [ES3Serializable] private int _tikCount;
+    public int tikCount => _tikCount;
+
     [SerializeField] [ES3Serializable] private List<FoodCondition_Data> _conditionDatas;
     public List<FoodCondition_Data> conditionDatas => _conditionDatas;
 
@@ -43,6 +46,7 @@ public class FoodData
     {
         _foodScrObj = data.foodScrObj;
         _currentAmount = data.currentAmount;
+        _tikCount = data.tikCount;
         _conditionDatas = data.conditionDatas;
     }
 
@@ -50,11 +54,12 @@ public class FoodData
     {
         _foodScrObj = food;
         _currentAmount = 1;
+        _tikCount = 0;
         _conditionDatas = new();
     }
 
 
-    // Functions
+    // Amount
     public void Set_Amount(int setAmount)
     {
         _currentAmount = setAmount;
@@ -66,6 +71,23 @@ public class FoodData
     }
 
 
+    // TimTik Count
+    public void Set_TikCount(int setAmount)
+    {
+        _tikCount = setAmount;
+
+        if (_tikCount <= 0) _tikCount = 0;
+    }
+
+    public void Update_TikCount(int updateAmount)
+    {
+        _tikCount += updateAmount;
+
+        if (_tikCount <= 0) _tikCount = 0;
+    }
+
+
+    // Condition
     public void Set_Condition(List<FoodCondition_Data> conditionDatas)
     {
         if (conditionDatas.Count <= 0) return;
