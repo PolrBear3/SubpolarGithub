@@ -42,10 +42,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638563799709712026
+  lastModified: 638564913159524560
   FileSizes:
   - Name: Desktop
-    Value: 6720
+    Value: 9952
   Exists: 1
 --- !u!114 &-4010477259269481693
 MonoBehaviour:
@@ -94,6 +94,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 9408
   Exists: 1
+--- !u!114 &-3727272848604454080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Station SFX/Oven_switch
+  m_EditorClassIdentifier: 
+  Path: event:/Station SFX/Oven_switch
+  Guid:
+    Data1: -405792680
+    Data2: 1241036917
+    Data3: 808444331
+    Data4: -2073641631
+  Banks:
+  - {fileID: -5831155940130558466}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-2088351255270994832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,12 +170,13 @@ MonoBehaviour:
   - {fileID: -2088351255270994832}
   - {fileID: -7366365442869570914}
   - {fileID: 5696702888782777593}
+  - {fileID: -3727272848604454080}
   EditorParameters: []
   MasterBanks:
   - {fileID: 3878220415652670247}
   StringsBanks:
   - {fileID: 6601575054717938182}
-  cacheTime: 638563799709712026
+  cacheTime: 638564913159524560
   cacheVersion: 131618
 --- !u!114 &3878220415652670247
 MonoBehaviour:
@@ -165,7 +193,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638563799708374892
+  lastModified: 638564911307315534
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -212,8 +240,8 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638563799708388993
+  lastModified: 638564911307330378
   FileSizes:
   - Name: Desktop
-    Value: 1030
+    Value: 1084
   Exists: 1

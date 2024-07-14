@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class Oven : MonoBehaviour, IInteractable
 {
@@ -128,8 +129,12 @@ public class Oven : MonoBehaviour, IInteractable
     //
     public void Basic_SwapFood()
     {
-        // swap data with player
         FoodData_Controller playerFoodIcon = _controller.detection.player.foodIcon;
+
+        // check if food exist
+        if (_controller.Food_Icon().hasFood == false && playerFoodIcon.hasFood == false) return;
+
+        // swap data with player
         _controller.Food_Icon().Swap_Data(playerFoodIcon);
 
         // show player food data
@@ -142,6 +147,7 @@ public class Oven : MonoBehaviour, IInteractable
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+        Audio_Controller.instance.Play_OneShot("Oven_switch", transform.position);
     }
 
 

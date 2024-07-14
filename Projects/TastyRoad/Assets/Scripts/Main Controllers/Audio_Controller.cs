@@ -132,6 +132,10 @@ public class Audio_Controller : MonoBehaviour
     {
         EventInstance(currentPrefab).setParameterByName(parameterName, setValue);
     }
+    public void Set_EventInstance_Parameter(GameObject currentPrefab, string parameterName, string label)
+    {
+        EventInstance(currentPrefab).setParameterByNameWithLabel(parameterName, label);
+    }
 
 
     // Event Emitter

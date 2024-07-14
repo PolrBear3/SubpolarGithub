@@ -72,6 +72,29 @@ public class NPC_Movement : MonoBehaviour
         else return false;
     }
 
+    /// <returns>
+    /// true if there are no stations on straight direction to _targetPosition, false if it does
+    /// </returns>
+    private bool Is_PathClear()
+    {
+        Vector2 direction = (_targetPosition - (Vector2)transform.position).normalized;
+
+        float distance = Vector2.Distance(transform.position, _targetPosition);
+        int steps = Mathf.CeilToInt(distance / .5f);
+
+        for (int i = 0; i <= steps; i++)
+        {
+            Vector2 point = (Vector2)transform.position + direction * (i * .5f);
+
+            if (_controller.mainController.Is_StationArea(point))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public bool At_TargetPosition()
     {
         float threshold = 0.1f;
@@ -158,8 +181,9 @@ public class NPC_Movement : MonoBehaviour
     {
         yield return new WaitForSeconds(startDelayTime);
 
-        // start new random position
-        Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+        // update new random position
+        do Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+        while (Is_PathClear() == false);
 
         // repeat until free roam deactivates
         while (_roamActive == true)
@@ -174,7 +198,8 @@ public class NPC_Movement : MonoBehaviour
             yield return new WaitForSeconds(randIntervalTime);
 
             // update new random position
-            Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+            do Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+            while (Is_PathClear() == false);
         }
     }
 

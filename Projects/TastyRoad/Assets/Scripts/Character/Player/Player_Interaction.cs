@@ -42,7 +42,7 @@ public class Player_Interaction : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-
+        
     }
 
     public void UnInteract()

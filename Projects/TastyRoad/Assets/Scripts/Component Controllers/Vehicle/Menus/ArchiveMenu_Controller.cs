@@ -30,8 +30,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
 
-        _controller.OnSelect_Input += Select_Slot;
         _controller.OnCursor_Input += IngredientBubble_UpdatePosition;
+        _controller.OnSelect_Input += Select_Slot;
 
         _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
 
@@ -48,8 +48,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.MenuOpen_Event -= UpdateNew_ArchivedFoods;
         _controller.MenuOpen_Event -= Update_BookMarkFoods;
 
-        _controller.OnSelect_Input -= Select_Slot;
         _controller.OnCursor_Input -= IngredientBubble_UpdatePosition;
+        _controller.OnSelect_Input -= Select_Slot;
 
         _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
     }
@@ -243,6 +243,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         //
         ItemSlot currentSlot = cursor.currentSlot;
+        Data_Controller data = _controller.vehicleController.mainController.dataController;
+
+        // check if current food is cooked food
+        if (data.CookedFood(currentSlot.data.currentFood) == null) return;
 
         // toggle
         currentSlot.Toggle_BookMark(!cursorData.bookMarked);

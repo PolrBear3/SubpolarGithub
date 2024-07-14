@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 public class Station_Controller : MonoBehaviour
 {
     private PlayerInput _playerInput;
+
     private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer spriteRenderer => _spriteRenderer;
 
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
@@ -20,9 +22,16 @@ public class Station_Controller : MonoBehaviour
     private Animator _stationAnimator;
     public Animator stationAnmiator => _stationAnimator;
 
+
     [Header("")]
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
+
+    [Header("Start Setting for station area")]
+    [SerializeField] private bool _nonStationArea;
+
+    private bool _isStationArea;
+    public bool isStationArea => _isStationArea;
 
 
     public delegate void Action_Event();
@@ -43,6 +52,11 @@ public class Station_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
         if (gameObject.TryGetComponent(out Station_Movement movement)) { _movement = movement; }
         if (gameObject.TryGetComponent(out Animator stationAnimator)) { _stationAnimator = stationAnimator; }
+    }
+
+    private void Start()
+    {
+        StationArea_Toggle(_nonStationArea);
     }
 
 
@@ -120,6 +134,12 @@ public class Station_Controller : MonoBehaviour
     {
         _playerInput.enabled = isEnabled;
     }
+
+    public void StationArea_Toggle(bool toggleOn)
+    {
+        _isStationArea = toggleOn;
+    }
+
 
     public void Destroy_Station()
     {

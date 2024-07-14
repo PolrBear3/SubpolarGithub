@@ -112,6 +112,8 @@ public class OrderStand : MonoBehaviour, IInteractable
             Main_Controller.OrderOpen_Toggle(true);
             _orderOpen = true;
 
+            _stationController.StationArea_Toggle(false);
+
             GlobalTime_Controller.TimeTik_Update += TimeTik_Attract;
             dialog.Update_Dialog(0);
         }
@@ -127,6 +129,8 @@ public class OrderStand : MonoBehaviour, IInteractable
             // order close
             Main_Controller.OrderOpen_Toggle(false);
             _orderOpen = false;
+
+            _stationController.StationArea_Toggle(true);
 
             // subscription update
             GlobalTime_Controller.TimeTik_Update -= TimeTik_Attract;

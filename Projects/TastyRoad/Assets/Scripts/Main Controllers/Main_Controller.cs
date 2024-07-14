@@ -419,6 +419,26 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return destroyCount;
     }
 
+    public bool Is_StationArea(Vector2 areaPoint)
+    {
+        for (int i = 0; i < _currentStations.Count; i++)
+        {
+            // check if station is retrievable
+            if (_currentStations[i].movement == null) continue;
+
+            // check if station area is toggled on
+            if (_currentStations[i].isStationArea == true) continue;
+
+            // get station sprite render bound
+            Bounds stationArea = _currentStations[i].spriteRenderer.bounds;
+
+            // check if areaPoint is inside stationArea
+            if (stationArea.Contains(areaPoint)) return true;
+        }
+
+        return false;
+    }
+
     public Station_Controller Spawn_Station(Station_ScrObj stationScrObj, Vector2 spawnPosition)
     {
         GameObject spawnStation = Instantiate(stationScrObj.prefab, spawnPosition, Quaternion.identity);
