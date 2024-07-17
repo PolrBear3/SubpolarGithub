@@ -21,11 +21,16 @@ public class NPC_Movement : MonoBehaviour
     private SpriteRenderer _currentRoamArea;
     public SpriteRenderer currentRoamArea => _currentRoamArea;
 
+
     [Header("")]
     [SerializeField] private float _moveSpeed;
 
+    [Header("")]
     [SerializeField] private Vector2 _intervalTimeRange;
     public Vector2 intervalTimeRange => _intervalTimeRange;
+
+    [SerializeField] private int _pathFindCount;
+    public int pathFindCount => _pathFindCount;
 
 
     public delegate void Event();
@@ -182,8 +187,14 @@ public class NPC_Movement : MonoBehaviour
         yield return new WaitForSeconds(startDelayTime);
 
         // update new random position
-        do Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
-        while (Is_PathClear() == false);
+        int currentFindCount = _pathFindCount;
+
+        do
+        {
+            Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+            currentFindCount--;
+        }
+        while (Is_PathClear() == false && currentFindCount > 1);
 
         // repeat until free roam deactivates
         while (_roamActive == true)
@@ -198,8 +209,14 @@ public class NPC_Movement : MonoBehaviour
             yield return new WaitForSeconds(randIntervalTime);
 
             // update new random position
-            do Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
-            while (Is_PathClear() == false);
+            currentFindCount = _pathFindCount;
+
+            do
+            {
+                Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+                currentFindCount--;
+            }
+            while (Is_PathClear() == false && currentFindCount > 1);
         }
     }
 

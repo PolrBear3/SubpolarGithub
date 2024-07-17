@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7325306285980191583}
-  - component: {fileID: 6543745659871639232}
+  - component: {fileID: 5664077834325616251}
   m_Layer: 0
-  m_Name: Scrap Spawner
+  m_Name: Prefab Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6543745659871639232
+--- !u!114 &5664077834325616251
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,8 +41,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7398543223013236243}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34798bfb4361245618027f20ee48ed83, type: 3}
+  m_Script: {fileID: 11500000, guid: 6690383d12bb240eabb3a8cf2fd05e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scrapScrObj: {fileID: 11400000, guid: e40c6696d07554a4da102f46dcd59515, type: 2}
-  _spawnAmount: 0

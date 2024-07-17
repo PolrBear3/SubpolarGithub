@@ -15,7 +15,6 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _amountText;
 
 
-
     [Header("")]
     [SerializeField] private Transform _cursorPoint;
     public Transform cursorPoint => _cursorPoint;
@@ -23,13 +22,16 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Image _bookmarkIcon;
 
 
+    [Header("")]
+    [SerializeField] private GameObject _bookmarkUnlockedIcon;
+    [SerializeField] private GameObject _ingredientUnlockedIcon;
+
 
     [Header("")]
     [SerializeField] private GameObject _conditionIndicator;
 
     [SerializeField] private ConditionSprites[] _conditionSprites;
     [SerializeField] private Image[] _conditionBoxes;
-
 
 
     // UnityEngine
@@ -43,8 +45,7 @@ public class ItemSlot : MonoBehaviour
     }
 
 
-
-    // Mini Icon control
+    // Mini Icon Control
     public void Toggle_BookMark()
     {
         if (data.hasItem == false) return;
@@ -77,13 +78,19 @@ public class ItemSlot : MonoBehaviour
     }
 
 
+    // Unlock Icon Control
+    public void Toggle_Unlocks(bool bookMark, bool ingredient)
+    {
+        _bookmarkUnlockedIcon.SetActive(bookMark);
+        _ingredientUnlockedIcon.SetActive(ingredient);
+    }
+
 
     // Assign Data
     public void Assign_GridNum(Vector2 setNum)
     {
         _gridNum = setNum;
     }
-
 
 
     //
@@ -94,6 +101,8 @@ public class ItemSlot : MonoBehaviour
         Toggle_BookMark(false);
         data.hasItem = false;
 
+        Toggle_Unlocks(false, false);
+
         data.currentFood = null;
         data.currentStation = null;
 
@@ -103,7 +112,6 @@ public class ItemSlot : MonoBehaviour
         data.currentAmount = 0;
         _amountText.color = Color.clear;
     }
-
 
 
     // sprite update included
@@ -141,7 +149,6 @@ public class ItemSlot : MonoBehaviour
 
         Empty_ItemBox();
     }
-
 
 
     // text update included
@@ -183,7 +190,6 @@ public class ItemSlot : MonoBehaviour
         _amountText.text = data.currentAmount.ToString();
         _amountText.color = Color.black;
     }
-
 
 
     // Condition Indication Control

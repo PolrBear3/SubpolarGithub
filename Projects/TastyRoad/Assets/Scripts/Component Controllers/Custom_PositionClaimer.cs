@@ -12,7 +12,7 @@ public class Custom_PositionClaimer : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        _main = FindObjectOfType<Main_Controller>();
+        _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
 
         Claim_CustomPositions();
     }

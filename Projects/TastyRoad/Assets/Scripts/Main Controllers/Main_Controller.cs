@@ -7,6 +7,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Camera_Controller _cameraController;
     public Camera_Controller cameraController => _cameraController;
 
+
     [Header("")]
     [SerializeField] private Data_Controller _dataController;
     public Data_Controller dataController => _dataController;
@@ -26,9 +27,13 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private SubLocations_Controller _subLocation;
     public SubLocations_Controller subLocation => _subLocation;
 
+
     [Header("")]
     [SerializeField] private Transform _locationFile;
+    public Transform locationFile => _locationFile;
+
     [SerializeField] private Transform _characterFile;
+
     [SerializeField] private Transform _stationFile;
 
 
@@ -52,6 +57,13 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Application.targetFrameRate = 60;
+
+        TestButton1Event += TestButton_Subscription;
+    }
+
+    private void OnDestroy()
+    {
+        TestButton1Event -= TestButton_Subscription;
     }
 
 
@@ -83,6 +95,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Test Buttons
+    private void TestButton_Subscription()
+    {
+        _currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(63578), 1);
+    }
+
     public void TestButton1()
     {
         TestButton1Event?.Invoke();
@@ -177,6 +194,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     // Position Control
     private List<Vector2> _claimedPositions = new();
+    public List<Vector2> claimedPositions => _claimedPositions;
 
     public void ResetAll_ClaimedPositions()
     {
@@ -532,7 +550,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
     }
 
-    public void AddFood_toArhive(Food_ScrObj food)
+    public void AddFood_toArchive(Food_ScrObj food)
     {
         if (food == null) return;
 

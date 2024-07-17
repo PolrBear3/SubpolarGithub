@@ -150,8 +150,8 @@ public class FoodStock : MonoBehaviour
         _interactable.mainController.Remove_GoldenNugget(_currentFood.price);
 
         // not enough slots
-        FoodMenu_Controller menu = _interactable.mainController.currentVehicle.menu.foodMenu;
-        if (menu.Add_FoodItem(_currentFood, 1) > 0)
+        FoodMenu_Controller foodMenu = _interactable.mainController.currentVehicle.menu.foodMenu;
+        if (foodMenu.Add_FoodItem(_currentFood, 1) > 0)
         {
             _interactable.UnInteract();
 
@@ -166,6 +166,10 @@ public class FoodStock : MonoBehaviour
 
         //
         Update_Amount(-1);
+
+        // archive menu unlocks
+        ArchiveMenu_Controller archiveMenu = _interactable.mainController.currentVehicle.menu.archiveMenu;
+        archiveMenu.UnLock_BookMark(_currentFood);
 
         // coin launch animation
         Vector2 launchDirection = _interactable.detection.player.transform.position - transform.position;

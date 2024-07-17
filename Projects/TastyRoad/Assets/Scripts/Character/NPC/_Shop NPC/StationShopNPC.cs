@@ -163,6 +163,8 @@ public class StationShopNPC : MonoBehaviour
     // Merge Station Control
     private void Merge_BookMarkedStations()
     {
+        if (_npcController.movement.roamActive == false) return;
+
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // check if _mergeStationStock is empty

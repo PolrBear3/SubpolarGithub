@@ -387,6 +387,7 @@ MonoBehaviour:
   _controller: {fileID: 9094981842974887859}
   _moveSpeed: 5
   _intervalTimeRange: {x: 5, y: 10}
+  _pathFindCount: 10
 --- !u!114 &1602899645111724261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +406,6 @@ MonoBehaviour:
   _eatAnimationSR: {fileID: 532419520745837338}
   _goldCoinSR: {fileID: 1526801472330999249}
   _animTransitionTime: 1
-  roamDelayTime: {x: 2, y: 4}
   _defaultTimeLimit: 5
 --- !u!1 &9180975415276054669
 GameObject:

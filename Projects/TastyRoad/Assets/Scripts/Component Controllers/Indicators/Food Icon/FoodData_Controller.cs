@@ -187,9 +187,9 @@ public class FoodData_Controller : MonoBehaviour
     // Time Tik
     private void TimeTik_Update()
     {
-        TimeTikEvent?.Invoke();
-
         _currentData.Update_TikCount(1);
+
+        TimeTikEvent?.Invoke();
     }
 
 

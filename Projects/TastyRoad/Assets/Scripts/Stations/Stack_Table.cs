@@ -26,7 +26,6 @@ public class Stack_Table : Table, IInteractable
     }
 
 
-
     // IInteractable
     public new void Interact()
     {

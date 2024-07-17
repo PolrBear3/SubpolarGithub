@@ -119,7 +119,14 @@ public class FoodData
     {
         _conditionDatas.Clear();
     }
-
+    public void Clear_Condition(FoodCondition_Type targetCondition)
+    {
+        for (int i = 0; i < _conditionDatas.Count; i++)
+        {
+            if (_conditionDatas[i].type != targetCondition) continue;
+            _conditionDatas.RemoveAt(i);
+        }
+    }
 
     public int Conditions_MatchCount(List<FoodCondition_Data> conditionsToCompare)
     {
