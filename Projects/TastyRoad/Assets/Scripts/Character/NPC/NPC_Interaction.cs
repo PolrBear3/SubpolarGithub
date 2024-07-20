@@ -97,8 +97,6 @@ public class NPC_Interaction : MonoBehaviour
     // Stop and Face Player if Interacted
     private void Interact_FacePlayer()
     {
-        if (_controller.interactable.bubble.bubbleOn == true) return;
-
         _controller.basicAnim.Flip_Sprite(_controller.interactable.detection.player.gameObject);
 
         NPC_Movement movement = _controller.movement;

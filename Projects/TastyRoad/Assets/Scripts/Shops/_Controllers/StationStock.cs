@@ -11,7 +11,8 @@ public class StationStock : MonoBehaviour
     [SerializeField] private ActionBubble_Interactable _interactable;
     [SerializeField] private CoinLauncher _launcher;
 
-    private Station_ScrObj _station;
+    private Station_ScrObj _currentStation;
+    public Station_ScrObj currentStation => _currentStation;
 
     private int _price;
     public int price => _price;
@@ -50,26 +51,34 @@ public class StationStock : MonoBehaviour
 
      
     // Set
-    private void Set_Station()
+    private void Set_Data()
     {
-        // get random station
-        Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj();
+        if (_currentStation == null)
+        {
+            // get random station
+            Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj();
 
-        // set station scrobj
-        _station = randStation;
+            // set station scrobj
+            _currentStation = randStation;
+        }
 
         // set initial price
-        _price = _station.price;
-
-        // set sprite
-        _sr.sprite = _station.sprite;
-        _statusSign.sprite = _sellSign;
+        _price = _currentStation.price;
     }
+    public void Set_Data(Station_ScrObj setStation)
+    {
+        // set station scrobj
+        _currentStation = setStation;
+
+        // set initial price
+        _price = _currentStation.price;
+    }
+
 
     private void Set_Dialog()
     {
-        Sprite stationIcon = _station.dialogIcon;
-        string dialogInfo = _station.price + " coin\nto purchase";
+        Sprite stationIcon = _currentStation.dialogIcon;
+        string dialogInfo = _currentStation.price + " coin\nto purchase";
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
     }
@@ -100,17 +109,17 @@ public class StationStock : MonoBehaviour
         // check if station menu slot is available
         if (stationMenu.AvailableSlots_Count() <= 0)
         {
-            DialogData data = new(_station.dialogIcon, "Not enough space in station storage!");
+            DialogData data = new(_currentStation.dialogIcon, "Not enough space in station storage!");
             dialog.Update_Dialog(data);
 
             return;
         }
 
         // add to vehicle
-        stationMenu.Add_StationItem(_station, 1);
+        stationMenu.Add_StationItem(_currentStation, 1);
 
         // station coin launch animation
-        _launcher.Parabola_CoinLaunch(_station.miniSprite, _interactable.detection.player.transform.position - transform.position);
+        _launcher.Parabola_CoinLaunch(_currentStation.miniSprite, _interactable.detection.player.transform.position - transform.position);
 
         // 
         Update_toSold();
@@ -120,6 +129,8 @@ public class StationStock : MonoBehaviour
     {
         // set data
         _sold = true;
+        _currentStation = null;
+
         _interactable.Action1Event -= Purchase;
 
         // set sprite
@@ -137,7 +148,7 @@ public class StationStock : MonoBehaviour
     {
         if (_sold == false) return;
 
-        Set_Station();
+        Set_Data();
 
         // set data
         _sold = false;
@@ -145,6 +156,10 @@ public class StationStock : MonoBehaviour
 
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;
+
+        // set sprite
+        _sr.sprite = _currentStation.sprite;
+        _statusSign.sprite = _sellSign;
 
         //
         _interactable.LockInteract(false);

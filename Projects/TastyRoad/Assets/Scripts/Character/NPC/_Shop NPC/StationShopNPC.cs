@@ -18,6 +18,9 @@ public class StationShopNPC : MonoBehaviour
     [Header("")]
     [SerializeField] private SpriteRenderer _carryBox;
 
+    [Header("")]
+    [SerializeField] [Range(0, 5)] private int _duplicateAmount;
+
     private Coroutine _restockCoroutine;
 
 
@@ -95,17 +98,46 @@ public class StationShopNPC : MonoBehaviour
         return true;
     }
 
+
+    private bool DuplicateAmount_Stocked(Station_ScrObj checkStation)
+    {
+        int checkCount = 0;
+
+        for (int i = 0; i < _stationStocks.Length; i++)
+        {
+            if (_stationStocks[i].sold == true) continue; 
+            if (_stationStocks[i].currentStation != checkStation) continue;
+            checkCount++;
+        }
+
+        if (_duplicateAmount <= 0) _duplicateAmount = 1;
+
+        if (checkCount >= _duplicateAmount) return true;
+
+        return false;
+    }
+
+    private Station_ScrObj NonDuplicate_Station()
+    {
+        Data_Controller data = _interactable.mainController.dataController;
+        Station_ScrObj station = data.Station_ScrObj();
+
+        do
+        {
+            station = data.Station_ScrObj();
+        }
+        while (DuplicateAmount_Stocked(station));
+
+        return station;
+    }
+
+
+
     private void Restock_StationStocks()
     {
+        if (_restockCoroutine != null) return;
+
         if (StationStocks_Full()) return;
-
-        if (_npcController.movement.roamActive == false) return;
-
-        if (_restockCoroutine != null)
-        {
-            StopCoroutine(_restockCoroutine);
-            _restockCoroutine = null;
-        }
 
         _restockCoroutine = StartCoroutine(Restock_StationStocks_Coroutine());
     }
@@ -145,6 +177,9 @@ public class StationShopNPC : MonoBehaviour
             // wait until destination reach
             while (move.At_TargetPosition() == false) yield return null;
 
+            // set station
+            _stationStocks[i].Set_Data(NonDuplicate_Station());
+
             // restock station stock
             _stationStocks[i].Restock();
 
@@ -157,13 +192,16 @@ public class StationShopNPC : MonoBehaviour
 
         // return to free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
+
+        //
+        _restockCoroutine = null;
     }
 
 
     // Merge Station Control
     private void Merge_BookMarkedStations()
     {
-        if (_npcController.movement.roamActive == false) return;
+        if (_restockCoroutine != null) return;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -195,13 +233,6 @@ public class StationShopNPC : MonoBehaviour
             bookMarkedSlots[i].Empty_ItemBox();
         }
 
-        //
-        if (_restockCoroutine != null)
-        {
-            StopCoroutine(_restockCoroutine);
-            _restockCoroutine = null;
-        }
-
         _restockCoroutine = StartCoroutine(Merge_BookMarkedStations_Coroutine());
     }
     private IEnumerator Merge_BookMarkedStations_Coroutine()
@@ -231,5 +262,11 @@ public class StationShopNPC : MonoBehaviour
 
         // interact unlock
         _interactable.LockInteract(false);
+
+        // return to free roam
+        _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
+
+        //
+        _restockCoroutine = null;
     }
 }

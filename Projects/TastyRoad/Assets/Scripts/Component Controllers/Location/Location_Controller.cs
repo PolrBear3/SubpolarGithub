@@ -15,10 +15,6 @@ public class Location_Controller : MonoBehaviour
     public LocationData currentData => _currentData;
 
     [Header("")]
-    [SerializeField] private Sprite _locationIcon;
-    public Sprite locationIcon => _locationIcon;
-
-    [Header("")]
     [SerializeField] private SpriteRenderer _environment;
     public SpriteRenderer environment => _environment;
 
@@ -28,7 +24,7 @@ public class Location_Controller : MonoBehaviour
     private MaxSpawn_TimePoint _currentTimePoint;
 
     [Header("")]
-    [SerializeField] private List<GameObject> locationSetEvents = new();
+    [SerializeField] private GameObject[] _locationSetEvents;
 
 
     // UnityEngine
@@ -65,13 +61,15 @@ public class Location_Controller : MonoBehaviour
 
     // Gets
     /// <returns>
-    /// True if checkPosition is in restricted range, False if not
+    /// True if checkPosition is in restricted range and position claimed, False if not
     /// </returns>
     public bool Restricted_Position(Vector2 checkPosition)
     {
         LocationData d = _currentData;
 
         bool restricted = false;
+
+        if (_mainController.Position_Claimed(checkPosition)) restricted = true;
 
         float xValue = checkPosition.x;
         if (xValue < d.spawnRangeX.x || xValue > d.spawnRangeX.y) restricted = true;
@@ -82,26 +80,10 @@ public class Location_Controller : MonoBehaviour
         return restricted;
     }
 
-    /// <summary>
-    /// Excludes claimed positions and restricted positions
-    /// </summary>
-    /// <returns>
-    /// Random snap position of this location
-    /// </returns>
-    public Vector2 Location_Random_SnapPosition()
+    public Vector2 Random_SnapPosition()
     {
-        while (true)
-        {
-            Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_environment));
-            bool posAvailable = _mainController.Position_Claimed(randSnapPos) == false && Restricted_Position(randSnapPos) == false;
-
-            if (posAvailable)
-            {
-                return randSnapPos;
-            }
-
-            continue;
-        }
+        Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_environment));
+        return randSnapPos;
     }
 
 
@@ -232,16 +214,15 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-    // Location Control
     /// <summary>
-    /// Activate all IInteractables in ingameEvents gameobject list
+    /// New Location Set Starting Events Control
     /// </summary>
-    public void Activate_LocationSet_Events()
+    public void Activate_NewSetEvents()
     {
-        for (int i = 0; i < locationSetEvents.Count; i++)
+        for (int i = 0; i < _locationSetEvents.Length; i++)
         {
-            if (!locationSetEvents[i].TryGetComponent(out IInteractable ingameEvent)) continue;
-            ingameEvent.Interact();
+            if (_locationSetEvents[i].TryGetComponent(out IInteractable interactable) == false) continue;
+            interactable.Interact();
         }
     }
 }

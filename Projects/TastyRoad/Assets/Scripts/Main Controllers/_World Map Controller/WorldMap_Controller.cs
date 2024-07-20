@@ -29,6 +29,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private int _currentTileNum;
     private int _cursorTileNum;
 
+    private bool _isNewLocation;
+
 
     // UnityEngine
     private void Start()
@@ -41,14 +43,24 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             Location_Controller location = _mainController.Set_Location(loadScrObj.worldNum, loadScrObj.locationNum);
             _mainController.Track_CurrentLocaiton(location);
 
+            // check if a new location was set before scene load
+            if (_isNewLocation == true)
+            {
+                // activate location starting events
+                location.Activate_NewSetEvents();
+                _isNewLocation = false;
+            }
+
             return;
         }
 
         // set new game starting location
         _currentTileNum = _cursorTileNum;
-
         Set_RandomLocation();
-        _mainController.currentLocation.Activate_LocationSet_Events();
+
+        // activate location starting events
+        _mainController.currentLocation.Activate_NewSetEvents();
+        _isNewLocation = false;
     }
 
 
@@ -93,11 +105,13 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("WorldMap_Controller/_currentTileNum", _currentTileNum);
+        ES3.Save("WorldMap_Controller/_isNewLocation", _isNewLocation);
     }
 
     public void Load_Data()
     {
         _currentTileNum = ES3.Load("WorldMap_Controller/_currentTileNum", _currentTileNum);
+        _isNewLocation = ES3.Load("WorldMap_Controller/_isNewLocation", _isNewLocation);
     }
 
 
@@ -186,7 +200,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
         // set new location
         Set_RandomLocation(_tiles[_currentTileNum].worldNum);
-        _mainController.currentLocation.Activate_LocationSet_Events();
+        _isNewLocation = true;
 
         // reload game scene
         Main_Controller.gamePaused = false;

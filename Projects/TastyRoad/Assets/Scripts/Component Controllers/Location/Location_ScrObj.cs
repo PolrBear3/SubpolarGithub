@@ -10,5 +10,7 @@ public class Location_ScrObj : ScriptableObject
 
     public string locationNickName;
 
+    public Sprite locationIcon;
+
     public GameObject locationPrefab;
 }

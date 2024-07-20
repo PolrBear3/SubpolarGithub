@@ -36,6 +36,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private Transform _stationFile;
 
+    [SerializeField] private Transform _otherFile;
+    public Transform otherFile => _otherFile;
+
 
     public static bool gamePaused;
     public static bool orderOpen;
@@ -59,6 +62,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Application.targetFrameRate = 60;
 
         TestButton1Event += TestButton_Subscription;
+        TestButton_Subscription();
     }
 
     private void OnDestroy()
@@ -97,7 +101,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Test Buttons
     private void TestButton_Subscription()
     {
-        _currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(63578), 1);
+        //_currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(79025), 1);
     }
 
     public void TestButton1()

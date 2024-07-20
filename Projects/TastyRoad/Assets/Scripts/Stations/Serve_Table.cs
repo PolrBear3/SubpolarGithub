@@ -151,7 +151,7 @@ public class Serve_Table : Table, IInteractable
 
     private void FoodOrder_PreviewUpdate()
     {
-        if (_currentNPC == null)
+        if (Main_Controller.orderOpen == false || _currentNPC == null)
         {
             _foodOrderPreview.Set_CurrentData(null);
             _foodOrderPreview.Show_Icon();
@@ -182,7 +182,8 @@ public class Serve_Table : Table, IInteractable
     }
     private IEnumerator Check_FoodServe_Coroutine()
     {
-        while (_currentNPC != null && _currentNPC.interaction.servedFoodData == null) yield return null;
+        // current npc assigned, waiting for food order, time not ended
+        while (_currentNPC != null && _currentNPC.interaction.servedFoodData == null && _currentNPC.foodIcon.hasFood) yield return null;
 
         Find_AttractedNPC();
     }
@@ -250,7 +251,8 @@ public class Serve_Table : Table, IInteractable
 
     private void CloseOrder()
     {
-        if (Main_Controller.orderOpen == true) return;
+        FoodOrder_PreviewUpdate();
+
         if (_currentNPC == null) return;
 
         SpriteRenderer locationRoamArea = stationController.mainController.currentLocation.roamArea;
@@ -267,8 +269,5 @@ public class Serve_Table : Table, IInteractable
 
         // reset
         _currentNPC = null;
-
-        //
-        FoodOrder_PreviewUpdate();
     }
 }
