@@ -80,7 +80,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         for (int i = 0; i < loadSlots.Count; i++)
         {
-            _slotsController.itemSlots[i].data = loadSlots[i];
+            _slotsController.itemSlots[i].Assign_Data(loadSlots[i]);
         }
 
         // default slots amount
@@ -316,7 +316,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
 
         // toggle
-        currentSlot.Toggle_BookMark();
+        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
     }
 
     public List<ItemSlot_Data> BookMarked_SlotDatas()

@@ -6,7 +6,8 @@ using TMPro;
 
 public class ItemSlot : MonoBehaviour
 {
-    public ItemSlot_Data data;
+    private ItemSlot_Data _data;
+    public ItemSlot_Data data => _data;
 
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
@@ -25,6 +26,8 @@ public class ItemSlot : MonoBehaviour
     [Header("")]
     [SerializeField] private GameObject _bookmarkUnlockedIcon;
     [SerializeField] private GameObject _ingredientUnlockedIcon;
+
+    [SerializeField] [Range(0, 1)] private float _transparentValue;
 
 
     [Header("")]
@@ -46,21 +49,6 @@ public class ItemSlot : MonoBehaviour
 
 
     // Mini Icon Control
-    public void Toggle_BookMark()
-    {
-        if (data.hasItem == false) return;
-
-        if (data.bookMarked == false)
-        {
-            data.bookMarked = true;
-            _bookmarkIcon.color = Color.white;
-
-            return;
-        }
-
-        data.bookMarked = false;
-        _bookmarkIcon.color = Color.clear;
-    }
     public void Toggle_BookMark(bool toggleOn)
     {
         if (data.hasItem == false) return;
@@ -78,18 +66,34 @@ public class ItemSlot : MonoBehaviour
     }
 
 
-    // Unlock Icon Control
-    public void Toggle_Unlocks(bool bookMark, bool ingredient)
+    // Unlock Control
+    public void Toggle_Lock(bool isLock)
+    {
+        _data.isLocked = isLock;
+    }
+
+    /// <summary>
+    /// Micro bookmark and ingredient icons
+    /// </summary>
+    public void Toggle_Icons(bool bookMark, bool ingredient)
     {
         _bookmarkUnlockedIcon.SetActive(bookMark);
         _ingredientUnlockedIcon.SetActive(ingredient);
     }
 
 
-    // Assign Data
+    // Data
     public void Assign_GridNum(Vector2 setNum)
     {
         _gridNum = setNum;
+    }
+
+    public void Assign_Data(ItemSlot_Data data)
+    {
+        _data = data;
+
+        Toggle_BookMark(data.bookMarked);
+        Toggle_Lock(data.isLocked);
     }
 
 
@@ -97,11 +101,12 @@ public class ItemSlot : MonoBehaviour
     public void Empty_ItemBox()
     {
         data.bookMarked = false;
-
         Toggle_BookMark(false);
-        data.hasItem = false;
 
-        Toggle_Unlocks(false, false);
+        data.hasItem = false;
+        data.isLocked = false;
+
+        Toggle_Icons(false, false);
 
         data.currentFood = null;
         data.currentStation = null;
@@ -127,12 +132,15 @@ public class ItemSlot : MonoBehaviour
             _iconImage.color = Color.white;
             _iconImage.transform.localPosition = food.centerPosition * 100;
 
+            Toggle_BookMark(data.bookMarked);
+            Toggle_Lock(data.isLocked);
+
             return;
         }
 
         Empty_ItemBox();
     }
-    public void Assign_Item(Station_ScrObj station)
+    public ItemSlot Assign_Item(Station_ScrObj station)
     {
         if (station != null)
         {
@@ -144,10 +152,15 @@ public class ItemSlot : MonoBehaviour
             _iconImage.color = Color.white;
             _iconImage.transform.localPosition = station.centerPosition;
 
-            return;
+            Toggle_BookMark(data.bookMarked);
+            Toggle_Lock(data.isLocked);
+
+            return this;
         }
 
         Empty_ItemBox();
+
+        return this;
     }
 
 

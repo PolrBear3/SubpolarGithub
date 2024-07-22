@@ -34,6 +34,9 @@ public class ItemSlots_Controller : MonoBehaviour
 
             // add instantiated item slots to _itemSlots
             _itemSlots.Add(newSlot);
+
+            // set data
+            newSlot.Assign_Data(new());
         }
 
         Set_Slots_GridNum();

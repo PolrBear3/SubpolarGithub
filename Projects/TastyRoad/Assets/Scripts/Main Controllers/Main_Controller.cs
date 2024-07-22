@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -101,7 +102,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Test Buttons
     private void TestButton_Subscription()
     {
-        //_currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(79025), 1);
+        _currentVehicle.menu.archiveMenu.AddFood(_dataController.CookedFood(78327));
+        _currentVehicle.menu.archiveMenu.UnLock_BookMark(_dataController.CookedFood(78327));
+
+        _currentVehicle.menu.archiveMenu.AddFood(_dataController.CookedFood(14031));
+        _currentVehicle.menu.archiveMenu.UnLock_BookMark(_dataController.CookedFood(14031));
     }
 
     public void TestButton1()
@@ -159,6 +164,13 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Color color = sr.color;
         color.a = alpha;
         sr.color = color;
+    }
+
+    public static void Change_ImageAlpha(Image image, float alpha)
+    {
+        Color color = image.color;
+        color.a = alpha;
+        image.color = color;
     }
 
     /// <returns>

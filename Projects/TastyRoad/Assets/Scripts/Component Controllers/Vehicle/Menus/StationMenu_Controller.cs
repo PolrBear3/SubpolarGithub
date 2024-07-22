@@ -73,7 +73,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         for (int i = 0; i < loadSlots.Count; i++)
         {
-            _slotsController.itemSlots[i].data = loadSlots[i];
+            _slotsController.itemSlots[i].Assign_Data(loadSlots[i]);
         }
 
         // default slots amount
@@ -90,21 +90,46 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    /// <summary>
-    /// Render sprites or amounts according to slot's current loaded data
-    /// </summary>
-    private void Update_Slots_Data()
+    // Menu Control
+    public ItemSlot Add_StationItem(Station_ScrObj station, int amount)
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        int repeatAmount = amount;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
-            currentSlots[i].Assign_Item(currentSlots[i].data.currentStation);
+            if (currentSlots[i].data.hasItem == true) continue;
+
+            ItemSlot addSlot = currentSlots[i].Assign_Item(station);
+            repeatAmount--;
+
+            if (repeatAmount > 0) continue;
+            return addSlot;
+        }
+
+        return null;
+    }
+
+    public void Remove_StationItem(Station_ScrObj station, int amount)
+    {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        int repeatAmount = amount;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (station != currentSlots[i].data.currentStation) continue;
+
+            currentSlots[i].Empty_ItemBox();
+            repeatAmount--;
+
+            if (repeatAmount > 0) continue;
+            break;
         }
     }
 
 
-    // Check
+    // Slots Control
     public int AvailableSlots_Count()
     {
         int slotsCount = 0;
@@ -135,44 +160,21 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Menu Control
-    public void Add_StationItem(Station_ScrObj station, int amount)
+    /// <summary>
+    /// Render sprites or amounts according to slot's current loaded data
+    /// </summary>
+    private void Update_Slots_Data()
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
-        int repeatAmount = amount;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
-            if (currentSlots[i].data.hasItem == true) continue;
-
-            currentSlots[i].Assign_Item(station);
-            repeatAmount--;
-
-            if (repeatAmount > 0) continue;
-            break;
-        }
-    }
-
-    public void Remove_StationItem(Station_ScrObj station, int amount)
-    {
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
-        int repeatAmount = amount;
-
-        for (int i = 0; i < currentSlots.Count; i++)
-        {
-            if (currentSlots[i].data.hasItem == false) continue;
-            if (station != currentSlots[i].data.currentStation) continue;
-
-            currentSlots[i].Empty_ItemBox();
-            repeatAmount--;
-
-            if (repeatAmount > 0) continue;
-            break;
+            currentSlots[i].Assign_Item(currentSlots[i].data.currentStation);
         }
     }
 
 
-    // Slot and Cursor Control
+    // Cursor Control
     private void Select_Slot()
     {
         if (_interactionMode) return;
@@ -199,9 +201,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         ItemSlot_Cursor cursor = _controller.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
-        Station_ScrObj slotStation = currentSlot.data.currentStation;
 
+        ItemSlot_Data slotData = currentSlot.data;
+        Station_ScrObj slotStation = slotData.currentStation;
+
+        ItemSlot_Data currentSlotData = new(currentSlot.data);
         cursor.Assign_Item(slotStation);
+        cursor.Assign_Data(currentSlotData);
+
         currentSlot.Empty_ItemBox();
     }
 
@@ -211,7 +218,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (cursor.data.hasItem == false) return;
 
-        Add_StationItem(cursor.data.currentStation, 1);
+        ItemSlot_Data cursorData = new(cursor.data);
+        Add_StationItem(cursor.data.currentStation, 1).Assign_Data(cursorData);
+
         cursor.Empty_Item();
     }
 
@@ -221,7 +230,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        currentSlot.Assign_Item(cursor.data.currentStation);
+        ItemSlot_Data cursorData = new(cursor.data);
+        currentSlot.Assign_Item(cursor.data.currentStation).Assign_Data(cursorData);
+
         cursor.Empty_Item();
     }
 
@@ -231,10 +242,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        Station_ScrObj cursorStation = cursor.data.currentStation;
+        ItemSlot_Data currentSlotData = new(currentSlot.data);
+        ItemSlot_Data cursorData = new(cursor.data);
 
+        cursor.Assign_Data(currentSlotData);
         cursor.Assign_Item(currentSlot.data.currentStation);
-        currentSlot.Assign_Item(cursorStation);
+
+        currentSlot.Assign_Item(cursorData.currentStation).Assign_Data(cursorData);
     }
 
 
@@ -261,7 +275,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Station();
 
         // toggle
-        currentSlot.Toggle_BookMark();
+        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
     }
 
 

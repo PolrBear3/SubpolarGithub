@@ -29,6 +29,7 @@ public class CollectCard : MonoBehaviour
     {
         // add all interact Functions here //
         _allInteractions.Add(FoodIngredient_toArchive);
+        //_allInteractions.Add(StationBluePrint_toArchive);
     }
 
     private void Invoke_RandomInteraction()
@@ -52,6 +53,18 @@ public class CollectCard : MonoBehaviour
 
         // unlock only ingredient
         menu.UnLock_Ingredient(randFood);
+
+        // remove
+        Destroy(gameObject);
+    }
+
+    private void StationBluePrint_toArchive()
+    {
+        Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj();
+        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+
+        // add station blueprint
+        menu.Add_StationItem(randStation, 1).Toggle_Lock(true);
 
         // remove
         Destroy(gameObject);

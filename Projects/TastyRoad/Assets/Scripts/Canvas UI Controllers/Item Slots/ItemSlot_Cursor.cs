@@ -48,10 +48,18 @@ public class ItemSlot_Cursor : MonoBehaviour
     }
 
 
+    // Data
+    public void Assign_Data(ItemSlot_Data data)
+    {
+        this.data = data;
+    }
+
+
     // Cursor item Control
     public void Empty_Item()
     {
         data.hasItem = false;
+        data.isLocked = false;
 
         data.currentFood = null;
         data.currentStation = null;
