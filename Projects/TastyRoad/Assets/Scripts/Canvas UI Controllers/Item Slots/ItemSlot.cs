@@ -91,9 +91,6 @@ public class ItemSlot : MonoBehaviour
     public void Assign_Data(ItemSlot_Data data)
     {
         _data = data;
-
-        Toggle_BookMark(data.bookMarked);
-        Toggle_Lock(data.isLocked);
     }
 
 
@@ -132,9 +129,6 @@ public class ItemSlot : MonoBehaviour
             _iconImage.color = Color.white;
             _iconImage.transform.localPosition = food.centerPosition * 100;
 
-            Toggle_BookMark(data.bookMarked);
-            Toggle_Lock(data.isLocked);
-
             return;
         }
 
@@ -151,9 +145,6 @@ public class ItemSlot : MonoBehaviour
 
             _iconImage.color = Color.white;
             _iconImage.transform.localPosition = station.centerPosition;
-
-            Toggle_BookMark(data.bookMarked);
-            Toggle_Lock(data.isLocked);
 
             return this;
         }

@@ -233,6 +233,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data cursorData = new(cursor.data);
         currentSlot.Assign_Item(cursor.data.currentStation).Assign_Data(cursorData);
 
+        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        currentSlot.Toggle_Lock(currentSlot.data.isLocked);
+
         cursor.Empty_Item();
     }
 
@@ -249,6 +252,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.Assign_Item(currentSlot.data.currentStation);
 
         currentSlot.Assign_Item(cursorData.currentStation).Assign_Data(cursorData);
+
+        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        currentSlot.Toggle_Lock(currentSlot.data.isLocked);
     }
 
 

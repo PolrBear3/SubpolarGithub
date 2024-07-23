@@ -250,6 +250,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
+        currentSlot.Assign_Data(cursor.data);
         currentSlot.Assign_Item(cursor.data.currentFood);
         currentSlot.Assign_Amount(cursor.data.currentAmount);
 

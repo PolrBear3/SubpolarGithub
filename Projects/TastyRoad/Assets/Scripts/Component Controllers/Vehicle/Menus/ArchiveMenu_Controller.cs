@@ -176,8 +176,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data slotData = new(currentSlot.data);
         currentSlot.Empty_ItemBox();
 
+        cursor.Assign_Data(slotData);
         cursor.Assign_Item(slotData.currentFood);
-        cursor.data.bookMarked = currentSlot.data.bookMarked;
 
         IngredientBubble_Toggle(true);
     }
@@ -202,11 +202,15 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        ItemSlot_Data dragData = new(cursor.data);
+        ItemSlot_Data cursorData = new(cursor.data);
+
         cursor.Empty_Item();
 
-        currentSlot.Assign_Data(dragData);
-        currentSlot.Assign_Item(dragData.currentFood);
+        currentSlot.Assign_Data(cursorData);
+        currentSlot.Assign_Item(cursorData.currentFood);
+
+        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        currentSlot.Toggle_Lock(currentSlot.data.isLocked);
 
         IngredientBubble_Toggle(false);
         UpdateSlot_UnlcokIcons(currentSlot);
@@ -319,7 +323,35 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void CurrentFood_BookmarkToggle()
     {
+        //
+        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Data cursorData = cursor.data;
 
+        // check if cursor is dragging item
+        if (cursorData.hasItem == false) return;
+
+        //
+        ItemSlot currentSlot = cursor.currentSlot;
+
+        // check if current hover slot has no item
+        if (currentSlot.data.hasItem) return;
+
+        //
+        Drop_Food();
+
+        // toggle dropped food
+        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
+
+        // main data update
+        Main_Controller main = _controller.vehicleController.mainController;
+
+        if (currentSlot.data.bookMarked == true)
+        {
+            main.AddFood_toBookmark(currentSlot.data.currentFood);
+            return;
+        }
+
+        main.RemoveFood_fromBookmark(currentSlot.data.currentFood);
     }
 
 
