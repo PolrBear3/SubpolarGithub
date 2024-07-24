@@ -322,6 +322,7 @@ MonoBehaviour:
   _stationStocks: []
   _mergeStationStock: {fileID: 0}
   _carryBox: {fileID: 3467676747412569844}
+  _duplicateAmount: 0
 --- !u!1 &6140207368992471877
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +415,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9178826915786458251}
     m_Modifications:
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -2072177065, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_IsActive
       value: 0

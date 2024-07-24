@@ -19,7 +19,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
-        _controller.MenuOpen_Event += Update_Slots_Data;
+        _controller.MenuOpen_Event += UpdateSlots_Data;
+        _controller.MenuOpen_Event += UpdateSlots_Unlock;
+        _controller.MenuOpen_Event += CurrentSlots_BookmarkToggle;
+
         _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
 
         _controller.OnSelect_Input += Select_Slot;
@@ -35,7 +38,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // save current dragging item before menu close
         Drag_Cancel();
 
-        _controller.MenuOpen_Event -= Update_Slots_Data;
+        _controller.MenuOpen_Event -= UpdateSlots_Data;
+        _controller.MenuOpen_Event -= UpdateSlots_Unlock;
+        _controller.MenuOpen_Event -= CurrentSlots_BookmarkToggle;
 
         _controller.OnSelect_Input -= Select_Slot;
 
@@ -110,6 +115,26 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
+
+    /// <summary>
+    /// Removes all
+    /// </summary>
+    public void Remove_StationItem(Station_ScrObj station)
+    {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (station != currentSlots[i].data.currentStation) continue;
+
+            currentSlots[i].Empty_ItemBox();
+        }
+    }
+
+    /// <summary>
+    /// Removes target amount
+    /// </summary>
     public void Remove_StationItem(Station_ScrObj station, int amount)
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
@@ -163,13 +188,23 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// <summary>
     /// Render sprites or amounts according to slot's current loaded data
     /// </summary>
-    private void Update_Slots_Data()
+    private void UpdateSlots_Data()
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
             currentSlots[i].Assign_Item(currentSlots[i].data.currentStation);
+        }
+    }
+
+    private void UpdateSlots_Unlock()
+    {
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            currentSlots[i].Toggle_Lock(currentSlots[i].data.isLocked);
         }
     }
 
@@ -219,9 +254,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (cursor.data.hasItem == false) return;
 
         ItemSlot_Data cursorData = new(cursor.data);
-        Add_StationItem(cursor.data.currentStation, 1).Assign_Data(cursorData);
-
         cursor.Empty_Item();
+
+        ItemSlot targetSlot = Add_StationItem(cursorData.currentStation, 1);
+        targetSlot.Assign_Data(cursorData);
+
+        targetSlot.Toggle_BookMark(cursorData.bookMarked);
+        targetSlot.Toggle_Lock(cursorData.isLocked);
     }
 
     //
@@ -284,6 +323,17 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
     }
 
+    private void CurrentSlots_BookmarkToggle()
+    {
+        List<ItemSlot> allSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < allSlots.Count; i++)
+        {
+            if (allSlots[i].data.hasItem == false) continue;
+            allSlots[i].Toggle_BookMark(allSlots[i].data.bookMarked);
+        }
+    }
+
 
     public List<ItemSlot> BookMarked_Slots()
     {
@@ -321,6 +371,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         ItemSlot_Cursor cursor = _controller.cursor;
         if (cursor.data.hasItem == false) return;
+
+        if (cursor.data.isLocked == true)
+        {
+            Drag_Cancel();
+            return;
+        }
 
         _interactionMode = true;
 

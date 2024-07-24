@@ -8,6 +8,12 @@ public class StationData
     public int stationID;
     public Vector2 position;
 
+    public StationData (Station_ScrObj stationScrObj)
+    {
+        this.stationScrObj = stationScrObj;
+        stationID = stationScrObj.id;
+    }
+
     public StationData (Station_Controller controller)
     {
         stationScrObj = controller.stationScrObj;

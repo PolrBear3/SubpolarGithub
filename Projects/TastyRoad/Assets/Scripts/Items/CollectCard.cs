@@ -28,8 +28,8 @@ public class CollectCard : MonoBehaviour
     private void Set_Interactions()
     {
         // add all interact Functions here //
-        _allInteractions.Add(FoodIngredient_toArchive);
-        //_allInteractions.Add(StationBluePrint_toArchive);
+        //_allInteractions.Add(FoodIngredient_toArchive);
+        _allInteractions.Add(StationBluePrint_toArchive);
     }
 
     private void Invoke_RandomInteraction()
@@ -49,7 +49,9 @@ public class CollectCard : MonoBehaviour
         Food_ScrObj randFood = _interactable.mainController.dataController.CookedFood();
 
         ArchiveMenu_Controller menu = _interactable.mainController.currentVehicle.menu.archiveMenu;
-        menu.AddFood(randFood);
+
+        // add food and lock bookmarking
+        menu.AddFood(randFood).Toggle_Lock(true);
 
         // unlock only ingredient
         menu.UnLock_Ingredient(randFood);

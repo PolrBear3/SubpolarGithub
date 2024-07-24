@@ -22,6 +22,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         _controller.MenuOpen_Event += Update_Slots_Data;
         _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
+        _controller.MenuOpen_Event += CurrentSlots_BookmarkToggle;
 
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnHoldSelect_Input += Export_Food;
@@ -40,6 +41,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drag_Cancel();
 
         _controller.MenuOpen_Event -= Update_Slots_Data;
+        _controller.MenuOpen_Event -= CurrentSlots_BookmarkToggle;
 
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_Food;
@@ -211,10 +213,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Drag_Food()
     {
         ItemSlot_Cursor cursor = _controller.cursor;
-        ItemSlot currentSlot = cursor.currentSlot;
-        Food_ScrObj slotFood = currentSlot.data.currentFood;
 
-        cursor.Assign_Item(slotFood);
+        ItemSlot currentSlot = cursor.currentSlot;
+        ItemSlot_Data slotData = new(currentSlot.data);
+
+        cursor.Assign_Item(slotData.currentFood);
         cursor.Assign_Amount(1);
 
         currentSlot.Update_Amount(-1);
@@ -248,11 +251,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Drop_Food()
     {
         ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Data cursorData = new(cursor.data);
+
         ItemSlot currentSlot = cursor.currentSlot;
 
-        currentSlot.Assign_Data(cursor.data);
-        currentSlot.Assign_Item(cursor.data.currentFood);
-        currentSlot.Assign_Amount(cursor.data.currentAmount);
+        currentSlot.Assign_Item(cursorData.currentFood);
+        currentSlot.Assign_Amount(cursorData.currentAmount);
 
         cursor.Empty_Item();
     }
@@ -317,8 +321,20 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
 
         // toggle
-        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
+        currentSlot.Toggle_BookMark(true);
     }
+
+    private void CurrentSlots_BookmarkToggle()
+    {
+        List<ItemSlot> allSlots = _slotsController.itemSlots;
+
+        for (int i = 0; i < allSlots.Count; i++)
+        {
+            if (allSlots[i].data.hasItem == false) continue;
+            allSlots[i].Toggle_BookMark(allSlots[i].data.bookMarked);
+        }
+    }
+
 
     public List<ItemSlot_Data> BookMarked_SlotDatas()
     {

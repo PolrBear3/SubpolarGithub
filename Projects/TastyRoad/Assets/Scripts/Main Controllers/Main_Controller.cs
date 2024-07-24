@@ -102,11 +102,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Test Buttons
     private void TestButton_Subscription()
     {
-        _currentVehicle.menu.archiveMenu.AddFood(_dataController.CookedFood(78327));
-        _currentVehicle.menu.archiveMenu.UnLock_BookMark(_dataController.CookedFood(78327));
 
-        _currentVehicle.menu.archiveMenu.AddFood(_dataController.CookedFood(14031));
-        _currentVehicle.menu.archiveMenu.UnLock_BookMark(_dataController.CookedFood(14031));
     }
 
     public void TestButton1()

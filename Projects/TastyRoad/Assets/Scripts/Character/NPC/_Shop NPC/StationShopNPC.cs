@@ -21,6 +21,8 @@ public class StationShopNPC : MonoBehaviour
     [Header("")]
     [SerializeField] [Range(0, 5)] private int _duplicateAmount;
 
+    private List<Station_ScrObj> _unlockedStations = new(); 
+
     private Coroutine _restockCoroutine;
 
 
@@ -35,7 +37,9 @@ public class StationShopNPC : MonoBehaviour
         _npcController.movement.TargetPosition_UpdateEvent += CarryBox_DirectionUpdate;
 
         _interactable.InteractEvent += Interact_FacePlayer;
+
         _interactable.Action1Event += Merge_BookMarkedStations;
+        _interactable.Action2Event += Unlock_BookMarkedStations;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -51,7 +55,9 @@ public class StationShopNPC : MonoBehaviour
         _npcController.movement.TargetPosition_UpdateEvent -= CarryBox_DirectionUpdate;
 
         _interactable.InteractEvent -= Interact_FacePlayer;
+
         _interactable.Action1Event -= Merge_BookMarkedStations;
+        _interactable.Action2Event -= Unlock_BookMarkedStations;
     }
 
 
@@ -87,6 +93,35 @@ public class StationShopNPC : MonoBehaviour
     }
 
 
+    // Unlocked Station Control
+    private Station_ScrObj Unlocked_Station()
+    {
+        if (_unlockedStations.Count <= 0) return null;
+
+        int arrayNum = Random.Range(0, _unlockedStations.Count);
+
+        return _unlockedStations[arrayNum];
+    }
+
+    private void Unlock_Station(Station_ScrObj unlockStation)
+    {
+        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        List<ItemSlot> lockedSlots = menu.slotsController.LockedSlots();
+
+        // remove all locked unlockStation
+        for (int i = 0; i < lockedSlots.Count; i++)
+        {
+            if (unlockStation != lockedSlots[i].data.currentStation) continue;
+
+            lockedSlots[i].Empty_ItemBox();
+        }
+
+        if (_unlockedStations.Contains(unlockStation)) return;
+
+        _unlockedStations.Add(unlockStation);
+    }
+
+
     // Station Stock Control
     private bool StationStocks_Full()
     {
@@ -110,8 +145,9 @@ public class StationShopNPC : MonoBehaviour
             checkCount++;
         }
 
-        if (_duplicateAmount <= 0) _duplicateAmount = 1;
+        if (_unlockedStations.Count <= _stationStocks.Length) return false;
 
+        if (_duplicateAmount <= 0) _duplicateAmount = 1;
         if (checkCount >= _duplicateAmount) return true;
 
         return false;
@@ -119,12 +155,11 @@ public class StationShopNPC : MonoBehaviour
 
     private Station_ScrObj NonDuplicate_Station()
     {
-        Data_Controller data = _interactable.mainController.dataController;
-        Station_ScrObj station = data.Station_ScrObj();
+        Station_ScrObj station = Unlocked_Station();
 
         do
         {
-            station = data.Station_ScrObj();
+            station = Unlocked_Station();
         }
         while (DuplicateAmount_Stocked(station));
 
@@ -132,9 +167,11 @@ public class StationShopNPC : MonoBehaviour
     }
 
 
-
+    // Main Actions
     private void Restock_StationStocks()
     {
+        if (_unlockedStations.Count <= 0) return;
+
         if (_restockCoroutine != null) return;
 
         if (StationStocks_Full()) return;
@@ -198,9 +235,15 @@ public class StationShopNPC : MonoBehaviour
     }
 
 
-    // Merge Station Control
     private void Merge_BookMarkedStations()
     {
+        // check if there is unlocked station
+        if (_unlockedStations.Count <= 0)
+        {
+            // dialog
+            return;
+        }
+
         if (_restockCoroutine != null) return;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
@@ -208,9 +251,7 @@ public class StationShopNPC : MonoBehaviour
         // check if _mergeStationStock is empty
         if (_mergeStationStock.sold == false)
         {
-            // dialog
             dialog.Update_Dialog(0);
-
             return;
         }
 
@@ -221,9 +262,7 @@ public class StationShopNPC : MonoBehaviour
         // check if there are more than 2 bookmarked stations
         if (bookMarkedSlots.Count < 2)
         {
-            // dialog
             dialog.Update_Dialog(1);
-
             return;
         }
 
@@ -268,5 +307,18 @@ public class StationShopNPC : MonoBehaviour
 
         //
         _restockCoroutine = null;
+    }
+
+
+    private void Unlock_BookMarkedStations()
+    {
+        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        List<ItemSlot> bookmarkedSlots = menu.slotsController.BookMarked_Slots();
+
+        for (int i = 0; i < bookmarkedSlots.Count; i++)
+        {
+            if (bookmarkedSlots[i].data.isLocked == false) continue;
+            Unlock_Station(bookmarkedSlots[i].data.currentStation);
+        }
     }
 }

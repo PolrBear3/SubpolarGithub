@@ -14,7 +14,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public ItemSlots_Controller slotsController => _slotsController;
 
     private List<Food_ScrObj> _ingredientUnlocks = new();
-    private List<Food_ScrObj> _bookmarkUnlocks = new();
 
     [Header("")]
     [SerializeField] private GameObject _ingredientBubble;
@@ -27,7 +26,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         _controller.MenuOpen_Event += UpdateSlots_Data;
         _controller.MenuOpen_Event += UpdateNew_ArchivedFoods;
-        _controller.MenuOpen_Event += UpdateSlots_UnlockIcons;
+        _controller.MenuOpen_Event += UpdateSlots_Unlocks;
         _controller.MenuOpen_Event += Update_BookMarkFoods;
 
         _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
@@ -48,7 +47,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.MenuOpen_Event -= UpdateSlots_Data;
         _controller.MenuOpen_Event -= UpdateNew_ArchivedFoods;
-        _controller.MenuOpen_Event -= UpdateSlots_UnlockIcons;
+        _controller.MenuOpen_Event -= UpdateSlots_Unlocks;
         _controller.MenuOpen_Event -= Update_BookMarkFoods;
 
         _controller.OnCursor_Input -= IngredientBubble_UpdatePosition;
@@ -89,13 +88,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // bookmark unlocks
         foodIDs.Clear();
-
-        foreach (var foods in _bookmarkUnlocks)
-        {
-            foodIDs.Add(foods.id);
-        }
-
-        ES3.Save("ArchiveMenu_Controller/_bookmarkUnlocks", foodIDs);
     }
 
     public void Load_Data()
@@ -127,11 +119,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             if (ingredientIDs.Contains(targetID))
             {
                 _ingredientUnlocks.Add(targetFood);
-            }
-
-            if (bookmarkIDs.Contains(targetID))
-            {
-                _bookmarkUnlocks.Add(targetFood);
             }
         }
 
@@ -213,7 +200,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
 
         IngredientBubble_Toggle(false);
-        UpdateSlot_UnlcokIcons(currentSlot);
+        UpdateSlot_Unlcoks(currentSlot);
     }
 
     //
@@ -229,7 +216,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Assign_Item(cursorData.currentFood);
 
         IngredientBubble_Toggle(true);
-        UpdateSlot_UnlcokIcons(currentSlot);
+        UpdateSlot_Unlcoks(currentSlot);
     }
 
 
@@ -251,29 +238,26 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// <summary>
     /// Single slot
     /// </summary>
-    private void UpdateSlot_UnlcokIcons(ItemSlot currentSlot)
+    private void UpdateSlot_Unlcoks(ItemSlot currentSlot)
     {
         if (currentSlot.data.hasItem == false) return;
 
         Food_ScrObj slotFood = currentSlot.data.currentFood;
 
-        currentSlot.Toggle_Icons(BookMark_Unlocked(slotFood), Ingredient_Unlocked(slotFood));
+        currentSlot.Toggle_Icons(!currentSlot.data.isLocked, Ingredient_Unlocked(slotFood));
+        currentSlot.Toggle_Lock(currentSlot.data.isLocked);
     }
 
     /// <summary>
     /// All slots
     /// </summary>
-    private void UpdateSlots_UnlockIcons()
+    private void UpdateSlots_Unlocks()
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
-            if (currentSlots[i].data.hasItem == false) continue;
-
-            Food_ScrObj slotFood = currentSlots[i].data.currentFood;
-
-            currentSlots[i].Toggle_Icons(BookMark_Unlocked(slotFood), Ingredient_Unlocked(slotFood));
+            UpdateSlot_Unlcoks(currentSlots[i]);
         }
     }
 
@@ -293,11 +277,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return bookMarkedSlots;
     }
 
-    private bool BookMark_Unlocked(Food_ScrObj checkFood)
-    {
-        return _bookmarkUnlocks.Contains(checkFood);
-    }
-
 
     private void Update_BookMarkFoods()
     {
@@ -315,11 +294,18 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void UnLock_BookMark(Food_ScrObj unlockFood)
     {
-        if (_controller.vehicleController.mainController.dataController.CookedFood(unlockFood) == null) return;
-        if (_bookmarkUnlocks.Contains(unlockFood)) return;
+        List<ItemSlot> currentSlots = _slotsController.itemSlots;
 
-        _bookmarkUnlocks.Add(unlockFood);
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.hasItem == false) continue;
+            if (currentSlots[i].data.currentFood != unlockFood) continue;
+
+            currentSlots[i].Toggle_Lock(false);
+            return;
+        }
     }
+
 
     private void CurrentFood_BookmarkToggle()
     {
@@ -338,6 +324,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         //
         Drop_Food();
+
+        // check if current food is bookmark unlocked
+        if (currentSlot.data.isLocked == true) return;
 
         // toggle dropped food
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
@@ -383,13 +372,13 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return false;
     }
 
-    public void AddFood(Food_ScrObj food)
+    public ItemSlot AddFood(Food_ScrObj food)
     {
         // check if non duplicate food
-        if (Food_InMenu(food)) return;
+        if (Food_InMenu(food)) return null;
 
         // check if current food have ingredients
-        if (food.ingredients.Count <= 0) return;
+        if (food.ingredients.Count <= 0) return null;
 
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
 
@@ -397,9 +386,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         {
             if (currentSlots[i].data.hasItem) continue;
 
-            currentSlots[i].Assign_Item(food);
-            break;
+            return currentSlots[i].Assign_Item(food);
         }
+
+        return null;
     }
 
 

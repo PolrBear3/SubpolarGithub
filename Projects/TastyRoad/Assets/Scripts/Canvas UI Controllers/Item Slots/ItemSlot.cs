@@ -69,7 +69,19 @@ public class ItemSlot : MonoBehaviour
     // Unlock Control
     public void Toggle_Lock(bool isLock)
     {
+        if (data.hasItem == false) return;
+
         _data.isLocked = isLock;
+
+        // transparency control
+        if (isLock == true)
+        {
+            Main_Controller.Change_ImageAlpha(_iconImage, _transparentValue);
+        }
+        else
+        {
+            Main_Controller.Change_ImageAlpha(_iconImage, 1f);
+        }
     }
 
     /// <summary>
@@ -117,7 +129,7 @@ public class ItemSlot : MonoBehaviour
 
 
     // sprite update included
-    public void Assign_Item(Food_ScrObj food)
+    public ItemSlot Assign_Item(Food_ScrObj food)
     {
         if (food != null)
         {
@@ -129,10 +141,11 @@ public class ItemSlot : MonoBehaviour
             _iconImage.color = Color.white;
             _iconImage.transform.localPosition = food.centerPosition * 100;
 
-            return;
+            return this;
         }
 
         Empty_ItemBox();
+        return this;
     }
     public ItemSlot Assign_Item(Station_ScrObj station)
     {
@@ -150,7 +163,6 @@ public class ItemSlot : MonoBehaviour
         }
 
         Empty_ItemBox();
-
         return this;
     }
 

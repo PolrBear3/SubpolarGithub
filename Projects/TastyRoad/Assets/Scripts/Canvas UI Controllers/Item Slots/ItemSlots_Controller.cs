@@ -20,7 +20,6 @@ public class ItemSlots_Controller : MonoBehaviour
     [SerializeField] private GameObject _itemSlotPrefab;
 
 
-
     //
     public void Add_Slot(int amount)
     {
@@ -42,7 +41,6 @@ public class ItemSlots_Controller : MonoBehaviour
         Set_Slots_GridNum();
     }
 
-    //
     private void Set_Slots_GridNum()
     {
         Vector2 gridCount = Vector2.zero;
@@ -61,7 +59,7 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-
+    //
     public bool Slots_Full()
     {
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -71,5 +69,36 @@ public class ItemSlots_Controller : MonoBehaviour
         }
 
         return true;
+    }
+
+
+    public List<ItemSlot> BookMarked_Slots()
+    {
+        List<ItemSlot> bookmarkedSlots = new();
+
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            if (_itemSlots[i].data.hasItem == false) continue;
+            if (_itemSlots[i].data.bookMarked == false) continue;
+
+            bookmarkedSlots.Add(_itemSlots[i]);
+        }
+
+        return bookmarkedSlots;
+    }
+
+    public List<ItemSlot> LockedSlots()
+    {
+        List<ItemSlot> lockedSlots = new();
+
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            if (_itemSlots[i].data.hasItem == false) continue;
+            if (_itemSlots[i].data.isLocked == false) continue;
+
+            lockedSlots.Add(_itemSlots[i]);
+        }
+
+        return lockedSlots;
     }
 }
