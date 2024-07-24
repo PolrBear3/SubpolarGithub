@@ -28,7 +28,7 @@ public class CollectCard : MonoBehaviour
     private void Set_Interactions()
     {
         // add all interact Functions here //
-        //_allInteractions.Add(FoodIngredient_toArchive);
+        _allInteractions.Add(FoodIngredient_toArchive);
         _allInteractions.Add(StationBluePrint_toArchive);
     }
 
@@ -47,7 +47,6 @@ public class CollectCard : MonoBehaviour
     private void FoodIngredient_toArchive()
     {
         Food_ScrObj randFood = _interactable.mainController.dataController.CookedFood();
-
         ArchiveMenu_Controller menu = _interactable.mainController.currentVehicle.menu.archiveMenu;
 
         // add food and lock bookmarking
@@ -55,6 +54,10 @@ public class CollectCard : MonoBehaviour
 
         // unlock only ingredient
         menu.UnLock_Ingredient(randFood);
+
+        // dialog
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+        dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[0].info));
 
         // remove
         Destroy(gameObject);
@@ -67,6 +70,10 @@ public class CollectCard : MonoBehaviour
 
         // add station blueprint
         menu.Add_StationItem(randStation, 1).Toggle_Lock(true);
+
+        // dialog
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+        dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[1].info));
 
         // remove
         Destroy(gameObject);

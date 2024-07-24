@@ -72,7 +72,7 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    public List<ItemSlot> BookMarked_Slots()
+    public List<ItemSlot> BookMarked_Slots(bool isLocked)
     {
         List<ItemSlot> bookmarkedSlots = new();
 
@@ -80,6 +80,7 @@ public class ItemSlots_Controller : MonoBehaviour
         {
             if (_itemSlots[i].data.hasItem == false) continue;
             if (_itemSlots[i].data.bookMarked == false) continue;
+            if (_itemSlots[i].data.isLocked != isLocked) continue;
 
             bookmarkedSlots.Add(_itemSlots[i]);
         }

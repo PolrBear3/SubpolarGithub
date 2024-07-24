@@ -336,21 +336,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    public List<ItemSlot_Data> BookMarked_SlotDatas()
-    {
-        List<ItemSlot_Data> slotDatas = new();
-        List<ItemSlot> allSlots = _slotsController.itemSlots;
-
-        for (int i = 0; i < allSlots.Count; i++)
-        {
-            if (allSlots[i].data.bookMarked == false) continue;
-            slotDatas.Add(allSlots[i].data);
-        }
-
-        return slotDatas;
-    }
-
-
     // FoodBox Export System
     private void Export_Food()
     {

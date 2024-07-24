@@ -218,13 +218,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultData:
-    icon: {fileID: 0}
+    icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: 
   _datas:
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Collect your merged station first!
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not enough stations bookmarked!
+  - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: No locked stations currently bookmarked!
+  - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Bookmarked stations successfully unlocked!
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,7 +422,7 @@ PrefabInstance:
     - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2072177065, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+      objectReference: {fileID: -22302663, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1

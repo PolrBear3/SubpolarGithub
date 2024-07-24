@@ -263,21 +263,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // BookMark Control
-    public List<ItemSlot> BookMarked_Slots()
-    {
-        List<ItemSlot> allSlots = _slotsController.itemSlots;
-        List<ItemSlot> bookMarkedSlots = new();
-
-        for (int i = 0; i < allSlots.Count; i++)
-        {
-            if (allSlots[i].data.bookMarked == false) continue;
-            bookMarkedSlots.Add(allSlots[i]);
-        }
-
-        return bookMarkedSlots;
-    }
-
-
     private void Update_BookMarkFoods()
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;

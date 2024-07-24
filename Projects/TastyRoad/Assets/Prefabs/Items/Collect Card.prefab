@@ -264,7 +264,7 @@ SpriteRenderer:
   m_SortingLayerID: 1908127167
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: -614086343, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+  m_Sprite: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -340,6 +340,7 @@ GameObject:
   - component: {fileID: 1871645149704256381}
   - component: {fileID: 4002702723880789616}
   - component: {fileID: 5739883101272452172}
+  - component: {fileID: 8571569119331683655}
   - component: {fileID: 6290791405807346158}
   m_Layer: 0
   m_Name: Collect Card
@@ -533,6 +534,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &8571569119331683655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638662604626066613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: 
+  _datas:
+  - icon: {fileID: 0}
+    info: A food ingredient is picked up !
+  - icon: {fileID: 0}
+    info: A station blueprint is picked up !
 --- !u!114 &6290791405807346158
 MonoBehaviour:
   m_ObjectHideFlags: 0

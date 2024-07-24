@@ -30,6 +30,7 @@ public class FoodData_Controller : MonoBehaviour
 
     [Header("")]
     [SerializeField] private Sprite[] _amountBarSprites;
+    public Sprite[] amountBarSprites => _amountBarSprites;
 
     [Header("")]
     [SerializeField] private ConditionSprites[] _conditionSprites;

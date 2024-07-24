@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationShopNPC : MonoBehaviour
+public class StationShopNPC : MonoBehaviour, ISaveLoadable
 {
     [Header("")]
     [SerializeField] private NPC_Controller _npcController;
@@ -27,6 +27,11 @@ public class StationShopNPC : MonoBehaviour
 
 
     // UnityEngine
+    private void Awake()
+    {
+        Load_Data();
+    }
+
     private void Start()
     {
         // untrack
@@ -58,6 +63,33 @@ public class StationShopNPC : MonoBehaviour
 
         _interactable.Action1Event -= Merge_BookMarkedStations;
         _interactable.Action2Event -= Unlock_BookMarkedStations;
+    }
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        List<int> stationIDs = new();
+
+        foreach (var station in _unlockedStations)
+        {
+            stationIDs.Add(station.id);
+        }
+
+        ES3.Save("StationShopNPC/_unlockedStations", stationIDs);
+    }
+
+    public void Load_Data()
+    {
+        List<int> stationIDs = new();
+        stationIDs = ES3.Load("StationShopNPC/_unlockedStations", stationIDs);
+
+        Data_Controller data = _npcController.mainController.dataController;
+
+        for (int i = 0; i < stationIDs.Count; i++)
+        {
+            _unlockedStations.Add(data.Station_ScrObj(stationIDs[i]));
+        }
     }
 
 
@@ -237,16 +269,17 @@ public class StationShopNPC : MonoBehaviour
 
     private void Merge_BookMarkedStations()
     {
+        // check if currently on action
+        if (_restockCoroutine != null) return;
+
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
         // check if there is unlocked station
         if (_unlockedStations.Count <= 0)
         {
             // dialog
             return;
         }
-
-        if (_restockCoroutine != null) return;
-
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // check if _mergeStationStock is empty
         if (_mergeStationStock.sold == false)
@@ -255,9 +288,8 @@ public class StationShopNPC : MonoBehaviour
             return;
         }
 
-        //
         StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> bookMarkedSlots = menu.BookMarked_Slots();
+        List<ItemSlot> bookMarkedSlots = menu.slotsController.BookMarked_Slots(false);
 
         // check if there are more than 2 bookmarked stations
         if (bookMarkedSlots.Count < 2)
@@ -313,12 +345,21 @@ public class StationShopNPC : MonoBehaviour
     private void Unlock_BookMarkedStations()
     {
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> bookmarkedSlots = menu.slotsController.BookMarked_Slots();
+        List<ItemSlot> bookmarkedSlots = menu.slotsController.BookMarked_Slots(true);
+
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        if (bookmarkedSlots.Count <= 0)
+        {
+            dialog.Update_Dialog(2);
+            return;
+        }
 
         for (int i = 0; i < bookmarkedSlots.Count; i++)
         {
-            if (bookmarkedSlots[i].data.isLocked == false) continue;
             Unlock_Station(bookmarkedSlots[i].data.currentStation);
         }
+
+        dialog.Update_Dialog(3);
     }
 }
