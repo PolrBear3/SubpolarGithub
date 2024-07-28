@@ -13,18 +13,16 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private Transform[] _boxStackPoints;
     [SerializeField] private StationStock[] _stationStocks;
-
-    [SerializeField] [Range(0, 5)] private int _duplicateAmount;
-
-    [Header("")]
     [SerializeField] private StationStock _mergeStationStock;
-
-    [SerializeField] private Station_ScrObj[] _mergeStations;
 
     [Header("")]
     [SerializeField] private SpriteRenderer _carryBox;
 
+    [Header("")]
+    [SerializeField] [Range(0, 5)] private int _duplicateAmount;
+
     private List<Station_ScrObj> _unlockedStations = new(); 
+
     private Coroutine _restockCoroutine;
 
 
@@ -43,7 +41,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         GlobalTime_Controller.TimeTik_Update += Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent += CarryBox_DirectionUpdate;
 
-        // interaction subscription
         _interactable.InteractEvent += Interact_FacePlayer;
 
         _interactable.Action1Event += Merge_BookMarkedStations;
@@ -58,13 +55,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void OnDestroy()
     {
-        Save_Data();
-
         // event subscriptions
         GlobalTime_Controller.TimeTik_Update -= Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent -= CarryBox_DirectionUpdate;
 
-        // interaction subscription
         _interactable.InteractEvent -= Interact_FacePlayer;
 
         _interactable.Action1Event -= Merge_BookMarkedStations;
@@ -328,10 +322,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         // wait until arrival
         while (move.At_TargetPosition() == false) yield return null;
 
-        Station_ScrObj mergeStation = _mergeStations[Random.Range(0, _mergeStations.Length)];
-
         // restock _mergeStationStock
-        _mergeStationStock.Restock(mergeStation);
+        _mergeStationStock.Restock();
 
         // set _mergeStationStock price to 0
         _mergeStationStock.Update_Price(0);
@@ -347,9 +339,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         //
         _restockCoroutine = null;
-        // dialog
-
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(4);
     }
 
 

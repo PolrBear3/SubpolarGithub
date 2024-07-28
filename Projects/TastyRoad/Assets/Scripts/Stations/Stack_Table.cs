@@ -3,6 +3,13 @@ using System.Collections;
 
 public class Stack_Table : Table, IInteractable
 {
+    // UnityEngine
+    private void Start()
+    {
+        stationController.Food_Icon().Show_AmountBar_Duration();
+    }
+
+
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {

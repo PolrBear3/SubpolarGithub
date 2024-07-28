@@ -102,15 +102,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Test Buttons
     private void TestButton_Subscription()
     {
-        /*
-        StationMenu_Controller stationMenu = _currentVehicle.menu.stationMenu;
-
-        stationMenu.Add_StationItem(_dataController.Station_ScrObj(81430), 1);
-        stationMenu.Add_StationItem(_dataController.Station_ScrObj(44567), 1);
-        stationMenu.Add_StationItem(_dataController.Station_ScrObj(45757), 1);
-        stationMenu.Add_StationItem(_dataController.Station_ScrObj(12481), 1);
-        stationMenu.Add_StationItem(_dataController.Station_ScrObj(68003), 1);
-        */
+        currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(63578), 1);
     }
 
     public void TestButton1()
@@ -438,8 +430,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void Track_CurrentStation(Station_Controller station)
     {
         _currentStations.Add(station);
-
-        station.transform.SetParent(_stationFile);
     }
     public void UnTrack_CurrentStation(Station_Controller station)
     {
@@ -482,6 +472,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public Station_Controller Spawn_Station(Station_ScrObj stationScrObj, Vector2 spawnPosition)
     {
         GameObject spawnStation = Instantiate(stationScrObj.prefab, spawnPosition, Quaternion.identity);
+        spawnStation.transform.parent = _stationFile;
 
         if (!spawnStation.TryGetComponent(out Station_Controller stationController)) return null;
         return stationController;

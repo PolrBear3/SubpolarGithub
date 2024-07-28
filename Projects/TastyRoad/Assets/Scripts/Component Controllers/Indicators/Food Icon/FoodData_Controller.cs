@@ -23,27 +23,18 @@ public class FoodData_Controller : MonoBehaviour
     public delegate void Event();
     public event Event TimeTikEvent;
 
-
     [Header("")]
     [SerializeField] private SpriteRenderer _foodIcon;
-    public SpriteRenderer foodIcon => _foodIcon;
-
     [SerializeField] private SpriteRenderer _amountBar;
     [SerializeField] private SpriteRenderer[] _conditionBoxes;
 
-
     [Header("")]
-    [SerializeField] private Sprite[] _defaultBarSprites;
-    [SerializeField] private Sprite[] _greenBarSprites;
-
-    private Sprite[] _amountBarSprites;
+    [SerializeField] private Sprite[] _amountBarSprites;
     public Sprite[] amountBarSprites => _amountBarSprites;
-
 
     [Header("")]
     [SerializeField] private ConditionSprites[] _conditionSprites;
     public ConditionSprites[] conditionSprites => _conditionSprites;
-
 
     [Header("")]
     [SerializeField] private bool _iconShowLocked;
@@ -54,11 +45,6 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // UnityEngine
-    private void Awake()
-    {
-        _amountBarSprites = _defaultBarSprites;
-    }
-
     private void Start()
     {
         Show_Icon();
@@ -198,17 +184,6 @@ public class FoodData_Controller : MonoBehaviour
         _amountBar.color = Color.clear;
     }
 
-    public void Toggle_BarColor(bool isColored)
-    {
-        if (isColored)
-        {
-            _amountBarSprites = _greenBarSprites;
-            return;
-        }
-
-        _amountBarSprites = _defaultBarSprites;
-    }
-
 
     // Time Tik
     private void TimeTik_Update()
@@ -220,18 +195,6 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Food Condition
-    private ConditionSprites Get_ConditionSprites(FoodCondition_Type type)
-    {
-        for (int i = 0; i < _conditionSprites.Length; i++)
-        {
-            if (type != _conditionSprites[i].type) continue;
-
-            return _conditionSprites[i];
-        }
-        return null;
-    }
-
-
     public void Show_Condition()
     {
         bool conditionEmpty = _hasFood == false || _currentData.conditionDatas == null;
@@ -253,13 +216,14 @@ public class FoodData_Controller : MonoBehaviour
             _conditionBoxes[i].color = Color.white;
         }
     }
-
-    public void Hide_Condition()
+    private ConditionSprites Get_ConditionSprites(FoodCondition_Type type)
     {
-        foreach (var conditionBox in _conditionBoxes)
+        for (int i = 0; i < _conditionSprites.Length; i++)
         {
-            conditionBox.sprite = null;
-            conditionBox.color = Color.clear;
+            if (type != _conditionSprites[i].type) continue;
+
+            return _conditionSprites[i];
         }
+        return null;
     }
 }

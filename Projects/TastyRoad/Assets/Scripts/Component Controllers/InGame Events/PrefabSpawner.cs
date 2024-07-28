@@ -6,12 +6,8 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 {
     private Main_Controller _mainController;
 
-    [Header("")]
     [SerializeField] private GameObject _spawnPrefab;
     [Range(0, 10)] [SerializeField] private int _spawnAmount;
-
-    [Header("")]
-    [SerializeField] private Vector2[] _spawnPositions;
 
 
     // UnityEngine
@@ -24,13 +20,7 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-        if (_spawnPositions.Length <= 0)
-        {
-            Random_Spawn();
-            return;
-        }
-
-        Assign_Spawn();
+        Spawn();
     }
 
     public void UnInteract()
@@ -40,24 +30,7 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 
 
     // Functions
-    private void Spawn_Prefab(Vector2 spawnPosition)
-    {
-        GameObject spawnPrefab = Instantiate(_spawnPrefab, spawnPosition, Quaternion.identity);
-
-        // check if spawn prefab is a station
-        if (spawnPrefab.TryGetComponent(out Station_Movement movement) == false)
-        {
-            // set as a child of current location file
-            spawnPrefab.transform.SetParent(_mainController.otherFile);
-            return;
-        }
-
-        // set station
-        movement.Load_Position();
-    }
-
-
-    private void Random_Spawn()
+    private void Spawn()
     {
         Location_Controller location = _mainController.currentLocation;
 
@@ -71,23 +44,19 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
                 setPosition = location.Random_SnapPosition();
             }
 
-            Spawn_Prefab(setPosition);
-        }
-    }
+            // spawn on empty random position
+            GameObject spawnPrefab = Instantiate(_spawnPrefab, setPosition, Quaternion.identity);
 
-    private void Assign_Spawn()
-    {
-        Location_Controller location = _mainController.currentLocation;
+            // check if spawn prefab is a station
+            if (spawnPrefab.TryGetComponent(out Station_Movement movement) == false)
+            {
+                // set as a child of current location file
+                spawnPrefab.transform.SetParent(_mainController.otherFile);
+                continue;
+            }
 
-        int spawnCount = _spawnAmount;
-
-        for (int i = 0; i < _spawnPositions.Length; i++)
-        {
-            if (spawnCount <= 0) return;
-            if (location.Restricted_Position(_spawnPositions[i])) continue;
-
-            Spawn_Prefab(_spawnPositions[i]);
-            spawnCount--;
+            // set station
+            movement.Load_Position();
         }
     }
 }
