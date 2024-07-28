@@ -71,6 +71,19 @@ public class ItemSlots_Controller : MonoBehaviour
         return true;
     }
 
+    public int AvailableSlots_Count()
+    {
+        int slotsCount = 0;
+
+        foreach (var slot in _itemSlots)
+        {
+            if (slot.data.hasItem == true) continue;
+            slotsCount++;
+        }
+
+        return slotsCount;
+    }
+
 
     public List<ItemSlot> BookMarked_Slots(bool isLocked)
     {

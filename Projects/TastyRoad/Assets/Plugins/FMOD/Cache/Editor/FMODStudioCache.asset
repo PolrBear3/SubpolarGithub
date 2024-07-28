@@ -27,33 +27,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-6042152632685146692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/Oven_switch
-  m_EditorClassIdentifier: 
-  Path: event:/Station SFX/Oven_switch
-  Guid:
-    Data1: -405792680
-    Data2: 1241036917
-    Data3: 808444331
-    Data4: -2073641631
-  Banks:
-  - {fileID: -5831155940130558466}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-5831155940130558466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,10 +42,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638564913159524560
+  lastModified: 638577206591839269
   FileSizes:
   - Name: Desktop
-    Value: 9952
+    Value: 11104
   Exists: 1
 --- !u!114 &-4636642808447246786
 MonoBehaviour:
@@ -197,13 +170,13 @@ MonoBehaviour:
   - {fileID: -2088351255270994832}
   - {fileID: -7366365442869570914}
   - {fileID: -4636642808447246786}
-  - {fileID: -6042152632685146692}
+  - {fileID: 6769733327766220667}
   EditorParameters: []
   MasterBanks:
   - {fileID: 3878220415652670247}
   StringsBanks:
   - {fileID: 6601575054717938182}
-  cacheTime: 638564913159524560
+  cacheTime: 638577206591839269
   cacheVersion: 131618
 --- !u!114 &3878220415652670247
 MonoBehaviour:
@@ -220,7 +193,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638564911307315534
+  lastModified: 638577206590483197
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -240,8 +213,35 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638564911307330378
+  lastModified: 638577206590494194
   FileSizes:
   - Name: Desktop
-    Value: 1084
+    Value: 1090
   Exists: 1
+--- !u!114 &6769733327766220667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Station SFX/Oven_interaction
+  m_EditorClassIdentifier: 
+  Path: event:/Station SFX/Oven_interaction
+  Guid:
+    Data1: 1286707223
+    Data2: 1287438130
+    Data3: -1066805879
+    Data4: 294826659
+  Banks:
+  - {fileID: -5831155940130558466}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0

@@ -151,7 +151,6 @@ public class Oven : MonoBehaviour, IInteractable
     }
 
 
-
     // Food Heating System
     private void Heat_Food()
     {
@@ -162,6 +161,8 @@ public class Oven : MonoBehaviour, IInteractable
         }
 
         if (_controller.Food_Icon().hasFood == false) return;
+
+        Audio_Controller.instance.Play_OneShot("Oven_interaction", transform.position);
 
         _heatCoroutine = StartCoroutine(Heat_Food_Coroutine());
     }
