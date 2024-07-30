@@ -25,11 +25,16 @@ public class FoodData_Controller : MonoBehaviour
 
     [Header("")]
     [SerializeField] private SpriteRenderer _foodIcon;
+    public SpriteRenderer foodIcon => _foodIcon;
+
     [SerializeField] private SpriteRenderer _amountBar;
     [SerializeField] private SpriteRenderer[] _conditionBoxes;
 
     [Header("")]
-    [SerializeField] private Sprite[] _amountBarSprites;
+    [SerializeField] private Sprite[] _defaultBarSprites;
+    [SerializeField] private Sprite[] _greenBarSprites;
+
+    private Sprite[] _amountBarSprites;
     public Sprite[] amountBarSprites => _amountBarSprites;
 
     [Header("")]
@@ -184,6 +189,17 @@ public class FoodData_Controller : MonoBehaviour
         _amountBar.color = Color.clear;
     }
 
+    public void Toggle_BarColor(bool isColored)
+    {
+        if (isColored)
+        {
+            _amountBarSprites = _greenBarSprites;
+            return;
+        }
+
+        _amountBarSprites = _defaultBarSprites;
+    }
+
 
     // Time Tik
     private void TimeTik_Update()
@@ -195,6 +211,18 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Food Condition
+    private ConditionSprites Get_ConditionSprites(FoodCondition_Type type)
+    {
+        for (int i = 0; i < _conditionSprites.Length; i++)
+        {
+            if (type != _conditionSprites[i].type) continue;
+
+            return _conditionSprites[i];
+        }
+        return null;
+    }
+
+
     public void Show_Condition()
     {
         bool conditionEmpty = _hasFood == false || _currentData.conditionDatas == null;
@@ -216,14 +244,13 @@ public class FoodData_Controller : MonoBehaviour
             _conditionBoxes[i].color = Color.white;
         }
     }
-    private ConditionSprites Get_ConditionSprites(FoodCondition_Type type)
-    {
-        for (int i = 0; i < _conditionSprites.Length; i++)
-        {
-            if (type != _conditionSprites[i].type) continue;
 
-            return _conditionSprites[i];
+    public void Hide_Condition()
+    {
+        foreach (var conditionBox in _conditionBoxes)
+        {
+            conditionBox.sprite = null;
+            conditionBox.color = Color.clear;
         }
-        return null;
     }
 }

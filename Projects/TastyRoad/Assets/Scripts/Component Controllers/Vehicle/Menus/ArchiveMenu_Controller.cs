@@ -163,8 +163,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data slotData = new(currentSlot.data);
         currentSlot.Empty_ItemBox();
 
-        cursor.Assign_Data(slotData);
         cursor.Assign_Item(slotData.currentFood);
+        cursor.Assign_Data(slotData);
 
         IngredientBubble_Toggle(true);
     }
@@ -193,8 +193,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         cursor.Empty_Item();
 
-        currentSlot.Assign_Data(cursorData);
         currentSlot.Assign_Item(cursorData.currentFood);
+        currentSlot.Assign_Data(cursorData);
 
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
@@ -212,11 +212,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data cursorData = new(cursor.data);
         ItemSlot_Data slotData = new(currentSlot.data);
 
-        cursor.Assign_Item(slotData.currentFood);
         currentSlot.Assign_Item(cursorData.currentFood);
+        cursor.Assign_Item(slotData.currentFood);
 
-        IngredientBubble_Toggle(true);
         UpdateSlot_Unlcoks(currentSlot);
+        IngredientBubble_Toggle(true);
     }
 
 
@@ -279,12 +279,20 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void UnLock_BookMark(Food_ScrObj unlockFood)
     {
+        Data_Controller data = _controller.vehicleController.mainController.dataController;
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
             if (currentSlots[i].data.hasItem == false) continue;
             if (currentSlots[i].data.currentFood != unlockFood) continue;
+
+            // lock bookmark if it is not cooked food
+            if (data.CookedFood(unlockFood) == null)
+            {
+                currentSlots[i].Toggle_Lock(true);
+                return;
+            }
 
             currentSlots[i].Toggle_Lock(false);
             return;
@@ -362,7 +370,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // check if non duplicate food
         if (Food_InMenu(food)) return null;
 
-        // check if current food have ingredients
+        // check if food has ingredients
         if (food.ingredients.Count <= 0) return null;
 
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
@@ -379,7 +387,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Food Ingredient Control
-    private bool Ingredient_Unlocked(Food_ScrObj checkFood)
+    public bool Ingredient_Unlocked(Food_ScrObj checkFood)
     {
         return _ingredientUnlocks.Contains(checkFood);
     }

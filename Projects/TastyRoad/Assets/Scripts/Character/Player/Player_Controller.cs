@@ -26,7 +26,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Awake()
     {
-        mainController = FindObjectOfType<Main_Controller>();
+        mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
         mainController.Track_CurrentCharacter(gameObject);
 
         if (gameObject.TryGetComponent(out PlayerInput playerInput)) { _playerInput = playerInput; }

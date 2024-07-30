@@ -155,20 +155,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Slots Control
-    public int AvailableSlots_Count()
-    {
-        int slotsCount = 0;
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
-
-        foreach (var slot in currentSlots)
-        {
-            if (slot.data.hasItem == true) continue;
-            slotsCount++;
-        }
-
-        return slotsCount;
-    }
-
     public int Station_Amount(Station_ScrObj station)
     {
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
@@ -450,9 +436,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (_interactionMode) return;
 
         ItemSlot_Cursor cursor = _controller.cursor;
+
         if (cursor.data.hasItem) return;
+        if (cursor.currentSlot.data.isLocked) return;
 
         List<Station_Controller> currentStations = _controller.vehicleController.mainController.CurrentStations(false);
+
         if (currentStations.Count <= 0) return;
 
         // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
