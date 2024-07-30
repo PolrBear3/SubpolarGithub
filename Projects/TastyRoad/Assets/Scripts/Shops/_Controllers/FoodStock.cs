@@ -127,7 +127,7 @@ public class FoodStock : MonoBehaviour
         {
             _interactable.UnInteract();
 
-            DialogData data = new DialogData(_currentFood.sprite, "Not enough amount available!");
+            DialogData data = new DialogData(_currentFood.sprite, "Not enough amount to purchase!");
             dialog.Update_Dialog(data).UpdateIcon_CenterPosition(_currentFood.uiCenterPosition);
 
             return;
@@ -140,7 +140,7 @@ public class FoodStock : MonoBehaviour
         {
             _interactable.UnInteract();
 
-            DialogData data = new DialogData(goldenNugget.sprite, "Not enough golden nuggets to purchase!");
+            DialogData data = new DialogData(goldenNugget.sprite, "Not enough amount to purchase!");
             dialog.Update_Dialog(data).UpdateIcon_CenterPosition(goldenNugget.uiCenterPosition);
 
             return;
@@ -167,12 +167,12 @@ public class FoodStock : MonoBehaviour
         //
         Update_Amount(-1);
 
+        // archive menu unlocks
         ArchiveMenu_Controller archiveMenu = _interactable.mainController.currentVehicle.menu.archiveMenu;
-
-        archiveMenu.AddFood(_currentFood);
         archiveMenu.UnLock_BookMark(_currentFood);
 
         // coin launch animation
-        _launcher.Parabola_CoinLaunch(_currentFood.sprite, _interactable.detection.player.transform.position);
+        Vector2 launchDirection = _interactable.detection.player.transform.position - transform.position;
+        _launcher.Parabola_CoinLaunch(_currentFood.sprite, launchDirection);
     }
 }

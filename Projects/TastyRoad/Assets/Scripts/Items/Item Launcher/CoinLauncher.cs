@@ -26,9 +26,7 @@ public class CoinLauncher : MonoBehaviour
         GameObject launchedBullet = Instantiate(_coin, transform.parent.position, Quaternion.identity);
         CoinLauncher_Coin bullet = launchedBullet.GetComponent<CoinLauncher_Coin>();
 
-        Vector2 direction = launchDirection - (Vector2)transform.position;
-
-        bullet.SetData(this, sprite, direction);
+        bullet.SetData(this, sprite, launchDirection);
         bullet.movementEvent += bullet.Parabola_Movement;
     }
 }

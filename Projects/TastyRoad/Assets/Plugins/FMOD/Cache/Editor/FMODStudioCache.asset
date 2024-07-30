@@ -170,7 +170,7 @@ MonoBehaviour:
   - {fileID: -2088351255270994832}
   - {fileID: -7366365442869570914}
   - {fileID: -4636642808447246786}
-  - {fileID: 6769733327766220667}
+  - {fileID: 3452610737266261844}
   EditorParameters: []
   MasterBanks:
   - {fileID: 3878220415652670247}
@@ -178,6 +178,33 @@ MonoBehaviour:
   - {fileID: 6601575054717938182}
   cacheTime: 638577206591839269
   cacheVersion: 131618
+--- !u!114 &3452610737266261844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Station SFX/Oven_interaction
+  m_EditorClassIdentifier: 
+  Path: event:/Station SFX/Oven_interaction
+  Guid:
+    Data1: 1286707223
+    Data2: 1287438130
+    Data3: -1066805879
+    Data4: 294826659
+  Banks:
+  - {fileID: -5831155940130558466}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &3878220415652670247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,30 +245,3 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1090
   Exists: 1
---- !u!114 &6769733327766220667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/Oven_interaction
-  m_EditorClassIdentifier: 
-  Path: event:/Station SFX/Oven_interaction
-  Guid:
-    Data1: 1286707223
-    Data2: 1287438130
-    Data3: -1066805879
-    Data4: 294826659
-  Banks:
-  - {fileID: -5831155940130558466}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
