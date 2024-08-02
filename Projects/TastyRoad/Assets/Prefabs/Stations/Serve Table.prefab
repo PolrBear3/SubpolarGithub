@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stationScrObj: {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
+  _roamRestrictedArea: 1
 --- !u!114 &3609195736537386832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,6 +327,10 @@ PrefabInstance:
     - target: {fileID: 8499766286869677877, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720598385154043323, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9000294280825195306, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_SortingOrder

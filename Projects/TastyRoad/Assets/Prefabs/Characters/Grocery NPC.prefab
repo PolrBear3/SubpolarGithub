@@ -243,10 +243,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterData: {fileID: 0}
-  _detection: {fileID: -2268305881826384539}
   _basicAnim: {fileID: -7268301005637499790}
   _foodIcon: {fileID: 0}
-  _actionBubble: {fileID: 936463578848434098}
+  _interactable: {fileID: 0}
   _itemLauncher: {fileID: 0}
   _timer: {fileID: 0}
   _movement: {fileID: 2978574373251596411}
@@ -266,6 +265,7 @@ MonoBehaviour:
   _controller: {fileID: 9094981842974887859}
   _moveSpeed: 5
   _intervalTimeRange: {x: 5, y: 10}
+  _pathFindCount: 0
 --- !u!114 &9161566515473168446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +284,7 @@ MonoBehaviour:
   _foodStocks: []
   _storagePoint: {fileID: 0}
   _actionSpeed: 0.75
+  _discountStockCount: 3
 --- !u!1 &6140207368992471877
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,17 +434,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
---- !u!114 &936463578848434098 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
-  m_PrefabInstance: {fileID: 4692392363641812106}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30505787c5e974c94ab610c0b4a0b7e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &2860891977526307164 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}

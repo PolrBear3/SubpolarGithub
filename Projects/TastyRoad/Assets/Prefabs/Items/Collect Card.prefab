@@ -337,10 +337,10 @@ GameObject:
   - component: {fileID: 6507860424653012280}
   - component: {fileID: 3486195159248401679}
   - component: {fileID: 8986218194932457666}
+  - component: {fileID: 8571569119331683655}
   - component: {fileID: 1871645149704256381}
   - component: {fileID: 4002702723880789616}
   - component: {fileID: 5739883101272452172}
-  - component: {fileID: 8571569119331683655}
   - component: {fileID: 6290791405807346158}
   m_Layer: 0
   m_Name: Collect Card
@@ -363,6 +363,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3907853181888454532}
+  - {fileID: 5939617936879358401}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6507860424653012280
@@ -492,6 +493,26 @@ MonoBehaviour:
   m_DefaultActionMap: In Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &8571569119331683655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638662604626066613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: 
+  _datas:
+  - icon: {fileID: 0}
+    info: A food ingredient is picked up !
+  - icon: {fileID: 0}
+    info: A station blueprint is picked up !
 --- !u!114 &1871645149704256381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,26 +555,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
---- !u!114 &8571569119331683655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2638662604626066613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultData:
-    icon: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
-    info: 
-  _datas:
-  - icon: {fileID: 0}
-    info: A food ingredient is picked up !
-  - icon: {fileID: 0}
-    info: A station blueprint is picked up !
 --- !u!114 &6290791405807346158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,6 +568,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactable: {fileID: 4002702723880789616}
+  _launcher: {fileID: 4653407473077677712}
+  _launchSprite: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
+  _bluePrintStations:
+  - {fileID: 11400000, guid: 533d860f69be7472e99b1a648377fcf5, type: 2}
+  - {fileID: 11400000, guid: 3264c6e5229014a67bd03e468bead6c8, type: 2}
+  - {fileID: 11400000, guid: 2d159bd0995db474498c96e00ccc654a, type: 2}
+  - {fileID: 11400000, guid: 274ee32ff1ff346cea9879afe6146486, type: 2}
+  - {fileID: 11400000, guid: 0ae1b32d583fb477da6041b8044d7346, type: 2}
+  - {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
+  - {fileID: 11400000, guid: a1ca9265c35084055ae852fb82aaf7cd, type: 2}
+  - {fileID: 11400000, guid: 8d1e6b36626de4a3ea7b9c6ec7712fc7, type: 2}
+  - {fileID: 11400000, guid: 0f31023eefe2544a0bd111e3e4514df6, type: 2}
+  - {fileID: 11400000, guid: 4340d4a463bc04e91bf54de1f75d2888, type: 2}
+  - {fileID: 11400000, guid: c32ff8ce5146c45c79af7acf780abf86, type: 2}
 --- !u!1 &4072280877947688544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,3 +1236,76 @@ Transform:
   - {fileID: 677652322954826136}
   m_Father: {fileID: 3907853181888454532}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &7619357214468527778
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7906845208016612264}
+    m_Modifications:
+    - target: {fileID: 3771857720093246161, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_Name
+      value: Coin Launcher
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+--- !u!114 &4653407473077677712 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2966003488704018482, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+  m_PrefabInstance: {fileID: 7619357214468527778}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a2ea85ed7b094d77826665f950a06a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &5939617936879358401 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4310127427621701475, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+  m_PrefabInstance: {fileID: 7619357214468527778}
+  m_PrefabAsset: {fileID: 0}

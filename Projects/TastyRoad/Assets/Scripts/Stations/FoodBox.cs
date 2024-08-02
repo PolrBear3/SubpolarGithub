@@ -7,18 +7,11 @@ public class FoodBox : MonoBehaviour, IInteractable
     private Station_Controller _controller;
 
 
-
     // UnityEngine
     private void Awake()
     {
         _controller = gameObject.GetComponent<Station_Controller>();
     }
-
-    private void Start()
-    {
-        _controller.Food_Icon().Show_AmountBar_Duration();
-    }
-
 
 
     // OnTrigger

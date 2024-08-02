@@ -28,10 +28,10 @@ public class Station_Controller : MonoBehaviour
     public Station_ScrObj stationScrObj => _stationScrObj;
 
     [Header("Start Setting for station area")]
-    [SerializeField] private bool _nonStationArea;
+    [SerializeField] private bool _roamRestrictedArea;
 
-    private bool _isStationArea;
-    public bool isStationArea => _isStationArea;
+    private bool _isRoamArea;
+    public bool isRoamArea => _isRoamArea;
 
 
     public delegate void Action_Event();
@@ -56,7 +56,7 @@ public class Station_Controller : MonoBehaviour
 
     private void Start()
     {
-        StationArea_Toggle(_nonStationArea);
+        RoamArea_Toggle(_roamRestrictedArea);
     }
 
 
@@ -135,9 +135,9 @@ public class Station_Controller : MonoBehaviour
         _playerInput.enabled = isEnabled;
     }
 
-    public void StationArea_Toggle(bool toggleOn)
+    public void RoamArea_Toggle(bool toggleOn)
     {
-        _isStationArea = toggleOn;
+        _isRoamArea = toggleOn;
     }
 
 

@@ -102,9 +102,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Test Buttons
     private void TestButton_Subscription()
     {
-        /*
-        currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(63578), 1);
-        */
+        // currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(97210), 1);
+        UnClaim_Position(new Vector2(3, -1));
     }
 
     public void TestButton1()
@@ -461,7 +460,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             if (_currentStations[i].movement == null) continue;
 
             // check if station area is toggled on
-            if (_currentStations[i].isStationArea == true) continue;
+            if (_currentStations[i].isRoamArea == true) continue;
 
             // get station sprite render bound
             Bounds stationArea = _currentStations[i].spriteRenderer.bounds;

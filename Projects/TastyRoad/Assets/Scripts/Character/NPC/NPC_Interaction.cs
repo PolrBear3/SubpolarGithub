@@ -64,9 +64,24 @@ public class NPC_Interaction : MonoBehaviour
     {
         Interact_FacePlayer();
 
-        if (_servedFoodData != null && _controller.foodIcon.hasFood)
+        if (FoodOrder_Served())
         {
             Collect_Coin();
+            Clear_Data();
+
+            // toss coin to player animation
+            Sprite coinSprite = _controller.mainController.dataController.goldenNugget.sprite;
+            Transform playerDirection = _controller.interactable.detection.player.transform;
+
+            _controller.itemLauncher.Parabola_CoinLaunch(coinSprite, playerDirection.position);
+
+            // leave current location
+            NPC_Movement move = _controller.movement;
+            SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
+
+            move.Update_RoamArea(currentLocation);
+            move.Leave(move.Random_IntervalTime());
+
             return;
         }
 
@@ -127,6 +142,7 @@ public class NPC_Interaction : MonoBehaviour
             LeanTween.alpha(_stateBoxes, 0f, 0.01f);
         }
     }
+
 
     // wake animation for order open
     public void Wake_Animation()
@@ -207,13 +223,8 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.bubble.Toggle(false);
         StateBox_Toggle();
 
-        //
         _controller.interactable.Action1Event -= Serve_FoodOrder;
-
-        // clear food data
-        _controller.foodIcon.Set_CurrentData(null);
-        _controller.foodIcon.Show_Icon();
-        _controller.foodIcon.Show_Condition();
+        Clear_Data();
 
         // hunger level to 0
         Character_Data data = _controller.characterData;
@@ -227,6 +238,7 @@ public class NPC_Interaction : MonoBehaviour
     }
 
 
+    // Checks
     /// <returns>
     /// NPC will decide whether or not they should get in line for food order
     /// </returns>
@@ -239,6 +251,12 @@ public class NPC_Interaction : MonoBehaviour
         if (Main_Controller.Percentage_Activated(_controller.characterData.hungerLevel)) return true;
         else return false;
     }
+
+    public bool FoodOrder_Served()
+    {
+        return _servedFoodData != null && _controller.foodIcon.hasFood;
+    }
+
 
     // Set Random Food Order and State
     public void Assign_FoodOrder()
@@ -281,6 +299,7 @@ public class NPC_Interaction : MonoBehaviour
             }
         }
     }
+
 
     // Serve Food Order
     private void Serve_FoodOrder()
@@ -356,7 +375,6 @@ public class NPC_Interaction : MonoBehaviour
         Eat_Animation();
     }
 
-    // Eat Food Animation after Food Order is Served
     private void Eat_Animation()
     {
         StartCoroutine(Eat_Animation_Coroutine());
@@ -408,6 +426,7 @@ public class NPC_Interaction : MonoBehaviour
         _goldCoinSR.color = Color.white;
     }
 
+
     // Food Served 
     private int Calculated_FoodScore()
     {
@@ -433,7 +452,8 @@ public class NPC_Interaction : MonoBehaviour
         return defaultScore + timeBlock + stateMatch + bookMarkCount;
     }
 
-    private void Collect_Coin()
+
+    public void Collect_Coin()
     {
         int leftOver = _controller.mainController.Add_GoldenNugget(_foodScore);
 
@@ -446,16 +466,12 @@ public class NPC_Interaction : MonoBehaviour
 
         _foodScore = 0;
 
-        // hide coin sprite
-        _goldCoinSR.color = Color.clear;
-
-        // toss coin to player animation
-        Sprite coinSprite = _controller.mainController.dataController.goldenNugget.sprite;
-        _controller.itemLauncher.Parabola_CoinLaunch(coinSprite, -_controller.interactable.detection.player.transform.position);
-
         // dialog update
         gameObject.GetComponent<DialogTrigger>().Update_Dialog();
+    }
 
+    public void Clear_Data()
+    {
         // clear data
         _servedFoodData = null;
 
@@ -463,11 +479,7 @@ public class NPC_Interaction : MonoBehaviour
         _controller.foodIcon.Show_Icon();
         _controller.foodIcon.Show_Condition();
 
-        // leave
-        NPC_Movement move = _controller.movement;
-        SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
-
-        move.Update_RoamArea(currentLocation);
-        move.Leave(move.Random_IntervalTime());
+        // hide coin sprite
+        _goldCoinSR.color = Color.clear;
     }
 }

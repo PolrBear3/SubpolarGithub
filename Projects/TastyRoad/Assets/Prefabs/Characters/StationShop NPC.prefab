@@ -229,6 +229,8 @@ MonoBehaviour:
     info: No locked stations currently bookmarked!
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Bookmarked stations successfully unlocked!
+  - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Bookmarked stations have been successfully merged!
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,9 +326,20 @@ MonoBehaviour:
   _currentSubLocation: {fileID: 0}
   _boxStackPoints: []
   _stationStocks: []
-  _mergeStationStock: {fileID: 0}
-  _carryBox: {fileID: 3467676747412569844}
   _duplicateAmount: 0
+  _mergeStationStock: {fileID: 0}
+  _mergeStations:
+  - {fileID: 11400000, guid: 533d860f69be7472e99b1a648377fcf5, type: 2}
+  - {fileID: 11400000, guid: 3264c6e5229014a67bd03e468bead6c8, type: 2}
+  - {fileID: 11400000, guid: 2d159bd0995db474498c96e00ccc654a, type: 2}
+  - {fileID: 11400000, guid: 274ee32ff1ff346cea9879afe6146486, type: 2}
+  - {fileID: 11400000, guid: 0ae1b32d583fb477da6041b8044d7346, type: 2}
+  - {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
+  - {fileID: 11400000, guid: a1ca9265c35084055ae852fb82aaf7cd, type: 2}
+  - {fileID: 11400000, guid: 8d1e6b36626de4a3ea7b9c6ec7712fc7, type: 2}
+  - {fileID: 11400000, guid: 0f31023eefe2544a0bd111e3e4514df6, type: 2}
+  - {fileID: 11400000, guid: 4340d4a463bc04e91bf54de1f75d2888, type: 2}
+  _carryBox: {fileID: 3467676747412569844}
 --- !u!1 &6140207368992471877
 GameObject:
   m_ObjectHideFlags: 0

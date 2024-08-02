@@ -147,7 +147,6 @@ public class Oven : MonoBehaviour, IInteractable
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
-        Audio_Controller.instance.Play_OneShot("Oven_switch", transform.position);
     }
 
 
@@ -163,7 +162,7 @@ public class Oven : MonoBehaviour, IInteractable
 
         if (_controller.Food_Icon().hasFood == false) return;
 
-        Audio_Controller.instance.Play_OneShot("Oven_interaction", transform.position);
+        Audio_Controller.instance.Play_OneShot("Oven_switch", transform.position);
 
         _heatCoroutine = StartCoroutine(Heat_Food_Coroutine());
     }

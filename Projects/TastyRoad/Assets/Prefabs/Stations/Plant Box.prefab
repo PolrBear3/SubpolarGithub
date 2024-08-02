@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stationScrObj: {fileID: 11400000, guid: 274ee32ff1ff346cea9879afe6146486, type: 2}
-  _nonStationArea: 0
+  _roamRestrictedArea: 1
 --- !u!114 &3609195736537386832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,6 +272,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _plantableFoods:
   - {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
+  _unPlantedSprite: {fileID: 1153679454, guid: efc963dc4f222479caa64033825131e4, type: 3}
+  _plantedSprite: {fileID: 2077508385, guid: efc963dc4f222479caa64033825131e4, type: 3}
 --- !u!1001 &1517393429545405773
 PrefabInstance:
   m_ObjectHideFlags: 0

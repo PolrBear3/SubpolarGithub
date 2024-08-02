@@ -281,13 +281,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        // check if there is unlocked station
-        if (_unlockedStations.Count <= 0)
-        {
-            // dialog
-            return;
-        }
-
         // check if _mergeStationStock is empty
         if (_mergeStationStock.sold == false)
         {
@@ -349,7 +342,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         //
         _restockCoroutine = null;
 
-        // dialog
+        // merge complete dialog
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(4);
     }
 

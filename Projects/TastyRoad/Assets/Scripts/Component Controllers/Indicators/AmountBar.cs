@@ -8,6 +8,10 @@ public class AmountBar : MonoBehaviour
 
     [Header("")]
     [SerializeField] private Sprite[] _amountBarSprites;
+    public Sprite[] amountBarSprite => _amountBarSprites;
+
+    private int _currentAmount;
+    public int currentAmount => _currentAmount;
 
     private bool _isTransparent;
     public bool isTransparent => _isTransparent;
@@ -21,10 +25,34 @@ public class AmountBar : MonoBehaviour
 
 
     // Functions
+    public void Set_Amount(int setAmount)
+    {
+        _currentAmount = setAmount;
+
+        if (_currentAmount >= 0) return;
+
+        _currentAmount = 0;
+    }
+
+    public void Update_Amount(int updateAmount)
+    {
+        _currentAmount += updateAmount;
+
+        if (_currentAmount >= 0) return;
+
+        _currentAmount = 0;
+    }
+
+
+    public void Load()
+    {
+        Load(_currentAmount);
+    }
     public void Load(int loadAmount)
     {
         _sr.sprite = _amountBarSprites[Mathf.Clamp(loadAmount, 0, _amountBarSprites.Length - 1)];
     }
+
 
     public void Transparent_Toggle(bool toggleOn)
     {

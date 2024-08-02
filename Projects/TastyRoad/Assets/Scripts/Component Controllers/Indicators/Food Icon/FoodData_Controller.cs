@@ -53,7 +53,10 @@ public class FoodData_Controller : MonoBehaviour
     private void Start()
     {
         Show_Icon();
+
+        Toggle_BarColor(false);
         Show_AmountBar();
+
         Show_Condition();
     }
 
@@ -172,6 +175,13 @@ public class FoodData_Controller : MonoBehaviour
 
     public void Show_AmountBar_Duration()
     {
+        // empty
+        if (_barShowLocked == true || _hasFood == false || _currentData.currentAmount <= 0)
+        {
+            _amountBar.color = Color.clear;
+            return;
+        }
+
         if (_amountBarCoroutine != null)
         {
             StopCoroutine(_amountBarCoroutine);

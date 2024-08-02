@@ -163,8 +163,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data slotData = new(currentSlot.data);
         currentSlot.Empty_ItemBox();
 
-        cursor.Assign_Item(slotData.currentFood);
         cursor.Assign_Data(slotData);
+        cursor.Assign_Item(slotData.currentFood);
 
         IngredientBubble_Toggle(true);
     }
@@ -193,8 +193,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         cursor.Empty_Item();
 
-        currentSlot.Assign_Item(cursorData.currentFood);
         currentSlot.Assign_Data(cursorData);
+        currentSlot.Assign_Item(cursorData.currentFood);
 
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
@@ -212,7 +212,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data cursorData = new(cursor.data);
         ItemSlot_Data slotData = new(currentSlot.data);
 
+        currentSlot.Assign_Data(cursorData);
         currentSlot.Assign_Item(cursorData.currentFood);
+
+        cursor.Assign_Data(slotData);
         cursor.Assign_Item(slotData.currentFood);
 
         UpdateSlot_Unlcoks(currentSlot);

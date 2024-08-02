@@ -17,13 +17,22 @@ public class FoodStock : MonoBehaviour
     [SerializeField] private Sprite[] _sprites;
 
     [Header("")]
+    [SerializeField] private SpriteRenderer _tagSR;
+    [SerializeField] private Sprite[] _tagSprites;
+
+    [Header("")]
     [Range(1, 98)] [SerializeField] private int _maxAmount;
     public int maxAmount => _maxAmount;
+
+    [Range(1, 98)] [SerializeField] private int _discountPrice;
 
     private int _currentAmount;
     public int currentAmount => _currentAmount;
 
     private Food_ScrObj _currentFood;
+
+    private bool _isDiscount;
+    public bool isDiscount => _isDiscount;
 
 
     // UnityEngine
@@ -35,7 +44,9 @@ public class FoodStock : MonoBehaviour
     private void Start()
     {
         Set_Data();
-        SpriteUpdate();
+
+        Sprite_Update();
+        TagSprite_Update();
 
         _interactable.LockUnInteract(true);
 
@@ -62,6 +73,7 @@ public class FoodStock : MonoBehaviour
         _interactable.bubble.Update_Bubble(_currentFood, null);
     }
 
+
     public void Update_Data()
     {
         Data_Controller data = _interactable.mainController.dataController;
@@ -82,10 +94,25 @@ public class FoodStock : MonoBehaviour
         _interactable.bubble.Update_Bubble(_currentFood, null);
     }
 
+    public void Update_Discount(bool isDiscount)
+    {
+        _isDiscount = isDiscount;
+
+        TagSprite_Update();
+    }
+
 
     private void Set_Dialog()
     {
-        string dialog = _currentFood.price + " coin to purchase\nyour current coin is " + _interactable.mainController.GoldenNugget_Amount();
+        // calculation
+        int price = _currentFood.price;
+
+        if (_isDiscount && price > 0)
+        {
+            price = _discountPrice;
+        }
+
+        string dialog = price + " nuggets to purchase\nyour current nugget amount is " + _interactable.mainController.GoldenNugget_Amount();
 
         DialogData data = new DialogData(_currentFood.sprite, dialog);
         DialogBox dialogBox = gameObject.GetComponent<DialogTrigger>().Update_Dialog(data);
@@ -95,7 +122,7 @@ public class FoodStock : MonoBehaviour
 
 
     // Sprite Control
-    private void SpriteUpdate()
+    private void Sprite_Update()
     {
         // cooked food
         if (_interactable.mainController.dataController.Is_RawFood(_currentFood) == false)
@@ -108,12 +135,31 @@ public class FoodStock : MonoBehaviour
         _sr.sprite = _sprites[0];
     }
 
+    private void TagSprite_Update()
+    {
+        if (currentAmount <= 0)
+        {
+            _tagSR.sprite = _tagSprites[0];
+            return;
+        }
+
+        if (_isDiscount == false)
+        {
+            _tagSR.sprite = _tagSprites[1];
+            return;
+        }
+
+        _tagSR.sprite = _tagSprites[2];
+    }
+
 
     // Amount Bar
     public void Update_Amount(int updateAmount)
     {
         _currentAmount += updateAmount;
         _amountBar.Load(_currentAmount);
+
+        TagSprite_Update();
     }
 
 
@@ -133,12 +179,20 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        Food_ScrObj goldenNugget = _interactable.mainController.dataController.goldenNugget;
+        // calculation
+        int price = _currentFood.price;
+
+        if (_isDiscount && price > 0)
+        {
+            price = _discountPrice;
+        }
 
         // not enough golden nuggets
-        if (_interactable.mainController.GoldenNugget_Amount() < _currentFood.price)
+        if (_interactable.mainController.GoldenNugget_Amount() < price)
         {
             _interactable.UnInteract();
+
+            Food_ScrObj goldenNugget = _interactable.mainController.dataController.goldenNugget;
 
             DialogData data = new DialogData(goldenNugget.sprite, "Not enough golden nuggets to purchase!");
             dialog.Update_Dialog(data).UpdateIcon_CenterPosition(goldenNugget.uiCenterPosition);
@@ -146,8 +200,7 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        // current coin calculation
-        _interactable.mainController.Remove_GoldenNugget(_currentFood.price);
+        _interactable.mainController.Remove_GoldenNugget(price);
 
         // not enough slots
         FoodMenu_Controller foodMenu = _interactable.mainController.currentVehicle.menu.foodMenu;
@@ -166,6 +219,7 @@ public class FoodStock : MonoBehaviour
 
         //
         Update_Amount(-1);
+        TagSprite_Update();
 
         // archive menu unlocks
         ArchiveMenu_Controller archiveMenu = _interactable.mainController.currentVehicle.menu.archiveMenu;

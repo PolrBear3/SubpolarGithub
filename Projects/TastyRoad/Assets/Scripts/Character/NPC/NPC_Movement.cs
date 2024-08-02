@@ -41,10 +41,7 @@ public class NPC_Movement : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out NPC_Controller controller)) { _controller = controller; }
-    }
 
-    private void Start()
-    {
         _targetPosition = transform.position;
     }
 
