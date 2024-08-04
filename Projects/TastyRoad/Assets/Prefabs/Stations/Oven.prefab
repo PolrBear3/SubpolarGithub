@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4234209580075691094
 Transform:
   m_ObjectHideFlags: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: -1771329353, guid: 1fb58d5e96e7047fdb4aeba2449f8b88, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -133,7 +133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &738463755145253491
 Transform:
   m_ObjectHideFlags: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.96862745, g: 0.5882353, b: 0.09019608, a: 1}
-  m_Intensity: 3
+  m_Intensity: 0
   m_LightVolumeIntensity: 0
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 0000000047127e5f4dda026fbfb5bb71
@@ -485,9 +485,11 @@ MonoBehaviour:
   _controller: {fileID: -5017999228258243358}
   inActiveSprite: {fileID: 2118350969, guid: efc963dc4f222479caa64033825131e4, type: 3}
   activeSprite: {fileID: 1872977410, guid: efc963dc4f222479caa64033825131e4, type: 3}
-  _heatEmission: {fileID: 1283921541534742190}
-  _light: {fileID: 3229255353084678073}
+  _heatEmission: {fileID: 9079970196269597345}
+  _light: {fileID: 4963728484724285984}
   _heatIncreaseTime: 3
+  _emissionValue: 5
+  _lightValue: 3
 --- !u!1001 &2608825548309145368
 PrefabInstance:
   m_ObjectHideFlags: 0

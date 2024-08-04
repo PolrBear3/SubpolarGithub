@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Custom_PositionClaimer : MonoBehaviour
+public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
 {
     private Main_Controller _main;
 
@@ -20,6 +20,18 @@ public class Custom_PositionClaimer : MonoBehaviour
     private void OnDestroy()
     {
         _main.UnClaim_Position(transform.position);
+    }
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        _main.UnClaim_Position(transform.position);
+    }
+
+    public void Load_Data()
+    {
+        
     }
 
 

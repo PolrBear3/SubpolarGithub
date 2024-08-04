@@ -102,20 +102,28 @@ public class GroceryNPC : MonoBehaviour
 
 
     // Actions
+    private void Cancel_Action()
+    {
+        if (_actionCoroutine == null) return;
+
+        StopCoroutine(_actionCoroutine);
+        _actionCoroutine = null;
+
+        // food box transparency
+        _foodBox.color = Color.clear;
+
+        // return to free roam
+        NPC_Movement move = _npcController.movement;
+        move.Free_Roam(_currentSubLocation.roamArea, move.Random_IntervalTime());
+    }
+
+
     private void Refill_Amount()
     {
-        // if currently not in action
-        if (_npcController.movement.roamActive == false) return;
+        if (_actionCoroutine != null) return;
 
         // food box transparency
         _foodBox.color = Color.white;
-
-        // coroutine refresh
-        if (_actionCoroutine != null)
-        {
-            StopCoroutine(_actionCoroutine);
-            _actionCoroutine = null;
-        }
 
         _actionCoroutine = StartCoroutine(Refill_Amount_Coroutine());
     }
@@ -156,18 +164,10 @@ public class GroceryNPC : MonoBehaviour
 
     private void Restock()
     {
-        // if currently not in action
-        if (_npcController.movement.roamActive == false) return;
+        if (_actionCoroutine != null) return;
 
         // food box transparency
         _foodBox.color = Color.white;
-
-        // coroutine refresh
-        if (_actionCoroutine != null)
-        {
-            StopCoroutine(_actionCoroutine);
-            _actionCoroutine = null;
-        }
 
         _actionCoroutine = StartCoroutine(Restock_Coroutine());
     }
@@ -222,6 +222,7 @@ public class GroceryNPC : MonoBehaviour
         // return to free roam
         movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
     }
+
 
     private void Set_Discount()
     {

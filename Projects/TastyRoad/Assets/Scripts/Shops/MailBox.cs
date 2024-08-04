@@ -87,7 +87,7 @@ public class MailBox : MonoBehaviour, IInteractable
     {
         // get current location outer position
         Location_Controller currentLocation = _mainController.currentLocation;
-        Vector2 spawnPoint = currentLocation.OuterLocation_Position(1);
+        Vector2 spawnPoint = currentLocation.OuterLocation_Position(Random.Range(0, 2));
 
         // spawn
         GameObject spawnNPC = _mainController.Spawn_Character(2, spawnPoint);
@@ -99,7 +99,7 @@ public class MailBox : MonoBehaviour, IInteractable
     }
 
 
-    // Interact Functions
+    // Spawn Points
     private Vector2 Available_SpawnPoint()
     {
         List<Vector2> spawnPoints = new();
@@ -117,6 +117,7 @@ public class MailBox : MonoBehaviour, IInteractable
     }
 
 
+    // Interact Functions
     private void Insert_Nugget()
     {
         // check if nugget amount is max
@@ -129,6 +130,7 @@ public class MailBox : MonoBehaviour, IInteractable
 
         playerFood.Set_CurrentData(null);
         playerFood.Show_Icon();
+        playerFood.Show_Condition();
 
         // increase amount
         _amountBar.Update_Amount(1);
@@ -166,9 +168,17 @@ public class MailBox : MonoBehaviour, IInteractable
             Update_Sprite();
         }
 
+        // get current location outer position
+        Location_Controller currentLocation = _mainController.currentLocation;
+
         // leave
-        movement.Leave(0f);
+        int direction = Random.Range(0, 2);
+        Vector2 spawnPoint = currentLocation.OuterLocation_Position(direction);
+
+        movement.Assign_TargetPosition(spawnPoint);
+
         while (movement.At_TargetPosition() == false) yield return null;
+        movement.Leave(direction, 0f);
 
         _coroutine = null;
         yield break;

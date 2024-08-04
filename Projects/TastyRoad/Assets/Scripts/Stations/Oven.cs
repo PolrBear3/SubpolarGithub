@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using FMODUnity;
 
 public class Oven : MonoBehaviour, IInteractable
@@ -15,13 +16,16 @@ public class Oven : MonoBehaviour, IInteractable
     [SerializeField] private Sprite activeSprite;
 
     [Header("")]
-    [SerializeField] private GameObject _heatEmission; 
-    [SerializeField] private GameObject _light;
+    [SerializeField] private SpriteRenderer _heatEmission; 
+    [SerializeField] private Light2D _light;
 
     private Coroutine _emissionCoroutine;
 
     [Header("")]
     [SerializeField] private float _heatIncreaseTime;
+    [SerializeField] [Range(0, 10)] private float _emissionValue;
+    [SerializeField] [Range(0, 10)] private float _lightValue;
+
     private Coroutine _heatCoroutine;
 
 
@@ -88,26 +92,26 @@ public class Oven : MonoBehaviour, IInteractable
         // active
         if (_controller.Food_Icon().hasFood)
         {
-            _light.SetActive(true);
-            _heatEmission.SetActive(true);
+            _light.intensity = _lightValue;
+            _heatEmission.color = Color.white;
 
-            LeanTween.value(gameObject, 0f, 5f, 2f).setOnUpdate((float val) =>
+            LeanTween.value(gameObject, 0f, _emissionValue, 2f).setOnUpdate((float val) =>
             {
-                _heatEmission.GetComponent<SpriteRenderer>().material.SetFloat("_Glow", val);
+                _heatEmission.material.SetFloat("_Glow", val);
             });
         }
         // inactive
         else
         {
-            LeanTween.value(gameObject, 5f, 0f, 2f).setOnUpdate((float val) =>
+            LeanTween.value(gameObject, _heatEmission.material.GetFloat("_Glow"), 0f, 2f).setOnUpdate((float val) =>
             {
-                _heatEmission.GetComponent<SpriteRenderer>().material.SetFloat("_Glow", val);
+                _heatEmission.material.SetFloat("_Glow", val);
             });
 
             yield return new WaitForSeconds(2f);
 
-            _light.SetActive(false);
-            _heatEmission.SetActive(false);
+            _light.intensity = 0f;
+            _heatEmission.color = Color.clear;
         }
     }
 

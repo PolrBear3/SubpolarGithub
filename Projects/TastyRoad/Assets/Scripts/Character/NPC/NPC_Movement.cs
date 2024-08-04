@@ -231,16 +231,26 @@ public class NPC_Movement : MonoBehaviour
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
 
         _isLeaving = true;
-        _moveCoroutine = StartCoroutine(Leave_Coroutine(startDelayTime));
+        _moveCoroutine = StartCoroutine(Leave_Coroutine(Random.Range(0, 2), startDelayTime));
     }
-    private IEnumerator Leave_Coroutine(float startDelayTime)
+    /// <summary>
+    /// 0 for left, 1 for right
+    /// </summary>
+    public void Leave(int direction, float startDelayTime)
+    {
+        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+
+        _isLeaving = true;
+        _moveCoroutine = StartCoroutine(Leave_Coroutine(direction, startDelayTime));
+    }
+    private IEnumerator Leave_Coroutine(int direction, float startDelayTime)
     {
         yield return new WaitForSeconds(startDelayTime);
 
         Main_Controller main = _controller.mainController;
 
         // random left or right side of camera
-        Vector2 targetPosition = main.currentLocation.OuterLocation_Position(Random.Range(0, 2));
+        Vector2 targetPosition = main.currentLocation.OuterLocation_Position(direction);
 
         // assign target position
         Assign_TargetPosition(targetPosition);

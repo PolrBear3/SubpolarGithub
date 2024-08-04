@@ -45,6 +45,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent += CarryBox_DirectionUpdate;
 
         // interaction subscription
+        _interactable.InteractEvent += Cancel_Action;
         _interactable.InteractEvent += Interact_FacePlayer;
 
         _interactable.Action1Event += Merge_BookMarkedStations;
@@ -66,6 +67,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent -= CarryBox_DirectionUpdate;
 
         // interaction subscription
+        _interactable.InteractEvent -= Cancel_Action;
         _interactable.InteractEvent -= Interact_FacePlayer;
 
         _interactable.Action1Event -= Merge_BookMarkedStations;
@@ -207,6 +209,21 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
 
     // Main Actions
+    private void Cancel_Action()
+    {
+        if (_restockCoroutine == null) return;
+
+        StopCoroutine(_restockCoroutine);
+        _restockCoroutine = null;
+
+        CarryBox_SpriteToggle(false);
+
+        // return to free roam
+        NPC_Movement move = _npcController.movement;
+        move.Free_Roam(_currentSubLocation.roamArea, move.Random_IntervalTime());
+    }
+
+
     private void Restock_StationStocks()
     {
         if (_unlockedStations.Count <= 0) return;
@@ -222,9 +239,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         NPC_Movement move = _npcController.movement;
 
         _interactable.UnInteract();
-
-        // interact lock
-        _interactable.LockInteract(true);
 
         //
         move.Stop_FreeRoam();
@@ -263,14 +277,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             CarryBox_SpriteToggle(false);
         }
 
-        // interact unlock
-        _interactable.LockInteract(false);
-
         // return to free roam
-        _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
+        move.Free_Roam(_currentSubLocation.roamArea, 0f);
 
         //
         _restockCoroutine = null;
+        yield break;
     }
 
 
@@ -313,9 +325,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         //
         CarryBox_SpriteToggle(true);
 
-        // interact toggle off
-        _interactable.LockInteract(true);
-
         // move to _mergeStationStock
         move.Assign_TargetPosition(_mergeStationStock.transform.position);
 
@@ -333,17 +342,15 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         //
         CarryBox_SpriteToggle(false);
 
-        // interact unlock
-        _interactable.LockInteract(false);
-
         // return to free roam
-        _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
-
-        //
-        _restockCoroutine = null;
+        move.Free_Roam(_currentSubLocation.roamArea, 0f);
 
         // merge complete dialog
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(4);
+
+        //
+        _restockCoroutine = null;
+        yield break;
     }
 
 

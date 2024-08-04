@@ -103,7 +103,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void TestButton_Subscription()
     {
         // currentVehicle.menu.stationMenu.Add_StationItem(_dataController.Station_ScrObj(97210), 1);
-        UnClaim_Position(new Vector2(3, -1));
     }
 
     public void TestButton1()
