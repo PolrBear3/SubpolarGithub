@@ -67,6 +67,15 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Current Data
+    public bool Is_SameFood(Food_ScrObj compareFood)
+    {
+        if (_hasFood == false) return false;
+        if (compareFood != _currentData.foodScrObj) return false;
+
+        return true;
+    }
+
+
     public void Set_CurrentData(FoodData data)
     {
         // update to null if empty data
@@ -132,6 +141,13 @@ public class FoodData_Controller : MonoBehaviour
     {
         if (_iconShowLocked == true || _hasFood == false)
         {
+            Hide_Icon();
+            return;
+        }
+
+        if (_currentData.foodScrObj == null)
+        {
+            Set_CurrentData(null);
             Hide_Icon();
             return;
         }

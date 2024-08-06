@@ -6,9 +6,12 @@ public class AmountBar : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
-    [Header("")]
     [SerializeField] private Sprite[] _amountBarSprites;
     public Sprite[] amountBarSprite => _amountBarSprites;
+
+    [Header("")]
+    [SerializeField] private Sprite[] _defaultBarSprites;
+    [SerializeField] private Sprite[] _greenBarSprites;
 
     private int _currentAmount;
     public int currentAmount => _currentAmount;
@@ -66,5 +69,16 @@ public class AmountBar : MonoBehaviour
         {
             _sr.color = Color.white;
         }
+    }
+
+    public void Toggle_BarColor(bool isColored)
+    {
+        if (isColored)
+        {
+            _amountBarSprites = _greenBarSprites;
+            return;
+        }
+
+        _amountBarSprites = _defaultBarSprites;
     }
 }

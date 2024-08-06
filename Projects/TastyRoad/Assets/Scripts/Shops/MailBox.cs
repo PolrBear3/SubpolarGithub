@@ -125,8 +125,13 @@ public class MailBox : MonoBehaviour, IInteractable
 
         FoodData_Controller playerFood = _detection.player.foodIcon;
 
-        if (playerFood.hasFood == false) return;
-        if (playerFood.currentData.foodScrObj != _mainController.dataController.goldenNugget) return;
+        if (playerFood.Is_SameFood(_mainController.dataController.goldenNugget) == false)
+        {
+            DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+            dialog.Update_Dialog();
+            return;
+        }
 
         playerFood.Set_CurrentData(null);
         playerFood.Show_Icon();

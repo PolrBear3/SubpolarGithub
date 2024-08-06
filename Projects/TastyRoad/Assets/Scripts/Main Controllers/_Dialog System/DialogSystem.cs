@@ -18,6 +18,7 @@ public class DialogSystem : MonoBehaviour
 
 
     // InputSystem
+    /*
     private void OnNumKey1()
     {
         if (_currentDialogs.Count <= 0) return;
@@ -56,6 +57,7 @@ public class DialogSystem : MonoBehaviour
 
         _currentDialogs[2].InfoPanel_Toggle(false);
     }
+    */
 
 
     //
@@ -83,8 +85,6 @@ public class DialogSystem : MonoBehaviour
 
                 return;
             }
-
-            _currentDialogs[i].InfoPanel_Toggle(false);
 
             _currentDialogs[i].transform.SetParent(_snapPoints[i]);
             LeanTween.moveLocal(_currentDialogs[i].gameObject, Vector2.zero, _transitionTime).setEase(_tweenType);
