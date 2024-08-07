@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class DialogSystem : MonoBehaviour
 {
@@ -10,6 +12,10 @@ public class DialogSystem : MonoBehaviour
     [SerializeField] private RectTransform[] _snapPoints;
 
     private List<DialogBox> _currentDialogs = new();
+
+    [Header("")]
+    [SerializeField] private RectTransform _infoBox;
+    [SerializeField] private TMP_Text _infoText;
 
     [Header("")]
     [SerializeField] private LeanTweenType _tweenType;
@@ -59,15 +65,16 @@ public class DialogSystem : MonoBehaviour
     */
 
 
-    //
+    // Set
     public DialogBox Add_DialogBox(DialogData data)
     {
         GameObject addDialog = Instantiate(_dialogBox, _snapPoints[0].transform);
         DialogBox dialogBox = addDialog.GetComponent<DialogBox>();
 
-        _currentDialogs.Insert(0, dialogBox);
-        dialogBox.Update_Box(data);
+        dialogBox.Set_Data(data);
+        dialogBox.Update_IconImage();
 
+        _currentDialogs.Insert(0, dialogBox);
         ReOrder_CurrentDialogs();
 
         return dialogBox;
@@ -92,5 +99,17 @@ public class DialogSystem : MonoBehaviour
 
             LeanTween.moveLocal(_currentDialogs[i].gameObject, Vector2.zero, _transitionTime).setEase(_tweenType);
         }
+    }
+
+
+    // Input Functions
+    private void Update_CurrentInfo(int dialogNum)
+    {
+        _infoText.text = _currentDialogs[dialogNum].data.info.ToString();
+
+        _infoText.ForceMeshUpdate();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_infoText.rectTransform);
+
+        float textHeight = _infoText.textInfo.lineCount;
     }
 }

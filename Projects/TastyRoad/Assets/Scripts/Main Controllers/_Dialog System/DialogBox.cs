@@ -6,15 +6,25 @@ using TMPro;
 
 public class DialogBox : MonoBehaviour
 {
+    private DialogData _data;
+    public DialogData data => _data;
+
     [Header("")]
     [SerializeField] private Image _iconImage;
     [SerializeField] private RectTransform _newIndication;
 
 
     // Data Set
-    public void Update_Box(DialogData data)
+    public void Set_Data(DialogData setData)
     {
-        _iconImage.sprite = data.icon;
+        _data = setData;
+    }
+
+
+    // Updates
+    public void Update_IconImage()
+    {
+        _iconImage.sprite = _data.icon;
     }
 
     public void UpdateIcon_CenterPosition(Vector2 centerPosition)
