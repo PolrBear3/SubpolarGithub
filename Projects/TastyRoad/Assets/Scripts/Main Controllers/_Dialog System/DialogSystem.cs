@@ -7,7 +7,6 @@ public class DialogSystem : MonoBehaviour
 {
     [Header("")]
     [SerializeField] private GameObject _dialogBox;
-    [SerializeField] private RectTransform _spawnPoint;
     [SerializeField] private RectTransform[] _snapPoints;
 
     private List<DialogBox> _currentDialogs = new();
@@ -63,7 +62,7 @@ public class DialogSystem : MonoBehaviour
     //
     public DialogBox Add_DialogBox(DialogData data)
     {
-        GameObject addDialog = Instantiate(_dialogBox, _spawnPoint);
+        GameObject addDialog = Instantiate(_dialogBox, _snapPoints[0].transform);
         DialogBox dialogBox = addDialog.GetComponent<DialogBox>();
 
         _currentDialogs.Insert(0, dialogBox);
@@ -78,6 +77,7 @@ public class DialogSystem : MonoBehaviour
     {
         for (int i = 0; i < _currentDialogs.Count; i++)
         {
+            // destroy if old dialog box
             if (i >= _snapPoints.Length)
             {
                 Destroy(_currentDialogs[i].gameObject);
@@ -87,6 +87,9 @@ public class DialogSystem : MonoBehaviour
             }
 
             _currentDialogs[i].transform.SetParent(_snapPoints[i]);
+
+            if (i == 0) continue;
+
             LeanTween.moveLocal(_currentDialogs[i].gameObject, Vector2.zero, _transitionTime).setEase(_tweenType);
         }
     }
