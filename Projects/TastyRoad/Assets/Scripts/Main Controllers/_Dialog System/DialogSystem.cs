@@ -17,9 +17,19 @@ public class DialogSystem : MonoBehaviour
     [SerializeField] private RectTransform _infoBox;
     [SerializeField] private TMP_Text _infoText;
 
+    private float _defaultHeight;
+    [SerializeField] private float _heightIncreaseValue;
+
     [Header("")]
     [SerializeField] private LeanTweenType _tweenType;
     [Range(0, 1)][SerializeField] private float _transitionTime;
+
+
+    // UnityEngine
+    private void Start()
+    {
+        _defaultHeight = _infoBox.anchoredPosition.y;
+    }
 
 
     // InputSystem
@@ -77,6 +87,8 @@ public class DialogSystem : MonoBehaviour
         _currentDialogs.Insert(0, dialogBox);
         ReOrder_CurrentDialogs();
 
+        Update_CurrentInfo(0);
+
         return dialogBox;
     }
 
@@ -102,7 +114,7 @@ public class DialogSystem : MonoBehaviour
     }
 
 
-    // Input Functions
+    //
     private void Update_CurrentInfo(int dialogNum)
     {
         _infoText.text = _currentDialogs[dialogNum].data.info.ToString();
@@ -110,6 +122,9 @@ public class DialogSystem : MonoBehaviour
         _infoText.ForceMeshUpdate();
         LayoutRebuilder.ForceRebuildLayoutImmediate(_infoText.rectTransform);
 
-        float textHeight = _infoText.textInfo.lineCount;
+        float lineCount = _infoText.textInfo.lineCount;
+        float updateValue = _heightIncreaseValue * lineCount;
+
+        _infoBox.anchoredPosition = new Vector2(_infoBox.anchoredPosition.x, _defaultHeight + _heightIncreaseValue - updateValue);
     }
 }
