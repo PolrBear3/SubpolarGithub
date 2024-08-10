@@ -63,7 +63,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Application.targetFrameRate = 60;
 
         TestButton1Event += TestButton_Subscription;
-        TestButton_Subscription();
+        // TestButton_Subscription();
     }
 
     private void OnDestroy()
@@ -121,6 +121,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
+    // Tools
     /// <summary>
     /// (-1, 0, 1) horizontal(left, right), vertical(top bottom), position x and y(local position)
     /// </summary>

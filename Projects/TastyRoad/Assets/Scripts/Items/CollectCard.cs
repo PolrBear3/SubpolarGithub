@@ -48,9 +48,12 @@ public class CollectCard : MonoBehaviour
 
     private void Invoke_Interaction()
     {
-        _launcher.Parabola_CoinLaunch(_launchSprite, _interactable.detection.player.transform.position);
+        _interactable.LockInteract(true);
 
+        _launcher.Parabola_CoinLaunch(_launchSprite, _interactable.detection.player.transform.position);
         _setInteraction?.Invoke();
+
+        Destroy(gameObject, 0.1f);
     }
 
 
@@ -72,9 +75,6 @@ public class CollectCard : MonoBehaviour
         // dialog
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[0].info));
-
-        // remove
-        Destroy(gameObject);
     }
 
     private void StationBluePrint_toArchive()
@@ -94,8 +94,5 @@ public class CollectCard : MonoBehaviour
         // dialog
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[1].info));
-
-        // remove
-        Destroy(gameObject);
     }
 }

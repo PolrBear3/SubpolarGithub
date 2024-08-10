@@ -103,10 +103,13 @@ public class RetrieveBox : Stack_Table, IInteractable
 
         FoodData foodData = foodIcon.currentData;
 
-        //
         FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
+        StationMenu_Controller stationMenu = stationController.mainController.currentVehicle.menu.stationMenu;
 
         // retrieve current food data
         foodMenu.Add_FoodItem(foodData.foodScrObj, foodData.currentAmount);
+
+        // station retrieve restriction
+        stationMenu.Remove_StationItem(stationController.stationScrObj, 1);
     }
 }

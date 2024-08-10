@@ -11,6 +11,7 @@ public interface ISaveLoadable
  
 public class SaveLoad_Controller : MonoBehaviour
 {
+
     // UnityEngine
     private void Awake()
     {
@@ -23,15 +24,12 @@ public class SaveLoad_Controller : MonoBehaviour
     }
 
 
-
     //
     private static List<ISaveLoadable> All_ISaveLoadables()
     {
         IEnumerable<ISaveLoadable> saveLoadableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoadable>();
         return new(saveLoadableObjects);
     }
-
-
 
     public static void SaveAll_ISaveLoadable()
     {

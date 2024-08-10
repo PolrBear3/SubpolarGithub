@@ -13,7 +13,14 @@ public class DialogSystem : MonoBehaviour
 
     private List<DialogBox> _currentDialogs = new();
 
+    private bool _newDialogOpened;
     private int _currentDialogNum;
+
+    [Header("")]
+    [SerializeField] private List<DialogData> _customDialogs = new();
+
+    [Header("")]
+    [SerializeField] private GameObject _actionKey;
 
     [Header("")]
     [SerializeField] private RectTransform _infoBox;
@@ -32,6 +39,11 @@ public class DialogSystem : MonoBehaviour
     {
         _defaultHeight = _infoBox.anchoredPosition.y;
         _infoBox.gameObject.SetActive(false);
+
+        Refresh_CustomDialogs();
+        _actionKey.SetActive(false);
+
+        _newDialogOpened = true;
     }
 
 
@@ -39,22 +51,54 @@ public class DialogSystem : MonoBehaviour
     private void OnNumKey1()
     {
         InfoBox_Toggle(0);
+
+        _newDialogOpened = true;
+
+        if (_infoBox.gameObject.activeSelf == false) return;
+        _actionKey.SetActive(false);
     }
     private void OnNumKey2()
     {
         InfoBox_Toggle(1);
+
+        if (_infoBox.gameObject.activeSelf == true)
+        {
+            _actionKey.SetActive(false);
+            return;
+        }
+
+        if (_newDialogOpened == true) return;
+        _actionKey.SetActive(true);
     }
     private void OnNumKey3()
     {
         InfoBox_Toggle(2);
+
+        if (_infoBox.gameObject.activeSelf == true)
+        {
+            _actionKey.SetActive(false);
+            return;
+        }
+
+        if (_newDialogOpened == true) return;
+        _actionKey.SetActive(true);
     }
     private void OnNumKey4()
     {
         InfoBox_Toggle(3);
+
+        if (_infoBox.gameObject.activeSelf == true)
+        {
+            _actionKey.SetActive(false);
+            return;
+        }
+
+        if (_newDialogOpened == true) return;
+        _actionKey.SetActive(true);
     }
 
 
-    // Set
+    // Basic Functions
     public DialogBox Add_DialogBox(DialogData data)
     {
         GameObject addDialog = Instantiate(_dialogBox, _snapPoints[0].transform);
@@ -69,7 +113,24 @@ public class DialogSystem : MonoBehaviour
         Update_CurrentInfo(_currentDialogNum);
         HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
 
+        _newDialogOpened = false;
+
+        if (_infoBox.gameObject.activeSelf == false)
+        {
+            _actionKey.SetActive(true);
+        }
+
         return dialogBox;
+    }
+
+
+    // Custom Dialogs Control
+    public void Refresh_CustomDialogs()
+    {
+        for (int i = 0; i < _snapPoints.Length; i++)
+        {
+            Add_DialogBox(_customDialogs[i]);
+        }
     }
 
 
