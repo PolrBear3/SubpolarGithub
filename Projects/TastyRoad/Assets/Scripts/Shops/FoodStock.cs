@@ -112,7 +112,7 @@ public class FoodStock : MonoBehaviour
             price = _discountPrice;
         }
 
-        string dialog = price + " nuggets to purchase\nyour current nugget amount is " + _interactable.mainController.GoldenNugget_Amount();
+        string dialog = price + " nuggets to purchase.\nyour current nugget amount is " + _interactable.mainController.GoldenNugget_Amount();
 
         DialogData data = new DialogData(_currentFood.sprite, dialog);
         DialogBox dialogBox = gameObject.GetComponent<DialogTrigger>().Update_Dialog(data);

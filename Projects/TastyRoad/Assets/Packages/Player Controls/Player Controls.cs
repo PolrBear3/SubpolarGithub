@@ -334,7 +334,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""d24a02e5-1064-4672-bee8-a27aed44f364"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.5)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -343,7 +343,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""bb5545b0-5356-43ed-957b-bca5990dadba"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.5)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -352,31 +352,13 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""b5a86fd7-ce99-4690-b06a-74b2a144ba6b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.5)"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""NumKey1Release"",
-                    ""type"": ""Button"",
-                    ""id"": ""99ebd647-99c7-4899-82bb-471dac1e6b4f"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""NumKey2Release"",
+                    ""name"": ""NumKey4"",
                     ""type"": ""Button"",
-                    ""id"": ""519baf54-9fb0-400b-9b3d-7a08d6130c2d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""NumKey3Release"",
-                    ""type"": ""Button"",
-                    ""id"": ""7c1b3391-ca32-4d1a-8f3d-b8d80b838eef"",
+                    ""id"": ""e843842c-d396-4f7f-8adb-918860a3720e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -606,34 +588,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d7849ff2-8b68-4d2e-96c0-707607c559bd"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": ""Press(behavior=1)"",
+                    ""id"": ""14150833-863c-4f27-b5b6-4a90fe120b6c"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NumKey1Release"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""42e8d180-6a6e-4f39-a2c2-d344148e7f19"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": ""Press(behavior=1)"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NumKey2Release"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9f1636a4-f20b-4e7d-ab37-4067cc5df344"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": ""Press(behavior=1)"",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NumKey3Release"",
+                    ""action"": ""NumKey4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -662,9 +622,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_UIControl_NumKey1 = m_UIControl.FindAction("NumKey1", throwIfNotFound: true);
         m_UIControl_NumKey2 = m_UIControl.FindAction("NumKey2", throwIfNotFound: true);
         m_UIControl_NumKey3 = m_UIControl.FindAction("NumKey3", throwIfNotFound: true);
-        m_UIControl_NumKey1Release = m_UIControl.FindAction("NumKey1Release", throwIfNotFound: true);
-        m_UIControl_NumKey2Release = m_UIControl.FindAction("NumKey2Release", throwIfNotFound: true);
-        m_UIControl_NumKey3Release = m_UIControl.FindAction("NumKey3Release", throwIfNotFound: true);
+        m_UIControl_NumKey4 = m_UIControl.FindAction("NumKey4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -815,9 +773,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIControl_NumKey1;
     private readonly InputAction m_UIControl_NumKey2;
     private readonly InputAction m_UIControl_NumKey3;
-    private readonly InputAction m_UIControl_NumKey1Release;
-    private readonly InputAction m_UIControl_NumKey2Release;
-    private readonly InputAction m_UIControl_NumKey3Release;
+    private readonly InputAction m_UIControl_NumKey4;
     public struct UIControlActions
     {
         private @PlayerControls m_Wrapper;
@@ -833,9 +789,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @NumKey1 => m_Wrapper.m_UIControl_NumKey1;
         public InputAction @NumKey2 => m_Wrapper.m_UIControl_NumKey2;
         public InputAction @NumKey3 => m_Wrapper.m_UIControl_NumKey3;
-        public InputAction @NumKey1Release => m_Wrapper.m_UIControl_NumKey1Release;
-        public InputAction @NumKey2Release => m_Wrapper.m_UIControl_NumKey2Release;
-        public InputAction @NumKey3Release => m_Wrapper.m_UIControl_NumKey3Release;
+        public InputAction @NumKey4 => m_Wrapper.m_UIControl_NumKey4;
         public InputActionMap Get() { return m_Wrapper.m_UIControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -878,15 +832,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @NumKey3.started += instance.OnNumKey3;
             @NumKey3.performed += instance.OnNumKey3;
             @NumKey3.canceled += instance.OnNumKey3;
-            @NumKey1Release.started += instance.OnNumKey1Release;
-            @NumKey1Release.performed += instance.OnNumKey1Release;
-            @NumKey1Release.canceled += instance.OnNumKey1Release;
-            @NumKey2Release.started += instance.OnNumKey2Release;
-            @NumKey2Release.performed += instance.OnNumKey2Release;
-            @NumKey2Release.canceled += instance.OnNumKey2Release;
-            @NumKey3Release.started += instance.OnNumKey3Release;
-            @NumKey3Release.performed += instance.OnNumKey3Release;
-            @NumKey3Release.canceled += instance.OnNumKey3Release;
+            @NumKey4.started += instance.OnNumKey4;
+            @NumKey4.performed += instance.OnNumKey4;
+            @NumKey4.canceled += instance.OnNumKey4;
         }
 
         private void UnregisterCallbacks(IUIControlActions instance)
@@ -924,15 +872,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @NumKey3.started -= instance.OnNumKey3;
             @NumKey3.performed -= instance.OnNumKey3;
             @NumKey3.canceled -= instance.OnNumKey3;
-            @NumKey1Release.started -= instance.OnNumKey1Release;
-            @NumKey1Release.performed -= instance.OnNumKey1Release;
-            @NumKey1Release.canceled -= instance.OnNumKey1Release;
-            @NumKey2Release.started -= instance.OnNumKey2Release;
-            @NumKey2Release.performed -= instance.OnNumKey2Release;
-            @NumKey2Release.canceled -= instance.OnNumKey2Release;
-            @NumKey3Release.started -= instance.OnNumKey3Release;
-            @NumKey3Release.performed -= instance.OnNumKey3Release;
-            @NumKey3Release.canceled -= instance.OnNumKey3Release;
+            @NumKey4.started -= instance.OnNumKey4;
+            @NumKey4.performed -= instance.OnNumKey4;
+            @NumKey4.canceled -= instance.OnNumKey4;
         }
 
         public void RemoveCallbacks(IUIControlActions instance)
@@ -971,8 +913,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnNumKey1(InputAction.CallbackContext context);
         void OnNumKey2(InputAction.CallbackContext context);
         void OnNumKey3(InputAction.CallbackContext context);
-        void OnNumKey1Release(InputAction.CallbackContext context);
-        void OnNumKey2Release(InputAction.CallbackContext context);
-        void OnNumKey3Release(InputAction.CallbackContext context);
+        void OnNumKey4(InputAction.CallbackContext context);
     }
 }

@@ -20,7 +20,13 @@ public class GroceryNPC : MonoBehaviour
     [Header("")]
     [Range(0, 1)] [SerializeField] private float _actionSpeed;
 
+    [Range(0, 24)] [SerializeField] private int _refillCoolTime;
+    private int _refillTimeCount;
+
     [Range(0, 10)] [SerializeField] private int _discountStockCount;
+
+    [Range(0, 24)] [SerializeField] private int _discountCoolTime;
+    private int _discountTimeCount;
 
     private Coroutine _actionCoroutine;
 
@@ -68,6 +74,15 @@ public class GroceryNPC : MonoBehaviour
 
 
     // Food Stocks Control
+    private bool RefillFoodStock_Available()
+    {
+        for (int i = 0; i < _foodStocks.Length; i++)
+        {
+            if (_foodStocks[i].currentAmount < _foodStocks[i].maxAmount) return true;
+        }
+        return false;
+    }
+
     private List<FoodStock> Discount_FoodStocks()
     {
         List<FoodStock> discountStocks = new();
@@ -121,6 +136,15 @@ public class GroceryNPC : MonoBehaviour
     private void Refill_Amount()
     {
         if (_actionCoroutine != null) return;
+        if (RefillFoodStock_Available() == false) return;
+
+        // cool time
+        if (_refillTimeCount < _refillCoolTime)
+        {
+            _refillTimeCount++;
+            return;
+        }
+        _refillTimeCount = 0;
 
         // food box transparency
         _foodBox.color = Color.white;
@@ -223,7 +247,6 @@ public class GroceryNPC : MonoBehaviour
         movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
     }
 
-
     private void Set_Discount()
     {
         if (_actionCoroutine != null) return;
@@ -231,6 +254,14 @@ public class GroceryNPC : MonoBehaviour
 
         // check if there is a non discount food stock
         if (Discount_FoodStocks().Count >= _foodStocks.Length) return;
+
+        // cool time
+        if (_discountTimeCount < _discountCoolTime)
+        {
+            _discountTimeCount++;
+            return;
+        }
+        _discountTimeCount = 0;
 
         _actionCoroutine = StartCoroutine(Set_Discount_Coroutine());
     }

@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638561369277898231
+  lastModified: 638588323577460984
   FileSizes:
   - Name: Desktop
-    Value: 7680
+    Value: 46496
   Exists: 1
 --- !u!114 &-8782401601473127640
 MonoBehaviour:
@@ -35,10 +35,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638561369275529719
+  lastModified: 638588323574626386
   FileSizes:
   - Name: Desktop
-    Value: 1150
+    Value: 1202
   Exists: 1
 --- !u!114 &-6252724095389087783
 MonoBehaviour:
@@ -55,39 +55,11 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638561369278227295
+  lastModified: 638588323577749195
   FileSizes:
   - Name: Desktop
-    Value: 10176
+    Value: 9952
   Exists: 1
---- !u!114 &-3286175432110261447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/Oven_heat
-  m_EditorClassIdentifier: 
-  Path: event:/Station SFX/Oven_heat
-  Guid:
-    Data1: -2013507183
-    Data2: 1322177193
-    Data3: -344410724
-    Data4: 1782283318
-  Banks:
-  - {fileID: -6252724095389087783}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 6799844321666882838}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 296
 --- !u!114 &-3199232476146871466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +114,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-844024901071479391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/CoinLauncher_throw/Value_intensity
+  m_EditorClassIdentifier: 
+  Name: Value_intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1104856012
+    data2: 3748696620
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,14 +159,15 @@ MonoBehaviour:
   - {fileID: 510665171980663971}
   - {fileID: -2044609886030408810}
   - {fileID: -3199232476146871466}
-  - {fileID: 3472038719391137360}
-  - {fileID: -3286175432110261447}
+  - {fileID: 9205706461703209910}
+  - {fileID: 5183988356940860259}
+  - {fileID: 1566291285197125512}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638561369278227295
+  cacheTime: 638588323577749195
   cacheVersion: 131618
 --- !u!114 &510665171980663971
 MonoBehaviour:
@@ -214,12 +211,12 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638561369275515784
+  lastModified: 638588323574613558
   FileSizes:
   - Name: Desktop
     Value: 1036
   Exists: 1
---- !u!114 &3472038719391137360
+--- !u!114 &1566291285197125512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -229,14 +226,69 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/FoodInteract_swap1
+  m_Name: event:/Station SFX/Oven_switch
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/FoodInteract_swap1
+  Path: event:/Station SFX/Oven_switch
   Guid:
-    Data1: 160023467
-    Data2: 1289084721
-    Data3: -2021319020
-    Data4: -227617006
+    Data1: -405792680
+    Data2: 1241036917
+    Data3: 808444331
+    Data4: -2073641631
+  Banks:
+  - {fileID: -6252724095389087783}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &5183988356940860259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/CoinLauncher_throw
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/CoinLauncher_throw
+  Guid:
+    Data1: -1660709437
+    Data2: 1200014235
+    Data3: -1415380316
+    Data4: -1692421121
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -844024901071479391}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 50
+--- !u!114 &9205706461703209910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/FoodInteract_eat
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/FoodInteract_eat
+  Guid:
+    Data1: 2088776602
+    Data2: 1222638691
+    Data3: -637841019
+    Data4: 1565476813
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -246,27 +298,3 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &6799844321666882838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Oven_heat/Value_intensity
-  m_EditorClassIdentifier: 
-  Name: Value_intensity
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 1104856012
-    data2: 3748696620
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1

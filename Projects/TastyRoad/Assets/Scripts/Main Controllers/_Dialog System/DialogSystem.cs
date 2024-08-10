@@ -13,6 +13,8 @@ public class DialogSystem : MonoBehaviour
 
     private List<DialogBox> _currentDialogs = new();
 
+    private int _currentDialogNum;
+
     [Header("")]
     [SerializeField] private RectTransform _infoBox;
     [SerializeField] private TMP_Text _infoText;
@@ -29,50 +31,27 @@ public class DialogSystem : MonoBehaviour
     private void Start()
     {
         _defaultHeight = _infoBox.anchoredPosition.y;
+        _infoBox.gameObject.SetActive(false);
     }
 
 
     // InputSystem
-    /*
     private void OnNumKey1()
     {
-        if (_currentDialogs.Count <= 0) return;
-
-        _currentDialogs[0].InfoPanel_Toggle(true);
+        InfoBox_Toggle(0);
     }
-    private void OnNumKey1Release()
-    {
-        if (_currentDialogs.Count <= 0) return;
-
-        _currentDialogs[0].InfoPanel_Toggle(false);
-    }
-
     private void OnNumKey2()
     {
-        if (_currentDialogs.Count <= 1) return;
-
-        _currentDialogs[1].InfoPanel_Toggle(true);
+        InfoBox_Toggle(1);
     }
-    private void OnNumKey2Release()
-    {
-        if (_currentDialogs.Count <= 1) return;
-
-        _currentDialogs[1].InfoPanel_Toggle(false);
-    }
-
     private void OnNumKey3()
     {
-        if (_currentDialogs.Count <= 2) return;
-
-        _currentDialogs[2].InfoPanel_Toggle(true);
+        InfoBox_Toggle(2);
     }
-    private void OnNumKey3Release()
+    private void OnNumKey4()
     {
-        if (_currentDialogs.Count <= 2) return;
-
-        _currentDialogs[2].InfoPanel_Toggle(false);
+        InfoBox_Toggle(3);
     }
-    */
 
 
     // Set
@@ -87,11 +66,61 @@ public class DialogSystem : MonoBehaviour
         _currentDialogs.Insert(0, dialogBox);
         ReOrder_CurrentDialogs();
 
-        Update_CurrentInfo(0);
+        Update_CurrentInfo(_currentDialogNum);
+        HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
 
         return dialogBox;
     }
 
+
+    // Info Box Control
+    private void InfoBox_Toggle(int dialogNum)
+    {
+        if (_currentDialogs.Count <= dialogNum) return;
+
+        if (dialogNum != _currentDialogNum)
+        {
+            _currentDialogNum = dialogNum;
+
+            _infoBox.gameObject.SetActive(true);
+            Update_CurrentInfo(dialogNum);
+
+            HoverToggle_CurrentDialog(true);
+
+            return;
+        }
+
+        if (_infoBox.gameObject.activeSelf == true)
+        {
+            _infoBox.gameObject.SetActive(false);
+
+            HoverToggle_CurrentDialog(false);
+
+            return;
+        }
+
+        _infoBox.gameObject.SetActive(true);
+        Update_CurrentInfo(dialogNum);
+
+        HoverToggle_CurrentDialog(true);
+    }
+
+    private void Update_CurrentInfo(int dialogNum)
+    {
+        _infoText.text = _currentDialogs[dialogNum].data.info.ToString();
+
+        _infoText.ForceMeshUpdate();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_infoText.rectTransform);
+
+        float lineCount = _infoText.textInfo.lineCount;
+        float updateValue = _heightIncreaseValue * lineCount;
+        float targetPosY = _defaultHeight + _heightIncreaseValue - updateValue;
+
+        _infoBox.anchoredPosition = new Vector2(_infoBox.anchoredPosition.x, targetPosY);
+    }
+
+
+    // Current Dialogs Control
     private void ReOrder_CurrentDialogs()
     {
         for (int i = 0; i < _currentDialogs.Count; i++)
@@ -113,18 +142,25 @@ public class DialogSystem : MonoBehaviour
         }
     }
 
-
-    //
-    private void Update_CurrentInfo(int dialogNum)
+    private void HoverToggle_CurrentDialog(bool toggleOn)
     {
-        _infoText.text = _currentDialogs[dialogNum].data.info.ToString();
+        if (toggleOn == false)
+        {
+            foreach (var dialog in _currentDialogs)
+            {
+                Main_Controller.Change_ImageAlpha(dialog.iconImage, 1f);
+            }
+            return;
+        }
 
-        _infoText.ForceMeshUpdate();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_infoText.rectTransform);
-
-        float lineCount = _infoText.textInfo.lineCount;
-        float updateValue = _heightIncreaseValue * lineCount;
-
-        _infoBox.anchoredPosition = new Vector2(_infoBox.anchoredPosition.x, _defaultHeight + _heightIncreaseValue - updateValue);
+        for (int i = 0; i < _currentDialogs.Count; i++)
+        {
+            if (i != _currentDialogNum)
+            {
+                Main_Controller.Change_ImageAlpha(_currentDialogs[i].iconImage, 0.5f);
+                continue;
+            }
+            Main_Controller.Change_ImageAlpha(_currentDialogs[i].iconImage, 1f);
+        }
     }
 }

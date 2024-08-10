@@ -20,6 +20,18 @@ public class CoinLauncher : MonoBehaviour
     public float gravity => _gravity;
 
 
+    // UnityEngine
+    private void Start()
+    {
+        Audio_Controller.instance.Create_EventInstance("CoinLauncher_throw", gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        Audio_Controller.instance.Remove_EventInstance(gameObject);
+    }
+
+
     // Launch
     public void Parabola_CoinLaunch(Sprite sprite, Vector2 launchDirection)
     {
@@ -30,5 +42,9 @@ public class CoinLauncher : MonoBehaviour
 
         bullet.SetData(this, sprite, direction);
         bullet.movementEvent += bullet.Parabola_Movement;
+
+        float pitchValue = Random.Range(0, 1f);
+        Audio_Controller.instance.Set_EventInstance_Parameter(gameObject, "Value_intensity", pitchValue);
+        Audio_Controller.instance.EventInstance(gameObject).start();
     }
 }

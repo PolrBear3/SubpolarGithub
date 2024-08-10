@@ -68,6 +68,7 @@ public class Audio_Controller : MonoBehaviour
         return EventInstance_Data(currentPrefab).eventInstance;
     }
 
+
     public StudioEventEmitter EventEmitter(GameObject currentPrefab)
     {
         StudioEventEmitter currentEmitter = currentPrefab.GetComponent<StudioEventEmitter>();
@@ -106,8 +107,8 @@ public class Audio_Controller : MonoBehaviour
             if (soundName != _soundDatas[i].eventName) continue;
 
             EventInstance eventInstance = RuntimeManager.CreateInstance(_soundDatas[i].eventReference);
-            _eventInstances.Add(new(soundName, setPrefab, eventInstance));
 
+            _eventInstances.Add(new(soundName, setPrefab, eventInstance));
             return;
         }
     }

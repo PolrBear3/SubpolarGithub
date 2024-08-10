@@ -11,7 +11,14 @@ public class DialogBox : MonoBehaviour
 
     [Header("")]
     [SerializeField] private Image _iconImage;
+    public Image iconImage => _iconImage;
+
     [SerializeField] private RectTransform _newIndication;
+    public RectTransform newIndication => _newIndication;
+
+    [Header("")]
+    [SerializeField] private RectTransform _infoBoxPosition;
+    public RectTransform infoBoxPosition => _infoBoxPosition;
 
 
     // Data Set
