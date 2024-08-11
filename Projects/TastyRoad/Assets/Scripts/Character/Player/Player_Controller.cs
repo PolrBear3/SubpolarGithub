@@ -22,7 +22,6 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     [HideInInspector] public Player_Interaction interaction;
 
 
-
     // UnityEngine
     private void Awake()
     {
@@ -36,7 +35,6 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
         if (gameObject.TryGetComponent(out Player_Movement movement)) { this.movement = movement; }
     }
-
 
 
     // ISaveLoadable
@@ -53,25 +51,9 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-
-    //
+    // Get
     public PlayerInput Player_Input()
     {
         return _playerInput;
-    }
-
-    private void Set_Apple_forTest()
-    {
-        _foodIcon.Set_CurrentData(new FoodData(mainController.dataController.rawFoods[0]));
-        _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
-
-        _foodIcon.Show_Icon();
-        _foodIcon.Show_Condition();
-        _foodIcon.Show_AmountBar();
-    }
-
-    private void Debug_FoodData()
-    {
-        Debug.Log(_foodIcon.currentData == null);
     }
 }

@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "HoldInteract",
+                    "type": "Button",
+                    "id": "8958d88c-5aa1-4fb9-8d44-7f1792bab53b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Action1",
                     "type": "Button",
                     "id": "989f30a4-c0f9-45d1-a39a-a5d8c1cb76c8",
@@ -227,6 +236,17 @@
                     "action": "Hit",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "a084032f-51df-4cc1-bdf4-0c75678a6fa7",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HoldInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

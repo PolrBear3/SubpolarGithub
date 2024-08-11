@@ -27,6 +27,9 @@ public class NPC_Controller : MonoBehaviour
     [SerializeField] private CoinLauncher _itemLauncher;
     public CoinLauncher itemLauncher => _itemLauncher;
 
+    [SerializeField] private ItemDropper _itemDropper;
+    public ItemDropper itemDropper => _itemDropper;
+
     [SerializeField] private Clock_Timer _timer;
     public Clock_Timer timer => _timer;
 

@@ -46,6 +46,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""HoldInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""8958d88c-5aa1-4fb9-8d44-7f1792bab53b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Action1"",
                     ""type"": ""Button"",
                     ""id"": ""989f30a4-c0f9-45d1-a39a-a5d8c1cb76c8"",
@@ -249,6 +258,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Hit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a084032f-51df-4cc1-bdf4-0c75678a6fa7"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -606,6 +626,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_InGame = asset.FindActionMap("In Game", throwIfNotFound: true);
         m_InGame_Movement = m_InGame.FindAction("Movement", throwIfNotFound: true);
         m_InGame_Interact = m_InGame.FindAction("Interact", throwIfNotFound: true);
+        m_InGame_HoldInteract = m_InGame.FindAction("HoldInteract", throwIfNotFound: true);
         m_InGame_Action1 = m_InGame.FindAction("Action1", throwIfNotFound: true);
         m_InGame_Action2 = m_InGame.FindAction("Action2", throwIfNotFound: true);
         m_InGame_Hit = m_InGame.FindAction("Hit", throwIfNotFound: true);
@@ -686,6 +707,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IInGameActions> m_InGameActionsCallbackInterfaces = new List<IInGameActions>();
     private readonly InputAction m_InGame_Movement;
     private readonly InputAction m_InGame_Interact;
+    private readonly InputAction m_InGame_HoldInteract;
     private readonly InputAction m_InGame_Action1;
     private readonly InputAction m_InGame_Action2;
     private readonly InputAction m_InGame_Hit;
@@ -695,6 +717,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InGameActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_InGame_Movement;
         public InputAction @Interact => m_Wrapper.m_InGame_Interact;
+        public InputAction @HoldInteract => m_Wrapper.m_InGame_HoldInteract;
         public InputAction @Action1 => m_Wrapper.m_InGame_Action1;
         public InputAction @Action2 => m_Wrapper.m_InGame_Action2;
         public InputAction @Hit => m_Wrapper.m_InGame_Hit;
@@ -713,6 +736,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @HoldInteract.started += instance.OnHoldInteract;
+            @HoldInteract.performed += instance.OnHoldInteract;
+            @HoldInteract.canceled += instance.OnHoldInteract;
             @Action1.started += instance.OnAction1;
             @Action1.performed += instance.OnAction1;
             @Action1.canceled += instance.OnAction1;
@@ -732,6 +758,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @HoldInteract.started -= instance.OnHoldInteract;
+            @HoldInteract.performed -= instance.OnHoldInteract;
+            @HoldInteract.canceled -= instance.OnHoldInteract;
             @Action1.started -= instance.OnAction1;
             @Action1.performed -= instance.OnAction1;
             @Action1.canceled -= instance.OnAction1;
@@ -896,6 +925,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnHoldInteract(InputAction.CallbackContext context);
         void OnAction1(InputAction.CallbackContext context);
         void OnAction2(InputAction.CallbackContext context);
         void OnHit(InputAction.CallbackContext context);

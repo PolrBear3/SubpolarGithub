@@ -32,8 +32,10 @@ public class CoinLauncher : MonoBehaviour
     }
 
 
-    // Launch
-    public void Parabola_CoinLaunch(Sprite sprite, Vector2 launchDirection)
+    /// <returns>
+    /// Launched coin
+    /// </returns>
+    public CoinLauncher_Coin Parabola_CoinLaunch(Sprite sprite, Vector2 launchDirection)
     {
         GameObject launchedBullet = Instantiate(_coin, transform.parent.position, Quaternion.identity);
         CoinLauncher_Coin bullet = launchedBullet.GetComponent<CoinLauncher_Coin>();
@@ -46,5 +48,7 @@ public class CoinLauncher : MonoBehaviour
         float pitchValue = Random.Range(0, 1f);
         Audio_Controller.instance.Set_EventInstance_Parameter(gameObject, "Value_intensity", pitchValue);
         Audio_Controller.instance.EventInstance(gameObject).start();
+
+        return bullet;
     }
 }

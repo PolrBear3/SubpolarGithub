@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_Interaction : MonoBehaviour, IInteractable
+public class Player_Interaction : MonoBehaviour
 {
     private Player_Controller _controller;
-
 
 
     // UnityEngine
@@ -14,7 +13,6 @@ public class Player_Interaction : MonoBehaviour, IInteractable
     {
         if (gameObject.TryGetComponent(out Player_Controller controller)) { _controller = controller; }
     }
-
 
 
     // Player Input
@@ -37,16 +35,24 @@ public class Player_Interaction : MonoBehaviour, IInteractable
         interactable.Interact();
     }
 
-
-
-    // IInteractable
-    public void Interact()
+    private void OnHoldInteract()
     {
-        
+        Drop_CurrentFood();
     }
 
-    public void UnInteract()
-    {
 
+    // Player Interact Actions
+    private void Drop_CurrentFood()
+    {
+        FoodData_Controller foodIcon = _controller.foodIcon;
+
+        if (foodIcon.hasFood == false) return;
+
+        CoinLauncher launcher = _controller.coinLauncher;
+        launcher.Parabola_CoinLaunch(foodIcon.currentData.foodScrObj.sprite, transform.position);
+
+        foodIcon.Set_CurrentData(null);
+        foodIcon.Show_Icon();
+        foodIcon.Show_Condition();
     }
 }

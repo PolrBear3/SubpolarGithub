@@ -58,8 +58,6 @@ public class Audio_Controller : MonoBehaviour
             if (currentPrefab != _eventInstances[i].eventPrefab) continue;
             return _eventInstances[i];
         }
-
-        Debug.Log("Event Instance not found in current list");
         return null;
     }
 
@@ -116,6 +114,7 @@ public class Audio_Controller : MonoBehaviour
     public void Remove_EventInstance(GameObject setPrefab)
     {
         SoundData removeInstance = EventInstance_Data(setPrefab);
+        if (removeInstance == null) return;
 
         removeInstance.eventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         removeInstance.eventInstance.release();
@@ -125,7 +124,10 @@ public class Audio_Controller : MonoBehaviour
 
     public void ClearAll_EventInstances()
     {
-
+        for (int i = _eventInstances.Count - 1; i >= 0; i--)
+        {
+            Remove_EventInstance(_eventInstances[i].eventPrefab);
+        }
     }
 
 

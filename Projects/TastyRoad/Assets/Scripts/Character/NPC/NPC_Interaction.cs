@@ -64,6 +64,8 @@ public class NPC_Interaction : MonoBehaviour
     {
         Interact_FacePlayer();
 
+        _controller.itemDropper.Drop_Item();
+
         if (FoodOrder_Served())
         {
             Collect_Coin();

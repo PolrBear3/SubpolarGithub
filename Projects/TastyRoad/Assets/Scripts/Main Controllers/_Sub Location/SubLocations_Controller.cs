@@ -20,6 +20,11 @@ public class SubLocations_Controller : MonoBehaviour
 
     public void ClearAll()
     {
+        foreach (var subLocation in _currentSubLocations)
+        {
+            Destroy(subLocation.gameObject);
+        }
+
         _currentSubLocations.Clear();
     }
 
