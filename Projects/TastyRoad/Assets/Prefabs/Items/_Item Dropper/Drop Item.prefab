@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6507860424653012280}
   - component: {fileID: 3486195159248401679}
   - component: {fileID: 8571569119331683655}
+  - component: {fileID: 5722743193769059770}
   - component: {fileID: 5739883101272452172}
   - component: {fileID: 1988062440466020946}
   m_Layer: 0
@@ -153,6 +154,20 @@ MonoBehaviour:
     info: A food ingredient is picked up !
   - icon: {fileID: 0}
     info: A station blueprint is picked up !
+--- !u!114 &5722743193769059770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638662604626066613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _claimPositions:
+  - {x: 0, y: 0}
 --- !u!114 &5739883101272452172
 MonoBehaviour:
   m_ObjectHideFlags: 0

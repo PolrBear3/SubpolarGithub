@@ -28,18 +28,21 @@ public class ItemDropper : MonoBehaviour
     {
         if (_coroutine != null) return;
 
+        Transform playerTransform = _main.Player().transform;
+        Vector2 dropPosition = Main_Controller.SnapPosition(playerTransform.position);
+
+        if (_main.Position_Claimed(dropPosition)) return;
+
         _coroutine = StartCoroutine(Drop_Item_Coroutine());
     }
     private IEnumerator Drop_Item_Coroutine()
     {
         Transform playerTransform = _main.Player().transform;
+        Vector2 spawnPosition = Main_Controller.SnapPosition(playerTransform.position);
 
-        // spawn
-        GameObject itemGameObject = Instantiate(_dropItem, playerTransform.position, Quaternion.identity);
+        // spawn to nearest snap position
+        GameObject itemGameObject = Instantiate(_dropItem, spawnPosition, Quaternion.identity);
         itemGameObject.transform.SetParent(_main.otherFile);
-
-        // set to nearest snap position
-
 
         // launch
         GameObject launchCoin = _launcher.Parabola_CoinLaunch(_launchSprite, playerTransform.position).gameObject;
