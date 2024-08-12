@@ -34,4 +34,16 @@ public class ItemSlot_Data
         currentFood = data.currentFood;
         currentStation = data.currentStation;
     }
+
+    public ItemSlot_Data (Food_ScrObj food, int amount)
+    {
+        currentFood = food;
+        currentAmount = amount;
+    }
+
+    public ItemSlot_Data(Station_ScrObj station, int amount)
+    {
+        currentStation = station;
+        currentAmount = amount;
+    }
 }

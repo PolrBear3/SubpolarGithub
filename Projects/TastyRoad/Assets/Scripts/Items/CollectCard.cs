@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class CollectCard : MonoBehaviour
 {
+    private SpriteRenderer _sr;
+    public SpriteRenderer sr => _sr;
+
     [Header("")]
     [SerializeField] private ActionBubble_Interactable _interactable;
 
     [Header("")]
     [SerializeField] private CoinLauncher _launcher;
+
     [SerializeField] private Sprite _launchSprite;
+    public Sprite launchSprite => _launchSprite;
 
     [Header("")]
     [SerializeField] private Station_ScrObj[] _bluePrintStations;
@@ -21,6 +26,11 @@ public class CollectCard : MonoBehaviour
 
 
     // UnityEngine
+    private void Awake()
+    {
+        _sr = gameObject.GetComponent<SpriteRenderer>();
+    }
+
     private void Start()
     {
         Set_RandomInteraction();

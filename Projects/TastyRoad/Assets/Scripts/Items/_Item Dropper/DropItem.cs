@@ -12,12 +12,7 @@ public class DropItem : MonoBehaviour, IInteractable
     [SerializeField] private Detection_Controller _detection;
     [SerializeField] private CoinLauncher _launcher;
 
-    [Header("")]
-    [SerializeField] private Sprite _launchSprite;
-    public Sprite launchSprite => _launchSprite;
-
-    private Food_ScrObj _foodItem;
-    private int _itemAmount;
+    private ItemSlot_Data _itemData;
 
 
     // UnityEngine
@@ -31,12 +26,6 @@ public class DropItem : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-        if (_foodItem == null)
-        {
-            Random_Pickup();
-            return;
-        }
-
         Pickup();
     }
 
@@ -47,26 +36,39 @@ public class DropItem : MonoBehaviour, IInteractable
 
 
     // Set
-    public void Set_FoodItem(Food_ScrObj setFood, int setAmount)
+    public void Set_ItemData(ItemSlot_Data setData)
     {
-        _foodItem = setFood;
-        _itemAmount = setAmount;
+        _itemData = setData;
     }
 
 
     //
-    private void Random_Pickup()
-    {
-        _launcher.Parabola_CoinLaunch(_launchSprite, _main.Player().transform.position);
-        Destroy(gameObject, 0.1f);
-    }
-
     private void Pickup()
     {
-        FoodMenu_Controller foodMenu = _main.currentVehicle.menu.foodMenu;
-        foodMenu.Add_FoodItem(_foodItem, _itemAmount);
+        if (_itemData == null) return;
 
-        _launcher.Parabola_CoinLaunch(_launchSprite, _main.Player().transform.position);
+        Sprite launchSprite;
+
+        // food
+        if (_itemData.currentFood != null)
+        {
+            FoodMenu_Controller foodMenu = _main.currentVehicle.menu.foodMenu;
+            foodMenu.Add_FoodItem(_itemData.currentFood, _itemData.currentAmount);
+
+            launchSprite = _itemData.currentFood.sprite;
+        }
+        // station
+        else
+        {
+            StationMenu_Controller stationMenu = _main.currentVehicle.menu.stationMenu;
+            stationMenu.Add_StationItem(_itemData.currentStation, _itemData.currentAmount);
+
+            launchSprite = _itemData.currentStation.sprite;
+        }
+
+        // launch
+        _launcher.Parabola_CoinLaunch(launchSprite, _main.Player().transform.position);
+
         Destroy(gameObject, 0.1f);
     }
 }

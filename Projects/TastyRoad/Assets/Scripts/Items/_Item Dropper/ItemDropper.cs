@@ -8,7 +8,13 @@ public class ItemDropper : MonoBehaviour
 
     [Header("")]
     [SerializeField] private CoinLauncher _launcher;
+
+    [Header("")]
     [SerializeField] private GameObject _dropItem;
+    [SerializeField] private GameObject _collectCard;
+
+    [Header("")]
+    [SerializeField] private Sprite _defaultLaunchSprite;
 
     private Coroutine _coroutine;
 
@@ -20,8 +26,27 @@ public class ItemDropper : MonoBehaviour
     }
 
 
-    //
-    public void Drop_Item()
+    // Launch
+    private IEnumerator Launch_ShowItem(SpriteRenderer dropItemSR, Sprite launchSprite)
+    {
+        // hide
+        dropItemSR.color = Color.clear;
+
+        // launch
+        Transform playerTransform = _main.Player().transform;
+        GameObject launchCoin = _launcher.Parabola_CoinLaunch(launchSprite, playerTransform.position).gameObject;
+
+        // show
+        while (launchCoin != null) yield return null;
+        dropItemSR.color = Color.white;
+
+        _coroutine = null;
+        yield break;
+    }
+
+
+    // Drops
+    public void Drop_Food(Food_ScrObj dropFood, int amount)
     {
         if (_coroutine != null) return;
 
@@ -30,29 +55,31 @@ public class ItemDropper : MonoBehaviour
 
         if (_main.Position_Claimed(dropPosition)) return;
 
-        _coroutine = StartCoroutine(Drop_Item_Coroutine());
-    }
-    private IEnumerator Drop_Item_Coroutine()
-    {
-        Transform playerTransform = _main.Player().transform;
-        Vector2 spawnPosition = Main_Controller.SnapPosition(playerTransform.position);
-
         // spawn to nearest snap position
-        GameObject itemGameObject = Instantiate(_dropItem, spawnPosition, Quaternion.identity);
+        GameObject itemGameObject = Instantiate(_dropItem, dropPosition, Quaternion.identity);
         itemGameObject.transform.SetParent(_main.otherFile);
 
-        // hide
+        // set drop data
         DropItem dropItem = itemGameObject.GetComponent<DropItem>();
-        dropItem.sr.color = Color.clear;
+        dropItem.Set_ItemData(new ItemSlot_Data(dropFood, amount));
 
-        // launch
-        GameObject launchCoin = _launcher.Parabola_CoinLaunch(dropItem.launchSprite, playerTransform.position).gameObject;
+        StartCoroutine(Launch_ShowItem(dropItem.sr, _defaultLaunchSprite));
+    }
 
-        // show
-        while (launchCoin != null) yield return null;
-        dropItem.sr.color = Color.white;
+    public void Drop_CollectCard()
+    {
+        if (_coroutine != null) return;
 
-        _coroutine = null;
-        yield break;
+        Transform playerTransform = _main.Player().transform;
+        Vector2 dropPosition = Main_Controller.SnapPosition(playerTransform.position);
+
+        if (_main.Position_Claimed(dropPosition)) return;
+
+        // spawn to nearest snap position
+        GameObject itemGameObject = Instantiate(_collectCard, dropPosition, Quaternion.identity);
+        CollectCard dropCard = itemGameObject.GetComponent<CollectCard>();
+        itemGameObject.transform.SetParent(_main.otherFile);
+
+        StartCoroutine(Launch_ShowItem(dropCard.sr, dropCard.launchSprite));
     }
 }
