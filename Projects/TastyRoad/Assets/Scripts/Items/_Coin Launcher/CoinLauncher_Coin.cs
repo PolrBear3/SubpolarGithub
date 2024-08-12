@@ -58,8 +58,9 @@ public class CoinLauncher_Coin : MonoBehaviour
     public void Parabola_Movement()
     {
         // calculation
-        float horizontalVelocity = _speed * Mathf.Cos(_itemLauncher.angle * Mathf.Deg2Rad);
-        float verticalVelocity = _speed * Mathf.Sin(_itemLauncher.angle * Mathf.Deg2Rad);
+        float angle = 90 - _itemLauncher.updateAngle;
+        float horizontalVelocity = _speed * Mathf.Cos(angle * Mathf.Deg2Rad);
+        float verticalVelocity = _speed * Mathf.Sin(angle * Mathf.Deg2Rad);
 
         // direction update
         if (_direction.x < 0) horizontalVelocity *= -1f;

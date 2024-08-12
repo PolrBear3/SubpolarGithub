@@ -12,12 +12,15 @@ public class CoinLauncher : MonoBehaviour
     [SerializeField] private float _range;
     public float range => _range;
 
-    [Header("Parabola Data")]
-    [SerializeField] private float _angle;
-    public float angle => _angle;
-
     [SerializeField] private float _gravity;
     public float gravity => _gravity;
+
+    [Header("Angle")]
+    [SerializeField] [Range(0, 1)] private float _angleUpdateDistnace;
+    [SerializeField] [Range(10, 20)] private float _distanceMultiplier;
+
+    private float _updateAngle;
+    public float updateAngle => _updateAngle;
 
 
     // UnityEngine
@@ -32,11 +35,21 @@ public class CoinLauncher : MonoBehaviour
     }
 
 
+    // Set
+    private void Set_UpdateAngle(Vector2 launchPoint)
+    {
+        float distance = Vector2.Distance(transform.position, launchPoint);
+        _updateAngle = distance * _distanceMultiplier;
+    }
+
+
     /// <returns>
     /// Launched coin
     /// </returns>
     public CoinLauncher_Coin Parabola_CoinLaunch(Sprite sprite, Vector2 launchDirection)
     {
+        Set_UpdateAngle(launchDirection);
+
         GameObject launchedBullet = Instantiate(_coin, transform.parent.position, Quaternion.identity);
         CoinLauncher_Coin bullet = launchedBullet.GetComponent<CoinLauncher_Coin>();
 

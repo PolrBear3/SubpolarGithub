@@ -7,9 +7,6 @@ public class ItemDropper : MonoBehaviour
     private Main_Controller _main;
 
     [Header("")]
-    [SerializeField] private Sprite _launchSprite;
-
-    [Header("")]
     [SerializeField] private CoinLauncher _launcher;
     [SerializeField] private GameObject _dropItem;
 
@@ -44,14 +41,14 @@ public class ItemDropper : MonoBehaviour
         GameObject itemGameObject = Instantiate(_dropItem, spawnPosition, Quaternion.identity);
         itemGameObject.transform.SetParent(_main.otherFile);
 
-        // launch
-        GameObject launchCoin = _launcher.Parabola_CoinLaunch(_launchSprite, playerTransform.position).gameObject;
-
         // hide
         DropItem dropItem = itemGameObject.GetComponent<DropItem>();
         dropItem.sr.color = Color.clear;
 
-        // show if launch is complete
+        // launch
+        GameObject launchCoin = _launcher.Parabola_CoinLaunch(dropItem.launchSprite, playerTransform.position).gameObject;
+
+        // show
         while (launchCoin != null) yield return null;
         dropItem.sr.color = Color.white;
 
