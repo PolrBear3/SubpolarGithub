@@ -98,6 +98,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Menu Control
     public ItemSlot Add_StationItem(Station_ScrObj station, int amount)
     {
+        if (amount <= 0) return null;
+
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
         int repeatAmount = amount;
 
@@ -364,7 +366,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         Complete_StationPlace();
     }
-    //
+    
     private void Complete_StationPlace()
     {
         _controller.cursor.Empty_Item();

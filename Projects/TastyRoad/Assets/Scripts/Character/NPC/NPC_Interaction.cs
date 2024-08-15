@@ -64,8 +64,7 @@ public class NPC_Interaction : MonoBehaviour
     {
         Interact_FacePlayer();
 
-        //_controller.itemDropper.Drop_Food(_controller.mainController.dataController.CookedFood(), 1);
-        //_controller.itemDropper.Drop_CollectCard();
+        _controller.itemDropper.Drop_RandomFood();
 
         if (FoodOrder_Served())
         {

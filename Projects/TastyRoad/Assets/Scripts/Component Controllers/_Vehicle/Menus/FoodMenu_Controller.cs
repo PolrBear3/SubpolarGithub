@@ -134,6 +134,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
+        if (amount <= 0) return 0;
+
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
         int slotCapacity = _slotsController.singleSlotCapacity;
 
