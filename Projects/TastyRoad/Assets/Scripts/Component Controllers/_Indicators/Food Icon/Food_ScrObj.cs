@@ -20,4 +20,10 @@ public class Food_ScrObj : ScriptableObject
     [Header("")]
     public int price;
     public List<FoodData> ingredients = new();
+    private Food_ScrObj food_ScrObj;
+
+    public Food_ScrObj(Food_ScrObj food_ScrObj)
+    {
+        this.food_ScrObj = food_ScrObj;
+    }
 }

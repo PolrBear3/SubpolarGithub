@@ -22,6 +22,9 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] [Range(1, 100)] private int _foodAmountRange;
 
     [Header("")]
+    [SerializeField] private List<Food_ScrObj> _foodShuffles = new();
+
+    [Header("")]
     [SerializeField] [Range(1, 100)] private int _nuggetAmountRange;
 
 
