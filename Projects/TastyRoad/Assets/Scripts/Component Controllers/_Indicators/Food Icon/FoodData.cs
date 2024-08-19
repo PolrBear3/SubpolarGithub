@@ -1,6 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct FoodWeight_Data
+{
+    public Food_ScrObj foodScrObj;
+    [Range(0, 100)] public int weight;
+
+    public FoodWeight_Data(Food_ScrObj foodScrObj, int weight)
+    {
+        this.foodScrObj = foodScrObj;
+        this.weight = weight;
+    }
+}
+
+
 public enum FoodCondition_Type { sliced, heated, rotten }
 
 [System.Serializable]

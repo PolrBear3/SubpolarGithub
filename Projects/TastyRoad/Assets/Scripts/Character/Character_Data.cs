@@ -10,9 +10,6 @@ public class Character_Data : MonoBehaviour
     private float _inPatienceLevel;
     public float inPatienceLevel => _inPatienceLevel;
 
-    private float _dropPercentage;
-    public float dropPercentage => _dropPercentage;
-
 
     // UnityEngine
     private void Start()
@@ -26,11 +23,9 @@ public class Character_Data : MonoBehaviour
     {
         int hungerInt = Random.Range(0, 100);
         int inPatientInt = Random.Range(0, 100);
-        int dropInt = Random.Range(0, 100);
 
         _hungerLevel = hungerInt;
         _inPatienceLevel = inPatientInt;
-        _dropPercentage = dropInt;
     }
 
 
@@ -43,10 +38,5 @@ public class Character_Data : MonoBehaviour
     public void Update_InPatiency(float updateLevel)
     {
         _inPatienceLevel += updateLevel;
-    }
-
-    public void Update_DropPercentage(float updateLevel)
-    {
-        _dropPercentage = updateLevel;
     }
 }

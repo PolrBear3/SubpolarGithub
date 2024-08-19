@@ -67,6 +67,8 @@ public class StationStock : MonoBehaviour
     }
     public void Set_Data(Station_ScrObj setStation)
     {
+        if (setStation == null) return;
+
         // set station scrobj
         _currentStation = setStation;
 

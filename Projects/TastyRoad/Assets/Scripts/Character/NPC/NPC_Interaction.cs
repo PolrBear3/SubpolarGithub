@@ -48,6 +48,8 @@ public class NPC_Interaction : MonoBehaviour
 
         _controller.interactable.InteractEvent += Interact;
         _controller.interactable.UnInteractEvent += UnInteract;
+
+        _controller.itemDropper.Set_DropCount(Random.Range(0, 2));
     }
 
     private void OnDestroy()
@@ -63,8 +65,6 @@ public class NPC_Interaction : MonoBehaviour
     private void Interact()
     {
         Interact_FacePlayer();
-
-        _controller.itemDropper.Drop_RandomFood();
 
         if (FoodOrder_Served())
         {
@@ -87,8 +87,11 @@ public class NPC_Interaction : MonoBehaviour
             return;
         }
 
-        if (Main_Controller.orderOpen == false) return;
-        if (_controller.foodIcon.hasFood == false) return;
+        if (Main_Controller.orderOpen == false || _controller.foodIcon.hasFood == false)
+        {
+            _controller.itemDropper.Drop_Random();
+            return;
+        }
 
         _controller.timer.Toggle_Transparency(_controller.interactable.bubble.bubbleOn);
 

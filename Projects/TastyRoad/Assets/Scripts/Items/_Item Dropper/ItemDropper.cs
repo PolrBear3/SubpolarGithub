@@ -17,15 +17,12 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] private Sprite _defaultLaunchSprite;
 
     [Header("")]
-    [SerializeField] private Food_ScrObj[] _foodDrops;
-    [SerializeField] private int[] _foodDropWeights;
-    [SerializeField] [Range(1, 100)] private int _foodAmountRange;
+    [SerializeField] [Range(0, 100)] private int _dropCount;
+    private int _currentDropCount;
 
     [Header("")]
-    [SerializeField] private List<Food_ScrObj> _foodShuffles = new();
-
-    [Header("")]
-    [SerializeField] [Range(1, 100)] private int _nuggetAmountRange;
+    [SerializeField] private FoodWeight_Data[] _foodWeights;
+    [SerializeField] [Range(0, 100)] private int _foodAmountRange;
 
 
     public delegate void Event();
@@ -43,22 +40,32 @@ public class ItemDropper : MonoBehaviour
     private void Start()
     {
         Set_AllDropTypes();
+
+        if (_dropCount <= 0) return;
+        Set_DropCount(_dropCount);
+    }
+
+
+    // Drop Count
+    public void Set_DropCount(int setCount)
+    {
+        _currentDropCount = setCount;
     }
 
 
     // Launch
-    private IEnumerator Launch_ShowItem(SpriteRenderer dropItemSR, Sprite launchSprite)
+    private IEnumerator Launch_ShowItem(GameObject dropItem, Sprite launchSprite)
     {
-        // hide
-        dropItemSR.color = Color.clear;
+        // deactivate
+        dropItem.SetActive(false);
 
         // launch
         Transform playerTransform = _main.Player().transform;
         GameObject launchCoin = _launcher.Parabola_CoinLaunch(launchSprite, playerTransform.position).gameObject;
 
-        // show
+        // activate when item drops
         while (launchCoin != null) yield return null;
-        dropItemSR.color = Color.white;
+        dropItem.SetActive(true);
 
         _coroutine = null;
         yield break;
@@ -70,7 +77,6 @@ public class ItemDropper : MonoBehaviour
     {
         _allDrops.Add(Drop_RandomFood);
         _allDrops.Add(Drop_CollectCard);
-        _allDrops.Add(Drop_GoldenNuggets);
     }
 
     //
@@ -83,12 +89,15 @@ public class ItemDropper : MonoBehaviour
     // Food
     public void Drop_AssignedFood(Food_ScrObj dropFood, int amount)
     {
+        if (_currentDropCount <= 0) return;
         if (_coroutine != null) return;
 
         Transform playerTransform = _main.Player().transform;
         Vector2 dropPosition = Main_Controller.SnapPosition(playerTransform.position);
 
         if (_main.Position_Claimed(dropPosition)) return;
+
+        _currentDropCount--;
 
         // spawn to nearest snap position
         GameObject itemGameObject = Instantiate(_dropItem, dropPosition, Quaternion.identity);
@@ -98,7 +107,7 @@ public class ItemDropper : MonoBehaviour
         DropItem dropItem = itemGameObject.GetComponent<DropItem>();
         dropItem.Set_ItemData(new ItemSlot_Data(dropFood, amount));
 
-        StartCoroutine(Launch_ShowItem(dropItem.sr, _defaultLaunchSprite));
+        StartCoroutine(Launch_ShowItem(dropItem.gameObject, _defaultLaunchSprite));
     }
 
 
@@ -107,9 +116,9 @@ public class ItemDropper : MonoBehaviour
         // get total wieght
         int totalWeight = 0;
 
-        foreach (var weight in _foodDropWeights)
+        foreach (var food in _foodWeights)
         {
-            totalWeight += weight;
+            totalWeight += food.weight;
         }
 
         // track values
@@ -117,39 +126,47 @@ public class ItemDropper : MonoBehaviour
         int cumulativeWeight = 0;
 
         // get random food according to weight
-        for (int i = 0; i < _foodDropWeights.Length; i++)
+        for (int i = 0; i < _foodWeights.Length; i++)
         {
-            cumulativeWeight += _foodDropWeights[i];
+            cumulativeWeight += _foodWeights[i].weight;
 
             if (randValue >= cumulativeWeight) continue;
 
-            return _foodDrops[i];
+            return _foodWeights[i].foodScrObj;
         }
 
         return null;
     }
 
-    public void Drop_RandomFood()
+    private void FisherYates_FoodShuffle()
     {
-        if (_foodDrops.Length <= 0) return;
+        for (int i = _foodWeights.Length - 1; i >= 0; i--)
+        {
+            int randIndex = Random.Range(0, i + 1);
+            FoodWeight_Data randData = new(_foodWeights[randIndex].foodScrObj, _foodWeights[randIndex].weight);
 
-        int randAmount = Random.Range(0, _foodAmountRange);
-
-        Drop_AssignedFood(Weighted_RandomFood(), randAmount);
+            _foodWeights[randIndex] = _foodWeights[i];
+            _foodWeights[i] = randData;
+        }
     }
 
 
-    //
-    private void Drop_GoldenNuggets()
+    public void Drop_RandomFood()
     {
-        int randAmount = Random.Range(0, _nuggetAmountRange);
-        Drop_AssignedFood(_main.dataController.goldenNugget, randAmount);
+        if (_currentDropCount <= 0) return;
+        if (_foodWeights.Length <= 0) return;
+
+        _currentDropCount--;
+
+        int randAmount = Random.Range(1, _foodAmountRange);
+        Drop_AssignedFood(Weighted_RandomFood(), randAmount);
     }
 
 
     //
     public void Drop_CollectCard()
     {
+        if (_currentDropCount <= 0) return;
         if (_coroutine != null) return;
 
         Transform playerTransform = _main.Player().transform;
@@ -157,11 +174,13 @@ public class ItemDropper : MonoBehaviour
 
         if (_main.Position_Claimed(dropPosition)) return;
 
+        _currentDropCount--;
+
         // spawn to nearest snap position
         GameObject itemGameObject = Instantiate(_collectCard, dropPosition, Quaternion.identity);
         CollectCard dropCard = itemGameObject.GetComponent<CollectCard>();
         itemGameObject.transform.SetParent(_main.otherFile);
 
-        StartCoroutine(Launch_ShowItem(dropCard.sr, dropCard.launchSprite));
+        StartCoroutine(Launch_ShowItem(dropCard.gameObject, dropCard.launchSprite));
     }
 }

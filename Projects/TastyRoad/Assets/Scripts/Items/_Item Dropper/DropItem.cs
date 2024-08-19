@@ -5,7 +5,6 @@ using UnityEngine;
 public class DropItem : MonoBehaviour, IInteractable
 {
     private SpriteRenderer _sr;
-    public SpriteRenderer sr => _sr;
 
     private Main_Controller _main;
 

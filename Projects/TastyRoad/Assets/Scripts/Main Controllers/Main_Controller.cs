@@ -41,18 +41,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public Transform otherFile => _otherFile;
 
 
-    [Header("")]
-    [SerializeField] private List<Food_ScrObj> _foodShuffles = new();
-
-    private void FisherYates_FoodShuffle()
-    {
-        for (int i = _foodShuffles.Count - 1; i >= 0; i--)
-        {
-            int randIndex = Random.Range(0, i + 1);
-        }
-    }
-
-
     public static bool gamePaused;
     public static bool orderOpen;
 
@@ -76,8 +64,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         TestButton1Event += TestButton_Subscription;
         // TestButton_Subscription();
-
-        FisherYates_FoodShuffle();
     }
 
     private void OnDestroy()
