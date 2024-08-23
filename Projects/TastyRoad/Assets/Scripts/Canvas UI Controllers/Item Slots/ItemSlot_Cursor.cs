@@ -6,12 +6,16 @@ using TMPro;
 
 public class ItemSlot_Cursor : MonoBehaviour
 {
-    [Header("")]
-    [SerializeField] private VehicleMenu_Controller _vehicleMenu;
-    public VehicleMenu_Controller vehicleMenu => _vehicleMenu;
+    private RectTransform _rectTransform;
+    public RectTransform rectTransform => _rectTransform;
 
     [Header("")]
-    [SerializeField] private Image _itemIcon;
+    [SerializeField] private ItemSlots_Controller _slotsController;
+
+    [Header("")]
+    [SerializeField] private Image _cursorImage;
+    [SerializeField] private Sprite _defaultCursor;
+
     [SerializeField] private TextMeshProUGUI _amountText;
 
     [Header("")]
@@ -19,68 +23,65 @@ public class ItemSlot_Cursor : MonoBehaviour
     public UI_ClockTimer holdTimer => _holdTimer;
 
 
-    [Header("")]
-    [SerializeField] private Sprite _defaultCursor;
-
-
-    [HideInInspector] public ItemSlot_Data data;
+    private ItemSlot_Data _data;
 
     private ItemSlot _currentSlot;
     public ItemSlot currentSlot => _currentSlot;
 
 
     // UnityEngine
+    private void Awake()
+    {
+        _rectTransform = gameObject.GetComponent<RectTransform>();
+    }
+
     private void Start()
     {
         Empty_Item();
     }
 
 
-    /// <summary>
-    /// Cursor slot location control
-    /// </summary>
-    public void Assign_CurrentSlot(ItemSlot assignSlot)
-    {
-        _currentSlot = assignSlot;
-
-        transform.SetParent(_currentSlot.cursorPoint);
-        transform.localPosition = Vector2.zero;
-    }
-
-
     // Data
     public void Assign_Data(ItemSlot_Data data)
     {
-        this.data = data;
+        this._data = data;
+    }
+
+    public ItemSlot_Data Current_Data()
+    {
+        return _data;
     }
 
 
-    // Cursor item Control
+    // Control
     public void Empty_Item()
     {
-        data.hasItem = false;
-        data.isLocked = false;
+        _data = new();
 
-        data.currentFood = null;
-        data.currentStation = null;
+        _data.hasItem = false;
+        _data.isLocked = false;
 
-        data.currentAmount = 0;
-        _amountText.color = Color.clear;
+        _data.currentFood = null;
+        _data.currentStation = null;
 
-        _itemIcon.sprite = _defaultCursor;
+        _cursorImage.sprite = _defaultCursor;
+
+        _data.currentAmount = 0;
+        _amountText.text = "";
     }
+
 
     public void Assign_Item(Food_ScrObj food)
     {
         if (food != null)
         {
-            data.hasItem = true;
-            data.currentFood = food;
+            _data.hasItem = true;
+            _data.currentFood = food;
 
-            _itemIcon.sprite = food.sprite;
+            _cursorImage.sprite = food.sprite;
 
-            _itemIcon.color = Color.white;
-            _itemIcon.transform.localPosition = food.centerPosition * 0.01f;
+            _cursorImage.color = Color.white;
+            _cursorImage.transform.localPosition = food.uiCenterPosition;
 
             return;
         }
@@ -91,13 +92,13 @@ public class ItemSlot_Cursor : MonoBehaviour
     {
         if (station != null)
         {
-            data.hasItem = true;
-            data.currentStation = station;
+            _data.hasItem = true;
+            _data.currentStation = station;
 
-            _itemIcon.sprite = station.miniSprite;
+            _cursorImage.sprite = station.miniSprite;
 
-            _itemIcon.color = Color.white;
-            _itemIcon.transform.localPosition = station.centerPosition * 0.01f;
+            _cursorImage.color = Color.white;
+            _cursorImage.transform.localPosition = station.centerPosition * 0.01f;
 
             return;
         }
@@ -107,21 +108,30 @@ public class ItemSlot_Cursor : MonoBehaviour
 
     public void Assign_Amount(int assignAmount)
     {
-        data.currentAmount = assignAmount;
+        if (_data.hasItem == false) return;
 
-        if (data.currentAmount <= 0)
-        {
-            Empty_Item();
-            return;
-        }
+        _data.currentAmount = assignAmount;
+        _amountText.text = _data.currentAmount.ToString();
 
-        if (data.currentAmount == 1)
-        {
-            _amountText.color = Color.clear;
-            return;
-        }
+        if (_data.currentAmount > 0) return;
+        Empty_Item();
+    }
 
-        _amountText.text = data.currentAmount.ToString();
-        _amountText.color = Color.black;
+
+    public void Navigate_toSlot(ItemSlot assignSlot)
+    {
+        if (assignSlot == null) return;
+        _currentSlot = assignSlot;
+
+        _rectTransform.SetParent(_currentSlot.cursorPoint);
+        _rectTransform.anchoredPosition = Vector2.zero;
+    }
+    public void Navigate_toSlot(Vector2 direction)
+    {
+        Vector2 currentGridNum = _currentSlot.gridNum;
+        Vector2 nextGridNum = new Vector2(currentGridNum.x + direction.x, currentGridNum.y + direction.y);
+
+        ItemSlot nextSlot = _slotsController.ItemSlot(nextGridNum);
+        Navigate_toSlot(nextSlot);
     }
 }

@@ -88,7 +88,7 @@ public class GasPump : MonoBehaviour
 
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
-        if (menu.slotsController.Slots_Full())
+        if (menu.controller.slotsController.Slots_Full())
         {
             dialog.Update_Dialog(new DialogData(_oilDrum.dialogIcon, dialog.datas[1].info));
             return;
@@ -157,7 +157,7 @@ public class GasPump : MonoBehaviour
 
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
-        if (menu.slotsController.Slots_Full()) return;
+        if (menu.controller.slotsController.Slots_Full()) return;
 
         menu.Add_StationItem(_oilDrum, 1);
         _launcher.Parabola_CoinLaunch(_oilDrum.miniSprite, _interactable.detection.player.transform.position);

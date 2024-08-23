@@ -19,7 +19,8 @@ public class ItemSlot_Data
     //
     public ItemSlot_Data()
     {
-        
+        hasItem = false;
+        currentAmount = 0;
     }
 
     public ItemSlot_Data (ItemSlot_Data data)
@@ -37,12 +38,16 @@ public class ItemSlot_Data
 
     public ItemSlot_Data (Food_ScrObj food, int amount)
     {
+        hasItem = true;
+
         currentFood = food;
         currentAmount = amount;
     }
 
-    public ItemSlot_Data(Station_ScrObj station, int amount)
+    public ItemSlot_Data (Station_ScrObj station, int amount)
     {
+        hasItem = true;
+
         currentStation = station;
         currentAmount = amount;
     }

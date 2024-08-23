@@ -109,7 +109,7 @@ public class StationStock : MonoBehaviour
         StationMenu_Controller stationMenu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
         // check if station menu slot is available
-        if (stationMenu.slotsController.AvailableSlots_Count() <= 0)
+        if (stationMenu.controller.slotsController.AvailableSlots_Count() <= 0)
         {
             DialogData data = new(_currentStation.dialogIcon, "Not enough space in station storage!");
             dialog.Update_Dialog(data);

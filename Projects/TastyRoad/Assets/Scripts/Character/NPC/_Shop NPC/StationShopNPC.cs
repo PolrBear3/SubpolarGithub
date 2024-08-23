@@ -147,7 +147,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private void Unlock_Station(Station_ScrObj unlockStation)
     {
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> lockedSlots = menu.slotsController.LockedSlots();
+        List<ItemSlot> lockedSlots = menu.controller.slotsController.LockedSlots();
 
         // remove all locked unlockStation
         for (int i = 0; i < lockedSlots.Count; i++)
@@ -301,7 +301,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         }
 
         StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> bookMarkedSlots = menu.slotsController.BookMarked_Slots(false);
+        List<ItemSlot> bookMarkedSlots = menu.controller.slotsController.BookMarked_Slots(false);
 
         // check if there are more than 2 bookmarked stations
         if (bookMarkedSlots.Count < 2)
@@ -357,7 +357,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private void Unlock_BookMarkedStations()
     {
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> bookmarkedSlots = menu.slotsController.BookMarked_Slots(true);
+        List<ItemSlot> bookmarkedSlots = menu.controller.slotsController.BookMarked_Slots(true);
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 

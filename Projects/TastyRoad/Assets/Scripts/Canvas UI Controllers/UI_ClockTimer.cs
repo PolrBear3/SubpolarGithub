@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class UI_ClockTimer : MonoBehaviour
 {
-    private Image _image;
-
+    [Header("")]
+    [SerializeField] private Image _clockImage;
     [SerializeField] private List<Sprite> _clockSprites = new();
 
     private bool _onHold;
@@ -20,11 +20,6 @@ public class UI_ClockTimer : MonoBehaviour
 
 
     // UnityEngine
-    private void Awake()
-    {
-        _image = gameObject.GetComponent<Image>();
-    }
-
     private void Start()
     {
         Stop_ClockSpriteRun();
@@ -46,15 +41,15 @@ public class UI_ClockTimer : MonoBehaviour
 
             _onHold = true;
 
-            _image.color = Color.white;
-            _image.sprite = _clockSprites[i];
+            _clockImage.color = Color.white;
+            _clockImage.sprite = _clockSprites[i];
         }
 
         yield return new WaitForSeconds(transitionTime);
 
         _holdFinished = true;
 
-        _image.color = Color.clear;
+        _clockImage.color = Color.clear;
     }
 
     public void Stop_ClockSpriteRun()
@@ -64,6 +59,6 @@ public class UI_ClockTimer : MonoBehaviour
 
         if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
 
-        _image.color = Color.clear;
+        _clockImage.color = Color.clear;
     }
 }

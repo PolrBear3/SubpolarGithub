@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
+public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 {
     [Header("")]
     [SerializeField] private VehicleMenu_Controller _controller;
+    public VehicleMenu_Controller controller => _controller;
 
     [Header("")]
-    [SerializeField] private ItemSlots_Controller _slotsController;
-    public ItemSlots_Controller slotsController => _slotsController;
-
     private bool _interactionMode;
     private Station_Controller _interactStation;
 
@@ -17,8 +15,20 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // UnityEngine
+    private void Start()
+    {
+        Load_Data();
+        gameObject.SetActive(false);
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save_Data();
+    }
+
     private void OnEnable()
     {
+        /*
         _controller.MenuOpen_Event += UpdateSlots_Data;
         _controller.MenuOpen_Event += UpdateSlots_Unlock;
         _controller.MenuOpen_Event += CurrentSlots_BookmarkToggle;
@@ -31,10 +41,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
 
         _controller.OnOption1_Input += CurrentStation_BookmarkToggle;
+        */
     }
 
     private void OnDisable()
     {
+        /*
         // save current dragging item before menu close
         Drag_Cancel();
 
@@ -48,6 +60,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
 
         _controller.OnOption1_Input -= CurrentStation_BookmarkToggle;
+        */
     }
 
     private void OnDestroy()
@@ -57,8 +70,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // ISaveLoadable
-    public void Save_Data()
+    private void Save_Data()
     {
+        /*
         List<ItemSlot> currentSlots = _slotsController.itemSlots;
         List<ItemSlot_Data> saveSlots = new();
 
@@ -68,10 +82,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         ES3.Save("StationMenu_Controller/_itemSlotDatas", saveSlots);
+        */
     }
 
-    public void Load_Data()
+    private void Load_Data()
     {
+        /*
         List<ItemSlot_Data> loadSlots = ES3.Load("StationMenu_Controller/_itemSlotDatas", new List<ItemSlot_Data>());
 
         _slotsController.Add_Slot(loadSlots.Count);
@@ -85,6 +101,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (ES3.KeyExists("StationMenu_Controller/_itemSlotDatas")) return;
 
         _slotsController.Add_Slot(5);
+        */
     }
 
 
@@ -100,7 +117,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (amount <= 0) return null;
 
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
         int repeatAmount = amount;
 
         for (int i = 0; i < currentSlots.Count; i++)
@@ -123,7 +140,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     public void Remove_StationItem(Station_ScrObj station)
     {
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
@@ -139,7 +156,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     public void Remove_StationItem(Station_ScrObj station, int amount)
     {
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
         int repeatAmount = amount;
 
         for (int i = 0; i < currentSlots.Count; i++)
@@ -159,7 +176,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Slots Control
     public int Station_Amount(Station_ScrObj station)
     {
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
         int count = 0;
 
         for (int i = 0; i < currentSlots.Count; i++)
@@ -178,7 +195,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     private void UpdateSlots_Data()
     {
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
@@ -188,7 +205,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void UpdateSlots_Unlock()
     {
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
+        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)
         {
@@ -202,9 +219,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (_interactionMode) return;
 
-        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
-        if (cursor.data.hasItem == false)
+        if (cursor.Current_Data().hasItem == false)
         {
             Drag_Station();
             return;
@@ -222,7 +239,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     //
     private void Drag_Station()
     {
-        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
         ItemSlot_Data slotData = currentSlot.data;
@@ -237,11 +254,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Drag_Cancel()
     {
-        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
-        if (cursor.data.hasItem == false) return;
+        if (cursor.Current_Data().hasItem == false) return;
 
-        ItemSlot_Data cursorData = new(cursor.data);
+        ItemSlot_Data cursorData = new(cursor.Current_Data());
         cursor.Empty_Item();
 
         ItemSlot targetSlot = Add_StationItem(cursorData.currentStation, 1);
@@ -254,11 +271,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     //
     private void Drop_Station()
     {
-        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        ItemSlot_Data cursorData = new(cursor.data);
-        currentSlot.Assign_Item(cursor.data.currentStation).Assign_Data(cursorData);
+        ItemSlot_Data cursorData = new(cursor.Current_Data());
+        currentSlot.Assign_Item(cursor.Current_Data().currentStation).Assign_Data(cursorData);
 
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
@@ -269,11 +286,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     //
     private void Swap_Station()
     {
-        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
         ItemSlot_Data currentSlotData = new(currentSlot.data);
-        ItemSlot_Data cursorData = new(cursor.data);
+        ItemSlot_Data cursorData = new(cursor.Current_Data());
 
         cursor.Assign_Data(currentSlotData);
         cursor.Assign_Item(currentSlot.data.currentStation);
@@ -292,8 +309,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (_interactionMode == true) return;
 
         //
-        ItemSlot_Cursor cursor = _controller.cursor;
-        ItemSlot_Data cursorData = cursor.data;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlot_Data cursorData = cursor.Current_Data();
 
         // check if cursor is dragging item
         if (cursorData.hasItem == false) return;
@@ -313,7 +330,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void CurrentSlots_BookmarkToggle()
     {
-        List<ItemSlot> allSlots = _slotsController.itemSlots;
+        List<ItemSlot> allSlots = _controller.slotsController.itemSlots;
 
         for (int i = 0; i < allSlots.Count; i++)
         {
@@ -328,10 +345,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (_interactionMode) return;
 
-        ItemSlot_Cursor cursor = _controller.cursor;
-        if (cursor.data.hasItem == false) return;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        if (cursor.Current_Data().hasItem == false) return;
 
-        if (cursor.data.isLocked == true)
+        if (cursor.Current_Data().isLocked == true)
         {
             Drag_Cancel();
             return;
@@ -340,7 +357,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactionMode = true;
 
         Vehicle_Controller vehicle = _controller.vehicleController;
-        Station_ScrObj cursorStation = cursor.data.currentStation;
+        Station_ScrObj cursorStation = cursor.Current_Data().currentStation;
 
         _interactStation = vehicle.mainController.Spawn_Station(cursorStation, vehicle.stationSpawnPoint.position);
 
@@ -369,7 +386,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     
     private void Complete_StationPlace()
     {
-        _controller.cursor.Empty_Item();
+        _controller.slotsController.cursor.Empty_Item();
 
         _interactionMode = false;
         _interactStation = null;
@@ -385,8 +402,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Cancel_Export()
     {
-        ItemSlot_Cursor cursor = _controller.cursor;
-        if (cursor.data.hasItem == false) return;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        if (cursor.Current_Data().hasItem == false) return;
 
         _interactionMode = false;
 
@@ -437,9 +454,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (_interactionMode) return;
 
-        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
-        if (cursor.data.hasItem) return;
+        if (cursor.Current_Data().hasItem) return;
         if (cursor.currentSlot.data.isLocked) return;
 
         List<Station_Controller> currentStations = _controller.vehicleController.mainController.CurrentStations(false);
@@ -447,7 +464,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (currentStations.Count <= 0) return;
 
         // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
-        cursor.data.hasItem = true;
+        cursor.Current_Data().hasItem = true;
 
         _interactionMode = true;
         _controller.OnCursorControl_Input += Station_TargetDirection_Control;
@@ -464,7 +481,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (_interactionMode == false) return;
 
-        ItemSlot_Cursor cursor = _controller.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
         Station_ScrObj interactStation = _interactStation.stationScrObj;
@@ -492,7 +509,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
-        cursor.data.hasItem = false;
+        cursor.Current_Data().hasItem = false;
 
         _interactionMode = false;
         _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
@@ -505,7 +522,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Cancel_Retrieve()
     {
         // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
-        _controller.cursor.data.hasItem = false;
+        _controller.slotsController.cursor.Current_Data().hasItem = false;
 
         _interactionMode = false;
 

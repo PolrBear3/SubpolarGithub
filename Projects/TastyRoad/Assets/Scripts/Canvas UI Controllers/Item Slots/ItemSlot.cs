@@ -6,21 +6,26 @@ using TMPro;
 
 public class ItemSlot : MonoBehaviour
 {
+    private RectTransform _rectTransform;
+    public RectTransform rectTransform => _rectTransform;
+
     private ItemSlot_Data _data;
     public ItemSlot_Data data => _data;
 
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
 
+
+    [Header("")]
     [SerializeField] private Image _iconImage;
+    [SerializeField] private Image _bookmarkIcon;
+
     [SerializeField] private TextMeshProUGUI _amountText;
 
 
     [Header("")]
-    [SerializeField] private Transform _cursorPoint;
-    public Transform cursorPoint => _cursorPoint;
-
-    [SerializeField] private Image _bookmarkIcon;
+    [SerializeField] private RectTransform _cursorPoint;
+    public RectTransform cursorPoint => _cursorPoint;
 
 
     [Header("")]
@@ -30,21 +35,13 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] [Range(0, 1)] private float _transparentValue;
 
 
-    [Header("")]
-    [SerializeField] private GameObject _conditionIndicator;
-
-    [SerializeField] private ConditionSprites[] _conditionSprites;
-    [SerializeField] private Image[] _conditionBoxes;
-
-
     // UnityEngine
     private void Awake()
     {
-        _iconImage.color = Color.clear;
-        _amountText.color = Color.clear;
-        _bookmarkIcon.color = Color.clear;
+        _rectTransform = gameObject.GetComponent<RectTransform>();
 
-        _conditionIndicator.SetActive(false);
+        _iconImage.color = Color.clear;
+        _bookmarkIcon.color = Color.clear;
     }
 
 
@@ -109,22 +106,24 @@ public class ItemSlot : MonoBehaviour
     //
     public void Empty_ItemBox()
     {
-        data.bookMarked = false;
+        _data = new();
+
+        _data.bookMarked = false;
         Toggle_BookMark(false);
 
-        data.hasItem = false;
-        data.isLocked = false;
+        _data.hasItem = false;
+        _data.isLocked = false;
 
         Toggle_Icons(false, false);
 
-        data.currentFood = null;
-        data.currentStation = null;
+        _data.currentFood = null;
+        _data.currentStation = null;
 
         _iconImage.sprite = null;
         _iconImage.color = Color.clear;
 
-        data.currentAmount = 0;
-        _amountText.color = Color.clear;
+        _data.currentAmount = 0;
+        _amountText.text = "";
     }
 
 
@@ -133,13 +132,13 @@ public class ItemSlot : MonoBehaviour
     {
         if (food != null)
         {
-            data.hasItem = true;
-            data.currentFood = food;
+            _data.hasItem = true;
+            _data.currentFood = food;
 
             _iconImage.sprite = food.sprite;
 
             _iconImage.color = Color.white;
-            _iconImage.transform.localPosition = food.centerPosition * 100;
+            _iconImage.rectTransform.anchoredPosition = food.uiCenterPosition;
 
             return this;
         }
@@ -166,74 +165,43 @@ public class ItemSlot : MonoBehaviour
         return this;
     }
 
+    /// <summary>
+    /// Assigns current data item
+    /// </summary>
+    public ItemSlot Assign_Item()
+    {
+        if (_data.hasItem == false)
+        {
+            Empty_ItemBox();
+            return this;
+        }
+
+        if (_data.currentFood != null)
+        {
+            Assign_Item(_data.currentFood);
+            return this;
+        }
+
+        Assign_Item(_data.currentStation);
+        return this;
+    }
+
 
     // text update included
     public void Assign_Amount(int assignAmount)
     {
         data.currentAmount = assignAmount;
+        _amountText.text = _data.currentAmount.ToString();
 
-        if (data.currentAmount <= 0)
-        {
-            Empty_ItemBox();
-            return;
-        }
-
-        if (data.currentAmount == 1)
-        {
-            _amountText.color = Color.clear;
-            return;
-        }
-
-        _amountText.text = data.currentAmount.ToString();
-        _amountText.color = Color.black;
+        if (data.currentAmount > 0) return;
+        Empty_ItemBox();
     }
     public void Update_Amount(int updateAmount)
     {
         data.currentAmount += updateAmount;
+        _amountText.text = _data.currentAmount.ToString();
 
-        if (data.currentAmount <= 0)
-        {
-            Empty_ItemBox();
-            return;
-        }
-
-        if (data.currentAmount == 1)
-        {
-            _amountText.color = Color.clear;
-            return;
-        }
-
-        _amountText.text = data.currentAmount.ToString();
-        _amountText.color = Color.black;
-    }
-
-
-    // Condition Indication Control
-    private Sprite ConditionBox_Sprite(FoodCondition_Type type, int level)
-    {
-        for (int i = 0; i < _conditionSprites.Length; i++)
-        {
-            if (_conditionSprites[i].type == type)
-            {
-                return _conditionSprites[i].sprites[level - 1];
-            }
-        }
-        return null;
-    }
-    public void Assign_State(List<FoodCondition_Data> conditionData)
-    {
-        _conditionIndicator.SetActive(true);
-
-        for (int i = 0; i < _conditionBoxes.Length; i++)
-        {
-            if (i > conditionData.Count - 1)
-            {
-                _conditionBoxes[i].color = Color.clear;
-                continue;
-            }
-
-            _conditionBoxes[i].color = Color.white;
-            _conditionBoxes[i].sprite = ConditionBox_Sprite(conditionData[i].type, conditionData[i].level);
-        }
+        if (data.currentAmount > 0) return;
+        Empty_ItemBox();
     }
 }

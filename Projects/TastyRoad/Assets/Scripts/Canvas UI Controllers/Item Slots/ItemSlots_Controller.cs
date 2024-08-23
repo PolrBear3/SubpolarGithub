@@ -5,61 +5,67 @@ using UnityEngine;
 public class ItemSlots_Controller : MonoBehaviour
 {
     [Header("")]
-    [SerializeField] private Transform _itemSlotsLayout;
+    [SerializeField] private ItemSlot_Cursor _cursor;
+    public ItemSlot_Cursor cursor => _cursor;
 
-    private List<ItemSlot> _itemSlots = new();
+    [Header("")]
+    [SerializeField] private List<ItemSlot> _itemSlots = new();
     public List<ItemSlot> itemSlots => _itemSlots;
 
-    [Header("")]
-    [SerializeField] private int _maxGridNumX;
-
-    [SerializeField] private int _singleSlotCapacity;
+    [SerializeField] [Range(0, 1000)] private int _singleSlotCapacity;
     public int singleSlotCapacity => _singleSlotCapacity;
 
-    [Header("")]
-    [SerializeField] private GameObject _itemSlotPrefab;
 
-
-    //
-    public void Add_Slot(int amount)
+    // UnityEngine
+    private void Start()
     {
-        for (int i = 0; i < amount; i++)
-        {
-            // instantiate item slots prefab in All Item Slots
-            GameObject addSlot = Instantiate(_itemSlotPrefab, _itemSlotsLayout);
-            ItemSlot newSlot = addSlot.GetComponent<ItemSlot>();
-
-            addSlot.transform.SetParent(_itemSlotsLayout);
-
-            // add instantiated item slots to _itemSlots
-            _itemSlots.Add(newSlot);
-
-            // set data
-            newSlot.Assign_Data(new());
-        }
-
-        Set_Slots_GridNum();
+        Set_GridNums();
     }
 
-    private void Set_Slots_GridNum()
+
+    // Set
+    private void Set_GridNums()
     {
-        Vector2 gridCount = Vector2.zero;
+        Vector2 gridNumTrack = Vector2.zero;
+        float recentPosY = _itemSlots[0].rectTransform.position.y;
 
         for (int i = 0; i < _itemSlots.Count; i++)
         {
-            _itemSlots[i].Assign_GridNum(gridCount);
+            if (_itemSlots[i].rectTransform.position.y != recentPosY)
+            {
+                gridNumTrack.x = 0;
+                gridNumTrack.y++;
+            }
 
-            gridCount.x++;
+            _itemSlots[i].Assign_GridNum(gridNumTrack);
 
-            if (gridCount.x != _maxGridNumX + 1) continue;
+            recentPosY = _itemSlots[i].rectTransform.position.y;
+            gridNumTrack.x++;
+        }
+    }
 
-            gridCount.x = 0;
-            gridCount.y++;
+    public void Set_Datas(List<ItemSlot_Data> setDatas)
+    {
+        for (int i = 0; i < setDatas.Count; i++)
+        {
+            if (i >= _itemSlots.Count) return;
+            _itemSlots[i].Assign_Data(setDatas[i]);
         }
     }
 
 
-    //
+    // Checks and Gets
+    public ItemSlot ItemSlot(Vector2 gridNum)
+    {
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            if (gridNum != _itemSlots[i].gridNum) continue;
+            return _itemSlots[i];
+        }
+        return null;
+    }
+
+
     public bool Slots_Full()
     {
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -82,6 +88,22 @@ public class ItemSlots_Controller : MonoBehaviour
         }
 
         return slotsCount;
+    }
+
+
+    /// <returns>
+    /// All datas from _itemSlots
+    /// </returns>
+    public List<ItemSlot_Data> Current_SlotDatas()
+    {
+        List<ItemSlot_Data> currentDatas = new();
+
+        foreach (var slot in _itemSlots)
+        {
+            currentDatas.Add(slot.data);
+        }
+
+        return currentDatas;
     }
 
 

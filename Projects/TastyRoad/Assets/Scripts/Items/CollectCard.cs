@@ -92,7 +92,7 @@ public class CollectCard : MonoBehaviour
         Station_ScrObj randStation = _bluePrintStations[Random.Range(0, _bluePrintStations.Length)];
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
-        if (menu.slotsController.Slots_Full() == true)
+        if (menu.controller.slotsController.Slots_Full() == true)
         {
             // dialog
             return;
