@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
+public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
     [Header("")]
     [SerializeField] private VehicleMenu_Controller _controller;
     public VehicleMenu_Controller controller => _controller;
+
+    private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
+    private int _currentPageNum;
 
     [Header("")]
     private bool _interactionMode;
@@ -15,22 +18,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
 
     // UnityEngine
-    private void Start()
-    {
-        Load_Data();
-        gameObject.SetActive(false);
-    }
-
-    private void OnApplicationQuit()
-    {
-        Save_Data();
-    }
-
     private void OnEnable()
     {
+        _controller.MenuOpen_Event += UpdateData_toSlots;
+
         /*
-        _controller.MenuOpen_Event += UpdateSlots_Data;
-        _controller.MenuOpen_Event += UpdateSlots_Unlock;
         _controller.MenuOpen_Event += CurrentSlots_BookmarkToggle;
 
         _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
@@ -46,12 +38,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
     private void OnDisable()
     {
-        /*
         // save current dragging item before menu close
+        _currentDatas[_currentPageNum] = _controller.slotsController.Current_SlotDatas();
         Drag_Cancel();
 
-        _controller.MenuOpen_Event -= UpdateSlots_Data;
-        _controller.MenuOpen_Event -= UpdateSlots_Unlock;
+        _controller.MenuOpen_Event -= UpdateData_toSlots;
+
+        /*
         _controller.MenuOpen_Event -= CurrentSlots_BookmarkToggle;
 
         _controller.OnSelect_Input -= Select_Slot;
@@ -70,38 +63,31 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
 
 
     // ISaveLoadable
-    private void Save_Data()
+    public void Save_Data()
     {
-        /*
-        List<ItemSlot> currentSlots = _slotsController.itemSlots;
-        List<ItemSlot_Data> saveSlots = new();
-
-        for (int i = 0; i < currentSlots.Count; i++)
-        {
-            saveSlots.Add(currentSlots[i].data);
-        }
-
-        ES3.Save("StationMenu_Controller/_itemSlotDatas", saveSlots);
-        */
+        ES3.Save("StationMenu_Controller/_currentDatas", _currentDatas);
+        _currentDatas = ES3.Load("StationMenu_Controller/_currentDatas", _currentDatas);
     }
 
-    private void Load_Data()
+    public void Load_Data()
     {
-        /*
-        List<ItemSlot_Data> loadSlots = ES3.Load("StationMenu_Controller/_itemSlotDatas", new List<ItemSlot_Data>());
+        Debug.Log("check");
 
-        _slotsController.Add_Slot(loadSlots.Count);
-
-        for (int i = 0; i < loadSlots.Count; i++)
+        // load saved slot datas
+        if (ES3.KeyExists("StationMenu_Controller/_currentDatas"))
         {
-            _slotsController.itemSlots[i].Assign_Data(loadSlots[i]);
+            _currentDatas = ES3.Load("StationMenu_Controller/_currentDatas", _currentDatas);
+            return;
         }
 
-        // default slots amount
-        if (ES3.KeyExists("StationMenu_Controller/_itemSlotDatas")) return;
+        // set new slot datas
+        List<ItemSlot_Data> newDatas = new();
+        for (int i = 0; i < _controller.slotsController.itemSlots.Count; i++)
+        {
+            newDatas.Add(new());
+        }
 
-        _slotsController.Add_Slot(5);
-        */
+        _currentDatas.Add(0, newDatas);
     }
 
 
@@ -109,6 +95,22 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu
     public bool MenuInteraction_Active()
     {
         return _interactionMode;
+    }
+
+
+    //
+    private void UpdateData_toSlots()
+    {
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+
+        List<ItemSlot> currentSlots = slotsController.itemSlots;
+
+        foreach (var slot in currentSlots)
+        {
+            slot.Assign_Item();
+            slot.Assign_Amount(slot.data.currentAmount);
+        }
     }
 
 

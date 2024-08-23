@@ -65,6 +65,7 @@ public class ItemSlot_Cursor : MonoBehaviour
         _data.currentStation = null;
 
         _cursorImage.sprite = _defaultCursor;
+        _cursorImage.rectTransform.anchoredPosition = Vector2.zero;
 
         _data.currentAmount = 0;
         _amountText.text = "";
