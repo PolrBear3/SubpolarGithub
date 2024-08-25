@@ -188,11 +188,22 @@ public class ItemSlot : MonoBehaviour
     }
 
 
-    // text update included
+    // Amount Control
+    private void AmountText_Update()
+    {
+        if (data.currentAmount == 1)
+        {
+            _amountText.text = "";
+            return;
+        }
+
+        _amountText.text = _data.currentAmount.ToString();
+    }
+
     public void Assign_Amount(int assignAmount)
     {
         data.currentAmount = assignAmount;
-        _amountText.text = _data.currentAmount.ToString();
+        AmountText_Update();
 
         if (data.currentAmount > 0) return;
         Empty_ItemBox();
@@ -200,7 +211,7 @@ public class ItemSlot : MonoBehaviour
     public void Update_Amount(int updateAmount)
     {
         data.currentAmount += updateAmount;
-        _amountText.text = _data.currentAmount.ToString();
+        AmountText_Update();
 
         if (data.currentAmount > 0) return;
         Empty_ItemBox();

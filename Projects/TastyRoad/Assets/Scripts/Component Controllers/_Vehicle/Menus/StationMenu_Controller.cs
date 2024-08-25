@@ -22,12 +22,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         _controller.MenuOpen_Event += UpdateData_toSlots;
 
+        _controller.OnSelect_Input += Select_Slot;
+
         /*
         _controller.MenuOpen_Event += CurrentSlots_BookmarkToggle;
 
         _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
-
-        _controller.OnSelect_Input += Select_Slot;
 
         _controller.OnHoldSelect_Input += Export_StationPrefab;
         _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
@@ -39,15 +39,15 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnDisable()
     {
         // save current dragging item before menu close
-        _currentDatas[_currentPageNum] = _controller.slotsController.Current_SlotDatas();
         Drag_Cancel();
+        _currentDatas[_currentPageNum] = _controller.slotsController.Current_SlotDatas();
 
         _controller.MenuOpen_Event -= UpdateData_toSlots;
 
+        _controller.OnSelect_Input -= Select_Slot;
+
         /*
         _controller.MenuOpen_Event -= CurrentSlots_BookmarkToggle;
-
-        _controller.OnSelect_Input -= Select_Slot;
 
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
         _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
@@ -71,7 +71,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Load_Data()
     {
-        Debug.Log("check");
 
         // load saved slot datas
         if (ES3.KeyExists("StationMenu_Controller/_currentDatas"))
@@ -115,7 +114,27 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Menu Control
-    public ItemSlot Add_StationItem(Station_ScrObj station, int amount)
+    public ItemSlot_Data Add_StationItem_Data(Station_ScrObj station, int amount)
+    {
+        if (amount <= 0) return null;
+
+        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
+        int repeatAmount = amount;
+
+        for (int i = 0; i < datas.Count; i++)
+        {
+            if (datas[i].hasItem == true) continue;
+
+            datas[i] = new(station, 1);
+            repeatAmount--;
+
+            if (repeatAmount > 0) continue;
+            return datas[i];
+        }
+
+        return null;
+    }
+    public ItemSlot Add_StationItem_Slot(Station_ScrObj station, int amount)
     {
         if (amount <= 0) return null;
 
@@ -142,14 +161,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     public void Remove_StationItem(Station_ScrObj station)
     {
-        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
+        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
 
-        for (int i = 0; i < currentSlots.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (currentSlots[i].data.hasItem == false) continue;
-            if (station != currentSlots[i].data.currentStation) continue;
+            if (datas[i].hasItem == false) continue;
+            if (station != datas[i].currentStation) continue;
 
-            currentSlots[i].Empty_ItemBox();
+            datas[i] = new();
         }
     }
 
@@ -158,19 +177,18 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     public void Remove_StationItem(Station_ScrObj station, int amount)
     {
-        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
+        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
         int repeatAmount = amount;
 
-        for (int i = 0; i < currentSlots.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (currentSlots[i].data.hasItem == false) continue;
-            if (station != currentSlots[i].data.currentStation) continue;
+            if (datas[i].hasItem == false) continue;
+            if (station != datas[i].currentStation) continue;
 
-            currentSlots[i].Empty_ItemBox();
+            datas[i] = new();
             repeatAmount--;
 
-            if (repeatAmount > 0) continue;
-            break;
+            if (repeatAmount <= 0) return;
         }
     }
 
@@ -263,11 +281,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data cursorData = new(cursor.Current_Data());
         cursor.Empty_Item();
 
-        ItemSlot targetSlot = Add_StationItem(cursorData.currentStation, 1);
+        ItemSlot targetSlot = Add_StationItem_Slot(cursorData.currentStation, 1);
         targetSlot.Assign_Data(cursorData);
-
-        targetSlot.Toggle_BookMark(cursorData.bookMarked);
-        targetSlot.Toggle_Lock(cursorData.isLocked);
     }
 
     //
@@ -410,7 +425,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactionMode = false;
 
         // return exported station back to current slot
-        Add_StationItem(_interactStation.stationScrObj, 1);
+        Add_StationItem_Slot(_interactStation.stationScrObj, 1);
         cursor.Empty_Item();
 
         // destroy current exported station

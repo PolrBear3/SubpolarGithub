@@ -78,16 +78,9 @@ public class Scrap : MonoBehaviour, IInteractable
         StationMenu_Controller menu = _stationController.mainController.currentVehicle.menu.stationMenu;
 
         // check if station slots are all full
-        if (menu.controller.slotsController.Slots_Full())
-        {
-            // slots all full animation ?
-
-            UnInteract();
-            return;
-        }
 
         // add this station to vehicle station menu
-        menu.Add_StationItem(_stationController.stationScrObj, 1);
+        menu.Add_StationItem_Data(_stationController.stationScrObj, 1);
 
         // destroy
         _stationController.Destroy_Station();

@@ -99,7 +99,7 @@ public class CollectCard : MonoBehaviour
         }
 
         // add station blueprint
-        menu.Add_StationItem(randStation, 1).Toggle_Lock(true);
+        menu.Add_StationItem_Data(randStation, 1).isLocked = true;
 
         // dialog
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();

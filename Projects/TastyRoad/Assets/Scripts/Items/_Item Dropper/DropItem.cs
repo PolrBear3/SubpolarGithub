@@ -60,7 +60,7 @@ public class DropItem : MonoBehaviour, IInteractable
         else
         {
             StationMenu_Controller stationMenu = _main.currentVehicle.menu.stationMenu;
-            stationMenu.Add_StationItem(_itemData.currentStation, _itemData.currentAmount);
+            stationMenu.Add_StationItem_Data(_itemData.currentStation, _itemData.currentAmount);
 
             launchSprite = _itemData.currentStation.sprite;
         }
