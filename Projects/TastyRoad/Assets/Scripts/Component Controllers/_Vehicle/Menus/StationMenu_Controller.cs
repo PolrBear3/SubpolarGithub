@@ -277,6 +277,20 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_BookMark(true);
     }
 
+
+    public bool Slots_Full()
+    {
+        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
+
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (data[i].hasItem == true) continue;
+            return false;
+        }
+
+        return true;
+    }
+
     public int Station_Amount(Station_ScrObj station)
     {
         List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];

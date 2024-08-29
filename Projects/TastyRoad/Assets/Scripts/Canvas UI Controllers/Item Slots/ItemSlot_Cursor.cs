@@ -82,7 +82,7 @@ public class ItemSlot_Cursor : MonoBehaviour
             _cursorImage.sprite = food.sprite;
 
             _cursorImage.color = Color.white;
-            _cursorImage.transform.localPosition = food.uiCenterPosition;
+            _cursorImage.rectTransform.anchoredPosition = food.uiCenterPosition;
 
             return;
         }
@@ -99,7 +99,7 @@ public class ItemSlot_Cursor : MonoBehaviour
             _cursorImage.sprite = station.miniSprite;
 
             _cursorImage.color = Color.white;
-            _cursorImage.transform.localPosition = station.centerPosition * 0.01f;
+            _cursorImage.rectTransform.anchoredPosition = new Vector2(0f, 6.5f);
 
             return;
         }

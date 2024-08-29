@@ -151,10 +151,10 @@ public class ItemSlot : MonoBehaviour
             data.hasItem = true;
             data.currentStation = station;
 
-            _iconImage.sprite = station.miniSprite;
+            _iconImage.sprite = station.dialogIcon;
 
             _iconImage.color = Color.white;
-            _iconImage.transform.localPosition = station.centerPosition;
+            _iconImage.rectTransform.anchoredPosition = new Vector2(0f, -6.5f);
 
             return this;
         }
