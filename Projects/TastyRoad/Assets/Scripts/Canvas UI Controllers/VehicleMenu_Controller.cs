@@ -112,14 +112,14 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnSelect()
     {
-        ItemSlot_Cursor _cursor = _slotsController.cursor;
+        ItemSlot_Cursor cursor = _slotsController.cursor;
 
-        if (_cursor.holdTimer.onHold == false)
+        if (cursor.holdTimer.onHold == false)
         {
             OnSelect_Input?.Invoke();
         }
 
-        _cursor.holdTimer.Stop_ClockSpriteRun();
+        cursor.holdTimer.Stop_ClockSpriteRun();
     }
 
     private void OnSelectDown()
@@ -174,17 +174,15 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnExit()
     {
-        // if (_cursor.holdTimer.onHold) return;
+        if (_slotsController.cursor.holdTimer.onHold == true) return;
 
-        // if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
 
-        /*
         if (currentMenu.MenuInteraction_Active() == true)
         {
             OnExit_Input?.Invoke();
             return;
         }
-        */
 
         OnExit_Input?.Invoke();
 
@@ -236,6 +234,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public void Toggle_NavigatedMenu()
     {
         _menus[_currentMenuNum].SetActive(true);
+        _slotsController.SlotsAssign_Update();
+
         MenuOpen_Event?.Invoke();
     }
 }

@@ -19,17 +19,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
-        // subscriptions
-        _controller.MenuOpen_Event += UpdateData_toSlots;
-        _controller.MenuOpen_Event += CurrentSlots_BookmarkToggle;
+        _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
+        // subscriptions
         _controller.OnSelect_Input += Select_Slot;
+        _controller.OnHoldSelect_Input += Export_Food;
+
+        _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
         _controller.OnOption1_Input += DropSingle_Food;
         _controller.OnOption2_Input += DragSingle_Food;
 
-        _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
-
-        _controller.OnHoldSelect_Input += Export_Food;
         Toggle_ExportIndicators(true);
     }
 
@@ -40,16 +39,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drag_Cancel();
 
         // subscriptions
-        _controller.MenuOpen_Event -= UpdateData_toSlots;
-        _controller.MenuOpen_Event -= CurrentSlots_BookmarkToggle;
-
         _controller.OnSelect_Input -= Select_Slot;
+        _controller.OnHoldSelect_Input -= Export_Food;
+
+        _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
         _controller.OnOption1_Input -= DropSingle_Food;
         _controller.OnOption2_Input -= DragSingle_Food;
 
-        _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
-
-        _controller.OnHoldSelect_Input -= Export_Food;
         Toggle_ExportIndicators(false);
     }
 
@@ -90,22 +86,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public bool MenuInteraction_Active()
     {
         return false;
-    }
-
-
-    //
-    private void UpdateData_toSlots()
-    {
-        ItemSlots_Controller slotsController = _controller.slotsController;
-        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
-
-        List<ItemSlot> currentSlots = slotsController.itemSlots;
-
-        foreach (var slot in currentSlots)
-        {
-            slot.Assign_Item();
-            slot.Assign_Amount(slot.data.currentAmount);
-        }
     }
 
 
@@ -207,9 +187,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        ItemSlot_Data slotData = new(currentSlot.data);
-
         currentSlot.Toggle_BookMark(false);
+        ItemSlot_Data slotData = new(currentSlot.data);
 
         cursor.Assign_Item(slotData.currentFood);
         cursor.Assign_Amount(1);
@@ -233,12 +212,14 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Drag_Cancel()
     {
-        ItemSlot_Data cursorData = _controller.slotsController.cursor.Current_Data();
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
-        if (cursorData.hasItem == false) return;
+        if (cursor.Current_Data().hasItem == false) return;
+
+        ItemSlot_Data cursorData = new(cursor.Current_Data());
+        cursor.Empty_Item();
 
         Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
-        _controller.slotsController.cursor.Empty_Item();
     }
 
     //
@@ -297,7 +278,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // BookMark Control
+    // Data Control
     private void CurrentFood_BookmarkToggle()
     {
         //
@@ -318,17 +299,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // toggle
         currentSlot.Toggle_BookMark(true);
-    }
-
-    private void CurrentSlots_BookmarkToggle()
-    {
-        List<ItemSlot> allSlots = _controller.slotsController.itemSlots;
-
-        for (int i = 0; i < allSlots.Count; i++)
-        {
-            if (allSlots[i].data.hasItem == false) continue;
-            allSlots[i].Toggle_BookMark(allSlots[i].data.bookMarked);
-        }
     }
 
 

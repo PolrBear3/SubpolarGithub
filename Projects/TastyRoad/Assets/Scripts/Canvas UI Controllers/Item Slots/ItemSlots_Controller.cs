@@ -44,12 +44,25 @@ public class ItemSlots_Controller : MonoBehaviour
         }
     }
 
+
     public void Set_Datas(List<ItemSlot_Data> setDatas)
     {
         for (int i = 0; i < setDatas.Count; i++)
         {
             if (i >= _itemSlots.Count) return;
             _itemSlots[i].Assign_Data(setDatas[i]);
+        }
+    }
+
+    public void SlotsAssign_Update()
+    {
+        foreach (var slot in _itemSlots)
+        {
+            slot.Assign_Item();
+            slot.Assign_Amount(slot.data.currentAmount);
+
+            slot.Toggle_BookMark(slot.data.bookMarked);
+            slot.Toggle_Lock(slot.data.isLocked);
         }
     }
 

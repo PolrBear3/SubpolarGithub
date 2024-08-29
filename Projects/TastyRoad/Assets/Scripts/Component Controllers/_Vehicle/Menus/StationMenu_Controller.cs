@@ -20,20 +20,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
-        _controller.MenuOpen_Event += UpdateData_toSlots;
+        _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
         _controller.OnSelect_Input += Select_Slot;
-
-        /*
-        _controller.MenuOpen_Event += CurrentSlots_BookmarkToggle;
-
-        _controller.AssignMain_ItemSlots(_slotsController.itemSlots);
-
         _controller.OnHoldSelect_Input += Export_StationPrefab;
         _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
 
         _controller.OnOption1_Input += CurrentStation_BookmarkToggle;
-        */
     }
 
     private void OnDisable()
@@ -42,18 +35,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drag_Cancel();
         _currentDatas[_currentPageNum] = _controller.slotsController.Current_SlotDatas();
 
-        _controller.MenuOpen_Event -= UpdateData_toSlots;
-
         _controller.OnSelect_Input -= Select_Slot;
-
-        /*
-        _controller.MenuOpen_Event -= CurrentSlots_BookmarkToggle;
-
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
         _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
 
         _controller.OnOption1_Input -= CurrentStation_BookmarkToggle;
-        */
     }
 
     private void OnDestroy()
@@ -94,22 +80,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public bool MenuInteraction_Active()
     {
         return _interactionMode;
-    }
-
-
-    //
-    private void UpdateData_toSlots()
-    {
-        ItemSlots_Controller slotsController = _controller.slotsController;
-        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
-
-        List<ItemSlot> currentSlots = slotsController.itemSlots;
-
-        foreach (var slot in currentSlots)
-        {
-            slot.Assign_Item();
-            slot.Assign_Amount(slot.data.currentAmount);
-        }
     }
 
 
@@ -193,47 +163,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Slots Control
-    public int Station_Amount(Station_ScrObj station)
-    {
-        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
-        int count = 0;
-
-        for (int i = 0; i < currentSlots.Count; i++)
-        {
-            if (currentSlots[i].data.hasItem == false) continue;
-            if (currentSlots[i].data.currentStation != station) continue;
-            count++;
-        }
-
-        return count;
-    }
-
-
-    /// <summary>
-    /// Render sprites or amounts according to slot's current loaded data
-    /// </summary>
-    private void UpdateSlots_Data()
-    {
-        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
-
-        for (int i = 0; i < currentSlots.Count; i++)
-        {
-            currentSlots[i].Assign_Item(currentSlots[i].data.currentStation);
-        }
-    }
-
-    private void UpdateSlots_Unlock()
-    {
-        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
-
-        for (int i = 0; i < currentSlots.Count; i++)
-        {
-            currentSlots[i].Toggle_Lock(currentSlots[i].data.isLocked);
-        }
-    }
-
-
     // Cursor Control
     private void Select_Slot()
     {
@@ -265,9 +194,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data slotData = currentSlot.data;
         Station_ScrObj slotStation = slotData.currentStation;
 
+        currentSlot.Toggle_BookMark(false);
         ItemSlot_Data currentSlotData = new(currentSlot.data);
-        cursor.Assign_Item(slotStation);
+
         cursor.Assign_Data(currentSlotData);
+        cursor.Assign_Item(slotStation);
 
         currentSlot.Empty_ItemBox();
     }
@@ -283,6 +214,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         ItemSlot targetSlot = Add_StationItem_Slot(cursorData.currentStation, 1);
         targetSlot.Assign_Data(cursorData);
+
+        targetSlot.Toggle_Lock(targetSlot.data.isLocked);
     }
 
     //
@@ -292,9 +225,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot currentSlot = cursor.currentSlot;
 
         ItemSlot_Data cursorData = new(cursor.Current_Data());
-        currentSlot.Assign_Item(cursor.Current_Data().currentStation).Assign_Data(cursorData);
 
-        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        currentSlot.Assign_Item(cursor.Current_Data().currentStation).Assign_Data(cursorData);
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
 
         cursor.Empty_Item();
@@ -309,17 +241,17 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data currentSlotData = new(currentSlot.data);
         ItemSlot_Data cursorData = new(cursor.Current_Data());
 
+        currentSlot.Toggle_BookMark(false);
+
         cursor.Assign_Data(currentSlotData);
         cursor.Assign_Item(currentSlot.data.currentStation);
 
         currentSlot.Assign_Item(cursorData.currentStation).Assign_Data(cursorData);
-
-        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
     }
 
 
-    // BookMark Control
+    // Data Control
     private void CurrentStation_BookmarkToggle()
     {
         // check if it is not interaction mode
@@ -342,18 +274,22 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Station();
 
         // toggle
-        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
+        currentSlot.Toggle_BookMark(true);
     }
 
-    private void CurrentSlots_BookmarkToggle()
+    public int Station_Amount(Station_ScrObj station)
     {
-        List<ItemSlot> allSlots = _controller.slotsController.itemSlots;
+        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
+        int count = 0;
 
-        for (int i = 0; i < allSlots.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (allSlots[i].data.hasItem == false) continue;
-            allSlots[i].Toggle_BookMark(allSlots[i].data.bookMarked);
+            if (datas[i].hasItem == false) continue;
+            if (datas[i].currentStation != station) continue;
+            count++;
         }
+
+        return count;
     }
 
 

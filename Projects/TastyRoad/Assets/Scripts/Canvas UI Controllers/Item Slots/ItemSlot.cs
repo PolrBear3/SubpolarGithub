@@ -48,18 +48,15 @@ public class ItemSlot : MonoBehaviour
     // Mini Icon Control
     public void Toggle_BookMark(bool toggleOn)
     {
-        if (data.hasItem == false) return;
-
-        if (toggleOn)
+        if (toggleOn == false || data.hasItem == false)
         {
-            data.bookMarked = true;
-            _bookmarkIcon.color = Color.white;
-
+            data.bookMarked = false;
+            _bookmarkIcon.color = Color.clear;
             return;
         }
 
-        data.bookMarked = false;
-        _bookmarkIcon.color = Color.clear;
+        data.bookMarked = true;
+        _bookmarkIcon.color = Color.white;
     }
 
 
