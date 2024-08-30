@@ -23,6 +23,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnSelect_Input += Select_Slot;
 
+        _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
+
         /*
         _controller.MenuOpen_Event += UpdateSlots_Data;
         _controller.MenuOpen_Event += UpdateNew_ArchivedFoods;
@@ -33,7 +35,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnCursor_Input += IngredientBubble_UpdatePosition;
 
-        _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
         */
     }
 
@@ -45,6 +46,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnSelect_Input -= Select_Slot;
 
+        _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
+
         /*
         _controller.MenuOpen_Event -= UpdateSlots_Data;
         _controller.MenuOpen_Event -= UpdateNew_ArchivedFoods;
@@ -52,8 +55,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.MenuOpen_Event -= Update_BookMarkFoods;
 
         _controller.OnCursor_Input -= IngredientBubble_UpdatePosition;
-
-        _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
         */
     }
 
@@ -151,24 +152,21 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot currentSlot = cursor.currentSlot;
 
         ItemSlot_Data cursorData = new(cursor.Current_Data());
-
         cursor.Empty_Item();
 
         currentSlot.Assign_Data(cursorData);
         currentSlot.Assign_Item(cursorData.currentFood);
-    }
 
+        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        currentSlot.Toggle_Lock(currentSlot.data.isLocked);
+    }
 
     private void Swap_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
-        ItemSlot currentSlot = cursor.currentSlot;
+        ItemSlot_Data slotData = new(cursor.currentSlot.data);
 
-        ItemSlot_Data cursorData = new(cursor.Current_Data());
-        ItemSlot_Data slotData = new(currentSlot.data);
-
-        currentSlot.Assign_Data(cursorData);
-        currentSlot.Assign_Item(cursorData.currentFood);
+        Drop_Food();
 
         cursor.Assign_Data(slotData);
         cursor.Assign_Item(slotData.currentFood);
@@ -181,7 +179,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot_Data cursorData = cursor.Current_Data();
 
-        // check if cursor is dragging item
+        // check if cursor has item
         if (cursorData.hasItem == false) return;
 
         //
@@ -190,15 +188,13 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // check if current hover slot has no item
         if (currentSlot.data.hasItem) return;
 
-        //
+        // drop current item
         Drop_Food();
 
-        // check if current food is bookmark unlocked
-        if (currentSlot.data.isLocked == true) return;
-
-        // toggle dropped food
+        // toggle
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
 
+        /*
         // main data update
         Main_Controller main = _controller.vehicleController.mainController;
 
@@ -209,6 +205,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         main.RemoveFood_fromBookmark(currentSlot.data.currentFood);
+        */
     }
 
 
