@@ -186,7 +186,54 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    // station amount //
+    public int StationAmount(List<ItemSlot_Data> targetDatas, Station_ScrObj targetStation)
+    {
+        int stationCount = 0;
 
-    // food amount //
+        for (int i = 0; i < targetDatas.Count; i++)
+        {
+            if (targetDatas[i].hasItem == false) continue;
+            if (targetStation != targetDatas[i].currentStation) continue;
+            stationCount++;
+        }
+
+        return stationCount;
+    }
+
+    public void Stations_ToggleLock(List<ItemSlot_Data> targetDatas, Station_ScrObj targetStation, bool isLock)
+    {
+        for (int i = 0; i < targetDatas.Count; i++)
+        {
+            if (targetDatas[i].hasItem == false) continue;
+            if (targetStation != targetDatas[i].currentStation) continue;
+
+            targetDatas[i].isLocked = isLock;
+        }
+    }
+
+
+    public int FoodAmount(List<ItemSlot_Data> targetDatas, Food_ScrObj targetFood)
+    {
+        int foodCount = 0;
+
+        for (int i = 0; i < targetDatas.Count; i++)
+        {
+            if (targetDatas[i].hasItem == false) continue;
+            if (targetFood != targetDatas[i].currentFood) continue;
+            foodCount++;
+        }
+
+        return foodCount;
+    }
+
+    public void Foods_ToggleLock(List<ItemSlot_Data> targetDatas, Food_ScrObj targetFood, bool isLock)
+    {
+        for (int i = 0; i < targetDatas.Count; i++)
+        {
+            if (targetDatas[i].hasItem == false) continue;
+            if (targetFood != targetDatas[i].currentFood) continue;
+
+            targetDatas[i].isLocked = isLock;
+        }
+    }
 }

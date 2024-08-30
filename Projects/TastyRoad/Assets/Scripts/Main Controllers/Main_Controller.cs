@@ -80,7 +80,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         ES3.Save("_claimedPositions", _claimedPositions);
 
-        Save_ArchivedFood();
         Save_BookmarkedFood();
 
         Save_CurrentLocationData();
@@ -91,7 +90,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);
 
-        Load_ArchivedFood();
         Load_bookmarkedFood();
 
         Load_CurrentLocationData();
@@ -542,54 +540,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Current Archive and BookMark Foods Control
-    private List<Food_ScrObj> _archiveFoods = new();
-    public List<Food_ScrObj> archiveFoods => _archiveFoods;
-
-    private void Save_ArchivedFood()
-    {
-        List<int> foodIDs = new();
-
-        for (int i = 0; i < _archiveFoods.Count; i++)
-        {
-            foodIDs.Add(_archiveFoods[i].id);
-        }
-
-        ES3.Save("Main_Controller/_archiveFoods/foodIDs", foodIDs);
-    }
-    private void Load_ArchivedFood()
-    {
-        List<int> foodIDs = new();
-
-        foodIDs = ES3.Load("Main_Controller/_archiveFoods/foodIDs", foodIDs);
-
-        for (int i = 0; i < foodIDs.Count; i++)
-        {
-            _archiveFoods.Add(dataController.Food(foodIDs[i]));
-        }
-    }
-
-    public void AddFood_toArchive(Food_ScrObj food)
-    {
-        if (food == null) return;
-
-        if (Is_ArchivedFood(food) == true) return;
-
-        _archiveFoods.Add(food);
-    }
-
-    public bool Is_ArchivedFood(Food_ScrObj food)
-    {
-        if (food == null) return false;
-
-        for (int i = 0; i < _archiveFoods.Count; i++)
-        {
-            if (food == _archiveFoods[i]) return true;
-        }
-        return false;
-    }
-
-
+    // Main Game Global BookMark Foods Control
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
 

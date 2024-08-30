@@ -59,7 +59,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("FoodMenu_Controller/_currentDatas", _currentDatas);
-        _currentDatas = ES3.Load("FoodMenu_Controller/_currentDatas", _currentDatas);
     }
 
     public void Load_Data()

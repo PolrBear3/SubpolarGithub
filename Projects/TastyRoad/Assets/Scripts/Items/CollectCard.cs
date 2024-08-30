@@ -73,14 +73,14 @@ public class CollectCard : MonoBehaviour
         Food_ScrObj randFood = _interactable.mainController.dataController.CookedFood();
         ArchiveMenu_Controller menu = _interactable.mainController.currentVehicle.menu.archiveMenu;
 
-        if (menu.Ingredient_Unlocked(randFood) == false && menu.Food_Archived(randFood) == false)
+        if (menu.Food_Archived(randFood) == false)
         {
             // add food and lock bookmarking
             menu.Archive_Food(randFood).isLocked = true;
-        }
 
-        // unlock only ingredient
-        menu.UnLock_Ingredient(randFood);
+            // unlcok food ingredient
+            menu.Unlock_FoodIngredient(randFood);
+        }
 
         // dialog
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();

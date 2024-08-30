@@ -11,7 +11,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public VehicleMenu_Controller controller => _controller;
 
     private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
+    public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
+
     private int _currentPageNum;
+    public int currentPageNum;
 
     private List<Food_ScrObj> _ingredientUnlocks = new();
 
@@ -68,7 +71,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("ArchiveMenu_Controller/_currentDatas", _currentDatas);
-        _currentDatas = ES3.Load("ArchiveMenu_Controller/_currentDatas", _currentDatas);
+        ES3.Save("ArchiveMenu_Controller/_ingredientUnlocks", _ingredientUnlocks);
     }
 
     public void Load_Data()
@@ -77,6 +80,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (ES3.KeyExists("ArchiveMenu_Controller/_currentDatas"))
         {
             _currentDatas = ES3.Load("ArchiveMenu_Controller/_currentDatas", _currentDatas);
+            _ingredientUnlocks = ES3.Load("ArchiveMenu_Controller/_ingredientUnlocks", _ingredientUnlocks);
             return;
         }
 
@@ -194,7 +198,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // toggle
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
 
-        /*
         // main data update
         Main_Controller main = _controller.vehicleController.mainController;
 
@@ -205,23 +208,13 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         main.RemoveFood_fromBookmark(currentSlot.data.currentFood);
-        */
     }
 
 
     // Data Control
     public bool Food_Archived(Food_ScrObj food)
     {
-        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
-
-        for (int i = 0; i < data.Count; i++)
-        {
-            if (data[i].hasItem == false) continue;
-            if (food != data[i].currentFood) continue;
-            return true;
-        }
-
-        return false;
+        return _controller.slotsController.FoodAmount(_currentDatas[currentPageNum], food) > 0;
     }
 
     public ItemSlot_Data Archive_Food(Food_ScrObj food)
@@ -246,16 +239,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Ingredient Data Control
-    public bool Ingredient_Unlocked(Food_ScrObj checkFood)
+    public void Unlock_FoodIngredient(Food_ScrObj food)
     {
-        return _ingredientUnlocks.Contains(checkFood);
-    }
-
-    public void UnLock_Ingredient(Food_ScrObj unlockFood)
-    {
-        if (_ingredientUnlocks.Contains(unlockFood)) return;
-
-        _ingredientUnlocks.Add(unlockFood);
+        if (_ingredientUnlocks.Contains(food)) return;
+        _ingredientUnlocks.Add(food);
     }
 }
