@@ -35,7 +35,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnDisable()
     {
         // save current showing slots contents to _currentDatas
-        _currentDatas[_currentPageNum] = _controller.slotsController.Current_SlotDatas();
+        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
         Drag_Cancel();
 
         // subscriptions
@@ -181,7 +181,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
     }
 
-    //
+
     private void Drag_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -222,7 +222,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
     }
 
-    //
+
     private void Drop_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -249,7 +249,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Update_Amount(1);
     }
 
-    //
+
     private void Swap_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -278,7 +278,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Data Control
     private void CurrentFood_BookmarkToggle()
     {
         //

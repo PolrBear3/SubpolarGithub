@@ -144,24 +144,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         return _unlockedStations[arrayNum];
     }
 
-    private void Unlock_Station(Station_ScrObj unlockStation)
-    {
-        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> lockedSlots = menu.controller.slotsController.LockedSlots();
-
-        // remove all locked unlockStation
-        for (int i = 0; i < lockedSlots.Count; i++)
-        {
-            if (unlockStation != lockedSlots[i].data.currentStation) continue;
-
-            lockedSlots[i].Empty_ItemBox();
-        }
-
-        if (_unlockedStations.Contains(unlockStation)) return;
-
-        _unlockedStations.Add(unlockStation);
-    }
-
 
     // Station Stock Control
     private bool StationStocks_Full()
@@ -357,19 +339,30 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private void Unlock_BookMarkedStations()
     {
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> bookmarkedSlots = menu.controller.slotsController.BookMarked_Slots(true);
+        ItemSlots_Controller slotsController = menu.controller.slotsController;
+
+        List<ItemSlot_Data> stationDatas = menu.currentDatas[menu.currentPageNum];
+        List<ItemSlot_Data> bookMarkedDatas = slotsController.BookMarked_Datas(stationDatas);
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        if (bookmarkedSlots.Count <= 0)
+        if (bookMarkedDatas.Count <= 0)
         {
             dialog.Update_Dialog(2);
             return;
         }
 
-        for (int i = 0; i < bookmarkedSlots.Count; i++)
+        for (int i = 0; i < bookMarkedDatas.Count; i++)
         {
-            Unlock_Station(bookmarkedSlots[i].data.currentStation);
+            if (bookMarkedDatas[i].isLocked == false) continue;
+
+            // empty data
+            Station_ScrObj unlockStation = bookMarkedDatas[i].currentStation;
+            slotsController.SlotData(stationDatas, bookMarkedDatas[i]).Empty_Item();
+
+            // add station to _unlockedStations
+            if (_unlockedStations.Contains(unlockStation)) continue;
+            _unlockedStations.Add(unlockStation);
         }
 
         dialog.Update_Dialog(3);

@@ -8,7 +8,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public VehicleMenu_Controller controller => _controller;
 
     private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
+    public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
+
     private int _currentPageNum;
+    public int currentPageNum => _currentPageNum;
 
     [Header("")]
     private bool _interactionMode;
@@ -33,7 +36,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         // save current dragging item before menu close
         Drag_Cancel();
-        _currentDatas[_currentPageNum] = _controller.slotsController.Current_SlotDatas();
+        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
@@ -185,7 +188,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Station();
     }
 
-    //
+
     private void Drag_Station()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -218,7 +221,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         targetSlot.Toggle_Lock(targetSlot.data.isLocked);
     }
 
-    //
+
     private void Drop_Station()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -232,7 +235,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.Empty_Item();
     }
 
-    //
     private void Swap_Station()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -251,7 +253,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Data Control
     private void CurrentStation_BookmarkToggle()
     {
         // check if it is not interaction mode
@@ -278,6 +279,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
+    // Data Control
     public bool Slots_Full()
     {
         List<ItemSlot_Data> data = _currentDatas[_currentPageNum];

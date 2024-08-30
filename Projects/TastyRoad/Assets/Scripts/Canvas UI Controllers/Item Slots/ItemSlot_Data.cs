@@ -51,4 +51,16 @@ public class ItemSlot_Data
         currentStation = station;
         currentAmount = amount;
     }
+
+
+    //
+    public void Empty_Item()
+    {
+        hasItem = bookMarked = isLocked = false;
+
+        currentAmount = 0;
+
+        currentFood = null;
+        currentStation = null;
+    }
 }

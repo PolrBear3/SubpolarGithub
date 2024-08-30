@@ -67,7 +67,7 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    // Checks and Gets
+    // Current Slot
     public ItemSlot ItemSlot(Vector2 gridNum)
     {
         for (int i = 0; i < _itemSlots.Count; i++)
@@ -114,10 +114,7 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    /// <returns>
-    /// All datas from _itemSlots
-    /// </returns>
-    public List<ItemSlot_Data> Current_SlotDatas()
+    public List<ItemSlot_Data> CurrentSlots_toDatas()
     {
         List<ItemSlot_Data> currentDatas = new();
 
@@ -160,4 +157,36 @@ public class ItemSlots_Controller : MonoBehaviour
 
         return lockedSlots;
     }
+
+
+    // Data
+    public ItemSlot_Data SlotData(List<ItemSlot_Data> targetDatas, ItemSlot_Data data)
+    {
+        for (int i = 0; i < targetDatas.Count; i++)
+        {
+            if (data != targetDatas[i]) continue;
+            return targetDatas[i];
+        }
+        return null;
+    }
+
+    public List<ItemSlot_Data> BookMarked_Datas(List<ItemSlot_Data> targetDatas)
+    {
+        List<ItemSlot_Data> datas = new();
+
+        for (int i = 0; i < targetDatas.Count; i++)
+        {
+            if (targetDatas[i].hasItem == false) continue;
+            if (targetDatas[i].bookMarked == false) continue;
+
+            datas.Add(targetDatas[i]);
+        }
+
+        return datas;
+    }
+
+
+    // station amount //
+
+    // food amount //
 }

@@ -41,7 +41,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         // save current showing slots contents to _currentDatas
         Drag_Cancel();
-        _currentDatas[_currentPageNum] = _controller.slotsController.Current_SlotDatas();
+        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
         _controller.OnSelect_Input -= Select_Slot;
 
@@ -117,7 +117,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
     }
 
-    //
+
     private void Drag_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -144,7 +144,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         returnSlot.Assign_Item();
     }
 
-    //
+
     private void Drop_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -158,7 +158,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Assign_Item(cursorData.currentFood);
     }
 
-    //
+
     private void Swap_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
@@ -172,43 +172,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         cursor.Assign_Data(slotData);
         cursor.Assign_Item(slotData.currentFood);
-    }
-
-
-    // Data Control
-    public bool Food_Archived(Food_ScrObj food)
-    {
-        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
-
-        for (int i = 0; i < data.Count; i++)
-        {
-            if (data[i].hasItem == false) continue;
-            if (food != data[i].currentFood) continue;
-            return true;
-        }
-
-        return false;
-    }
-
-    public ItemSlot_Data Archive_Food(Food_ScrObj food)
-    {
-        // check if non duplicate food
-        if (Food_Archived(food)) return null;
-
-        // check if food has ingredients
-        if (food.ingredients.Count <= 0) return null;
-
-        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
-
-        for (int i = 0; i < data.Count; i++)
-        {
-            if (data[i].hasItem == true) continue;
-
-            data[i] = new(food, 1);
-            return data[i];
-        }
-
-        return null;
     }
 
 
@@ -246,6 +209,43 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         main.RemoveFood_fromBookmark(currentSlot.data.currentFood);
+    }
+
+
+    // Data Control
+    public bool Food_Archived(Food_ScrObj food)
+    {
+        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
+
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (data[i].hasItem == false) continue;
+            if (food != data[i].currentFood) continue;
+            return true;
+        }
+
+        return false;
+    }
+
+    public ItemSlot_Data Archive_Food(Food_ScrObj food)
+    {
+        // check if non duplicate food
+        if (Food_Archived(food)) return null;
+
+        // check if food has ingredients
+        if (food.ingredients.Count <= 0) return null;
+
+        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
+
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (data[i].hasItem == true) continue;
+
+            data[i] = new(food, 1);
+            return data[i];
+        }
+
+        return null;
     }
 
 
