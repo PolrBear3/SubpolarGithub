@@ -78,6 +78,16 @@ public class ItemSlots_Controller : MonoBehaviour
         return null;
     }
 
+    public ItemSlot EmptySlot()
+    {
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            if (_itemSlots[i].data.hasItem == true) continue;
+            return _itemSlots[i];
+        }
+        return null;
+    }
+
 
     public bool Slots_Full()
     {

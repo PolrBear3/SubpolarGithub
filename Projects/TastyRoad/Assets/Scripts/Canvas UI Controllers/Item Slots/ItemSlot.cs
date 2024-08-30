@@ -96,7 +96,7 @@ public class ItemSlot : MonoBehaviour
 
     public void Assign_Data(ItemSlot_Data data)
     {
-        _data = data;
+        _data = new ItemSlot_Data(data);
     }
 
 

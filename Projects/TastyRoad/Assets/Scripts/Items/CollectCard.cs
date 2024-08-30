@@ -73,10 +73,10 @@ public class CollectCard : MonoBehaviour
         Food_ScrObj randFood = _interactable.mainController.dataController.CookedFood();
         ArchiveMenu_Controller menu = _interactable.mainController.currentVehicle.menu.archiveMenu;
 
-        if (menu.Ingredient_Unlocked(randFood) == false)
+        if (menu.Ingredient_Unlocked(randFood) == false && menu.Food_Archived(randFood) == false)
         {
             // add food and lock bookmarking
-            menu.AddFood(randFood).Toggle_Lock(true);
+            menu.Archive_Food(randFood).isLocked = true;
         }
 
         // unlock only ingredient
@@ -92,7 +92,7 @@ public class CollectCard : MonoBehaviour
         Station_ScrObj randStation = _bluePrintStations[Random.Range(0, _bluePrintStations.Length)];
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
-        if (menu.controller.slotsController.Slots_Full() == true)
+        if (menu.Slots_Full() == true)
         {
             // dialog
             return;

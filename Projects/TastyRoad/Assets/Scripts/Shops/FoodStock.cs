@@ -224,8 +224,8 @@ public class FoodStock : MonoBehaviour
         // archive menu unlocks
         ArchiveMenu_Controller archiveMenu = _interactable.mainController.currentVehicle.menu.archiveMenu;
 
-        archiveMenu.AddFood(_currentFood);
-        archiveMenu.UnLock_BookMark(_currentFood);
+        archiveMenu.Archive_Food(_currentFood);
+        // archiveMenu.UnLock_BookMark(_currentFood);
 
         // coin launch animation
         _launcher.Parabola_CoinLaunch(_currentFood.sprite, _interactable.detection.player.transform.position);

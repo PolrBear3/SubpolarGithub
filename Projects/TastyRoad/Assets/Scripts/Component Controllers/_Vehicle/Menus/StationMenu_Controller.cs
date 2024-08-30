@@ -459,7 +459,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // retrieve
         if (currentSlot.data.hasItem == false)
         {
-            currentSlot.Assign_Item(_interactStation.stationScrObj);
+            currentSlot.Assign_Data(new(interactStation, 1));
+            currentSlot.Assign_Item();
         }
 
         // swap
@@ -472,11 +473,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             exportStation.movement.Load_Position();
 
             // retrieving station
-            currentSlot.Assign_Item(interactStation);
+            currentSlot.Assign_Data(new(interactStation, 1));
+            currentSlot.Assign_Item();
         }
 
         // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
-        cursor.Current_Data().hasItem = false;
+        cursor.Assign_Data(new());
+        currentSlot.Assign_Item();
 
         _interactionMode = false;
         _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
