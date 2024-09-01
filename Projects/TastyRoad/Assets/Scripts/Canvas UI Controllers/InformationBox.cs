@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class InformationBox : MonoBehaviour
@@ -22,7 +23,8 @@ public class InformationBox : MonoBehaviour
     private void Start()
     {
         _defaultHeight = _rect.anchoredPosition.y;
-        // _rect.gameObject.SetActive(false);
+
+        gameObject.SetActive(false);
     }
 
 
@@ -31,5 +33,27 @@ public class InformationBox : MonoBehaviour
     {
         float currentX = _rect.anchoredPosition.x;
         _rect.anchoredPosition = new Vector2(currentX * -1, _rect.anchoredPosition.y);
+    }
+    public void Flip_toDefault()
+    {
+        while (_rect.anchoredPosition.x < 0) Flip();
+    }
+
+
+    public void Update_InfoText(string infoText)
+    {
+        _infoText.text = infoText.ToString();
+    }
+
+    public void Update_RectLayout()
+    {
+        _infoText.ForceMeshUpdate();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(_infoText.rectTransform);
+
+        float lineCount = _infoText.textInfo.lineCount;
+        float updateValue = _heightIncreaseValue * lineCount;
+        float targetPosY = _defaultHeight + _heightIncreaseValue - updateValue;
+
+        _rect.anchoredPosition = new Vector2(_rect.anchoredPosition.x, targetPosY);
     }
 }

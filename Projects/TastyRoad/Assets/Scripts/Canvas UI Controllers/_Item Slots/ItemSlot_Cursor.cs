@@ -9,6 +9,7 @@ public class ItemSlot_Cursor : MonoBehaviour
     private RectTransform _rectTransform;
     public RectTransform rectTransform => _rectTransform;
 
+
     [Header("")]
     [SerializeField] private ItemSlots_Controller _slotsController;
 
@@ -21,12 +22,6 @@ public class ItemSlot_Cursor : MonoBehaviour
     [Header("")]
     [SerializeField] private UI_ClockTimer _holdTimer;
     public UI_ClockTimer holdTimer => _holdTimer;
-
-    [Header("")]
-    [SerializeField] private InformationBox _infoBox;
-    public InformationBox infoBox => _infoBox;
-
-    [SerializeField] private int _flipSlotNumX;
 
 
     private ItemSlot_Data _data;
@@ -50,7 +45,7 @@ public class ItemSlot_Cursor : MonoBehaviour
     // Data
     public void Assign_Data(ItemSlot_Data data)
     {
-        this._data = data;
+        _data = data;
     }
 
     public ItemSlot_Data Current_Data()
@@ -140,19 +135,5 @@ public class ItemSlot_Cursor : MonoBehaviour
 
         ItemSlot nextSlot = _slotsController.ItemSlot(nextGridNum);
         Navigate_toSlot(nextSlot);
-
-        InfoBox_FlipUpdate((int)currentGridNum.x);
-    }
-
-
-    // Additional Information Box Control
-    private void InfoBox_FlipUpdate(int prevSlotNumX)
-    {
-        bool navigateRight = prevSlotNumX < _flipSlotNumX && _currentSlot.gridNum.x >= _flipSlotNumX;
-        bool navigateLeft = prevSlotNumX >= _flipSlotNumX && currentSlot.gridNum.x < _flipSlotNumX;
-
-        if (navigateRight == false && navigateLeft == false) return;
-
-        _infoBox.Flip();
     }
 }

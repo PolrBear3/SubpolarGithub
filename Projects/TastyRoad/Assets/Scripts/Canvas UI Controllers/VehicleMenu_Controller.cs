@@ -28,6 +28,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
     [Header("")]
+    [SerializeField] private InformationBox _infoBox;
+    public InformationBox infoBox => _infoBox;
+
+    [SerializeField] private ItemSlot _flipUpdateSlot;
+
+
+    [Header("")]
     [SerializeField] private List<GameObject> _menus = new();
 
     [SerializeField] private FoodMenu_Controller _foodMenu;
@@ -107,19 +114,24 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
         if (currentMenu.MenuInteraction_Active() == true) return;
 
+        int prevSlotNum = (int)_slotsController.cursor.currentSlot.gridNum.x;
+
         _slotsController.cursor.Navigate_toSlot(input);
+        InfoBox_FlipUpdate(prevSlotNum);
     }
 
     private void OnSelect()
     {
         ItemSlot_Cursor cursor = _slotsController.cursor;
 
-        if (cursor.holdTimer.onHold == false)
-        {
-            OnSelect_Input?.Invoke();
-        }
-
         cursor.holdTimer.Stop_ClockSpriteRun();
+
+        if (cursor.holdTimer.onHold == true) return;
+
+        OnSelect_Input?.Invoke();
+
+        _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
+        infoBox.Update_RectLayout();
     }
 
     private void OnSelectDown()
@@ -217,6 +229,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         ItemSlot firstSlot = _slotsController.ItemSlot(Vector2.zero);
         _slotsController.cursor.Navigate_toSlot(firstSlot);
+        _infoBox.Flip_toDefault();
     }
 
 
@@ -237,5 +250,20 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _slotsController.SlotsAssign_Update();
 
         MenuOpen_Event?.Invoke();
+    }
+
+
+    // Information Box Control
+    private void InfoBox_FlipUpdate(int prevSlotNumX)
+    {
+        ItemSlot currentSlot = _slotsController.cursor.currentSlot;
+        float flipUpdateSlotX = _flipUpdateSlot.gridNum.x;
+
+        bool navigateRight = prevSlotNumX < flipUpdateSlotX && currentSlot.gridNum.x >= flipUpdateSlotX;
+        bool navigateLeft = prevSlotNumX >= flipUpdateSlotX && currentSlot.gridNum.x < flipUpdateSlotX;
+
+        if (navigateRight == false && navigateLeft == false) return;
+
+        _infoBox.Flip();
     }
 }

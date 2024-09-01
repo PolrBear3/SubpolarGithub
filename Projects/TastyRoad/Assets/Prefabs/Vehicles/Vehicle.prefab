@@ -752,7 +752,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2065118869506491105}
-  - {fileID: 6566044857676089461}
   m_Father: {fileID: 4048123379781644011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1034,11 +1033,11 @@ RectTransform:
   - {fileID: 4570522584232588373}
   - {fileID: 4393910875431448884}
   - {fileID: 120391151439684013}
-  m_Father: {fileID: 6871736045534458602}
+  m_Father: {fileID: 4048123379781644011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 287.50006, y: 695.38}
   m_SizeDelta: {x: 137, y: 137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8400571084727056706
@@ -1058,8 +1057,6 @@ MonoBehaviour:
   _defaultCursor: {fileID: -1626501043, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
   _amountText: {fileID: 1173792458398783848}
   _holdTimer: {fileID: 874618642129103200}
-  _infoBox: {fileID: 4446537866322792846}
-  _flipSlotNumX: 4
 --- !u!114 &874618642129103200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,6 +1110,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6871736045534458602}
+  - {fileID: 6566044857676089461}
   - {fileID: 7761129869153443280}
   m_Father: {fileID: 5419941011623935099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1229,6 +1227,8 @@ MonoBehaviour:
   _vehicleController: {fileID: 7023176493674794937}
   _slotsController: {fileID: 3595328392461979482}
   _menuPanel: {fileID: 3751826682762323923}
+  _infoBox: {fileID: 4446537866322792846}
+  _flipUpdateSlot: {fileID: 4772758237972630517}
   _menus:
   - {fileID: 699851387819695624}
   - {fileID: 7869437387223674262}
