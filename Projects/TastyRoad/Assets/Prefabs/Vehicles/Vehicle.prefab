@@ -752,6 +752,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2065118869506491105}
+  - {fileID: 6566044857676089461}
   m_Father: {fileID: 4048123379781644011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1033,11 +1034,11 @@ RectTransform:
   - {fileID: 4570522584232588373}
   - {fileID: 4393910875431448884}
   - {fileID: 120391151439684013}
-  m_Father: {fileID: 4048123379781644011}
+  m_Father: {fileID: 6871736045534458602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 287.50006, y: 695.38}
+  m_AnchoredPosition: {x: -422.5, y: -51.49997}
   m_SizeDelta: {x: 137, y: 137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8400571084727056706
@@ -1088,6 +1089,7 @@ GameObject:
   - component: {fileID: 872659568982886879}
   - component: {fileID: 8532775503531135405}
   - component: {fileID: 1302976397803527024}
+  - component: {fileID: 4724103010261172904}
   - component: {fileID: 8508866487849260274}
   - component: {fileID: 3595328392461979482}
   m_Layer: 5
@@ -1110,7 +1112,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6871736045534458602}
-  - {fileID: 6566044857676089461}
   - {fileID: 7761129869153443280}
   m_Father: {fileID: 5419941011623935099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1212,6 +1213,28 @@ MonoBehaviour:
   m_DefaultActionMap: UI Control
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4724103010261172904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501531826094346831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: 0}
+    info: 
+  _datas:
+  - icon: {fileID: -630237576, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: '"Food Storage Menu" currently opened'
+  - icon: {fileID: -1672774169, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: '"Station Storage Menu" currently opened'
+  - icon: {fileID: 348918676, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: '"Food Archive Menu" currently opened'
 --- !u!114 &8508866487849260274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1233,6 +1256,10 @@ MonoBehaviour:
   - {fileID: 699851387819695624}
   - {fileID: 7869437387223674262}
   - {fileID: 1142200799194987385}
+  _menuCursorSprites:
+  - {fileID: -1626501043, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+  - {fileID: 1430127973, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+  - {fileID: -1839197318, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
   _foodMenu: {fileID: 4272963676511979}
   _stationMenu: {fileID: 5409495821357756064}
   _archiveMenu: {fileID: 6819107497965341309}

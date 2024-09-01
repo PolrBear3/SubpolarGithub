@@ -195,6 +195,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // drop current item
         Drop_Food();
 
+        if (currentSlot.data.isLocked == true) return;
+
         // toggle
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
 

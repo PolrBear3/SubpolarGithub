@@ -37,6 +37,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private List<GameObject> _menus = new();
 
+    [SerializeField] private Sprite[] _menuCursorSprites;
+
+
+    [Header("")]
     [SerializeField] private FoodMenu_Controller _foodMenu;
     public FoodMenu_Controller foodMenu => _foodMenu;
 
@@ -45,6 +49,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private ArchiveMenu_Controller _archiveMenu;
     public ArchiveMenu_Controller archiveMenu => _archiveMenu;
+
 
 
     private int _currentMenuNum;
@@ -146,13 +151,17 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnOption1()
     {
-        ItemSlot_Cursor _cursor = _slotsController.cursor;
+        ItemSlot_Cursor cursor = _slotsController.cursor;
 
-        if (_cursor.holdTimer.onHold) return;
+        if (cursor.holdTimer.onHold) return;
 
-        if (_cursor.Current_Data().hasItem)
+        if (cursor.Current_Data().hasItem)
         {
             OnOption1_Input?.Invoke();
+
+            _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
+            infoBox.Update_RectLayout();
+
             return;
         }
 
@@ -162,17 +171,28 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _menus[_currentMenuNum].SetActive(false);
         Menu_Navigate(false);
         Toggle_NavigatedMenu();
+
+        // change cursor sprite to current menu type cursor
+        cursor.Update_DefaultCursor(_menuCursorSprites[_currentMenuNum]);
+        cursor.cursorImage.sprite = cursor.defaultCursor;
+
+        // current menu update dialog
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
     }
 
     private void OnOption2()
     {
-        ItemSlot_Cursor _cursor = _slotsController.cursor;
+        ItemSlot_Cursor cursor = _slotsController.cursor;
 
-        if (_cursor.holdTimer.onHold) return;
+        if (cursor.holdTimer.onHold) return;
 
-        if (_cursor.Current_Data().hasItem)
+        if (cursor.Current_Data().hasItem)
         {
             OnOption2_Input?.Invoke();
+
+            _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
+            infoBox.Update_RectLayout();
+
             return;
         }
 
@@ -182,6 +202,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _menus[_currentMenuNum].SetActive(false);
         Menu_Navigate(true);
         Toggle_NavigatedMenu();
+
+        // change cursor sprite to current menu type cursor
+        cursor.Update_DefaultCursor(_menuCursorSprites[_currentMenuNum]);
+        cursor.cursorImage.sprite = cursor.defaultCursor;
+
+        // current menu update dialog
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
     }
 
     private void OnExit()
@@ -199,6 +226,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         OnExit_Input?.Invoke();
 
         VehicleMenu_Toggle(false);
+        _infoBox.gameObject.SetActive(false);
 
         if (_vehicleController.detection.player == null) return;
 
