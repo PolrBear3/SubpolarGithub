@@ -23,11 +23,7 @@ public class DialogSystem : MonoBehaviour
     [SerializeField] private GameObject _actionKey;
 
     [Header("")]
-    [SerializeField] private RectTransform _infoBox;
-    [SerializeField] private TMP_Text _infoText;
-
-    private float _defaultHeight;
-    [SerializeField] private float _heightIncreaseValue;
+    [SerializeField] private InformationBox _infoBox;
 
     [Header("")]
     [SerializeField] private LeanTweenType _tweenType;
@@ -37,9 +33,6 @@ public class DialogSystem : MonoBehaviour
     // UnityEngine
     private void Start()
     {
-        _defaultHeight = _infoBox.anchoredPosition.y;
-        _infoBox.gameObject.SetActive(false);
-
         Refresh_CustomDialogs();
         _actionKey.SetActive(false);
 
@@ -110,7 +103,9 @@ public class DialogSystem : MonoBehaviour
         _currentDialogs.Insert(0, dialogBox);
         ReOrder_CurrentDialogs();
 
-        Update_CurrentInfo(_currentDialogNum);
+        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
+        _infoBox.Update_RectLayout();
+
         HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
 
         _newDialogOpened = false;
@@ -134,7 +129,7 @@ public class DialogSystem : MonoBehaviour
     }
 
 
-    // Info Box Control
+    // Information Box Control
     private void InfoBox_Toggle(int dialogNum)
     {
         if (_currentDialogs.Count <= dialogNum) return;
@@ -144,7 +139,8 @@ public class DialogSystem : MonoBehaviour
             _currentDialogNum = dialogNum;
 
             _infoBox.gameObject.SetActive(true);
-            Update_CurrentInfo(dialogNum);
+            _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
+            _infoBox.Update_RectLayout();
 
             HoverToggle_CurrentDialog(true);
 
@@ -161,23 +157,10 @@ public class DialogSystem : MonoBehaviour
         }
 
         _infoBox.gameObject.SetActive(true);
-        Update_CurrentInfo(dialogNum);
+        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
+        _infoBox.Update_RectLayout();
 
         HoverToggle_CurrentDialog(true);
-    }
-
-    private void Update_CurrentInfo(int dialogNum)
-    {
-        _infoText.text = _currentDialogs[dialogNum].data.info.ToString();
-
-        _infoText.ForceMeshUpdate();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_infoText.rectTransform);
-
-        float lineCount = _infoText.textInfo.lineCount;
-        float updateValue = _heightIncreaseValue * lineCount;
-        float targetPosY = _defaultHeight + _heightIncreaseValue - updateValue;
-
-        _infoBox.anchoredPosition = new Vector2(_infoBox.anchoredPosition.x, targetPosY);
     }
 
 
