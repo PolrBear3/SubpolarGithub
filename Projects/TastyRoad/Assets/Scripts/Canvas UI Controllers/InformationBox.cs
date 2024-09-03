@@ -22,9 +22,16 @@ public class InformationBox : MonoBehaviour
 
     private void Start()
     {
-        _defaultHeight = _rect.anchoredPosition.y;
+        Set_DefalutHeight();
 
         gameObject.SetActive(false);
+    }
+
+
+    // Data Set
+    public void Set_DefalutHeight()
+    {
+        _defaultHeight = _rect.anchoredPosition.y;
     }
 
 

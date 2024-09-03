@@ -33,6 +33,8 @@ public class DialogSystem : MonoBehaviour
     // UnityEngine
     private void Start()
     {
+        _infoBox.Set_DefalutHeight();
+
         Refresh_CustomDialogs();
         _actionKey.SetActive(false);
 
@@ -103,17 +105,13 @@ public class DialogSystem : MonoBehaviour
         _currentDialogs.Insert(0, dialogBox);
         ReOrder_CurrentDialogs();
 
+        HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
+        _actionKey.SetActive(!_infoBox.gameObject.activeSelf);
+
         _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
         _infoBox.Update_RectLayout();
 
-        HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
-
         _newDialogOpened = false;
-
-        if (_infoBox.gameObject.activeSelf == false)
-        {
-            _actionKey.SetActive(true);
-        }
 
         return dialogBox;
     }
