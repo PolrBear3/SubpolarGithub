@@ -121,7 +121,7 @@ public class StationStock : MonoBehaviour
         stationMenu.Add_StationItem_Data(_currentStation, 1);
 
         // station coin launch animation
-        _launcher.Parabola_CoinLaunch(_currentStation.miniSprite, _interactable.detection.player.transform.position - transform.position);
+        _launcher.Parabola_CoinLaunch(_currentStation.miniSprite, _interactable.detection.player.transform.position);
 
         // 
         Update_toSold();

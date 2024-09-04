@@ -283,19 +283,22 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         }
 
         StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
-        List<ItemSlot> bookMarkedSlots = menu.controller.slotsController.BookMarked_Slots(false);
+        ItemSlots_Controller slotsController = menu.controller.slotsController;
+
+        List<ItemSlot_Data> currentStationDatas = menu.currentDatas[menu.currentPageNum];
+        List<ItemSlot_Data> bookmarkedDatas = slotsController.BookMarked_Datas(currentStationDatas);
 
         // check if there are more than 2 bookmarked stations
-        if (bookMarkedSlots.Count < 2)
+        if (bookmarkedDatas.Count < 2)
         {
             dialog.Update_Dialog(1);
             return;
         }
 
         // empty bookmarked stations
-        for (int i = 0; i < bookMarkedSlots.Count; i++)
+        for (int i = 0; i < bookmarkedDatas.Count; i++)
         {
-            bookMarkedSlots[i].Empty_ItemBox();
+            slotsController.SlotData(currentStationDatas, bookmarkedDatas[i]).Empty_Item();
         }
 
         _restockCoroutine = StartCoroutine(Merge_BookMarkedStations_Coroutine());

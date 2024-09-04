@@ -16,7 +16,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     [Header("")]
     [SerializeField] private Station_ScrObj _foodBox;
-    [SerializeField] private Transform[] _exportIndicators; 
+    [SerializeField] private Transform[] _exportIndicators;
 
 
     // UnityEngine

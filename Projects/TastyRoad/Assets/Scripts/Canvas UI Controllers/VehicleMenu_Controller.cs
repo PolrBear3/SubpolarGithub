@@ -128,6 +128,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (nextSlot == null)
         {
             OnCursor_Outer?.Invoke();
+            InfoBox_FlipUpdate(prevSlotNum);
             return;
         }
 
@@ -138,10 +139,16 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     private void OnSelect()
     {
         ItemSlot_Cursor cursor = _slotsController.cursor;
+        UI_ClockTimer timer = cursor.holdTimer;
 
-        cursor.holdTimer.Stop_ClockSpriteRun();
+        if (timer.holdFinished == true)
+        {
+            timer.Stop_ClockSpriteRun();
+            return;
+        }
 
-        if (cursor.holdTimer.onHold == true) return;
+        timer.Stop_ClockSpriteRun();
+        if (timer.onHold == true) return;
 
         OnSelect_Input?.Invoke();
 
