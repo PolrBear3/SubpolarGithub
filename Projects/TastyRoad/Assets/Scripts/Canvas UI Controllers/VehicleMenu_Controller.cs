@@ -51,17 +51,18 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public ArchiveMenu_Controller archiveMenu => _archiveMenu;
 
 
-
     private int _currentMenuNum;
     public int currentMenuNum => _currentMenuNum;
 
-    public delegate void Cursor_Event(float value);
-    public event Cursor_Event OnCursorControl_Input;
 
     public delegate void Menu_Event();
+    public delegate void Cursor_Event(float value);
+
     public event Menu_Event MenuOpen_Event;
 
     public event Menu_Event OnCursor_Input;
+    public event Menu_Event OnCursor_Outer;
+    public event Cursor_Event OnCursorControl_Input;
 
     public event Menu_Event OnSelect_Input;
     public event Menu_Event OnHoldSelect_Input;
@@ -113,15 +114,24 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         Vector2 input = value.Get<Vector2>();
 
-        OnCursorControl_Input?.Invoke(input.x);
         OnCursor_Input?.Invoke();
+        OnCursorControl_Input?.Invoke(input.x);
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
         if (currentMenu.MenuInteraction_Active() == true) return;
 
         int prevSlotNum = (int)_slotsController.cursor.currentSlot.gridNum.x;
 
-        _slotsController.cursor.Navigate_toSlot(input);
+        ItemSlot_Cursor cursor = _slotsController.cursor;
+        ItemSlot nextSlot = cursor.Navigated_NextSlot(input);
+
+        if (nextSlot == null)
+        {
+            OnCursor_Outer?.Invoke();
+            return;
+        }
+
+        cursor.Navigate_toSlot(nextSlot);
         InfoBox_FlipUpdate(prevSlotNum);
     }
 

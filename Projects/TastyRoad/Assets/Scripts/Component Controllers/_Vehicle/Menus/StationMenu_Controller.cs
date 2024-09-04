@@ -25,6 +25,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
+        // subscriptions
+        _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
+
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnHoldSelect_Input += Export_StationPrefab;
         _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
@@ -37,6 +40,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // save current dragging item before menu close
         Drag_Cancel();
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
+
+        // subscriptions
+        _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_StationPrefab;
@@ -60,7 +66,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Load_Data()
     {
-
         // load saved slot datas
         if (ES3.KeyExists("StationMenu_Controller/_currentDatas"))
         {
@@ -69,13 +74,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         // set new slot datas
-        List<ItemSlot_Data> newDatas = new();
-        for (int i = 0; i < _controller.slotsController.itemSlots.Count; i++)
-        {
-            newDatas.Add(new());
-        }
-
-        _currentDatas.Add(0, newDatas);
+        _controller.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
     }
 
 
@@ -186,6 +185,34 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         Drop_Station();
+    }
+
+    private void CurrentSlots_PageUpdate()
+    {
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
+        // save current slots data to current page data, before moving on to next page
+        _currentDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
+
+        int lastSlotNum = slotsController.itemSlots.Count - 1;
+
+        // previous slots
+        if (cursor.currentSlot.gridNum.x <= 0)
+        {
+            _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
+        }
+        // next slots
+        else if (cursor.currentSlot.gridNum.x >= lastSlotNum)
+        {
+            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
+        }
+
+        // load data to slots
+        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.SlotsAssign_Update();
     }
 
 

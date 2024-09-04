@@ -130,6 +130,15 @@ public class ItemSlot_Cursor : MonoBehaviour
     }
 
 
+    public ItemSlot Navigated_NextSlot(Vector2 direction)
+    {
+        Vector2 currentGridNum = new Vector2(_currentSlot.gridNum.x, _currentSlot.gridNum.y);
+        Vector2 nextGridNum = new Vector2(currentGridNum.x + direction.x, currentGridNum.y + direction.y);
+
+        ItemSlot nextSlot = _slotsController.ItemSlot(nextGridNum);
+        return nextSlot;
+    }
+
     public void Navigate_toSlot(ItemSlot assignSlot)
     {
         if (assignSlot == null) return;
@@ -137,13 +146,5 @@ public class ItemSlot_Cursor : MonoBehaviour
 
         _rectTransform.SetParent(_currentSlot.cursorPoint);
         _rectTransform.anchoredPosition = Vector2.zero;
-    }
-    public void Navigate_toSlot(Vector2 direction)
-    {
-        Vector2 currentGridNum = new Vector2(_currentSlot.gridNum.x, _currentSlot.gridNum.y);
-        Vector2 nextGridNum = new Vector2(currentGridNum.x + direction.x, currentGridNum.y + direction.y);
-
-        ItemSlot nextSlot = _slotsController.ItemSlot(nextGridNum);
-        Navigate_toSlot(nextSlot);
     }
 }

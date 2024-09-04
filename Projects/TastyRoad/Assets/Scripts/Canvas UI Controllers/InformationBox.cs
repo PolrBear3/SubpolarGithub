@@ -11,6 +11,8 @@ public class InformationBox : MonoBehaviour
     [SerializeField] private TMP_Text _infoText;
 
     private float _defaultHeight;
+    private bool _defaultHeightSaved;
+
     [SerializeField] private float _heightIncreaseValue;
 
 
@@ -31,7 +33,10 @@ public class InformationBox : MonoBehaviour
     // Data Set
     public void Set_DefalutHeight()
     {
+        if (_defaultHeightSaved == true) return;
+
         _defaultHeight = _rect.anchoredPosition.y;
+        _defaultHeightSaved = true;
     }
 
 

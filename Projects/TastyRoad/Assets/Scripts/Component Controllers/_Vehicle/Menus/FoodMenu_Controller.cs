@@ -9,7 +9,10 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public VehicleMenu_Controller controller => _controller;
 
     private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
+    public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
+
     private int _currentPageNum;
+    public int currentPageNum => _currentPageNum;
 
     [Header("")]
     [SerializeField] private Station_ScrObj _foodBox;
@@ -22,6 +25,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
         // subscriptions
+        _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
+
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnHoldSelect_Input += Export_Food;
 
@@ -39,6 +44,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drag_Cancel();
 
         // subscriptions
+        _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
+
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_Food;
 
@@ -71,13 +78,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         // set new slot datas
-        List<ItemSlot_Data> newDatas = new();
-        for (int i = 0; i < _controller.slotsController.itemSlots.Count; i++)
-        {
-            newDatas.Add(new());
-        }
-
-        _currentDatas.Add(0, newDatas);
+        _controller.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
     }
 
 
@@ -178,6 +179,34 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         Drop_Food();
+    }
+
+    private void CurrentSlots_PageUpdate()
+    {
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
+        // save current slots data to current page data, before moving on to next page
+        _currentDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
+
+        int lastSlotNum = slotsController.itemSlots.Count - 1;
+
+        // previous slots
+        if (cursor.currentSlot.gridNum.x <= 0)
+        {
+            _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
+        }
+        // next slots
+        else if (cursor.currentSlot.gridNum.x >= lastSlotNum)
+        {
+            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
+        }
+
+        // load data to slots
+        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.SlotsAssign_Update();
     }
 
 

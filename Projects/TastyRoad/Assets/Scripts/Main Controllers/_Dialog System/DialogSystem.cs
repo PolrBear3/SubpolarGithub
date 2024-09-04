@@ -36,9 +36,10 @@ public class DialogSystem : MonoBehaviour
         _infoBox.Set_DefalutHeight();
 
         Refresh_CustomDialogs();
-        _actionKey.SetActive(false);
+        HoverToggle_CurrentDialog(false);
 
         _newDialogOpened = true;
+        _actionKey.SetActive(!_newDialogOpened);
     }
 
 

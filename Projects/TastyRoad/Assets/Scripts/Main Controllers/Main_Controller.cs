@@ -100,8 +100,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Test Buttons
     private void TestButton_Subscription()
     {
-        // currentVehicle.menu.stationMenu.Add_StationItem_Data(_dataController.Station_ScrObj(79025), 1);
-        Debug.Log("check");
+        Add_GoldenNugget(5);
     }
 
     public void TestButton1()

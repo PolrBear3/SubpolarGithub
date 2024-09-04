@@ -49,7 +49,6 @@ public class ItemSlots_Controller : MonoBehaviour
     {
         for (int i = 0; i < setDatas.Count; i++)
         {
-            if (i >= _itemSlots.Count) return;
             _itemSlots[i].Assign_Data(setDatas[i]);
         }
     }
@@ -160,6 +159,20 @@ public class ItemSlots_Controller : MonoBehaviour
 
 
     // Data
+    public void AddNewPage_ItemSlotDatas(Dictionary<int, List<ItemSlot_Data>> targetData)
+    {
+        // set new slot datas, amount of current _itemSlots
+        List<ItemSlot_Data> newDatas = new();
+        for (int i = 0; i < _itemSlots.Count; i++)
+        {
+            newDatas.Add(new());
+        }
+
+        // add new data to targetData
+        targetData.Add(targetData.Count, newDatas);
+    }
+
+
     public ItemSlot_Data SlotData(List<ItemSlot_Data> targetDatas, ItemSlot_Data data)
     {
         for (int i = 0; i < targetDatas.Count; i++)
