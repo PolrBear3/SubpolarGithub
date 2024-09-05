@@ -23,7 +23,7 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    // Set
+    // Set Slot
     private void Set_GridNums()
     {
         Vector2 gridNumTrack = Vector2.zero;
@@ -173,29 +173,35 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    public ItemSlot_Data SlotData(List<ItemSlot_Data> targetDatas, ItemSlot_Data data)
+    public ItemSlot_Data SlotData(Dictionary<int, List<ItemSlot_Data>> datas, ItemSlot_Data data)
     {
-        for (int i = 0; i < targetDatas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (data != targetDatas[i]) continue;
-            return targetDatas[i];
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (data != datas[i][j]) continue;
+                return datas[i][j];
+            }
         }
         return null;
     }
 
-    public List<ItemSlot_Data> BookMarked_Datas(List<ItemSlot_Data> targetDatas)
+    public List<ItemSlot_Data> BookMarked_Datas(Dictionary<int, List<ItemSlot_Data>> datas)
     {
-        List<ItemSlot_Data> datas = new();
+        List<ItemSlot_Data> bookmarkedDatas = new();
 
-        for (int i = 0; i < targetDatas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (targetDatas[i].hasItem == false) continue;
-            if (targetDatas[i].bookMarked == false) continue;
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem == false) continue;
+                if (datas[i][j].bookMarked == false) continue;
 
-            datas.Add(targetDatas[i]);
+                bookmarkedDatas.Add(datas[i][j]);
+            }
         }
 
-        return datas;
+        return bookmarkedDatas;
     }
 
 
@@ -224,7 +230,7 @@ public class ItemSlots_Controller : MonoBehaviour
         }
     }
 
-
+    
     public int FoodAmount(List<ItemSlot_Data> targetDatas, Food_ScrObj targetFood)
     {
         int foodCount = 0;

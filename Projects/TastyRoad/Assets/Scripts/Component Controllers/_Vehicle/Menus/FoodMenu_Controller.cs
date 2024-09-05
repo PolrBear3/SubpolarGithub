@@ -23,6 +23,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnEnable()
     {
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
         // subscriptions
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
@@ -207,6 +208,9 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // load data to slots
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
+
+        // indicator
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
     }
 
 

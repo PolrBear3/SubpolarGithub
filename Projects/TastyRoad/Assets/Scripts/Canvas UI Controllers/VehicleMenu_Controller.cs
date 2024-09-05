@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using TMPro;
+using System.Linq;
 
 public interface IVehicleMenu
 {
@@ -25,6 +26,11 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private GameObject _menuPanel;
     public GameObject menuPanel => _menuPanel;
+
+
+    [Header("")]
+    [SerializeField] private Image[] _pageDots;
+    [SerializeField] private Sprite[] _dotSprites;
 
 
     [Header("")]
@@ -298,7 +304,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Information Box Control
+    // UI Control
     private void InfoBox_FlipUpdate(int prevSlotNumX)
     {
         ItemSlot currentSlot = _slotsController.cursor.currentSlot;
@@ -310,5 +316,27 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (navigateRight == false && navigateLeft == false) return;
 
         _infoBox.Flip();
+    }
+
+    public void Update_PageDots(int pageAmount, int currentPageNum)
+    {
+        int pageCount = pageAmount;
+        
+        for (int i = 0; i < _pageDots.Length; i++)
+        {
+            // lock
+            if (pageCount <= 0)
+            {
+                _pageDots[i].sprite = _dotSprites[0];
+                continue;
+            }
+
+            // unlock
+            _pageDots[i].sprite = _dotSprites[1];
+            pageCount--;
+        }
+
+        // indicate
+        _pageDots[currentPageNum].sprite = _dotSprites[2];
     }
 }

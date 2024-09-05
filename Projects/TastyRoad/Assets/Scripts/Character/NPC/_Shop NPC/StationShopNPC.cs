@@ -285,8 +285,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        List<ItemSlot_Data> currentStationDatas = menu.currentDatas[menu.currentPageNum];
-        List<ItemSlot_Data> bookmarkedDatas = slotsController.BookMarked_Datas(currentStationDatas);
+        List<ItemSlot_Data> bookmarkedDatas = slotsController.BookMarked_Datas(menu.currentDatas);
 
         // check if there are more than 2 bookmarked stations
         if (bookmarkedDatas.Count < 2)
@@ -298,7 +297,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         // empty bookmarked stations
         for (int i = 0; i < bookmarkedDatas.Count; i++)
         {
-            slotsController.SlotData(currentStationDatas, bookmarkedDatas[i]).Empty_Item();
+            slotsController.SlotData(menu.currentDatas, bookmarkedDatas[i]).Empty_Item();
         }
 
         _restockCoroutine = StartCoroutine(Merge_BookMarkedStations_Coroutine());
@@ -344,8 +343,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        List<ItemSlot_Data> stationDatas = menu.currentDatas[menu.currentPageNum];
-        List<ItemSlot_Data> bookMarkedDatas = slotsController.BookMarked_Datas(stationDatas);
+        List<ItemSlot_Data> bookMarkedDatas = slotsController.BookMarked_Datas(menu.currentDatas);
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -361,7 +359,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             // empty data
             Station_ScrObj unlockStation = bookMarkedDatas[i].currentStation;
-            slotsController.SlotData(stationDatas, bookMarkedDatas[i]).Empty_Item();
+            slotsController.SlotData(menu.currentDatas, bookMarkedDatas[i]).Empty_Item();
 
             // add station to _unlockedStations
             if (_unlockedStations.Contains(unlockStation)) continue;
