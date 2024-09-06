@@ -1,0 +1,13 @@
+# Top-level EditorConfig file
+# Set to 'true' if this is the root of the project
+root = true
+
+[*.cs]
+# C# formatting rules
+dotnet_style_require_accessibility_modifiers = always:suggestion
+csharp_new_line_before_open_brace = all
+
+# Enforce placing braces on a new line
+dotnet_style_prefer_braces = true:suggestion
+
+# Optional: Add more formatting rules as needed

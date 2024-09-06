@@ -319,7 +319,7 @@ public class StationBuilder : MonoBehaviour, IInteractable, ISaveLoadable
     private void Collect_BuiltStation()
     {
         // collect built station
-        _main.currentVehicle.menu.stationMenu.Add_StationItem_Data(_currentBuildStation, 1);
+        _main.currentVehicle.menu.stationMenu.Add_StationItem(_currentBuildStation, 1);
 
         // toss built station to player
         Player_Controller player = _detection.player;

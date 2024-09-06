@@ -61,14 +61,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Application.targetFrameRate = 60;
-
-        TestButton1Event += TestButton_Subscription;
-        // TestButton_Subscription();
-    }
-
-    private void OnDestroy()
-    {
-        TestButton1Event -= TestButton_Subscription;
     }
 
 
@@ -98,11 +90,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Test Buttons
-    private void TestButton_Subscription()
-    {
-        Add_GoldenNugget(5);
-    }
-
     public void TestButton1()
     {
         TestButton1Event?.Invoke();
@@ -235,8 +222,10 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Current Golden Nugget Control
     public int GoldenNugget_Amount()
     {
+        ItemSlots_Controller slotsController = _currentVehicle.menu.slotsController;
         FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
-        return foodMenu.FoodAmount(dataController.goldenNugget);
+
+        return slotsController.FoodAmount(foodMenu.currentDatas, dataController.goldenNugget);
     }
 
 
@@ -405,7 +394,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
     private void Load_CurrentStations()
     {
-        if (ES3.KeyExists("Main_Controller/stationDatas") == false) return; 
+        if (ES3.KeyExists("Main_Controller/stationDatas") == false) return;
 
         List<StationData> stationDatas = ES3.Load<List<StationData>>("Main_Controller/stationDatas");
         List<FoodData> stationFoodDatas = ES3.Load<List<FoodData>>("Main_Controller/stationFoodDatas");

@@ -56,5 +56,17 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "TastyRoad.sln"
+    "dotnet.defaultSolution": "TastyRoad.sln",
+    "razor.format.codeBlockBraceOnNextLine": true,
+    "javascript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+    "javascript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
+    "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+
+    "[csharp]": {
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
+        "csharp.format.enable": true,
+        "csharp.format.newLine.beforeOpenBrace": "all"
+    }
 }

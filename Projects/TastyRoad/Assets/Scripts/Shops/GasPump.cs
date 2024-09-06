@@ -159,9 +159,9 @@ public class GasPump : MonoBehaviour
 
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
-        if (menu.Slots_Full()) return;
+        // slots full check //
 
-        menu.Add_StationItem_Data(_oilDrum, 1);
+        menu.Add_StationItem(_oilDrum, 1);
         _launcher.Parabola_CoinLaunch(_oilDrum.miniSprite, _interactable.detection.player.transform.position);
 
         _collectReady = false;

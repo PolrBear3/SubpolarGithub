@@ -107,7 +107,7 @@ public class ItemSlot_Cursor : MonoBehaviour
             _data.hasItem = true;
             _data.currentStation = station;
 
-            _cursorImage.sprite = station.miniSprite;
+            _cursorImage.sprite = station.dialogIcon;
 
             _cursorImage.color = Color.white;
             _cursorImage.rectTransform.anchoredPosition = new Vector2(0f, 6.5f);

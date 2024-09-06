@@ -24,6 +24,10 @@ public class CollectCard : MonoBehaviour
 
     private Event _setInteraction;
 
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _destroyTikCount;
+    private int _currentTikCount;
+
 
     // UnityEngine
     private void Awake()
@@ -36,11 +40,13 @@ public class CollectCard : MonoBehaviour
         Set_RandomInteraction();
 
         _interactable.Action1Event += Invoke_Interaction;
+        GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
     }
 
     private void OnDestroy()
     {
         _interactable.Action1Event -= Invoke_Interaction;
+        GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
     }
 
 
@@ -67,7 +73,7 @@ public class CollectCard : MonoBehaviour
     }
 
 
-    // Functions
+    // Event Functions
     private void FoodIngredient_toArchive()
     {
         Food_ScrObj randFood = _interactable.mainController.dataController.CookedFood();
@@ -92,17 +98,26 @@ public class CollectCard : MonoBehaviour
         Station_ScrObj randStation = _bluePrintStations[Random.Range(0, _bluePrintStations.Length)];
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
-        if (menu.Slots_Full() == true)
-        {
-            // dialog
-            return;
-        }
+        // slots full check //
 
         // add station blueprint
-        menu.Add_StationItem_Data(randStation, 1).isLocked = true;
+        menu.Add_StationItem(randStation, 1).isLocked = true;
 
         // dialog
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[1].info));
+    }
+
+
+    // Functions
+    private void Activate_DestroyTimeTik()
+    {
+        float alphaStepSize = 100 / _destroyTikCount * 0.01f;
+
+        _currentTikCount++;
+        Main_Controller.Change_SpriteAlpha(_sr, _sr.color.a - alphaStepSize);
+
+        if (_currentTikCount < _destroyTikCount) return;
+        Destroy(gameObject, 0.1f);
     }
 }

@@ -80,7 +80,7 @@ public class Scrap : MonoBehaviour, IInteractable
         // check if station slots are all full
 
         // add this station to vehicle station menu
-        menu.Add_StationItem_Data(_stationController.stationScrObj, 1);
+        menu.Add_StationItem(_stationController.stationScrObj, 1);
 
         // destroy
         _stationController.Destroy_Station();

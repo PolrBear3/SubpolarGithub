@@ -12,7 +12,7 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     public int currentTime => _currentTime;
 
     [Header("")]
-    [SerializeField] private float _tikTime;
+    [SerializeField][Range(0, 100)] private float _tikTime;
     private bool _isIncrease;
 
     public delegate void OnEvent();

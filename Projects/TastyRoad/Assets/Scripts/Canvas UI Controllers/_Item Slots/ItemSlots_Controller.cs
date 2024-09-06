@@ -12,7 +12,7 @@ public class ItemSlots_Controller : MonoBehaviour
     [SerializeField] private List<ItemSlot> _itemSlots = new();
     public List<ItemSlot> itemSlots => _itemSlots;
 
-    [SerializeField] [Range(0, 1000)] private int _singleSlotCapacity;
+    [SerializeField][Range(0, 1000)] private int _singleSlotCapacity;
     public int singleSlotCapacity => _singleSlotCapacity;
 
 
@@ -186,6 +186,19 @@ public class ItemSlots_Controller : MonoBehaviour
         return null;
     }
 
+    public ItemSlot_Data Empty_SlotData(Dictionary<int, List<ItemSlot_Data>> datas)
+    {
+        for (int i = 0; i < datas.Count; i++)
+        {
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem) continue;
+                return datas[i][j];
+            }
+        }
+        return null;
+    }
+
     public List<ItemSlot_Data> BookMarked_Datas(Dictionary<int, List<ItemSlot_Data>> datas)
     {
         List<ItemSlot_Data> bookmarkedDatas = new();
@@ -205,54 +218,66 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    public int StationAmount(List<ItemSlot_Data> targetDatas, Station_ScrObj targetStation)
+    public int StationAmount(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation)
     {
         int stationCount = 0;
 
-        for (int i = 0; i < targetDatas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (targetDatas[i].hasItem == false) continue;
-            if (targetStation != targetDatas[i].currentStation) continue;
-            stationCount++;
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem == false) continue;
+                if (targetStation != datas[i][j].currentStation) continue;
+                stationCount++;
+            }
         }
 
         return stationCount;
     }
 
-    public void Stations_ToggleLock(List<ItemSlot_Data> targetDatas, Station_ScrObj targetStation, bool isLock)
+    public void Stations_ToggleLock(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation, bool isLock)
     {
-        for (int i = 0; i < targetDatas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (targetDatas[i].hasItem == false) continue;
-            if (targetStation != targetDatas[i].currentStation) continue;
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem == false) continue;
+                if (targetStation != datas[i][j].currentStation) continue;
 
-            targetDatas[i].isLocked = isLock;
+                datas[i][j].isLocked = isLock;
+            }
         }
     }
 
-    
-    public int FoodAmount(List<ItemSlot_Data> targetDatas, Food_ScrObj targetFood)
+
+    public int FoodAmount(Dictionary<int, List<ItemSlot_Data>> datas, Food_ScrObj targetFood)
     {
         int foodCount = 0;
 
-        for (int i = 0; i < targetDatas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (targetDatas[i].hasItem == false) continue;
-            if (targetFood != targetDatas[i].currentFood) continue;
-            foodCount++;
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem == false) continue;
+                if (targetFood != datas[i][j].currentStation) continue;
+                foodCount++;
+            }
         }
 
         return foodCount;
     }
 
-    public void Foods_ToggleLock(List<ItemSlot_Data> targetDatas, Food_ScrObj targetFood, bool isLock)
+    public void Foods_ToggleLock(Dictionary<int, List<ItemSlot_Data>> datas, Food_ScrObj targetFood, bool isLock)
     {
-        for (int i = 0; i < targetDatas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
-            if (targetDatas[i].hasItem == false) continue;
-            if (targetFood != targetDatas[i].currentFood) continue;
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem == false) continue;
+                if (targetFood != datas[i][j].currentFood) continue;
 
-            targetDatas[i].isLocked = isLock;
+                datas[i][j].isLocked = isLock;
+            }
         }
     }
 }

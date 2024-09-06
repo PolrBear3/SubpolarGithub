@@ -49,7 +49,7 @@ public class StationStock : MonoBehaviour
         _interactable.Action1Event -= Purchase;
     }
 
-     
+
     // Set
     private void Set_Data()
     {
@@ -118,7 +118,7 @@ public class StationStock : MonoBehaviour
         }
 
         // add to vehicle
-        stationMenu.Add_StationItem_Data(_currentStation, 1);
+        stationMenu.Add_StationItem(_currentStation, 1);
 
         // station coin launch animation
         _launcher.Parabola_CoinLaunch(_currentStation.miniSprite, _interactable.detection.player.transform.position);

@@ -8,10 +8,15 @@ public class DropItem : MonoBehaviour, IInteractable
 
     private Main_Controller _main;
 
+    [Header("")]
     [SerializeField] private Detection_Controller _detection;
     [SerializeField] private CoinLauncher _launcher;
 
     private ItemSlot_Data _itemData;
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _destroyTikCount;
+    private int _currentTikCount;
 
 
     // UnityEngine
@@ -19,6 +24,16 @@ public class DropItem : MonoBehaviour, IInteractable
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
         _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
+    }
+
+    private void Start()
+    {
+        GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
+    }
+
+    private void OnDestroy()
+    {
+        GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
     }
 
 
@@ -30,7 +45,7 @@ public class DropItem : MonoBehaviour, IInteractable
 
     public void UnInteract()
     {
-        
+
     }
 
 
@@ -41,7 +56,7 @@ public class DropItem : MonoBehaviour, IInteractable
     }
 
 
-    //
+    // Functions
     private void Pickup()
     {
         if (_itemData == null) return;
@@ -60,7 +75,7 @@ public class DropItem : MonoBehaviour, IInteractable
         else
         {
             StationMenu_Controller stationMenu = _main.currentVehicle.menu.stationMenu;
-            stationMenu.Add_StationItem_Data(_itemData.currentStation, _itemData.currentAmount);
+            stationMenu.Add_StationItem(_itemData.currentStation, _itemData.currentAmount);
 
             launchSprite = _itemData.currentStation.sprite;
         }
@@ -68,6 +83,17 @@ public class DropItem : MonoBehaviour, IInteractable
         // launch
         _launcher.Parabola_CoinLaunch(launchSprite, _main.Player().transform.position);
 
+        Destroy(gameObject, 0.1f);
+    }
+
+    private void Activate_DestroyTimeTik()
+    {
+        float alphaStepSize = 100 / _destroyTikCount * 0.01f;
+
+        _currentTikCount++;
+        Main_Controller.Change_SpriteAlpha(_sr, _sr.color.a - alphaStepSize);
+
+        if (_currentTikCount < _destroyTikCount) return;
         Destroy(gameObject, 0.1f);
     }
 }

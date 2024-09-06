@@ -23,6 +23,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnEnable()
     {
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
         // subscriptions
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
@@ -127,6 +128,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // load data to slots
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
+
+        // indicator
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
     }
 
 
@@ -144,16 +148,19 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Drag_Cancel()
     {
-        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
 
         if (cursor.Current_Data().hasItem == false) return;
 
         ItemSlot_Data cursorData = new(cursor.Current_Data());
         cursor.Empty_Item();
 
-        ItemSlot returnSlot = _controller.slotsController.EmptySlot();
-        returnSlot.Assign_Data(cursorData);
-        returnSlot.Assign_Item();
+        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
+        slotsController.Empty_SlotData(_currentDatas).Assign_Data(cursorData);
+
+        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.SlotsAssign_Update();
     }
 
 
@@ -202,7 +209,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // drop current item
         Drop_Food();
 
-        if (currentSlot.data.isLocked == true) return;
+        if (currentSlot.data.isLocked == true)
+        {
+            currentSlot.Toggle_BookMark(false);
+            return;
+        }
 
         // toggle
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
@@ -223,8 +234,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Data Control
     public bool Food_Archived(Food_ScrObj food)
     {
-        return _controller.slotsController.FoodAmount(_currentDatas[currentPageNum], food) > 0;
+        return _controller.slotsController.FoodAmount(_currentDatas, food) > 0;
     }
+
 
     public ItemSlot_Data Archive_Food(Food_ScrObj food)
     {
@@ -234,23 +246,23 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // check if food has ingredients
         if (food.ingredients.Count <= 0) return null;
 
-        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
-
-        for (int i = 0; i < data.Count; i++)
+        for (int i = 0; i < _currentDatas.Count; i++)
         {
-            if (data[i].hasItem == true) continue;
-            data[i] = new(food, 1);
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == true) continue;
+                _currentDatas[i][j] = new(food, 1);
 
-            // lock toggle according to cooked food
-            Data_Controller dataController = _controller.vehicleController.mainController.dataController;
-            data[i].isLocked = !dataController.CookedFood(food);
+                // lock toggle according to cooked food
+                Data_Controller dataController = _controller.vehicleController.mainController.dataController;
+                _currentDatas[i][j].isLocked = !dataController.CookedFood(food);
 
-            return data[i];
+                return _currentDatas[i][j];
+            }
         }
 
         return null;
     }
-
 
     public void Unlock_FoodIngredient(Food_ScrObj food)
     {

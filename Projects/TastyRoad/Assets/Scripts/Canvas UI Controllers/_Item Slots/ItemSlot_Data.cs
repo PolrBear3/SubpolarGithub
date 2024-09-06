@@ -6,8 +6,8 @@ using UnityEngine;
 public class ItemSlot_Data
 {
     public bool hasItem;
-    public bool bookMarked;
 
+    public bool bookMarked;
     public bool isLocked;
 
     public int currentAmount;
@@ -23,11 +23,11 @@ public class ItemSlot_Data
         currentAmount = 0;
     }
 
-    public ItemSlot_Data (ItemSlot_Data data)
+    public ItemSlot_Data(ItemSlot_Data data)
     {
         hasItem = data.hasItem;
-        bookMarked = data.bookMarked;
 
+        bookMarked = data.bookMarked;
         isLocked = data.isLocked;
 
         currentAmount = data.currentAmount;
@@ -36,7 +36,7 @@ public class ItemSlot_Data
         currentStation = data.currentStation;
     }
 
-    public ItemSlot_Data (Food_ScrObj food, int amount)
+    public ItemSlot_Data(Food_ScrObj food, int amount)
     {
         hasItem = true;
 
@@ -44,7 +44,7 @@ public class ItemSlot_Data
         currentAmount = amount;
     }
 
-    public ItemSlot_Data (Station_ScrObj station, int amount)
+    public ItemSlot_Data(Station_ScrObj station, int amount)
     {
         hasItem = true;
 
@@ -54,6 +54,19 @@ public class ItemSlot_Data
 
 
     //
+    public void Assign_Data(ItemSlot_Data assignData)
+    {
+        hasItem = assignData.hasItem;
+
+        bookMarked = assignData.bookMarked;
+        isLocked = assignData.isLocked;
+
+        currentAmount = assignData.currentAmount;
+
+        currentFood = assignData.currentFood; ;
+        currentStation = assignData.currentStation;
+    }
+
     public void Empty_Item()
     {
         hasItem = bookMarked = isLocked = false;

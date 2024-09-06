@@ -24,6 +24,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnEnable()
     {
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
         // subscriptions
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
@@ -86,27 +87,29 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Menu Control
-    public ItemSlot_Data Add_StationItem_Data(Station_ScrObj station, int amount)
+    public ItemSlot_Data Add_StationItem(Station_ScrObj station, int amount)
     {
         if (amount <= 0) return null;
 
-        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
         int repeatAmount = amount;
 
-        for (int i = 0; i < datas.Count; i++)
+        for (int i = 0; i < _currentDatas.Count; i++)
         {
-            if (datas[i].hasItem == true) continue;
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == true) continue;
 
-            datas[i] = new(station, 1);
-            repeatAmount--;
+                _currentDatas[i][j] = new(station, 1);
+                repeatAmount--;
 
-            if (repeatAmount > 0) continue;
-            return datas[i];
+                if (repeatAmount > 0) continue;
+                return _currentDatas[i][j];
+            }
         }
 
         return null;
     }
-    public ItemSlot Add_StationItem_Slot(Station_ScrObj station, int amount)
+    public ItemSlot Add_StationItem_toSlot(Station_ScrObj station, int amount)
     {
         if (amount <= 0) return null;
 
@@ -133,14 +136,15 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     public void Remove_StationItem(Station_ScrObj station)
     {
-        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
-
-        for (int i = 0; i < datas.Count; i++)
+        for (int i = 0; i < _currentDatas.Count; i++)
         {
-            if (datas[i].hasItem == false) continue;
-            if (station != datas[i].currentStation) continue;
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == false) continue;
+                if (station != _currentDatas[i][j].currentStation) continue;
 
-            datas[i] = new();
+                _currentDatas[i][j] = new();
+            }
         }
     }
 
@@ -149,18 +153,20 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     public void Remove_StationItem(Station_ScrObj station, int amount)
     {
-        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
         int repeatAmount = amount;
 
-        for (int i = 0; i < datas.Count; i++)
+        for (int i = 0; i < _currentDatas.Count; i++)
         {
-            if (datas[i].hasItem == false) continue;
-            if (station != datas[i].currentStation) continue;
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == false) continue;
+                if (station != _currentDatas[i][j].currentStation) continue;
 
-            datas[i] = new();
-            repeatAmount--;
+                _currentDatas[i][j] = new();
+                repeatAmount--;
 
-            if (repeatAmount <= 0) return;
+                if (repeatAmount <= 0) return;
+            }
         }
     }
 
@@ -213,6 +219,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // load data to slots
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
+
+        // indicator
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
     }
 
 
@@ -235,17 +244,19 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Drag_Cancel()
     {
-        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
 
         if (cursor.Current_Data().hasItem == false) return;
 
         ItemSlot_Data cursorData = new(cursor.Current_Data());
         cursor.Empty_Item();
 
-        ItemSlot targetSlot = Add_StationItem_Slot(cursorData.currentStation, 1);
-        targetSlot.Assign_Data(cursorData);
+        _currentDatas[_currentPageNum] = slotsController.CurrentSlots_toDatas();
+        Add_StationItem(cursorData.currentStation, 1).isLocked = cursorData.isLocked;
 
-        targetSlot.Toggle_Lock(targetSlot.data.isLocked);
+        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.SlotsAssign_Update();
     }
 
 
@@ -306,36 +317,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Data Control
-    public bool Slots_Full()
-    {
-        List<ItemSlot_Data> data = _currentDatas[_currentPageNum];
-
-        for (int i = 0; i < data.Count; i++)
-        {
-            if (data[i].hasItem == true) continue;
-            return false;
-        }
-
-        return true;
-    }
-
-    public int Station_Amount(Station_ScrObj station)
-    {
-        List<ItemSlot_Data> datas = _currentDatas[_currentPageNum];
-        int count = 0;
-
-        for (int i = 0; i < datas.Count; i++)
-        {
-            if (datas[i].hasItem == false) continue;
-            if (datas[i].currentStation != station) continue;
-            count++;
-        }
-
-        return count;
-    }
-
-
     // Station Export System
     private void Export_StationPrefab()
     {
@@ -379,7 +360,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         Complete_StationPlace();
     }
-    
+
     private void Complete_StationPlace()
     {
         _controller.slotsController.cursor.Empty_Item();
@@ -404,8 +385,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactionMode = false;
 
         // return exported station back to current slot
-        Add_StationItem_Slot(_interactStation.stationScrObj, 1);
-        cursor.Empty_Item();
+        Drag_Cancel();
 
         // destroy current exported station
         _interactStation.Destroy_Station();

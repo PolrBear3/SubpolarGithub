@@ -161,13 +161,14 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
+        ItemSlots_Controller slotsController = _mainController.currentVehicle.menu.slotsController;
         StationMenu_Controller menu = _mainController.currentVehicle.menu.stationMenu;
 
         Station_ScrObj oilDrum = _mainController.dataController.Station_ScrObj(79025);
         int oilAmount = Mathf.Abs(_cursorTileNum - _currentTileNum);
 
         // check if has enough oil drum in station menu
-        if (menu.Station_Amount(oilDrum) < oilAmount)
+        if (slotsController.StationAmount(menu.currentDatas, oilDrum) < oilAmount)
         {
             Map_Toggle(false);
             // not enough oil drum dialog

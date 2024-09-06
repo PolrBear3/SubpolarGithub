@@ -91,49 +91,34 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Menu Control
-    public int FoodAmount(Food_ScrObj food)
-    {
-        List<ItemSlot_Data> currentDatas = _currentDatas[_currentPageNum];
-        int count = 0;
-
-        for (int i = 0; i < currentDatas.Count; i++)
-        {
-            if (currentDatas[i].hasItem == false) continue;
-            if (currentDatas[i].currentFood != food) continue;
-
-            count += currentDatas[i].currentAmount;
-        }
-
-        return count;
-    }
-
-
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
         if (amount <= 0) return 0;
 
-        List<ItemSlot_Data> currentDatas = _currentDatas[_currentPageNum];
         int slotCapacity = _controller.slotsController.singleSlotCapacity;
 
-        for (int i = 0; i < currentDatas.Count; i++)
+        for (int i = 0; i < _currentDatas.Count; i++)
         {
-            if (currentDatas[i].hasItem == true && currentDatas[i].currentFood != food) continue;
-            if (currentDatas[i].currentAmount >= slotCapacity) continue;
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (currentDatas[i][j].hasItem == true && currentDatas[i][j].currentFood != food) continue;
+                if (currentDatas[i][j].currentAmount >= slotCapacity) continue;
 
-            int calculatedAmount = currentDatas[i].currentAmount + amount;
-            int leftOver = calculatedAmount - slotCapacity;
+                int calculatedAmount = currentDatas[i][j].currentAmount + amount;
+                int leftOver = calculatedAmount - slotCapacity;
 
-            currentDatas[i] = new(food, calculatedAmount);
+                currentDatas[i][j] = new(food, calculatedAmount);
 
-            // check if there is leftover
-            if (leftOver <= 0) return 0;
-            currentDatas[i].currentAmount = slotCapacity;
+                // check if there is leftover
+                if (leftOver <= 0) return 0;
+                currentDatas[i][j].currentAmount = slotCapacity;
 
-            // no slots available
-            if (i == currentDatas.Count - 1) return leftOver;
+                // no slots available
+                if (i == currentDatas.Count - 1) return leftOver;
 
-            // add to next available slot
-            return Add_FoodItem(food, leftOver);
+                // add to next available slot
+                return Add_FoodItem(food, leftOver);
+            }
         }
 
         return amount;
@@ -216,7 +201,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Drag_Food()
     {
-        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
         currentSlot.Toggle_BookMark(false);
@@ -230,13 +216,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void DragSingle_Food()
     {
-        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
         if (cursor.Current_Data().hasItem == false) return;
 
         ItemSlot currentSlot = cursor.currentSlot;
-        if (currentSlot.data.hasItem == false) return;
 
+        if (currentSlot.data.hasItem == false) return;
         if (cursor.Current_Data().currentFood != currentSlot.data.currentFood) return;
+        if (cursor.Current_Data().currentAmount >= slotsController.singleSlotCapacity) return;
 
         cursor.Assign_Amount(cursor.Current_Data().currentAmount + 1);
         currentSlot.Update_Amount(-1);
@@ -270,12 +259,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void DropSingle_Food()
     {
-        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
         if (cursor.Current_Data().hasItem == false) return;
 
         ItemSlot currentSlot = cursor.currentSlot;
+
         if (currentSlot.data.hasItem == false) return;
         if (cursor.Current_Data().currentFood != currentSlot.data.currentFood) return;
+        if (currentSlot.data.currentAmount >= slotsController.singleSlotCapacity) return;
 
         cursor.Assign_Amount(cursor.Current_Data().currentAmount - 1);
         currentSlot.Update_Amount(1);
@@ -284,17 +277,30 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Swap_Food()
     {
+        ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
+        // cursor max drag amount
+        int maxCapacity = slotsController.singleSlotCapacity;
+        if (cursor.Current_Data().currentAmount >= maxCapacity) return;
+
         currentSlot.Toggle_BookMark(false);
 
-        // same food
+        // same food combine drag
         if (cursor.Current_Data().currentFood == currentSlot.data.currentFood)
         {
+            int calculatedAmount = cursor.Current_Data().currentAmount + currentSlot.data.currentAmount;
+
+            if (calculatedAmount > maxCapacity)
+            {
+                cursor.Assign_Amount(maxCapacity);
+                currentSlot.Assign_Amount(calculatedAmount - maxCapacity);
+                return;
+            }
+
             cursor.Assign_Amount(cursor.Current_Data().currentAmount + currentSlot.data.currentAmount);
             currentSlot.Empty_ItemBox();
-
             return;
         }
 

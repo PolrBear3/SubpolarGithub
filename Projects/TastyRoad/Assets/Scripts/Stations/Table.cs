@@ -115,9 +115,7 @@ public class Table : MonoBehaviour, IInteractable
 
         // unlocks
         ArchiveMenu_Controller menu = _stationController.mainController.currentVehicle.menu.archiveMenu;
-        List<ItemSlot_Data> archiveDatas = menu.currentDatas[menu.currentPageNum];
-
-        menu.controller.slotsController.Foods_ToggleLock(archiveDatas, cookedFood, false);
+        menu.controller.slotsController.Foods_ToggleLock(menu.currentDatas, cookedFood, false);
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_merge", transform.position);
