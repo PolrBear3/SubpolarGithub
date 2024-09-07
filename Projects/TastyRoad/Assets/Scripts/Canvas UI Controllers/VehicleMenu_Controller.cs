@@ -120,7 +120,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         Vector2 input = value.Get<Vector2>();
 
-        OnCursor_Input?.Invoke();
         OnCursorControl_Input?.Invoke(input.x);
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
@@ -134,11 +133,15 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (nextSlot == null)
         {
             OnCursor_Outer?.Invoke();
+            OnCursor_Input?.Invoke();
+
             InfoBox_FlipUpdate(prevSlotNum);
             return;
         }
 
         cursor.Navigate_toSlot(nextSlot);
+        OnCursor_Input?.Invoke();
+
         InfoBox_FlipUpdate(prevSlotNum);
     }
 
@@ -269,7 +272,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             {
                 _menus[i].SetActive(false);
             }
-            
+
             return;
         }
 
@@ -321,7 +324,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public void Update_PageDots(int pageAmount, int currentPageNum)
     {
         int pageCount = pageAmount;
-        
+
         for (int i = 0; i < _pageDots.Length; i++)
         {
             // lock

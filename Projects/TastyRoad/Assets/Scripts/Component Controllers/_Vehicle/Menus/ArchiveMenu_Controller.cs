@@ -232,9 +232,56 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Data Control
+    private List<Food_ScrObj> Archived_Foods()
+    {
+        List<Food_ScrObj> archivedFoods = new();
+
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == false) continue;
+                if (archivedFoods.Contains(_currentDatas[i][j].currentFood)) continue;
+
+                archivedFoods.Add(_currentDatas[i][j].currentFood);
+            }
+        }
+
+        return archivedFoods;
+    }
+
     public bool Food_Archived(Food_ScrObj food)
     {
         return _controller.slotsController.FoodAmount(_currentDatas, food) > 0;
+    }
+
+
+    private void RemoveDuplicate_ArchivedFood(Food_ScrObj food)
+    {
+        if (Food_Archived(food) == false) return;
+
+        int amountCount = 0;
+
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == false) continue;
+                if (_currentDatas[i][j].currentFood != food) continue;
+                amountCount++;
+
+                if (amountCount <= 1) continue;
+                _currentDatas[i][j].Empty_Item();
+            }
+        }
+    }
+
+    private void RemoveDuplicate_ArchivedFoods()
+    {
+        foreach (Food_ScrObj food in Archived_Foods())
+        {
+            RemoveDuplicate_ArchivedFood(food);
+        }
     }
 
 
@@ -256,6 +303,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 // lock toggle according to cooked food
                 Data_Controller dataController = _controller.vehicleController.mainController.dataController;
                 _currentDatas[i][j].isLocked = !dataController.CookedFood(food);
+
+                RemoveDuplicate_ArchivedFoods();
 
                 return _currentDatas[i][j];
             }

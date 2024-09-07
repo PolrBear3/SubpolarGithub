@@ -35,6 +35,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnOption1_Input += DropSingle_Food;
         _controller.OnOption2_Input += DragSingle_Food;
 
+        _controller.OnCursor_Input += InfoBox_Update;
+        _controller.OnSelect_Input += InfoBox_Update;
+        _controller.OnOption1_Input += InfoBox_Update;
+        _controller.OnOption2_Input += InfoBox_Update;
+
         Toggle_ExportIndicators(true);
     }
 
@@ -53,6 +58,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
         _controller.OnOption1_Input -= DropSingle_Food;
         _controller.OnOption2_Input -= DragSingle_Food;
+
+        _controller.OnCursor_Input -= InfoBox_Update;
+        _controller.OnSelect_Input -= InfoBox_Update;
+        _controller.OnOption1_Input -= InfoBox_Update;
+        _controller.OnOption2_Input -= InfoBox_Update;
 
         Toggle_ExportIndicators(false);
     }
@@ -167,6 +177,35 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
     }
 
+    private void InfoBox_Update()
+    {
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data slotData = cursor.currentSlot.data;
+
+        if (cursorData.hasItem == false) return;
+
+        InformationBox info = _controller.infoBox;
+
+        // Action key 1 update
+        string action1 = "Swap";
+
+        if (slotData.hasItem && cursorData.currentFood == slotData.currentFood)
+        {
+            action1 = "Drop 1 amount";
+        }
+        else if (slotData.hasItem == false)
+        {
+            action1 = "Bookmark";
+        }
+
+        // Set update
+        string amountInfo = info.CurrentAmount_Template(cursorData.currentAmount);
+        string controlInfo = info.UIControl_Template(action1, "Drag 1 amount", "Export");
+
+        info.Update_InfoText(amountInfo + "\n\n" + controlInfo);
+    }
+
     private void CurrentSlots_PageUpdate()
     {
         ItemSlots_Controller slotsController = _controller.slotsController;
@@ -267,7 +306,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot currentSlot = cursor.currentSlot;
 
         if (currentSlot.data.hasItem == false) return;
-        if (cursor.Current_Data().currentFood != currentSlot.data.currentFood) return;
+
+        if (cursor.Current_Data().currentFood != currentSlot.data.currentFood)
+        {
+            Swap_Food();
+            return;
+        }
+
         if (currentSlot.data.currentAmount >= slotsController.singleSlotCapacity) return;
 
         cursor.Assign_Amount(cursor.Current_Data().currentAmount - 1);

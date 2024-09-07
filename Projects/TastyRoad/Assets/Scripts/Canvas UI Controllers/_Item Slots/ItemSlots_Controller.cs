@@ -259,7 +259,7 @@ public class ItemSlots_Controller : MonoBehaviour
             for (int j = 0; j < datas[i].Count; j++)
             {
                 if (datas[i][j].hasItem == false) continue;
-                if (targetFood != datas[i][j].currentStation) continue;
+                if (targetFood != datas[i][j].currentFood) continue;
                 foodCount++;
             }
         }
