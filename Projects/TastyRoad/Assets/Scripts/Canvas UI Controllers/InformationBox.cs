@@ -80,9 +80,9 @@ public class InformationBox : MonoBehaviour
     {
         // set [key] to current binding map
 
-        string action1Key = "[Q] " + action1 + "\n";
-        string action2Key = "[E] " + action2 + "\n";
-        string holdKey = "[Hold Space] " + hold;
+        string action1Key = "<sprite=0> " + action1 + "\n";
+        string action2Key = "<sprite=1> " + action2 + "\n";
+        string holdKey = "Hold <sprite=2> to " + hold;
 
         return action1Key + action2Key + holdKey;
     }
