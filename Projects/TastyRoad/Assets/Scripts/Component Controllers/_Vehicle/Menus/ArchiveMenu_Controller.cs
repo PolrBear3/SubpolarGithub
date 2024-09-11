@@ -16,7 +16,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private int _currentPageNum;
     public int currentPageNum;
 
-    private List<Food_ScrObj> _ingredientUnlocks = new();
+    private List<FoodData> _ingredientUnlocks = new();
+
+    [Header("")]
+    [SerializeField] private RectTransform _ingredientBox;
+    [SerializeField] private FoodCondition_Indicator[] _indicators;
 
 
     // UnityEngine
@@ -29,8 +33,18 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input += Select_Slot;
+        _controller.OnHoldSelect_Input += CurrentFood_BookmarkToggle;
         _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
 
+        _controller.OnCursor_Input += InfoBox_Update;
+        _controller.OnSelect_Input += InfoBox_Update;
+        _controller.OnOption1_Input += InfoBox_Update;
+        _controller.OnOption2_Input += InfoBox_Update;
+
+        _controller.OnOption2_Input += IngredientBox_Toggle;
+        _controller.OnSelect_Input += Hide_IngredientBox;
+        _controller.OnCursor_Input += Hide_IngredientBox;
+        _controller.OnExit_Input += Hide_IngredientBox;
     }
 
     private void OnDisable()
@@ -43,8 +57,18 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input -= Select_Slot;
+        _controller.OnHoldSelect_Input -= CurrentFood_BookmarkToggle;
         _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
 
+        _controller.OnCursor_Input -= InfoBox_Update;
+        _controller.OnSelect_Input -= InfoBox_Update;
+        _controller.OnOption1_Input -= InfoBox_Update;
+        _controller.OnOption2_Input -= InfoBox_Update;
+
+        _controller.OnOption2_Input -= IngredientBox_Toggle;
+        _controller.OnSelect_Input -= Hide_IngredientBox;
+        _controller.OnCursor_Input -= Hide_IngredientBox;
+        _controller.OnExit_Input -= Hide_IngredientBox;
     }
 
     private void OnDestroy()
@@ -100,6 +124,45 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         Drop_Food();
+    }
+
+    private void InfoBox_Update()
+    {
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data slotData = cursor.currentSlot.data;
+
+        if (!cursorData.hasItem) return;
+
+        InformationBox info = _controller.infoBox;
+
+        // Bookmark Lock Status
+        string lockStatus = null;
+        string bookmarkStatus = "to drop";
+
+        if (slotData.hasItem)
+        {
+            bookmarkStatus = "to swap";
+        }
+
+        if (cursorData.isLocked)
+        {
+            lockStatus = "Bookmark Unavailable\n\n";
+        }
+        else if (!slotData.hasItem)
+        {
+            if (cursorData.bookMarked)
+            {
+                bookmarkStatus = "UnBookmark";
+            }
+            else
+            {
+                bookmarkStatus = "Bookmark";
+            }
+        }
+
+        string controlInfo = info.UIControl_Template(bookmarkStatus, "Toggle ingredients", bookmarkStatus);
+        info.Update_InfoText(lockStatus + controlInfo);
     }
 
     private void CurrentSlots_PageUpdate()
@@ -204,7 +267,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot currentSlot = cursor.currentSlot;
 
         // check if current hover slot has no item
-        if (currentSlot.data.hasItem) return;
+        if (currentSlot.data.hasItem)
+        {
+            Swap_Food();
+            return;
+        }
 
         // drop current item
         Drop_Food();
@@ -315,7 +382,58 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Unlock_FoodIngredient(Food_ScrObj food)
     {
-        if (_ingredientUnlocks.Contains(food) == true) return;
-        _ingredientUnlocks.Add(food);
+        for (int i = 0; i < _ingredientUnlocks.Count; i++)
+        {
+            if (food != _ingredientUnlocks[i].foodScrObj) continue;
+            return;
+        }
+
+        _ingredientUnlocks.Add(new(food));
+    }
+
+
+    // Ingredient Box Control
+    private void IngredientBox_Toggle()
+    {
+        if (_ingredientBox.gameObject.activeSelf == false)
+        {
+            Show_IngredientBox();
+            return;
+        }
+
+        Hide_IngredientBox();
+    }
+
+    private void Show_IngredientBox()
+    {
+        if (_controller.slotsController.cursor.Current_Data().hasItem == false) return;
+
+        // set active
+        _ingredientBox.gameObject.SetActive(true);
+
+        // update position to info box
+        float infoBoxX = _controller.infoBox.transform.position.x - 21f;
+        _ingredientBox.transform.position = new Vector2(infoBoxX, _ingredientBox.transform.position.y);
+
+        Update_IngredientBox();
+    }
+
+    private void Hide_IngredientBox()
+    {
+        _ingredientBox.gameObject.SetActive(false);
+    }
+
+
+    private void Update_IngredientBox()
+    {
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlot_Data cursorData = cursor.Current_Data();
+
+        if (cursorData.hasItem == false) return;
+
+        for (int i = 0; i < _indicators.Length; i++)
+        {
+            _indicators[i].Indicate(cursorData.currentFood.ingredients[i]);
+        }
     }
 }

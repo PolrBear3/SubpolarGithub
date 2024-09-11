@@ -30,10 +30,15 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input += Select_Slot;
-        _controller.OnHoldSelect_Input += Export_StationPrefab;
         _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
+        _controller.OnHoldSelect_Input += Export_StationPrefab;
 
         _controller.OnOption1_Input += CurrentStation_BookmarkToggle;
+        _controller.OnOption2_Input += CurrentStation_BookmarkToggle;
+
+        _controller.OnCursor_Input += InfoBox_Update;
+        _controller.OnSelect_Input += InfoBox_Update;
+        _controller.OnOption1_Input += InfoBox_Update;
     }
 
     private void OnDisable()
@@ -46,10 +51,15 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input -= Select_Slot;
-        _controller.OnHoldSelect_Input -= Export_StationPrefab;
         _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
+        _controller.OnHoldSelect_Input -= Export_StationPrefab;
 
         _controller.OnOption1_Input -= CurrentStation_BookmarkToggle;
+        _controller.OnOption2_Input -= CurrentStation_BookmarkToggle;
+
+        _controller.OnCursor_Input -= InfoBox_Update;
+        _controller.OnSelect_Input -= InfoBox_Update;
+        _controller.OnOption1_Input -= InfoBox_Update;
     }
 
     private void OnDestroy()
@@ -193,6 +203,45 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Station();
     }
 
+    private void InfoBox_Update()
+    {
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data slotData = cursor.currentSlot.data;
+
+        if (!cursorData.hasItem) return;
+
+        InformationBox info = _controller.infoBox;
+
+        // Lock Status
+        string lockStatus = null;
+        if (cursorData.isLocked)
+        {
+            lockStatus = "Export currently locked (station blueprint)\n\n";
+        }
+
+        // Retrieve Status
+        string retrieveStatus = "Hold <sprite=2> on empty to retrieve\n\n";
+
+        // Action key 1
+        string action1 = "Swap";
+        if (slotData.hasItem == false)
+        {
+            action1 = "Bookmark";
+        }
+
+        // Hold Key
+        string hold = "Drop";
+        if (cursorData.isLocked == false)
+        {
+            hold = "Export";
+        }
+
+        // Set update
+        string controlInfo = info.UIControl_Template(action1, action1, hold);
+        info.Update_InfoText(lockStatus + retrieveStatus + controlInfo);
+    }
+
     private void CurrentSlots_PageUpdate()
     {
         ItemSlots_Controller slotsController = _controller.slotsController;
@@ -307,7 +356,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot currentSlot = cursor.currentSlot;
 
         // check if current hover slot has no item
-        if (currentSlot.data.hasItem) return;
+        if (currentSlot.data.hasItem)
+        {
+            Swap_Station();
+            return;
+        }
 
         // drop current item
         Drop_Station();

@@ -35,7 +35,7 @@ public class UI_ClockTimer : MonoBehaviour
     {
         float transitionTime = _inputHoldTime / _clockSprites.Count;
 
-        for (int i = 0; i < _clockSprites.Count; i++) 
+        for (int i = 0; i < _clockSprites.Count; i++)
         {
             yield return new WaitForSeconds(transitionTime);
 
@@ -48,17 +48,16 @@ public class UI_ClockTimer : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
         _holdFinished = true;
-
         _clockImage.color = Color.clear;
     }
 
     public void Stop_ClockSpriteRun()
     {
         _onHold = false;
-        _holdFinished = false;
 
         if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
 
+        _holdFinished = false;
         _clockImage.color = Color.clear;
     }
 }

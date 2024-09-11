@@ -150,14 +150,14 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         ItemSlot_Cursor cursor = _slotsController.cursor;
         UI_ClockTimer timer = cursor.holdTimer;
 
-        if (timer.holdFinished == true)
+        if (timer.holdFinished)
         {
             timer.Stop_ClockSpriteRun();
             return;
         }
 
         timer.Stop_ClockSpriteRun();
-        if (timer.onHold == true) return;
+        if (timer.onHold) return;
 
         OnSelect_Input?.Invoke();
 
@@ -173,6 +173,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     private void OnHoldSelect()
     {
         OnHoldSelect_Input?.Invoke();
+
+        _infoBox.gameObject.SetActive(false);
     }
 
     private void OnOption1()
@@ -243,6 +245,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
 
+        _infoBox.gameObject.SetActive(false);
+
         if (currentMenu.MenuInteraction_Active() == true)
         {
             OnExit_Input?.Invoke();
@@ -252,7 +256,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         OnExit_Input?.Invoke();
 
         VehicleMenu_Toggle(false);
-        _infoBox.gameObject.SetActive(false);
 
         if (_vehicleController.detection.player == null) return;
 

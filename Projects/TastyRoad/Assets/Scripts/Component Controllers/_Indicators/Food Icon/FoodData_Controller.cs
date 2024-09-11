@@ -237,7 +237,7 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Food Condition
-    private ConditionSprites Get_ConditionSprites(FoodCondition_Type type)
+    public ConditionSprites Get_ConditionSprites(FoodCondition_Type type)
     {
         for (int i = 0; i < _conditionSprites.Length; i++)
         {
