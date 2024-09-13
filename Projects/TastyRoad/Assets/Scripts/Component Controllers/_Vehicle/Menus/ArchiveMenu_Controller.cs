@@ -138,11 +138,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // Bookmark Lock Status
         string lockStatus = null;
-        string bookmarkStatus = "to drop";
+        string bookmarkStatus = "Drop";
 
         if (slotData.hasItem)
         {
-            bookmarkStatus = "to swap";
+            bookmarkStatus = "Swap";
         }
 
         if (cursorData.isLocked)
@@ -161,7 +161,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             }
         }
 
-        string controlInfo = info.UIControl_Template(bookmarkStatus, "Toggle ingredients", bookmarkStatus);
+        // ingredient available status
+        string ingredientStatus = "Toggle ingredients";
+        if (FoodIngredient_Unlocked(cursorData.currentFood) == false)
+        {
+            ingredientStatus = "Drop";
+        }
+
+        string controlInfo = info.UIControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
         info.Update_InfoText(lockStatus + controlInfo);
     }
 
@@ -323,6 +330,21 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
+    private void Remove_ArchivedFood(Food_ScrObj food)
+    {
+        if (Food_Archived(food) == false) return;
+
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == false) continue;
+                if (_currentDatas[i][j].currentFood != food) continue;
+                _currentDatas[i][j].Empty_Item();
+            }
+        }
+    }
+
     private void RemoveDuplicate_ArchivedFood(Food_ScrObj food)
     {
         if (Food_Archived(food) == false) return;
@@ -350,7 +372,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             RemoveDuplicate_ArchivedFood(food);
         }
     }
-
 
     public ItemSlot_Data Archive_Food(Food_ScrObj food)
     {
@@ -380,6 +401,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
+
     public void Unlock_FoodIngredient(Food_ScrObj food)
     {
         for (int i = 0; i < _ingredientUnlocks.Count; i++)
@@ -391,10 +413,40 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _ingredientUnlocks.Add(new(food));
     }
 
+    private void Remove_FoodIngredient(Food_ScrObj food)
+    {
+        for (int i = 0; i < _ingredientUnlocks.Count; i++)
+        {
+            if (food != _ingredientUnlocks[i].foodScrObj) continue;
+
+            _ingredientUnlocks.RemoveAt(i);
+            return;
+        }
+    }
+
+    private bool FoodIngredient_Unlocked(Food_ScrObj food)
+    {
+        for (int i = 0; i < _ingredientUnlocks.Count; i++)
+        {
+            if (food != _ingredientUnlocks[i].foodScrObj) continue;
+            return true;
+        }
+        return false;
+    }
+
 
     // Ingredient Box Control
     private void IngredientBox_Toggle()
     {
+        ItemSlot_Data cursorData = _controller.slotsController.cursor.Current_Data();
+
+        if (cursorData.hasItem == false) return;
+        if (FoodIngredient_Unlocked(cursorData.currentFood) == false)
+        {
+            Drag_Cancel();
+            return;
+        }
+
         if (_ingredientBox.gameObject.activeSelf == false)
         {
             Show_IngredientBox();
@@ -406,8 +458,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Show_IngredientBox()
     {
-        if (_controller.slotsController.cursor.Current_Data().hasItem == false) return;
-
         // set active
         _ingredientBox.gameObject.SetActive(true);
 

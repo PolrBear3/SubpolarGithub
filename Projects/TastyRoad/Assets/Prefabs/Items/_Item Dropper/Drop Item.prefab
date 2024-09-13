@@ -148,13 +148,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultData:
-    icon: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    icon: {fileID: 0}
     info: 
   _datas:
-  - icon: {fileID: 0}
-    info: A food ingredient is picked up !
-  - icon: {fileID: 0}
-    info: A station blueprint is picked up !
+  - icon: {fileID: 14751554, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: Not enough empty slots in food storage!
+  - icon: {fileID: 14751554, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: Not enough empty slots in station storage!
 --- !u!114 &5722743193769059770
 MonoBehaviour:
   m_ObjectHideFlags: 0

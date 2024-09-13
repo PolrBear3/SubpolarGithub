@@ -21,10 +21,10 @@ public class FoodStock : MonoBehaviour
     [SerializeField] private Sprite[] _tagSprites;
 
     [Header("")]
-    [Range(1, 98)] [SerializeField] private int _maxAmount;
+    [Range(1, 98)][SerializeField] private int _maxAmount;
     public int maxAmount => _maxAmount;
 
-    [Range(1, 98)] [SerializeField] private int _discountPrice;
+    [Range(1, 98)][SerializeField] private int _discountPrice;
 
     private int _currentAmount;
     public int currentAmount => _currentAmount;

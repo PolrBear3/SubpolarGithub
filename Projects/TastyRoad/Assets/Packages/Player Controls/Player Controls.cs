@@ -286,30 +286,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""SelectDown"",
-                    ""type"": ""Button"",
-                    ""id"": ""7b16b699-0e53-463e-9830-f87ef51ace71"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""HoldSelect"",
-                    ""type"": ""Button"",
-                    ""id"": ""c5583446-0dd0-4fa8-8c02-019633f14a06"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold(duration=1)"",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Select"",
                     ""type"": ""Button"",
                     ""id"": ""f964ffd7-7696-4a67-8d2e-e88782e79151"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(behavior=1)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -542,28 +524,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""eb944a9c-663a-47a1-9ea9-794af8351064"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""SelectDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b3d526fc-d84b-4a6b-91f0-f9f0983381ae"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""HoldSelect"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a988eeb6-3605-4347-ab72-9509c54cfd48"",
                     ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
@@ -633,8 +593,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         // UI Control
         m_UIControl = asset.FindActionMap("UI Control", throwIfNotFound: true);
         m_UIControl_CursorControl = m_UIControl.FindAction("Cursor Control", throwIfNotFound: true);
-        m_UIControl_SelectDown = m_UIControl.FindAction("SelectDown", throwIfNotFound: true);
-        m_UIControl_HoldSelect = m_UIControl.FindAction("HoldSelect", throwIfNotFound: true);
         m_UIControl_Select = m_UIControl.FindAction("Select", throwIfNotFound: true);
         m_UIControl_Option1 = m_UIControl.FindAction("Option1", throwIfNotFound: true);
         m_UIControl_Option2 = m_UIControl.FindAction("Option2", throwIfNotFound: true);
@@ -792,8 +750,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UIControl;
     private List<IUIControlActions> m_UIControlActionsCallbackInterfaces = new List<IUIControlActions>();
     private readonly InputAction m_UIControl_CursorControl;
-    private readonly InputAction m_UIControl_SelectDown;
-    private readonly InputAction m_UIControl_HoldSelect;
     private readonly InputAction m_UIControl_Select;
     private readonly InputAction m_UIControl_Option1;
     private readonly InputAction m_UIControl_Option2;
@@ -808,8 +764,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         private @PlayerControls m_Wrapper;
         public UIControlActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @CursorControl => m_Wrapper.m_UIControl_CursorControl;
-        public InputAction @SelectDown => m_Wrapper.m_UIControl_SelectDown;
-        public InputAction @HoldSelect => m_Wrapper.m_UIControl_HoldSelect;
         public InputAction @Select => m_Wrapper.m_UIControl_Select;
         public InputAction @Option1 => m_Wrapper.m_UIControl_Option1;
         public InputAction @Option2 => m_Wrapper.m_UIControl_Option2;
@@ -831,12 +785,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CursorControl.started += instance.OnCursorControl;
             @CursorControl.performed += instance.OnCursorControl;
             @CursorControl.canceled += instance.OnCursorControl;
-            @SelectDown.started += instance.OnSelectDown;
-            @SelectDown.performed += instance.OnSelectDown;
-            @SelectDown.canceled += instance.OnSelectDown;
-            @HoldSelect.started += instance.OnHoldSelect;
-            @HoldSelect.performed += instance.OnHoldSelect;
-            @HoldSelect.canceled += instance.OnHoldSelect;
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
@@ -871,12 +819,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @CursorControl.started -= instance.OnCursorControl;
             @CursorControl.performed -= instance.OnCursorControl;
             @CursorControl.canceled -= instance.OnCursorControl;
-            @SelectDown.started -= instance.OnSelectDown;
-            @SelectDown.performed -= instance.OnSelectDown;
-            @SelectDown.canceled -= instance.OnSelectDown;
-            @HoldSelect.started -= instance.OnHoldSelect;
-            @HoldSelect.performed -= instance.OnHoldSelect;
-            @HoldSelect.canceled -= instance.OnHoldSelect;
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
@@ -933,8 +875,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     public interface IUIControlActions
     {
         void OnCursorControl(InputAction.CallbackContext context);
-        void OnSelectDown(InputAction.CallbackContext context);
-        void OnHoldSelect(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnOption1(InputAction.CallbackContext context);
         void OnOption2(InputAction.CallbackContext context);

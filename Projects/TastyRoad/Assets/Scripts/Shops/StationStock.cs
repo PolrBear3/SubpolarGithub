@@ -107,13 +107,16 @@ public class StationStock : MonoBehaviour
         }
 
         StationMenu_Controller stationMenu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
+
+        bool slotFull = slotsController.Empty_SlotData(stationMenu.currentDatas) == null;
 
         // check if station menu slot is available
-        if (stationMenu.controller.slotsController.AvailableSlots_Count() <= 0)
+        if (slotFull)
         {
             DialogData data = new(_currentStation.dialogIcon, "Not enough space in station storage!");
-            dialog.Update_Dialog(data);
 
+            dialog.Update_Dialog(data);
             return;
         }
 
@@ -132,8 +135,6 @@ public class StationStock : MonoBehaviour
         // set data
         _sold = true;
         _currentStation = null;
-
-        _interactable.Action1Event -= Purchase;
 
         // set sprite
         _sr.sortingLayerName = "Background";
@@ -154,7 +155,6 @@ public class StationStock : MonoBehaviour
 
         // set data
         _sold = false;
-        _interactable.Action1Event += Purchase;
 
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;
@@ -174,7 +174,6 @@ public class StationStock : MonoBehaviour
 
         // set data
         _sold = false;
-        _interactable.Action1Event += Purchase;
 
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;

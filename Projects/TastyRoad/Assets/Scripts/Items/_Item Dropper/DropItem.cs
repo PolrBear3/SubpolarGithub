@@ -61,22 +61,40 @@ public class DropItem : MonoBehaviour, IInteractable
     {
         if (_itemData == null) return;
 
+        VehicleMenu_Controller menu = _main.currentVehicle.menu;
+        ItemSlots_Controller slotsController = menu.slotsController;
+
         Sprite launchSprite;
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // food
         if (_itemData.currentFood != null)
         {
-            FoodMenu_Controller foodMenu = _main.currentVehicle.menu.foodMenu;
-            foodMenu.Add_FoodItem(_itemData.currentFood, _itemData.currentAmount);
+            FoodMenu_Controller foodMenu = menu.foodMenu;
 
+            // food menu empty slots available check
+            if (slotsController.Empty_SlotData(foodMenu.currentDatas) == null)
+            {
+                dialog.Update_Dialog(0);
+                return;
+            }
+
+            foodMenu.Add_FoodItem(_itemData.currentFood, _itemData.currentAmount);
             launchSprite = _itemData.currentFood.sprite;
         }
         // station
         else
         {
-            StationMenu_Controller stationMenu = _main.currentVehicle.menu.stationMenu;
-            stationMenu.Add_StationItem(_itemData.currentStation, _itemData.currentAmount);
+            StationMenu_Controller stationMenu = menu.stationMenu;
 
+            // station menu empty slots available check
+            if (slotsController.Empty_SlotData(stationMenu.currentDatas) == null)
+            {
+                dialog.Update_Dialog(1);
+                return;
+            }
+
+            stationMenu.Add_StationItem(_itemData.currentStation, _itemData.currentAmount);
             launchSprite = _itemData.currentStation.sprite;
         }
 

@@ -14,7 +14,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private Transform[] _boxStackPoints;
     [SerializeField] private StationStock[] _stationStocks;
 
-    [SerializeField] [Range(0, 5)] private int _duplicateAmount;
+    [SerializeField][Range(0, 5)] private int _duplicateAmount;
 
     [Header("")]
     [SerializeField] private StationStock _mergeStationStock;
@@ -24,7 +24,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private SpriteRenderer _carryBox;
 
 
-    private List<Station_ScrObj> _unlockedStations = new(); 
+    private List<Station_ScrObj> _unlockedStations = new();
 
     private Coroutine _restockCoroutine;
 
@@ -163,7 +163,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold == true) continue; 
+            if (_stationStocks[i].sold == true) continue;
             if (_stationStocks[i].currentStation != checkStation) continue;
             checkCount++;
         }
@@ -285,7 +285,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        List<ItemSlot_Data> bookmarkedDatas = slotsController.BookMarked_Datas(menu.currentDatas);
+        List<ItemSlot_Data> bookmarkedDatas = slotsController.BookMarked_Datas(menu.currentDatas, false);
 
         // check if there are more than 2 bookmarked stations
         if (bookmarkedDatas.Count < 2)
@@ -308,6 +308,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         //
         CarryBox_SpriteToggle(true);
+        _npcController.interactable.LockInteract(true);
 
         // move to _mergeStationStock
         move.Assign_TargetPosition(_mergeStationStock.transform.position);
@@ -325,6 +326,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         //
         CarryBox_SpriteToggle(false);
+        _npcController.interactable.LockInteract(false);
 
         // return to free roam
         move.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -343,7 +345,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        List<ItemSlot_Data> bookMarkedDatas = slotsController.BookMarked_Datas(menu.currentDatas);
+        List<ItemSlot_Data> bookMarkedDatas = slotsController.BookMarked_Datas(menu.currentDatas, true);
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 

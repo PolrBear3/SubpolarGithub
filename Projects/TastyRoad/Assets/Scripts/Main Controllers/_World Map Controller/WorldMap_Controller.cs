@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 {
-    [SerializeField] private PlayerInput _input;
+    [SerializeField] private PlayerInput _playerInput;
 
     [Header("")]
     [SerializeField] private Main_Controller _mainController;
@@ -32,9 +32,19 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private bool _isNewLocation;
 
 
+    private bool _onHold;
+    private float _pressStartTime;
+
+
     // UnityEngine
     private void Start()
     {
+        _playerInput.actions["Select"].started += ctx => OnPressStart();
+        _playerInput.actions["Select"].canceled += ctx => OnPressEnd();
+
+        _playerInput.enabled = false;
+
+
         if (ES3.KeyExists("Main_Controller/_currentLocationData"))
         {
             // set previous saved location
@@ -67,7 +77,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     // InputSystem
     private void OnCursorControl(InputValue value)
     {
-        if (_holdTimer.onHold) return;
+        if (_onHold) return;
 
         Vector2 input = value.Get<Vector2>();
         int xInput = (int)input.x;
@@ -76,26 +86,44 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         UpdateTiles_Animation();
     }
 
-    private void OnSelect()
-    {
-        _cursorImage.color = Color.white;
-        _holdTimer.Stop_ClockSpriteRun();
-    }
 
-    private void OnSelectDown()
+    private void OnPressStart()
     {
-        _cursorImage.color = Color.clear;
+        _pressStartTime = Time.time;  // Record the time when the button is pressed
+        _onHold = true;
+
+        // Start the clock timer for visual feedback
         _holdTimer.Run_ClockSprite();
+        _cursorImage.color = Color.clear;
     }
 
-    private void OnHoldSelect()
+    private void OnPressEnd()
     {
+        float pressDuration = Time.time - _pressStartTime;
+        float holdTime = 1;
+
+        // Stop the clock timer when the button is released
+        _holdTimer.Stop_ClockSpriteRun();
+        _cursorImage.color = Color.white;
+
+        if (pressDuration >= holdTime)
+        {
+            HoldSelect();
+        }
+
+        _onHold = false;
+    }
+
+    private void HoldSelect()
+    {
+        _onHold = false;
+
         Select_CursorTile();
     }
 
     private void OnExit()
     {
-        if (_holdTimer.onHold) return;
+        if (_onHold) return;
 
         Map_Toggle(false);
     }
@@ -121,7 +149,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Main_Controller.gamePaused = toggleOn;
 
         _worldPanel.SetActive(toggleOn);
-        _input.enabled = toggleOn;
+        _playerInput.enabled = toggleOn;
 
         if (toggleOn)
         {
@@ -183,7 +211,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Select_CursorTile_Coroutine()
     {
-        _input.enabled = false;
+        _playerInput.enabled = false;
 
         // transition curtain animation
         _mainController.transitionCanvas.Set_LoadIcon(_loadIconSprite);

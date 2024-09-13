@@ -19,7 +19,7 @@ public class CollectCard : MonoBehaviour
     [Header("")]
     [SerializeField] private Station_ScrObj[] _bluePrintStations;
 
-    public delegate void Event();
+    public delegate bool Event();
     public List<Event> _allInteractions = new();
 
     private Event _setInteraction;
@@ -64,20 +64,31 @@ public class CollectCard : MonoBehaviour
 
     private void Invoke_Interaction()
     {
-        _interactable.LockInteract(true);
+        if (_setInteraction?.Invoke() == false) return;
 
+        _interactable.LockInteract(true);
         _launcher.Parabola_CoinLaunch(_launchSprite, _interactable.detection.player.transform.position);
-        _setInteraction?.Invoke();
 
         Destroy(gameObject, 0.1f);
     }
 
 
     // Event Functions
-    private void FoodIngredient_toArchive()
+    private bool FoodIngredient_toArchive()
     {
         Food_ScrObj randFood = _interactable.mainController.dataController.CookedFood();
         ArchiveMenu_Controller menu = _interactable.mainController.currentVehicle.menu.archiveMenu;
+
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        // available slots check
+        if (menu.controller.slotsController.Empty_SlotData(menu.currentDatas) == null)
+        {
+            // dialog
+            dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[2].info));
+
+            return false;
+        }
 
         if (menu.Food_Archived(randFood) == false)
         {
@@ -89,23 +100,34 @@ public class CollectCard : MonoBehaviour
         }
 
         // dialog
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[0].info));
+
+        return true;
     }
 
-    private void StationBluePrint_toArchive()
+    private bool StationBluePrint_toArchive()
     {
         Station_ScrObj randStation = _bluePrintStations[Random.Range(0, _bluePrintStations.Length)];
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
 
-        // slots full check //
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        // available slots check
+        if (menu.controller.slotsController.Empty_SlotData(menu.currentDatas) == null)
+        {
+            // dialog
+            dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[3].info));
+
+            return false;
+        }
 
         // add station blueprint
         menu.Add_StationItem(randStation, 1).isLocked = true;
 
         // dialog
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[1].info));
+
+        return true;
     }
 
 

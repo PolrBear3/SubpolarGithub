@@ -73,6 +73,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public event Menu_Event OnSelect_Input;
     public event Menu_Event OnHoldSelect_Input;
 
+    private bool _onHold;
+    private float _pressStartTime;
+
     public event Menu_Event OnOption1_Input;
     public event Menu_Event OnOption2_Input;
 
@@ -87,6 +90,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
+        _playerInput.actions["Select"].started += ctx => OnPressStart();
+        _playerInput.actions["Select"].canceled += ctx => OnPressEnd();
+
         VehicleMenu_Toggle(false);
     }
 
@@ -113,17 +119,25 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
+    // IVehicleMenu
+    private bool MenuInteraction_Active()
+    {
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return false;
+        if (currentMenu.MenuInteraction_Active()) return true;
+        return false;
+    }
+
+
     // InputSystem
     private void OnCursorControl(InputValue value)
     {
-        if (_slotsController.cursor.holdTimer.onHold) return;
+        if (_onHold) return;
 
         Vector2 input = value.Get<Vector2>();
 
         OnCursorControl_Input?.Invoke(input.x);
 
-        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
-        if (currentMenu.MenuInteraction_Active() == true) return;
+        if (MenuInteraction_Active()) return;
 
         int prevSlotNum = (int)_slotsController.cursor.currentSlot.gridNum.x;
 
@@ -145,47 +159,69 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         InfoBox_FlipUpdate(prevSlotNum);
     }
 
-    private void OnSelect()
-    {
-        ItemSlot_Cursor cursor = _slotsController.cursor;
-        UI_ClockTimer timer = cursor.holdTimer;
 
-        if (timer.holdFinished)
+    private void OnPressStart()
+    {
+        UI_ClockTimer timer = _slotsController.cursor.holdTimer;
+
+        _pressStartTime = Time.time;  // Record the time when the button is pressed
+        _onHold = true;
+
+        // Start the clock timer for visual feedback
+        timer.Run_ClockSprite();
+    }
+
+    private void OnPressEnd()
+    {
+        UI_ClockTimer timer = _slotsController.cursor.holdTimer;
+
+        float pressDuration = Time.time - _pressStartTime;
+        float holdTime = 1;
+
+        // Stop the clock timer when the button is released
+        timer.Stop_ClockSpriteRun();
+
+        if (pressDuration >= holdTime)
         {
-            timer.Stop_ClockSpriteRun();
-            return;
+            HoldSelect();
+        }
+        else
+        {
+            Select();
         }
 
-        timer.Stop_ClockSpriteRun();
-        if (timer.onHold) return;
+        _onHold = false;
+    }
 
+    private void Select()
+    {
         OnSelect_Input?.Invoke();
+
+        if (MenuInteraction_Active()) return;
 
         _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
         infoBox.Update_RectLayout();
     }
 
-    private void OnSelectDown()
-    {
-        _slotsController.cursor.holdTimer.Run_ClockSprite();
-    }
-
-    private void OnHoldSelect()
+    private void HoldSelect()
     {
         OnHoldSelect_Input?.Invoke();
 
         _infoBox.gameObject.SetActive(false);
     }
 
+
     private void OnOption1()
     {
-        ItemSlot_Cursor cursor = _slotsController.cursor;
+        if (_onHold) return;
 
-        if (cursor.holdTimer.onHold) return;
+        ItemSlot_Cursor cursor = _slotsController.cursor;
 
         if (cursor.Current_Data().hasItem)
         {
             OnOption1_Input?.Invoke();
+
+            if (MenuInteraction_Active()) return;
 
             _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
             infoBox.Update_RectLayout();
@@ -193,8 +229,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
-        if (currentMenu.MenuInteraction_Active() == true) return;
+        if (MenuInteraction_Active()) return;
 
         _menus[_currentMenuNum].SetActive(false);
         Menu_Navigate(false);
@@ -210,13 +245,15 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnOption2()
     {
-        ItemSlot_Cursor cursor = _slotsController.cursor;
+        if (_onHold) return;
 
-        if (cursor.holdTimer.onHold) return;
+        ItemSlot_Cursor cursor = _slotsController.cursor;
 
         if (cursor.Current_Data().hasItem)
         {
             OnOption2_Input?.Invoke();
+
+            if (MenuInteraction_Active()) return;
 
             _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
             infoBox.Update_RectLayout();
@@ -224,8 +261,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
-        if (currentMenu.MenuInteraction_Active() == true) return;
+        if (MenuInteraction_Active()) return;
 
         _menus[_currentMenuNum].SetActive(false);
         Menu_Navigate(true);
@@ -241,7 +277,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void OnExit()
     {
-        if (_slotsController.cursor.holdTimer.onHold == true) return;
+        if (_onHold) return;
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
 

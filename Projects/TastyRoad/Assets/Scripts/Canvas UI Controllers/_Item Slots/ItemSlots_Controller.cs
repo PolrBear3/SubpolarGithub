@@ -199,7 +199,7 @@ public class ItemSlots_Controller : MonoBehaviour
         return null;
     }
 
-    public List<ItemSlot_Data> BookMarked_Datas(Dictionary<int, List<ItemSlot_Data>> datas)
+    public List<ItemSlot_Data> BookMarked_Datas(Dictionary<int, List<ItemSlot_Data>> datas, bool isLocked)
     {
         List<ItemSlot_Data> bookmarkedDatas = new();
 
@@ -209,6 +209,7 @@ public class ItemSlots_Controller : MonoBehaviour
             {
                 if (datas[i][j].hasItem == false) continue;
                 if (datas[i][j].bookMarked == false) continue;
+                if (datas[i][j].isLocked != isLocked) continue;
 
                 bookmarkedDatas.Add(datas[i][j]);
             }
@@ -260,7 +261,7 @@ public class ItemSlots_Controller : MonoBehaviour
             {
                 if (datas[i][j].hasItem == false) continue;
                 if (targetFood != datas[i][j].currentFood) continue;
-                foodCount++;
+                foodCount += datas[i][j].currentAmount;
             }
         }
 

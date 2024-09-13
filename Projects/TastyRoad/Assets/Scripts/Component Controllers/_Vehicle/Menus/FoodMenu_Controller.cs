@@ -111,26 +111,28 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         {
             for (int j = 0; j < _currentDatas[i].Count; j++)
             {
+                // Skip if slot has a different item or is full
                 if (currentDatas[i][j].hasItem == true && currentDatas[i][j].currentFood != food) continue;
                 if (currentDatas[i][j].currentAmount >= slotCapacity) continue;
 
+                // Calculate the total amount that would be in the slot
                 int calculatedAmount = currentDatas[i][j].currentAmount + amount;
                 int leftOver = calculatedAmount - slotCapacity;
 
-                currentDatas[i][j] = new(food, calculatedAmount);
+                // If no leftover, just update the slot and return
+                if (leftOver <= 0)
+                {
+                    currentDatas[i][j] = new ItemSlot_Data(food, calculatedAmount);
+                    return 0;
+                }
 
-                // check if there is leftover
-                if (leftOver <= 0) return 0;
-                currentDatas[i][j].currentAmount = slotCapacity;
-
-                // no slots available
-                if (i == currentDatas.Count - 1) return leftOver;
-
-                // add to next available slot
-                return Add_FoodItem(food, leftOver);
+                // If leftover, fill the current slot to capacity
+                currentDatas[i][j] = new ItemSlot_Data(food, slotCapacity);
+                amount = leftOver;
             }
         }
 
+        // No slots left, return the remaining amount that couldn't be added
         return amount;
     }
 
@@ -144,7 +146,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             if (currentDatas[i].hasItem == false) continue;
             if (currentDatas[i].currentFood != food) continue;
 
-            if (currentDatas[i].currentAmount <= removeAmount)
+            if (currentDatas[i].currentAmount < removeAmount)
             {
                 removeAmount -= currentDatas[i].currentAmount;
                 currentDatas[i] = new();
@@ -279,7 +281,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data cursorData = new(cursor.Current_Data());
         cursor.Empty_Item();
 
+        ItemSlots_Controller slotsController = _controller.slotsController;
+
+        _currentDatas[_currentPageNum] = slotsController.CurrentSlots_toDatas();
         Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
+
+        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.SlotsAssign_Update();
     }
 
 
@@ -326,18 +334,15 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        // cursor max drag amount
-        int maxCapacity = slotsController.singleSlotCapacity;
-        if (cursor.Current_Data().currentAmount >= maxCapacity) return;
-
         currentSlot.Toggle_BookMark(false);
 
         // same food combine drag
         if (cursor.Current_Data().currentFood == currentSlot.data.currentFood)
         {
+            int maxCapacity = slotsController.singleSlotCapacity;
             int calculatedAmount = cursor.Current_Data().currentAmount + currentSlot.data.currentAmount;
 
-            if (calculatedAmount > maxCapacity)
+            if (calculatedAmount >= maxCapacity)
             {
                 cursor.Assign_Amount(maxCapacity);
                 currentSlot.Assign_Amount(calculatedAmount - maxCapacity);
@@ -425,7 +430,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (currentCursorData.hasItem == false) return;
 
         // if there are enough space to spawn food box
-        if (Available_ExportPositions().Count <= 0) return;
+        if (Available_ExportPositions().Count <= 0)
+        {
+            // dialog //
+
+            Drag_Cancel();
+            return;
+        }
 
         // get vehicle 
         Vehicle_Controller vehicle = _controller.vehicleController;

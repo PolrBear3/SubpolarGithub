@@ -213,13 +213,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         InformationBox info = _controller.infoBox;
 
-        // Lock Status
-        string lockStatus = null;
-        if (cursorData.isLocked)
-        {
-            lockStatus = "Export currently locked (station blueprint)\n\n";
-        }
-
         // Retrieve Status
         string retrieveStatus = "Hold <sprite=2> on empty to retrieve\n\n";
 
@@ -231,7 +224,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         // Hold Key
-        string hold = "Drop";
+        string hold = "Remove";
         if (cursorData.isLocked == false)
         {
             hold = "Export";
@@ -239,7 +232,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // Set update
         string controlInfo = info.UIControl_Template(action1, action1, hold);
-        info.Update_InfoText(lockStatus + retrieveStatus + controlInfo);
+        info.Update_InfoText(retrieveStatus + controlInfo);
     }
 
     private void CurrentSlots_PageUpdate()
@@ -380,7 +373,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (cursor.Current_Data().isLocked == true)
         {
-            Drag_Cancel();
+            cursor.Empty_Item();
             return;
         }
 

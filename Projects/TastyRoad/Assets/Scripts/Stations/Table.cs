@@ -113,9 +113,12 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.Food_Icon().Show_Icon();
         _stationController.Food_Icon().Show_Condition();
 
-        // unlocks
+        // unlock if cooked food
         ArchiveMenu_Controller menu = _stationController.mainController.currentVehicle.menu.archiveMenu;
-        menu.controller.slotsController.Foods_ToggleLock(menu.currentDatas, cookedFood, false);
+
+        menu.Archive_Food(cookedFood);
+        menu.Unlock_FoodIngredient(cookedFood);
+        menu.controller.slotsController.Foods_ToggleLock(menu.currentDatas, cookedFood, data.Is_RawFood(cookedFood));
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_merge", transform.position);

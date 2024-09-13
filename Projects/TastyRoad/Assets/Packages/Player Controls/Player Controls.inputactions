@@ -264,30 +264,12 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SelectDown",
-                    "type": "Button",
-                    "id": "7b16b699-0e53-463e-9830-f87ef51ace71",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "HoldSelect",
-                    "type": "Button",
-                    "id": "c5583446-0dd0-4fa8-8c02-019633f14a06",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold(duration=1)",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Select",
                     "type": "Button",
                     "id": "f964ffd7-7696-4a67-8d2e-e88782e79151",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=1)",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -515,28 +497,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Option1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "eb944a9c-663a-47a1-9ea9-794af8351064",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SelectDown",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b3d526fc-d84b-4a6b-91f0-f9f0983381ae",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "HoldSelect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
