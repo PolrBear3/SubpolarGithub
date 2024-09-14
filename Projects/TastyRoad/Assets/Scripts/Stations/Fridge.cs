@@ -29,7 +29,7 @@ public class Fridge : Stack_Table, IInteractable
         }
         else
         {
-            Basic_SwapFood();
+            Swap_Food();
         }
     }
 
