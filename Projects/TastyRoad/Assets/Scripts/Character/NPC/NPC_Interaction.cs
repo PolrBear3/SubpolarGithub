@@ -91,7 +91,7 @@ public class NPC_Interaction : MonoBehaviour
         // item drop
         if (Main_Controller.orderOpen == false || _controller.foodIcon.hasFood == false)
         {
-            Drop_Item();
+            Exchange_Item();
             return;
         }
 
@@ -492,14 +492,12 @@ public class NPC_Interaction : MonoBehaviour
 
 
     // Drop Control
-    private bool Drop_Available()
+    private bool Exchange_Available()
     {
-
-
         return true;
     }
 
-    private void Drop_Item()
+    private void Exchange_Item()
     {
         // check if item drop activated
         if (_controller.itemDropper.enabled == false) return;
@@ -513,7 +511,7 @@ public class NPC_Interaction : MonoBehaviour
         // disable item dropper
         _controller.itemDropper.enabled = false;
 
-        if (Drop_Available() == false) return;
+        if (Exchange_Available() == false) return;
 
         playerFoodIcon.Set_CurrentData(null);
         playerFoodIcon.Show_Icon();
