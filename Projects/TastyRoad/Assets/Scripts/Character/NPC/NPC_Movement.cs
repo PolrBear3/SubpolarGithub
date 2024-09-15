@@ -29,8 +29,8 @@ public class NPC_Movement : MonoBehaviour
     [SerializeField] private Vector2 _intervalTimeRange;
     public Vector2 intervalTimeRange => _intervalTimeRange;
 
-    [SerializeField] private int _pathFindCount;
-    public int pathFindCount => _pathFindCount;
+    [SerializeField][Range(0, 100)] private int _searchAttempts;
+    public int searchAttempts => _searchAttempts;
 
 
     public delegate void Event();
@@ -74,29 +74,6 @@ public class NPC_Movement : MonoBehaviour
         else return false;
     }
 
-    /// <returns>
-    /// true if there are no stations on straight direction to _targetPosition, false if it does
-    /// </returns>
-    private bool Is_PathClear()
-    {
-        Vector2 direction = (_targetPosition - (Vector2)transform.position).normalized;
-
-        float distance = Vector2.Distance(transform.position, _targetPosition);
-        int steps = Mathf.CeilToInt(distance / .5f);
-
-        for (int i = 0; i <= steps; i++)
-        {
-            Vector2 point = (Vector2)transform.position + direction * (i * .5f);
-
-            if (_controller.mainController.Is_StationArea(point))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public bool At_TargetPosition()
     {
         float threshold = 0.1f;
@@ -134,6 +111,7 @@ public class NPC_Movement : MonoBehaviour
         _currentRoamArea = assignArea;
     }
 
+
     /// <summary>
     /// Moves to assign position
     /// </summary>
@@ -143,6 +121,31 @@ public class NPC_Movement : MonoBehaviour
         _controller.basicAnim.Flip_Sprite(Move_Direction());
 
         TargetPosition_UpdateEvent?.Invoke();
+    }
+
+    /// <summary>
+    /// Attempts to find path cleared position
+    /// </summary>
+    public void Assign_TargetPosition(SpriteRenderer searchArea)
+    {
+        int attemptCount = _searchAttempts;
+        Vector2 targetPosition;
+
+        do
+        {
+            targetPosition = Main_Controller.Random_AreaPoint(searchArea);
+            bool stationPlaced = _controller.mainController.Is_StationArea(targetPosition);
+
+            if (stationPlaced == false)
+            {
+                Assign_TargetPosition(targetPosition);
+                return;
+            }
+            attemptCount--;
+        }
+        while (attemptCount > 0);
+
+        Leave(Random_IntervalTime());
     }
 
     /// <summary>
@@ -164,6 +167,7 @@ public class NPC_Movement : MonoBehaviour
         Free_Roam(roamReturnArea, roamReturnTime);
     }
 
+
     /// <summary>
     /// Updates and moves to a random target position inside roam area on every interval time
     /// </summary>
@@ -182,16 +186,8 @@ public class NPC_Movement : MonoBehaviour
     private IEnumerator Free_Roam_Coroutine(SpriteRenderer roamArea, float startDelayTime)
     {
         yield return new WaitForSeconds(startDelayTime);
-
-        // update new random position
-        int currentFindCount = _pathFindCount;
-
-        do
-        {
-            Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
-            currentFindCount--;
-        }
-        while (Is_PathClear() == false && currentFindCount > 1);
+        // Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+        Assign_TargetPosition(roamArea);
 
         // repeat until free roam deactivates
         while (_roamActive == true)
@@ -203,17 +199,10 @@ public class NPC_Movement : MonoBehaviour
             }
 
             float randIntervalTime = Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
+
             yield return new WaitForSeconds(randIntervalTime);
-
-            // update new random position
-            currentFindCount = _pathFindCount;
-
-            do
-            {
-                Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
-                currentFindCount--;
-            }
-            while (Is_PathClear() == false && currentFindCount > 1);
+            // Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+            Assign_TargetPosition(roamArea);
         }
     }
 
@@ -233,6 +222,7 @@ public class NPC_Movement : MonoBehaviour
         _isLeaving = true;
         _moveCoroutine = StartCoroutine(Leave_Coroutine(Random.Range(0, 2), startDelayTime));
     }
+
     /// <summary>
     /// 0 for left, 1 for right
     /// </summary>

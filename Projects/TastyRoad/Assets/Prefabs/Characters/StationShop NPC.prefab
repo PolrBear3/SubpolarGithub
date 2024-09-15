@@ -275,6 +275,7 @@ MonoBehaviour:
   _foodIcon: {fileID: 0}
   _interactable: {fileID: 494314912932873177}
   _itemLauncher: {fileID: 0}
+  _itemDropper: {fileID: 0}
   _timer: {fileID: 0}
   _movement: {fileID: 2978574373251596411}
   _interaction: {fileID: 0}
@@ -293,7 +294,7 @@ MonoBehaviour:
   _controller: {fileID: 9094981842974887859}
   _moveSpeed: 5
   _intervalTimeRange: {x: 5, y: 10}
-  _pathFindCount: 10
+  _searchAttempts: 50
 --- !u!114 &494314912932873177
 MonoBehaviour:
   m_ObjectHideFlags: 0
