@@ -27,9 +27,6 @@ public class Station_Controller : MonoBehaviour
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
 
-    [Header("Start Setting for station area")]
-    [SerializeField] private bool _roamRestrictedArea;
-
     private bool _isRoamArea;
     public bool isRoamArea => _isRoamArea;
 
@@ -52,11 +49,6 @@ public class Station_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
         if (gameObject.TryGetComponent(out Station_Movement movement)) { _movement = movement; }
         if (gameObject.TryGetComponent(out Animator stationAnimator)) { _stationAnimator = stationAnimator; }
-    }
-
-    private void Start()
-    {
-        RoamArea_Toggle(_roamRestrictedArea);
     }
 
 

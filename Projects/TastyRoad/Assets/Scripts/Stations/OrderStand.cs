@@ -16,7 +16,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     [SerializeField] private Sprite _openStand;
     [SerializeField] private Sprite _closedStand;
 
-    [Header ("Action Bubble Sprites")]
+    [Header("Action Bubble Sprites")]
     [SerializeField] private Sprite _lineOpenSprite;
     [SerializeField] private Sprite _lineClosedSprite;
 
@@ -112,7 +112,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             Main_Controller.OrderOpen_Toggle(true);
             _orderOpen = true;
 
-            _stationController.RoamArea_Toggle(false);
+            _stationController.RoamArea_Toggle(true);
 
             GlobalTime_Controller.TimeTik_Update += TimeTik_Attract;
             dialog.Update_Dialog(0);
@@ -130,7 +130,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             Main_Controller.OrderOpen_Toggle(false);
             _orderOpen = false;
 
-            _stationController.RoamArea_Toggle(true);
+            _stationController.RoamArea_Toggle(false);
 
             // subscription update
             GlobalTime_Controller.TimeTik_Update -= TimeTik_Attract;
@@ -232,9 +232,9 @@ public class OrderStand : MonoBehaviour, IInteractable
     }
     private IEnumerator Attract_Coroutine()
     {
-        while(Main_Controller.orderOpen == true)
+        while (Main_Controller.orderOpen == true)
         {
-            while (_stationController.mainController.bookmarkedFoods.Count <= 0) 
+            while (_stationController.mainController.bookmarkedFoods.Count <= 0)
             {
                 yield return null;
             }

@@ -7,6 +7,8 @@ public class Player_Interaction : MonoBehaviour
 {
     private Player_Controller _controller;
 
+    private float _pressStartTime;
+
 
     // UnityEngine
     private void Awake()
@@ -14,9 +16,35 @@ public class Player_Interaction : MonoBehaviour
         if (gameObject.TryGetComponent(out Player_Controller controller)) { _controller = controller; }
     }
 
+    void Start()
+    {
+        _controller.Player_Input().actions["Interact"].started += ctx => OnPressStart();
+        _controller.Player_Input().actions["Interact"].canceled += ctx => OnPressEnd();
+    }
+
 
     // Player Input
-    private void OnInteract()
+    private void OnPressStart()
+    {
+        _pressStartTime = Time.time;  // Record the time when the button is pressed
+    }
+
+    private void OnPressEnd()
+    {
+        float pressDuration = Time.time - _pressStartTime;
+        float holdTime = 1;
+
+        if (pressDuration >= holdTime)
+        {
+            HoldInteract();
+            return;
+        }
+
+        Interact();
+    }
+
+
+    private void Interact()
     {
         if (Main_Controller.gamePaused) return;
 
@@ -35,14 +63,14 @@ public class Player_Interaction : MonoBehaviour
         interactable.Interact();
     }
 
-    private void OnHoldInteract()
+    private void HoldInteract()
     {
         Drop_CurrentFood();
     }
 
 
     // Player Interact Actions
-    private void Drop_CurrentFood()
+    public void Drop_CurrentFood()
     {
         FoodData_Controller foodIcon = _controller.foodIcon;
 

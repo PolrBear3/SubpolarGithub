@@ -66,6 +66,7 @@ public class NPC_Interaction : MonoBehaviour
     {
         Interact_FacePlayer();
 
+        // coin collect
         if (FoodOrder_Served())
         {
             Collect_Coin();
@@ -87,12 +88,14 @@ public class NPC_Interaction : MonoBehaviour
             return;
         }
 
+        // item drop
         if (Main_Controller.orderOpen == false || _controller.foodIcon.hasFood == false)
         {
-            _controller.itemDropper.Drop_Random();
+            Drop_Item();
             return;
         }
 
+        // show current food order
         _controller.timer.Toggle_Transparency(_controller.interactable.bubble.bubbleOn);
 
         _controller.foodIcon.Show_Condition();
@@ -431,7 +434,6 @@ public class NPC_Interaction : MonoBehaviour
         _goldCoinSR.color = Color.white;
     }
 
-
     // Food Served 
     private int Calculated_FoodScore()
     {
@@ -486,5 +488,37 @@ public class NPC_Interaction : MonoBehaviour
 
         // hide coin sprite
         _goldCoinSR.color = Color.clear;
+    }
+
+
+    // Drop Control
+    private bool Drop_Available()
+    {
+
+
+        return true;
+    }
+
+    private void Drop_Item()
+    {
+        // check if item drop activated
+        if (_controller.itemDropper.enabled == false) return;
+
+        Player_Controller player = _controller.interactable.detection.player;
+        FoodData_Controller playerFoodIcon = player.foodIcon;
+
+        if (playerFoodIcon.hasFood == false) return;
+        Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
+
+        // disable item dropper
+        _controller.itemDropper.enabled = false;
+
+        if (Drop_Available() == false) return;
+
+        playerFoodIcon.Set_CurrentData(null);
+        playerFoodIcon.Show_Icon();
+        playerFoodIcon.Show_Condition();
+
+        _controller.itemDropper.Drop_Random();
     }
 }

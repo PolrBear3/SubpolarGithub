@@ -447,11 +447,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         for (int i = 0; i < _currentStations.Count; i++)
         {
-            // check if station is retrievable
-            if (_currentStations[i].movement == null) continue;
-
-            // check if station area is toggled on
-            if (_currentStations[i].isRoamArea == true) continue;
+            if (_currentStations[i].isRoamArea) continue;
 
             // get station sprite render bound
             Bounds stationArea = _currentStations[i].spriteRenderer.bounds;
