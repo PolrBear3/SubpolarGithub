@@ -18,14 +18,14 @@ public class NPC_Interaction : MonoBehaviour
     [Header("")]
     [SerializeField] private SpriteRenderer _goldCoinSR;
 
-
     [Header("")]
     [SerializeField] private float _animTransitionTime;
     public float animTransitionTime => _animTransitionTime;
 
-    [SerializeField] private int _defaultTimeLimit;
-
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _defaultTimeLimit;
     [SerializeField][Range(0, 100)] private float _itemDropRate;
+    [SerializeField][Range(0, 100)] private int _generosityMultiplier;
 
 
     private FoodData _servedFoodData;
@@ -183,7 +183,7 @@ public class NPC_Interaction : MonoBehaviour
         Clock_Timer timer = _controller.timer;
 
         // set the time limit according to npc inpatient level
-        int extraTime = (int)_controller.characterData.inPatienceLevel * 10;
+        int extraTime = (int)_controller.characterData.patienceLevel;
         timer.Set_Time(_defaultTimeLimit + extraTime);
 
         // lock interaction until npc reaches roam area
@@ -237,8 +237,7 @@ public class NPC_Interaction : MonoBehaviour
         Clear_Data();
 
         // hunger level to 0
-        Character_Data data = _controller.characterData;
-        data.Update_Hunger(-data.hungerLevel);
+        Update_ServedData();
 
         // return roam area to current location
         SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
@@ -346,15 +345,15 @@ public class NPC_Interaction : MonoBehaviour
 
         // update data
         _servedFoodData = new FoodData(playerFoodIcon.currentData);
-        _controller.characterData.Update_Hunger(-_controller.characterData.hungerLevel);
-
-        // save food score
-        _foodScore = Calculated_FoodScore();
+        Update_ServedData();
 
         // clear player food data
         playerFoodIcon.Set_CurrentData(null);
         playerFoodIcon.Show_Icon();
         playerFoodIcon.Show_Condition();
+
+        // save food score
+        _foodScore = Calculated_FoodScore();
 
         // food eat animation
         Eat_Animation();
@@ -376,7 +375,7 @@ public class NPC_Interaction : MonoBehaviour
 
         // update data
         _servedFoodData = serveFoodData;
-        _controller.characterData.Update_Hunger(-_controller.characterData.hungerLevel);
+        Update_ServedData();
 
         // save food score
         _foodScore = Calculated_FoodScore();
@@ -461,6 +460,19 @@ public class NPC_Interaction : MonoBehaviour
         return defaultScore + timeBlock + stateMatch + bookMarkCount;
     }
 
+
+    public void Update_ServedData()
+    {
+        Character_Data data = _controller.characterData;
+
+        data.Update_Hunger(-data.hungerLevel);
+
+        if (_servedFoodData == null) return;
+        FoodData orderFoodData = _controller.foodIcon.currentData;
+
+        int stateMatch = orderFoodData.Conditions_MatchCount(_servedFoodData.conditionDatas) * _generosityMultiplier;
+        data.Update_Generosity(_generosityMultiplier + stateMatch);
+    }
 
     public void Collect_Coin()
     {

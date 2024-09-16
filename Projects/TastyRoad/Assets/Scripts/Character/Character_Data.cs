@@ -9,8 +9,8 @@ public class Character_Data : MonoBehaviour
     public float hungerLevel => _hungerLevel;
 
     // clock speed
-    private float _inPatienceLevel;
-    public float inPatienceLevel => _inPatienceLevel;
+    private float _patienceLevel;
+    public float patienceLevel => _patienceLevel;
 
     // item drop
     private float _generosityLevel;
@@ -32,7 +32,7 @@ public class Character_Data : MonoBehaviour
         int generosityInt = Random.Range(0, 100);
 
         _hungerLevel = hungerInt;
-        _inPatienceLevel = inPatientInt;
+        _patienceLevel = inPatientInt;
         _generosityLevel = generosityInt;
     }
 
@@ -43,9 +43,9 @@ public class Character_Data : MonoBehaviour
         _hungerLevel += updateLevel;
     }
 
-    public void Update_InPatiency(float updateLevel)
+    public void Update_Patiency(float updateLevel)
     {
-        _inPatienceLevel += updateLevel;
+        _patienceLevel += updateLevel;
     }
 
     public void Update_Generosity(float updateLevel)
