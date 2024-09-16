@@ -161,6 +161,18 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public static bool Percentage_Activated(float percentage)
     {
         float comparePercentage = Mathf.Round(Random.Range(0f, 100f)) * 1f;
+        return percentage >= comparePercentage;
+    }
+    /// <returns>
+    /// activates on range (100 - ratePercentage) ~ 100.
+    /// </returns>
+    public static bool Percentage_Activated(float percentage, float ratePercentage)
+    {
+        float comparePercentage = Mathf.Round(Random.Range(100f - ratePercentage, 100f)) * 1f;
+
+        Debug.Log("comparePercentage: " + comparePercentage);
+        Debug.Log("percentage: " + percentage);
+        Debug.Log(percentage >= comparePercentage);
 
         return percentage >= comparePercentage;
     }

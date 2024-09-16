@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemDropper : MonoBehaviour
@@ -17,12 +18,13 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] private Sprite _defaultLaunchSprite;
 
     [Header("")]
-    [SerializeField] [Range(0, 100)] private int _dropCount;
+    [SerializeField][Range(0, 100)] private int _dropCount;
     private int _currentDropCount;
 
     [Header("")]
     [SerializeField] private FoodWeight_Data[] _foodWeights;
-    [SerializeField] [Range(0, 100)] private int _foodAmountRange;
+
+    [SerializeField][Range(0, 100)] private int _dropAmountRange;
 
 
     public delegate void Event();
@@ -50,6 +52,11 @@ public class ItemDropper : MonoBehaviour
     public void Set_DropCount(int setCount)
     {
         _currentDropCount = setCount;
+    }
+
+    public int Random_DropCount()
+    {
+        return Random.Range(1, _dropAmountRange);
     }
 
 
@@ -86,7 +93,7 @@ public class ItemDropper : MonoBehaviour
     }
 
 
-    // Food
+    // Food Drop Control
     public void Drop_AssignedFood(Food_ScrObj dropFood, int amount)
     {
         if (_currentDropCount <= 0) return;
@@ -138,6 +145,52 @@ public class ItemDropper : MonoBehaviour
         return null;
     }
 
+    private Food_ScrObj Weighted_RandomFood(List<FoodWeight_Data> targetFoods)
+    {
+        // get total wieght
+        int totalWeight = 0;
+
+        foreach (var food in targetFoods)
+        {
+            totalWeight += food.weight;
+        }
+
+        // track values
+        int randValue = Random.Range(0, totalWeight);
+        int cumulativeWeight = 0;
+
+        // get random food according to weight
+        for (int i = 0; i < targetFoods.Count; i++)
+        {
+            cumulativeWeight += targetFoods[i].weight;
+
+            if (randValue >= cumulativeWeight) continue;
+
+            return targetFoods[i].foodScrObj;
+        }
+
+        return null;
+    }
+
+    /// <returns>
+    /// random weighted food that is higher price than compareFood. Also excludes compareFood.
+    /// </returns>
+    public Food_ScrObj Weighted_RandomFood(Food_ScrObj compareFood)
+    {
+        List<FoodWeight_Data> targetFoods = new();
+
+        for (int i = 0; i < _foodWeights.Length; i++)
+        {
+            if (compareFood == _foodWeights[i].foodScrObj) continue;
+            if (compareFood.price > _foodWeights[i].foodScrObj.price) continue;
+
+            targetFoods.Add(_foodWeights[i]);
+        }
+
+        return Weighted_RandomFood(targetFoods);
+    }
+
+
     private void FisherYates_FoodShuffle()
     {
         for (int i = _foodWeights.Length - 1; i >= 0; i--)
@@ -151,20 +204,19 @@ public class ItemDropper : MonoBehaviour
     }
 
 
-    public void Drop_RandomFood()
+    // Events
+    private void Drop_RandomFood()
     {
         if (_currentDropCount <= 0) return;
         if (_foodWeights.Length <= 0) return;
 
         _currentDropCount--;
 
-        int randAmount = Random.Range(1, _foodAmountRange);
+        int randAmount = Random.Range(1, _dropAmountRange);
         Drop_AssignedFood(Weighted_RandomFood(), randAmount);
     }
 
-
-    //
-    public void Drop_CollectCard()
+    private void Drop_CollectCard()
     {
         if (_currentDropCount <= 0) return;
         if (_coroutine != null) return;

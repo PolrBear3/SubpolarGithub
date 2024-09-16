@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Character_Data : MonoBehaviour
 {
+    // attract
     private float _hungerLevel;
     public float hungerLevel => _hungerLevel;
 
+    // clock speed
     private float _inPatienceLevel;
     public float inPatienceLevel => _inPatienceLevel;
+
+    // item drop
+    private float _generosityLevel;
+    public float generosityLevel => _generosityLevel;
 
 
     // UnityEngine
@@ -23,9 +29,11 @@ public class Character_Data : MonoBehaviour
     {
         int hungerInt = Random.Range(0, 100);
         int inPatientInt = Random.Range(0, 100);
+        int generosityInt = Random.Range(0, 100);
 
         _hungerLevel = hungerInt;
         _inPatienceLevel = inPatientInt;
+        _generosityLevel = generosityInt;
     }
 
 
@@ -38,5 +46,10 @@ public class Character_Data : MonoBehaviour
     public void Update_InPatiency(float updateLevel)
     {
         _inPatienceLevel += updateLevel;
+    }
+
+    public void Update_Generosity(float updateLevel)
+    {
+        _generosityLevel += updateLevel;
     }
 }

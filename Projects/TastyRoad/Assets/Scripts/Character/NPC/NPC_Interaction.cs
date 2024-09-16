@@ -19,11 +19,13 @@ public class NPC_Interaction : MonoBehaviour
     [SerializeField] private SpriteRenderer _goldCoinSR;
 
 
-    [Header("Adjust Data")]
+    [Header("")]
     [SerializeField] private float _animTransitionTime;
     public float animTransitionTime => _animTransitionTime;
 
     [SerializeField] private int _defaultTimeLimit;
+
+    [SerializeField][Range(0, 100)] private float _itemDropRate;
 
 
     private FoodData _servedFoodData;
@@ -181,7 +183,7 @@ public class NPC_Interaction : MonoBehaviour
         Clock_Timer timer = _controller.timer;
 
         // set the time limit according to npc inpatient level
-        int extraTime = (int)_controller.characterData.inPatienceLevel;
+        int extraTime = (int)_controller.characterData.inPatienceLevel * 10;
         timer.Set_Time(_defaultTimeLimit + extraTime);
 
         // lock interaction until npc reaches roam area
@@ -248,7 +250,7 @@ public class NPC_Interaction : MonoBehaviour
 
     // Checks
     /// <returns>
-    /// NPC will decide whether or not they should get in line for food order
+    /// NPC will decide whether or not they should get in line for food order (hunger level)
     /// </returns>
     public bool Want_FoodOrder()
     {
@@ -491,12 +493,7 @@ public class NPC_Interaction : MonoBehaviour
     }
 
 
-    // Drop Control
-    private bool Exchange_Available()
-    {
-        return true;
-    }
-
+    // Exchange Item
     private void Exchange_Item()
     {
         // check if item drop activated
@@ -508,15 +505,18 @@ public class NPC_Interaction : MonoBehaviour
         if (playerFoodIcon.hasFood == false) return;
         Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
 
-        // disable item dropper
-        _controller.itemDropper.enabled = false;
-
-        if (Exchange_Available() == false) return;
-
+        // remove player current food
         playerFoodIcon.Set_CurrentData(null);
         playerFoodIcon.Show_Icon();
         playerFoodIcon.Show_Condition();
 
-        _controller.itemDropper.Drop_Random();
+        // disable item dropper
+        _controller.itemDropper.enabled = false;
+
+        // check generosity
+        if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _itemDropRate) == false) return;
+
+        ItemDropper dropper = _controller.itemDropper;
+        dropper.Drop_AssignedFood(dropper.Weighted_RandomFood(playerFood), dropper.Random_DropCount());
     }
 }
