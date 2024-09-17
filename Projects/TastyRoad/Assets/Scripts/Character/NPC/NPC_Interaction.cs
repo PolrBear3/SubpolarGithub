@@ -236,7 +236,10 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.Action1Event -= Serve_FoodOrder;
         Clear_Data();
 
-        // hunger level to 0
+        // data update
+        Character_Data data = _controller.characterData;
+        data.Update_Generosity(-data.patienceLevel);
+
         Update_ServedData();
 
         // return roam area to current location

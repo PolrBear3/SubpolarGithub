@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEditor;
 
 public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
@@ -17,6 +19,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Header("")]
     [SerializeField] private Station_ScrObj _foodBox;
     [SerializeField] private Transform[] _exportIndicators;
+
+
+    // Editor
+    [HideInInspector] public Food_ScrObj foodToAdd;
+    [HideInInspector] public int amountToAdd;
 
 
     // UnityEngine
@@ -103,7 +110,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Menu Control
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
-        if (amount <= 0) return 0;
+        if (food == null || amount <= 0) return 0;
 
         int slotCapacity = _controller.slotsController.singleSlotCapacity;
 
@@ -138,6 +145,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Remove_FoodItem(Food_ScrObj food, int amount)
     {
+        if (food == null || amount <= 0) return;
+
         List<ItemSlot_Data> currentDatas = _currentDatas[_currentPageNum];
         int removeAmount = amount;
 
@@ -336,12 +345,22 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         currentSlot.Toggle_BookMark(false);
 
-        // same food combine drag
+        // same food
         if (cursor.Current_Data().currentFood == currentSlot.data.currentFood)
         {
             int maxCapacity = slotsController.singleSlotCapacity;
+
+            // swap if cursor is currently max amount
+            if (cursor.Current_Data().currentAmount >= maxCapacity)
+            {
+                cursor.Assign_Amount(currentSlot.data.currentAmount);
+                currentSlot.Assign_Amount(maxCapacity);
+                return;
+            }
+
             int calculatedAmount = cursor.Current_Data().currentAmount + currentSlot.data.currentAmount;
 
+            // set cursor amount to max if calculated amount is over max
             if (calculatedAmount >= maxCapacity)
             {
                 cursor.Assign_Amount(maxCapacity);
@@ -349,6 +368,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 return;
             }
 
+            // merge amount to cursor
             cursor.Assign_Amount(cursor.Current_Data().currentAmount + currentSlot.data.currentAmount);
             currentSlot.Empty_ItemBox();
             return;
@@ -467,3 +487,49 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 }
+
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(FoodMenu_Controller))]
+public class FoodMenu_Controller_Inspector : Editor
+{
+    private SerializedProperty foodToAddProp;
+    private SerializedProperty amountToAddProp;
+
+    private void OnEnable()
+    {
+        foodToAddProp = serializedObject.FindProperty("foodToAdd");
+        amountToAddProp = serializedObject.FindProperty("amountToAdd");
+    }
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        FoodMenu_Controller menu = (FoodMenu_Controller)target;
+        serializedObject.Update();
+
+        GUILayout.Space(60);
+        GUILayout.BeginHorizontal();
+
+        EditorGUILayout.PropertyField(foodToAddProp, GUIContent.none);
+        Food_ScrObj foodToAdd = (Food_ScrObj)foodToAddProp.objectReferenceValue;
+
+        EditorGUILayout.PropertyField(amountToAddProp, GUIContent.none);
+        int amountToAdd = amountToAddProp.intValue;
+
+        GUILayout.EndHorizontal();
+        serializedObject.ApplyModifiedProperties();
+
+        if (GUILayout.Button("Add Food"))
+        {
+            menu.Add_FoodItem(foodToAdd, amountToAdd);
+        }
+
+        if (GUILayout.Button("Remove Food"))
+        {
+            menu.Remove_FoodItem(foodToAdd, amountToAdd);
+        }
+    }
+}
+#endif

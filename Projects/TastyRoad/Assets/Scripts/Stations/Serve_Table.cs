@@ -41,7 +41,7 @@ public class Serve_Table : Table, IInteractable
     private List<Serve_Table> Other_ServeTables()
     {
         List<Station_Controller> currentStations = stationController.mainController.currentStations;
-        List <Serve_Table> others = new();
+        List<Serve_Table> others = new();
 
         for (int i = 0; i < currentStations.Count; i++)
         {
@@ -164,7 +164,7 @@ public class Serve_Table : Table, IInteractable
         _foodOrderPreview.Show_Icon();
         _foodOrderPreview.Show_Condition();
 
-        LeanTween.alpha(_foodOrderPreview.gameObject, 0.3f, 0f);
+        LeanTween.alpha(_foodOrderPreview.gameObject, 0.5f, 0f);
 
         //
         Check_FoodServe();

@@ -40,16 +40,31 @@ public class Character_Data : MonoBehaviour
     // data update
     public void Update_Hunger(float updateLevel)
     {
+        // float previousLevel = _hungerLevel;
+
         _hungerLevel += updateLevel;
+        Mathf.Clamp(_hungerLevel, 0, 100);
+
+        // Debug.Log("hungerLevel level " + previousLevel + " => " + _hungerLevel);
     }
 
     public void Update_Patiency(float updateLevel)
     {
+        // float previousLevel = _patienceLevel;
+
         _patienceLevel += updateLevel;
+        Mathf.Clamp(_patienceLevel, 0, 100);
+
+        // Debug.Log("patienceLevel level " + previousLevel + " => " + _patienceLevel);
     }
 
     public void Update_Generosity(float updateLevel)
     {
+        // float previousLevel = _generosityLevel;
+
         _generosityLevel += updateLevel;
+        Mathf.Clamp(_generosityLevel, 0, 100);
+
+        // Debug.Log("generosity level " + previousLevel + " => " + _generosityLevel);
     }
 }

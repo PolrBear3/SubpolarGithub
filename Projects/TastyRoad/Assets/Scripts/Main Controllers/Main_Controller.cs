@@ -93,6 +93,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void TestButton1()
     {
         TestButton1Event?.Invoke();
+
+        FoodMenu_Controller menu = _currentVehicle.menu.foodMenu;
+        menu.Add_FoodItem(_dataController.RawFood(15367), 100);
     }
 
     public void TestButton2()
