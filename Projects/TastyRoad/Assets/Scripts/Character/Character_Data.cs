@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class Character_Data : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class Character_Data : MonoBehaviour
         // float previousLevel = _hungerLevel;
 
         _hungerLevel += updateLevel;
-        Mathf.Clamp(_hungerLevel, 0, 100);
+        _hungerLevel = Mathf.Clamp(_hungerLevel, 0, 100);
 
         // Debug.Log("hungerLevel level " + previousLevel + " => " + _hungerLevel);
     }
@@ -53,7 +54,7 @@ public class Character_Data : MonoBehaviour
         // float previousLevel = _patienceLevel;
 
         _patienceLevel += updateLevel;
-        Mathf.Clamp(_patienceLevel, 0, 100);
+        _patienceLevel = Mathf.Clamp(_patienceLevel, 0, 100);
 
         // Debug.Log("patienceLevel level " + previousLevel + " => " + _patienceLevel);
     }
@@ -63,8 +64,31 @@ public class Character_Data : MonoBehaviour
         // float previousLevel = _generosityLevel;
 
         _generosityLevel += updateLevel;
-        Mathf.Clamp(_generosityLevel, 0, 100);
+        _generosityLevel = Mathf.Clamp(_generosityLevel, 0, 100);
 
         // Debug.Log("generosity level " + previousLevel + " => " + _generosityLevel);
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Character_Data))]
+public class Character_Data_Inspector : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        Character_Data data = (Character_Data)target;
+
+        GUILayout.Space(15);
+        GUILayout.BeginHorizontal();
+
+        GUILayout.Label("hunger Level: " + data.hungerLevel);
+        GUILayout.Label("patience Level: " + data.generosityLevel);
+        GUILayout.Label("generosity Level: " + data.generosityLevel);
+
+        GUILayout.EndHorizontal();
+        GUILayout.Space(15);
+    }
+}
+#endif

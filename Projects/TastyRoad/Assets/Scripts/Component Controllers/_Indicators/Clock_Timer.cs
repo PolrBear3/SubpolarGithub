@@ -16,6 +16,7 @@ public class Clock_Timer : MonoBehaviour
 
     private Coroutine _timeCoroutine;
     private Coroutine _timeSpriteCoroutine;
+    private Coroutine _toggleCoroutine;
 
     private bool _timeRunning;
     public bool timeRunning => _timeRunning;
@@ -49,7 +50,13 @@ public class Clock_Timer : MonoBehaviour
 
     public void Toggle_Transparency(bool isTransparent, float delayTime)
     {
-        StartCoroutine(Toggle_Transparency_Coroutine(isTransparent, delayTime));
+        if (_toggleCoroutine != null)
+        {
+            StopCoroutine(_toggleCoroutine);
+            _toggleCoroutine = null;
+        }
+
+        _toggleCoroutine = StartCoroutine(Toggle_Transparency_Coroutine(isTransparent, delayTime));
     }
     private IEnumerator Toggle_Transparency_Coroutine(bool isTransparent, float delayTime)
     {
@@ -73,7 +80,6 @@ public class Clock_Timer : MonoBehaviour
         _timeCoroutine = StartCoroutine(Run_Time_Coroutine());
         _timeSpriteCoroutine = StartCoroutine(TimeSprite_Update_Coroutine());
     }
-
     private IEnumerator Run_Time_Coroutine()
     {
         while (_currentTime > 1)

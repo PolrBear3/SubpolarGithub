@@ -8,6 +8,8 @@ public class Player_Interaction : MonoBehaviour
     private Player_Controller _controller;
 
     private float _pressStartTime;
+    private float _holdTime = 1;
+    private Coroutine _pressDelayCoroutine;
 
 
     // UnityEngine
@@ -26,15 +28,30 @@ public class Player_Interaction : MonoBehaviour
     // Player Input
     private void OnPressStart()
     {
+        _pressDelayCoroutine = StartCoroutine(OnPressStart_Coroutine());
+    }
+    private IEnumerator OnPressStart_Coroutine()
+    {
         _pressStartTime = Time.time;  // Record the time when the button is pressed
+
+        _controller.timer.Set_Time((int)_holdTime);
+        _controller.timer.Run_Time();
+
+        yield return new WaitForSeconds(.2f);
+        _controller.timer.Toggle_Transparency(!_controller.foodIcon.hasFood);
     }
 
     private void OnPressEnd()
     {
-        float pressDuration = Time.time - _pressStartTime;
-        float holdTime = 1;
+        StopCoroutine(_pressDelayCoroutine);
+        _pressDelayCoroutine = null;
 
-        if (pressDuration >= holdTime)
+        float pressDuration = Time.time - _pressStartTime;
+
+        _controller.timer.Stop_Time();
+        _controller.timer.Toggle_Transparency(true);
+
+        if (pressDuration >= _holdTime)
         {
             HoldInteract();
             return;

@@ -18,13 +18,13 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] private Sprite _defaultLaunchSprite;
 
     [Header("")]
+    [SerializeField][Range(0, 100)] private int _dropAmountRange;
+
     [SerializeField][Range(0, 100)] private int _dropCount;
     private int _currentDropCount;
 
     [Header("")]
     [SerializeField] private FoodWeight_Data[] _foodWeights;
-
-    [SerializeField][Range(0, 100)] private int _dropAmountRange;
 
 
     public delegate void Event();
@@ -54,7 +54,7 @@ public class ItemDropper : MonoBehaviour
         _currentDropCount = setCount;
     }
 
-    public int Random_DropCount()
+    public int Random_DropAmount()
     {
         return Random.Range(1, _dropAmountRange);
     }
@@ -216,7 +216,7 @@ public class ItemDropper : MonoBehaviour
         Drop_AssignedFood(Weighted_RandomFood(), randAmount);
     }
 
-    private void Drop_CollectCard()
+    public void Drop_CollectCard()
     {
         if (_currentDropCount <= 0) return;
         if (_coroutine != null) return;

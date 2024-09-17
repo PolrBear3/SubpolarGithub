@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
@@ -18,6 +19,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private Station_Controller _interactStation;
 
     private int _targetNum;
+
+
+    // Editor
+    [HideInInspector] public Station_ScrObj editStation;
 
 
     // UnityEngine
@@ -561,3 +566,47 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation = null;
     }
 }
+
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(StationMenu_Controller))]
+public class StationMenu_Controller_Inspector : Editor
+{
+    //
+    private SerializedProperty editStationProp;
+    private SerializedProperty editAmountProp;
+
+    private void OnEnable()
+    {
+        editStationProp = serializedObject.FindProperty("editStation");
+        editAmountProp = serializedObject.FindProperty("editAmount");
+    }
+
+
+    //
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        StationMenu_Controller menu = (StationMenu_Controller)target;
+        serializedObject.Update();
+
+        GUILayout.Space(60);
+
+        EditorGUILayout.PropertyField(editStationProp, GUIContent.none);
+        Station_ScrObj editStation = (Station_ScrObj)editStationProp.objectReferenceValue;
+
+        serializedObject.ApplyModifiedProperties();
+
+        if (GUILayout.Button("Add Station"))
+        {
+            menu.Add_StationItem(editStation, 1);
+        }
+
+        if (GUILayout.Button("Remove Station"))
+        {
+            menu.Remove_StationItem(editStation, 1);
+        }
+    }
+}
+#endif

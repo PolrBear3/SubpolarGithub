@@ -24,8 +24,9 @@ public class NPC_Interaction : MonoBehaviour
 
     [Header("")]
     [SerializeField][Range(0, 100)] private int _defaultTimeLimit;
-    [SerializeField][Range(0, 100)] private float _itemDropRate;
     [SerializeField][Range(0, 100)] private int _generosityMultiplier;
+    [SerializeField][Range(0, 100)] private float _itemDropRate;
+    [SerializeField][Range(0, 100)] private float _collectCardDropRate;
 
 
     private FoodData _servedFoodData;
@@ -528,10 +529,19 @@ public class NPC_Interaction : MonoBehaviour
         // disable item dropper
         _controller.itemDropper.enabled = false;
 
-        // check generosity
+        // check drop rate
         if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _itemDropRate) == false) return;
 
         ItemDropper dropper = _controller.itemDropper;
-        dropper.Drop_AssignedFood(dropper.Weighted_RandomFood(playerFood), dropper.Random_DropCount());
+
+        // check collect card drop rate
+        if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _collectCardDropRate))
+        {
+            dropper.Drop_CollectCard();
+            return;
+        }
+
+        // drop food
+        dropper.Drop_AssignedFood(dropper.Weighted_RandomFood(playerFood), dropper.Random_DropAmount());
     }
 }
