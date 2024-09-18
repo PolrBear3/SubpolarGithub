@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2074082356524549681}
   - component: {fileID: -4383346783892420963}
+  - component: {fileID: 5732427818065060565}
   m_Layer: 0
   m_Name: MailBox
   m_TagString: Untagged
@@ -72,6 +73,35 @@ MonoBehaviour:
   _roamArea: {fileID: 620701033008239444}
   _locationSetEvents:
   - {fileID: 6233436322218340841}
+--- !u!114 &5732427818065060565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247332783631202756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f1ad0c756ea4b848f72c624571946a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _assetObject: {fileID: 3082183167978614532, guid: 7e96df31a8fa14ca7aab8c968f41fa60, type: 3}
+  _environment: {fileID: 3917753078253197839}
+  _assets:
+  - _spawnAmount: 5
+    _collapseDistance: 0.5
+    _maxVerticalValue: -0.13
+    _minVerticalValue: -0.5
+    _assetSprites:
+    - {fileID: -293933234, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: 2116959546, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: -1270728154, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: 136815711, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: -294755812, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: 2097243009, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: 1682883787, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: -673966147, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
+    - {fileID: -343439244, guid: 8ff3b565398754740b990d384974e0ee, type: 3}
 --- !u!1 &511853549960901787
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,7 +377,7 @@ Transform:
   m_GameObject: {fileID: 8029897241524241976}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.719, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
