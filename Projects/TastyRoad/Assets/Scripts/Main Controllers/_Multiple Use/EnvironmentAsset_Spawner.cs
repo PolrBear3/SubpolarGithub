@@ -20,6 +20,10 @@ public class EnvironmentAsset
     public float minVerticalValue => _minVerticalValue;
 
     [Header("")]
+    [SerializeField] private int _layerOrderNum;
+    public int layerOrderNum => _layerOrderNum;
+
+    [Header("")]
     [SerializeField] private Sprite[] _assetSprites;
     public Sprite[] assetSprites => _assetSprites;
 }
@@ -27,9 +31,9 @@ public class EnvironmentAsset
 public class EnvironmentAsset_Spawner : MonoBehaviour
 {
     [SerializeField] private GameObject _assetObject;
+    [SerializeField] private SpriteRenderer _environmentBoundsSR;
 
     [Header("")]
-    [SerializeField] private SpriteRenderer _environment;
     [SerializeField] private EnvironmentAsset[] _assets;
 
 
@@ -59,7 +63,7 @@ public class EnvironmentAsset_Spawner : MonoBehaviour
     private void Spawn(int listNum)
     {
         EnvironmentAsset targetAsset = _assets[listNum];
-        Bounds envirbounds = _environment.bounds;
+        Bounds envirbounds = _environmentBoundsSR.bounds;
 
         List<Vector2> spawnedPositions = new();
 
@@ -79,9 +83,13 @@ public class EnvironmentAsset_Spawner : MonoBehaviour
             spawnedPositions.Add(spawnPosition);
 
             GameObject spawnAsset = Instantiate(_assetObject, spawnPosition, Quaternion.identity);
-            SpriteRenderer assetSR = spawnAsset.GetComponent<SpriteRenderer>();
 
+            spawnAsset.transform.SetParent(_environmentBoundsSR.transform);
+
+            SpriteRenderer assetSR = spawnAsset.GetComponent<SpriteRenderer>();
             Sprite randAssetSprite = targetAsset.assetSprites[Random.Range(0, targetAsset.assetSprites.Length)];
+
+            assetSR.sortingOrder = targetAsset.layerOrderNum;
             assetSR.sprite = randAssetSprite;
         }
     }

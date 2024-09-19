@@ -15,8 +15,8 @@ public class Location_Controller : MonoBehaviour
     public LocationData currentData => _currentData;
 
     [Header("")]
-    [SerializeField] private SpriteRenderer _environment;
-    public SpriteRenderer environment => _environment;
+    [SerializeField] private SpriteRenderer _environmentBoundsSR;
+    public SpriteRenderer environmentBoundsSR => _environmentBoundsSR;
 
     [SerializeField] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
@@ -82,7 +82,7 @@ public class Location_Controller : MonoBehaviour
 
     public Vector2 Random_SnapPosition()
     {
-        Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_environment));
+        Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_environmentBoundsSR));
         return randSnapPos;
     }
 
@@ -93,7 +93,7 @@ public class Location_Controller : MonoBehaviour
     public Vector2 OuterLocation_Position(float horizontal, float vertical, float positionX, float positionY)
     {
         // Get the sprite's bounds
-        Bounds bounds = _environment.bounds;
+        Bounds bounds = _environmentBoundsSR.bounds;
 
         // Calculate the horizontal position
         float horizontalPos = horizontal;
