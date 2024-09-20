@@ -9,20 +9,15 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private ActionBubble_Interactable _interactable;
 
     [Header("")]
+    [SerializeField] private SpriteRenderer _carryBox;
+
+    [Header("")]
     [SerializeField] private SubLocation _currentSubLocation;
 
     [SerializeField] private Transform[] _boxStackPoints;
     [SerializeField] private StationStock[] _stationStocks;
 
     [SerializeField][Range(0, 5)] private int _duplicateAmount;
-
-    [Header("")]
-    [SerializeField] private StationStock _mergeStationStock;
-    [SerializeField] private Station_ScrObj[] _mergeStations;
-
-    [Header("")]
-    [SerializeField] private SpriteRenderer _carryBox;
-
 
     private List<Station_ScrObj> _unlockedStations = new();
 
@@ -48,7 +43,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent += Cancel_Action;
         _interactable.InteractEvent += Interact_FacePlayer;
 
-        _interactable.Action1Event += Merge_BookMarkedStations;
         _interactable.Action2Event += Unlock_BookMarkedStations;
 
         // start free roam
@@ -70,7 +64,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent -= Cancel_Action;
         _interactable.InteractEvent -= Interact_FacePlayer;
 
-        _interactable.Action1Event -= Merge_BookMarkedStations;
         _interactable.Action2Event -= Unlock_BookMarkedStations;
     }
 
@@ -261,78 +254,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // return to free roam
         move.Free_Roam(_currentSubLocation.roamArea, 0f);
-
-        //
-        _restockCoroutine = null;
-        yield break;
-    }
-
-
-    private void Merge_BookMarkedStations()
-    {
-        // check if currently on action
-        if (_restockCoroutine != null) return;
-
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        // check if _mergeStationStock is empty
-        if (_mergeStationStock.sold == false)
-        {
-            dialog.Update_Dialog(0);
-            return;
-        }
-
-        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
-        ItemSlots_Controller slotsController = menu.controller.slotsController;
-
-        List<ItemSlot_Data> bookmarkedDatas = slotsController.BookMarked_Datas(menu.currentDatas, false);
-
-        // check if there are more than 2 bookmarked stations
-        if (bookmarkedDatas.Count < 2)
-        {
-            dialog.Update_Dialog(1);
-            return;
-        }
-
-        // empty bookmarked stations
-        for (int i = 0; i < bookmarkedDatas.Count; i++)
-        {
-            slotsController.SlotData(menu.currentDatas, bookmarkedDatas[i]).Empty_Item();
-        }
-
-        _restockCoroutine = StartCoroutine(Merge_BookMarkedStations_Coroutine());
-    }
-    private IEnumerator Merge_BookMarkedStations_Coroutine()
-    {
-        NPC_Movement move = _npcController.movement;
-
-        //
-        CarryBox_SpriteToggle(true);
-        _npcController.interactable.LockInteract(true);
-
-        // move to _mergeStationStock
-        move.Assign_TargetPosition(_mergeStationStock.transform.position);
-
-        // wait until arrival
-        while (move.At_TargetPosition() == false) yield return null;
-
-        Station_ScrObj mergeStation = _mergeStations[Random.Range(0, _mergeStations.Length)];
-
-        // restock _mergeStationStock
-        _mergeStationStock.Restock(mergeStation);
-
-        // set _mergeStationStock price to 0
-        _mergeStationStock.Update_Price(0);
-
-        //
-        CarryBox_SpriteToggle(false);
-        _npcController.interactable.LockInteract(false);
-
-        // return to free roam
-        move.Free_Roam(_currentSubLocation.roamArea, 0f);
-
-        // merge complete dialog
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(4);
 
         //
         _restockCoroutine = null;
