@@ -219,9 +219,10 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    public int StationAmount(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation)
+    // Station
+    public List<ItemSlot_Data> Station_SlotDatas(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation)
     {
-        int stationCount = 0;
+        List<ItemSlot_Data> targetDatas = new();
 
         for (int i = 0; i < datas.Count; i++)
         {
@@ -229,11 +230,28 @@ public class ItemSlots_Controller : MonoBehaviour
             {
                 if (datas[i][j].hasItem == false) continue;
                 if (targetStation != datas[i][j].currentStation) continue;
-                stationCount++;
+                targetDatas.Add(datas[i][j]);
+
             }
         }
+        return targetDatas;
+    }
+    public List<ItemSlot_Data> Station_SlotDatas(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation, bool bookMarked)
+    {
+        List<ItemSlot_Data> targetDatas = new();
 
-        return stationCount;
+        for (int i = 0; i < datas.Count; i++)
+        {
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem == false) continue;
+                if (datas[i][j].bookMarked != bookMarked) continue;
+                if (targetStation != datas[i][j].currentStation) continue;
+                targetDatas.Add(datas[i][j]);
+
+            }
+        }
+        return targetDatas;
     }
 
     public void Stations_ToggleLock(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation, bool isLock)
@@ -251,6 +269,7 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
+    // Food
     public int FoodAmount(Dictionary<int, List<ItemSlot_Data>> datas, Food_ScrObj targetFood)
     {
         int foodCount = 0;

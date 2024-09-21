@@ -12,6 +12,9 @@ public class Detection_Controller : MonoBehaviour
     private Player_Controller _player;
     public Player_Controller player => _player;
 
+    public delegate void OnTriggerEvent();
+    public event OnTriggerEvent EnterEvent;
+    public event OnTriggerEvent ExitEvent;
 
 
     // UnityEngine
@@ -30,6 +33,8 @@ public class Detection_Controller : MonoBehaviour
         _detectedprefabs.Add(collision.gameObject);
 
         if (collision.TryGetComponent(out Player_Controller player)) { _player = player; }
+
+        EnterEvent?.Invoke();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -39,6 +44,8 @@ public class Detection_Controller : MonoBehaviour
         _detectedprefabs.Remove(collision.gameObject);
 
         if (collision.TryGetComponent(out Player_Controller player)) { _player = null; }
+
+        ExitEvent?.Invoke();
     }
 
 

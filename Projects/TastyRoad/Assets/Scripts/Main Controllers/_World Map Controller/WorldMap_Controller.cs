@@ -196,7 +196,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         int oilAmount = Mathf.Abs(_cursorTileNum - _currentTileNum);
 
         // check if has enough oil drum in station menu
-        if (slotsController.StationAmount(menu.currentDatas, oilDrum) < oilAmount)
+        if (slotsController.Station_SlotDatas(menu.currentDatas, oilDrum).Count < oilAmount)
         {
             Map_Toggle(false);
             // not enough oil drum dialog

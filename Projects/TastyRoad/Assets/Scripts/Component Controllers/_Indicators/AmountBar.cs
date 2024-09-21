@@ -47,6 +47,12 @@ public class AmountBar : MonoBehaviour
     }
 
 
+    public bool Is_MaxAmount()
+    {
+        return _currentAmount >= _amountBarSprites.Length;
+    }
+
+
     public void Load()
     {
         Load(_currentAmount);
@@ -57,6 +63,10 @@ public class AmountBar : MonoBehaviour
     }
 
 
+    public void Transparent_Toggle()
+    {
+        Transparent_Toggle(!_isTransparent);
+    }
     public void Transparent_Toggle(bool toggleOn)
     {
         _isTransparent = toggleOn;
@@ -70,6 +80,7 @@ public class AmountBar : MonoBehaviour
             _sr.color = Color.white;
         }
     }
+
 
     public void Toggle_BarColor(bool isColored)
     {
