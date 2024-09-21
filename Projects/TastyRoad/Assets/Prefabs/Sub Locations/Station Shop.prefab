@@ -1064,9 +1064,21 @@ PrefabInstance:
       value: StationShop NPC
       objectReference: {fileID: 0}
     - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
+      propertyPath: _scrapStack
+      value: 
+      objectReference: {fileID: 3627152083992463839}
+    - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
+      propertyPath: _disposeWaitTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
       propertyPath: _currentSubLocation
       value: 
       objectReference: {fileID: 6697486133214081430}
+    - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
+      propertyPath: _disposeScrapAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
       propertyPath: _boxStacks.Array.size
       value: 3
@@ -1298,6 +1310,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8039675154155897468, guid: 6ad315638512743c284354b0ba42bf4e, type: 3}
   m_PrefabInstance: {fileID: 5480102554454785154}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3627152083992463839 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9104879486881281373, guid: 6ad315638512743c284354b0ba42bf4e, type: 3}
+  m_PrefabInstance: {fileID: 5480102554454785154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c941a4f1a176742c2bcd7ac7884c4202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8792493872968019084
 PrefabInstance:
   m_ObjectHideFlags: 0

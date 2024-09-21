@@ -7,7 +7,9 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     private SpriteRenderer _sr;
 
     [SerializeField] private ActionBubble_Interactable _interactable;
+
     [SerializeField] private AmountBar _amountBar;
+    public AmountBar amountBar => _amountBar;
 
     [Header("")]
     [SerializeField] private Station_ScrObj _scrap;
@@ -62,7 +64,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
 
 
     //
-    private void Update_CurrentSprite()
+    public void Update_CurrentSprite()
     {
         int spriteNum = Mathf.Clamp(_amountBar.currentAmount, 0, _scrapSprites.Length - 1);
         _sr.sprite = _scrapSprites[spriteNum];
