@@ -228,8 +228,10 @@ MonoBehaviour:
   _launcher: {fileID: 2148129110217271742}
   _emptyStation: {fileID: 1351854973, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   _statusSign: {fileID: 3569663137575501159}
-  _sellSign: {fileID: 1615136246, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
-  _soldSign: {fileID: 1353327767, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  _signSprites:
+  - {fileID: 1615136246, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  - {fileID: -957326405, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  - {fileID: 1353327767, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
 --- !u!1 &6121253042431113937
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +324,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3989022576964105059}
     m_Modifications:
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1923143937, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_IsActive
       value: 0

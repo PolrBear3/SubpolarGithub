@@ -20,13 +20,15 @@ public class StationStock : MonoBehaviour
     private bool _sold;
     public bool sold => _sold;
 
+    private bool _isDiscount;
+    public bool isDiscount => _isDiscount;
+
     [Header("")]
     [SerializeField] private Sprite _emptyStation;
 
     [Header("")]
     [SerializeField] private SpriteRenderer _statusSign;
-    [SerializeField] private Sprite _sellSign;
-    [SerializeField] private Sprite _soldSign;
+    [SerializeField] private Sprite[] _signSprites;
 
 
     // MonoBehaviour
@@ -40,13 +42,17 @@ public class StationStock : MonoBehaviour
         Update_toSold();
 
         _interactable.InteractEvent += Set_Dialog;
+
         _interactable.Action1Event += Purchase;
+        _interactable.Action2Event += Toggle_Discount;
     }
 
     private void OnDestroy()
     {
         _interactable.InteractEvent -= Set_Dialog;
+
         _interactable.Action1Event -= Purchase;
+        _interactable.Action2Event -= Toggle_Discount;
     }
 
 
@@ -79,6 +85,8 @@ public class StationStock : MonoBehaviour
 
     private void Set_Dialog()
     {
+        if (_sold) return;
+
         Sprite stationIcon = _currentStation.dialogIcon;
         string dialogInfo = _currentStation.price + " coin\nto purchase";
 
@@ -130,10 +138,13 @@ public class StationStock : MonoBehaviour
         Update_toSold();
     }
 
+
     private void Update_toSold()
     {
         // set data
         _sold = true;
+        _isDiscount = false;
+
         _currentStation = null;
 
         // set sprite
@@ -141,48 +152,68 @@ public class StationStock : MonoBehaviour
         _sr.sortingOrder += 1;
 
         _sr.sprite = _emptyStation;
-        _statusSign.sprite = _soldSign;
-
-        //
-        _interactable.LockInteract(true);
+        _statusSign.sprite = _signSprites[2];
     }
+
+
+    private void Toggle_Discount()
+    {
+        if (_sold == false) return;
+
+        _isDiscount = !_isDiscount;
+
+        if (_isDiscount == false)
+        {
+            _statusSign.sprite = _signSprites[2];
+            return;
+        }
+
+        _statusSign.sprite = _signSprites[1];
+    }
+    public void Toggle_Discount(bool toggleOn)
+    {
+        _isDiscount = toggleOn;
+
+        if (_isDiscount == false)
+        {
+            _statusSign.sprite = _signSprites[2];
+            return;
+        }
+
+        _statusSign.sprite = _signSprites[1];
+    }
+
 
     public void Restock()
     {
         if (_sold == false) return;
 
+        // set data
         Set_Data();
 
-        // set data
         _sold = false;
 
+        // set sprite
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;
 
-        // set sprite
         _sr.sprite = _currentStation.sprite;
-        _statusSign.sprite = _sellSign;
-
-        //
-        _interactable.LockInteract(false);
+        _statusSign.sprite = _signSprites[0];
     }
     public void Restock(Station_ScrObj restockStation)
     {
         if (_sold == false) return;
 
+        // set data
         Set_Data(restockStation);
 
-        // set data
         _sold = false;
 
+        // set sprite
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;
 
-        // set sprite
         _sr.sprite = _currentStation.sprite;
-        _statusSign.sprite = _sellSign;
-
-        //
-        _interactable.LockInteract(false);
+        _statusSign.sprite = _signSprites[0];
     }
 }

@@ -23,6 +23,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     // Editor
     [HideInInspector] public Station_ScrObj editStation;
+    [HideInInspector] public bool lockStation;
 
 
     // UnityEngine
@@ -575,12 +576,12 @@ public class StationMenu_Controller_Inspector : Editor
 {
     //
     private SerializedProperty editStationProp;
-    private SerializedProperty editAmountProp;
+    private SerializedProperty lockStationProp;
 
     private void OnEnable()
     {
         editStationProp = serializedObject.FindProperty("editStation");
-        editAmountProp = serializedObject.FindProperty("editAmount");
+        lockStationProp = serializedObject.FindProperty("lockStation");
     }
 
 
@@ -596,17 +597,24 @@ public class StationMenu_Controller_Inspector : Editor
         EditorGUILayout.PropertyField(editStationProp, GUIContent.none);
         Station_ScrObj editStation = (Station_ScrObj)editStationProp.objectReferenceValue;
 
-        serializedObject.ApplyModifiedProperties();
+        EditorGUILayout.BeginHorizontal();
+
+        EditorGUILayout.PropertyField(lockStationProp, GUIContent.none);
+        bool lockStation = lockStationProp.boolValue;
 
         if (GUILayout.Button("Add Station"))
         {
-            menu.Add_StationItem(editStation, 1);
+            menu.Add_StationItem(editStation, 1).isLocked = lockStation;
         }
+
+        EditorGUILayout.EndHorizontal();
 
         if (GUILayout.Button("Remove Station"))
         {
             menu.Remove_StationItem(editStation, 1);
         }
+
+        serializedObject.ApplyModifiedProperties();
     }
 }
 #endif
