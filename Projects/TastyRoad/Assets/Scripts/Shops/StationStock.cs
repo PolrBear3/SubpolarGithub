@@ -103,9 +103,13 @@ public class StationStock : MonoBehaviour
     // Functions
     private void Purchase()
     {
-        if (_sold) return;
-
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        if (_sold)
+        {
+            dialog.Update_Dialog(2);
+            return;
+        }
 
         // check if player has enough coins
         if (_interactable.mainController.GoldenNugget_Amount() < _price)
@@ -122,9 +126,7 @@ public class StationStock : MonoBehaviour
         // check if station menu slot is available
         if (slotFull)
         {
-            DialogData data = new(_currentStation.dialogIcon, "Not enough space in station storage!");
-
-            dialog.Update_Dialog(data);
+            dialog.Update_Dialog(1);
             return;
         }
 
@@ -158,35 +160,51 @@ public class StationStock : MonoBehaviour
 
     private void Toggle_Discount()
     {
-        if (_sold == false) return;
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        if (_sold == false)
+        {
+            dialog.Update_Dialog(4);
+            return;
+        }
 
         _isDiscount = !_isDiscount;
 
-        if (_isDiscount == false)
+        if (_isDiscount)
+        {
+            _statusSign.sprite = _signSprites[1];
+            dialog.Update_Dialog(new DialogData(dialog.datas[3].icon, "Discount tag has been set."));
+
+            return;
+        }
+
+        dialog.Update_Dialog(new DialogData(dialog.datas[3].icon, "Discount tag has been removed."));
+
+        if (_sold)
         {
             _statusSign.sprite = _signSprites[2];
             return;
         }
 
-        _statusSign.sprite = _signSprites[1];
+        _statusSign.sprite = _signSprites[0];
     }
     public void Toggle_Discount(bool toggleOn)
     {
         _isDiscount = toggleOn;
 
-        if (_isDiscount == false)
+        if (_isDiscount)
         {
-            if (sold)
-            {
-                _statusSign.sprite = _signSprites[2];
-                return;
-            }
-
-            _statusSign.sprite = _signSprites[0];
+            _statusSign.sprite = _signSprites[1];
             return;
         }
 
-        _statusSign.sprite = _signSprites[1];
+        if (_sold)
+        {
+            _statusSign.sprite = _signSprites[2];
+            return;
+        }
+
+        _statusSign.sprite = _signSprites[0];
     }
 
 
