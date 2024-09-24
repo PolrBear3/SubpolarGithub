@@ -28,7 +28,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private StationStock[] _stationStocks;
     [SerializeField][Range(0, 5)] private int _duplicateAmount;
 
-    private List<Station_ScrObj> _stationArchive = new();
+    private List<Station_ScrObj> _archivedStations = new();
 
     private Coroutine _actionCoroutine;
 
@@ -45,10 +45,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
 
         // event subscriptions
-        // GlobalTime_Controller.TimeTik_Update += Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent += CarryObject_DirectionUpdate;
 
-        // interaction subscription
+        // subscription
+        GlobalTime_Controller.TimeTik_Update += Restock_ArchivedStation;
+
         _interactable.InteractEvent += Cancel_Action;
         _interactable.InteractEvent += Interact_FacePlayer;
 
@@ -67,10 +68,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         Save_Data();
 
         // event subscriptions
-        // GlobalTime_Controller.TimeTik_Update -= Restock_StationStocks;
         _npcController.movement.TargetPosition_UpdateEvent -= CarryObject_DirectionUpdate;
 
         // interaction subscription
+        GlobalTime_Controller.TimeTik_Update -= Restock_ArchivedStation;
+
         _interactable.InteractEvent -= Cancel_Action;
         _interactable.InteractEvent -= Interact_FacePlayer;
 
@@ -84,24 +86,24 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     {
         List<int> stationIDs = new();
 
-        foreach (var station in _stationArchive)
+        foreach (var station in _archivedStations)
         {
             stationIDs.Add(station.id);
         }
 
-        ES3.Save("StationShopNPC/_stationArchive", stationIDs);
+        ES3.Save("StationShopNPC/_archivedStations", stationIDs);
     }
 
     public void Load_Data()
     {
         List<int> stationIDs = new();
-        stationIDs = ES3.Load("StationShopNPC/_stationArchive", stationIDs);
+        stationIDs = ES3.Load("StationShopNPC/_archivedStations", stationIDs);
 
         Data_Controller data = _npcController.mainController.dataController;
 
         for (int i = 0; i < stationIDs.Count; i++)
         {
-            _stationArchive.Add(data.Station_ScrObj(stationIDs[i]));
+            _archivedStations.Add(data.Station_ScrObj(stationIDs[i]));
         }
     }
 
@@ -143,17 +145,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Unlocked Station Control
-    private Station_ScrObj Unlocked_Station()
-    {
-        if (_stationArchive.Count <= 0) return null;
-
-        int arrayNum = Random.Range(0, _stationArchive.Count);
-
-        return _stationArchive[arrayNum];
-    }
-
-
     // Station Stock Control
     private bool StationStocks_Full()
     {
@@ -163,6 +154,35 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         }
 
         return true;
+    }
+
+    private int DiscountStock_Amount()
+    {
+        int count = 0;
+
+        for (int i = 0; i < _stationStocks.Length; i++)
+        {
+            if (_stationStocks[i].isDiscount == false) continue;
+            count++;
+        }
+
+        return count;
+    }
+
+
+    private Station_ScrObj Archived_Station()
+    {
+        if (_archivedStations.Count <= 0) return null;
+
+        int arrayNum = Random.Range(0, _archivedStations.Count);
+
+        return _archivedStations[arrayNum];
+    }
+
+    private void Archive_Station(Station_ScrObj station)
+    {
+        if (_archivedStations.Contains(station)) return;
+        _archivedStations.Add(station);
     }
 
 
@@ -177,7 +197,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             checkCount++;
         }
 
-        if (_stationArchive.Count <= _stationStocks.Length) return false;
+        if (_archivedStations.Count <= _stationStocks.Length) return false;
 
         if (_duplicateAmount <= 0) _duplicateAmount = 1;
         if (checkCount >= _duplicateAmount) return true;
@@ -187,11 +207,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private Station_ScrObj NonDuplicate_Station()
     {
-        Station_ScrObj station = Unlocked_Station();
+        Station_ScrObj station = Archived_Station();
 
         do
         {
-            station = Unlocked_Station();
+            station = Archived_Station();
         }
         while (DuplicateAmount_Stocked(station));
 
@@ -221,6 +241,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Dispose_BookMarkedStation()
     {
+        if (_actionCoroutine != null) return;
+
         _actionCoroutine = StartCoroutine(Dispose_BookMarkedStation_Coroutine());
     }
     private IEnumerator Dispose_BookMarkedStation_Coroutine()
@@ -230,14 +252,20 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         List<ItemSlot_Data> bookmarkedStations = slots.BookMarked_Datas(menu.currentDatas, false);
 
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
         // check if there are any bookmarked stations
         if (bookmarkedStations.Count <= 0)
         {
             // dialog
+            dialog.Update_Dialog(0);
 
             Cancel_Action();
             yield break;
         }
+
+        // dialog
+        dialog.Update_Dialog(1);
 
         NPC_Movement movement = _npcController.movement;
         movement.Stop_FreeRoam();
@@ -274,9 +302,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Build_BookMarkedStations()
     {
+        if (_actionCoroutine != null) return;
+
         if (StationStocks_Full())
         {
             // dialog
+            gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
             return;
         }
 
@@ -288,15 +319,21 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slots = menu.controller.slotsController;
 
-        List<ItemSlot_Data> bookmarkedStations = slots.BookMarked_Datas(menu.currentDatas, true);
+        List<ItemSlot_Data> bookmarkedData = slots.BookMarked_Datas(menu.currentDatas, true);
 
-        if (bookmarkedStations.Count <= 0)
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        if (bookmarkedData.Count <= 0)
         {
             // dialog
+            dialog.Update_Dialog(2);
 
             Cancel_Action();
             yield break;
         }
+
+        // dialog
+        dialog.Update_Dialog(3);
 
         NPC_Movement movement = _npcController.movement;
         movement.Stop_FreeRoam();
@@ -311,6 +348,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             if (_scrapStack.amountBar.currentAmount <= 0)
             {
                 // dialog
+                dialog.Update_Dialog(4);
                 break;
             }
 
@@ -337,20 +375,82 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             movement.Assign_TargetPosition(_stationStocks[i].transform.position);
             while (movement.At_TargetPosition() == false) yield return null;
 
+            // get recent bookmarked station
+            Station_ScrObj recentStation = bookmarkedData[bookmarkedData.Count - 1].currentStation;
+
             // add to archive
-            _stationArchive.Add(bookmarkedStations[i].currentStation);
+            Archive_Station(recentStation);
 
             // restock locked bookmark station
             _stationStocks[i].Toggle_Discount(false);
-            _stationStocks[i].Restock(bookmarkedStations[i].currentStation);
+            _stationStocks[i].Restock(recentStation);
 
-            bookmarkedStations[i].Empty_Item();
+            bookmarkedData[bookmarkedData.Count - 1].Empty_Item();
 
             CarryObject_SpriteToggle(false, null);
 
-            if (i >= bookmarkedStations.Count - 1) break;
+            if (i >= bookmarkedData.Count - 1) break;
         }
 
         Cancel_Action();
+    }
+
+
+    private void Restock_ArchivedStation()
+    {
+        if (_actionCoroutine != null) return;
+
+        if (StationStocks_Full())
+        {
+            // dialog
+            return;
+        }
+
+        if (_archivedStations.Count <= 0)
+        {
+            // dialog
+            return;
+        }
+
+        _actionCoroutine = StartCoroutine(Restock_ArchivedStation_Coroutine());
+    }
+    private IEnumerator Restock_ArchivedStation_Coroutine()
+    {
+        for (int i = 0; i < _stationStocks.Length; i++)
+        {
+            if (_stationStocks[i].sold == false) continue;
+
+            //
+            _npcController.interactable.LockInteract(true);
+
+            NPC_Movement movement = _npcController.movement;
+            movement.Stop_FreeRoam();
+
+            // move to random box stack
+            movement.Assign_TargetPosition(_boxStackPoints[Random.Range(0, _boxStackPoints.Length)].position);
+            while (movement.At_TargetPosition() == false) yield return null;
+
+            CarryObject_SpriteToggle(true, _carrySprites[0]);
+
+            // move to _stationStocks[i]
+            movement.Assign_TargetPosition(_stationStocks[i].transform.position);
+            while (movement.At_TargetPosition() == false) yield return null;
+
+            // restock station
+            _stationStocks[i].Restock(NonDuplicate_Station());
+
+            CarryObject_SpriteToggle(false, null);
+
+            //
+            _npcController.interactable.LockInteract(false);
+
+            if (DiscountStock_Amount() <= 1) break;
+
+            _stationStocks[i].Toggle_Discount(false);
+            break;
+        }
+
+        Cancel_Action();
+        yield break;
     }
 }

@@ -219,19 +219,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultData:
-    icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    icon: {fileID: 0}
     info: 
   _datas:
+  - icon: {fileID: 1586993584, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Dismantles a bookmarked station into a scrap.
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Collect your merged station first!
+    info: Currently dismantling the station into scrap.
+  - icon: {fileID: -170552078, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Builds a blueprint station that is bookmarked on an empty purchase stock.
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Not enough stations bookmarked!
-  - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: No locked stations currently bookmarked!
-  - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Bookmarked stations successfully unlocked!
-  - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Bookmarked stations have been successfully merged!
+    info: Currently building a blueprint station on an empty purchase stock.
+  - icon: {fileID: -842560820, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not enough scraps available!
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,7 +325,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _npcController: {fileID: 9094981842974887859}
   _interactable: {fileID: 494314912932873177}
-  _stationObject: {fileID: 630016658404570712}
   _carryObject: {fileID: 3467676747412569844}
   _carrySprites:
   - {fileID: -127528085, guid: 8c99d34896b414ee9859f23993f0f708, type: 3}

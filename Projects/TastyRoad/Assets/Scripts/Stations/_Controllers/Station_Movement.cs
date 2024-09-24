@@ -29,6 +29,7 @@ public class Station_Movement : MonoBehaviour
     private void Update()
     {
         RestrictBlink_Update();
+        SnapPosition_Move();
     }
 
     private void FixedUpdate()
@@ -45,11 +46,20 @@ public class Station_Movement : MonoBehaviour
     }
 
 
-    // for fixed update
+    // for update
     private void Rigidbody_Move()
     {
         _rigidBody.velocity = new Vector2(_currentDirection.x * 3f, _currentDirection.y * 3f);
     }
+
+    private void SnapPosition_Move()
+    {
+        if (_rigidBody.velocity != Vector2.zero) return;
+
+        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+        transform.position = snapPosition;
+    }
+
 
 
     /// <returns>

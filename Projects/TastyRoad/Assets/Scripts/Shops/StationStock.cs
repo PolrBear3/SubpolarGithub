@@ -176,7 +176,13 @@ public class StationStock : MonoBehaviour
 
         if (_isDiscount == false)
         {
-            _statusSign.sprite = _signSprites[2];
+            if (sold)
+            {
+                _statusSign.sprite = _signSprites[2];
+                return;
+            }
+
+            _statusSign.sprite = _signSprites[0];
             return;
         }
 
@@ -198,6 +204,8 @@ public class StationStock : MonoBehaviour
         _sr.sortingOrder -= 1;
 
         _sr.sprite = _currentStation.sprite;
+
+        if (_isDiscount) return;
         _statusSign.sprite = _signSprites[0];
     }
     public void Restock(Station_ScrObj restockStation)
@@ -214,6 +222,8 @@ public class StationStock : MonoBehaviour
         _sr.sortingOrder -= 1;
 
         _sr.sprite = _currentStation.sprite;
+
+        if (_isDiscount) return;
         _statusSign.sprite = _signSprites[0];
     }
 }
