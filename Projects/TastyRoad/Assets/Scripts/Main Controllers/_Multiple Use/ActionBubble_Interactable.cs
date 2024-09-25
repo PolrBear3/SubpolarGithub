@@ -24,6 +24,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public event Event InteractEvent;
     public event Event UnInteractEvent;
+
     public event Event Action1Event;
     public event Event Action2Event;
 
@@ -95,6 +96,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public void UnInteract()
     {
+        if (_unInteractLocked) return;
+
         if (_bubble == null) return;
 
         // bubble off

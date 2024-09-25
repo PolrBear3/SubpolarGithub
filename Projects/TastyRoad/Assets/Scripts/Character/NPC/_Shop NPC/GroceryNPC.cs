@@ -18,14 +18,14 @@ public class GroceryNPC : MonoBehaviour
     [SerializeField] private Transform _storagePoint;
 
     [Header("")]
-    [Range(0, 1)] [SerializeField] private float _actionSpeed;
+    [Range(0, 1)][SerializeField] private float _actionSpeed;
 
-    [Range(0, 24)] [SerializeField] private int _refillCoolTime;
+    [Range(0, 24)][SerializeField] private int _refillCoolTime;
     private int _refillTimeCount;
 
-    [Range(0, 10)] [SerializeField] private int _discountStockCount;
+    [Range(0, 10)][SerializeField] private int _discountStockCount;
 
-    [Range(0, 24)] [SerializeField] private int _discountCoolTime;
+    [Range(0, 24)][SerializeField] private int _discountCoolTime;
     private int _discountTimeCount;
 
     private Coroutine _actionCoroutine;
@@ -45,18 +45,12 @@ public class GroceryNPC : MonoBehaviour
 
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
-
-        GlobalTime_Controller.TimeTik_Update += Refill_Amount;
-        GlobalTime_Controller.TimeTik_Update += Set_Discount;
     }
 
     private void OnDestroy()
     {
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
-
-        GlobalTime_Controller.TimeTik_Update -= Refill_Amount;
-        GlobalTime_Controller.TimeTik_Update -= Set_Discount;
     }
 
 
@@ -186,6 +180,7 @@ public class GroceryNPC : MonoBehaviour
         movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
     }
 
+
     private void Restock()
     {
         if (_actionCoroutine != null) return;
@@ -229,7 +224,7 @@ public class GroceryNPC : MonoBehaviour
                 yield return new WaitForSeconds(_actionSpeed);
             }
 
-            _foodStocks[i].Update_Data();
+            // _foodStocks[i].Update_Data(); //
 
             yield return new WaitForSeconds(_actionSpeed);
 
@@ -246,6 +241,7 @@ public class GroceryNPC : MonoBehaviour
         // return to free roam
         movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
     }
+
 
     private void Set_Discount()
     {

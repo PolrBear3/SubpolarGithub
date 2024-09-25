@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Player_Controller : MonoBehaviour, ISaveLoadable
 {
+    private SpriteRenderer _sr;
+
     private PlayerInput _playerInput;
 
     private Main_Controller _mainController;
@@ -41,6 +43,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
         _mainController.Track_CurrentCharacter(gameObject);
 
+        _sr = gameObject.GetComponent<SpriteRenderer>();
         _playerInput = gameObject.GetComponent<PlayerInput>();
     }
 
@@ -63,5 +66,25 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public PlayerInput Player_Input()
     {
         return _playerInput;
+    }
+
+
+    // Functions
+    public void Toggle_Hide(bool toggleOn)
+    {
+        if (toggleOn)
+        {
+            _sr.color = Color.clear;
+
+            _foodIcon.Hide_Icon();
+            _foodIcon.Hide_Condition();
+
+            return;
+        }
+
+        _sr.color = Color.white;
+
+        _foodIcon.Show_Icon();
+        _foodIcon.Show_Condition();
     }
 }

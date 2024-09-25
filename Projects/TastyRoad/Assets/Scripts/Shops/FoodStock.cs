@@ -44,11 +44,10 @@ public class FoodStock : MonoBehaviour
     private void Start()
     {
         Set_Data();
+        Update_Amount(0);
 
         Sprite_Update();
         TagSprite_Update();
-
-        _interactable.LockUnInteract(true);
 
         _interactable.InteractEvent += Set_Dialog;
         _interactable.Action1Event += Purchase;
@@ -61,38 +60,27 @@ public class FoodStock : MonoBehaviour
     }
 
 
-    // Set
+    // Data Control
+    public void Set_Data(Food_ScrObj setFood)
+    {
+        _currentFood = setFood;
+
+        // action bubble update
+        _interactable.bubble.Update_Bubble(_currentFood, null);
+    }
     public void Set_Data()
     {
-        _currentFood = _interactable.mainController.dataController.Food();
-
-        // set amount
-        Update_Amount(_maxAmount);
-
-        // action bubble update
-        _interactable.bubble.Update_Bubble(_currentFood, null);
+        Set_Data(_interactable.mainController.dataController.Food());
     }
 
-
-    public void Update_Data()
+    public void Update_Amount(int updateAmount)
     {
-        Data_Controller data = _interactable.mainController.dataController;
+        _currentAmount += updateAmount;
+        _amountBar.Load(_currentAmount);
 
-        if (data.Is_RawFood(_currentFood))
-        {
-            _currentFood = data.RawFood();
-        }
-        else
-        {
-            _currentFood = data.CookedFood();
-        }
-
-        // set amount
-        Update_Amount(_maxAmount);
-
-        // action bubble update
-        _interactable.bubble.Update_Bubble(_currentFood, null);
+        TagSprite_Update();
     }
+
 
     public void Update_Discount(bool isDiscount)
     {
@@ -139,27 +127,17 @@ public class FoodStock : MonoBehaviour
     {
         if (currentAmount <= 0)
         {
-            _tagSR.sprite = _tagSprites[0];
+            _tagSR.sprite = _tagSprites[2];
             return;
         }
 
         if (_isDiscount == false)
         {
-            _tagSR.sprite = _tagSprites[1];
+            _tagSR.sprite = _tagSprites[0];
             return;
         }
 
-        _tagSR.sprite = _tagSprites[2];
-    }
-
-
-    // Amount Bar
-    public void Update_Amount(int updateAmount)
-    {
-        _currentAmount += updateAmount;
-        _amountBar.Load(_currentAmount);
-
-        TagSprite_Update();
+        _tagSR.sprite = _tagSprites[1];
     }
 
 
