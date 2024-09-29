@@ -45,12 +45,22 @@ public class GroceryNPC : MonoBehaviour
 
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
+
+        ActionBubble_Interactable interact = _npcController.interactable;
+
+        interact.InteractEvent += Cancel_Action;
+        interact.InteractEvent += Interact_FacePlayer;
     }
 
     private void OnDestroy()
     {
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
+
+        ActionBubble_Interactable interact = _npcController.interactable;
+
+        interact.InteractEvent -= Cancel_Action;
+        interact.InteractEvent -= Interact_FacePlayer;
     }
 
 
@@ -72,7 +82,7 @@ public class GroceryNPC : MonoBehaviour
     {
         for (int i = 0; i < _foodStocks.Length; i++)
         {
-            if (_foodStocks[i].currentAmount < _foodStocks[i].maxAmount) return true;
+            if (_foodStocks[i].foodIcon.currentData.currentAmount < _foodStocks[i].maxAmount) return true;
         }
         return false;
     }
@@ -83,7 +93,7 @@ public class GroceryNPC : MonoBehaviour
 
         for (int i = 0; i < _foodStocks.Length; i++)
         {
-            if (_foodStocks[i].isDiscount == false) continue;
+            if (_foodStocks[i].data.isDiscount == false) continue;
             discountStocks.Add(_foodStocks[i]);
         }
 
@@ -111,6 +121,17 @@ public class GroceryNPC : MonoBehaviour
 
 
     // Actions
+    private void Interact_FacePlayer()
+    {
+        // facing to player direction
+        _npcController.basicAnim.Flip_Sprite(_npcController.interactable.detection.player.gameObject);
+
+        NPC_Movement movement = _npcController.movement;
+
+        movement.Stop_FreeRoam();
+        movement.Free_Roam(_currentSubLocation.roamArea, Random.Range(movement.intervalTimeRange.x, movement.intervalTimeRange.y));
+    }
+
     private void Cancel_Action()
     {
         if (_actionCoroutine == null) return;
@@ -153,8 +174,10 @@ public class GroceryNPC : MonoBehaviour
 
         for (int i = 0; i < _foodStocks.Length; i++)
         {
+            int stockAmount = _foodStocks[i].foodIcon.currentData.currentAmount;
+
             // if food stock current amount is not max amount
-            if (_foodStocks[i].currentAmount >= _foodStocks[i].maxAmount) continue;
+            if (stockAmount >= _foodStocks[i].maxAmount) continue;
 
             // move to food stock
             movement.Stop_FreeRoam();
@@ -164,7 +187,7 @@ public class GroceryNPC : MonoBehaviour
             while (movement.At_TargetPosition() == false) yield return null;
 
             // gradually amount increase
-            int refillAmount = _foodStocks[i].maxAmount - _foodStocks[i].currentAmount;
+            int refillAmount = _foodStocks[i].maxAmount - stockAmount;
 
             for (int j = 0; j < refillAmount; j++)
             {
@@ -178,150 +201,5 @@ public class GroceryNPC : MonoBehaviour
 
         // return to free roam
         movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
-    }
-
-
-    private void Restock()
-    {
-        if (_actionCoroutine != null) return;
-
-        // food box transparency
-        _foodBox.color = Color.white;
-
-        _actionCoroutine = StartCoroutine(Restock_Coroutine());
-    }
-    private IEnumerator Restock_Coroutine()
-    {
-        NPC_Movement movement = _npcController.movement;
-
-        SortFoodStocks_byDistance();
-
-        for (int i = 0; i < _foodStocks.Length; i++)
-        {
-            // if currently interacting
-            if (_foodStocks[i].interactable.bubble.bubbleOn) continue;
-
-            // 50% activation
-            if (Random.value < 0.5f) continue;
-
-            // action bubble interaction control 
-            _foodStocks[i].interactable.LockInteract(true);
-            _foodStocks[i].interactable.LockUnInteract(true);
-
-            // move to food stock
-            movement.Stop_FreeRoam();
-            movement.Assign_TargetPosition(_foodStocks[i].transform.position);
-
-            // wait until arrival
-            while (movement.At_TargetPosition() == false) yield return null;
-
-            // gradually amount decrease
-            int deceraseAmount = _foodStocks[i].currentAmount;
-
-            for (int j = 0; j < deceraseAmount; j++)
-            {
-                _foodStocks[i].Update_Amount(-1);
-                yield return new WaitForSeconds(_actionSpeed);
-            }
-
-            // _foodStocks[i].Update_Data(); //
-
-            yield return new WaitForSeconds(_actionSpeed);
-
-            // action bubble interaction control
-            _foodStocks[i].interactable.LockInteract(false);
-            _foodStocks[i].interactable.LockUnInteract(false);
-
-            _foodStocks[i].interactable.UnInteract();
-        }
-
-        // food box transparency
-        _foodBox.color = Color.clear;
-
-        // return to free roam
-        movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
-    }
-
-
-    private void Set_Discount()
-    {
-        if (_actionCoroutine != null) return;
-        if (_discountStockCount <= 0) return;
-
-        // check if there is a non discount food stock
-        if (Discount_FoodStocks().Count >= _foodStocks.Length) return;
-
-        // cool time
-        if (_discountTimeCount < _discountCoolTime)
-        {
-            _discountTimeCount++;
-            return;
-        }
-        _discountTimeCount = 0;
-
-        _actionCoroutine = StartCoroutine(Set_Discount_Coroutine());
-    }
-    private IEnumerator Set_Discount_Coroutine()
-    {
-        List<FoodStock> currentStocks = new();
-
-        foreach (var stock in _foodStocks)
-        {
-            currentStocks.Add(stock);
-        }
-
-        List<FoodStock> targetStocks = new();
-
-        do
-        {
-            // get random food stocks
-            FoodStock targetStock = currentStocks[Random.Range(0, currentStocks.Count)];
-
-            if (targetStock.isDiscount == true)
-            {
-                currentStocks.Remove(targetStock);
-            }
-            else
-            {
-                targetStocks.Add(targetStock);
-            }
-        }
-        while (targetStocks.Count < _discountStockCount);
-
-        SortFoodStocks_byDistance(targetStocks);
-
-        NPC_Movement movement = _npcController.movement;
-        List<FoodStock> previousStocks = Discount_FoodStocks();
-
-        // set target stocks to discount
-        for (int i = 0; i < targetStocks.Count; i++)
-        {
-            // if currently interacting
-            if (targetStocks[i].interactable.bubble.bubbleOn) continue;
-
-            // move to food stock
-            movement.Stop_FreeRoam();
-            movement.Assign_TargetPosition(targetStocks[i].transform.position);
-
-            // wait until arrival
-            while (movement.At_TargetPosition() == false) yield return null;
-
-            targetStocks[i].Update_Discount(true);
-
-            // remove discount from previous discount food stock
-            if (previousStocks.Count <= 0) continue;
-
-            int randIndex = Random.Range(0, previousStocks.Count);
-
-            previousStocks[randIndex].Update_Discount(false);
-            previousStocks.RemoveAt(randIndex);
-        }
-
-        // return to free roam
-        movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
-
-        // reset action
-        _actionCoroutine = null;
-        yield break;
     }
 }

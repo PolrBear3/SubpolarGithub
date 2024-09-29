@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class FoodStock : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class FoodStock : MonoBehaviour
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
 
-    [SerializeField] private AmountBar _amountBar;
+    [SerializeField] private FoodData_Controller _foodIcon;
+    public FoodData_Controller foodIcon => _foodIcon;
+
     [SerializeField] private CoinLauncher _launcher;
 
     [Header("")]
@@ -26,13 +29,13 @@ public class FoodStock : MonoBehaviour
 
     [Range(1, 98)][SerializeField] private int _discountPrice;
 
-    private int _currentAmount;
-    public int currentAmount => _currentAmount;
 
-    private Food_ScrObj _currentFood;
+    private StockData _data;
+    public StockData data => _data;
 
-    private bool _isDiscount;
-    public bool isDiscount => _isDiscount;
+
+    // Editor
+    [HideInInspector] public Food_ScrObj foodToAdd;
 
 
     // UnityEngine
@@ -43,11 +46,13 @@ public class FoodStock : MonoBehaviour
 
     private void Start()
     {
-        Set_Data();
-        Update_Amount(0);
+        // set these to loaded data //
+        _data = new();
+        Set_Data(null);
+        //
 
         Sprite_Update();
-        TagSprite_Update();
+        Toggle_Unlock(_data.unlocked);
 
         _interactable.InteractEvent += Set_Dialog;
         _interactable.Action1Event += Purchase;
@@ -63,28 +68,41 @@ public class FoodStock : MonoBehaviour
     // Data Control
     public void Set_Data(Food_ScrObj setFood)
     {
-        _currentFood = setFood;
+        _foodIcon.Set_CurrentData(new(setFood));
+
+        _foodIcon.currentData.Set_Amount(0);
+        _foodIcon.Show_AmountBar();
+
+        if (_foodIcon.currentData.foodScrObj == null) return;
+
+        _foodIcon.Show_Icon();
 
         // action bubble update
-        _interactable.bubble.Update_Bubble(_currentFood, null);
-    }
-    public void Set_Data()
-    {
-        Set_Data(_interactable.mainController.dataController.Food());
+        _interactable.bubble.Update_Bubble(_foodIcon.currentData.foodScrObj, null);
     }
 
     public void Update_Amount(int updateAmount)
     {
-        _currentAmount += updateAmount;
-        _amountBar.Load(_currentAmount);
+        _foodIcon.currentData.Update_Amount(updateAmount);
+        _foodIcon.Show_AmountBar();
 
         TagSprite_Update();
     }
 
 
-    public void Update_Discount(bool isDiscount)
+    public void Toggle_Unlock(bool toggle)
     {
-        _isDiscount = isDiscount;
+        _data.Toggle_UnLock(toggle);
+
+        Sprite_Update();
+        TagSprite_Update();
+
+        _interactable.LockInteract(!toggle);
+    }
+
+    public void Toggle_Discount(bool toggle)
+    {
+        _data.Toggle_Discount(toggle);
 
         TagSprite_Update();
     }
@@ -92,46 +110,62 @@ public class FoodStock : MonoBehaviour
 
     private void Set_Dialog()
     {
-        // calculation
-        int price = _currentFood.price;
+        Food_ScrObj currentFood = _foodIcon.currentData.foodScrObj;
 
-        if (_isDiscount && price > 0)
+        // calculation
+        int price = _foodIcon.currentData.foodScrObj.price;
+
+        if (_data.isDiscount && price > 0)
         {
             price = _discountPrice;
         }
 
         string dialog = price + " nuggets to purchase.\nyour current nugget amount is " + _interactable.mainController.GoldenNugget_Amount();
 
-        DialogData data = new DialogData(_currentFood.sprite, dialog);
+        DialogData data = new DialogData(currentFood.sprite, dialog);
         DialogBox dialogBox = gameObject.GetComponent<DialogTrigger>().Update_Dialog(data);
 
-        dialogBox.UpdateIcon_CenterPosition(_currentFood.uiCenterPosition);
+        dialogBox.UpdateIcon_CenterPosition(currentFood.uiCenterPosition);
     }
 
 
     // Sprite Control
     private void Sprite_Update()
     {
-        // cooked food
-        if (_interactable.mainController.dataController.Is_RawFood(_currentFood) == false)
+        if (_data.unlocked == false)
         {
-            _sr.sprite = _sprites[1];
+            _sr.sprite = _sprites[0];
+            return;
+        }
+
+        // cooked food
+        if (_interactable.mainController.dataController.Is_RawFood(_foodIcon.currentData.foodScrObj) == false)
+        {
+            _sr.sprite = _sprites[2];
             return;
         }
 
         // raw food & default
-        _sr.sprite = _sprites[0];
+        _sr.sprite = _sprites[1];
     }
 
     private void TagSprite_Update()
     {
-        if (currentAmount <= 0)
+        if (_data.unlocked == false)
+        {
+            _tagSR.color = Color.clear;
+            return;
+        }
+
+        _tagSR.color = Color.white;
+
+        if (_foodIcon.currentData.currentAmount <= 0)
         {
             _tagSR.sprite = _tagSprites[2];
             return;
         }
 
-        if (_isDiscount == false)
+        if (_data.isDiscount == false)
         {
             _tagSR.sprite = _tagSprites[0];
             return;
@@ -145,22 +179,23 @@ public class FoodStock : MonoBehaviour
     private void Purchase()
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
 
         // not enough amount
-        if (_currentAmount <= 0)
+        if (_foodIcon.currentData.currentAmount <= 0)
         {
             _interactable.UnInteract();
 
-            DialogData data = new DialogData(_currentFood.sprite, "Not enough amount available!");
-            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(_currentFood.uiCenterPosition);
+            DialogData data = new DialogData(stockedFood.sprite, "Not enough amount available!");
+            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
 
             return;
         }
 
         // calculation
-        int price = _currentFood.price;
+        int price = stockedFood.price;
 
-        if (_isDiscount && price > 0)
+        if (_data.isDiscount && price > 0)
         {
             price = _discountPrice;
         }
@@ -182,15 +217,15 @@ public class FoodStock : MonoBehaviour
 
         // not enough slots
         FoodMenu_Controller foodMenu = _interactable.mainController.currentVehicle.menu.foodMenu;
-        if (foodMenu.Add_FoodItem(_currentFood, 1) > 0)
+        if (foodMenu.Add_FoodItem(stockedFood, 1) > 0)
         {
             _interactable.UnInteract();
 
             // return golden nuggets
-            _interactable.mainController.Add_GoldenNugget(_currentFood.price);
+            _interactable.mainController.Add_GoldenNugget(stockedFood.price);
 
-            DialogData data = new DialogData(_currentFood.sprite, "Not enough space in food storage!");
-            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(_currentFood.uiCenterPosition);
+            DialogData data = new DialogData(stockedFood.sprite, "Not enough space in food storage!");
+            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
 
             return;
         }
@@ -201,9 +236,64 @@ public class FoodStock : MonoBehaviour
 
         // add purchased food to archive
         ArchiveMenu_Controller archiveMenu = _interactable.mainController.currentVehicle.menu.archiveMenu;
-        archiveMenu.Archive_Food(_currentFood);
+        archiveMenu.Archive_Food(stockedFood);
 
         // coin launch animation
-        _launcher.Parabola_CoinLaunch(_currentFood.sprite, _interactable.detection.player.transform.position);
+        _launcher.Parabola_CoinLaunch(stockedFood.sprite, _interactable.detection.player.transform.position);
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(FoodStock))]
+public class FoodStock_Inspector : Editor
+{
+    //
+    private SerializedProperty foodToAddProp;
+
+    private void OnEnable()
+    {
+        foodToAddProp = serializedObject.FindProperty("foodToAdd");
+    }
+
+
+    //
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        FoodStock foodStock = (FoodStock)target;
+        serializedObject.Update();
+
+        GUILayout.Space(60);
+
+        EditorGUILayout.BeginHorizontal();
+
+        EditorGUILayout.PropertyField(foodToAddProp, GUIContent.none);
+        Food_ScrObj foodToAdd = (Food_ScrObj)foodToAddProp.objectReferenceValue;
+
+        if (GUILayout.Button("Assign Food"))
+        {
+            foodStock.Set_Data(foodToAdd);
+            foodStock.Toggle_Unlock(true);
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Increase Amount"))
+        {
+            foodStock.Update_Amount(1);
+        }
+
+        if (GUILayout.Button("Decrease Amount"))
+        {
+            foodStock.Update_Amount(-1);
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+#endif
