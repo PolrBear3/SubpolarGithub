@@ -215,6 +215,18 @@ public class FoodData_Controller : MonoBehaviour
         _amountBar.color = Color.clear;
     }
 
+
+    public void Toggle_AmountBar(bool toggle)
+    {
+        if (toggle == false)
+        {
+            _amountBar.color = Color.clear;
+            return;
+        }
+
+        Show_AmountBar();
+    }
+
     public void Toggle_BarColor(bool isColored)
     {
         if (isColored)

@@ -252,7 +252,7 @@ MonoBehaviour:
   - {fileID: -898468499, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   _maxAmount: 6
   _discountPrice: 1
-  foodToAdd: {fileID: 0}
+  foodToAdd: {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
 --- !u!1 &6231251741471268091
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,18 +345,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4241338682329067724}
     m_Modifications:
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3749055550170630146, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.055
       objectReference: {fileID: 0}
     - target: {fileID: 4034252938134837271, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Name
       value: Action Bubble
       objectReference: {fileID: 0}
-    - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
-      propertyPath: m_Sprite
-      value: 
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _toggleHeight
+      value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _setSprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _setSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: -1337495358, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _setSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: -1401049284, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 0
@@ -367,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.99
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.z
@@ -444,7 +464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2
+      value: 0.188
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.z

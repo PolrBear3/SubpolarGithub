@@ -20,15 +20,28 @@ public class Action_Bubble : MonoBehaviour
     private bool _bubbleOn;
     public bool bubbleOn => _bubbleOn;
 
+    [Header("")]
+    [SerializeField] private float _toggleHeight;
+    private float _defaultHeight;
+
+    [Header("")]
+    [SerializeField] private Sprite[] _setSprites;
+    public Sprite[] setSprites => _setSprites;
+
 
     // MonoBehaviour
+    private void Awake()
+    {
+        _defaultHeight = transform.localPosition.y;
+    }
+
     private void Start()
     {
         Toggle(false);
     }
 
 
-    // Show and Hide Action Bubble
+    // Show and Hide
     public void Toggle(bool toggleOn)
     {
         if (toggleOn)
@@ -42,7 +55,7 @@ public class Action_Bubble : MonoBehaviour
     }
 
 
-    // Update Bubble Icon Sprite
+    // Icon Sprite
     public void Set_Bubble(Sprite leftIcon, Sprite rightIcon)
     {
         if (_leftIcon == null) return;
@@ -124,7 +137,8 @@ public class Action_Bubble : MonoBehaviour
         _rightIcon.sprite = null;
     }
 
-    // Update Bubble Position
+
+    // Position
     private void Update_BubblePosition()
     {
         Vector2 leftPos = _leftBubble.transform.localPosition;
@@ -139,5 +153,16 @@ public class Action_Bubble : MonoBehaviour
             _leftBubble.transform.localPosition = new Vector2(-0.4f, leftPos.y);
             _rightBubble.transform.localPosition = new Vector2(0.4f, rightPos.y);
         }
+    }
+
+    public void Toggle_Height(bool toggle)
+    {
+        if (toggle)
+        {
+            transform.localPosition = new Vector2(transform.localPosition.x, _toggleHeight);
+            return;
+        }
+
+        transform.localPosition = new Vector2(transform.localPosition.x, _defaultHeight);
     }
 }
