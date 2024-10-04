@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroceryNPC : MonoBehaviour
+public class GroceryNPC : MonoBehaviour, ISaveLoadable
 {
     [Header("")]
     [SerializeField] private NPC_Controller _npcController;
@@ -15,23 +15,31 @@ public class GroceryNPC : MonoBehaviour
 
     [Header("")]
     [SerializeField] private FoodStock[] _foodStocks;
-    [SerializeField] private Transform _storagePoint;
+
 
     [Header("")]
-    [Range(0, 1)][SerializeField] private float _actionSpeed;
+    [SerializeField][Range(0, 1)] private float _actionSpeed;
 
-    [Range(0, 24)][SerializeField] private int _refillCoolTime;
-    private int _refillTimeCount;
+    [SerializeField] private Food_ScrObj[] _startingArchive;
+    private List<FoodData> _archivedCooks = new();
+    private Food_ScrObj _questFood;
 
-    [Range(0, 10)][SerializeField] private int _discountStockCount;
+    [SerializeField][Range(0, 100)] private int _questCount;
+    private int _currentQuestCount;
 
-    [Range(0, 24)][SerializeField] private int _discountCoolTime;
-    private int _discountTimeCount;
+    [SerializeField][Range(0, 100)] private int _refreshCount;
+    private int _currentRefreshCount;
+
 
     private Coroutine _actionCoroutine;
 
 
     // UnityEngine
+    private void Awake()
+    {
+        Load_Data();
+    }
+
     private void Start()
     {
         // untrack
@@ -46,10 +54,14 @@ public class GroceryNPC : MonoBehaviour
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
 
+        GlobalTime_Controller.TimeTik_Update += Set_QuestFood;
+
         ActionBubble_Interactable interact = _npcController.interactable;
 
         interact.InteractEvent += Cancel_Action;
         interact.InteractEvent += Interact_FacePlayer;
+
+        interact.Action1Event += Complete_Quest;
     }
 
     private void OnDestroy()
@@ -57,10 +69,38 @@ public class GroceryNPC : MonoBehaviour
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
 
+        GlobalTime_Controller.TimeTik_Update -= Set_QuestFood;
+
         ActionBubble_Interactable interact = _npcController.interactable;
 
         interact.InteractEvent -= Cancel_Action;
         interact.InteractEvent -= Interact_FacePlayer;
+
+        interact.Action1Event -= Complete_Quest;
+    }
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        ES3.Save("GroceryNPC/_archivedCooks", _archivedCooks);
+    }
+
+    public void Load_Data()
+    {
+        // new
+        if (ES3.KeyExists("GroceryNPC/_archivedCooks") == false)
+        {
+            foreach (Food_ScrObj food in _startingArchive)
+            {
+                Archive_toCooks(food);
+            }
+
+            return;
+        }
+
+        // load
+        _archivedCooks = ES3.Load("GroceryNPC/_archivedCooks", _archivedCooks);
     }
 
 
@@ -120,6 +160,26 @@ public class GroceryNPC : MonoBehaviour
     }
 
 
+    // Data Control
+    private bool Is_Archived(Food_ScrObj food)
+    {
+        for (int i = 0; i < _archivedCooks.Count; i++)
+        {
+            if (_archivedCooks[i].foodScrObj != food) continue;
+            return true;
+        }
+        return false;
+    }
+
+    private void Archive_toCooks(Food_ScrObj food)
+    {
+        if (Is_Archived(food)) return;
+
+        FoodData archiveData = new(food);
+        _archivedCooks.Add(archiveData);
+    }
+
+
     // Actions
     private void Interact_FacePlayer()
     {
@@ -148,58 +208,60 @@ public class GroceryNPC : MonoBehaviour
     }
 
 
-    private void Refill_Amount()
+    private void Set_QuestFood()
     {
-        if (_actionCoroutine != null) return;
-        if (RefillFoodStock_Available() == false) return;
+        // get random cooked food from _archivedCooks
+        _questFood = _archivedCooks[Random.Range(0, _archivedCooks.Count)].foodScrObj;
 
-        // cool time
-        if (_refillTimeCount < _refillCoolTime)
-        {
-            _refillTimeCount++;
-            return;
-        }
-        _refillTimeCount = 0;
+        // action bubble update
+        ActionBubble_Interactable interactable = _npcController.interactable;
 
-        // food box transparency
-        _foodBox.color = Color.white;
-
-        _actionCoroutine = StartCoroutine(Refill_Amount_Coroutine());
+        interactable.bubble.Update_Bubble(_questFood, null);
+        interactable.UnInteract();
     }
-    private IEnumerator Refill_Amount_Coroutine()
+
+    private void Complete_Quest()
     {
-        NPC_Movement movement = _npcController.movement;
+        if (_questFood == null) return;
 
-        SortFoodStocks_byDistance();
+        ActionBubble_Interactable interactable = _npcController.interactable;
+        FoodData_Controller playerIcon = interactable.detection.player.foodIcon;
 
-        for (int i = 0; i < _foodStocks.Length; i++)
-        {
-            int stockAmount = _foodStocks[i].foodIcon.currentData.currentAmount;
+        if (playerIcon.Is_SameFood(_questFood) == false) return;
 
-            // if food stock current amount is not max amount
-            if (stockAmount >= _foodStocks[i].maxAmount) continue;
+        // quest count update
+        _currentQuestCount++;
+        _currentQuestCount = Mathf.Clamp(_currentQuestCount, 0, _questCount);
 
-            // move to food stock
-            movement.Stop_FreeRoam();
-            movement.Assign_TargetPosition(_foodStocks[i].transform.position);
+        // remove player food
+        playerIcon.Set_CurrentData(null);
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
 
-            // wait until arrival
-            while (movement.At_TargetPosition() == false) yield return null;
+        // refresh _questFood
+        _questFood = null;
+        interactable.bubble.Empty_Bubble(); // ?
+    }
 
-            // gradually amount increase
-            int refillAmount = _foodStocks[i].maxAmount - stockAmount;
 
-            for (int j = 0; j < refillAmount; j++)
-            {
-                _foodStocks[i].Update_Amount(1);
-                yield return new WaitForSeconds(_actionSpeed);
-            }
-        }
+    private void Collect_FoodBundles()
+    {
+        _actionCoroutine = StartCoroutine(Collect_FoodBundles_Coroutine());
+    }
+    private IEnumerator Collect_FoodBundles_Coroutine()
+    {
+        Cancel_Action();
+        yield break;
+    }
 
-        // food box transparency
-        _foodBox.color = Color.clear;
 
-        // return to free roam
-        movement.Free_Roam(_currentSubLocation.roamArea, _actionSpeed);
+    private void Clear_RottenStocks()
+    {
+        _actionCoroutine = StartCoroutine(Clear_RottenStocks_Coroutine());
+    }
+    private IEnumerator Clear_RottenStocks_Coroutine()
+    {
+        Cancel_Action();
+        yield break;
     }
 }
