@@ -240,7 +240,21 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         // refresh _questFood
         _questFood = null;
-        interactable.bubble.Empty_Bubble(); // ?
+        interactable.bubble.Empty_Bubble();
+    }
+
+
+    private void Set_Discount()
+    {
+        if (_currentQuestCount < _questCount) return;
+
+        _currentQuestCount = 0;
+        _actionCoroutine = StartCoroutine(Set_Discount_Coroutine());
+    }
+    private IEnumerator Set_Discount_Coroutine()
+    {
+        Cancel_Action();
+        yield break;
     }
 
 
