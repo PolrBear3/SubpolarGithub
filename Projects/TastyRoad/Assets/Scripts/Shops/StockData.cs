@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class StockData
 {
-    private bool _unlocked;
+    [SerializeField][ES3Serializable] private bool _unlocked;
     public bool unlocked => _unlocked;
 
-    private bool _isDiscount;
+    [SerializeField][ES3Serializable] private bool _isDiscount;
     public bool isDiscount => _isDiscount;
 
 

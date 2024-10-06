@@ -23,13 +23,13 @@ public class FoodCondition_Data
     public FoodCondition_Type type;
     public int level;
 
-    public FoodCondition_Data (FoodCondition_Type type)
+    public FoodCondition_Data(FoodCondition_Type type)
     {
         this.type = type;
         level = 1;
     }
 
-    public FoodCondition_Data (FoodCondition_Type type, int level)
+    public FoodCondition_Data(FoodCondition_Type type, int level)
     {
         this.type = type;
 
@@ -42,20 +42,25 @@ public class FoodCondition_Data
 [System.Serializable]
 public class FoodData
 {
-    [SerializeField] [ES3Serializable] private Food_ScrObj _foodScrObj;
+    [SerializeField][ES3Serializable] private Food_ScrObj _foodScrObj;
     public Food_ScrObj foodScrObj => _foodScrObj;
 
     [ES3Serializable] private int _currentAmount;
     public int currentAmount => _currentAmount;
 
-    [SerializeField] [ES3Serializable] private int _tikCount;
+    [SerializeField][ES3Serializable] private int _tikCount;
     public int tikCount => _tikCount;
 
-    [SerializeField] [ES3Serializable] private List<FoodCondition_Data> _conditionDatas;
+    [SerializeField][ES3Serializable] private List<FoodCondition_Data> _conditionDatas;
     public List<FoodCondition_Data> conditionDatas => _conditionDatas;
 
 
     // Constructors
+    public FoodData()
+    {
+
+    }
+
     public FoodData(FoodData data)
     {
         _foodScrObj = data.foodScrObj;

@@ -18,7 +18,10 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public Action_Bubble bubble => _bubble;
 
     private bool _interactLocked;
+    public bool interactLocked => _interactLocked;
+
     private bool _unInteractLocked;
+    public bool unInteractLocked => _unInteractLocked;
 
     public delegate void Event();
 
@@ -38,15 +41,13 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public void Start()
     {
         UnInteract();
+
+        _detection.ExitEvent += Refresh;
     }
 
-
-    // OnTrigger
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnDestroy()
     {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        UnInteract();
+        _detection.ExitEvent -= Refresh;
     }
 
 
@@ -87,7 +88,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         }
 
         // bubble on
-        _input.enabled = true;
+        InputToggle(true);
         _bubble.Toggle(true);
 
         //
@@ -101,7 +102,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         if (_bubble == null) return;
 
         // bubble off
-        _input.enabled = false;
+        InputToggle(false);
         _bubble.Toggle(false);
 
         //
@@ -115,6 +116,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         _input.enabled = toggleOn;
     }
 
+
     public void LockInteract(bool toggleLock)
     {
         _interactLocked = toggleLock;
@@ -123,5 +125,14 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public void LockUnInteract(bool toggleLock)
     {
         _unInteractLocked = toggleLock;
+    }
+
+
+    public void Refresh()
+    {
+        LockInteract(false);
+        LockUnInteract(false);
+
+        UnInteract();
     }
 }
