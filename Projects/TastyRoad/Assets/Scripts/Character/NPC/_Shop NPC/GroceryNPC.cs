@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GroceryNPC : MonoBehaviour, ISaveLoadable
 {
@@ -31,6 +32,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private int _currentQuestCount;
 
 
+    private bool _isNewRestock;
+
     private Coroutine _actionCoroutine;
 
 
@@ -42,6 +45,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
+        Update_RestockBubble();
+
         // untrack
         _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
 
@@ -64,7 +69,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent += Cancel_Action;
         interact.InteractEvent += Interact_FacePlayer;
 
-        interact.Action1Event += Complete_Quest;
+        interact.Action1Event += Toggle_RestockMode;
+        interact.Action2Event += Complete_Quest;
     }
 
     private void OnDestroy()
@@ -82,7 +88,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent -= Cancel_Action;
         interact.InteractEvent -= Interact_FacePlayer;
 
-        interact.Action1Event -= Complete_Quest;
+        interact.Action1Event -= Toggle_RestockMode;
+        interact.Action2Event -= Complete_Quest;
     }
 
 
@@ -256,11 +263,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // get random cooked food from _archivedCooks
         _questFood = _archivedCooks[Random.Range(0, _archivedCooks.Count)].foodScrObj;
 
-        // action bubble update
-        ActionBubble_Interactable interactable = _npcController.interactable;
-
-        interactable.bubble.Update_Bubble(_questFood, null);
-        interactable.UnInteract();
+        Action_Bubble bubble = _npcController.interactable.bubble;
+        bubble.Set_Bubble(_questFood, _questFood);
+        Update_RestockBubble();
     }
 
     private void Complete_Quest()
@@ -283,9 +288,31 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         // refresh _questFood
         _questFood = null;
-        interactable.bubble.Empty_Bubble();
+
+        Action_Bubble bubble = _npcController.interactable.bubble;
+        bubble.Empty_Bubble();
+        Update_RestockBubble();
     }
 
+
+    private void Update_RestockBubble()
+    {
+        Action_Bubble bubble = _npcController.interactable.bubble;
+
+        if (_isNewRestock)
+        {
+            bubble.Set_Bubble(bubble.setSprites[1], bubble.rightIcon.sprite);
+            return;
+        }
+
+        bubble.Set_Bubble(bubble.setSprites[2], bubble.rightIcon.sprite);
+    }
+
+    private void Toggle_RestockMode()
+    {
+        _isNewRestock = !_isNewRestock;
+        Update_RestockBubble();
+    }
 
     private void Restock()
     {

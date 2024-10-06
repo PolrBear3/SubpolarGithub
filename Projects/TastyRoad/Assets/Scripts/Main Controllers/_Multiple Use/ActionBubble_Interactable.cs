@@ -72,6 +72,13 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     }
 
 
+    public void Clear_ActionSubscriptions()
+    {
+        Action1Event = null;
+        Action2Event = null;
+    }
+
+
     // IInteractable
     public void Interact()
     {

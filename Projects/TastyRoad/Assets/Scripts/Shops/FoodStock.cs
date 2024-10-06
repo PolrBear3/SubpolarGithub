@@ -184,7 +184,7 @@ public class FoodStock : MonoBehaviour
 
             return;
         }
-        bubble.Set_Bubble(bubble.setSprites[1], null);
+        bubble.Set_Bubble(bubble.setSprites[1], bubble.setSprites[2]);
         bubble.Toggle_Height(false);
     }
 
