@@ -94,6 +94,12 @@ public class FoodStock : MonoBehaviour
     }
 
 
+    public int Current_Amount()
+    {
+        if (_foodIcon.hasFood == false) return 0;
+        return _foodIcon.currentData.currentAmount;
+    }
+
     public void Update_Amount(int updateAmount)
     {
         if (_foodIcon.hasFood == false) return;

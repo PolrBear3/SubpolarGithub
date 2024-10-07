@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEditor;
 
 public class GroceryNPC : MonoBehaviour, ISaveLoadable
 {
@@ -174,6 +174,26 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         return false;
     }
 
+
+    private List<FoodStock> FoodStocks_byDistance()
+    {
+        List<FoodStock> foodStocks = new();
+
+        foreach (FoodStock stock in _foodStocks)
+        {
+            foodStocks.Add(stock);
+        }
+
+        foodStocks.Sort((a, b) =>
+        {
+            float distanceA = Vector3.Distance(transform.position, a.transform.position);
+            float distanceB = Vector3.Distance(transform.position, b.transform.position);
+            return distanceA.CompareTo(distanceB);
+        });
+
+        return foodStocks;
+    }
+
     private List<FoodStock> Discount_FoodStocks()
     {
         List<FoodStock> discountStocks = new();
@@ -185,26 +205,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
 
         return discountStocks;
-    }
-
-
-    private void SortFoodStocks_byDistance()
-    {
-        System.Array.Sort(_foodStocks, (a, b) =>
-        {
-            float distanceA = Vector3.Distance(a.transform.position, transform.position);
-            float distanceB = Vector3.Distance(b.transform.position, transform.position);
-            return distanceA.CompareTo(distanceB);
-        });
-    }
-    private void SortFoodStocks_byDistance(List<FoodStock> targetFoodStocks)
-    {
-        targetFoodStocks.Sort((a, b) =>
-        {
-            float distanceA = Vector3.Distance(transform.position, a.transform.position);
-            float distanceB = Vector3.Distance(transform.position, b.transform.position);
-            return distanceA.CompareTo(distanceB);
-        });
     }
 
 
@@ -226,6 +226,26 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         FoodData archiveData = new(food);
         _archivedCooks.Add(archiveData);
     }
+
+
+    private List<Food_ScrObj> ArchivedCooks_Ingredients()
+    {
+        List<Food_ScrObj> ingredients = new();
+
+        for (int i = 0; i < _archivedCooks.Count; i++)
+        {
+            for (int j = 0; j < _archivedCooks[i].foodScrObj.ingredients.Count; j++)
+            {
+                Food_ScrObj foodToAdd = _archivedCooks[i].foodScrObj.ingredients[j].foodScrObj;
+                if (ingredients.Contains(foodToAdd)) continue;
+
+                ingredients.Add(foodToAdd);
+            }
+        }
+
+        return ingredients;
+    }
+
 
 
     // Actions
@@ -314,13 +334,15 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         Update_RestockBubble();
     }
 
-    private void Restock()
+    public void Restock()
     {
+        /*
         if (_currentRestockCount < _restockCount)
         {
             _currentRestockCount++;
             return;
         }
+        */
 
         if (_actionCoroutine != null) return;
 
@@ -329,6 +351,44 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Restock_Coroutine()
     {
+        for (int i = 0; i < FoodStocks_byDistance().Count; i++)
+        {
+            if (FoodStocks_byDistance()[i].stockData.unlocked == false) continue;
+
+            int maxAmount = FoodStocks_byDistance()[i].maxAmount;
+            int currentAmount = FoodStocks_byDistance()[i].Current_Amount();
+
+            // move to target food stock
+            NPC_Movement movement = _npcController.movement;
+            movement.Stop_FreeRoam();
+
+            movement.Assign_TargetPosition(FoodStocks_byDistance()[i].transform.position);
+            while (movement.At_TargetPosition() == false) yield return null;
+
+            // new restock
+            if (_isNewRestock)
+            {
+                Food_ScrObj newFood = ArchivedCooks_Ingredients()[Random.Range(0, ArchivedCooks_Ingredients().Count)];
+
+                FoodStocks_byDistance()[i].Set_FoodData(new(newFood));
+                FoodStocks_byDistance()[i].Update_Amount(-currentAmount);
+
+                continue;
+            }
+
+            // amount restock
+            if (FoodStocks_byDistance()[i].foodIcon.hasFood == false) continue;
+            if (currentAmount >= maxAmount) continue;
+
+            int restockAmount = maxAmount - currentAmount;
+
+            for (int j = 0; j < restockAmount; j++)
+            {
+                FoodStocks_byDistance()[i].Update_Amount(1);
+                yield return new WaitForSeconds(_actionSpeed);
+            }
+        }
+
         Cancel_Action();
         yield break;
     }
@@ -361,3 +421,24 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         yield break;
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(GroceryNPC))]
+public class EditorButton : Editor
+{
+    //
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        GroceryNPC npc = (GroceryNPC)target;
+
+        GUILayout.Space(60);
+
+        if (GUILayout.Button("Activate"))
+        {
+            npc.Restock();
+        }
+    }
+}
+#endif
