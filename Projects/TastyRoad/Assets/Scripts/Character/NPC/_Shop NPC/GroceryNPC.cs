@@ -247,7 +247,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-
     // Actions
     private void Interact_FacePlayer()
     {
@@ -262,10 +261,13 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     private void Cancel_Action()
     {
-        if (_actionCoroutine == null) return;
+        if (_actionCoroutine != null)
+        {
+            StopCoroutine(_actionCoroutine);
+            _actionCoroutine = null;
+        }
 
-        StopCoroutine(_actionCoroutine);
-        _actionCoroutine = null;
+        _npcController.interactable.LockInteract(false);
 
         // food box transparency
         _foodBox.color = Color.clear;
@@ -315,6 +317,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
+    private void Toggle_RestockMode()
+    {
+        _isNewRestock = !_isNewRestock;
+        Update_RestockBubble();
+    }
+
     private void Update_RestockBubble()
     {
         Action_Bubble bubble = _npcController.interactable.bubble;
@@ -325,24 +333,17 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        bubble.Set_Bubble(bubble.setSprites[2], bubble.rightIcon.sprite);
+        bubble.Set_Bubble(bubble.setSprites[0], bubble.rightIcon.sprite);
     }
 
-    private void Toggle_RestockMode()
-    {
-        _isNewRestock = !_isNewRestock;
-        Update_RestockBubble();
-    }
 
     public void Restock()
     {
-        /*
         if (_currentRestockCount < _restockCount)
         {
             _currentRestockCount++;
             return;
         }
-        */
 
         if (_actionCoroutine != null) return;
 
@@ -351,40 +352,47 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Restock_Coroutine()
     {
-        for (int i = 0; i < FoodStocks_byDistance().Count; i++)
+        _npcController.interactable.LockInteract(true);
+        _foodBox.color = Color.white;
+
+        NPC_Movement movement = _npcController.movement;
+        movement.Stop_FreeRoam();
+
+        List<FoodStock> stocks = FoodStocks_byDistance();
+
+        for (int i = 0; i < stocks.Count; i++)
         {
-            if (FoodStocks_byDistance()[i].stockData.unlocked == false) continue;
+            if (stocks[i].stockData.unlocked == false) continue;
 
-            int maxAmount = FoodStocks_byDistance()[i].maxAmount;
-            int currentAmount = FoodStocks_byDistance()[i].Current_Amount();
-
-            // move to target food stock
-            NPC_Movement movement = _npcController.movement;
-            movement.Stop_FreeRoam();
-
-            movement.Assign_TargetPosition(FoodStocks_byDistance()[i].transform.position);
-            while (movement.At_TargetPosition() == false) yield return null;
+            int currentAmount = stocks[i].Current_Amount();
 
             // new restock
             if (_isNewRestock)
             {
-                Food_ScrObj newFood = ArchivedCooks_Ingredients()[Random.Range(0, ArchivedCooks_Ingredients().Count)];
+                movement.Assign_TargetPosition(stocks[i].transform.position);
+                while (movement.At_TargetPosition() == false) yield return null;
 
-                FoodStocks_byDistance()[i].Set_FoodData(new(newFood));
-                FoodStocks_byDistance()[i].Update_Amount(-currentAmount);
+                Food_ScrObj newFood = ArchivedCooks_Ingredients()[Random.Range(0, ArchivedCooks_Ingredients().Count)]; ;
 
+                stocks[i].Set_FoodData(new(newFood));
+                stocks[i].Update_Amount(-(currentAmount + 1));
+
+                yield return new WaitForSeconds(_actionSpeed);
                 continue;
             }
 
             // amount restock
-            if (FoodStocks_byDistance()[i].foodIcon.hasFood == false) continue;
-            if (currentAmount >= maxAmount) continue;
+            if (stocks[i].foodIcon.hasFood == false) continue;
 
-            int restockAmount = maxAmount - currentAmount;
+            int restockAmount = stocks[i].maxAmount - currentAmount;
+            if (restockAmount <= 0) continue;
+
+            movement.Assign_TargetPosition(stocks[i].transform.position);
+            while (movement.At_TargetPosition() == false) yield return null;
 
             for (int j = 0; j < restockAmount; j++)
             {
-                FoodStocks_byDistance()[i].Update_Amount(1);
+                stocks[i].Update_Amount(1);
                 yield return new WaitForSeconds(_actionSpeed);
             }
         }
@@ -421,24 +429,3 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         yield break;
     }
 }
-
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(GroceryNPC))]
-public class EditorButton : Editor
-{
-    //
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        GroceryNPC npc = (GroceryNPC)target;
-
-        GUILayout.Space(60);
-
-        if (GUILayout.Button("Activate"))
-        {
-            npc.Restock();
-        }
-    }
-}
-#endif

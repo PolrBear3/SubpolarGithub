@@ -105,8 +105,8 @@ public class FoodStock : MonoBehaviour
         if (_foodIcon.hasFood == false) return;
 
         _foodIcon.currentData.Update_Amount(updateAmount);
-        _foodIcon.Toggle_AmountBar(!_interactable.bubble.bubbleOn);
 
+        Toggle_AmountBar();
         Update_TagSprite();
     }
 
@@ -135,6 +135,7 @@ public class FoodStock : MonoBehaviour
         if (foodData == null || foodData.currentAmount <= 0)
         {
             _foodIcon.Toggle_AmountBar(false);
+            return;
         }
 
         _foodIcon.Toggle_AmountBar(!_interactable.bubble.bubbleOn);
