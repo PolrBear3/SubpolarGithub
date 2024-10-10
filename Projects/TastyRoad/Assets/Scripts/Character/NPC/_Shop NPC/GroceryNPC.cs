@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class GroceryNPC : MonoBehaviour, ISaveLoadable
 {
     [Header("")]
     [SerializeField] private NPC_Controller _npcController;
+
+    [Header("")]
+    [SerializeField] private GameObject _questBarObject;
+    [SerializeField] private AmountBar _questBar;
 
     [Header("")]
     [SerializeField] private SpriteRenderer _foodBox;
@@ -47,6 +50,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         Update_RestockBubble();
 
+        _questBar.Toggle_BarColor(true);
+        Update_QuestBar();
+
         // untrack
         _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
 
@@ -69,6 +75,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent += Cancel_Action;
         interact.InteractEvent += Interact_FacePlayer;
 
+        interact.InteractEvent += Update_QuestBar;
+        interact.UnInteractEvent += Update_QuestBar;
+
         interact.Action1Event += Toggle_RestockMode;
         interact.Action2Event += Complete_Quest;
     }
@@ -88,6 +97,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent -= Cancel_Action;
         interact.InteractEvent -= Interact_FacePlayer;
 
+        interact.InteractEvent -= Update_QuestBar;
+        interact.UnInteractEvent -= Update_QuestBar;
+
         interact.Action1Event -= Toggle_RestockMode;
         interact.Action2Event -= Complete_Quest;
     }
@@ -97,6 +109,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("GroceryNPC/_archivedCooks", _archivedCooks);
+        ES3.Save("GroceryNPC/_currentQuestCount", _currentQuestCount);
 
         Save_CurrentFoodStocks();
     }
@@ -116,6 +129,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         // load
         _archivedCooks = ES3.Load("GroceryNPC/_archivedCooks", _archivedCooks);
+        _currentQuestCount = ES3.Load("GroceryNPC/_currentQuestCount", _currentQuestCount);
 
         Load_CurrentFoodStocks();
     }
@@ -247,7 +261,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Actions
+    // Basics
     private void Interact_FacePlayer()
     {
         // facing to player direction
@@ -257,6 +271,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         movement.Stop_FreeRoam();
         movement.Free_Roam(_currentSubLocation.roamArea, Random.Range(movement.intervalTimeRange.x, movement.intervalTimeRange.y));
+    }
+
+
+    private void Start_Action()
+    {
+        _npcController.interactable.LockInteract(true);
+        _foodBox.color = Color.white;
+
+        NPC_Movement movement = _npcController.movement;
+        movement.Stop_FreeRoam();
     }
 
     private void Cancel_Action()
@@ -278,16 +302,32 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
+    // Quest
+    public void Update_QuestBar()
+    {
+        Action_Bubble bubble = _npcController.interactable.bubble;
+        _questBarObject.SetActive(!bubble.bubbleOn);
+
+        if (bubble.bubbleOn) return;
+        _questBar.Load_Custom(_questCount, _currentQuestCount);
+    }
+
+
     private void Set_QuestFood()
     {
         if (_questFood != null) return;
+        if (_currentQuestCount >= _questCount) return;
 
         // get random cooked food from _archivedCooks
         _questFood = _archivedCooks[Random.Range(0, _archivedCooks.Count)].foodScrObj;
 
-        Action_Bubble bubble = _npcController.interactable.bubble;
+        ActionBubble_Interactable interactable = _npcController.interactable;
+        Action_Bubble bubble = interactable.bubble;
+
         bubble.Set_Bubble(_questFood, _questFood);
         Update_RestockBubble();
+
+        interactable.UnInteract();
     }
 
     private void Complete_Quest()
@@ -317,6 +357,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
+    // Restock
     private void Toggle_RestockMode()
     {
         _isNewRestock = !_isNewRestock;
@@ -329,15 +370,15 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         if (_isNewRestock)
         {
-            bubble.Set_Bubble(bubble.setSprites[1], bubble.rightIcon.sprite);
+            bubble.Set_Bubble(bubble.setSprites[1], null);
             return;
         }
 
-        bubble.Set_Bubble(bubble.setSprites[0], bubble.rightIcon.sprite);
+        bubble.Set_Bubble(bubble.setSprites[0], null);
     }
 
 
-    public void Restock()
+    private void Restock()
     {
         if (_currentRestockCount < _restockCount)
         {
@@ -352,13 +393,10 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Restock_Coroutine()
     {
-        _npcController.interactable.LockInteract(true);
-        _foodBox.color = Color.white;
-
-        NPC_Movement movement = _npcController.movement;
-        movement.Stop_FreeRoam();
+        Start_Action();
 
         List<FoodStock> stocks = FoodStocks_byDistance();
+        NPC_Movement movement = _npcController.movement;
 
         for (int i = 0; i < stocks.Count; i++)
         {
@@ -402,16 +440,46 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    private void Set_Discount()
+    // Other
+    public void Set_Discount()
     {
         if (_actionCoroutine != null) return;
         if (_currentQuestCount < _questCount) return;
 
-        _currentQuestCount = 0;
         _actionCoroutine = StartCoroutine(Set_Discount_Coroutine());
     }
     private IEnumerator Set_Discount_Coroutine()
     {
+        Start_Action();
+
+        List<FoodStock> sortedStocks = new();
+        NPC_Movement movement = _npcController.movement;
+
+        // sort stocks according to conditions
+        for (int i = 0; i < FoodStocks_byDistance().Count; i++)
+        {
+            if (FoodStocks_byDistance()[i].stockData.unlocked == false) continue;
+            if (FoodStocks_byDistance()[i].foodIcon.hasFood == false) continue;
+            if (FoodStocks_byDistance()[i].stockData.isDiscount) continue;
+
+            sortedStocks.Add(FoodStocks_byDistance()[i]);
+        }
+
+        // cancel action if there are no available stocks
+        if (sortedStocks.Count <= 0)
+        {
+            Cancel_Action();
+            yield break;
+        }
+
+        FoodStock randStock = sortedStocks[Random.Range(0, sortedStocks.Count)];
+
+        movement.Assign_TargetPosition(randStock.transform.position);
+        while (movement.At_TargetPosition() == false) yield return null;
+
+        randStock.Toggle_Discount(true);
+        _currentQuestCount = 0;
+
         Cancel_Action();
         yield break;
     }

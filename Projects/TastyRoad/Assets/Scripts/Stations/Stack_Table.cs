@@ -44,7 +44,7 @@ public class Stack_Table : Table, IInteractable
     }
 
 
-    //
+    // Functions
     public void Swap_Food()
     {
         FoodData_Controller tableIcon = stationController.Food_Icon();
@@ -86,7 +86,6 @@ public class Stack_Table : Table, IInteractable
         Basic_SwapFood();
         tableIcon.Show_AmountBar();
     }
-
 
     public void Stack_Food()
     {

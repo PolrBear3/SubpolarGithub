@@ -58,32 +58,27 @@ public class Action_Bubble : MonoBehaviour
     // Icon Sprite
     public void Set_Bubble(Sprite leftIcon, Sprite rightIcon)
     {
-        if (_leftIcon == null) return;
+        if (leftIcon == null) return;
 
-        _leftIcon.sprite = leftIcon;
         _leftIcon.transform.localPosition = Vector2.zero;
+        _leftIcon.sprite = leftIcon;
 
-        if (_rightIcon == null) return;
+        if (rightIcon == null) return;
 
-        _rightIcon.sprite = rightIcon;
         _rightIcon.transform.localPosition = Vector2.zero;
+        _rightIcon.sprite = rightIcon;
     }
     public void Set_Bubble(Food_ScrObj leftFood, Food_ScrObj rightFood)
     {
-        // reposition left food icon to the center of the bubble
+        if (leftFood == null) return;
+
         _leftIcon.transform.localPosition = leftFood.centerPosition;
+        _leftIcon.sprite = leftFood.sprite;
 
-        // reposition right food icon to the center of the bubble
-        Sprite rightFoodSprite = _rightIcon.sprite;
+        if (rightFood == null) return;
 
-        if (rightFood != null)
-        {
-            rightFoodSprite = rightFood.sprite;
-            _rightIcon.transform.localPosition = rightFood.centerPosition;
-        }
-
-        //
-        Set_Bubble(leftFood.sprite, rightFoodSprite);
+        _rightIcon.transform.localPosition = rightFood.centerPosition;
+        _rightIcon.sprite = rightFood.sprite;
     }
 
 

@@ -14,9 +14,9 @@ public class EditorButton : Editor
 
         GUILayout.Space(60);
 
-        if (GUILayout.Button("Restock"))
+        if (GUILayout.Button("Activate"))
         {
-            npc.Restock();
+            npc.Set_Discount();
         }
     }
 }

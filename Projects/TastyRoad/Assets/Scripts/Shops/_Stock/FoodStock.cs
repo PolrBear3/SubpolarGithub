@@ -91,6 +91,9 @@ public class FoodStock : MonoBehaviour
     {
         _foodIcon.Set_CurrentData(data);
         _foodIcon.Show_Icon();
+
+        if (_foodIcon.hasFood == false) return;
+        Update_TagSprite();
     }
 
 
@@ -217,7 +220,7 @@ public class FoodStock : MonoBehaviour
 
         _tagSR.color = Color.white;
 
-        if (_foodIcon.hasFood == false || _foodIcon.currentData.currentAmount <= 0)
+        if (_foodIcon.hasFood == false)
         {
             _tagSR.sprite = _tagSprites[2];
             return;
@@ -302,6 +305,10 @@ public class FoodStock : MonoBehaviour
 
         // coin launch animation
         _launcher.Parabola_CoinLaunch(stockedFood.sprite, _interactable.detection.player.transform.position);
+
+        // deactivate discount on empty amount
+        if (Current_Amount() > 0) return;
+        Toggle_Discount(false);
     }
 
     private void Purchase_Single()
