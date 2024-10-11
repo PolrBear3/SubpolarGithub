@@ -19,13 +19,14 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField] private FoodStock[] _foodStocks;
+    [SerializeField] private PlaceableStock[] _placeableStocks;
 
 
     [Header("")]
     [SerializeField][Range(0, 1)] private float _actionSpeed;
 
-    [SerializeField] private Food_ScrObj[] _startingArchive;
-    private List<FoodData> _archivedCooks = new();
+    [SerializeField] private Food_ScrObj[] _startingBundles;
+    private List<FoodData> _archivedBundles = new();
     private Food_ScrObj _questFood;
 
     [SerializeField][Range(0, 100)] private int _restockCount;
@@ -36,7 +37,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
 
     private bool _isNewRestock;
-
     private Coroutine _actionCoroutine;
 
 
@@ -108,7 +108,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("GroceryNPC/_archivedCooks", _archivedCooks);
+        ES3.Save("GroceryNPC/_archivedCooks", _archivedBundles);
+
+        ES3.Save("GroceryNPC/_currentRestockCount", _currentRestockCount);
         ES3.Save("GroceryNPC/_currentQuestCount", _currentQuestCount);
 
         Save_CurrentFoodStocks();
@@ -119,16 +121,18 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // new
         if (ES3.KeyExists("GroceryNPC/_archivedCooks") == false)
         {
-            foreach (Food_ScrObj food in _startingArchive)
+            foreach (Food_ScrObj food in _startingBundles)
             {
-                Archive_toCooks(food);
+                Archive_toBundles(food);
             }
 
             return;
         }
 
         // load
-        _archivedCooks = ES3.Load("GroceryNPC/_archivedCooks", _archivedCooks);
+        _archivedBundles = ES3.Load("GroceryNPC/_archivedCooks", _archivedBundles);
+
+        _currentRestockCount = ES3.Load("GroceryNPC/_currentRestockCount", _currentRestockCount);
         _currentQuestCount = ES3.Load("GroceryNPC/_currentQuestCount", _currentQuestCount);
 
         Load_CurrentFoodStocks();
@@ -225,32 +229,42 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // Data Control
     private bool Is_Archived(Food_ScrObj food)
     {
-        for (int i = 0; i < _archivedCooks.Count; i++)
+        for (int i = 0; i < _archivedBundles.Count; i++)
         {
-            if (_archivedCooks[i].foodScrObj != food) continue;
+            if (_archivedBundles[i].foodScrObj != food) continue;
             return true;
         }
         return false;
     }
 
-    private void Archive_toCooks(Food_ScrObj food)
+    private void Archive_toBundles(Food_ScrObj food)
     {
         if (Is_Archived(food)) return;
 
         FoodData archiveData = new(food);
-        _archivedCooks.Add(archiveData);
+        _archivedBundles.Add(archiveData);
     }
 
 
-    private List<Food_ScrObj> ArchivedCooks_Ingredients()
+    private List<Food_ScrObj> ArchivedBundles_Ingredients()
     {
         List<Food_ScrObj> ingredients = new();
 
-        for (int i = 0; i < _archivedCooks.Count; i++)
+        for (int i = 0; i < _archivedBundles.Count; i++)
         {
-            for (int j = 0; j < _archivedCooks[i].foodScrObj.ingredients.Count; j++)
+            // Raw Food
+            if (_archivedBundles[i].foodScrObj.ingredients.Count <= 0)
             {
-                Food_ScrObj foodToAdd = _archivedCooks[i].foodScrObj.ingredients[j].foodScrObj;
+                if (ingredients.Contains(_archivedBundles[i].foodScrObj)) continue;
+
+                ingredients.Add(_archivedBundles[i].foodScrObj);
+                continue;
+            }
+
+            // Cooked Food
+            for (int j = 0; j < _archivedBundles[i].foodScrObj.ingredients.Count; j++)
+            {
+                Food_ScrObj foodToAdd = _archivedBundles[i].foodScrObj.ingredients[j].foodScrObj;
                 if (ingredients.Contains(foodToAdd)) continue;
 
                 ingredients.Add(foodToAdd);
@@ -319,7 +333,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         if (_currentQuestCount >= _questCount) return;
 
         // get random cooked food from _archivedCooks
-        _questFood = _archivedCooks[Random.Range(0, _archivedCooks.Count)].foodScrObj;
+        _questFood = _archivedBundles[Random.Range(0, _archivedBundles.Count)].foodScrObj;
 
         ActionBubble_Interactable interactable = _npcController.interactable;
         Action_Bubble bubble = interactable.bubble;
@@ -410,7 +424,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
                 movement.Assign_TargetPosition(stocks[i].transform.position);
                 while (movement.At_TargetPosition() == false) yield return null;
 
-                Food_ScrObj newFood = ArchivedCooks_Ingredients()[Random.Range(0, ArchivedCooks_Ingredients().Count)]; ;
+                Food_ScrObj newFood = ArchivedBundles_Ingredients()[Random.Range(0, ArchivedBundles_Ingredients().Count)]; ;
 
                 stocks[i].Set_FoodData(new(newFood));
                 stocks[i].Update_Amount(-(currentAmount + 1));
@@ -485,14 +499,41 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    private void Collect_FoodBundles()
+    private List<PlaceableStock> Complete_Stocks()
+    {
+        List<PlaceableStock> stocks = new();
+
+        for (int i = 0; i < _placeableStocks.Length; i++)
+        {
+            if (_placeableStocks[i].isComplete == false) continue;
+            stocks.Add(_placeableStocks[i]);
+        }
+
+        return stocks;
+    }
+
+    public void Collect_FoodBundles()
     {
         if (_actionCoroutine != null) return;
+        if (Complete_Stocks().Count <= 0) return;
 
         _actionCoroutine = StartCoroutine(Collect_FoodBundles_Coroutine());
     }
     private IEnumerator Collect_FoodBundles_Coroutine()
     {
+        Start_Action();
+
+        NPC_Movement movement = _npcController.movement;
+
+        for (int i = 0; i < Complete_Stocks().Count; i++)
+        {
+            movement.Assign_TargetPosition(Complete_Stocks()[i].transform.position);
+            while (movement.At_TargetPosition() == false) yield return null;
+
+            Archive_toBundles(Complete_Stocks()[i].foodIcon.currentData.foodScrObj);
+            Complete_Stocks()[i].Dispose();
+        }
+
         Cancel_Action();
         yield break;
     }

@@ -54,10 +54,16 @@ public class FoodStock : MonoBehaviour
         }
 
         Toggle_Unlock(_stockData.unlocked);
+        Toggle_AmountBar();
+
         Update_Sprite();
+        Update_TagSprite();
         Update_Bubble();
 
         // subscriptions
+        _interactable.detection.EnterEvent += Toggle_AmountBar;
+        _interactable.detection.ExitEvent += Toggle_AmountBar;
+
         _interactable.InteractEvent += Set_Dialog;
         _interactable.InteractEvent += Toggle_AmountBar;
         _interactable.UnInteractEvent += Toggle_AmountBar;
@@ -70,6 +76,9 @@ public class FoodStock : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
+        _interactable.detection.EnterEvent -= Toggle_AmountBar;
+        _interactable.detection.ExitEvent -= Toggle_AmountBar;
+
         _interactable.InteractEvent -= Set_Dialog;
         _interactable.InteractEvent -= Toggle_AmountBar;
         _interactable.UnInteractEvent -= Toggle_AmountBar;
@@ -133,14 +142,16 @@ public class FoodStock : MonoBehaviour
 
     private void Toggle_AmountBar()
     {
+        Player_Controller playerDetection = _interactable.detection.player;
         FoodData foodData = _foodIcon.currentData;
 
-        if (foodData == null || foodData.currentAmount <= 0)
+        if (playerDetection == null || foodData == null || foodData.currentAmount <= 0)
         {
             _foodIcon.Toggle_AmountBar(false);
             return;
         }
 
+        _foodIcon.Toggle_BarLock(false);
         _foodIcon.Toggle_AmountBar(!_interactable.bubble.bubbleOn);
     }
 
@@ -220,13 +231,13 @@ public class FoodStock : MonoBehaviour
 
         _tagSR.color = Color.white;
 
-        if (_foodIcon.hasFood == false)
+        if (_stockData.isDiscount)
         {
             _tagSR.sprite = _tagSprites[2];
             return;
         }
 
-        if (_stockData.isDiscount == false)
+        if (_foodIcon.hasFood == false || _foodIcon.currentData.currentAmount <= 0)
         {
             _tagSR.sprite = _tagSprites[0];
             return;

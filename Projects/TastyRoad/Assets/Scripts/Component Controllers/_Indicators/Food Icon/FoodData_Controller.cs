@@ -42,6 +42,10 @@ public class FoodData_Controller : MonoBehaviour
     public ConditionSprites[] conditionSprites => _conditionSprites;
 
     [Header("")]
+    [SerializeField] private float _toggleHeight;
+    private float _defaultHeight;
+
+    [Header("")]
     [SerializeField] private bool _iconShowLocked;
     [SerializeField] private bool _barShowLocked;
 
@@ -50,6 +54,11 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // UnityEngine
+    private void Awake()
+    {
+        _defaultHeight = transform.localPosition.y;
+    }
+
     private void Start()
     {
         Show_Icon();
@@ -164,6 +173,18 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
+    public void Toggle_Height(bool toggle)
+    {
+        if (toggle)
+        {
+            transform.localPosition = new Vector2(transform.localPosition.x, _toggleHeight);
+            return;
+        }
+
+        transform.localPosition = new Vector2(transform.localPosition.x, _defaultHeight);
+    }
+
+
     // Amount Bar
     public void Show_AmountBar()
     {
@@ -215,6 +236,11 @@ public class FoodData_Controller : MonoBehaviour
         _amountBar.color = Color.clear;
     }
 
+
+    public void Toggle_BarLock(bool toggle)
+    {
+        _barShowLocked = toggle;
+    }
 
     public void Toggle_AmountBar(bool toggle)
     {

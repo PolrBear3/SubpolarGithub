@@ -156,6 +156,7 @@ public class Action_Bubble : MonoBehaviour
         }
     }
 
+
     public void Toggle_Height(bool toggle)
     {
         if (toggle)
@@ -165,5 +166,10 @@ public class Action_Bubble : MonoBehaviour
         }
 
         transform.localPosition = new Vector2(transform.localPosition.x, _defaultHeight);
+    }
+
+    public void Adjust_Height(float height)
+    {
+        transform.localPosition = new Vector2(transform.localPosition.x, height);
     }
 }

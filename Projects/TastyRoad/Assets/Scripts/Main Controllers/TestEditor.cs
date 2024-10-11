@@ -10,13 +10,13 @@ public class EditorButton : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        GroceryNPC npc = (GroceryNPC)target;
+        GroceryNPC targetScript = (GroceryNPC)target;
 
         GUILayout.Space(60);
 
         if (GUILayout.Button("Activate"))
         {
-            npc.Set_Discount();
+            targetScript.Collect_FoodBundles();
         }
     }
 }
