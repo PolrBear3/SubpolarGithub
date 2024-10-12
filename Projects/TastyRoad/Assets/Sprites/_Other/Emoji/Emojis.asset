@@ -1,6 +1,115 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!21 &-2829102448025736192
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
+  m_Name: Emojis
+  m_EditorClassIdentifier: 
+  hashCode: -1701531433
+  material: {fileID: 3377082071368041583}
+  materialHashCode: 0
+  m_Version: 1.1.0
+  m_FaceInfo:
+    m_FaceIndex: 0
+    m_FamilyName: 
+    m_StyleName: 
+    m_PointSize: 0
+    m_Scale: 0
+    m_UnitsPerEM: 0
+    m_LineHeight: 0
+    m_AscentLine: 0
+    m_CapLine: 0
+    m_MeanLine: 0
+    m_Baseline: 0
+    m_DescentLine: 0
+    m_SuperscriptOffset: 0
+    m_SuperscriptSize: 0
+    m_SubscriptOffset: 0
+    m_SubscriptSize: 0
+    m_UnderlineOffset: 0
+    m_UnderlineThickness: 0
+    m_StrikethroughOffset: 0
+    m_StrikethroughThickness: 0
+    m_TabWidth: 0
+  spriteSheet: {fileID: 2800000, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
+  m_SpriteCharacterTable:
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 0
+    m_Scale: 1
+    m_Name: Emojis_0
+    m_HashCode: -1836824360
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 1
+    m_Scale: 1
+    m_Name: Emojis_1
+    m_HashCode: -1836824359
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 2
+    m_Scale: 1
+    m_Name: Emojis_2
+    m_HashCode: -1836824358
+  m_SpriteGlyphTable:
+  - m_Index: 0
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: -5
+      m_HorizontalBearingY: 10.5
+      m_HorizontalAdvance: 6.5
+    m_GlyphRect:
+      m_X: 0
+      m_Y: 64
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 4
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 31715697, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
+  - m_Index: 1
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: -5
+      m_HorizontalBearingY: 10.5
+      m_HorizontalAdvance: 6.5
+    m_GlyphRect:
+      m_X: 16
+      m_Y: 64
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 4
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -115608470, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
+  - m_Index: 2
+    m_Metrics:
+      m_Width: 16
+      m_Height: 16
+      m_HorizontalBearingX: -5
+      m_HorizontalBearingY: 10.5
+      m_HorizontalAdvance: 6.5
+    m_GlyphRect:
+      m_X: 32
+      m_Y: 64
+      m_Width: 16
+      m_Height: 16
+    m_Scale: 4
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -563845673, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
+  spriteInfoList: []
+  fallbackSpriteAssets: []
+--- !u!21 &3377082071368041583
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 1
@@ -41,420 +150,3 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
-  m_Name: Emojis
-  m_EditorClassIdentifier: 
-  hashCode: -1701531433
-  material: {fileID: -2829102448025736192}
-  materialHashCode: 0
-  m_Version: 1.1.0
-  m_FaceInfo:
-    m_FaceIndex: 0
-    m_FamilyName: 
-    m_StyleName: 
-    m_PointSize: 0
-    m_Scale: 0
-    m_UnitsPerEM: 0
-    m_LineHeight: 0
-    m_AscentLine: 0
-    m_CapLine: 0
-    m_MeanLine: 0
-    m_Baseline: 0
-    m_DescentLine: 0
-    m_SuperscriptOffset: 0
-    m_SuperscriptSize: 0
-    m_SubscriptOffset: 0
-    m_SubscriptSize: 0
-    m_UnderlineOffset: 0
-    m_UnderlineThickness: 0
-    m_StrikethroughOffset: 0
-    m_StrikethroughThickness: 0
-    m_TabWidth: 0
-  spriteSheet: {fileID: 2800000, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  m_SpriteCharacterTable:
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 0
-    m_Scale: 1
-    m_Name: Emojis_2
-    m_HashCode: -1836824358
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 1
-    m_Scale: 1
-    m_Name: Emojis_3
-    m_HashCode: -1836824357
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 2
-    m_Scale: 1
-    m_Name: Emojis_0
-    m_HashCode: -1836824360
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 3
-    m_Scale: 1
-    m_Name: Emojis_1
-    m_HashCode: -1836824359
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 4
-    m_Scale: 1
-    m_Name: Emojis_5
-    m_HashCode: -1836824355
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 5
-    m_Scale: 1
-    m_Name: Emojis_7
-    m_HashCode: -1836824353
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 6
-    m_Scale: 1
-    m_Name: Emojis_6
-    m_HashCode: -1836824354
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 7
-    m_Scale: 1
-    m_Name: Emojis_4
-    m_HashCode: -1836824356
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 8
-    m_Scale: 1
-    m_Name: Emojis_8
-    m_HashCode: -1836824368
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 9
-    m_Scale: 1
-    m_Name: Emojis_11
-    m_HashCode: -485661752
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 10
-    m_Scale: 1
-    m_Name: Emojis_16
-    m_HashCode: -485661745
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 11
-    m_Scale: 1
-    m_Name: Emojis_9
-    m_HashCode: -1836824367
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 12
-    m_Scale: 1
-    m_Name: Emojis_12
-    m_HashCode: -485661749
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 13
-    m_Scale: 1
-    m_Name: Emojis_15
-    m_HashCode: -485661748
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 14
-    m_Scale: 1
-    m_Name: Emojis_10
-    m_HashCode: -485661751
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 15
-    m_Scale: 1
-    m_Name: Emojis_13
-    m_HashCode: -485661750
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 16
-    m_Scale: 1
-    m_Name: Emojis_14
-    m_HashCode: -485661747
-  m_SpriteGlyphTable:
-  - m_Index: 0
-    m_Metrics:
-      m_Width: 5
-      m_Height: 5
-      m_HorizontalBearingX: 0.6
-      m_HorizontalBearingY: 5
-      m_HorizontalAdvance: 5.5
-    m_GlyphRect:
-      m_X: 38
-      m_Y: 70
-      m_Width: 5
-      m_Height: 5
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -563845673, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 1
-    m_Metrics:
-      m_Width: 5
-      m_Height: 6
-      m_HorizontalBearingX: 0.6
-      m_HorizontalBearingY: 5
-      m_HorizontalAdvance: 6
-    m_GlyphRect:
-      m_X: 54
-      m_Y: 69
-      m_Width: 5
-      m_Height: 6
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -1822534943, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 2
-    m_Metrics:
-      m_Width: 8
-      m_Height: 8
-      m_HorizontalBearingX: 0.6
-      m_HorizontalBearingY: 7
-      m_HorizontalAdvance: 9
-    m_GlyphRect:
-      m_X: 4
-      m_Y: 68
-      m_Width: 8
-      m_Height: 8
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: 31715697, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 3
-    m_Metrics:
-      m_Width: 12
-      m_Height: 8
-      m_HorizontalBearingX: 0.6
-      m_HorizontalBearingY: 7
-      m_HorizontalAdvance: 13
-    m_GlyphRect:
-      m_X: 18
-      m_Y: 68
-      m_Width: 12
-      m_Height: 8
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -115608470, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 4
-    m_Metrics:
-      m_Width: 8
-      m_Height: 3
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 1.5
-      m_HorizontalAdvance: 8
-    m_GlyphRect:
-      m_X: 36
-      m_Y: 54
-      m_Width: 8
-      m_Height: 3
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: 1958312823, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 5
-    m_Metrics:
-      m_Width: 6
-      m_Height: 6
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 3
-      m_HorizontalAdvance: 6
-    m_GlyphRect:
-      m_X: 5
-      m_Y: 53
-      m_Width: 6
-      m_Height: 6
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -478051280, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 6
-    m_Metrics:
-      m_Width: 6
-      m_Height: 6
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 3
-      m_HorizontalAdvance: 6
-    m_GlyphRect:
-      m_X: 21
-      m_Y: 53
-      m_Width: 6
-      m_Height: 6
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -9744077, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 7
-    m_Metrics:
-      m_Width: 6
-      m_Height: 6
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 5
-      m_HorizontalAdvance: 9
-    m_GlyphRect:
-      m_X: 53
-      m_Y: 53
-      m_Width: 6
-      m_Height: 6
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -1490066568, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 8
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 6
-      m_Y: 38
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -1329673102, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 9
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 22
-      m_Y: 38
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -1812564934, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 10
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 38
-      m_Y: 38
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: 795749105, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 11
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 6
-      m_Y: 22
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: 1023386618, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 12
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 22
-      m_Y: 22
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: 457392871, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 13
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 38
-      m_Y: 22
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -608608457, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 14
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 6
-      m_Y: 6
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: 1289402976, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 15
-    m_Metrics:
-      m_Width: 4
-      m_Height: 4
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 2
-      m_HorizontalAdvance: 4
-    m_GlyphRect:
-      m_X: 22
-      m_Y: 6
-      m_Width: 4
-      m_Height: 4
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -532406891, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  - m_Index: 16
-    m_Metrics:
-      m_Width: 5
-      m_Height: 6
-      m_HorizontalBearingX: 1.5
-      m_HorizontalBearingY: 3
-      m_HorizontalAdvance: 5
-    m_GlyphRect:
-      m_X: 37
-      m_Y: 5
-      m_Width: 5
-      m_Height: 6
-    m_Scale: 1.5
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: 2108408059, guid: d306f2d808b4042a0bc7098853baf259, type: 3}
-  spriteInfoList: []
-  fallbackSpriteAssets: []

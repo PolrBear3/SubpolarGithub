@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlaceableStock : MonoBehaviour
 {
@@ -37,8 +36,8 @@ public class PlaceableStock : MonoBehaviour
     private void Start()
     {
         Update_forComplete();
+        Update_Amount();
         Update_Bubble();
-        Toggle_AmountBar();
 
         // subscriptions
         _interactable.detection.EnterEvent += Toggle_AmountBar;
@@ -71,6 +70,20 @@ public class PlaceableStock : MonoBehaviour
     }
 
 
+    // Data Control
+    public void Load_Data(List<FoodData> placedData, bool completeData)
+    {
+        _placedFoods = new(placedData);
+        _isComplete = completeData;
+
+        if (_placedFoods.Count <= 0) return;
+
+        // set recently placed food
+        Food_ScrObj recentFood = _placedFoods[_placedFoods.Count - 1].foodScrObj;
+        _foodIcon.Set_CurrentData(new(recentFood));
+    }
+
+
     // Updates and Toggles
     public void Update_forComplete() // currently used in test editor
     {
@@ -80,6 +93,8 @@ public class PlaceableStock : MonoBehaviour
         if (_isComplete == false)
         {
             _sr.sprite = _sprites[0];
+            _foodIcon.ShowIcon_LockToggle(false);
+
             _foodIcon.Toggle_Height(false);
 
             return;
@@ -90,12 +105,10 @@ public class PlaceableStock : MonoBehaviour
     }
 
 
-    private void Update_AmountBar()
+    private void Update_Amount()
     {
+        if (_placedFoods.Count <= 0) return;
         _foodIcon.currentData.Set_Amount(_placedFoods.Count);
-        _foodIcon.Show_AmountBar();
-
-        Toggle_AmountBar();
     }
 
     private void Toggle_AmountBar()
@@ -109,8 +122,7 @@ public class PlaceableStock : MonoBehaviour
             return;
         }
 
-        _foodIcon.Toggle_BarLock(false);
-        _foodIcon.Toggle_AmountBar(!_interactable.bubble.bubbleOn);
+        _foodIcon.ShowAmountBar_LockToggle(_interactable.bubble.bubbleOn);
     }
 
 
@@ -164,7 +176,8 @@ public class PlaceableStock : MonoBehaviour
         playerIcon.Show_Condition();
 
         //
-        Update_AmountBar();
+        Update_Amount();
+        Toggle_AmountBar();
     }
 
 
@@ -190,6 +203,7 @@ public class PlaceableStock : MonoBehaviour
         _foodIcon.Set_CurrentData(null);
         _foodIcon.Show_Icon();
 
+        Update_Amount();
         Toggle_AmountBar();
     }
 }

@@ -16,7 +16,7 @@ public class EditorButton : Editor
 
         if (GUILayout.Button("Activate"))
         {
-            targetScript.Collect_FoodBundles();
+            targetScript.Restock();
         }
     }
 }

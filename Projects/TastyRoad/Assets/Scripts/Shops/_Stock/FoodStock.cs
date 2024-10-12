@@ -25,10 +25,12 @@ public class FoodStock : MonoBehaviour
     [SerializeField] private Sprite[] _tagSprites;
 
     [Header("")]
-    [Range(1, 98)][SerializeField] private int _maxAmount;
+    [Range(1, 99)][SerializeField] private int _maxAmount;
     public int maxAmount => _maxAmount;
 
-    [Range(1, 98)][SerializeField] private int _discountPrice;
+    [Range(1, 99)][SerializeField] private int _unlockPrice;
+
+    [Range(1, 99)][SerializeField] private int _discountPrice;
 
 
     private StockData _stockData;
@@ -160,15 +162,27 @@ public class FoodStock : MonoBehaviour
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
+        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=0>";
+
         if (_stockData.unlocked == false)
         {
-            // dialog
+            string unlockDialog = _unlockPrice + " <sprite=0> to unlock." + currentAmountString;
+            dialog.Update_Dialog(new DialogData(dialog.datas[0].icon, unlockDialog));
+
             return;
         }
 
-        if (_foodIcon.currentData == null || _foodIcon.currentData.currentAmount <= 0)
+        if (_foodIcon.currentData == null)
         {
-            // dialog
+            dialog.Update_Dialog(1);
+
+            interactable.UnInteract();
+            return;
+        }
+
+        if (_foodIcon.currentData.currentAmount <= 0)
+        {
+            dialog.Update_Dialog(2);
 
             interactable.UnInteract();
             return;
@@ -184,7 +198,7 @@ public class FoodStock : MonoBehaviour
             price = _discountPrice;
         }
 
-        string priceString = price + " nuggets to purchase.\nyour current nugget amount is " + _interactable.mainController.GoldenNugget_Amount();
+        string priceString = price + " <sprite=0> to purchase." + currentAmountString;
 
         DialogData data = new(currentFood.sprite, priceString);
         DialogBox dialogBox = dialog.Update_Dialog(data);
