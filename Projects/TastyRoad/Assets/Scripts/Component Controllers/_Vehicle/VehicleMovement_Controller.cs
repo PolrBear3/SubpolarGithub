@@ -3,24 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class VehicleMovement_Controller : ActionBubble_Interactable
+public class VehicleMovement_Controller : MonoBehaviour
 {
+    [Header("")]
+    [SerializeField] private Vehicle_Controller _controller;
+    [SerializeField] private ActionBubble_Interactable _interactable;
+
+
     private bool _onBoard;
 
 
     // UnityEngine
-    private new void Start()
+    private void Start()
     {
-        base.Start();
-
         // subscriptions
-        Action1Event += Ride;
+        _interactable.InteractEvent += Exit;
+
+        _interactable.Action1Event += Ride;
+        _interactable.Action2Event += Open_WorldMap;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        Action1Event -= Ride;
+        _interactable.InteractEvent -= Exit;
+
+        _interactable.Action1Event -= Ride;
+        _interactable.Action2Event -= Open_WorldMap;
     }
 
 
@@ -32,12 +41,19 @@ public class VehicleMovement_Controller : ActionBubble_Interactable
 
 
     //
+    private void Open_WorldMap()
+    {
+        _interactable.mainController.worldMap.Map_Toggle(true);
+    }
+
+
+    // Movement System
     private void Ride()
     {
-        LockUnInteract(true);
-        bubble.Toggle(false);
+        _interactable.LockUnInteract(true);
+        _interactable.bubble.Toggle(false);
 
-        Player_Controller player = mainController.Player();
+        Player_Controller player = _interactable.mainController.Player();
 
         player.Player_Input().enabled = false;
         player.Toggle_Hide(true);
@@ -49,10 +65,9 @@ public class VehicleMovement_Controller : ActionBubble_Interactable
     {
         if (_onBoard == false) return;
 
-        LockUnInteract(false);
-        UnInteract();
+        _interactable.LockUnInteract(false);
 
-        Player_Controller player = mainController.Player();
+        Player_Controller player = _interactable.mainController.Player();
 
         player.Player_Input().enabled = true;
         player.Toggle_Hide(false);

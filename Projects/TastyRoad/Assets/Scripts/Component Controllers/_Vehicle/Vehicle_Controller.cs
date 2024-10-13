@@ -9,7 +9,13 @@ public class Vehicle_Controller : ActionBubble_Interactable
     [SerializeField] private VehicleMenu_Controller _menu;
     public VehicleMenu_Controller menu => _menu;
 
+    [SerializeField] private VehicleMovement_Controller _movement;
+
     [SerializeField] private Vehicle_Customizer _customizer;
+
+    [Header("")]
+    [SerializeField] private Custom_PositionClaimer _positionClaimer;
+    public Custom_PositionClaimer positionClaimer => _positionClaimer;
 
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
@@ -30,13 +36,11 @@ public class Vehicle_Controller : ActionBubble_Interactable
         base.Start();
 
         Action1Event += Open_VehicleMenu;
-        Action2Event += Open_WorldMap;
     }
 
     private void OnDestroy()
     {
         Action1Event -= Open_VehicleMenu;
-        Action2Event -= Open_WorldMap;
     }
 
     private void Update()
@@ -61,11 +65,6 @@ public class Vehicle_Controller : ActionBubble_Interactable
         detection.player.Player_Input().enabled = false;
 
         _menu.VehicleMenu_Toggle(true);
-    }
-
-    private void Open_WorldMap()
-    {
-        mainController.worldMap.Map_Toggle(true);
     }
 
 

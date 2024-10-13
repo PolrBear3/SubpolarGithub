@@ -353,7 +353,9 @@ MonoBehaviour:
   _detection: {fileID: 8095772719313856644}
   _bubble: {fileID: 4110360785583018332}
   _menu: {fileID: 8508866487849260274}
+  _movement: {fileID: 7736443948201978939}
   _customizer: {fileID: 4156666212345247569}
+  _positionClaimer: {fileID: 2342190877690906068}
   _transparencyPoint: {fileID: 1081486458950851603}
   _stationSpawnPoint: {fileID: 1075718707391883764}
 --- !u!1 &866821407086817425
@@ -443,6 +445,7 @@ GameObject:
   - component: {fileID: 8008917496019149361}
   - component: {fileID: 5814033916193496685}
   - component: {fileID: 4486792330137985799}
+  - component: {fileID: 4401101128229260073}
   - component: {fileID: 7736443948201978939}
   m_Layer: 0
   m_Name: Vehicle Movement
@@ -555,6 +558,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &4401101128229260073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875846079922781687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6680efb1d64c94cb481bd828ccf7fe4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _input: {fileID: 5814033916193496685}
+  _detection: {fileID: 4486792330137985799}
+  _bubble: {fileID: 4451972151034505292}
 --- !u!114 &7736443948201978939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -567,9 +585,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f31c90585bf64b2bab710e519fcd407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _input: {fileID: 5814033916193496685}
-  _detection: {fileID: 4486792330137985799}
-  _bubble: {fileID: 4451972151034505292}
+  _controller: {fileID: 7023176493674794937}
+  _interactable: {fileID: 4401101128229260073}
 --- !u!1 &900042385387526337
 GameObject:
   m_ObjectHideFlags: 0
@@ -3618,6 +3635,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6159379447971834147}
     m_Modifications:
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1897204511, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3704,12 +3729,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 5419941011623935099}
     m_Modifications:
     - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 1897204511, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
-    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1775199335361529302, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3733,7 +3754,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.y
