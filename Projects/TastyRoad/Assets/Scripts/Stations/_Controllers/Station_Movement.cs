@@ -56,8 +56,17 @@ public class Station_Movement : MonoBehaviour
     {
         if (_rigidBody.velocity != Vector2.zero) return;
 
-        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
-        transform.position = snapPosition;
+        Location_Controller location = _stationController.mainController.currentLocation;
+
+        if (location.Restricted_Position(transform.position))
+        {
+            Vector2 redirectedPosition = location.Redirected_Position(transform.position);
+            transform.position = Main_Controller.SnapPosition(redirectedPosition);
+
+            return;
+        }
+
+        transform.position = Main_Controller.SnapPosition(transform.position);
     }
 
 
@@ -81,7 +90,7 @@ public class Station_Movement : MonoBehaviour
     /// </summary>
     private void RestrictBlink_Update()
     {
-        _stationController.RestrictionBlink_Toggle(!PositionSet_Available());
+        _stationController.RestrictionBlink_Toggle(PositionSet_Available() == false);
     }
 
     /// <summary>

@@ -39,27 +39,21 @@ public class Vehicle_Controller : ActionBubble_Interactable
     {
         base.Start();
 
+        // subscription
+        detection.ExitEvent += Transparency_Update;
         OnAction1Event += Open_VehicleMenu;
     }
 
     private void OnDestroy()
     {
+        // subscription
+        detection.ExitEvent += Transparency_Update;
         OnAction1Event -= Open_VehicleMenu;
     }
 
     private void Update()
     {
         Transparency_Update();
-    }
-
-
-    // OnTrigger
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        UnInteract();
-        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
     }
 
 
@@ -75,15 +69,18 @@ public class Vehicle_Controller : ActionBubble_Interactable
     // Vehicle Sprite Control
     private void Transparency_Update()
     {
-        if (detection.player == null) return;
+        if (detection.player == null)
+        {
+            LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+            return;
+        }
 
         if (detection.player.transform.position.y > _transparencyPoint.position.y)
         {
             LeanTween.alpha(_customizer.gameObject, 0.3f, 0f);
+            return;
         }
-        else
-        {
-            LeanTween.alpha(_customizer.gameObject, 1f, 0f);
-        }
+
+        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
     }
 }

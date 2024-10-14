@@ -11,6 +11,7 @@ public class VehicleMovement_Controller : MonoBehaviour
 
 
     private bool _onBoard;
+    private Vector2 _currentDirection;
 
 
     // UnityEngine
@@ -23,6 +24,11 @@ public class VehicleMovement_Controller : MonoBehaviour
         _interactable.OnAction2Event += Open_WorldMap;
     }
 
+    private void FixedUpdate()
+    {
+        Movement_Update();
+    }
+
     private void OnDestroy()
     {
         // subscriptions
@@ -33,7 +39,27 @@ public class VehicleMovement_Controller : MonoBehaviour
     }
 
 
-    //
+    // InputSystem
+    private void OnMovement(InputValue value)
+    {
+        Vector2 input = value.Get<Vector2>();
+        _currentDirection = input;
+    }
+
+
+    // for Update
+    private void Movement_Update()
+    {
+        if (_onBoard == false) return;
+
+        float moveSpeed = 3f;
+
+        Vector2 moveDirection = new(_currentDirection.x, _currentDirection.y);
+        _controller.transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
+    }
+
+
+    // World Map
     private void Open_WorldMap()
     {
         if (_onBoard) return;
@@ -63,6 +89,7 @@ public class VehicleMovement_Controller : MonoBehaviour
         if (_onBoard == false) return;
 
         _interactable.LockUnInteract(false);
+        _interactable.UnInteract();
 
         _controller.positionClaimer.Claim_CurrentPositions();
 

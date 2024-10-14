@@ -80,6 +80,20 @@ public class Location_Controller : MonoBehaviour
         return restricted;
     }
 
+    /// <returns>
+    /// closest available location from restrictedPosition
+    /// </returns>
+    public Vector2 Redirected_Position(Vector2 restrictedPosition)
+    {
+        if (Restricted_Position(restrictedPosition) == false) return restrictedPosition;
+
+        float closestXPos = Mathf.Clamp(restrictedPosition.x, _setData.spawnRangeX.x, _setData.spawnRangeX.y);
+        float closestYPos = Mathf.Clamp(restrictedPosition.y, _setData.spawnRangeY.x, _setData.spawnRangeY.y);
+
+        return new Vector2(closestXPos, closestYPos);
+    }
+
+
     public Vector2 Random_SnapPosition()
     {
         Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_environmentBoundsSR));
