@@ -17,32 +17,27 @@ public class VehicleMovement_Controller : MonoBehaviour
     private void Start()
     {
         // subscriptions
-        _interactable.InteractEvent += Exit;
+        _interactable.OnInteractEvent += Exit;
 
-        _interactable.Action1Event += Ride;
-        _interactable.Action2Event += Open_WorldMap;
+        _interactable.OnAction1Event += Ride;
+        _interactable.OnAction2Event += Open_WorldMap;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        _interactable.InteractEvent -= Exit;
+        _interactable.OnInteractEvent -= Exit;
 
-        _interactable.Action1Event -= Ride;
-        _interactable.Action2Event -= Open_WorldMap;
-    }
-
-
-    // InputSystem
-    private void OnInteract()
-    {
-        Exit();
+        _interactable.OnAction1Event -= Ride;
+        _interactable.OnAction2Event -= Open_WorldMap;
     }
 
 
     //
     private void Open_WorldMap()
     {
+        if (_onBoard) return;
+
         _interactable.mainController.worldMap.Map_Toggle(true);
     }
 
@@ -52,6 +47,8 @@ public class VehicleMovement_Controller : MonoBehaviour
     {
         _interactable.LockUnInteract(true);
         _interactable.bubble.Toggle(false);
+
+        _controller.positionClaimer.UnClaim_CurrentPositions();
 
         Player_Controller player = _interactable.mainController.Player();
 
@@ -67,10 +64,14 @@ public class VehicleMovement_Controller : MonoBehaviour
 
         _interactable.LockUnInteract(false);
 
+        _controller.positionClaimer.Claim_CurrentPositions();
+
         Player_Controller player = _interactable.mainController.Player();
 
         player.Player_Input().enabled = true;
         player.Toggle_Hide(false);
+
+        player.transform.position = _controller.driverSeatPoint.position;
 
         _onBoard = false;
     }

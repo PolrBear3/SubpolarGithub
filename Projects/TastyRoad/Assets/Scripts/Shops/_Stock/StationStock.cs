@@ -43,16 +43,16 @@ public class StationStock : MonoBehaviour
 
         _interactable.InteractEvent += Set_Dialog;
 
-        _interactable.Action1Event += Purchase;
-        _interactable.Action2Event += Toggle_Discount;
+        _interactable.OnAction1Event += Purchase;
+        _interactable.OnAction2Event += Toggle_Discount;
     }
 
     private void OnDestroy()
     {
         _interactable.InteractEvent -= Set_Dialog;
 
-        _interactable.Action1Event -= Purchase;
-        _interactable.Action2Event -= Toggle_Discount;
+        _interactable.OnAction1Event -= Purchase;
+        _interactable.OnAction2Event -= Toggle_Discount;
     }
 
 

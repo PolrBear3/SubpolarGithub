@@ -32,8 +32,8 @@ public class GasPump : MonoBehaviour
 
         _interactable.InteractEvent += Update_Dialog;
 
-        _interactable.Action1Event += Purchase;
-        _interactable.Action1Event += Collect;
+        _interactable.OnAction1Event += Purchase;
+        _interactable.OnAction1Event += Collect;
     }
 
     private void OnDestroy()
@@ -44,8 +44,8 @@ public class GasPump : MonoBehaviour
 
         _interactable.InteractEvent -= Update_Dialog;
 
-        _interactable.Action1Event -= Purchase;
-        _interactable.Action1Event -= Collect;
+        _interactable.OnAction1Event -= Purchase;
+        _interactable.OnAction1Event -= Collect;
     }
 
 

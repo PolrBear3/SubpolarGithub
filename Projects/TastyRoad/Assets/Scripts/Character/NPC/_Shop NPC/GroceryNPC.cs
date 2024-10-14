@@ -83,8 +83,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent += Update_QuestBar;
         interact.UnInteractEvent += Update_QuestBar;
 
-        interact.Action1Event += Toggle_RestockMode;
-        interact.Action2Event += Complete_Quest;
+        interact.OnAction1Event += Toggle_RestockMode;
+        interact.OnAction2Event += Complete_Quest;
     }
 
     private void OnDestroy()
@@ -105,8 +105,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent -= Update_QuestBar;
         interact.UnInteractEvent -= Update_QuestBar;
 
-        interact.Action1Event -= Toggle_RestockMode;
-        interact.Action2Event -= Complete_Quest;
+        interact.OnAction1Event -= Toggle_RestockMode;
+        interact.OnAction2Event -= Complete_Quest;
     }
 
 

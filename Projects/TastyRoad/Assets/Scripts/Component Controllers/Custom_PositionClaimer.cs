@@ -15,19 +15,19 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
     {
         _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
 
-        Claim_CustomPositions();
+        Claim_CurrentPositions();
     }
 
     private void OnDestroy()
     {
-        UnClaim_CustomPositions();
+        UnClaim_CurrentPositions();
     }
 
 
     // ISaveLoadable
     public void Save_Data()
     {
-        UnClaim_CustomPositions();
+        UnClaim_CurrentPositions();
     }
 
     public void Load_Data()
@@ -53,7 +53,7 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
     }
 
 
-    private void Claim_CustomPositions()
+    public void Claim_CurrentPositions()
     {
         foreach (Vector2 position in Current_Positions())
         {
@@ -62,7 +62,7 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
         }
     }
 
-    private void UnClaim_CustomPositions()
+    public void UnClaim_CurrentPositions()
     {
         foreach (Vector2 position in Current_Positions())
         {

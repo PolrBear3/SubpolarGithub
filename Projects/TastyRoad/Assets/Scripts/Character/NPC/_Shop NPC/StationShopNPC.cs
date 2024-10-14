@@ -53,8 +53,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent += Cancel_Action;
         _interactable.InteractEvent += Interact_FacePlayer;
 
-        _interactable.Action1Event += Dispose_BookMarkedStation;
-        _interactable.Action2Event += Build_BookMarkedStations;
+        _interactable.OnAction1Event += Dispose_BookMarkedStation;
+        _interactable.OnAction2Event += Build_BookMarkedStations;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -76,8 +76,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent -= Cancel_Action;
         _interactable.InteractEvent -= Interact_FacePlayer;
 
-        _interactable.Action1Event -= Dispose_BookMarkedStation;
-        _interactable.Action2Event -= Build_BookMarkedStations;
+        _interactable.OnAction1Event -= Dispose_BookMarkedStation;
+        _interactable.OnAction2Event -= Build_BookMarkedStations;
     }
 
 

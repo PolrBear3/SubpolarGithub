@@ -47,10 +47,10 @@ public class PlaceableStock : MonoBehaviour
         _interactable.InteractEvent += Toggle_AmountBar;
         _interactable.UnInteractEvent += Toggle_AmountBar;
 
-        _interactable.Action1Event += Complete;
-        _interactable.Action1Event += Place;
+        _interactable.OnAction1Event += Complete;
+        _interactable.OnAction1Event += Place;
 
-        _interactable.Action2Event += Dispose;
+        _interactable.OnAction2Event += Dispose;
     }
 
     void OnDestroy()
@@ -63,10 +63,10 @@ public class PlaceableStock : MonoBehaviour
         _interactable.InteractEvent -= Toggle_AmountBar;
         _interactable.UnInteractEvent -= Toggle_AmountBar;
 
-        _interactable.Action1Event -= Complete;
-        _interactable.Action1Event -= Place;
+        _interactable.OnAction1Event -= Complete;
+        _interactable.OnAction1Event -= Place;
 
-        _interactable.Action2Event -= Dispose;
+        _interactable.OnAction2Event -= Dispose;
     }
 
 

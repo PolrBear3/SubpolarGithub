@@ -34,6 +34,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public Transform locationFile => _locationFile;
 
     [SerializeField] private Transform _characterFile;
+    public Transform characterFile => _characterFile;
 
     [SerializeField] private Transform _stationFile;
 

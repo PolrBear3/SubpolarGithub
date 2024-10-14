@@ -20,8 +20,12 @@ public class Vehicle_Controller : ActionBubble_Interactable
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
 
+    [Header("")]
     [SerializeField] private Transform _stationSpawnPoint;
     public Transform stationSpawnPoint => _stationSpawnPoint;
+
+    [SerializeField] private Transform _driverSeatPoint;
+    public Transform driverSeatPoint => _driverSeatPoint;
 
 
     // UnityEngine
@@ -35,12 +39,12 @@ public class Vehicle_Controller : ActionBubble_Interactable
     {
         base.Start();
 
-        Action1Event += Open_VehicleMenu;
+        OnAction1Event += Open_VehicleMenu;
     }
 
     private void OnDestroy()
     {
-        Action1Event -= Open_VehicleMenu;
+        OnAction1Event -= Open_VehicleMenu;
     }
 
     private void Update()

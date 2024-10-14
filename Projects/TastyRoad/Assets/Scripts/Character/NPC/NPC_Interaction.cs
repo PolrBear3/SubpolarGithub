@@ -60,7 +60,7 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.InteractEvent -= Interact;
         _controller.interactable.UnInteractEvent -= UnInteract;
 
-        _controller.interactable.Action1Event -= Serve_FoodOrder;
+        _controller.interactable.OnAction1Event -= Serve_FoodOrder;
     }
 
 
@@ -104,7 +104,7 @@ public class NPC_Interaction : MonoBehaviour
         _controller.foodIcon.Show_Condition();
         StateBox_Toggle();
 
-        _controller.interactable.Action1Event += Serve_FoodOrder;
+        _controller.interactable.OnAction1Event += Serve_FoodOrder;
     }
 
     private void UnInteract()
@@ -116,7 +116,7 @@ public class NPC_Interaction : MonoBehaviour
             _controller.timer.Toggle_Transparency(false);
         }
 
-        _controller.interactable.Action1Event -= Serve_FoodOrder;
+        _controller.interactable.OnAction1Event -= Serve_FoodOrder;
     }
 
 
@@ -234,7 +234,7 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.bubble.Toggle(false);
         StateBox_Toggle();
 
-        _controller.interactable.Action1Event -= Serve_FoodOrder;
+        _controller.interactable.OnAction1Event -= Serve_FoodOrder;
         Clear_Data();
 
         // data update

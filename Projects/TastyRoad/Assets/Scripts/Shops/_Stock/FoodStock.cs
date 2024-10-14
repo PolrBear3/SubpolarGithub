@@ -70,9 +70,9 @@ public class FoodStock : MonoBehaviour
         _interactable.InteractEvent += Toggle_AmountBar;
         _interactable.UnInteractEvent += Toggle_AmountBar;
 
-        _interactable.Action1Event += Unlock;
-        _interactable.Action1Event += Purchase_Single;
-        _interactable.Action2Event += Purchase_All;
+        _interactable.OnAction1Event += Unlock;
+        _interactable.OnAction1Event += Purchase_Single;
+        _interactable.OnAction2Event += Purchase_All;
     }
 
     private void OnDestroy()
@@ -85,9 +85,9 @@ public class FoodStock : MonoBehaviour
         _interactable.InteractEvent -= Toggle_AmountBar;
         _interactable.UnInteractEvent -= Toggle_AmountBar;
 
-        _interactable.Action1Event -= Unlock;
-        _interactable.Action1Event -= Purchase_Single;
-        _interactable.Action2Event -= Purchase_All;
+        _interactable.OnAction1Event -= Unlock;
+        _interactable.OnAction1Event -= Purchase_Single;
+        _interactable.OnAction2Event -= Purchase_All;
     }
 
 

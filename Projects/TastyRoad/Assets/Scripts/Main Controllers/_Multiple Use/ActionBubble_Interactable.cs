@@ -28,8 +28,9 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public event Event InteractEvent;
     public event Event UnInteractEvent;
 
-    public event Event Action1Event;
-    public event Event Action2Event;
+    public event Event OnInteractEvent;
+    public event Event OnAction1Event;
+    public event Event OnAction2Event;
 
 
     // MonoBehaviour
@@ -42,19 +43,24 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     {
         UnInteract();
 
-        _detection.ExitEvent += Refresh;
+        _detection.ExitEvent += UnInteract;
     }
 
     private void OnDestroy()
     {
-        _detection.ExitEvent -= Refresh;
+        _detection.ExitEvent += UnInteract;
     }
 
 
     // InputSystem
+    private void OnInteract()
+    {
+        OnInteractEvent?.Invoke();
+    }
+
     private void OnAction1()
     {
-        Action1Event?.Invoke();
+        OnAction1Event?.Invoke();
 
         if (_unInteractLocked) return;
 
@@ -63,8 +69,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     private void OnAction2()
     {
-        if (Action2Event == null) return;
-        Action2Event?.Invoke();
+        if (OnAction2Event == null) return;
+        OnAction2Event?.Invoke();
 
         if (_unInteractLocked) return;
 
@@ -74,8 +80,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public void Clear_ActionSubscriptions()
     {
-        Action1Event = null;
-        Action2Event = null;
+        OnAction1Event = null;
+        OnAction2Event = null;
     }
 
 

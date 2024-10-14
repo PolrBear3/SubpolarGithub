@@ -39,13 +39,13 @@ public class CollectCard : MonoBehaviour
     {
         Set_RandomInteraction();
 
-        _interactable.Action1Event += Invoke_Interaction;
+        _interactable.OnAction1Event += Invoke_Interaction;
         GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
     }
 
     private void OnDestroy()
     {
-        _interactable.Action1Event -= Invoke_Interaction;
+        _interactable.OnAction1Event -= Invoke_Interaction;
         GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
     }
 
