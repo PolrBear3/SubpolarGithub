@@ -12,6 +12,7 @@ public class Vehicle_Controller : ActionBubble_Interactable
     [SerializeField] private VehicleMovement_Controller _movement;
 
     [SerializeField] private Vehicle_Customizer _customizer;
+    public Vehicle_Customizer customizer => _customizer;
 
     [Header("")]
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
@@ -19,6 +20,7 @@ public class Vehicle_Controller : ActionBubble_Interactable
 
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
+    private bool _transparencyLocked;
 
     [Header("")]
     [SerializeField] private Transform _stationSpawnPoint;
@@ -57,19 +59,10 @@ public class Vehicle_Controller : ActionBubble_Interactable
     }
 
 
-    // Action Options
-    private void Open_VehicleMenu()
-    {
-        detection.player.Player_Input().enabled = false;
-
-        _menu.VehicleMenu_Toggle(true);
-    }
-
-
     // Vehicle Sprite Control
     private void Transparency_Update()
     {
-        if (detection.player == null)
+        if (_transparencyLocked || detection.player == null)
         {
             LeanTween.alpha(_customizer.gameObject, 1f, 0f);
             return;
@@ -82,5 +75,22 @@ public class Vehicle_Controller : ActionBubble_Interactable
         }
 
         LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+    }
+
+    public void Toggle_TransparencyLock(bool toggle)
+    {
+        _transparencyLocked = toggle;
+
+        if (toggle == false) return;
+        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+    }
+
+
+    // Action Options
+    private void Open_VehicleMenu()
+    {
+        detection.player.Player_Input().enabled = false;
+
+        _menu.VehicleMenu_Toggle(true);
     }
 }

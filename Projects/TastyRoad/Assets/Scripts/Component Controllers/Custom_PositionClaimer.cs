@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
+public class Custom_PositionClaimer : MonoBehaviour
 {
     private Main_Controller _main;
 
@@ -25,18 +25,6 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
     }
 
 
-    // ISaveLoadable
-    public void Save_Data()
-    {
-        UnClaim_CurrentPositions();
-    }
-
-    public void Load_Data()
-    {
-
-    }
-
-
     //
     public List<Vector2> All_Positions()
     {
@@ -53,7 +41,7 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
         return allPositions;
     }
 
-    private List<Vector2> Current_Positions()
+    public List<Vector2> Current_Positions()
     {
         List<Vector2> currentPositions = new();
 

@@ -27,6 +27,7 @@ public class VehicleMovement_Controller : MonoBehaviour
     private void Update()
     {
         ResrictPosition_Update();
+        ExitRestricted_IndicationUpdate();
     }
 
     private void FixedUpdate()
@@ -57,7 +58,7 @@ public class VehicleMovement_Controller : MonoBehaviour
     {
         if (_onBoard == false) return;
 
-        float moveSpeed = 3f;
+        float moveSpeed = 2f;
 
         Vector2 moveDirection = new(_currentDirection.x, _currentDirection.y);
         _controller.transform.Translate(moveSpeed * Time.deltaTime * moveDirection);
@@ -65,12 +66,28 @@ public class VehicleMovement_Controller : MonoBehaviour
 
     private void ResrictPosition_Update()
     {
+        if (_onBoard == false) return;
+
         Location_Controller location = _controller.mainController.currentLocation;
         Transform vehicle = _controller.transform;
 
         if (location.Restricted_Position(vehicle.position) == false) return;
 
         vehicle.position = location.Redirected_Position(vehicle.position);
+    }
+
+
+    private void ExitRestricted_IndicationUpdate()
+    {
+        if (_onBoard == false) return;
+
+        if (Exit_Available() == false)
+        {
+            LeanTween.color(_controller.customizer.gameObject, Color.red, 0.01f);
+            return;
+        }
+
+        LeanTween.color(_controller.customizer.gameObject, Color.white, 0.01f);
     }
 
 
@@ -89,6 +106,7 @@ public class VehicleMovement_Controller : MonoBehaviour
         _interactable.LockUnInteract(true);
         _interactable.bubble.Toggle(false);
 
+        _controller.Toggle_TransparencyLock(true);
         _controller.positionClaimer.UnClaim_CurrentPositions();
 
         Player_Controller player = _interactable.mainController.Player();
@@ -121,6 +139,7 @@ public class VehicleMovement_Controller : MonoBehaviour
     private void Exit()
     {
         if (_onBoard == false) return;
+
         if (Exit_Available() == false) return;
 
         _interactable.LockUnInteract(false);
@@ -133,6 +152,7 @@ public class VehicleMovement_Controller : MonoBehaviour
         Vector2 targetPos = location.Redirected_SnapPosition(vehicle.position);
         vehicle.transform.position = targetPos;
 
+        _controller.Toggle_TransparencyLock(false);
         _controller.positionClaimer.Claim_CurrentPositions();
 
         // update player

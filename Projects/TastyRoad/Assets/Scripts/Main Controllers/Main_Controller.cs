@@ -71,6 +71,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         gamePaused = false;
         orderOpen = false;
 
+        UnClaim_CustomPositions();
         ES3.Save("_claimedPositions", _claimedPositions);
 
         Save_BookmarkedFood();
@@ -227,6 +228,19 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             if (checkPosition == _claimedPositions[i]) return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Before saving, UnClaim custom positions from all Custom_positionClaimer
+    /// </summary>
+    private void UnClaim_CustomPositions()
+    {
+        Custom_PositionClaimer[] claimers = FindObjectsOfType<Custom_PositionClaimer>();
+
+        foreach (Custom_PositionClaimer claimer in claimers)
+        {
+            claimer.UnClaim_CurrentPositions();
+        }
     }
 
 
