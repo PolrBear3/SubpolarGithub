@@ -26,12 +26,14 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private Location_Tile[] _tiles;
 
+
+    public delegate void Event();
+    public static Event NewLocation_Event;
+
     private int _currentTileNum;
     private int _cursorTileNum;
 
-
     private bool _isNewLocation;
-
 
     private bool _onHold;
     private float _pressStartTime;
@@ -219,6 +221,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         _mainController.transitionCanvas.CloseScene_Transition();
 
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
+
+        NewLocation_Event?.Invoke();
 
         // reset settings before moving on to new location
         _mainController.Destroy_AllStations();

@@ -83,6 +83,20 @@ public class PlaceableStock : MonoBehaviour
         _foodIcon.Set_CurrentData(new(recentFood));
     }
 
+    public void Reset_Data()
+    {
+        _placedFoods.Clear();
+
+        _isComplete = false;
+        Update_forComplete();
+
+        _foodIcon.Set_CurrentData(null);
+        _foodIcon.Show_Icon();
+
+        Update_Amount();
+        Toggle_AmountBar();
+    }
+
 
     // Updates and Toggles
     public void Update_forComplete() // currently used in test editor
@@ -139,6 +153,7 @@ public class PlaceableStock : MonoBehaviour
         bubble.Set_Bubble(bubble.setSprites[1], bubble.setSprites[2]);
 
         if (_foodIcon.hasFood == true && _isComplete == false) return;
+
         _interactable.UnInteract();
     }
 
@@ -149,10 +164,20 @@ public class PlaceableStock : MonoBehaviour
         Player_Controller player = _interactable.detection.player;
         if (player == null) return false;
 
-        FoodData_Controller playerIcon = player.foodIcon;
-        if (playerIcon.hasFood == false) return false;
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        if (_foodIcon.hasFood && _foodIcon.currentData.currentAmount >= _maxAmount) return false;
+        FoodData_Controller playerIcon = player.foodIcon;
+        if (playerIcon.hasFood == false)
+        {
+            if (_foodIcon.hasFood == false) dialog.Update_Dialog(0);
+            return false;
+        }
+
+        if (_foodIcon.hasFood && _foodIcon.currentData.currentAmount >= _maxAmount)
+        {
+            dialog.Update_Dialog(4);
+            return false;
+        }
 
         return true;
     }
@@ -178,6 +203,8 @@ public class PlaceableStock : MonoBehaviour
         //
         Update_Amount();
         Toggle_AmountBar();
+
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
     }
 
 
@@ -188,6 +215,8 @@ public class PlaceableStock : MonoBehaviour
 
         _isComplete = true;
         Update_forComplete();
+
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(2);
     }
 
 
@@ -195,15 +224,7 @@ public class PlaceableStock : MonoBehaviour
     {
         if (_foodIcon.hasFood == false) return;
 
-        _placedFoods.Clear();
-
-        _isComplete = false;
-        Update_forComplete();
-
-        _foodIcon.Set_CurrentData(null);
-        _foodIcon.Show_Icon();
-
-        Update_Amount();
-        Toggle_AmountBar();
+        Reset_Data();
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(3);
     }
 }

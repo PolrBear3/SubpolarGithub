@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class VehicleMovement_Controller : MonoBehaviour
+public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 {
     [Header("")]
     [SerializeField] private Vehicle_Controller _controller;
@@ -13,11 +13,26 @@ public class VehicleMovement_Controller : MonoBehaviour
     private bool _onBoard;
     private Vector2 _currentDirection;
 
+    private Vector2 _defaultPosition;
+    private Vector2 _recentPosition;
+
 
     // UnityEngine
     private void Start()
     {
+        // set to recent position
+        _controller.positionClaimer.UnClaim_CurrentPositions();
+
+        _controller.transform.position = _recentPosition;
+        _controller.positionClaimer.Claim_CurrentPositions();
+
+        // set player position
+        Player_Controller player = _interactable.mainController.Player();
+        player.transform.position = _controller.driverSeatPoint.position;
+
         // subscriptions
+        WorldMap_Controller.NewLocation_Event += Moveto_DefaultPosition;
+
         _interactable.OnInteractEvent += Exit;
 
         _interactable.OnAction1Event += Ride;
@@ -38,6 +53,8 @@ public class VehicleMovement_Controller : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
+        WorldMap_Controller.NewLocation_Event -= Moveto_DefaultPosition;
+
         _interactable.OnInteractEvent -= Exit;
 
         _interactable.OnAction1Event -= Ride;
@@ -50,6 +67,28 @@ public class VehicleMovement_Controller : MonoBehaviour
     {
         Vector2 input = value.Get<Vector2>();
         _currentDirection = input;
+    }
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        ES3.Save("VehicleMovement_Controller/_defaultPosition", _defaultPosition);
+        ES3.Save("VehicleMovement_Controller/_recentPosition", _recentPosition);
+    }
+
+    public void Load_Data()
+    {
+        if (ES3.KeyExists("VehicleMovement_Controller/_recentPosition") == false)
+        {
+            _recentPosition = _controller.transform.position;
+            _defaultPosition = _controller.transform.position;
+
+            return;
+        }
+
+        _defaultPosition = ES3.Load("VehicleMovement_Controller/_defaultPosition", _defaultPosition);
+        _recentPosition = ES3.Load("VehicleMovement_Controller/_recentPosition", _recentPosition);
     }
 
 
@@ -97,6 +136,16 @@ public class VehicleMovement_Controller : MonoBehaviour
         if (_onBoard) return;
 
         _interactable.mainController.worldMap.Map_Toggle(true);
+    }
+
+    private void Moveto_DefaultPosition()
+    {
+        _controller.positionClaimer.UnClaim_CurrentPositions();
+
+        _controller.transform.position = _defaultPosition;
+        _recentPosition = _defaultPosition;
+
+        _controller.positionClaimer.Claim_CurrentPositions();
     }
 
 
@@ -163,6 +212,7 @@ public class VehicleMovement_Controller : MonoBehaviour
 
         player.transform.position = _controller.driverSeatPoint.position;
 
+        _recentPosition = _controller.transform.position;
         _onBoard = false;
     }
 }

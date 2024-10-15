@@ -573,7 +573,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
                 Archive_toBundles(placedDatas[j].foodScrObj);
             }
 
-            Complete_Stocks()[i].Dispose();
+            Complete_Stocks()[i].Reset_Data();
 
             _currentRestockCount += _restockBonus;
         }
