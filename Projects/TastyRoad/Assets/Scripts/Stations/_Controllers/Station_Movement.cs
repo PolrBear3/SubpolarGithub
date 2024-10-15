@@ -60,9 +60,7 @@ public class Station_Movement : MonoBehaviour
 
         if (location.Restricted_Position(transform.position))
         {
-            Vector2 redirectedPosition = location.Redirected_Position(transform.position);
-            transform.position = Main_Controller.SnapPosition(redirectedPosition);
-
+            transform.position = location.Redirected_Position(transform.position);
             return;
         }
 

@@ -7,6 +7,7 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
     private Main_Controller _main;
 
     [Header("")]
+    [SerializeField] private Vector2[] _allPositions;
     [SerializeField] private List<Vector2> _claimPositions = new();
 
 
@@ -37,6 +38,21 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
 
 
     //
+    public List<Vector2> All_Positions()
+    {
+        List<Vector2> allPositions = new();
+
+        foreach (Vector2 position in _allPositions)
+        {
+            float xPos = transform.position.x + position.x;
+            float yPos = transform.position.y + position.y;
+
+            allPositions.Add(new(xPos, yPos));
+        }
+
+        return allPositions;
+    }
+
     private List<Vector2> Current_Positions()
     {
         List<Vector2> currentPositions = new();
@@ -50,6 +66,17 @@ public class Custom_PositionClaimer : MonoBehaviour, ISaveLoadable
         }
 
         return currentPositions;
+    }
+
+
+    public bool Is_ClaimPosition(Vector2 checkPosition)
+    {
+        for (int i = 0; i < Current_Positions().Count; i++)
+        {
+            if (Current_Positions()[i] != checkPosition) continue;
+            return true;
+        }
+        return false;
     }
 
 

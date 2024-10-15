@@ -80,6 +80,7 @@ public class Location_Controller : MonoBehaviour
         return restricted;
     }
 
+
     /// <returns>
     /// closest available location from restrictedPosition
     /// </returns>
@@ -91,6 +92,11 @@ public class Location_Controller : MonoBehaviour
         float closestYPos = Mathf.Clamp(restrictedPosition.y, _setData.spawnRangeY.x, _setData.spawnRangeY.y);
 
         return new Vector2(closestXPos, closestYPos);
+    }
+
+    public Vector2 Redirected_SnapPosition(Vector2 targetPosition)
+    {
+        return Main_Controller.SnapPosition(Redirected_Position(targetPosition));
     }
 
 

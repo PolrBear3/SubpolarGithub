@@ -99,15 +99,43 @@ public class VehicleMovement_Controller : MonoBehaviour
         _onBoard = true;
     }
 
+
+    private bool Exit_Available()
+    {
+        Location_Controller location = _controller.mainController.currentLocation;
+        Custom_PositionClaimer claimer = _controller.positionClaimer;
+
+        for (int i = 0; i < claimer.All_Positions().Count; i++)
+        {
+            if (location.Restricted_Position(claimer.All_Positions()[i])) return false;
+
+            if (claimer.Is_ClaimPosition(claimer.All_Positions()[i]) == false) continue;
+            Vector2 redirectedPos = location.Redirected_SnapPosition(claimer.All_Positions()[i]);
+
+            if (_controller.mainController.Position_Claimed(redirectedPos)) return false;
+        }
+
+        return true;
+    }
+
     private void Exit()
     {
         if (_onBoard == false) return;
+        if (Exit_Available() == false) return;
 
         _interactable.LockUnInteract(false);
         _interactable.UnInteract();
 
+        // set vehicle to snap point
+        Location_Controller location = _controller.mainController.currentLocation;
+        Transform vehicle = _controller.transform;
+
+        Vector2 targetPos = location.Redirected_SnapPosition(vehicle.position);
+        vehicle.transform.position = targetPos;
+
         _controller.positionClaimer.Claim_CurrentPositions();
 
+        // update player
         Player_Controller player = _interactable.mainController.Player();
 
         player.Player_Input().enabled = true;
