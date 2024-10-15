@@ -24,6 +24,11 @@ public class VehicleMovement_Controller : MonoBehaviour
         _interactable.OnAction2Event += Open_WorldMap;
     }
 
+    private void Update()
+    {
+        ResrictPosition_Update();
+    }
+
     private void FixedUpdate()
     {
         Movement_Update();
@@ -47,7 +52,7 @@ public class VehicleMovement_Controller : MonoBehaviour
     }
 
 
-    // for Update
+    // Movement
     private void Movement_Update()
     {
         if (_onBoard == false) return;
@@ -55,7 +60,17 @@ public class VehicleMovement_Controller : MonoBehaviour
         float moveSpeed = 3f;
 
         Vector2 moveDirection = new(_currentDirection.x, _currentDirection.y);
-        _controller.transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
+        _controller.transform.Translate(moveSpeed * Time.deltaTime * moveDirection);
+    }
+
+    private void ResrictPosition_Update()
+    {
+        Location_Controller location = _controller.mainController.currentLocation;
+        Transform vehicle = _controller.transform;
+
+        if (location.Restricted_Position(vehicle.position) == false) return;
+
+        vehicle.position = location.Redirected_Position(vehicle.position);
     }
 
 
@@ -68,7 +83,7 @@ public class VehicleMovement_Controller : MonoBehaviour
     }
 
 
-    // Movement System
+    // Actions
     private void Ride()
     {
         _interactable.LockUnInteract(true);

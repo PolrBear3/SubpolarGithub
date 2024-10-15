@@ -70,7 +70,6 @@ public class Station_Movement : MonoBehaviour
     }
 
 
-
     /// <returns>
     /// True if current snap position is not claimed and not in a location restricted area
     /// </returns>
