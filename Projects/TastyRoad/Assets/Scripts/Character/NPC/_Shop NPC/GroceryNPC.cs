@@ -70,6 +70,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
 
+        WorldMap_Controller.NewLocation_Event += Restock_Full;
+
         GlobalTime_Controller.TimeTik_Update += Set_QuestFood;
         GlobalTime_Controller.TimeTik_Update += Set_Discount;
         GlobalTime_Controller.TimeTik_Update += Restock;
@@ -91,6 +93,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         // action subscription
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
+
+        WorldMap_Controller.NewLocation_Event -= Restock_Full;
 
         GlobalTime_Controller.TimeTik_Update -= Set_QuestFood;
         GlobalTime_Controller.TimeTik_Update -= Set_Discount;
@@ -427,6 +431,23 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         bubble.Set_Bubble(bubble.setSprites[0], null);
     }
 
+
+    private void Restock_Full()
+    {
+        for (int i = 0; i < _foodStocks.Length; i++)
+        {
+            if (_foodStocks[i].stockData.unlocked == false) continue;
+
+            // clear data
+            _foodStocks[i].foodIcon.Set_CurrentData(null);
+
+            Food_ScrObj newFood = ArchivedBundles_Ingredients()[Random.Range(0, ArchivedBundles_Ingredients().Count)];
+
+            // set new food and update to full amount
+            _foodStocks[i].Set_FoodData(new(newFood));
+            _foodStocks[i].Update_Amount(_foodStocks[i].maxAmount - 1);
+        }
+    }
 
     public void Restock()
     {

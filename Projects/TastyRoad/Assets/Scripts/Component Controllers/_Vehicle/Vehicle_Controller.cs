@@ -24,6 +24,7 @@ public class Vehicle_Controller : ActionBubble_Interactable
 
     [Header("")]
     [SerializeField] private SpriteRenderer _interactArea;
+    public SpriteRenderer interactArea => _interactArea;
 
     [Header("")]
     [SerializeField] private Transform _stationSpawnPoint;

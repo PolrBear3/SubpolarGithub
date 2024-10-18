@@ -32,6 +32,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
+        _controller.vehicleController.interactArea.gameObject.SetActive(true);
+
         // subscriptions
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
 
@@ -52,6 +54,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // save current dragging item before menu close
         Drag_Cancel();
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
+
+        _controller.vehicleController.interactArea.gameObject.SetActive(false);
 
         // subscriptions
         _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
