@@ -449,9 +449,24 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Station Retrieve System
+    private List<Station_Controller> Retrieve_Stations()
+    {
+        Vehicle_Controller vehicle = _controller.vehicleController;
+        List<Station_Controller> currentStations = new(vehicle.mainController.CurrentStations(false));
+
+        for (int i = currentStations.Count - 1; i >= 0; i--)
+        {
+            if (vehicle.Is_InteractArea(currentStations[i].transform.position)) continue;
+            currentStations.RemoveAt(i);
+        }
+
+        return currentStations;
+    }
+
+
     private void Station_TargetDirection_Control(float xInputDirection)
     {
-        List<Station_Controller> currentStations = _controller.vehicleController.mainController.CurrentStations(false);
+        List<Station_Controller> retrieveStations = new(Retrieve_Stations());
 
         int convertedDireciton = (int)xInputDirection;
         int nextStationNum = _targetNum + convertedDireciton;
@@ -459,11 +474,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // less than min 
         if (nextStationNum < 0)
         {
-            nextStationNum = currentStations.Count - 1;
+            nextStationNum = retrieveStations.Count - 1;
         }
 
         // more than max
-        if (nextStationNum > currentStations.Count - 1)
+        if (nextStationNum > retrieveStations.Count - 1)
         {
             nextStationNum = 0;
         }
@@ -472,7 +487,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation.movement.movementArrows.SetActive(false);
 
         _targetNum = nextStationNum;
-        _interactStation = currentStations[_targetNum];
+        _interactStation = retrieveStations[_targetNum];
 
         _interactStation.TransparentBlink_Toggle(true);
         _interactStation.movement.movementArrows.SetActive(true);
@@ -487,9 +502,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (cursor.Current_Data().hasItem) return;
         if (cursor.currentSlot.data.isLocked) return;
 
-        List<Station_Controller> currentStations = _controller.vehicleController.mainController.CurrentStations(false);
+        List<Station_Controller> retrieveStations = new(Retrieve_Stations());
 
-        if (currentStations.Count <= 0) return;
+        if (retrieveStations.Count <= 0) return;
 
         // cursor actually doesn't have item but need this for OnOption1_Input?.Invoke(); to work on VehicleMenu_Controller
         cursor.Current_Data().hasItem = true;
@@ -499,11 +514,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnOption1_Input += Retrieve_StationPrefab;
         _controller.OnExit_Input += Cancel_Retrieve;
 
-        _interactStation = currentStations[0];
+        _interactStation = retrieveStations[0];
 
         _interactStation.TransparentBlink_Toggle(true);
         _interactStation.movement.movementArrows.SetActive(true);
     }
+
 
     private void Retrieve_StationPrefab()
     {

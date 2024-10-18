@@ -23,6 +23,9 @@ public class Vehicle_Controller : ActionBubble_Interactable
     private bool _transparencyLocked;
 
     [Header("")]
+    [SerializeField] private SpriteRenderer _interactArea;
+
+    [Header("")]
     [SerializeField] private Transform _stationSpawnPoint;
     public Transform stationSpawnPoint => _stationSpawnPoint;
 
@@ -83,6 +86,26 @@ public class Vehicle_Controller : ActionBubble_Interactable
 
         if (toggle == false) return;
         LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+    }
+
+
+    // Interact Area Control
+    public bool Is_InteractArea(Vector2 checkPosition)
+    {
+        Bounds bounds = _interactArea.bounds;
+        return bounds.Contains(checkPosition);
+    }
+
+    public Vector2 Redirected_Position(Vector2 currentPosition)
+    {
+        if (Is_InteractArea(currentPosition)) return currentPosition;
+
+        Bounds bounds = _interactArea.bounds;
+
+        float closestXPos = Mathf.Clamp(currentPosition.x, bounds.min.x, bounds.max.x);
+        float closestYPos = Mathf.Clamp(currentPosition.y, bounds.min.y, bounds.max.y);
+
+        return new Vector2(closestXPos, closestYPos);
     }
 
 

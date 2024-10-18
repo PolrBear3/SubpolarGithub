@@ -56,6 +56,14 @@ public class Station_Movement : MonoBehaviour
     {
         if (_rigidBody.velocity != Vector2.zero) return;
 
+        Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
+
+        if (vehicle.Is_InteractArea(transform.position) == false)
+        {
+            transform.position = vehicle.Redirected_Position(transform.position);
+            return;
+        }
+
         Location_Controller location = _stationController.mainController.currentLocation;
 
         if (location.Restricted_Position(transform.position))
@@ -87,7 +95,12 @@ public class Station_Movement : MonoBehaviour
     /// </summary>
     private void RestrictBlink_Update()
     {
-        _stationController.RestrictionBlink_Toggle(PositionSet_Available() == false);
+        Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
+
+        bool isRestricted = PositionSet_Available() == false;
+        bool isInteractArea = vehicle.Is_InteractArea(transform.position);
+
+        _stationController.RestrictionBlink_Toggle(isRestricted || isInteractArea == false);
     }
 
     /// <summary>
