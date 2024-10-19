@@ -8,6 +8,10 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private NPC_Controller _npcController;
 
     [Header("")]
+    [SerializeField] private GameObject _restockBarObject;
+    [SerializeField] private AmountBar _restockBar;
+
+    [Header("")]
     [SerializeField] private GameObject _questBarObject;
     [SerializeField] private AmountBar _questBar;
 
@@ -55,6 +59,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         Update_RestockBubble();
 
+        _restockBar.Toggle_BarColor(true);
+        Update_RestockBar();
+
         _questBar.Toggle_BarColor(true);
         Update_QuestBar();
 
@@ -82,6 +89,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent += Cancel_Action;
         interact.InteractEvent += Interact_FacePlayer;
 
+        interact.InteractEvent += Update_RestockBar;
+        interact.UnInteractEvent += Update_RestockBar;
+
         interact.InteractEvent += Update_QuestBar;
         interact.UnInteractEvent += Update_QuestBar;
 
@@ -105,6 +115,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         interact.InteractEvent -= Cancel_Action;
         interact.InteractEvent -= Interact_FacePlayer;
+
+        interact.InteractEvent -= Update_RestockBar;
+        interact.UnInteractEvent -= Update_RestockBar;
 
         interact.InteractEvent -= Update_QuestBar;
         interact.UnInteractEvent -= Update_QuestBar;
@@ -271,8 +284,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-
-
     private FoodData Archived_BundleData(Food_ScrObj food)
     {
         for (int i = 0; i < _archivedBundles.Count; i++)
@@ -412,6 +423,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
 
     // Restock
+    private void Update_RestockBar()
+    {
+        Action_Bubble bubble = _npcController.interactable.bubble;
+        _restockBarObject.SetActive(!bubble.bubbleOn);
+
+        if (bubble.bubbleOn) return;
+        _restockBar.Load_Custom(_restockCount, _currentRestockCount);
+    }
+
+
     private void Toggle_RestockMode()
     {
         _isNewRestock = !_isNewRestock;
@@ -451,15 +472,19 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     public void Restock()
     {
-        if (_currentRestockCount < _restockCount)
+        if (_actionCoroutine != null) return;
+
+        if (_currentRestockCount <= _restockCount)
         {
             _currentRestockCount++;
+            Update_RestockBar();
+
             return;
         }
 
-        if (_actionCoroutine != null) return;
-
         _currentRestockCount = 0;
+        Update_RestockBar();
+
         _actionCoroutine = StartCoroutine(Restock_Coroutine());
     }
     private IEnumerator Restock_Coroutine()

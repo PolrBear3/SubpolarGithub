@@ -9,6 +9,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private ActionBubble_Interactable _interactable;
 
     [Header("")]
+    [SerializeField] private GameObject _restockBarObject;
+    [SerializeField] private AmountBar _restockBar;
+
+    [Header("")]
     [SerializeField] private SpriteRenderer _carryObject;
     [SerializeField] private Sprite[] _carrySprites;
 
@@ -23,9 +27,14 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private Transform[] _boxStackPoints;
 
-    [Header("")]
     [SerializeField] private StationStock[] _stationStocks;
+
+    [Header("")]
     [SerializeField][Range(0, 5)] private int _duplicateAmount;
+
+    [SerializeField][Range(0, 100)] private int _restockCount;
+    private int _currentRestockCount;
+
 
     private List<Station_ScrObj> _archivedStations = new();
 
@@ -40,6 +49,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
+        _restockBar.Toggle_BarColor(true);
+        Update_RestockBar();
+
         // untrack
         _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
 
@@ -51,6 +63,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         _interactable.InteractEvent += Cancel_Action;
         _interactable.InteractEvent += Interact_FacePlayer;
+
+        _interactable.InteractEvent += Update_RestockBar;
+        _interactable.UnInteractEvent += Update_RestockBar;
 
         _interactable.OnAction1Event += Dispose_BookMarkedStation;
         _interactable.OnAction2Event += Build_BookMarkedStations;
@@ -74,6 +89,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         _interactable.InteractEvent -= Cancel_Action;
         _interactable.InteractEvent -= Interact_FacePlayer;
+
+        _interactable.InteractEvent -= Update_RestockBar;
+        _interactable.UnInteractEvent -= Update_RestockBar;
 
         _interactable.OnAction1Event -= Dispose_BookMarkedStation;
         _interactable.OnAction2Event -= Build_BookMarkedStations;
@@ -141,6 +159,16 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         movement.Stop_FreeRoam();
         movement.Free_Roam(_currentSubLocation.roamArea, Random.Range(movement.intervalTimeRange.x, movement.intervalTimeRange.y));
+    }
+
+
+    private void Update_RestockBar()
+    {
+        Action_Bubble bubble = _npcController.interactable.bubble;
+        _restockBarObject.SetActive(!bubble.bubbleOn);
+
+        if (bubble.bubbleOn) return;
+        _restockBar.Load_Custom(_restockCount, _currentRestockCount);
     }
 
 
@@ -410,6 +438,17 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             // dialog
             return;
         }
+
+        if (_currentRestockCount <= _restockCount)
+        {
+            _currentRestockCount++;
+            Update_RestockBar();
+
+            return;
+        }
+
+        _currentRestockCount = 0;
+        Update_RestockBar();
 
         _actionCoroutine = StartCoroutine(Restock_ArchivedStation_Coroutine());
     }
