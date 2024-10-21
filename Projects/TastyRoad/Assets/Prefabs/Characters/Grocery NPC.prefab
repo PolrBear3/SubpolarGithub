@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 2509055865607579981}
   - component: {fileID: 1331804926663461836}
   - component: {fileID: 4272241710382912556}
+  - component: {fileID: 2755835798886388739}
   - component: {fileID: -2268305881826384539}
   - component: {fileID: -7268301005637499790}
   - component: {fileID: 9029849693329483984}
@@ -356,6 +357,40 @@ MonoBehaviour:
   m_DefaultActionMap: In Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2755835798886388739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: 0}
+    info: 
+  _datas:
+  - icon: {fileID: -372810078, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Ready to fully restock the amount.
+  - icon: {fileID: 2146137284, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Ready to restock with new items.
+  - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: A discount tag will be set to a random stock once all quests are completed.
+  - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: 'Quest food incorrect!
+
+
+      A discount tag will be set to a random stock
+      once all quests are completed.'
+  - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: 'Quest food recieved!
+
+
+      A discount tag will be set to a random stock
+      once all quests are completed.'
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,7 +494,7 @@ MonoBehaviour:
   _actionSpeed: 0.75
   _startingBundles:
   - {fileID: 11400000, guid: 93f468edd125c4322bd0f18fa9ba6a7b, type: 2}
-  _restockCount: 6
+  _restockCount: 5
   _restockBonus: 1
   _questCount: 2
 --- !u!1 &6140207368992471877

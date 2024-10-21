@@ -18,6 +18,11 @@ public class StockData
 
     }
 
+    public StockData(bool unlockToggle)
+    {
+        _unlocked = unlockToggle;
+    }
+
 
     // Functions
     public void Toggle_UnLock(bool toggle)

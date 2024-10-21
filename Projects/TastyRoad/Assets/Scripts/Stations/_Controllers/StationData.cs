@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class StationData
 {
-    public Station_ScrObj stationScrObj;
-    public int stationID;
-    public Vector2 position;
+    [SerializeField][ES3Serializable] public Station_ScrObj stationScrObj;
+    [SerializeField][ES3Serializable] public int stationID;
+    [SerializeField][ES3Serializable] public Vector2 position;
 
-    public StationData (Station_ScrObj stationScrObj)
+    public StationData()
+    {
+
+    }
+
+    public StationData(Station_ScrObj stationScrObj)
     {
         this.stationScrObj = stationScrObj;
         stationID = stationScrObj.id;
     }
 
-    public StationData (Station_Controller controller)
+    public StationData(Station_Controller controller)
     {
         stationScrObj = controller.stationScrObj;
         stationID = controller.stationScrObj.id;

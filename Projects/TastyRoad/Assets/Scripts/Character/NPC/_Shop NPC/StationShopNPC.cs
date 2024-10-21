@@ -59,6 +59,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent += CarryObject_DirectionUpdate;
 
         // subscription
+        WorldMap_Controller.NewLocation_Event += Restock_New;
         GlobalTime_Controller.TimeTik_Update += Restock_ArchivedStation;
 
         _interactable.InteractEvent += Cancel_Action;
@@ -79,12 +80,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void OnDestroy()
     {
-        Save_Data();
-
         // event subscriptions
         _npcController.movement.TargetPosition_UpdateEvent -= CarryObject_DirectionUpdate;
 
         // interaction subscription
+        WorldMap_Controller.NewLocation_Event -= Restock_New;
         GlobalTime_Controller.TimeTik_Update -= Restock_ArchivedStation;
 
         _interactable.InteractEvent -= Cancel_Action;
@@ -107,8 +107,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         {
             stationIDs.Add(station.id);
         }
-
         ES3.Save("StationShopNPC/_archivedStations", stationIDs);
+
+        Save_StationStocks();
+        ES3.Save("StationShopNPC/_currentRestockCount", _currentRestockCount);
     }
 
     public void Load_Data()
@@ -122,6 +124,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         {
             _archivedStations.Add(data.Station_ScrObj(stationIDs[i]));
         }
+
+        Load_StationStocks();
+        _currentRestockCount = ES3.Load("StationShopNPC/_currentRestockCount", _currentRestockCount);
     }
 
 
@@ -173,6 +178,37 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
 
     // Station Stock Control
+    private void Save_StationStocks()
+    {
+        Dictionary<StationData, StockData> stationStockDatas = new();
+
+        for (int i = 0; i < _stationStocks.Length; i++)
+        {
+            stationStockDatas.Add(_stationStocks[i].currentStation, _stationStocks[i].stockData);
+        }
+
+        ES3.Save("StationShopNPC/stationStockDatas", stationStockDatas);
+    }
+
+    private void Load_StationStocks()
+    {
+        Dictionary<StationData, StockData> stationStockDatas = new();
+        stationStockDatas = ES3.Load("StationShopNPC/stationStockDatas", stationStockDatas);
+
+        List<StationData> stations = new(stationStockDatas.Keys);
+        List<StockData> stockDatas = new(stationStockDatas.Values);
+
+        for (int i = 0; i < stationStockDatas.Count; i++)
+        {
+            // check if not enough station stocks are available to load
+            if (i > _stationStocks.Length - 1) return;
+
+            _stationStocks[i].Set_Data(stations[i].stationScrObj);
+            _stationStocks[i].Set_StockData(stockDatas[i]);
+        }
+    }
+
+
     private bool StationStocks_Full()
     {
         for (int i = 0; i < _stationStocks.Length; i++)
@@ -189,7 +225,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].isDiscount == false) continue;
+            if (_stationStocks[i].stockData.isDiscount == false) continue;
             count++;
         }
 
@@ -220,7 +256,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         for (int i = 0; i < _stationStocks.Length; i++)
         {
             if (_stationStocks[i].sold == true) continue;
-            if (_stationStocks[i].currentStation != checkStation) continue;
+            if (_stationStocks[i].currentStation.stationScrObj != checkStation) continue;
             checkCount++;
         }
 
@@ -270,26 +306,26 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     {
         if (_actionCoroutine != null) return;
 
+        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slots = menu.controller.slotsController;
+
+        List<ItemSlot_Data> bookmarkedStations = slots.BookMarked_Datas(menu.currentDatas, false);
+
+        if (bookmarkedStations.Count <= 0)
+        {
+            DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+            dialog.Update_Dialog(0);
+
+            return;
+        }
+
         _actionCoroutine = StartCoroutine(Dispose_BookMarkedStation_Coroutine());
     }
     private IEnumerator Dispose_BookMarkedStation_Coroutine()
     {
         StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slots = menu.controller.slotsController;
-
-        List<ItemSlot_Data> bookmarkedStations = slots.BookMarked_Datas(menu.currentDatas, false);
-
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        // check if there are any bookmarked stations
-        if (bookmarkedStations.Count <= 0)
-        {
-            // dialog
-            dialog.Update_Dialog(0);
-
-            Cancel_Action();
-            yield break;
-        }
 
         // dialog
         dialog.Update_Dialog(1);
@@ -300,6 +336,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.interactable.LockInteract(true);
 
         // get latest bookmark unlocked station
+        List<ItemSlot_Data> bookmarkedStations = slots.BookMarked_Datas(menu.currentDatas, false);
+
         ItemSlot_Data targetData = bookmarkedStations[bookmarkedStations.Count - 1];
         Station_ScrObj targetStation = targetData.currentStation;
 
@@ -331,10 +369,26 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     {
         if (_actionCoroutine != null) return;
 
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
         if (StationStocks_Full())
         {
             // dialog
-            gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
+            dialog.Update_Dialog(2);
+            return;
+        }
+
+        // get all locked bookmark stations
+        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slots = menu.controller.slotsController;
+
+        List<ItemSlot_Data> bookmarkedData = slots.BookMarked_Datas(menu.currentDatas, true);
+
+        // check if there are bookmarked stations
+        if (bookmarkedData.Count <= 0)
+        {
+            // dialog
+            dialog.Update_Dialog(2);
             return;
         }
 
@@ -348,18 +402,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         List<ItemSlot_Data> bookmarkedData = slots.BookMarked_Datas(menu.currentDatas, true);
 
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        if (bookmarkedData.Count <= 0)
-        {
-            // dialog
-            dialog.Update_Dialog(2);
-
-            Cancel_Action();
-            yield break;
-        }
-
         // dialog
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         dialog.Update_Dialog(3);
 
         NPC_Movement movement = _npcController.movement;
@@ -376,7 +420,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             {
                 // dialog
                 dialog.Update_Dialog(4);
-                break;
+
+                Cancel_Action();
+                yield break;
             }
 
             // go to scrap
@@ -413,39 +459,52 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             _stationStocks[i].Restock(recentStation);
 
             bookmarkedData[bookmarkedData.Count - 1].Empty_Item();
+            bookmarkedData.RemoveAt(bookmarkedData.Count - 1);
 
             CarryObject_SpriteToggle(false, null);
 
-            if (i >= bookmarkedData.Count - 1) break;
+            if (bookmarkedData.Count <= 0)
+            {
+                Cancel_Action();
+                break;
+            }
         }
 
         Cancel_Action();
+        yield break;
     }
 
 
+    private void Restock_New()
+    {
+        List<Station_ScrObj> archivedStations = new(_archivedStations);
+
+        for (int i = 0; i < _stationStocks.Length; i++)
+        {
+            if (archivedStations.Count <= 0) break;
+
+            Station_ScrObj randStation = archivedStations[Random.Range(0, archivedStations.Count)];
+
+            _stationStocks[i].Restock(randStation);
+            _stationStocks[i].Toggle_Discount(false);
+
+            archivedStations.Remove(randStation);
+        }
+    }
+
     private void Restock_ArchivedStation()
     {
-        if (_actionCoroutine != null) return;
-
-        if (StationStocks_Full())
-        {
-            // dialog
-            return;
-        }
-
-        if (_archivedStations.Count <= 0)
-        {
-            // dialog
-            return;
-        }
-
-        if (_currentRestockCount <= _restockCount)
+        if (_currentRestockCount < _restockCount)
         {
             _currentRestockCount++;
             Update_RestockBar();
 
             return;
         }
+
+        if (_actionCoroutine != null) return;
+        if (_archivedStations.Count <= 0) return;
+        if (StationStocks_Full()) return;
 
         _currentRestockCount = 0;
         Update_RestockBar();
@@ -458,7 +517,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         {
             if (_stationStocks[i].sold == false) continue;
 
-            //
+            // start action
             _npcController.interactable.LockInteract(true);
 
             NPC_Movement movement = _npcController.movement;
@@ -477,15 +536,17 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             // restock station
             _stationStocks[i].Restock(NonDuplicate_Station());
 
-            CarryObject_SpriteToggle(false, null);
+            if (DiscountStock_Amount() <= 1)
+            {
+                Cancel_Action();
+                break;
+            }
 
-            //
-            _npcController.interactable.LockInteract(false);
-
-            if (DiscountStock_Amount() <= 1) break;
-
+            // toggle discount false if more than 1 discount stocks are found
             _stationStocks[i].Toggle_Discount(false);
-            break;
+
+            Cancel_Action();
+            yield break;
         }
 
         Cancel_Action();

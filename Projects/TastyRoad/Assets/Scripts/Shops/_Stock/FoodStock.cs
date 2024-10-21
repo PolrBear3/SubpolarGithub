@@ -262,9 +262,9 @@ public class FoodStock : MonoBehaviour
 
 
     // Functions
-    private void Purchase(int purchaseAmount)
+    private bool Purchase(int purchaseAmount)
     {
-        if (_stockData.unlocked == false || _foodIcon.hasFood == false) return;
+        if (_stockData.unlocked == false || _foodIcon.hasFood == false) return false;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -279,7 +279,7 @@ public class FoodStock : MonoBehaviour
             DialogData data = new DialogData(stockedFood.sprite, "Not enough amount available!");
             dialog.Update_Dialog(data).UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
 
-            return;
+            return false;
         }
 
         // calculation
@@ -300,7 +300,7 @@ public class FoodStock : MonoBehaviour
             DialogData data = new DialogData(goldenNugget.sprite, "Not enough golden nuggets to purchase!");
             dialog.Update_Dialog(data).UpdateIcon_CenterPosition(goldenNugget.uiCenterPosition);
 
-            return;
+            return false;
         }
 
         _interactable.mainController.Remove_GoldenNugget(price);
@@ -317,7 +317,7 @@ public class FoodStock : MonoBehaviour
             DialogData data = new DialogData(stockedFood.sprite, "Not enough space in food storage!");
             dialog.Update_Dialog(data).UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
 
-            return;
+            return false;
         }
 
         //
@@ -328,22 +328,32 @@ public class FoodStock : MonoBehaviour
         ArchiveMenu_Controller archiveMenu = _interactable.mainController.currentVehicle.menu.archiveMenu;
         archiveMenu.Archive_Food(stockedFood);
 
-        // coin launch animation
-        _launcher.Parabola_CoinLaunch(stockedFood.sprite, _interactable.detection.player.transform.position);
-
         // deactivate discount on empty amount
-        if (Current_Amount() > 0) return;
+        if (Current_Amount() > 0) return true;
+
         Toggle_Discount(false);
+        return true;
     }
 
     private void Purchase_Single()
     {
-        Purchase(1);
+        if (Purchase(1) == false) return;
+
+        // coin launch animation
+        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
+        Transform player = _interactable.detection.player.transform;
+
+        _launcher.Parabola_CoinLaunch(stockedFood.sprite, player.position);
     }
 
     private void Purchase_All()
     {
-        Purchase(_foodIcon.currentData.currentAmount);
+        if (Purchase(_foodIcon.currentData.currentAmount) == false) return;
+
+        // coin launch animation
+        Transform player = _interactable.detection.player.transform;
+
+        _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], player.position);
     }
 
 

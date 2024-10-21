@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class StationStock : MonoBehaviour
 {
@@ -11,17 +12,14 @@ public class StationStock : MonoBehaviour
     [SerializeField] private ActionBubble_Interactable _interactable;
     [SerializeField] private CoinLauncher _launcher;
 
-    private Station_ScrObj _currentStation;
-    public Station_ScrObj currentStation => _currentStation;
+    private StationData _currentStation;
+    public StationData currentStation => _currentStation;
 
-    private int _price;
-    public int price => _price;
+    private StockData _stockData;
+    public StockData stockData => _stockData;
 
     private bool _sold;
     public bool sold => _sold;
-
-    private bool _isDiscount;
-    public bool isDiscount => _isDiscount;
 
     [Header("")]
     [SerializeField] private Sprite _emptyStation;
@@ -39,8 +37,13 @@ public class StationStock : MonoBehaviour
 
     private void Start()
     {
-        Update_toSold();
+        if (currentStation == null) _currentStation = new();
 
+        // load data
+        Restock(_currentStation.stationScrObj);
+        Toggle_Discount(_stockData.isDiscount);
+
+        // subscriptions
         _interactable.InteractEvent += Set_Dialog;
 
         _interactable.OnAction1Event += Purchase;
@@ -57,6 +60,12 @@ public class StationStock : MonoBehaviour
 
 
     // Set
+    public void Set_StockData(StockData data)
+    {
+        _stockData = data;
+    }
+
+
     private void Set_Data()
     {
         if (_currentStation == null)
@@ -65,21 +74,15 @@ public class StationStock : MonoBehaviour
             Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj();
 
             // set station scrobj
-            _currentStation = randStation;
+            _currentStation = new(randStation);
         }
-
-        // set initial price
-        _price = _currentStation.price;
     }
     public void Set_Data(Station_ScrObj setStation)
     {
         if (setStation == null) return;
 
         // set station scrobj
-        _currentStation = setStation;
-
-        // set initial price
-        _price = _currentStation.price;
+        _currentStation = new(setStation);
     }
 
 
@@ -87,16 +90,12 @@ public class StationStock : MonoBehaviour
     {
         if (_sold) return;
 
-        Sprite stationIcon = _currentStation.dialogIcon;
-        string dialogInfo = _currentStation.price + " coin\nto purchase";
+        Station_ScrObj currentStation = _currentStation.stationScrObj;
+
+        Sprite stationIcon = currentStation.dialogIcon;
+        string dialogInfo = currentStation.price + " coin\nto purchase";
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
-    }
-
-
-    public void Update_Price(int price)
-    {
-        _price = price;
     }
 
 
@@ -111,8 +110,10 @@ public class StationStock : MonoBehaviour
             return;
         }
 
+        Station_ScrObj currentStation = _currentStation.stationScrObj;
+
         // check if player has enough coins
-        if (_interactable.mainController.GoldenNugget_Amount() < _price)
+        if (_interactable.mainController.GoldenNugget_Amount() < currentStation.price)
         {
             dialog.Update_Dialog(0);
             return;
@@ -131,10 +132,10 @@ public class StationStock : MonoBehaviour
         }
 
         // add to vehicle
-        stationMenu.Add_StationItem(_currentStation, 1);
+        stationMenu.Add_StationItem(currentStation, 1);
 
         // station coin launch animation
-        _launcher.Parabola_CoinLaunch(_currentStation.miniSprite, _interactable.detection.player.transform.position);
+        _launcher.Parabola_CoinLaunch(currentStation.miniSprite, _interactable.detection.player.transform.position);
 
         // 
         Update_toSold();
@@ -145,9 +146,9 @@ public class StationStock : MonoBehaviour
     {
         // set data
         _sold = true;
-        _isDiscount = false;
+        Toggle_Discount(false);
 
-        _currentStation = null;
+        _currentStation = new();
 
         // set sprite
         _sr.sortingLayerName = "Background";
@@ -168,9 +169,9 @@ public class StationStock : MonoBehaviour
             return;
         }
 
-        _isDiscount = !_isDiscount;
+        _stockData.Toggle_Discount(!_stockData.isDiscount);
 
-        if (_isDiscount)
+        if (_stockData.isDiscount)
         {
             _statusSign.sprite = _signSprites[1];
             dialog.Update_Dialog(new DialogData(dialog.datas[3].icon, "Discount tag has been set."));
@@ -190,9 +191,9 @@ public class StationStock : MonoBehaviour
     }
     public void Toggle_Discount(bool toggleOn)
     {
-        _isDiscount = toggleOn;
+        _stockData = new(toggleOn);
 
-        if (_isDiscount)
+        if (_stockData.isDiscount)
         {
             _statusSign.sprite = _signSprites[1];
             return;
@@ -210,8 +211,6 @@ public class StationStock : MonoBehaviour
 
     public void Restock()
     {
-        if (_sold == false) return;
-
         // set data
         Set_Data();
 
@@ -221,14 +220,18 @@ public class StationStock : MonoBehaviour
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;
 
-        _sr.sprite = _currentStation.sprite;
+        _sr.sprite = _currentStation.stationScrObj.sprite;
 
-        if (_isDiscount) return;
+        if (_stockData.isDiscount) return;
         _statusSign.sprite = _signSprites[0];
     }
     public void Restock(Station_ScrObj restockStation)
     {
-        if (_sold == false) return;
+        if (restockStation == null)
+        {
+            Update_toSold();
+            return;
+        }
 
         // set data
         Set_Data(restockStation);
@@ -239,9 +242,9 @@ public class StationStock : MonoBehaviour
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder -= 1;
 
-        _sr.sprite = _currentStation.sprite;
+        _sr.sprite = _currentStation.stationScrObj.sprite;
 
-        if (_isDiscount) return;
+        if (_stockData.isDiscount) return;
         _statusSign.sprite = _signSprites[0];
     }
 }

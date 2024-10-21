@@ -16,8 +16,12 @@ public class CoinLauncher : MonoBehaviour
     public float gravity => _gravity;
 
     [Header("Angle")]
-    [SerializeField] [Range(0, 1)] private float _angleUpdateDistnace;
-    [SerializeField] [Range(10, 20)] private float _distanceMultiplier;
+    [SerializeField][Range(0, 1)] private float _angleUpdateDistnace;
+    [SerializeField][Range(10, 20)] private float _distanceMultiplier;
+
+    [Header("")]
+    [SerializeField] private Sprite[] _setCoinSprites;
+    public Sprite[] setCoinSprites => _setCoinSprites;
 
     private float _updateAngle;
     public float updateAngle => _updateAngle;

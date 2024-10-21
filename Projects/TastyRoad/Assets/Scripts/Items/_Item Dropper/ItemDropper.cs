@@ -123,9 +123,9 @@ public class ItemDropper : MonoBehaviour
         // get total wieght
         int totalWeight = 0;
 
-        foreach (var food in _foodWeights)
+        foreach (FoodWeight_Data data in _foodWeights)
         {
-            totalWeight += food.weight;
+            totalWeight += data.weight;
         }
 
         // track values
