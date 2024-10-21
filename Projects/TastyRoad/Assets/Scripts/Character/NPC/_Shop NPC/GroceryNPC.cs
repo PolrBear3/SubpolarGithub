@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GroceryNPC : MonoBehaviour, ISaveLoadable
@@ -571,16 +570,13 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         if (_currentRestockCount < _restockCount)
         {
-            _currentRestockCount++;
+            _currentRestockCount = Mathf.Clamp(_currentRestockCount + 1, 0, _restockCount);
             Update_RestockBar();
 
             return;
         }
 
         if (_actionCoroutine != null) return;
-
-        _currentRestockCount = 0;
-        Update_RestockBar();
 
         _actionCoroutine = StartCoroutine(Restock_Coroutine());
     }
@@ -591,15 +587,25 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         List<FoodStock> stocks = FoodStocks_byDistance();
         NPC_Movement movement = _npcController.movement;
 
+        int recentRestockCount = _currentRestockCount;
+
         for (int i = 0; i < stocks.Count; i++)
         {
+            if (recentRestockCount <= 0)
+            {
+                Cancel_Action();
+                yield break;
+            }
+
             if (stocks[i].stockData.unlocked == false) continue;
 
             int currentAmount = stocks[i].Current_Amount();
+            if (stocks[i].Current_Amount() > 0) continue;
 
             // new restock
             if (_isNewRestock)
             {
+                // move to stock 
                 movement.Assign_TargetPosition(stocks[i].transform.position);
                 while (movement.At_TargetPosition() == false) yield return null;
 
@@ -609,6 +615,10 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
                 stocks[i].Set_FoodData(new(restockFood));
                 stocks[i].Update_Amount(-(currentAmount + 1));
 
+                recentRestockCount--;
+                _currentRestockCount = Mathf.Clamp(_currentRestockCount - 1, 0, _restockCount);
+                Update_RestockBar();
+
                 yield return new WaitForSeconds(_actionSpeed);
                 continue;
             }
@@ -616,15 +626,18 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             // amount restock
             if (stocks[i].foodIcon.hasFood == false) continue;
 
-            int restockAmount = stocks[i].maxAmount - currentAmount;
-            if (restockAmount <= 0) continue;
-
+            // move to stock
             movement.Assign_TargetPosition(stocks[i].transform.position);
             while (movement.At_TargetPosition() == false) yield return null;
 
-            for (int j = 0; j < restockAmount; j++)
+            recentRestockCount--;
+            _currentRestockCount = Mathf.Clamp(_currentRestockCount - 1, 0, _restockCount);
+            Update_RestockBar();
+
+            for (int j = 0; j < stocks[i].maxAmount - currentAmount; j++)
             {
                 stocks[i].Update_Amount(1);
+
                 yield return new WaitForSeconds(_actionSpeed);
             }
         }
@@ -721,7 +734,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
             Complete_Stocks()[i].Reset_Data();
 
-            _currentRestockCount += _restockBonus;
+            _currentRestockCount = Mathf.Clamp(_currentRestockCount + 1, 0, _restockCount);
         }
 
         Cancel_Action();
