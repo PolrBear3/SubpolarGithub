@@ -28,6 +28,19 @@ public class Food_ScrObj : ScriptableObject
     public FoodData[] unlocks;
 
 
+    public List<Food_ScrObj> Unlocks()
+    {
+        List<Food_ScrObj> unlockFoods = new();
+
+        foreach (FoodData data in unlocks)
+        {
+            unlockFoods.Add(data.foodScrObj);
+        }
+
+        return unlockFoods;
+    }
+
+
     /// <returns>
     /// all ingredients Food_ScrObj and if it is a raw food, returns this
     /// </returns>

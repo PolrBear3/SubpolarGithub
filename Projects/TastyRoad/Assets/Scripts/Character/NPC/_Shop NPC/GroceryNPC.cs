@@ -31,9 +31,10 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField] private Food_ScrObj[] _startingBundles;
-    private List<FoodData> _archivedBundles = new();
 
-    private List<FoodData> _archivedQuestFoods = new();
+    private List<FoodData> _archivedBundles = new();
+    private List<FoodData> _unlockDatas = new();
+
     private FoodData _questFood;
 
     [Header("")]
@@ -133,11 +134,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("GroceryNPC/_archivedBundles", _archivedBundles);
+        ES3.Save("GroceryNPC/_unlockDatas", _unlockDatas);
 
         ES3.Save("GroceryNPC/_isNewRestock", _isNewRestock);
-        ES3.Save("GroceryNPC/_currentRestockCount", _currentRestockCount);
 
-        ES3.Save("GroceryNPC/_archivedQuestFoods", _archivedQuestFoods);
+        ES3.Save("GroceryNPC/_currentRestockCount", _currentRestockCount);
         ES3.Save("GroceryNPC/_currentQuestCount", _currentQuestCount);
 
         ES3.Save("GroceryNPC/_questFood", _questFood);
@@ -156,7 +157,14 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             foreach (Food_ScrObj food in _startingBundles)
             {
                 Archive_toBundles(food);
-                Archive_toQuestFoods(food);
+
+                if (food.ingredients.Count <= 0) continue;
+
+                // unlock only cooked foods from starting bundles
+                FoodData unlockData = new(food);
+                unlockData.Set_Amount(0);
+
+                _unlockDatas.Add(unlockData);
             }
 
             return;
@@ -164,11 +172,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         // load
         _archivedBundles = ES3.Load("GroceryNPC/_archivedBundles", _archivedBundles);
+        _unlockDatas = ES3.Load("GroceryNPC/_unlockDatas", _unlockDatas);
 
         _isNewRestock = ES3.Load("GroceryNPC/_isNewRestock", _isNewRestock);
-        _currentRestockCount = ES3.Load("GroceryNPC/_currentRestockCount", _currentRestockCount);
 
-        _archivedQuestFoods = ES3.Load("GroceryNPC/_archivedQuestFoods", _archivedQuestFoods);
+        _currentRestockCount = ES3.Load("GroceryNPC/_currentRestockCount", _currentRestockCount);
         _currentQuestCount = ES3.Load("GroceryNPC/_currentQuestCount", _currentQuestCount);
 
         _questFood = new(ES3.Load("GroceryNPC/_questFood", _questFood));
@@ -376,6 +384,58 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
+    // Unlock Datas
+    private bool Is_Unlocked(Food_ScrObj food)
+    {
+        for (int i = 0; i < _unlockDatas.Count; i++)
+        {
+            if (_unlockDatas[i].foodScrObj != food) continue;
+            if (_unlockDatas[i].currentAmount >= food.unlockAmount) return true;
+        }
+        return false;
+    }
+
+    private bool Unlock_inProgress(Food_ScrObj food)
+    {
+        if (Is_Unlocked(food)) return false;
+
+        for (int i = 0; i < _unlockDatas.Count; i++)
+        {
+            if (_unlockDatas[i].foodScrObj != food) continue;
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private FoodData Add_toUnlockData(Food_ScrObj food)
+    {
+        if (food.ingredients.Count <= 0) return null;
+
+        for (int i = 0; i < _unlockDatas.Count; i++)
+        {
+            if (_unlockDatas[i].foodScrObj != food) continue;
+            if (_unlockDatas[i].currentAmount >= food.unlockAmount) return null;
+
+            _unlockDatas[i].Update_Amount(1);
+            return _unlockDatas[i];
+        }
+
+        FoodData newFood = new(food);
+        _unlockDatas.Add(newFood);
+
+        return newFood;
+    }
+    private void Add_toUnlockData(List<Food_ScrObj> foods)
+    {
+        foreach (Food_ScrObj food in foods)
+        {
+            Add_toUnlockData(food);
+        }
+    }
+
+
     // Basics
     private void Interact_FacePlayer()
     {
@@ -426,21 +486,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    private void Archive_toQuestFoods(Food_ScrObj food)
-    {
-        if (food.ingredients.Count <= 0) return;
-
-        // check for duplicates
-        for (int i = 0; i < _archivedQuestFoods.Count; i++)
-        {
-            if (_archivedQuestFoods[i].foodScrObj != food) continue;
-            return;
-        }
-
-        _archivedQuestFoods.Add(new(food));
-    }
-
-
     private void Set_QuestFood(Food_ScrObj food)
     {
         if (food == null) return;
@@ -455,15 +500,20 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         interactable.UnInteract();
     }
+
+    /// <summary>
+    /// Sets a random quest food from one of _unlockData foods
+    /// </summary>
     private void Set_QuestFood()
     {
         if (_questFood.foodScrObj != null) return;
         if (_currentQuestCount >= _questCount) return;
 
         // get random cooked food from _archivedCooks
-        Food_ScrObj questFood = _archivedQuestFoods[Random.Range(0, _archivedQuestFoods.Count)].foodScrObj;
+        Food_ScrObj questFood = _unlockDatas[Random.Range(0, _unlockDatas.Count)].foodScrObj;
         Set_QuestFood(questFood);
     }
+
 
     private void Complete_Quest()
     {
@@ -721,32 +771,42 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private IEnumerator Collect_FoodBundles_Coroutine()
     {
         Start_Action();
-
         NPC_Movement movement = _npcController.movement;
 
-        // stock loop
-        for (int i = 0; i < Complete_Stocks().Count; i++)
+        List<PlaceableStock> completedStocks = new(Complete_Stocks());
+
+        // loops through placeable stocks
+        for (int i = 0; i < completedStocks.Count; i++)
         {
-            movement.Assign_TargetPosition(Complete_Stocks()[i].transform.position);
+            movement.Assign_TargetPosition(completedStocks[i].transform.position);
             while (movement.At_TargetPosition() == false) yield return null;
 
-            List<FoodData> placedDatas = Complete_Stocks()[i].placedFoods;
+            List<FoodData> placedDatas = completedStocks[i].placedFoods;
 
-            // placed foods loop
+            // loops through placed foods
             for (int j = 0; j < placedDatas.Count; j++)
             {
                 Archive_toBundles(placedDatas[j].foodScrObj);
-                Archive_toQuestFoods(placedDatas[j].foodScrObj);
+                Add_toUnlockData(placedDatas[j].foodScrObj);
 
-                // unlock foods loop
-                for (int k = 0; k < placedDatas[j].foodScrObj.Unlock_Ingredients().Count; k++)
+                if (Is_Unlocked(placedDatas[j].foodScrObj) == false) continue;
+
+                // loops through unlocked foods
+                for (int k = 0; k < placedDatas[j].foodScrObj.Unlocks().Count; k++)
                 {
+                    if (Unlock_inProgress(placedDatas[j].foodScrObj.Unlocks()[k])) continue;
 
+                    Add_toUnlockData(placedDatas[j].foodScrObj.Unlocks()[k]).Set_Amount(0);
+                }
+
+                // loops through unlocked food ingredients
+                foreach (Food_ScrObj newIngredient in placedDatas[j].foodScrObj.Unlock_Ingredients())
+                {
+                    Archive_toBundles(newIngredient);
                 }
             }
 
-            Complete_Stocks()[i].Reset_Data();
-
+            completedStocks[i].Reset_Data();
             _currentRestockCount = Mathf.Clamp(_currentRestockCount + 1, 0, _restockCount);
         }
 
