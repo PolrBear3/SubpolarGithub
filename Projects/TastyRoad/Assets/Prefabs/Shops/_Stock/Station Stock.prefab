@@ -197,16 +197,18 @@ MonoBehaviour:
     icon: {fileID: 0}
     info: 
   _datas:
-  - icon: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
-    info: No Enough nuggets!
-  - icon: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
-    info: No Enough space in vehicle storage!
+  - icon: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not Enough nuggets to purchase!
+  - icon: {fileID: -1672774169, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not Enough space in vehicle storage!
   - icon: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     info: Currently out of stock!
   - icon: {fileID: 1923143937, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: 
-  - icon: {fileID: 1923143937, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Discount tag cannot be set on stock!
+  - icon: {fileID: 1923143937, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: A discount tag has been set.
+  - icon: {fileID: -170552078, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: A Discount tag has been removed.
 --- !u!114 &518642445542634473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +244,7 @@ MonoBehaviour:
   - {fileID: 1615136246, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   - {fileID: -957326405, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   - {fileID: 1353327767, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  _discountPrice: 1
 --- !u!1 &6121253042431113937
 GameObject:
   m_ObjectHideFlags: 0

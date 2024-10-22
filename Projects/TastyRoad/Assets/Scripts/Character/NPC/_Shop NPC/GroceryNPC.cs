@@ -472,7 +472,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         ActionBubble_Interactable interactable = _npcController.interactable;
-        FoodData_Controller playerIcon = interactable.detection.player.foodIcon;
+
+        Player_Controller player = interactable.detection.player;
+        FoodData_Controller playerIcon = player.foodIcon;
 
         if (playerIcon.hasFood == false)
         {
@@ -495,6 +497,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
+
+        // animation
+        player.coinLauncher.Parabola_CoinLaunch(_questFood.foodScrObj.sprite, transform.position);
 
         // refresh _questFood
         _questFood = new();
@@ -719,6 +724,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         NPC_Movement movement = _npcController.movement;
 
+        // stock loop
         for (int i = 0; i < Complete_Stocks().Count; i++)
         {
             movement.Assign_TargetPosition(Complete_Stocks()[i].transform.position);
@@ -726,10 +732,17 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
             List<FoodData> placedDatas = Complete_Stocks()[i].placedFoods;
 
+            // placed foods loop
             for (int j = 0; j < placedDatas.Count; j++)
             {
                 Archive_toBundles(placedDatas[j].foodScrObj);
                 Archive_toQuestFoods(placedDatas[j].foodScrObj);
+
+                // unlock foods loop
+                for (int k = 0; k < placedDatas[j].foodScrObj.Unlock_Ingredients().Count; k++)
+                {
+
+                }
             }
 
             Complete_Stocks()[i].Reset_Data();

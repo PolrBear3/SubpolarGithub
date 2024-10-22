@@ -505,11 +505,19 @@ public class FoodMenu_Controller_Inspector : Editor
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
         FoodMenu_Controller menu = (FoodMenu_Controller)target;
+
+        base.OnInspectorGUI();
         serializedObject.Update();
 
         GUILayout.Space(60);
+
+        if (GUILayout.Button("Add New Page of Slots"))
+        {
+            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.currentDatas);
+        }
+        GUILayout.Space(20);
+
         GUILayout.BeginHorizontal();
 
         EditorGUILayout.PropertyField(foodToAddProp, GUIContent.none);
@@ -519,7 +527,6 @@ public class FoodMenu_Controller_Inspector : Editor
         int amountToAdd = amountToAddProp.intValue;
 
         GUILayout.EndHorizontal();
-        serializedObject.ApplyModifiedProperties();
 
         if (GUILayout.Button("Add Food"))
         {
@@ -530,6 +537,8 @@ public class FoodMenu_Controller_Inspector : Editor
         {
             menu.Remove_FoodItem(foodToAdd, amountToAdd);
         }
+
+        serializedObject.ApplyModifiedProperties();
     }
 }
 #endif

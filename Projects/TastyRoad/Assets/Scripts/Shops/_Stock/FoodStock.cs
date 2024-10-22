@@ -28,9 +28,9 @@ public class FoodStock : MonoBehaviour
     [Range(1, 99)][SerializeField] private int _maxAmount;
     public int maxAmount => _maxAmount;
 
-    [Range(1, 99)][SerializeField] private int _unlockPrice;
+    [Range(0, 99)][SerializeField] private int _unlockPrice;
 
-    [Range(1, 99)][SerializeField] private int _discountPrice;
+    [Range(0, 99)][SerializeField] private int _discountPrice;
 
 
     private StockData _stockData;
@@ -166,6 +166,7 @@ public class FoodStock : MonoBehaviour
 
         if (_stockData.unlocked == false)
         {
+            // price to unlock + current nugget amount
             string unlockDialog = _unlockPrice + " <sprite=0> to unlock." + currentAmountString;
             dialog.Update_Dialog(new DialogData(dialog.datas[0].icon, unlockDialog));
 
@@ -174,7 +175,8 @@ public class FoodStock : MonoBehaviour
 
         if (_foodIcon.currentData == null)
         {
-            dialog.Update_Dialog(1);
+            // no food currenlty stocked!
+            dialog.Update_Dialog(2);
 
             interactable.UnInteract();
             return;
@@ -182,28 +184,31 @@ public class FoodStock : MonoBehaviour
 
         if (_foodIcon.currentData.currentAmount <= 0)
         {
-            dialog.Update_Dialog(2);
+            // not enough food amount currenlty stocked
+            dialog.Update_Dialog(3);
 
             interactable.UnInteract();
             return;
         }
 
-        Food_ScrObj currentFood = _foodIcon.currentData.foodScrObj;
+        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
 
         // calculation
         int price = _foodIcon.currentData.foodScrObj.price;
 
         if (_stockData.isDiscount && price > 0)
         {
-            price = _discountPrice;
+            price -= _discountPrice;
+            price = Mathf.Clamp(price, 0, stockedFood.price);
         }
 
         string priceString = price + " <sprite=0> to purchase." + currentAmountString;
 
-        DialogData data = new(currentFood.sprite, priceString);
+        // price to purchase + current nugget amount
+        DialogData data = new(stockedFood.sprite, priceString);
         DialogBox dialogBox = dialog.Update_Dialog(data);
 
-        dialogBox.UpdateIcon_CenterPosition(currentFood.uiCenterPosition);
+        dialogBox.UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
     }
 
 
@@ -271,52 +276,46 @@ public class FoodStock : MonoBehaviour
         Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
         int stockedAmount = _foodIcon.currentData.currentAmount;
 
-        // not enough amount
-        if (stockedAmount <= 0)
-        {
-            _interactable.UnInteract();
-
-            DialogData data = new DialogData(stockedFood.sprite, "Not enough amount available!");
-            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
-
-            return false;
-        }
+        if (stockedAmount <= 0) return false;
 
         // calculation
         int price = stockedFood.price * purchaseAmount;
 
         if (_stockData.isDiscount && price > 0)
         {
-            price = _discountPrice * purchaseAmount;
+            price -= _discountPrice * purchaseAmount;
+            price = Mathf.Clamp(price, 0, stockedFood.price * purchaseAmount);
         }
 
-        // not enough golden nuggets
+        // check nugget amount
         if (_interactable.mainController.GoldenNugget_Amount() < price)
         {
+            // Not enough golden nuggets to purchase!
+            dialog.Update_Dialog(4);
+
             _interactable.UnInteract();
-
-            Food_ScrObj goldenNugget = _interactable.mainController.dataController.goldenNugget;
-
-            DialogData data = new DialogData(goldenNugget.sprite, "Not enough golden nuggets to purchase!");
-            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(goldenNugget.uiCenterPosition);
-
             return false;
         }
 
+
         _interactable.mainController.Remove_GoldenNugget(price);
 
-        // not enough slots
+        // add food
         FoodMenu_Controller foodMenu = _interactable.mainController.currentVehicle.menu.foodMenu;
-        if (foodMenu.Add_FoodItem(stockedFood, purchaseAmount) > 0)
+        int leftOverAmount = foodMenu.Add_FoodItem(stockedFood, purchaseAmount);
+
+        if (leftOverAmount > 0)
         {
-            _interactable.UnInteract();
+            // set to recent amount
+            foodMenu.Remove_FoodItem(stockedFood, purchaseAmount - leftOverAmount);
 
             // return golden nuggets
             _interactable.mainController.Add_GoldenNugget(stockedFood.price);
 
-            DialogData data = new DialogData(stockedFood.sprite, "Not enough space in food storage!");
-            dialog.Update_Dialog(data).UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
+            // Not enough space in food storage!
+            dialog.Update_Dialog(5);
 
+            _interactable.UnInteract();
             return false;
         }
 
@@ -360,6 +359,15 @@ public class FoodStock : MonoBehaviour
     private void Unlock()
     {
         if (_stockData.unlocked) return;
+
+        if (_interactable.mainController.GoldenNugget_Amount() < _unlockPrice)
+        {
+            // Not enough golden nuggets to purchase!
+            gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
+
+            _interactable.UnInteract();
+            return;
+        }
 
         Toggle_Unlock(true);
 

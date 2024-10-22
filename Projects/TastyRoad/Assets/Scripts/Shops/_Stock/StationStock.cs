@@ -1,8 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 
 public class StationStock : MonoBehaviour
 {
@@ -12,6 +11,17 @@ public class StationStock : MonoBehaviour
     [SerializeField] private ActionBubble_Interactable _interactable;
     [SerializeField] private CoinLauncher _launcher;
 
+    [Header("")]
+    [SerializeField] private Sprite _emptyStation;
+
+    [Header("")]
+    [SerializeField] private SpriteRenderer _statusSign;
+    [SerializeField] private Sprite[] _signSprites;
+
+    [Header("")]
+    [Range(0, 99)][SerializeField] private int _discountPrice;
+
+
     private StationData _currentStation;
     public StationData currentStation => _currentStation;
 
@@ -20,13 +30,6 @@ public class StationStock : MonoBehaviour
 
     private bool _sold;
     public bool sold => _sold;
-
-    [Header("")]
-    [SerializeField] private Sprite _emptyStation;
-
-    [Header("")]
-    [SerializeField] private SpriteRenderer _statusSign;
-    [SerializeField] private Sprite[] _signSprites;
 
 
     // MonoBehaviour
@@ -91,9 +94,18 @@ public class StationStock : MonoBehaviour
         if (_sold) return;
 
         Station_ScrObj currentStation = _currentStation.stationScrObj;
-
         Sprite stationIcon = currentStation.dialogIcon;
-        string dialogInfo = currentStation.price + " coin\nto purchase";
+
+        // calculation
+        int price = currentStation.price;
+
+        if (_stockData.isDiscount && price > 0)
+        {
+            price = Mathf.Clamp(price - _discountPrice, 0, currentStation.price);
+        }
+
+        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=0>";
+        string dialogInfo = price + " <sprite=0> to purchase." + currentAmountString;
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
     }
@@ -106,15 +118,24 @@ public class StationStock : MonoBehaviour
 
         if (_sold)
         {
+            // Not Enough space in vehicle storage!
             dialog.Update_Dialog(2);
             return;
         }
 
         Station_ScrObj currentStation = _currentStation.stationScrObj;
 
-        // check if player has enough coins
-        if (_interactable.mainController.GoldenNugget_Amount() < currentStation.price)
+        // calculation
+        int price = currentStation.price;
+
+        if (_stockData.isDiscount && price > 0)
         {
+            price = Mathf.Clamp(price - _discountPrice, 0, currentStation.price);
+        }
+
+        if (_interactable.mainController.GoldenNugget_Amount() < price)
+        {
+            // Not Enough nuggets to purchase!
             dialog.Update_Dialog(0);
             return;
         }
@@ -124,9 +145,9 @@ public class StationStock : MonoBehaviour
 
         bool slotFull = slotsController.Empty_SlotData(stationMenu.currentDatas) == null;
 
-        // check if station menu slot is available
         if (slotFull)
         {
+            // Not Enough space in vehicle storage!
             dialog.Update_Dialog(1);
             return;
         }
@@ -165,7 +186,7 @@ public class StationStock : MonoBehaviour
 
         if (_sold == false)
         {
-            dialog.Update_Dialog(4);
+            dialog.Update_Dialog(3);
             return;
         }
 
@@ -174,12 +195,12 @@ public class StationStock : MonoBehaviour
         if (_stockData.isDiscount)
         {
             _statusSign.sprite = _signSprites[1];
-            dialog.Update_Dialog(new DialogData(dialog.datas[3].icon, "Discount tag has been set."));
 
+            dialog.Update_Dialog(4);
             return;
         }
 
-        dialog.Update_Dialog(new DialogData(dialog.datas[3].icon, "Discount tag has been removed."));
+        dialog.Update_Dialog(5);
 
         if (_sold)
         {

@@ -200,12 +200,16 @@ MonoBehaviour:
   _datas:
   - icon: {fileID: -1337495358, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Lock State + Unlock Price
+  - icon: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not enough golden nuggets to unlock!
   - icon: {fileID: 2146137284, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: no food currently stocked!
+    info: No food currently stocked!
   - icon: {fileID: -372810078, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: not enough food amount currently stocked!
-  - icon: {fileID: 0}
-    info: action 1 2
+    info: Not enough food amount currently stocked!
+  - icon: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not enough golden nuggets to purchase!
+  - icon: {fileID: -630237576, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not enough space in food storage!
 --- !u!114 &3521912711758190000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +263,7 @@ MonoBehaviour:
   - {fileID: -1002933723, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   - {fileID: -2090806982, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   _maxAmount: 6
-  _unlockPrice: 0
+  _unlockPrice: 1
   _discountPrice: 1
   foodToAdd: {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
 --- !u!1 &6231251741471268091

@@ -608,16 +608,24 @@ public class StationMenu_Controller_Inspector : Editor
     //
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
         StationMenu_Controller menu = (StationMenu_Controller)target;
+
+        base.OnInspectorGUI();
         serializedObject.Update();
 
         GUILayout.Space(60);
 
+        if (GUILayout.Button("Add New Page of Slots"))
+        {
+            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.currentDatas);
+        }
+        GUILayout.Space(20);
+
+        //
+        EditorGUILayout.BeginHorizontal();
+
         EditorGUILayout.PropertyField(editStationProp, GUIContent.none);
         Station_ScrObj editStation = (Station_ScrObj)editStationProp.objectReferenceValue;
-
-        EditorGUILayout.BeginHorizontal();
 
         EditorGUILayout.PropertyField(lockStationProp, GUIContent.none);
         bool lockStation = lockStationProp.boolValue;
@@ -628,6 +636,7 @@ public class StationMenu_Controller_Inspector : Editor
         }
 
         EditorGUILayout.EndHorizontal();
+        //
 
         if (GUILayout.Button("Remove Station"))
         {
