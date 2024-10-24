@@ -32,7 +32,13 @@ public class MailBox : MonoBehaviour, IInteractable
     private void Start()
     {
         Update_Sprite();
+
         _amountBar.Load();
+        _amountBar.Transparent_Toggle(true);
+
+        // subscriptions
+        _detection.EnterEvent += Toggle_AmountBar;
+        _detection.ExitEvent += Toggle_AmountBar;
 
         GlobalTime_Controller.TimeTik_Update += Drop_CollectCard;
     }
@@ -40,6 +46,10 @@ public class MailBox : MonoBehaviour, IInteractable
     private void OnDestroy()
     {
         Save_Data();
+
+        // subscriptions
+        _detection.EnterEvent -= Toggle_AmountBar;
+        _detection.ExitEvent -= Toggle_AmountBar;
 
         GlobalTime_Controller.TimeTik_Update -= Drop_CollectCard;
     }
@@ -65,11 +75,11 @@ public class MailBox : MonoBehaviour, IInteractable
 
     public void UnInteract()
     {
-        
+
     }
 
 
-    // Sprite Control
+    // Visual Control
     private void Update_Sprite()
     {
         if (_amountBar.currentAmount <= 0)
@@ -79,6 +89,11 @@ public class MailBox : MonoBehaviour, IInteractable
         }
 
         _sr.sprite = _sprites[1];
+    }
+
+    public void Toggle_AmountBar()
+    {
+        _amountBar.Transparent_Toggle(_detection.player == null);
     }
 
 
@@ -148,7 +163,7 @@ public class MailBox : MonoBehaviour, IInteractable
     {
         if (_coroutine != null) return;
         if (_amountBar.currentAmount <= 0) return;
-        
+
         _coroutine = StartCoroutine(Drop_CollectCard_Coroutine());
     }
     private IEnumerator Drop_CollectCard_Coroutine()

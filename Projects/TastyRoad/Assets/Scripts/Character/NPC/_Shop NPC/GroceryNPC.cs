@@ -92,9 +92,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent += Cancel_Action;
         interact.InteractEvent += Interact_FacePlayer;
 
+        interact.detection.EnterEvent += Update_RestockBar;
         interact.InteractEvent += Update_RestockBar;
         interact.UnInteractEvent += Update_RestockBar;
 
+        interact.detection.EnterEvent += Update_QuestBar;
         interact.InteractEvent += Update_QuestBar;
         interact.UnInteractEvent += Update_QuestBar;
 
@@ -119,9 +121,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.InteractEvent -= Cancel_Action;
         interact.InteractEvent -= Interact_FacePlayer;
 
+        interact.detection.EnterEvent -= Update_RestockBar;
         interact.InteractEvent -= Update_RestockBar;
         interact.UnInteractEvent -= Update_RestockBar;
 
+        interact.detection.EnterEvent -= Update_QuestBar;
         interact.InteractEvent -= Update_QuestBar;
         interact.UnInteractEvent -= Update_QuestBar;
 
@@ -149,10 +153,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
-        // new
+        // new game
         if (ES3.KeyExists("GroceryNPC/_archivedBundles") == false)
         {
             _questFood = new();
+
+            _isNewRestock = true;
 
             foreach (Food_ScrObj food in _startingBundles)
             {
@@ -478,7 +484,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // Quest
     public void Update_QuestBar()
     {
-        Action_Bubble bubble = _npcController.interactable.bubble;
+        ActionBubble_Interactable interactable = _npcController.interactable;
+
+        if (interactable.detection.player == null)
+        {
+            _questBarObject.SetActive(false);
+            return;
+        }
+
+        Action_Bubble bubble = interactable.bubble;
+
         _questBarObject.SetActive(!bubble.bubbleOn);
 
         if (bubble.bubbleOn) return;
@@ -565,7 +580,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // Restock
     private void Update_RestockBar()
     {
-        Action_Bubble bubble = _npcController.interactable.bubble;
+        ActionBubble_Interactable interactable = _npcController.interactable;
+
+        if (interactable.detection.player == null)
+        {
+            _restockBarObject.SetActive(false);
+            return;
+        }
+
+        Action_Bubble bubble = interactable.bubble;
+
         _restockBarObject.SetActive(!bubble.bubbleOn);
 
         if (bubble.bubbleOn) return;

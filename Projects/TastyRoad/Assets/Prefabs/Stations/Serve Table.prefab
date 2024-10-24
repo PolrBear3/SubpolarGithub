@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1010970402213928676}
   - component: {fileID: 2050151741136552749}
   - component: {fileID: 2331507576810310344}
-  - component: {fileID: 4651739479640698696}
   - component: {fileID: -87010650432210433}
   - component: {fileID: 3609195736537386832}
   - component: {fileID: 3551917571397297857}
@@ -220,21 +219,6 @@ MonoBehaviour:
   m_DefaultActionMap: In Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4651739479640698696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5231110676368674916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9bdaefbdd1c543d9bba47e751d64aee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _disableInput: {fileID: 2331507576810310344}
-  _tutorial: {fileID: 11400000, guid: b02ebf74ad36e4855b12643469eaebd5, type: 2}
-  _onEnableShow: 0
 --- !u!114 &-87010650432210433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,7 +232,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stationScrObj: {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
-  _roamRestrictedArea: 1
 --- !u!114 &3609195736537386832
 MonoBehaviour:
   m_ObjectHideFlags: 0

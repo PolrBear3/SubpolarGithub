@@ -24,7 +24,6 @@ public class Detection_Controller : MonoBehaviour
     }
 
 
-
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -47,7 +46,6 @@ public class Detection_Controller : MonoBehaviour
 
         ExitEvent?.Invoke();
     }
-
 
 
     /// <returns>Closest Detected Object</returns>
@@ -111,7 +109,6 @@ public class Detection_Controller : MonoBehaviour
 
         return closestInteractable;
     }
-
 
 
     // Check Detected Object

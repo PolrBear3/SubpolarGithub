@@ -50,7 +50,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         _restockBar.Toggle_BarColor(true);
-        Update_RestockBar();
+        Toggle_RestockBar();
 
         // untrack
         _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
@@ -65,8 +65,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent += Cancel_Action;
         _interactable.InteractEvent += Interact_FacePlayer;
 
-        _interactable.InteractEvent += Update_RestockBar;
-        _interactable.UnInteractEvent += Update_RestockBar;
+        _interactable.detection.EnterEvent += Toggle_RestockBar;
+        _interactable.InteractEvent += Toggle_RestockBar;
+        _interactable.UnInteractEvent += Toggle_RestockBar;
 
         _interactable.OnAction1Event += Dispose_BookMarkedStation;
         _interactable.OnAction2Event += Build_BookMarkedStations;
@@ -90,8 +91,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent -= Cancel_Action;
         _interactable.InteractEvent -= Interact_FacePlayer;
 
-        _interactable.InteractEvent -= Update_RestockBar;
-        _interactable.UnInteractEvent -= Update_RestockBar;
+        _interactable.detection.EnterEvent -= Toggle_RestockBar;
+        _interactable.InteractEvent -= Toggle_RestockBar;
+        _interactable.UnInteractEvent -= Toggle_RestockBar;
 
         _interactable.OnAction1Event -= Dispose_BookMarkedStation;
         _interactable.OnAction2Event -= Build_BookMarkedStations;
@@ -167,9 +169,18 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    private void Update_RestockBar()
+    private void Toggle_RestockBar()
     {
-        Action_Bubble bubble = _npcController.interactable.bubble;
+        ActionBubble_Interactable interactable = _npcController.interactable;
+
+        if (interactable.detection.player == null)
+        {
+            _restockBarObject.SetActive(false);
+            return;
+        }
+
+        Action_Bubble bubble = interactable.bubble;
+
         _restockBarObject.SetActive(!bubble.bubbleOn);
 
         if (bubble.bubbleOn) return;
@@ -184,7 +195,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            stationStockDatas.Add(_stationStocks[i].currentStation, _stationStocks[i].stockData);
+            stationStockDatas.Add(new(_stationStocks[i].currentStation), new(_stationStocks[i].stockData));
         }
 
         ES3.Save("StationShopNPC/stationStockDatas", stationStockDatas);
@@ -203,7 +214,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             // check if not enough station stocks are available to load
             if (i > _stationStocks.Length - 1) return;
 
-            _stationStocks[i].Set_Data(stations[i].stationScrObj);
+            _stationStocks[i].Set_StationData(stations[i]);
             _stationStocks[i].Set_StockData(stockDatas[i]);
         }
     }
@@ -497,7 +508,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         if (_currentRestockCount < _restockCount)
         {
             _currentRestockCount++;
-            Update_RestockBar();
+            Toggle_RestockBar();
 
             return;
         }
@@ -507,7 +518,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         if (StationStocks_Full()) return;
 
         _currentRestockCount = 0;
-        Update_RestockBar();
+        Toggle_RestockBar();
 
         _actionCoroutine = StartCoroutine(Restock_ArchivedStation_Coroutine());
     }

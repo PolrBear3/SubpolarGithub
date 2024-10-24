@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScrapStack : MonoBehaviour, ISaveLoadable
 {
@@ -33,8 +34,9 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Update_CurrentSprite();
 
         // subscriptions
-        _interactable.detection.EnterEvent += _amountBar.Transparent_Toggle;
-        _interactable.detection.ExitEvent += _amountBar.Transparent_Toggle;
+        _interactable.detection.EnterEvent += Toggle_AmountBar;
+        _interactable.InteractEvent += Toggle_AmountBar;
+        _interactable.UnInteractEvent += Toggle_AmountBar;
 
         _interactable.OnAction1Event += Stack_ExistingScrap;
         _interactable.OnAction2Event += Stack_BookmarkedScrap;
@@ -43,8 +45,9 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
-        _interactable.detection.EnterEvent -= _amountBar.Transparent_Toggle;
-        _interactable.detection.ExitEvent -= _amountBar.Transparent_Toggle;
+        _interactable.detection.EnterEvent -= Toggle_AmountBar;
+        _interactable.InteractEvent -= Toggle_AmountBar;
+        _interactable.UnInteractEvent -= Toggle_AmountBar;
 
         _interactable.OnAction1Event -= Stack_ExistingScrap;
         _interactable.OnAction2Event -= Stack_BookmarkedScrap;
@@ -63,11 +66,22 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     }
 
 
-    //
+    // Visual Control
     public void Update_CurrentSprite()
     {
         int spriteNum = Mathf.Clamp(_amountBar.currentAmount, 0, _scrapSprites.Length - 1);
         _sr.sprite = _scrapSprites[spriteNum];
+    }
+
+    public void Toggle_AmountBar()
+    {
+        if (_interactable.detection.player == null)
+        {
+            _amountBar.Transparent_Toggle(true);
+            return;
+        }
+
+        _amountBar.Transparent_Toggle(_interactable.bubble.bubbleOn);
     }
 
 

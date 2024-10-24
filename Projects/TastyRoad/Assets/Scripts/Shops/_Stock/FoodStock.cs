@@ -51,7 +51,7 @@ public class FoodStock : MonoBehaviour
     {
         if (_stockData == null)
         {
-            Set_StockData(new());
+            _stockData = new(false);
             Set_FoodData(new());
         }
 
@@ -91,11 +91,11 @@ public class FoodStock : MonoBehaviour
     }
 
 
-    // Data Control
-    public void Set_StockData(StockData data)
+    // Public Constructors
+    public StockData Set_StockData(StockData data)
     {
-        _stockData = new();
-        _stockData = data;
+        _stockData = new(data.unlocked);
+        return _stockData;
     }
 
     public void Set_FoodData(FoodData data)

@@ -40,10 +40,10 @@ public class StationStock : MonoBehaviour
 
     private void Start()
     {
-        if (currentStation == null) _currentStation = new();
-
         // load data
-        Restock(_currentStation.stationScrObj);
+        Restock();
+
+        _stockData = new(_stockData);
         Toggle_Discount(_stockData.isDiscount);
 
         // subscriptions
@@ -59,33 +59,6 @@ public class StationStock : MonoBehaviour
 
         _interactable.OnAction1Event -= Purchase;
         _interactable.OnAction2Event -= Toggle_Discount;
-    }
-
-
-    // Set
-    public void Set_StockData(StockData data)
-    {
-        _stockData = data;
-    }
-
-
-    private void Set_Data()
-    {
-        if (_currentStation == null)
-        {
-            // get random station
-            Station_ScrObj randStation = _interactable.mainController.dataController.Station_ScrObj();
-
-            // set station scrobj
-            _currentStation = new(randStation);
-        }
-    }
-    public void Set_Data(Station_ScrObj setStation)
-    {
-        if (setStation == null) return;
-
-        // set station scrobj
-        _currentStation = new(setStation);
     }
 
 
@@ -108,6 +81,22 @@ public class StationStock : MonoBehaviour
         string dialogInfo = price + " <sprite=0> to purchase." + currentAmountString;
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
+    }
+
+
+    // Public Constructors
+    public StationData Set_StationData(StationData data)
+    {
+        if (data == null) return null;
+
+        _currentStation = new(data);
+        return _currentStation;
+    }
+
+    public StockData Set_StockData(StockData data)
+    {
+        _stockData = new(data);
+        return _stockData;
     }
 
 
@@ -169,14 +158,17 @@ public class StationStock : MonoBehaviour
         _sold = true;
         Toggle_Discount(false);
 
-        _currentStation = new();
+        _currentStation = null;
 
         // set sprite
-        _sr.sortingLayerName = "Background";
-        _sr.sortingOrder += 1;
-
         _sr.sprite = _emptyStation;
         _statusSign.sprite = _signSprites[2];
+
+        _sr.sortingLayerName = "Background";
+        _sr.sortingOrder = 1;
+
+        //
+        _interactable.bubble.Toggle_Height(true);
     }
 
 
@@ -230,22 +222,6 @@ public class StationStock : MonoBehaviour
     }
 
 
-    public void Restock()
-    {
-        // set data
-        Set_Data();
-
-        _sold = false;
-
-        // set sprite
-        _sr.sortingLayerName = "Prefabs";
-        _sr.sortingOrder -= 1;
-
-        _sr.sprite = _currentStation.stationScrObj.sprite;
-
-        if (_stockData.isDiscount) return;
-        _statusSign.sprite = _signSprites[0];
-    }
     public void Restock(Station_ScrObj restockStation)
     {
         if (restockStation == null)
@@ -255,17 +231,29 @@ public class StationStock : MonoBehaviour
         }
 
         // set data
-        Set_Data(restockStation);
-
+        _currentStation = new(restockStation);
         _sold = false;
 
         // set sprite
-        _sr.sortingLayerName = "Prefabs";
-        _sr.sortingOrder -= 1;
-
         _sr.sprite = _currentStation.stationScrObj.sprite;
+
+        _sr.sortingLayerName = "Prefabs";
+        _sr.sortingOrder = 0;
 
         if (_stockData.isDiscount) return;
         _statusSign.sprite = _signSprites[0];
+
+        //
+        _interactable.bubble.Toggle_Height(false);
+    }
+    public void Restock()
+    {
+        if (_currentStation == null)
+        {
+            Update_toSold();
+            return;
+        }
+
+        Restock(_currentStation.stationScrObj);
     }
 }

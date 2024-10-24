@@ -12,10 +12,13 @@ public class StockData
     public bool isDiscount => _isDiscount;
 
 
-    // New Sets
-    public StockData()
+    // Constructors
+    public StockData(StockData data)
     {
+        if (data == null) return;
 
+        _unlocked = data.unlocked;
+        _isDiscount = data.isDiscount;
     }
 
     public StockData(bool unlockToggle)
