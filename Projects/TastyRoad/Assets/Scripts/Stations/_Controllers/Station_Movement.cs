@@ -111,6 +111,7 @@ public class Station_Movement : MonoBehaviour
         if (PositionSet_Available() == false) return;
 
         Load_Position();
+        _stationController.data.Update_Position(transform.position);
     }
 
     /// <summary>

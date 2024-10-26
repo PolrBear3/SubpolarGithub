@@ -13,19 +13,22 @@ public class Station_Controller : MonoBehaviour
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
 
-    private Detection_Controller _detection;
+    [SerializeField] private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
 
-    private Station_Movement _movement;
+    [SerializeField] private Station_Movement _movement;
     public Station_Movement movement => _movement;
 
-    private Animator _stationAnimator;
+    [SerializeField] private Animator _stationAnimator;
     public Animator stationAnmiator => _stationAnimator;
 
 
     [Header("")]
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
+
+    private StationData _data;
+    public StationData data => _data;
 
     private bool _isRoamArea;
     public bool isRoamArea => _isRoamArea;
@@ -42,13 +45,16 @@ public class Station_Controller : MonoBehaviour
     private void Awake()
     {
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-        _mainController.Track_CurrentStation(this);
 
+        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         _playerInput = gameObject.GetComponent<PlayerInput>();
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
-        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
-        if (gameObject.TryGetComponent(out Station_Movement movement)) { _movement = movement; }
-        if (gameObject.TryGetComponent(out Animator stationAnimator)) { _stationAnimator = stationAnimator; }
+
+        _mainController.Track_CurrentStation(this);
+    }
+
+    private void Start()
+    {
+        Set_Data();
     }
 
 
@@ -65,6 +71,15 @@ public class Station_Controller : MonoBehaviour
     private void OnAction2()
     {
         Action2_Event?.Invoke();
+    }
+
+
+    // Data Constructor Functions
+    private void Set_Data()
+    {
+        if (_data != null) return;
+
+        _data = new(_stationScrObj, transform.position);
     }
 
 

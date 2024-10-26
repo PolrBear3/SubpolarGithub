@@ -401,7 +401,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             // check if station is exported and not placed
             if (_currentStations[i].movement != null && _currentStations[i].movement.enabled == true) continue;
 
-            stationDatas.Add(new StationData(_currentStations[i]));
+            stationDatas.Add(new(_currentStations[i].data));
 
             // food data save
             if (_currentStations[i].Food_Icon() == null || _currentStations[i].Food_Icon().hasFood == false)
