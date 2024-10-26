@@ -71,6 +71,8 @@ public class Table : MonoBehaviour, IInteractable
     // Swap Current and Player Food
     public void Basic_SwapFood()
     {
+        _stationController.data.Update_Durability(-1);
+
         // swap data with player
         FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
         _stationController.Food_Icon().Swap_Data(playerFoodIcon);

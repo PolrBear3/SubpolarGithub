@@ -227,7 +227,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.Empty_Item();
 
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
-        slotsController.Empty_SlotData(_currentDatas).Assign_Data(cursorData);
+
+        ItemSlot_Data emptySlot = slotsController.Empty_SlotData(_currentDatas);
+        emptySlot = new(cursorData);
 
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();

@@ -12,11 +12,20 @@ public class ItemSlot_Data
 
     public int currentAmount;
 
+
     public Food_ScrObj currentFood;
+
+    private FoodData _foodData;
+    public FoodData foodData => _foodData;
+
+
     public Station_ScrObj currentStation;
 
+    private StationData _stationData;
+    public StationData stationData => _stationData;
 
-    //
+
+    // Constructors
     public ItemSlot_Data()
     {
         hasItem = false;
@@ -53,20 +62,7 @@ public class ItemSlot_Data
     }
 
 
-    //
-    public void Assign_Data(ItemSlot_Data assignData)
-    {
-        hasItem = assignData.hasItem;
-
-        bookMarked = assignData.bookMarked;
-        isLocked = assignData.isLocked;
-
-        currentAmount = assignData.currentAmount;
-
-        currentFood = assignData.currentFood; ;
-        currentStation = assignData.currentStation;
-    }
-
+    // Data Control Functions
     public void Empty_Item()
     {
         hasItem = bookMarked = isLocked = false;
@@ -75,5 +71,20 @@ public class ItemSlot_Data
 
         currentFood = null;
         currentStation = null;
+    }
+
+
+    public void Update_FoodData(FoodData data)
+    {
+        if (data == null) return;
+
+        _foodData = new(data);
+    }
+
+    public void Update_StationData(StationData data)
+    {
+        if (data == null) return;
+
+        _stationData = new(data);
     }
 }

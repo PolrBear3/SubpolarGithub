@@ -532,6 +532,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
+        StationData interactStationData = new(_interactStation.data);
         Station_ScrObj interactStation = _interactStation.stationScrObj;
 
         // destroy prefab for retrieve to slot
@@ -542,6 +543,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         {
             currentSlot.Assign_Data(new(interactStation, 1));
             currentSlot.Assign_Item();
+
+            currentSlot.data.Update_StationData(interactStationData);
         }
 
         // swap
