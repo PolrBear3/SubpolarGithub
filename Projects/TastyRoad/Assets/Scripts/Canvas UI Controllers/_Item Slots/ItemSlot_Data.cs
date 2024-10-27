@@ -5,24 +5,26 @@ using UnityEngine;
 [System.Serializable]
 public class ItemSlot_Data
 {
-    public bool hasItem;
+    [SerializeField][ES3Serializable] public bool hasItem;
 
-    public bool bookMarked;
-    public bool isLocked;
+    [SerializeField][ES3Serializable] public bool bookMarked;
+    [SerializeField][ES3Serializable] public bool isLocked;
 
-    public int currentAmount;
+    [SerializeField][ES3Serializable] public int currentAmount;
 
 
-    public Food_ScrObj currentFood;
-
-    private FoodData _foodData;
+    [SerializeField][ES3Serializable] private FoodData _foodData;
     public FoodData foodData => _foodData;
 
+    [SerializeField][ES3Serializable] private Food_ScrObj _currentFood;
+    public Food_ScrObj currentFood => _currentFood;
 
-    public Station_ScrObj currentStation;
 
-    private StationData _stationData;
+    [SerializeField][ES3Serializable] private StationData _stationData;
     public StationData stationData => _stationData;
+
+    [SerializeField][ES3Serializable] private Station_ScrObj _currentStation;
+    public Station_ScrObj currentStation => _currentStation;
 
 
     // Constructors
@@ -35,30 +37,39 @@ public class ItemSlot_Data
     public ItemSlot_Data(ItemSlot_Data data)
     {
         hasItem = data.hasItem;
+        currentAmount = data.currentAmount;
 
         bookMarked = data.bookMarked;
         isLocked = data.isLocked;
 
+        _foodData = data.foodData;
+        _currentFood = data.currentFood;
+
+        _stationData = data.stationData;
+        _currentStation = data.currentStation;
+    }
+
+
+    public ItemSlot_Data(FoodData data)
+    {
+        if (data == null) return;
+
+        hasItem = true;
         currentAmount = data.currentAmount;
 
-        currentFood = data.currentFood;
-        currentStation = data.currentStation;
+        _foodData = new(data);
+        _currentFood = _foodData.foodScrObj;
     }
 
-    public ItemSlot_Data(Food_ScrObj food, int amount)
+    public ItemSlot_Data(StationData data)
     {
+        if (data == null) return;
+
         hasItem = true;
+        currentAmount = 1;
 
-        currentFood = food;
-        currentAmount = amount;
-    }
-
-    public ItemSlot_Data(Station_ScrObj station, int amount)
-    {
-        hasItem = true;
-
-        currentStation = station;
-        currentAmount = amount;
+        _stationData = new(data);
+        _currentStation = _stationData.stationScrObj;
     }
 
 
@@ -69,22 +80,54 @@ public class ItemSlot_Data
 
         currentAmount = 0;
 
-        currentFood = null;
-        currentStation = null;
+        _currentFood = null;
+        _foodData = null;
+
+        _stationData = null;
+        _currentStation = null;
     }
 
 
     public void Update_FoodData(FoodData data)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            _foodData = null;
+            _currentFood = null;
+
+            return;
+        }
 
         _foodData = new(data);
+        _currentFood = _foodData.foodScrObj;
     }
 
     public void Update_StationData(StationData data)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            _stationData = null;
+            _currentStation = null;
+
+            return;
+        }
 
         _stationData = new(data);
+        _currentStation = _stationData.stationScrObj;
+    }
+
+
+    public void Assign_Amount(int assignAmount)
+    {
+        currentAmount = assignAmount;
+
+        _foodData.Set_Amount(assignAmount);
+    }
+
+    public void Update_Amount(int updateAmount)
+    {
+        currentAmount += updateAmount;
+
+        _foodData.Update_Amount(updateAmount);
     }
 }

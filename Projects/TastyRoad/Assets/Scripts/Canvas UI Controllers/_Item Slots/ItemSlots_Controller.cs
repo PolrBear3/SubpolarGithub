@@ -57,8 +57,8 @@ public class ItemSlots_Controller : MonoBehaviour
     {
         foreach (var slot in _itemSlots)
         {
-            slot.Assign_Item();
-            slot.Assign_Amount(slot.data.currentAmount);
+            slot.Update_SlotIcon();
+            slot.AmountText_Update();
 
             slot.Toggle_BookMark(slot.data.bookMarked);
             slot.Toggle_Lock(slot.data.isLocked);

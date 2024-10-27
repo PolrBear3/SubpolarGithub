@@ -111,7 +111,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem == false)
+        if (cursor.data.hasItem == false)
         {
             Drag_Food();
             return;
@@ -129,7 +129,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void InfoBox_Update()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
-        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data cursorData = cursor.data;
         ItemSlot_Data slotData = cursor.currentSlot.data;
 
         if (!cursorData.hasItem) return;
@@ -213,7 +213,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Empty_ItemBox();
 
         cursor.Assign_Data(slotData);
-        cursor.Assign_Item(slotData.currentFood);
+        cursor.Update_SlotIcon();
     }
 
     private void Drag_Cancel()
@@ -221,9 +221,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem == false) return;
+        if (cursor.data.hasItem == false) return;
 
-        ItemSlot_Data cursorData = new(cursor.Current_Data());
+        ItemSlot_Data cursorData = new(cursor.data);
         cursor.Empty_Item();
 
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
@@ -241,11 +241,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        ItemSlot_Data cursorData = new(cursor.Current_Data());
+        ItemSlot_Data cursorData = new(cursor.data);
         cursor.Empty_Item();
 
         currentSlot.Assign_Data(cursorData);
-        currentSlot.Assign_Item(cursorData.currentFood);
+        currentSlot.Update_SlotIcon();
 
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
@@ -259,7 +259,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
 
         cursor.Assign_Data(slotData);
-        cursor.Assign_Item(slotData.currentFood);
+        cursor.Update_SlotIcon();
     }
 
 
@@ -267,7 +267,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         //
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
-        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data cursorData = cursor.data;
 
         // check if cursor has item
         if (cursorData.hasItem == false) return;
@@ -388,7 +388,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             for (int j = 0; j < _currentDatas[i].Count; j++)
             {
                 if (_currentDatas[i][j].hasItem == true) continue;
-                _currentDatas[i][j] = new(food, 1);
+
+                FoodData archiveData = new(food);
+                _currentDatas[i][j] = new(archiveData);
 
                 // lock toggle according to cooked food
                 Data_Controller dataController = _controller.vehicleController.mainController.dataController;
@@ -440,7 +442,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Ingredient Box Control
     private void IngredientBox_Toggle()
     {
-        ItemSlot_Data cursorData = _controller.slotsController.cursor.Current_Data();
+        ItemSlot_Data cursorData = _controller.slotsController.cursor.data;
 
         if (cursorData.hasItem == false) return;
         if (FoodIngredient_Unlocked(cursorData.currentFood) == false)
@@ -479,7 +481,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Update_IngredientBox()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
-        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data cursorData = cursor.data;
 
         if (cursorData.hasItem == false) return;
 

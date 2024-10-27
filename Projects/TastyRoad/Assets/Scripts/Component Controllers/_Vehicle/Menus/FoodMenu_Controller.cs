@@ -129,12 +129,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 // If no leftover, just update the slot and return
                 if (leftOver <= 0)
                 {
-                    currentDatas[i][j] = new ItemSlot_Data(food, calculatedAmount);
+                    FoodData addData = new(food, calculatedAmount);
+                    currentDatas[i][j] = new(addData);
+
                     return 0;
                 }
 
                 // If leftover, fill the current slot to capacity
-                currentDatas[i][j] = new ItemSlot_Data(food, slotCapacity);
+                FoodData leftOverData = new(food, slotCapacity);
+                currentDatas[i][j] = new(leftOverData);
+
                 amount = leftOver;
             }
         }
@@ -173,7 +177,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem == false)
+        if (cursor.data.hasItem == false)
         {
             Drag_Food();
             return;
@@ -191,7 +195,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void InfoBox_Update()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
-        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data cursorData = cursor.data;
         ItemSlot_Data slotData = cursor.currentSlot.data;
 
         if (cursorData.hasItem == false) return;
@@ -252,16 +256,36 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Drag_Food()
     {
         ItemSlots_Controller slotsController = _controller.slotsController;
-        ItemSlot_Cursor cursor = slotsController.cursor;
-        ItemSlot currentSlot = cursor.currentSlot;
 
-        currentSlot.Toggle_BookMark(false);
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
+        ItemSlot currentSlot = cursor.currentSlot;
         ItemSlot_Data slotData = new(currentSlot.data);
 
-        cursor.Assign_Item(slotData.currentFood);
-        cursor.Assign_Amount(1);
+        if (currentSlot.data.hasItem == false) return;
 
-        currentSlot.Update_Amount(-1);
+        // drag single amount
+        if (cursor.data.hasItem == false)
+        {
+            FoodData dragSingleData = new(slotData.foodData.foodScrObj);
+
+            cursor.Assign_Data(new(dragSingleData));
+            cursor.Update_SlotIcon();
+
+            currentSlot.data.Update_Amount(-1);
+            currentSlot.AmountText_Update();
+
+            return;
+        }
+
+        // drag all
+        FoodData dragData = new(slotData.foodData);
+
+        cursor.Assign_Data(new(dragData));
+        cursor.Update_SlotIcon();
+
+        currentSlot.Empty_ItemBox();
+        currentSlot.Toggle_BookMark(false);
     }
 
     private void DragSingle_Food()
@@ -269,25 +293,27 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem == false) return;
+        if (cursor.data.hasItem == false) return;
 
         ItemSlot currentSlot = cursor.currentSlot;
 
         if (currentSlot.data.hasItem == false) return;
-        if (cursor.Current_Data().currentFood != currentSlot.data.currentFood) return;
-        if (cursor.Current_Data().currentAmount >= slotsController.singleSlotCapacity) return;
+        if (cursor.data.currentFood != currentSlot.data.currentFood) return;
+        if (cursor.data.currentAmount >= slotsController.singleSlotCapacity) return;
 
-        cursor.Assign_Amount(cursor.Current_Data().currentAmount + 1);
-        currentSlot.Update_Amount(-1);
+        cursor.data.Assign_Amount(cursor.data.currentAmount + 1);
+
+        currentSlot.data.Update_Amount(-1);
+        currentSlot.AmountText_Update();
     }
 
     private void Drag_Cancel()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem == false) return;
+        if (cursor.data.hasItem == false) return;
 
-        ItemSlot_Data cursorData = new(cursor.Current_Data());
+        ItemSlot_Data cursorData = new(cursor.data);
         cursor.Empty_Item();
 
         ItemSlots_Controller slotsController = _controller.slotsController;
@@ -303,12 +329,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Drop_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
-        ItemSlot_Data cursorData = new(cursor.Current_Data());
+        ItemSlot_Data cursorData = cursor.data;
 
         ItemSlot currentSlot = cursor.currentSlot;
 
-        currentSlot.Assign_Item(cursorData.currentFood);
-        currentSlot.Assign_Amount(cursorData.currentAmount);
+        currentSlot.Assign_Data(new(cursorData.foodData));
+        currentSlot.Update_SlotIcon();
+        currentSlot.AmountText_Update();
 
         cursor.Empty_Item();
     }
@@ -318,13 +345,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem == false) return;
+        if (cursor.data.hasItem == false) return;
 
         ItemSlot currentSlot = cursor.currentSlot;
 
         if (currentSlot.data.hasItem == false) return;
 
-        if (cursor.Current_Data().currentFood != currentSlot.data.currentFood)
+        if (cursor.data.currentFood != currentSlot.data.currentFood)
         {
             Swap_Food();
             return;
@@ -332,8 +359,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (currentSlot.data.currentAmount >= slotsController.singleSlotCapacity) return;
 
-        cursor.Assign_Amount(cursor.Current_Data().currentAmount - 1);
-        currentSlot.Update_Amount(1);
+        cursor.data.Assign_Amount(cursor.data.currentAmount - 1);
+        cursor.Update_AmountText();
+
+        currentSlot.data.Update_Amount(1);
+        currentSlot.AmountText_Update();
     }
 
 
@@ -346,43 +376,52 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_BookMark(false);
 
         // same food
-        if (cursor.Current_Data().currentFood == currentSlot.data.currentFood)
+        if (cursor.data.currentFood == currentSlot.data.currentFood)
         {
             int maxCapacity = slotsController.singleSlotCapacity;
 
             // swap if cursor is currently max amount
-            if (cursor.Current_Data().currentAmount >= maxCapacity)
+            if (cursor.data.currentAmount >= maxCapacity)
             {
-                cursor.Assign_Amount(currentSlot.data.currentAmount);
-                currentSlot.Assign_Amount(maxCapacity);
+                cursor.data.Assign_Amount(currentSlot.data.currentAmount);
+                cursor.Update_AmountText();
+
+                currentSlot.data.Assign_Amount(maxCapacity);
+                currentSlot.AmountText_Update();
                 return;
             }
 
-            int calculatedAmount = cursor.Current_Data().currentAmount + currentSlot.data.currentAmount;
+            int calculatedAmount = cursor.data.currentAmount + currentSlot.data.currentAmount;
 
             // set cursor amount to max if calculated amount is over max
             if (calculatedAmount >= maxCapacity)
             {
-                cursor.Assign_Amount(maxCapacity);
-                currentSlot.Assign_Amount(calculatedAmount - maxCapacity);
+                cursor.data.Assign_Amount(maxCapacity);
+                cursor.Update_AmountText();
+
+                currentSlot.data.Assign_Amount(calculatedAmount - maxCapacity);
+                currentSlot.AmountText_Update();
                 return;
             }
 
             // merge amount to cursor
-            cursor.Assign_Amount(cursor.Current_Data().currentAmount + currentSlot.data.currentAmount);
+            cursor.data.Assign_Amount(cursor.data.currentAmount + currentSlot.data.currentAmount);
+            cursor.Update_AmountText();
+
             currentSlot.Empty_ItemBox();
             return;
         }
 
         // different food
-        Food_ScrObj cursorFood = cursor.Current_Data().currentFood;
-        int cursorAmount = cursor.Current_Data().currentAmount;
+        ItemSlot_Data cursorData = cursor.data;
+        FoodData swapData = currentSlot.data.foodData;
 
-        cursor.Assign_Item(currentSlot.data.currentFood);
-        cursor.Assign_Amount(currentSlot.data.currentAmount);
+        cursor.Assign_Data(new(swapData));
+        cursor.Update_SlotIcon();
 
-        currentSlot.Assign_Item(cursorFood);
-        currentSlot.Assign_Amount(cursorAmount);
+        currentSlot.Assign_Data(new(cursorData.foodData));
+        currentSlot.Update_SlotIcon();
+        currentSlot.AmountText_Update();
     }
 
 
@@ -390,7 +429,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         //
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
-        ItemSlot_Data cursorData = cursor.Current_Data();
+        ItemSlot_Data cursorData = cursor.data;
 
         // check if cursor has item
         if (cursorData.hasItem == false) return;
@@ -446,7 +485,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Export_Food()
     {
         // if no food to export on cursor
-        ItemSlot_Data currentCursorData = _controller.slotsController.cursor.Current_Data();
+        ItemSlot_Data currentCursorData = _controller.slotsController.cursor.data;
         if (currentCursorData.hasItem == false) return;
 
         // if there are enough space to spawn food box
@@ -477,7 +516,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         {
             // max amount
             station.Food_Icon().currentData.Set_Amount(6);
-            _controller.slotsController.cursor.Assign_Amount(currentCursorData.currentAmount - 6);
+            _controller.slotsController.cursor.data.Assign_Amount(currentCursorData.currentAmount - 6);
         }
         else
         {

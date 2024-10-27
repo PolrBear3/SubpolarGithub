@@ -73,7 +73,15 @@ public class FoodData
     {
         _foodScrObj = food;
         _currentAmount = 1;
-        _tikCount = 0;
+
+        _conditionDatas = new();
+    }
+
+    public FoodData(Food_ScrObj food, int amount)
+    {
+        _foodScrObj = food;
+        _currentAmount = amount;
+
         _conditionDatas = new();
     }
 

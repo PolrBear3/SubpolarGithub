@@ -199,7 +199,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         if (MenuInteraction_Active()) return;
 
-        _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
+        _infoBox.gameObject.SetActive(_slotsController.cursor.data.hasItem);
         infoBox.Update_RectLayout();
     }
 
@@ -217,13 +217,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         ItemSlot_Cursor cursor = _slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem)
+        if (cursor.data.hasItem)
         {
             OnOption1_Input?.Invoke();
 
             if (MenuInteraction_Active()) return;
 
-            _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
+            _infoBox.gameObject.SetActive(_slotsController.cursor.data.hasItem);
             infoBox.Update_RectLayout();
 
             return;
@@ -249,13 +249,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         ItemSlot_Cursor cursor = _slotsController.cursor;
 
-        if (cursor.Current_Data().hasItem)
+        if (cursor.data.hasItem)
         {
             OnOption2_Input?.Invoke();
 
             if (MenuInteraction_Active()) return;
 
-            _infoBox.gameObject.SetActive(_slotsController.cursor.Current_Data().hasItem);
+            _infoBox.gameObject.SetActive(_slotsController.cursor.data.hasItem);
             infoBox.Update_RectLayout();
 
             return;

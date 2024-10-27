@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ItemSlot_Cursor : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class ItemSlot_Cursor : MonoBehaviour
 
 
     private ItemSlot_Data _data;
+    public ItemSlot_Data data => _data;
 
     private ItemSlot _currentSlot;
     public ItemSlot currentSlot => _currentSlot;
@@ -58,22 +60,12 @@ public class ItemSlot_Cursor : MonoBehaviour
         _data = data;
     }
 
-    public ItemSlot_Data Current_Data()
-    {
-        return _data;
-    }
 
-
-    // Control
+    // Visual Cotrol
     public void Empty_Item()
     {
         _data = new();
-
-        _data.hasItem = false;
-        _data.isLocked = false;
-
-        _data.currentFood = null;
-        _data.currentStation = null;
+        _data.Empty_Item();
 
         _cursorImage.sprite = _defaultCursor;
         _cursorImage.rectTransform.anchoredPosition = Vector2.zero;
@@ -83,34 +75,22 @@ public class ItemSlot_Cursor : MonoBehaviour
     }
 
 
-    public void Assign_Item(Food_ScrObj food)
+    public void Update_SlotIcon()
     {
-        if (food != null)
+        if (_data.stationData != null)
         {
-            _data.hasItem = true;
-            _data.currentFood = food;
-
-            _cursorImage.sprite = food.sprite;
-
+            _cursorImage.sprite = _data.stationData.stationScrObj.dialogIcon;
             _cursorImage.color = Color.white;
-            _cursorImage.rectTransform.anchoredPosition = food.uiCenterPosition;
+            _cursorImage.rectTransform.anchoredPosition = new Vector2(0f, -6.5f);
 
             return;
         }
 
-        Empty_Item();
-    }
-    public void Assign_Item(Station_ScrObj station)
-    {
-        if (station != null)
+        if (_data.currentFood != null)
         {
-            _data.hasItem = true;
-            _data.currentStation = station;
-
-            _cursorImage.sprite = station.dialogIcon;
-
+            _cursorImage.sprite = _data.currentFood.sprite;
             _cursorImage.color = Color.white;
-            _cursorImage.rectTransform.anchoredPosition = new Vector2(0f, 6.5f);
+            _cursorImage.rectTransform.anchoredPosition = _data.currentFood.uiCenterPosition;
 
             return;
         }
@@ -118,18 +98,21 @@ public class ItemSlot_Cursor : MonoBehaviour
         Empty_Item();
     }
 
-    public void Assign_Amount(int assignAmount)
+    public void Update_AmountText()
     {
         if (_data.hasItem == false) return;
 
-        _data.currentAmount = assignAmount;
-        _amountText.text = _data.currentAmount.ToString();
+        if (_data.currentAmount <= 0)
+        {
+            Empty_Item();
+            return;
+        }
 
-        if (_data.currentAmount > 0) return;
-        Empty_Item();
+        _amountText.text = _data.currentAmount.ToString();
     }
 
 
+    // Navigate Control
     public ItemSlot Navigated_NextSlot(Vector2 direction)
     {
         Vector2 currentGridNum = new Vector2(_currentSlot.gridNum.x, _currentSlot.gridNum.y);

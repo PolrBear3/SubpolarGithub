@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class ItemSlot : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private GameObject _bookmarkUnlockedIcon;
     [SerializeField] private GameObject _ingredientUnlockedIcon;
 
-    [SerializeField] [Range(0, 1)] private float _transparentValue;
+    [SerializeField][Range(0, 1)] private float _transparentValue;
 
 
     // UnityEngine
@@ -68,7 +69,7 @@ public class ItemSlot : MonoBehaviour
         _data.isLocked = isLock;
 
         // transparency control
-        if (isLock == true)
+        if (_data.isLocked == true)
         {
             Main_Controller.Change_ImageAlpha(_iconImage, _transparentValue);
         }
@@ -94,27 +95,21 @@ public class ItemSlot : MonoBehaviour
         _gridNum = setNum;
     }
 
-    public void Assign_Data(ItemSlot_Data data)
+    public ItemSlot Assign_Data(ItemSlot_Data data)
     {
-        _data = new ItemSlot_Data(data);
+        _data = data;
+
+        return this;
     }
 
 
-    //
+    // Visual Control
     public void Empty_ItemBox()
     {
-        _data = new();
+        _data.Empty_Item();
 
-        _data.bookMarked = false;
         Toggle_BookMark(false);
-
-        _data.hasItem = false;
-        _data.isLocked = false;
-
         Toggle_Icons(false, false);
-
-        _data.currentFood = null;
-        _data.currentStation = null;
 
         _iconImage.sprite = null;
         _iconImage.color = Color.clear;
@@ -125,92 +120,44 @@ public class ItemSlot : MonoBehaviour
     }
 
 
-    // sprite update included
-    public ItemSlot Assign_Item(Food_ScrObj food)
+    public ItemSlot Update_SlotIcon()
     {
-        if (food != null)
+        if (_data.stationData != null)
         {
-            _data.hasItem = true;
-            _data.currentFood = food;
-
-            _iconImage.sprite = food.sprite;
-
-            _iconImage.color = Color.white;
-            _iconImage.rectTransform.anchoredPosition = food.uiCenterPosition;
-
-            return this;
-        }
-
-        Empty_ItemBox();
-        return this;
-    }
-    public ItemSlot Assign_Item(Station_ScrObj station)
-    {
-        if (station != null)
-        {
-            data.hasItem = true;
-            data.currentStation = station;
-
-            _iconImage.sprite = station.dialogIcon;
-
+            _iconImage.sprite = _data.stationData.stationScrObj.dialogIcon;
             _iconImage.color = Color.white;
             _iconImage.rectTransform.anchoredPosition = new Vector2(0f, -6.5f);
 
             return this;
         }
 
+        if (_data.currentFood != null)
+        {
+            _iconImage.sprite = _data.currentFood.sprite;
+            _iconImage.color = Color.white;
+            _iconImage.rectTransform.anchoredPosition = _data.currentFood.uiCenterPosition;
+
+            return this;
+        }
+
         Empty_ItemBox();
         return this;
     }
 
-    /// <summary>
-    /// Assigns current data item
-    /// </summary>
-    public ItemSlot Assign_Item()
+    public void AmountText_Update()
     {
-        if (_data.hasItem == false)
+        if (_data.currentAmount <= 0)
         {
             Empty_ItemBox();
-            return this;
+            return;
         }
 
-        if (_data.currentFood != null)
-        {
-            Assign_Item(_data.currentFood);
-            return this;
-        }
-
-        Assign_Item(_data.currentStation);
-        return this;
-    }
-
-
-    // Amount Control
-    private void AmountText_Update()
-    {
-        if (data.currentAmount == 1)
+        if (_data.currentAmount == 1)
         {
             _amountText.text = "";
             return;
         }
 
         _amountText.text = _data.currentAmount.ToString();
-    }
-
-    public void Assign_Amount(int assignAmount)
-    {
-        data.currentAmount = assignAmount;
-        AmountText_Update();
-
-        if (data.currentAmount > 0) return;
-        Empty_ItemBox();
-    }
-    public void Update_Amount(int updateAmount)
-    {
-        data.currentAmount += updateAmount;
-        AmountText_Update();
-
-        if (data.currentAmount > 0) return;
-        Empty_ItemBox();
     }
 }

@@ -112,7 +112,9 @@ public class ItemDropper : MonoBehaviour
 
         // set drop data
         DropItem dropItem = itemGameObject.GetComponent<DropItem>();
-        dropItem.Set_ItemData(new ItemSlot_Data(dropFood, amount));
+
+        FoodData dropData = new(dropFood, amount);
+        dropItem.Set_ItemData(new(dropData));
 
         StartCoroutine(Launch_ShowItem(dropItem.gameObject, _defaultLaunchSprite));
     }
