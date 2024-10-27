@@ -82,6 +82,11 @@ public class Station_Controller : MonoBehaviour
         _data = new(_stationScrObj, transform.position);
     }
 
+    public void Set_Data(StationData data)
+    {
+        _data = data;
+    }
+
 
     // Green Red Color Triggers
     public void TransparentBlink_Toggle(bool toggleOn)

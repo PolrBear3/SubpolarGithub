@@ -400,8 +400,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Station_ScrObj cursorStation = cursor.data.currentStation;
 
         _interactStation = vehicle.mainController.Spawn_Station(cursorStation, vehicle.stationSpawnPoint.position);
+        _interactStation.Set_Data(new(cursor.data.stationData));
 
         Station_Movement movement = _interactStation.movement;
+
         _interactStation.Action1_Event += movement.Set_Position;
 
         _controller.OnOption1_Input += Place_StationPrefab;
