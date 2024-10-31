@@ -6,8 +6,8 @@ https://gamedevbeginner.com/events-and-delegates-in-unity/
 ### Variable Setting
 ```C#
 // basic type
-public delegate void On_Event();
-public event On_Event onEvent;
+public delegate void EventHandler();
+public event EventHandler OnEvent;
 
 // constructor type
 public delegate void On_ConstuctorEvent(bool eventTriggered);
@@ -20,20 +20,20 @@ public event On_Event onConstuctorEvent;
 private void OnEnable()
 {
     // subscribe
-    onEvent += Function;
+    OnEvent += Function;
 }
 
 private void OnDisable()
 {
     // unsubscribe
-    onEvent -= Function;
+    OnEvent -= Function;
 }
 
 // always unsubscribe on destroy for reload scene
 private void OnDestroy()
 {
     // unsubscribe
-    onEvent -= Function;
+    OnEvent -= Function;
 }
 
 //
@@ -44,7 +44,7 @@ private void Function()
 ```
 
 ### Triggering the Event
-This will run all the functions that are subscribed to onEvent.
+This will run all the functions that are subscribed to OnEvent.
 ```C#
-onEvent?.Invoke();
+OnEvent?.Invoke();
 ```

@@ -272,6 +272,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // check if cursor has item
         if (cursorData.hasItem == false) return;
 
+        Hide_IngredientBox();
+
         //
         ItemSlot currentSlot = cursor.currentSlot;
 
@@ -462,6 +464,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Show_IngredientBox()
     {
+        if (_ingredientBox.gameObject.activeSelf) return;
+
         // set active
         _ingredientBox.gameObject.SetActive(true);
 
@@ -474,6 +478,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Hide_IngredientBox()
     {
+        if (_ingredientBox.gameObject.activeSelf == false) return;
+
         _ingredientBox.gameObject.SetActive(false);
     }
 

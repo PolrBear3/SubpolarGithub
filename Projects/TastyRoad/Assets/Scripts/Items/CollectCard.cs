@@ -7,8 +7,11 @@ public class CollectCard : MonoBehaviour
     private SpriteRenderer _sr;
     public SpriteRenderer sr => _sr;
 
+    private Main_Controller _mainController;
+
     [Header("")]
-    [SerializeField] private ActionBubble_Interactable _interactable;
+    [SerializeField] private Detection_Controller _detection;
+
 
     [Header("")]
     [SerializeField] private CoinLauncher _launcher;
@@ -19,65 +22,65 @@ public class CollectCard : MonoBehaviour
     [Header("")]
     [SerializeField] private Station_ScrObj[] _bluePrintStations;
 
-    public delegate bool Event();
-    public List<Event> _allInteractions = new();
-
-    private Event _setInteraction;
-
     [Header("")]
     [SerializeField][Range(0, 100)] private int _destroyTikCount;
     private int _currentTikCount;
+
+
+    public delegate bool EventHandler();
+
+    private List<EventHandler> OnPickups = new();
+    private event EventHandler OnPickup;
 
 
     // UnityEngine
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
+        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
     }
 
     private void Start()
     {
-        Set_RandomInteraction();
+        Set_RandomPickup();
 
-        _interactable.OnAction1Event += Invoke_Interaction;
+        _detection.EnterEvent += Pickup;
         GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
     }
 
     private void OnDestroy()
     {
-        _interactable.OnAction1Event -= Invoke_Interaction;
+        _detection.EnterEvent -= Pickup;
         GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
     }
 
 
     // Event Interaction
-    private void Set_RandomInteraction()
+    private void Set_RandomPickup()
     {
-        // add all interact Functions here //
-        _allInteractions.Add(FoodIngredient_toArchive);
-        _allInteractions.Add(StationBluePrint_toArchive);
+        // add all pickup Functions here !
+        OnPickups.Add(FoodIngredient_toArchive);
+        OnPickups.Add(StationBluePrint_toArchive);
 
         // set random interaction from event _allInteractions
-        int randIndex = Random.Range(0, _allInteractions.Count);
-        _setInteraction = _allInteractions[randIndex];
+        int randIndex = Random.Range(0, OnPickups.Count);
+        OnPickup = OnPickups[randIndex];
     }
 
-    private void Invoke_Interaction()
+    private void Pickup()
     {
-        if (_setInteraction?.Invoke() == false) return;
+        if (OnPickup?.Invoke() == false) return;
 
-        _interactable.LockInteract(true);
-        _launcher.Parabola_CoinLaunch(_launchSprite, _interactable.detection.player.transform.position);
-
+        _launcher.Parabola_CoinLaunch(_launchSprite, _detection.player.transform.position);
         Destroy(gameObject, 0.1f);
     }
 
 
-    // Event Functions
+    // On Pickups
     private bool FoodIngredient_toArchive()
     {
-        Food_ScrObj randFood = _interactable.mainController.dataController.CookedFood();
-        ArchiveMenu_Controller menu = _interactable.mainController.currentVehicle.menu.archiveMenu;
+        Food_ScrObj randFood = _mainController.dataController.CookedFood();
+        ArchiveMenu_Controller menu = _mainController.currentVehicle.menu.archiveMenu;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -108,7 +111,7 @@ public class CollectCard : MonoBehaviour
     private bool StationBluePrint_toArchive()
     {
         Station_ScrObj randStation = _bluePrintStations[Random.Range(0, _bluePrintStations.Length)];
-        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = _mainController.currentVehicle.menu.stationMenu;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 

@@ -9,7 +9,7 @@ public class RetrieveBox : Stack_Table, IInteractable
 
 
     // UnityEngine
-    private void Start()
+    private new void Start()
     {
         Sprite_Update();
     }

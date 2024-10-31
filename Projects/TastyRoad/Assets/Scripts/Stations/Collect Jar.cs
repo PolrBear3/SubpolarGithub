@@ -11,13 +11,13 @@ public class CollectJar : Stack_Table, IInteractable
 
     [Header("")]
     [SerializeField] private Food_ScrObj _collectFood;
-    [SerializeField] [Range(1, 10)] private int _retrieveAmount;
+    [SerializeField][Range(1, 10)] private int _retrieveAmount;
 
     private Coroutine _coroutine;
 
 
     // UnityEngine
-    private void Start()
+    private new void Start()
     {
         GlobalTime_Controller.TimeTik_Update += CollectNuggets;
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DropItem : MonoBehaviour, IInteractable
+public class DropItem : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
@@ -28,24 +28,14 @@ public class DropItem : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        _detection.EnterEvent += Pickup;
         GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
     }
 
     private void OnDestroy()
     {
+        _detection.EnterEvent -= Pickup;
         GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
-    }
-
-
-    // IInteractable
-    public void Interact()
-    {
-        Pickup();
-    }
-
-    public void UnInteract()
-    {
-
     }
 
 
@@ -99,8 +89,7 @@ public class DropItem : MonoBehaviour, IInteractable
         }
 
         // launch
-        _launcher.Parabola_CoinLaunch(launchSprite, _main.Player().transform.position);
-
+        _launcher.Parabola_CoinLaunch(launchSprite, _detection.player.transform.position);
         Destroy(gameObject, 0.1f);
     }
 

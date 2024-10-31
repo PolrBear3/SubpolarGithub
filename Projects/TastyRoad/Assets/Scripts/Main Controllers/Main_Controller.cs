@@ -187,6 +187,18 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         return new Vector2(snapX, snapY);
     }
+    public static Vector2 SnapPosition(Vector2 position, Bounds bounds)
+    {
+        // Round the position to the nearest integer
+        int snapX = Mathf.RoundToInt(position.x);
+        int snapY = Mathf.RoundToInt(position.y);
+
+        // Clamp the snapped position within the integer bounds
+        snapX = Mathf.Clamp(snapX, Mathf.CeilToInt(bounds.min.x), Mathf.FloorToInt(bounds.max.x));
+        snapY = Mathf.Clamp(snapY, Mathf.CeilToInt(bounds.min.y), Mathf.FloorToInt(bounds.max.y));
+
+        return new Vector2(snapX, snapY);
+    }
 
     /// <returns>
     /// Random point inside the boundary of inserted sprite renderer
@@ -428,6 +440,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         {
             // spawn saved stations
             Station_Controller station = Spawn_Station(stationDatas[i].stationScrObj, stationDatas[i].position);
+
+            // station data load
+            station.Set_Data(stationDatas[i]);
 
             // deactivate and set station if is has a movement script attached
             if (station.movement != null)

@@ -5,11 +5,10 @@ using UnityEngine;
 public class Fridge : Stack_Table, IInteractable
 {
     // UnityEngine
-    private void Start()
+    private new void Start()
     {
         Deactivate_RottenSystem();
     }
-
 
 
     // IInteractable
@@ -32,7 +31,6 @@ public class Fridge : Stack_Table, IInteractable
             Swap_Food();
         }
     }
-
 
 
     //

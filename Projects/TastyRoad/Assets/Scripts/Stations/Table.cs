@@ -15,10 +15,17 @@ public class Table : MonoBehaviour, IInteractable
         _stationController = gameObject.GetComponent<Station_Controller>();
     }
 
+    public void Start()
+    {
+        _stationController.maintenance.OnDurabilityBreak += Return_Food;
+    }
+
     public void OnDestroy()
     {
         _stationController.Action1_Event -= Basic_SwapFood;
         _stationController.Action2_Event -= Merge_Food;
+
+        _stationController.maintenance.OnDurabilityBreak += Return_Food;
     }
 
 
@@ -68,11 +75,9 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-    // Swap Current and Player Food
+    // Functions
     public void Basic_SwapFood()
     {
-        _stationController.data.Update_Durability(-1);
-
         // swap data with player
         FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
         _stationController.Food_Icon().Swap_Data(playerFoodIcon);
@@ -94,8 +99,6 @@ public class Table : MonoBehaviour, IInteractable
         UnInteract();
     }
 
-
-    // Merge Current and Player Food
     private void Merge_Food()
     {
         Data_Controller data = _stationController.mainController.dataController;
@@ -126,5 +129,24 @@ public class Table : MonoBehaviour, IInteractable
         Audio_Controller.instance.Play_OneShot("FoodInteract_merge", transform.position);
 
         UnInteract();
+
+        // durability
+        _stationController.data.Update_Durability(-1);
+        _stationController.maintenance.Update_DurabilityBreak();
+    }
+
+
+    private void Return_Food()
+    {
+        FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
+        if (playerFoodIcon.hasFood) return;
+
+        Basic_SwapFood();
+
+        FoodData_Controller foodIcon = _stationController.Food_Icon();
+
+        foodIcon.Set_CurrentData(null);
+        foodIcon.Show_Icon();
+        foodIcon.Show_Condition();
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StationShopNPC : MonoBehaviour, ISaveLoadable
@@ -21,8 +22,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField] private ScrapStack _scrapStack;
+
     [SerializeField][Range(0, 10)] private float _disposeWaitTime;
     [SerializeField][Range(0, 10)] private int _disposeScrapAmount;
+
+    [SerializeField] private Station_ScrObj[] _restrictedDisposables;
 
     [Header("")]
     [SerializeField] private Transform[] _boxStackPoints;
@@ -313,16 +317,38 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
 
 
+    private bool Dispose_Restricted(Station_ScrObj checkStation)
+    {
+        for (int i = 0; i < _restrictedDisposables.Length; i++)
+        {
+            if (_restrictedDisposables[i] != checkStation) continue;
+            return true;
+        }
+        return false;
+    }
+
+    private ItemSlot_Data Dispose_SlotData()
+    {
+        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slots = menu.controller.slotsController;
+
+        List<ItemSlot_Data> bookmarkedDatas = slots.BookMarked_Datas(menu.currentDatas, false);
+        ItemSlot_Data disposeSlot = null;
+
+        for (int i = bookmarkedDatas.Count - 1; i >= 0; i--)
+        {
+            if (Dispose_Restricted(bookmarkedDatas[i].currentStation)) continue;
+            disposeSlot = bookmarkedDatas[i];
+        }
+
+        return disposeSlot;
+    }
+
     private void Dispose_BookMarkedStation()
     {
         if (_actionCoroutine != null) return;
 
-        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
-        ItemSlots_Controller slots = menu.controller.slotsController;
-
-        List<ItemSlot_Data> bookmarkedStations = slots.BookMarked_Datas(menu.currentDatas, false);
-
-        if (bookmarkedStations.Count <= 0)
+        if (Dispose_SlotData() == null)
         {
             DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
             dialog.Update_Dialog(0);
@@ -346,18 +372,15 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         _npcController.interactable.LockInteract(true);
 
-        // get latest bookmark unlocked station
-        List<ItemSlot_Data> bookmarkedStations = slots.BookMarked_Datas(menu.currentDatas, false);
+        // remove dispose station
+        ItemSlot_Data disposeData = Dispose_SlotData();
+        Station_ScrObj disposeStation = disposeData.currentStation;
 
-        ItemSlot_Data targetData = bookmarkedStations[bookmarkedStations.Count - 1];
-        Station_ScrObj targetStation = targetData.currentStation;
-
-        // remove station
-        targetData.Empty_Item();
+        Dispose_SlotData().Empty_Item();
 
         // player give disopose station animation
         CoinLauncher playerLauncher = _interactable.detection.player.coinLauncher;
-        playerLauncher.Parabola_CoinLaunch(targetStation.miniSprite, transform.position);
+        playerLauncher.Parabola_CoinLaunch(disposeStation.miniSprite, transform.position);
 
         yield return new WaitForSeconds(_disposeWaitTime);
 

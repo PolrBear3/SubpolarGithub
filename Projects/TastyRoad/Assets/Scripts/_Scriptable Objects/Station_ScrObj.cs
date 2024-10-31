@@ -22,5 +22,5 @@ public class Station_ScrObj : ScriptableObject
 
     [Header("")]
     public int price;
-    public float buildTime;
+    public int durability;
 }

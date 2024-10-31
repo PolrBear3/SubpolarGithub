@@ -8,8 +8,10 @@ public class SliceTable : Table, IInteractable, ISignal
 
 
     // UnityEngine
-    private void Start()
+    private new void Start()
     {
+        base.Start();
+
         Audio_Controller.instance.Create_EventInstance("SliceTable_slice", gameObject);
     }
 
@@ -79,5 +81,9 @@ public class SliceTable : Table, IInteractable, ISignal
 
         stationController.Food_Icon().currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced));
         stationController.Food_Icon().Show_Condition();
+
+        // durability
+        stationController.data.Update_Durability(-1);
+        stationController.maintenance.Update_DurabilityBreak();
     }
 }

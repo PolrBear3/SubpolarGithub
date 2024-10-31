@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 1010970402213928676}
   - component: {fileID: 2050151741136552749}
   - component: {fileID: 2331507576810310344}
+  - component: {fileID: 3551917571397297857}
   - component: {fileID: -87010650432210433}
   - component: {fileID: 3609195736537386832}
-  - component: {fileID: 3551917571397297857}
+  - component: {fileID: 3928886942652671882}
   - component: {fileID: 8665988507796095349}
   m_Layer: 0
   m_Name: Serve Table
@@ -42,6 +43,7 @@ Transform:
   - {fileID: 7857154484209982906}
   - {fileID: 288932963818729354}
   - {fileID: 582604388991284371}
+  - {fileID: 9203070088618124384}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8178644164726041005
@@ -219,6 +221,19 @@ MonoBehaviour:
   m_DefaultActionMap: In Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3551917571397297857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5231110676368674916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectedprefabs: []
 --- !u!114 &-87010650432210433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detection: {fileID: 3551917571397297857}
   _movement: {fileID: 3609195736537386832}
+  _maintenance: {fileID: 3928886942652671882}
   _stationAnimator: {fileID: 2050151741136552749}
   _stationScrObj: {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
 --- !u!114 &3609195736537386832
@@ -248,7 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementArrows: {fileID: 3185406992926476595}
---- !u!114 &3551917571397297857
+--- !u!114 &3928886942652671882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,10 +273,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5231110676368674916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
+  m_Script: {fileID: 11500000, guid: 445f8f028848a4ece8af41ca86d257c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectedprefabs: []
+  _controller: {fileID: -87010650432210433}
+  _durabilityBreakIcon: {fileID: 7402267931961517697}
 --- !u!114 &8665988507796095349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,6 +291,90 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _foodOrderPreview: {fileID: 5777435655744921388}
+--- !u!1 &7402267931961517697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9203070088618124384}
+  - component: {fileID: 7209441596751873537}
+  m_Layer: 0
+  m_Name: Durability Break Indication
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9203070088618124384
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402267931961517697}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.375, y: -0.1875, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3224405375533897282}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &7209441596751873537
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402267931961517697}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 1862457933
+  m_SortingLayer: 2
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 1482856902, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &1368554460399882311
 PrefabInstance:
   m_ObjectHideFlags: 0

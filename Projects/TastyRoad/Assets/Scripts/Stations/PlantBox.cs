@@ -15,7 +15,7 @@ public class PlantBox : Stack_Table, IInteractable
 
 
     // UnityEngine
-    private void Start()
+    private new void Start()
     {
         if (stationController.Food_Icon().gameObject.TryGetComponent(out FoodData_RottenSystem rottenSystem))
         {

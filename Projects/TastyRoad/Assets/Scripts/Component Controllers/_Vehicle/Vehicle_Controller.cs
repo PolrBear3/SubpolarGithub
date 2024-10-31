@@ -97,18 +97,6 @@ public class Vehicle_Controller : ActionBubble_Interactable
         return bounds.Contains(checkPosition);
     }
 
-    public Vector2 Redirected_Position(Vector2 currentPosition)
-    {
-        if (Is_InteractArea(currentPosition)) return currentPosition;
-
-        Bounds bounds = _interactArea.bounds;
-
-        float closestXPos = Mathf.Clamp(currentPosition.x, bounds.min.x, bounds.max.x);
-        float closestYPos = Mathf.Clamp(currentPosition.y, bounds.min.y, bounds.max.y);
-
-        return new Vector2(closestXPos, closestYPos);
-    }
-
 
     // Action Options
     private void Open_VehicleMenu()

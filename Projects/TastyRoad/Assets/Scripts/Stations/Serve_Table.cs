@@ -14,7 +14,7 @@ public class Serve_Table : Table, IInteractable
 
 
     // UnityEngine
-    private void Start()
+    private new void Start()
     {
         Main_Controller.OrderOpen_ToggleEvent += Find_AttractedNPC;
         Main_Controller.OrderOpen_ToggleEvent += CloseOrder;

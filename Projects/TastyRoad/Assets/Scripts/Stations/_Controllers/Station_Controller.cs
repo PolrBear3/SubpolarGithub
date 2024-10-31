@@ -19,6 +19,9 @@ public class Station_Controller : MonoBehaviour
     [SerializeField] private Station_Movement _movement;
     public Station_Movement movement => _movement;
 
+    [SerializeField] private Station_Maintenance _maintenance;
+    public Station_Maintenance maintenance => _maintenance;
+
     [SerializeField] private Animator _stationAnimator;
     public Animator stationAnmiator => _stationAnimator;
 

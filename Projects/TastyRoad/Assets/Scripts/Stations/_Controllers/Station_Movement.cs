@@ -29,12 +29,12 @@ public class Station_Movement : MonoBehaviour
     private void Update()
     {
         RestrictBlink_Update();
-        SnapPosition_Move();
+        SnapPosition_Update();
     }
 
     private void FixedUpdate()
     {
-        Rigidbody_Move();
+        Rigidbody_Update();
     }
 
 
@@ -46,33 +46,18 @@ public class Station_Movement : MonoBehaviour
     }
 
 
-    // for update
-    private void Rigidbody_Move()
+    //
+    private void Rigidbody_Update()
     {
         _rigidBody.velocity = new Vector2(_currentDirection.x * 3f, _currentDirection.y * 3f);
     }
 
-    private void SnapPosition_Move()
+    private void SnapPosition_Update()
     {
         if (_rigidBody.velocity != Vector2.zero) return;
 
         Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
-
-        if (vehicle.Is_InteractArea(transform.position) == false)
-        {
-            transform.position = vehicle.Redirected_Position(transform.position);
-            return;
-        }
-
-        Location_Controller location = _stationController.mainController.currentLocation;
-
-        if (location.Restricted_Position(transform.position))
-        {
-            transform.position = location.Redirected_Position(transform.position);
-            return;
-        }
-
-        transform.position = Main_Controller.SnapPosition(transform.position);
+        transform.position = Main_Controller.SnapPosition(transform.position, vehicle.interactArea.bounds);
     }
 
 
@@ -86,6 +71,9 @@ public class Station_Movement : MonoBehaviour
 
         Location_Controller location = _stationController.mainController.currentLocation;
         if (location.Restricted_Position(snapPosition)) return false;
+
+        Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
+        if (vehicle.Is_InteractArea(transform.position) == false) return false;
 
         return true;
     }
@@ -102,6 +90,7 @@ public class Station_Movement : MonoBehaviour
 
         _stationController.RestrictionBlink_Toggle(isRestricted || isInteractArea == false);
     }
+
 
     /// <summary>
     /// Disables movement and set current station after movement is controlled
@@ -135,7 +124,6 @@ public class Station_Movement : MonoBehaviour
     }
 
 
-    //
     private void MathRound_Snap_Position()
     {
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);

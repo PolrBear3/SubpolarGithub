@@ -21,7 +21,6 @@ public class StationData
         if (data == null) return;
 
         _stationScrObj = data.stationScrObj;
-
         _position = data.position;
         _durability = data.durability;
     }
@@ -29,14 +28,14 @@ public class StationData
     public StationData(Station_ScrObj stationScrObj)
     {
         _stationScrObj = stationScrObj;
+        _durability = stationScrObj.durability;
     }
 
     public StationData(Station_ScrObj station, Vector2 position)
     {
         _stationScrObj = station;
         _position = position;
-
-        _durability = 10;
+        _durability = station.durability;
     }
 
 
