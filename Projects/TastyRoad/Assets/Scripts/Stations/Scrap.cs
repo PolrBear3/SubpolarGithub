@@ -10,8 +10,6 @@ public class Scrap : MonoBehaviour
     [SerializeField] private Station_Controller _stationController;
     public Station_Controller stationController => _stationController;
 
-    [SerializeField] private ActionBubble_Interactable _interactable;
-
     [Header("")]
     [SerializeField] private List<Sprite> _scrapSprites = new();
 
