@@ -224,13 +224,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7492899775058685991}
   - {fileID: 1317300597564469170}
   - {fileID: 1081486458950851603}
-  - {fileID: 8060614526370568925}
   - {fileID: 4509474956324539718}
+  - {fileID: 8060614526370568925}
   - {fileID: 1617839239778359926}
   - {fileID: 6159379447971834147}
-  - {fileID: 7492899775058685991}
   - {fileID: 4048123379781644011}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -362,10 +362,10 @@ MonoBehaviour:
   _bubble: {fileID: 4110360785583018332}
   _menu: {fileID: 8508866487849260274}
   _movement: {fileID: 7736443948201978939}
-  _customizer: {fileID: 4156666212345247569}
   _positionClaimer: {fileID: 2342190877690906068}
-  _transparencyPoint: {fileID: 1081486458950851603}
+  _spritesFile: {fileID: 6678037125461081039}
   _interactArea: {fileID: 2822506792041360295}
+  _transparencyPoint: {fileID: 1081486458950851603}
   _stationSpawnPoint: {fileID: 1075718707391883764}
   _driverSeatPoint: {fileID: 2598355576462302171}
 --- !u!1 &866821407086817425
@@ -875,6 +875,7 @@ MonoBehaviour:
   _indicators:
   - {fileID: 2659626740563591084}
   - {fileID: 8909905084411257416}
+  archiveFood: {fileID: 0}
 --- !u!1 &1627101173116583586
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,9 +2077,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7492899775058685991}
-  - component: {fileID: 4156666212345247569}
   m_Layer: 0
-  m_Name: Vehicle Customizer
+  m_Name: Vehicle Sprites
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2102,42 +2102,6 @@ Transform:
   - {fileID: 8875636739911798517}
   m_Father: {fileID: 5419941011623935099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4156666212345247569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6678037125461081039}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b39d902e6f721465996c0449ca512db8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bodySR: {fileID: 9108086270281051666}
-  _bodyDatas:
-  - _partScrObj: {fileID: 11400000, guid: e1a8ca4e54e7e42be8a2ef055ec41cd8, type: 2}
-    _unlocked: 0
-  - _partScrObj: {fileID: 11400000, guid: 85656236d71424fe783be8e73cbbc470, type: 2}
-    _unlocked: 0
-  - _partScrObj: {fileID: 11400000, guid: 3235ac16036f04349a30d6c7490984d4, type: 2}
-    _unlocked: 0
-  _headSR: {fileID: 7862138554168826428}
-  _headDatas:
-  - _partScrObj: {fileID: 11400000, guid: 14fb1257ac50d4c08af1b21cc311325f, type: 2}
-    _unlocked: 0
-  - _partScrObj: {fileID: 11400000, guid: 58cf15bdbd11e44188473207672487d9, type: 2}
-    _unlocked: 0
-  - _partScrObj: {fileID: 11400000, guid: 11b587755fb764423bf2ace1268d5b0e, type: 2}
-    _unlocked: 0
-  _wheelsSR: {fileID: 849942250446988615}
-  _wheelsDatas:
-  - _partScrObj: {fileID: 11400000, guid: 99c62f45a34eb4dc7869517d8ccd3532, type: 2}
-    _unlocked: 0
-  - _partScrObj: {fileID: 11400000, guid: b33ab7a9fbdeb489b9d3b3ab170dd031, type: 2}
-    _unlocked: 0
-  - _partScrObj: {fileID: 11400000, guid: 4ff17a2a9517f4256bed1c97a49004a3, type: 2}
-    _unlocked: 0
 --- !u!1 &7300566691704481784
 GameObject:
   m_ObjectHideFlags: 0
@@ -2584,7 +2548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8060614526370568925
 Transform:
   m_ObjectHideFlags: 0

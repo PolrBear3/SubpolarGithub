@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "New Location!")]
+[CreateAssetMenu(menuName = "New ScriptableObject/ New Location!")]
 public class Location_ScrObj : ScriptableObject
 {
     public int worldNum;

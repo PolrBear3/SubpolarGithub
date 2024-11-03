@@ -122,11 +122,11 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         if (Exit_Available() == false)
         {
-            LeanTween.color(_controller.customizer.gameObject, Color.red, 0.01f);
+            LeanTween.color(_controller.spritesFile, Color.red, 0.01f);
             return;
         }
 
-        LeanTween.color(_controller.customizer.gameObject, Color.white, 0.01f);
+        LeanTween.color(_controller.spritesFile, Color.white, 0.01f);
     }
 
 

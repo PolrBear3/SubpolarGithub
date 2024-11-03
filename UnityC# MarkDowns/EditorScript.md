@@ -28,8 +28,6 @@ public class ItemController : MonoBehaviour
 ### Main Template
 ```C#
 #if UNITY_EDITOR
-
-// target script for adding editor
 [CustomEditor(typeof(ItemController))]
 public class ItemController : Editor
 {
@@ -58,9 +56,11 @@ public class ItemController : Editor
             itemController.Add_Item(itemToAdd);
         }
 
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(20);
+
         serializedObject.ApplyModifiedProperties();
     }
 }
-
 #endif
 ```

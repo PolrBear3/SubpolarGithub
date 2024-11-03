@@ -416,12 +416,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         Vehicle_Controller vehicle = _controller.vehicleController;
 
-        if (_interactStation.movement.PositionSet_Available() == false)
-        {
-            // return back to spawn position
-            _interactStation.transform.localPosition = vehicle.stationSpawnPoint.position;
-            return;
-        }
+        if (_interactStation.movement.PositionSet_Available() == false) return;
 
         Complete_StationPlace();
     }

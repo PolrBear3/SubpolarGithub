@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.InputSystem;
+using UnityEditor;
 
 public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
@@ -21,6 +20,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Header("")]
     [SerializeField] private RectTransform _ingredientBox;
     [SerializeField] private FoodCondition_Indicator[] _indicators;
+
+
+    // Editor
+    public Food_ScrObj archiveFood;
 
 
     // UnityEngine
@@ -334,21 +337,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    private void Remove_ArchivedFood(Food_ScrObj food)
-    {
-        if (Food_Archived(food) == false) return;
-
-        for (int i = 0; i < _currentDatas.Count; i++)
-        {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
-            {
-                if (_currentDatas[i][j].hasItem == false) continue;
-                if (_currentDatas[i][j].currentFood != food) continue;
-                _currentDatas[i][j].Empty_Item();
-            }
-        }
-    }
-
     private void RemoveDuplicate_ArchivedFood(Food_ScrObj food)
     {
         if (Food_Archived(food) == false) return;
@@ -377,6 +365,21 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
+
+    private void AddNewPage_onFull()
+    {
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem) continue;
+                return;
+            }
+        }
+
+        _controller.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
+    }
+
     public ItemSlot_Data Archive_Food(Food_ScrObj food)
     {
         // check if non duplicate food
@@ -384,6 +387,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // check if food has ingredients
         if (food.ingredients.Count <= 0) return null;
+
+        AddNewPage_onFull();
 
         for (int i = 0; i < _currentDatas.Count; i++)
         {
@@ -398,8 +403,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 Data_Controller dataController = _controller.vehicleController.mainController.dataController;
                 _currentDatas[i][j].isLocked = !dataController.CookedFood(food);
 
-                RemoveDuplicate_ArchivedFoods();
-
                 return _currentDatas[i][j];
             }
         }
@@ -407,6 +410,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
+
+    private bool FoodIngredient_Unlocked(Food_ScrObj food)
+    {
+        for (int i = 0; i < _ingredientUnlocks.Count; i++)
+        {
+            if (food != _ingredientUnlocks[i].foodScrObj) continue;
+            return true;
+        }
+        return false;
+    }
 
     public void Unlock_FoodIngredient(Food_ScrObj food)
     {
@@ -417,27 +430,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         _ingredientUnlocks.Add(new(food));
-    }
-
-    private void Remove_FoodIngredient(Food_ScrObj food)
-    {
-        for (int i = 0; i < _ingredientUnlocks.Count; i++)
-        {
-            if (food != _ingredientUnlocks[i].foodScrObj) continue;
-
-            _ingredientUnlocks.RemoveAt(i);
-            return;
-        }
-    }
-
-    private bool FoodIngredient_Unlocked(Food_ScrObj food)
-    {
-        for (int i = 0; i < _ingredientUnlocks.Count; i++)
-        {
-            if (food != _ingredientUnlocks[i].foodScrObj) continue;
-            return true;
-        }
-        return false;
     }
 
 
@@ -497,3 +489,46 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(ArchiveMenu_Controller))]
+public class ArchiveMenu_Controller_Controller_Inspector : Editor
+{
+    //
+    private SerializedProperty _archiveFoodProp;
+
+    private void OnEnable()
+    {
+        _archiveFoodProp = serializedObject.FindProperty("archiveFood");
+    }
+
+
+    //
+    public override void OnInspectorGUI()
+    {
+        ArchiveMenu_Controller menu = (ArchiveMenu_Controller)target;
+
+        base.OnInspectorGUI();
+        serializedObject.Update();
+
+        GUILayout.Space(60);
+
+        //
+        EditorGUILayout.BeginHorizontal();
+
+        EditorGUILayout.PropertyField(_archiveFoodProp, GUIContent.none);
+        Food_ScrObj archiveFood = (Food_ScrObj)_archiveFoodProp.objectReferenceValue;
+
+        if (GUILayout.Button("Archive Food"))
+        {
+            menu.Archive_Food(archiveFood);
+        }
+
+        EditorGUILayout.EndHorizontal();
+        //
+
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+#endif

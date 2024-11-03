@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "New Food!")]
+[CreateAssetMenu(menuName = "New ScriptableObject/ New Food!")]
 public class Food_ScrObj : ScriptableObject
 {
     [Header("")]

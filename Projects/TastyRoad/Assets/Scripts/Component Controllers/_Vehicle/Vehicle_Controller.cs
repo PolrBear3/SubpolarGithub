@@ -11,22 +11,23 @@ public class Vehicle_Controller : ActionBubble_Interactable
 
     [SerializeField] private VehicleMovement_Controller _movement;
 
-    [SerializeField] private Vehicle_Customizer _customizer;
-    public Vehicle_Customizer customizer => _customizer;
-
     [Header("")]
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
 
     [Header("")]
-    [SerializeField] private Transform _transparencyPoint;
-    private bool _transparencyLocked;
+    [SerializeField] private GameObject _spritesFile;
+    public GameObject spritesFile => _spritesFile;
 
     [Header("")]
     [SerializeField] private SpriteRenderer _interactArea;
     public SpriteRenderer interactArea => _interactArea;
 
     [Header("")]
+    [SerializeField] private Transform _transparencyPoint;
+
+    private bool _transparencyLocked;
+
     [SerializeField] private Transform _stationSpawnPoint;
     public Transform stationSpawnPoint => _stationSpawnPoint;
 
@@ -44,6 +45,8 @@ public class Vehicle_Controller : ActionBubble_Interactable
     private new void Start()
     {
         base.Start();
+
+        _interactArea.gameObject.SetActive(false);
 
         // subscription
         detection.ExitEvent += Transparency_Update;
@@ -68,17 +71,17 @@ public class Vehicle_Controller : ActionBubble_Interactable
     {
         if (_transparencyLocked || detection.player == null)
         {
-            LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+            LeanTween.alpha(_spritesFile, 1f, 0f);
             return;
         }
 
         if (detection.player.transform.position.y > _transparencyPoint.position.y)
         {
-            LeanTween.alpha(_customizer.gameObject, 0.3f, 0f);
+            LeanTween.alpha(_spritesFile, 0.3f, 0f);
             return;
         }
 
-        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+        LeanTween.alpha(_spritesFile, 1f, 0f);
     }
 
     public void Toggle_TransparencyLock(bool toggle)
@@ -86,7 +89,7 @@ public class Vehicle_Controller : ActionBubble_Interactable
         _transparencyLocked = toggle;
 
         if (toggle == false) return;
-        LeanTween.alpha(_customizer.gameObject, 1f, 0f);
+        LeanTween.alpha(_spritesFile, 1f, 0f);
     }
 
 

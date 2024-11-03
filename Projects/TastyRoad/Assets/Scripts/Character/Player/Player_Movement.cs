@@ -5,14 +5,19 @@ using UnityEngine.InputSystem;
 
 public class Player_Movement : MonoBehaviour
 {
+    private Rigidbody2D _rigidBody;
     private Player_Controller _playerController;
 
-    private Rigidbody2D _rigidBody;
 
     private Vector2 _currentDirection;
     public Vector2 currentDirection => _currentDirection;
 
-    [SerializeField] private float _moveSpeed;
+    [Header("")]
+    [SerializeField][Range(0, 10)] private float _defaultMoveSpeed;
+
+    private float _additionalMoveSpeed;
+    public float additionalMoveSpeed => _additionalMoveSpeed;
+
 
     // UnityEngine
     private void Awake()
@@ -28,8 +33,9 @@ public class Player_Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Rigidbody_Move();
+        Movement_Update();
     }
+
 
     // Player Input
     private void OnMovement(InputValue value)
@@ -46,16 +52,25 @@ public class Player_Movement : MonoBehaviour
         _playerController.animationController.Flip_Sprite(_currentDirection.x);
     }
 
-    // Check
+
+    // FixedUpdate Movement Update
     public bool Is_Moving()
     {
         if (_rigidBody.velocity != Vector2.zero) return true;
         else return false;
     }
 
-    // Fixed Update Move
-    private void Rigidbody_Move()
+    private void Movement_Update()
     {
-        _rigidBody.velocity = new Vector2(_currentDirection.x * _moveSpeed, _currentDirection.y * _moveSpeed);
+        float moveSpeed = _defaultMoveSpeed + _additionalMoveSpeed;
+
+        _rigidBody.velocity = new Vector2(_currentDirection.x * moveSpeed, _currentDirection.y * moveSpeed);
+    }
+
+
+    // Data Control
+    public void Update_MoveSpeed(float updateValue)
+    {
+        _additionalMoveSpeed += updateValue;
     }
 }
