@@ -13,17 +13,18 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
 
     private int _currentPageNum;
-    public int currentPageNum;
+    public int currentPageNum => _currentPageNum;
 
     private List<FoodData> _ingredientUnlocks = new();
 
     [Header("")]
     [SerializeField] private RectTransform _ingredientBox;
+
     [SerializeField] private FoodCondition_Indicator[] _indicators;
 
 
     // Editor
-    public Food_ScrObj archiveFood;
+    [HideInInspector] public Food_ScrObj archiveFood;
 
 
     // UnityEngine
