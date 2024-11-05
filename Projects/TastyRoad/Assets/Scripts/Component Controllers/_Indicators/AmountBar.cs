@@ -65,8 +65,8 @@ public class AmountBar : MonoBehaviour
     public void Load_Custom(int maxAmount, int currentAmount)
     {
         int spriteIndex = Mathf.FloorToInt((float)currentAmount / maxAmount * (_amountBarSprites.Length - 1));
-
         spriteIndex = Mathf.Clamp(spriteIndex, 0, _amountBarSprites.Length - 1);
+
         _sr.sprite = _amountBarSprites[spriteIndex];
     }
 

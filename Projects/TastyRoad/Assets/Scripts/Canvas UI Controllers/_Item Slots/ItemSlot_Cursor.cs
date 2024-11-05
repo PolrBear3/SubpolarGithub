@@ -18,9 +18,6 @@ public class ItemSlot_Cursor : MonoBehaviour
     [SerializeField] private Image _cursorImage;
     public Image cursorImage => _cursorImage;
 
-    [SerializeField] private Sprite _defaultCursor;
-    public Sprite defaultCursor => _defaultCursor;
-
     [SerializeField] private TextMeshProUGUI _amountText;
 
     [Header("")]
@@ -47,13 +44,6 @@ public class ItemSlot_Cursor : MonoBehaviour
     }
 
 
-    // Sprite
-    public void Update_DefaultCursor(Sprite updateSprite)
-    {
-        _defaultCursor = updateSprite;
-    }
-
-
     // Data
     public void Assign_Data(ItemSlot_Data data)
     {
@@ -67,7 +57,6 @@ public class ItemSlot_Cursor : MonoBehaviour
         _data = new();
         _data.Empty_Item();
 
-        _cursorImage.sprite = _defaultCursor;
         _cursorImage.rectTransform.anchoredPosition = Vector2.zero;
 
         _data.currentAmount = 0;

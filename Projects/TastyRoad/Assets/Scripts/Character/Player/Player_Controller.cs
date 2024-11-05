@@ -6,11 +6,11 @@ using UnityEngine.InputSystem;
 public class Player_Controller : MonoBehaviour, ISaveLoadable
 {
     private SpriteRenderer _sr;
-
     private PlayerInput _playerInput;
 
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
+
 
     [Header("")]
     [SerializeField] private Player_Movement _movement;
@@ -19,12 +19,17 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Player_Interaction _interaction;
     public Player_Interaction interaction => _interaction;
 
+    [SerializeField] private AbilityManager _abilityManager;
+    public AbilityManager abilityManager => _abilityManager;
+
+
     [Header("")]
     [SerializeField] private Detection_Controller _detectionController;
     public Detection_Controller detectionController => _detectionController;
 
     [SerializeField] private BasicAnimation_Controller _animationController;
     public BasicAnimation_Controller animationController => _animationController;
+
 
     [Header("")]
     [SerializeField] private FoodData_Controller _foodIcon;

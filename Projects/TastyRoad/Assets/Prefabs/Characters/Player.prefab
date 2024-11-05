@@ -95,6 +95,7 @@ MonoBehaviour:
   _player: {fileID: 385993438348478003}
   _allAbilities:
   - {fileID: 6024308767436799126}
+  _maxAbilityPoint: 5
   editorAbility: {fileID: 11400000, guid: 87d60c67253004abda55375e9d9b2b06, type: 2}
 --- !u!1 &6894812432335870425
 GameObject:
@@ -411,6 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movement: {fileID: 1296528359833819897}
   _interaction: {fileID: 9121272627405539894}
+  _abilityManager: {fileID: 9176286486368829597}
   _detectionController: {fileID: 1671117369573998975}
   _animationController: {fileID: 3822302725464732542}
   _foodIcon: {fileID: 3671351110632059167}

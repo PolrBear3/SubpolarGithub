@@ -44,6 +44,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private List<GameObject> _menus = new();
 
     [SerializeField] private Sprite[] _menuCursorSprites;
+    public Sprite[] menuCursorSprites => _menuCursorSprites;
 
 
     [Header("")]
@@ -66,12 +67,15 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     public event Menu_Event MenuOpen_Event;
 
-    public event Menu_Event OnCursor_Input;
-    public event Menu_Event OnCursor_Outer;
     public event Cursor_Event OnCursorControl_Input;
 
+    public event Menu_Event OnCursor_Input;
+    public event Menu_Event OnCursor_Outer;
+
     public event Menu_Event OnSelect_Input;
+
     public event Menu_Event OnHoldSelect_Input;
+    public event Menu_Event OnHoldEmptySelect_Input;
 
     private bool _onHold;
     private float _pressStartTime;
@@ -200,7 +204,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (MenuInteraction_Active()) return;
 
         _infoBox.gameObject.SetActive(_slotsController.cursor.data.hasItem);
-        infoBox.Update_RectLayout();
+        _infoBox.Update_RectLayout();
     }
 
     private void HoldSelect()
@@ -208,6 +212,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         OnHoldSelect_Input?.Invoke();
 
         _infoBox.gameObject.SetActive(false);
+
+        OnHoldEmptySelect_Input?.Invoke();
     }
 
 
@@ -223,7 +229,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
             if (MenuInteraction_Active()) return;
 
-            _infoBox.gameObject.SetActive(_slotsController.cursor.data.hasItem);
+            _infoBox.gameObject.SetActive(cursor.data.hasItem);
             infoBox.Update_RectLayout();
 
             return;
@@ -232,12 +238,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (MenuInteraction_Active()) return;
 
         _menus[_currentMenuNum].SetActive(false);
+        _infoBox.gameObject.SetActive(false);
+
         Menu_Navigate(false);
         Toggle_NavigatedMenu();
 
         // change cursor sprite to current menu type cursor
-        cursor.Update_DefaultCursor(_menuCursorSprites[_currentMenuNum]);
-        cursor.cursorImage.sprite = cursor.defaultCursor;
+        cursor.cursorImage.sprite = _menuCursorSprites[_currentMenuNum];
 
         // current menu update dialog
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
@@ -255,7 +262,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
             if (MenuInteraction_Active()) return;
 
-            _infoBox.gameObject.SetActive(_slotsController.cursor.data.hasItem);
+            _infoBox.gameObject.SetActive(cursor.data.hasItem);
             infoBox.Update_RectLayout();
 
             return;
@@ -264,12 +271,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (MenuInteraction_Active()) return;
 
         _menus[_currentMenuNum].SetActive(false);
+        _infoBox.gameObject.SetActive(false);
+
         Menu_Navigate(true);
         Toggle_NavigatedMenu();
 
         // change cursor sprite to current menu type cursor
-        cursor.Update_DefaultCursor(_menuCursorSprites[_currentMenuNum]);
-        cursor.cursorImage.sprite = cursor.defaultCursor;
+        cursor.cursorImage.sprite = _menuCursorSprites[_currentMenuNum];
 
         // current menu update dialog
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
@@ -320,8 +328,14 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         Toggle_NavigatedMenu();
 
+        ItemSlot_Cursor cursor = _slotsController.cursor;
+
+        // change cursor sprite to current menu type cursor
+        cursor.cursorImage.sprite = _menuCursorSprites[_currentMenuNum];
+
         ItemSlot firstSlot = _slotsController.ItemSlot(Vector2.zero);
         _slotsController.cursor.Navigate_toSlot(firstSlot);
+
         _infoBox.Flip_toDefault();
     }
 
@@ -358,6 +372,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (navigateRight == false && navigateLeft == false) return;
 
         _infoBox.Flip();
+    }
+
+
+    public void Update_MenuCursorSprite(Sprite updateSprite)
+    {
+        _menuCursorSprites[currentMenuNum] = updateSprite;
+        _slotsController.cursor.cursorImage.sprite = updateSprite;
     }
 
     public void Update_PageDots(int pageAmount, int currentPageNum)

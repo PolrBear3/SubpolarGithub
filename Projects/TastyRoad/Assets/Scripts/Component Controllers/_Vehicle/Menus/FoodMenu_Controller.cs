@@ -10,11 +10,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private VehicleMenu_Controller _controller;
     public VehicleMenu_Controller controller => _controller;
 
+
     private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
     public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
 
     private int _currentPageNum;
-    public int currentPageNum => _currentPageNum;
+
 
     [Header("")]
     [SerializeField] private Station_ScrObj _foodBox;

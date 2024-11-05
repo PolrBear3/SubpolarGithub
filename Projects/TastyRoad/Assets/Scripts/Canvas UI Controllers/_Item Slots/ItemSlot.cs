@@ -16,6 +16,8 @@ public class ItemSlot : MonoBehaviour
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
 
+    private float _defaultIconHeight;
+
 
     [Header("")]
     [SerializeField] private Image _iconImage;
@@ -43,6 +45,11 @@ public class ItemSlot : MonoBehaviour
 
         _iconImage.color = Color.clear;
         _bookmarkIcon.color = Color.clear;
+    }
+
+    private void Start()
+    {
+        _defaultIconHeight = _iconImage.rectTransform.anchoredPosition.y;
     }
 
 
@@ -126,7 +133,7 @@ public class ItemSlot : MonoBehaviour
         {
             _iconImage.sprite = _data.stationData.stationScrObj.dialogIcon;
             _iconImage.color = Color.white;
-            _iconImage.rectTransform.anchoredPosition = new Vector2(0f, -6.5f);
+            _iconImage.rectTransform.anchoredPosition = new Vector2(0f, _defaultIconHeight);
 
             return this;
         }
@@ -143,6 +150,22 @@ public class ItemSlot : MonoBehaviour
         Empty_ItemBox();
         return this;
     }
+
+    public ItemSlot Update_SlotIcon(Sprite iconSprite)
+    {
+        if (iconSprite == null)
+        {
+            Empty_ItemBox();
+            return this;
+        }
+
+        _iconImage.sprite = iconSprite;
+        _iconImage.color = Color.white;
+        _iconImage.rectTransform.anchoredPosition = new Vector2(0f, _defaultIconHeight);
+
+        return this;
+    }
+
 
     public void AmountText_Update()
     {

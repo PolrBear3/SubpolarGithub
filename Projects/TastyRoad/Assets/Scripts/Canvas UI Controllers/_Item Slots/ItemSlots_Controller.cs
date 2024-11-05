@@ -27,19 +27,10 @@ public class ItemSlots_Controller : MonoBehaviour
     private void Set_GridNums()
     {
         Vector2 gridNumTrack = Vector2.zero;
-        float recentPosY = _itemSlots[0].rectTransform.position.y;
 
         for (int i = 0; i < _itemSlots.Count; i++)
         {
-            if (_itemSlots[i].rectTransform.position.y != recentPosY)
-            {
-                gridNumTrack.x = 0;
-                gridNumTrack.y++;
-            }
-
             _itemSlots[i].Assign_GridNum(gridNumTrack);
-
-            recentPosY = _itemSlots[i].rectTransform.position.y;
             gridNumTrack.x++;
         }
     }
