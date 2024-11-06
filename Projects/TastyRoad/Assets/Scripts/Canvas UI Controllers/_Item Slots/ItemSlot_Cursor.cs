@@ -18,6 +18,8 @@ public class ItemSlot_Cursor : MonoBehaviour
     [SerializeField] private Image _cursorImage;
     public Image cursorImage => _cursorImage;
 
+    private Sprite _recentCursorSprite;
+
     [SerializeField] private TextMeshProUGUI _amountText;
 
     [Header("")]
@@ -40,6 +42,7 @@ public class ItemSlot_Cursor : MonoBehaviour
 
     private void Start()
     {
+        Update_CursorSprite(_cursorImage.sprite);
         Empty_Item();
     }
 
@@ -52,11 +55,18 @@ public class ItemSlot_Cursor : MonoBehaviour
 
 
     // Visual Cotrol
+    public void Update_CursorSprite(Sprite cursorSprite)
+    {
+        _cursorImage.sprite = cursorSprite;
+        _recentCursorSprite = cursorSprite;
+    }
+
     public void Empty_Item()
     {
         _data = new();
         _data.Empty_Item();
 
+        _cursorImage.sprite = _recentCursorSprite;
         _cursorImage.rectTransform.anchoredPosition = Vector2.zero;
 
         _data.currentAmount = 0;

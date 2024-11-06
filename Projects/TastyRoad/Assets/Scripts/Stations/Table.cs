@@ -25,7 +25,7 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.Action1_Event -= Basic_SwapFood;
         _stationController.Action2_Event -= Merge_Food;
 
-        _stationController.maintenance.OnDurabilityBreak += Return_Food;
+        _stationController.maintenance.OnDurabilityBreak -= Return_Food;
     }
 
 

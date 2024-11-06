@@ -243,8 +243,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Menu_Navigate(false);
         Toggle_NavigatedMenu();
 
-        // change cursor sprite to current menu type cursor
-        cursor.cursorImage.sprite = _menuCursorSprites[_currentMenuNum];
+        cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
 
         // current menu update dialog
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
@@ -276,8 +275,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Menu_Navigate(true);
         Toggle_NavigatedMenu();
 
-        // change cursor sprite to current menu type cursor
-        cursor.cursorImage.sprite = _menuCursorSprites[_currentMenuNum];
+        cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
 
         // current menu update dialog
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
@@ -329,9 +327,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Toggle_NavigatedMenu();
 
         ItemSlot_Cursor cursor = _slotsController.cursor;
-
-        // change cursor sprite to current menu type cursor
-        cursor.cursorImage.sprite = _menuCursorSprites[_currentMenuNum];
+        cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
 
         ItemSlot firstSlot = _slotsController.ItemSlot(Vector2.zero);
         _slotsController.cursor.Navigate_toSlot(firstSlot);
