@@ -29,7 +29,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     {
         _amountBar.Set_Amount(ES3.Load("ScrapStack/currentAmount", _amountBar.currentAmount));
         _amountBar.Load();
-        _amountBar.Transparent_Toggle(true);
+        _amountBar.Toggle(true);
 
         Update_CurrentSprite();
 
@@ -77,11 +77,11 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     {
         if (_interactable.detection.player == null)
         {
-            _amountBar.Transparent_Toggle(true);
+            _amountBar.Toggle(true);
             return;
         }
 
-        _amountBar.Transparent_Toggle(_interactable.bubble.bubbleOn);
+        _amountBar.Toggle(_interactable.bubble.bubbleOn);
     }
 
 

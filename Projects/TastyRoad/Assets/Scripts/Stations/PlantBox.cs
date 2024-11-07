@@ -30,11 +30,20 @@ public class PlantBox : Stack_Table, IInteractable
         if (foodIcon.currentData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
 
         _growthInProgress = true;
+
+        // subscriptions
+        stationController.detection.EnterEvent += Update_AmountBar;
+        stationController.detection.ExitEvent += Update_AmountBar;
+
         GlobalTime_Controller.TimeTik_Update += Update_Growth;
     }
 
     private new void OnDestroy()
     {
+        // subscriptions
+        stationController.detection.EnterEvent -= Update_AmountBar;
+        stationController.detection.ExitEvent -= Update_AmountBar;
+
         GlobalTime_Controller.TimeTik_Update -= Update_Growth;
     }
 
@@ -46,16 +55,6 @@ public class PlantBox : Stack_Table, IInteractable
         Harvest();
 
         Update_Sprite();
-    }
-
-
-    // OnTrigger
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        stationController.Food_Icon().ShowAmountBar_LockToggle(false);
-        Update_AmountBar();
     }
 
 
@@ -71,7 +70,7 @@ public class PlantBox : Stack_Table, IInteractable
     }
 
 
-    // Functions
+    // Viusal Update
     private void Update_Sprite()
     {
         if (stationController.Food_Icon().hasFood == false)
@@ -83,19 +82,14 @@ public class PlantBox : Stack_Table, IInteractable
         stationController.spriteRenderer.sprite = _plantedSprite;
     }
 
-
     private void Update_AmountBar()
     {
-        if (_growthInProgress == true)
-        {
-            stationController.Food_Icon().Toggle_BarColor(false);
-            return;
-        }
-
-        stationController.Food_Icon().Toggle_BarColor(true);
+        stationController.Food_Icon().amountBar.Toggle_BarColor(_growthInProgress);
+        stationController.Food_Icon().Toggle_AmountBar(stationController.detection.player != null);
     }
 
 
+    // Interact Functions
     private void Plant()
     {
         if (_growthInProgress == true) return;
@@ -128,14 +122,13 @@ public class PlantBox : Stack_Table, IInteractable
     private void Update_Growth()
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
-        int maxAmount = foodIcon.amountBarSprites.Length;
 
         // increase amount +1
         foodIcon.currentData.Update_Amount(1);
         foodIcon.Show_AmountBar();
 
         // check if growth complete
-        if (foodIcon.currentData.currentAmount >= maxAmount)
+        if (foodIcon.amountBar.Is_MaxAmount())
         {
             // remove rotten state
             foodIcon.currentData.Clear_Condition(FoodCondition_Type.rotten);

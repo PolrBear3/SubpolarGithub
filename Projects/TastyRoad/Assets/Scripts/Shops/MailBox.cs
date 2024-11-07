@@ -34,7 +34,7 @@ public class MailBox : MonoBehaviour, IInteractable
         Update_Sprite();
 
         _amountBar.Load();
-        _amountBar.Transparent_Toggle(true);
+        _amountBar.Toggle(true);
 
         // subscriptions
         _detection.EnterEvent += Toggle_AmountBar;
@@ -93,7 +93,7 @@ public class MailBox : MonoBehaviour, IInteractable
 
     public void Toggle_AmountBar()
     {
-        _amountBar.Transparent_Toggle(_detection.player == null);
+        _amountBar.Toggle(_detection.player == null);
     }
 
 

@@ -13,22 +13,17 @@ public class FoodBox : MonoBehaviour, IInteractable
         _controller = gameObject.GetComponent<Station_Controller>();
     }
 
-
-    // OnTrigger
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Start()
     {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        _controller.Food_Icon().ShowAmountBar_LockToggle(false);
+        _controller.detection.EnterEvent += Toggle_AmountBar;
+        _controller.detection.ExitEvent += Toggle_AmountBar;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnDestroy()
     {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        _controller.Food_Icon().ShowAmountBar_LockToggle(true);
+        _controller.detection.EnterEvent -= Toggle_AmountBar;
+        _controller.detection.ExitEvent -= Toggle_AmountBar;
     }
-
 
 
     // IInteractable
@@ -51,8 +46,13 @@ public class FoodBox : MonoBehaviour, IInteractable
     }
 
 
+    // Functions
+    private void Toggle_AmountBar()
+    {
+        _controller.Food_Icon().Toggle_AmountBar(_controller.detection.player != null);
+    }
 
-    // Give Food to Player
+
     private void Give_Food()
     {
         FoodData_Controller playerIcon = _controller.detection.player.foodIcon;

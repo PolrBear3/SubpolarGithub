@@ -51,16 +51,11 @@ public class FoodData
     [SerializeField][ES3Serializable] private int _tikCount;
     public int tikCount => _tikCount;
 
-    [SerializeField][ES3Serializable] private List<FoodCondition_Data> _conditionDatas;
+    [SerializeField][ES3Serializable] private List<FoodCondition_Data> _conditionDatas = new();
     public List<FoodCondition_Data> conditionDatas => _conditionDatas;
 
 
     // Constructors
-    public FoodData()
-    {
-
-    }
-
     public FoodData(FoodData data)
     {
         _foodScrObj = data.foodScrObj;
@@ -68,6 +63,7 @@ public class FoodData
         _tikCount = data.tikCount;
         _conditionDatas = data.conditionDatas;
     }
+
 
     public FoodData(Food_ScrObj food)
     {

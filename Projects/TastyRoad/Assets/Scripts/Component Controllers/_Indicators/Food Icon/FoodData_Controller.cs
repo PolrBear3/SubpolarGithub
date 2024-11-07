@@ -23,34 +23,27 @@ public class FoodData_Controller : MonoBehaviour
     public delegate void Event();
     public event Event TimeTikEvent;
 
+
     [Header("")]
     [SerializeField] private SpriteRenderer _foodIcon;
     public SpriteRenderer foodIcon => _foodIcon;
 
-    [SerializeField] private SpriteRenderer _amountBar;
+    [SerializeField] private AmountBar _amountBar;
+    public AmountBar amountBar => _amountBar;
+
+
+    [Header("")]
     [SerializeField] private SpriteRenderer[] _conditionBoxes;
 
-    [Header("")]
-    [SerializeField] private Sprite[] _defaultBarSprites;
-    [SerializeField] private Sprite[] _greenBarSprites;
-
-    private Sprite[] _amountBarSprites;
-    public Sprite[] amountBarSprites => _amountBarSprites;
-
-    [Header("")]
     [SerializeField] private ConditionSprites[] _conditionSprites;
     public ConditionSprites[] conditionSprites => _conditionSprites;
+
 
     [Header("")]
     [SerializeField] private float _toggleHeight;
     private float _defaultHeight;
 
-    [Header("")]
     [SerializeField] private bool _iconShowLocked;
-    [SerializeField] private bool _barShowLocked;
-
-    [SerializeField] private float _durationTime;
-    private Coroutine _amountBarCoroutine;
 
 
     // UnityEngine
@@ -63,7 +56,6 @@ public class FoodData_Controller : MonoBehaviour
     {
         Show_Icon();
 
-        Toggle_BarColor(false);
         Show_AmountBar();
 
         Show_Condition();
@@ -129,7 +121,28 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
-    // Lock Toggles
+    private void TimeTik_Update()
+    {
+        _currentData.Update_TikCount(1);
+
+        TimeTikEvent?.Invoke();
+    }
+
+
+    // All
+    public void Toggle_Height(bool toggle)
+    {
+        if (toggle)
+        {
+            transform.localPosition = new Vector2(transform.localPosition.x, _toggleHeight);
+            return;
+        }
+
+        transform.localPosition = new Vector2(transform.localPosition.x, _defaultHeight);
+    }
+
+
+    // Icon
     public void ShowIcon_LockToggle(bool isLock)
     {
         _iconShowLocked = isLock;
@@ -137,15 +150,7 @@ public class FoodData_Controller : MonoBehaviour
         Show_Icon();
     }
 
-    public void ShowAmountBar_LockToggle(bool isLock)
-    {
-        _barShowLocked = isLock;
 
-        Show_AmountBar();
-    }
-
-
-    // Icon
     public void Show_Icon()
     {
         if (_iconShowLocked == true || _hasFood == false)
@@ -173,104 +178,40 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
-    public void Toggle_Height(bool toggle)
-    {
-        if (toggle)
-        {
-            transform.localPosition = new Vector2(transform.localPosition.x, _toggleHeight);
-            return;
-        }
-
-        transform.localPosition = new Vector2(transform.localPosition.x, _defaultHeight);
-    }
-
-
     // Amount Bar
     public void Show_AmountBar()
     {
         // empty
-        if (_barShowLocked == true || _hasFood == false || _currentData.currentAmount <= 0)
+        if (_hasFood == false || _currentData.currentAmount <= 0)
         {
-            _amountBar.color = Color.clear;
+            _amountBar.Toggle(false);
             return;
         }
 
-        _amountBar.color = Color.white;
+        _amountBar.Toggle(true);
 
-        int maxAmount = _amountBarSprites.Length;
+        int maxAmount = _amountBar.amountBarSprite.Length;
 
         // full bar check
         if (_currentData.currentAmount >= maxAmount)
         {
-            _amountBar.sprite = _amountBarSprites[maxAmount - 1];
+            _amountBar.Load(maxAmount);
             return;
         }
 
         // update bar sprite
-        _amountBar.sprite = _amountBarSprites[_currentData.currentAmount - 1];
-    }
-
-    public void Show_AmountBar_Duration()
-    {
-        // empty
-        if (_barShowLocked == true || _hasFood == false || _currentData.currentAmount <= 0)
-        {
-            _amountBar.color = Color.clear;
-            return;
-        }
-
-        if (_amountBarCoroutine != null)
-        {
-            StopCoroutine(_amountBarCoroutine);
-            _amountBarCoroutine = null;
-        }
-
-        _amountBarCoroutine = StartCoroutine(Show_AmountBar_Duration_Coroutine());
-    }
-    private IEnumerator Show_AmountBar_Duration_Coroutine()
-    {
-        Show_AmountBar();
-
-        yield return new WaitForSeconds(_durationTime);
-
-        _amountBar.color = Color.clear;
-    }
-
-
-    public void Toggle_BarLock(bool toggle)
-    {
-        _barShowLocked = toggle;
+        _amountBar.Load(_currentData.currentAmount);
     }
 
     public void Toggle_AmountBar(bool toggle)
     {
         if (toggle == false)
         {
-            _amountBar.color = Color.clear;
+            _amountBar.Toggle(false);
             return;
         }
 
         Show_AmountBar();
-    }
-
-    public void Toggle_BarColor(bool isColored)
-    {
-        if (isColored)
-        {
-            _amountBarSprites = _greenBarSprites;
-            return;
-        }
-
-        _amountBarSprites = _defaultBarSprites;
-    }
-
-
-    // Time Tik
-    private void TimeTik_Update()
-    {
-        _currentData.Update_TikCount(1);
-
-        TimeTikEvent?.Invoke();
     }
 
 

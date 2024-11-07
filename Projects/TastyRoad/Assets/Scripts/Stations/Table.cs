@@ -70,6 +70,7 @@ public class Table : MonoBehaviour, IInteractable
         if (bubble != null) bubble.Toggle(false);
 
         _stationController.PlayerInput_Activation(false);
+
         _stationController.Action1_Event -= Basic_SwapFood;
         _stationController.Action2_Event -= Merge_Food;
     }

@@ -188,7 +188,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _restockBarObject.SetActive(!bubble.bubbleOn);
 
         if (bubble.bubbleOn) return;
+
         _restockBar.Load_Custom(_restockCount, _currentRestockCount);
+        _restockBar.Toggle(true);
     }
 
 

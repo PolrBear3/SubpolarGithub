@@ -127,16 +127,10 @@ public class PlaceableStock : MonoBehaviour
 
     private void Toggle_AmountBar()
     {
-        Player_Controller playerDetection = _interactable.detection.player;
-        FoodData foodData = _foodIcon.currentData;
+        bool playerDetected = _interactable.detection.player != null;
+        bool bubbleOn = _interactable.bubble.bubbleOn;
 
-        if (playerDetection == null || _foodIcon.hasFood == false || foodData.currentAmount <= 0)
-        {
-            _foodIcon.Toggle_AmountBar(false);
-            return;
-        }
-
-        _foodIcon.ShowAmountBar_LockToggle(_interactable.bubble.bubbleOn);
+        _foodIcon.Toggle_AmountBar(playerDetected && !bubbleOn);
     }
 
 

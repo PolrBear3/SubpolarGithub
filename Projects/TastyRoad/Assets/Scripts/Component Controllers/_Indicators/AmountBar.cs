@@ -16,14 +16,25 @@ public class AmountBar : MonoBehaviour
     private int _currentAmount;
     public int currentAmount => _currentAmount;
 
-    private bool _isTransparent;
-    public bool isTransparent => _isTransparent;
+    private bool _toggledOn;
+    public bool toggledOn => _toggledOn;
+
+    [Header("")]
+    [SerializeField] private bool _toggleLocked;
+    public bool toggleLocked => _toggleLocked;
+
+    [SerializeField][Range(0, 100)] private float _durationTime;
+
+
+    private Coroutine _amountBarCoroutine;
 
 
     // MonoBehaviour
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
+
+        Toggle(false);
     }
 
 
@@ -71,22 +82,56 @@ public class AmountBar : MonoBehaviour
     }
 
 
-    public void Transparent_Toggle()
+    // Toggles
+    public void Toggle_Lock(bool lockToggle)
     {
-        Transparent_Toggle(!_isTransparent);
+        _toggleLocked = lockToggle;
     }
-    public void Transparent_Toggle(bool toggleOn)
-    {
-        _isTransparent = toggleOn;
 
-        if (_isTransparent)
+
+    public void Toggle()
+    {
+        Toggle(!_toggledOn);
+    }
+    public void Toggle(bool toggleOn)
+    {
+        if (_toggleLocked)
         {
             _sr.color = Color.clear;
+            return;
         }
-        else
+
+        _toggledOn = toggleOn;
+
+        if (_toggledOn)
         {
             _sr.color = Color.white;
+            return;
         }
+
+        _sr.color = Color.clear;
+    }
+
+
+    public void Toggle_Duration()
+    {
+        if (_amountBarCoroutine != null)
+        {
+            StopCoroutine(_amountBarCoroutine);
+            _amountBarCoroutine = null;
+        }
+
+        _amountBarCoroutine = StartCoroutine(Toggle_Duration_Coroutine());
+    }
+    private IEnumerator Toggle_Duration_Coroutine()
+    {
+        Toggle(true);
+        yield return new WaitForSeconds(_durationTime);
+
+        Toggle(false);
+
+        _amountBarCoroutine = null;
+        yield break;
     }
 
 

@@ -8,14 +8,14 @@ public class Stack_Table : Table, IInteractable
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        stationController.Food_Icon().ShowAmountBar_LockToggle(false);
+        stationController.Food_Icon().Toggle_AmountBar(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.TryGetComponent(out Player_Controller player)) return;
 
-        stationController.Food_Icon().ShowAmountBar_LockToggle(true);
+        stationController.Food_Icon().Toggle_AmountBar(false);
     }
 
 

@@ -52,7 +52,6 @@ public class FoodStock : MonoBehaviour
         if (_stockData == null)
         {
             _stockData = new(false);
-            Set_FoodData(new());
         }
 
         Toggle_Unlock(_stockData.unlocked);
@@ -144,17 +143,10 @@ public class FoodStock : MonoBehaviour
 
     private void Toggle_AmountBar()
     {
-        Player_Controller playerDetection = _interactable.detection.player;
-        FoodData foodData = _foodIcon.currentData;
+        bool playerDetected = _interactable.detection.player != null;
+        bool bubbleOn = _interactable.bubble.bubbleOn;
 
-        if (playerDetection == null || foodData == null || foodData.currentAmount <= 0)
-        {
-            _foodIcon.Toggle_AmountBar(false);
-            return;
-        }
-
-        _foodIcon.Toggle_BarLock(false);
-        _foodIcon.Toggle_AmountBar(!_interactable.bubble.bubbleOn);
+        _foodIcon.Toggle_AmountBar(playerDetected && !bubbleOn);
     }
 
 

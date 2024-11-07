@@ -156,8 +156,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // new game
         if (ES3.KeyExists("GroceryNPC/_archivedBundles") == false)
         {
-            _questFood = new();
-
             _isNewRestock = true;
 
             foreach (Food_ScrObj food in _startingBundles)
@@ -497,7 +495,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _questBarObject.SetActive(!bubble.bubbleOn);
 
         if (bubble.bubbleOn) return;
+
         _questBar.Load_Custom(_questCount, _currentQuestCount);
+        _questBar.Toggle(true);
     }
 
 
@@ -521,7 +521,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     /// </summary>
     private void Set_QuestFood()
     {
-        if (_questFood.foodScrObj != null) return;
+        if (_questFood != null) return;
         if (_currentQuestCount >= _questCount) return;
 
         // get random cooked food from _archivedCooks
@@ -532,7 +532,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     private void Complete_Quest()
     {
-        if (_questFood.foodScrObj == null) return;
+        if (_questFood == null) return;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -567,7 +567,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         player.coinLauncher.Parabola_CoinLaunch(_questFood.foodScrObj.sprite, transform.position);
 
         // refresh _questFood
-        _questFood = new();
+        _questFood = null;
 
         Action_Bubble bubble = _npcController.interactable.bubble;
         bubble.Empty_Bubble();
@@ -593,7 +593,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _restockBarObject.SetActive(!bubble.bubbleOn);
 
         if (bubble.bubbleOn) return;
+
         _restockBar.Load_Custom(_restockCount, _currentRestockCount);
+        _restockBar.Toggle(true);
     }
 
 
