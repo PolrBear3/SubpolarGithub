@@ -91,7 +91,7 @@ public class Serve_Table : Table, IInteractable
         if (stationController.Food_Icon().hasFood == false) return false;
 
         // check if correct food
-        if (stationController.Food_Icon().currentData.foodScrObj != _currentNPC.foodIcon.currentData.foodScrObj) return false;
+        if (stationController.Food_Icon().headData.foodScrObj != _currentNPC.foodIcon.headData.foodScrObj) return false;
 
         // check if food is already served
         if (_currentNPC.interaction.servedFoodData != null) return false;
@@ -160,7 +160,7 @@ public class Serve_Table : Table, IInteractable
             return;
         }
 
-        _foodOrderPreview.Set_CurrentData(_currentNPC.foodIcon.currentData);
+        _foodOrderPreview.Set_CurrentData(_currentNPC.foodIcon.headData);
         _foodOrderPreview.Show_Icon();
         _foodOrderPreview.Show_Condition();
 
@@ -236,7 +236,7 @@ public class Serve_Table : Table, IInteractable
         }
 
         // serve npc food
-        npc.interaction.Serve_FoodOrder(stationController.Food_Icon().currentData);
+        npc.interaction.Serve_FoodOrder(stationController.Food_Icon().headData);
 
         // empty current food
         stationController.Food_Icon().Set_CurrentData(null);

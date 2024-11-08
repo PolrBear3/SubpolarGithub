@@ -56,7 +56,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("Player_Controller/_foodIcon.currentData", _foodIcon.currentData);
+        ES3.Save("Player_Controller/_foodIcon.currentData", _foodIcon.headData);
     }
 
     public void Load_Data()

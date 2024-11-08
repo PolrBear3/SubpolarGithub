@@ -23,10 +23,10 @@ public class Stack_Table : Table, IInteractable
     public new void Interact()
     {
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
-        FoodData playerData = playerIcon.currentData;
+        FoodData playerData = playerIcon.headData;
 
         FoodData_Controller tableIcon = stationController.Food_Icon();
-        FoodData tableData = tableIcon.currentData;
+        FoodData tableData = tableIcon.headData;
 
         // if player food has a condition
         if (playerIcon.hasFood == true && playerData.conditionDatas.Count > 0) return;
@@ -48,7 +48,7 @@ public class Stack_Table : Table, IInteractable
     public void Swap_Food()
     {
         FoodData_Controller tableIcon = stationController.Food_Icon();
-        FoodData tableData = tableIcon.currentData;
+        FoodData tableData = tableIcon.headData;
 
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
@@ -71,7 +71,7 @@ public class Stack_Table : Table, IInteractable
 
             // give player
             playerIcon.Set_CurrentData(new FoodData(tableData.foodScrObj));
-            playerIcon.currentData.Set_Condition(tableData.conditionDatas);
+            playerIcon.headData.Set_Condition(tableData.conditionDatas);
 
             playerIcon.Show_Icon();
             playerIcon.Show_Condition();
@@ -90,11 +90,11 @@ public class Stack_Table : Table, IInteractable
     public void Stack_Food()
     {
         FoodData_Controller tableIcon = stationController.Food_Icon();
-        FoodData tableData = tableIcon.currentData;
+        FoodData tableData = tableIcon.headData;
 
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
-        if (tableIcon.currentData.currentAmount >= 6) return;
+        if (tableIcon.headData.currentAmount >= 6) return;
 
         // stack
         tableData.Update_Amount(1);

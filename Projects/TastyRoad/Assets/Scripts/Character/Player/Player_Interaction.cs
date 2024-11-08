@@ -94,7 +94,7 @@ public class Player_Interaction : MonoBehaviour
         if (foodIcon.hasFood == false) return;
 
         CoinLauncher launcher = _controller.coinLauncher;
-        launcher.Parabola_CoinLaunch(foodIcon.currentData.foodScrObj.sprite, transform.position);
+        launcher.Parabola_CoinLaunch(foodIcon.headData.foodScrObj.sprite, transform.position);
 
         foodIcon.Set_CurrentData(null);
         foodIcon.Show_Icon();

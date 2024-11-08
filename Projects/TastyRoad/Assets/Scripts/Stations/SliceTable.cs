@@ -79,7 +79,7 @@ public class SliceTable : Table, IInteractable, ISignal
     {
         if (stationController.Food_Icon().hasFood == false) return;
 
-        stationController.Food_Icon().currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced));
+        stationController.Food_Icon().headData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced));
         stationController.Food_Icon().Show_Condition();
 
         // durability

@@ -423,7 +423,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
                 continue;
             }
 
-            stationFoodDatas.Add(new FoodData(_currentStations[i].Food_Icon().currentData));
+            stationFoodDatas.Add(new FoodData(_currentStations[i].Food_Icon().headData));
         }
 
         ES3.Save("Main_Controller/stationDatas", stationDatas);

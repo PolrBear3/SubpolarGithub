@@ -15,7 +15,7 @@ public interface ISignal
 
 public class Data_Controller : MonoBehaviour
 {
-    [Header("")] 
+    [Header("")]
     public List<Location_ScrObj> locations = new();
     public List<Station_ScrObj> stations = new();
     public List<GameObject> characters = new();
@@ -251,8 +251,8 @@ public class Data_Controller : MonoBehaviour
         // search for cooked food
         List<FoodData> ingredients = new();
 
-        ingredients.Add(dataController1.currentData);
-        ingredients.Add(dataController2.currentData);
+        ingredients.Add(dataController1.headData);
+        ingredients.Add(dataController2.headData);
 
         Food_ScrObj cookedFood = CookedFood(ingredients);
 

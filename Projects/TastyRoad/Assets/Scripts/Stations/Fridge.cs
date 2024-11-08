@@ -15,10 +15,10 @@ public class Fridge : Stack_Table, IInteractable
     public new void Interact()
     {
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
-        FoodData playerData = playerIcon.currentData;
+        FoodData playerData = playerIcon.headData;
 
         FoodData_Controller tableIcon = stationController.Food_Icon();
-        FoodData tableData = tableIcon.currentData;
+        FoodData tableData = tableIcon.headData;
 
         bool bothHaveFood = playerIcon.hasFood && tableIcon.hasFood;
 

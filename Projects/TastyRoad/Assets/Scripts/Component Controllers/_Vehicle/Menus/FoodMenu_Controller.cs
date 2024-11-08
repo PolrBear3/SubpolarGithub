@@ -516,13 +516,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (currentCursorData.currentAmount >= 6)
         {
             // max amount
-            station.Food_Icon().currentData.Set_Amount(6);
+            station.Food_Icon().headData.Set_Amount(6);
             _controller.slotsController.cursor.data.Assign_Amount(currentCursorData.currentAmount - 6);
         }
         else
         {
             // bellow max amount
-            station.Food_Icon().currentData.Set_Amount(currentCursorData.currentAmount);
+            station.Food_Icon().headData.Set_Amount(currentCursorData.currentAmount);
             _controller.slotsController.cursor.Empty_Item();
         }
     }

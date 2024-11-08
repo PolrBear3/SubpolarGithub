@@ -7,7 +7,7 @@ public class FoodData_RottenSystem : MonoBehaviour
     [SerializeField] private FoodData_Controller _foodIcon;
 
     [Header("")]
-    [Range (0, 100)]
+    [Range(0, 100)]
     [SerializeField] private int _decayCount;
 
 
@@ -30,18 +30,18 @@ public class FoodData_RottenSystem : MonoBehaviour
         if (_foodIcon.hasFood == false) return;
 
         // update count calculation
-        int updateCount = _foodIcon.currentData.tikCount / _decayCount;
+        int updateCount = _foodIcon.headData.tikCount / _decayCount;
 
         // check if update is required
         if (updateCount <= 0) return;
 
         // reset rotten data
-        _foodIcon.currentData.Clear_Condition(FoodCondition_Type.rotten);
+        _foodIcon.headData.Clear_Condition(FoodCondition_Type.rotten);
 
         // set rotten data 
         for (int i = 0; i < updateCount; i++)
         {
-            _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten));
+            _foodIcon.headData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten));
         }
 
         //

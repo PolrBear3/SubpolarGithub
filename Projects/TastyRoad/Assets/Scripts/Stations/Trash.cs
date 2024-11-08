@@ -34,7 +34,7 @@ public class Trash : MonoBehaviour, IInteractable
 
         if (playerFoodIcon.hasFood == true)
         {
-            Save_TrashedFood_Data(playerFoodIcon.currentData);
+            Save_TrashedFood_Data(playerFoodIcon.headData);
 
             playerFoodIcon.Set_CurrentData(null);
             playerFoodIcon.Show_Icon();
@@ -48,7 +48,7 @@ public class Trash : MonoBehaviour, IInteractable
     private void Save_TrashedFood_Data(FoodData data)
     {
         _trashedFoodData.Add(data);
-        
+
         if (_trashedFoodData.Count >= 11)
         {
             _trashedFoodData.RemoveAt(0);
