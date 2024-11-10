@@ -211,7 +211,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _foodStocks.Length; i++)
         {
-            foodStockDatas.Add(_foodStocks[i].stockData, _foodStocks[i].foodIcon.headData);
+            foodStockDatas.Add(_foodStocks[i].stockData, _foodStocks[i].foodIcon.currentData);
         }
 
         ES3.Save("GroceryNPC/foodStockDatas", foodStockDatas);

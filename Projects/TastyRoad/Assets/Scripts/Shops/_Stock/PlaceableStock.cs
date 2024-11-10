@@ -122,7 +122,7 @@ public class PlaceableStock : MonoBehaviour
     private void Update_Amount()
     {
         if (_placedFoods.Count <= 0) return;
-        _foodIcon.headData.Set_Amount(_placedFoods.Count);
+        _foodIcon.currentData.Set_Amount(_placedFoods.Count);
     }
 
     private void Toggle_AmountBar()
@@ -167,7 +167,7 @@ public class PlaceableStock : MonoBehaviour
             return false;
         }
 
-        if (_foodIcon.hasFood && _foodIcon.headData.currentAmount >= _maxAmount)
+        if (_foodIcon.hasFood && _foodIcon.currentData.currentAmount >= _maxAmount)
         {
             dialog.Update_Dialog(4);
             return false;
@@ -183,11 +183,11 @@ public class PlaceableStock : MonoBehaviour
         FoodData_Controller playerIcon = _interactable.detection.player.foodIcon;
 
         // show recently placed food
-        _foodIcon.Set_CurrentData(new(playerIcon.headData.foodScrObj));
+        _foodIcon.Set_CurrentData(new(playerIcon.currentData.foodScrObj));
         _foodIcon.Show_Icon();
 
         // add data to _placedFoods
-        _placedFoods.Add(playerIcon.headData);
+        _placedFoods.Add(playerIcon.currentData);
 
         // empty player food
         playerIcon.Set_CurrentData(null);

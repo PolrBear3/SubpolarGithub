@@ -3,105 +3,86 @@ using System.Collections;
 
 public class Stack_Table : Table, IInteractable
 {
-    // OnTrigger
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _maxStackCount;
 
-        stationController.Food_Icon().Toggle_AmountBar(true);
+
+    // MonoBehaviour
+    public new void Start()
+    {
+        base.Start();
+
+        // subscriptions
+        stationController.detection.EnterEvent += AmountBar_Toggle;
+        stationController.detection.ExitEvent += AmountBar_Toggle;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public new void OnDestroy()
     {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
+        base.OnDestroy();
 
-        stationController.Food_Icon().Toggle_AmountBar(false);
+        // subscriptions
+        stationController.detection.EnterEvent -= AmountBar_Toggle;
+        stationController.detection.ExitEvent -= AmountBar_Toggle;
     }
 
 
     // IInteractable
     public new void Interact()
     {
-        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
-        FoodData playerData = playerIcon.headData;
-
         FoodData_Controller tableIcon = stationController.Food_Icon();
-        FoodData tableData = tableIcon.headData;
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
-        // if player food has a condition
-        if (playerIcon.hasFood == true && playerData.conditionDatas.Count > 0) return;
+        bool maxStacked = tableIcon.AllDatas().Count >= _maxStackCount;
+        bool swapAvailable = tableIcon.hasFood == false || playerIcon.hasFood == false;
 
-        bool bothHaveFood = playerIcon.hasFood && tableIcon.hasFood;
-
-        if (bothHaveFood && playerData.foodScrObj == tableData.foodScrObj)
-        {
-            Stack_Food();
-        }
-        else
+        if (maxStacked || swapAvailable)
         {
             Swap_Food();
+            return;
         }
+
+        Stack_Food();
     }
 
 
     // Functions
+    private void AmountBar_Toggle()
+    {
+        bool hasFood = stationController.Food_Icon().hasFood;
+        bool playerDetected = stationController.detection.player != null;
+
+        stationController.Food_Icon().amountBar.Toggle(hasFood && playerDetected);
+    }
+
+
     public void Swap_Food()
     {
         FoodData_Controller tableIcon = stationController.Food_Icon();
-        FoodData tableData = tableIcon.headData;
-
-        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
-
-        // if both does not have food, don't swap
-        if (tableIcon.hasFood == false && playerIcon.hasFood == false) return;
-
-        // decrease amount
-        if (playerIcon.hasFood == false && tableData.currentAmount > 1)
-        {
-            // update table data
-            tableData.Update_Amount(-1);
-
-            if (tableData.currentAmount <= 0)
-            {
-                tableIcon.Set_CurrentData(null);
-            }
-
-            tableIcon.Show_Icon();
-            tableIcon.Show_AmountBar();
-
-            // give player
-            playerIcon.Set_CurrentData(new FoodData(tableData.foodScrObj));
-            playerIcon.headData.Set_Condition(tableData.conditionDatas);
-
-            playerIcon.Show_Icon();
-            playerIcon.Show_Condition();
-
-            // sound
-            Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
-
-            return;
-        }
 
         // swap
         Basic_SwapFood();
-        tableIcon.Show_AmountBar();
+
+        // amount bar update
+        tableIcon.amountBar.Load_Custom(_maxStackCount, tableIcon.AllDatas().Count);
+        tableIcon.amountBar.Toggle(tableIcon.hasFood);
     }
 
     public void Stack_Food()
     {
         FoodData_Controller tableIcon = stationController.Food_Icon();
-        FoodData tableData = tableIcon.headData;
-
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
-        if (tableIcon.headData.currentAmount >= 6) return;
+        // stack player food
+        tableIcon.Set_CurrentData(playerIcon.currentData);
+        tableIcon.Show_Icon();
+        tableIcon.Show_Condition();
+        tableIcon.amountBar.Load_Custom(_maxStackCount, tableIcon.AllDatas().Count);
 
-        // stack
-        tableData.Update_Amount(1);
-        tableIcon.Show_AmountBar();
-
+        // empty player food
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);

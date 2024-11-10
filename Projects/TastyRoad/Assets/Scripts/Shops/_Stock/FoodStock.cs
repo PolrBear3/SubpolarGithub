@@ -110,14 +110,14 @@ public class FoodStock : MonoBehaviour
     public int Current_Amount()
     {
         if (_foodIcon.hasFood == false) return 0;
-        return _foodIcon.headData.currentAmount;
+        return _foodIcon.currentData.currentAmount;
     }
 
     public void Update_Amount(int updateAmount)
     {
         if (_foodIcon.hasFood == false) return;
 
-        _foodIcon.headData.Update_Amount(updateAmount);
+        _foodIcon.currentData.Update_Amount(updateAmount);
 
         Toggle_AmountBar();
         Update_TagSprite();
@@ -165,7 +165,7 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        if (_foodIcon.headData == null)
+        if (_foodIcon.currentData == null)
         {
             // no food currenlty stocked!
             dialog.Update_Dialog(2);
@@ -174,7 +174,7 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        if (_foodIcon.headData.currentAmount <= 0)
+        if (_foodIcon.currentData.currentAmount <= 0)
         {
             // not enough food amount currenlty stocked
             dialog.Update_Dialog(3);
@@ -183,10 +183,10 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        Food_ScrObj stockedFood = _foodIcon.headData.foodScrObj;
+        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
 
         // calculation
-        int price = _foodIcon.headData.foodScrObj.price;
+        int price = _foodIcon.currentData.foodScrObj.price;
 
         if (_stockData.isDiscount && price > 0)
         {
@@ -248,7 +248,7 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        if (_foodIcon.hasFood == false || _foodIcon.headData.currentAmount <= 0)
+        if (_foodIcon.hasFood == false || _foodIcon.currentData.currentAmount <= 0)
         {
             _tagSR.sprite = _tagSprites[0];
             return;
@@ -265,8 +265,8 @@ public class FoodStock : MonoBehaviour
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        Food_ScrObj stockedFood = _foodIcon.headData.foodScrObj;
-        int stockedAmount = _foodIcon.headData.currentAmount;
+        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
+        int stockedAmount = _foodIcon.currentData.currentAmount;
 
         if (stockedAmount <= 0) return false;
 
@@ -331,7 +331,7 @@ public class FoodStock : MonoBehaviour
         if (Purchase(1) == false) return;
 
         // coin launch animation
-        Food_ScrObj stockedFood = _foodIcon.headData.foodScrObj;
+        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
         Transform player = _interactable.detection.player.transform;
 
         _launcher.Parabola_CoinLaunch(stockedFood.sprite, player.position);
@@ -339,7 +339,7 @@ public class FoodStock : MonoBehaviour
 
     private void Purchase_All()
     {
-        if (Purchase(_foodIcon.headData.currentAmount) == false) return;
+        if (Purchase(_foodIcon.currentData.currentAmount) == false) return;
 
         // coin launch animation
         Transform player = _interactable.detection.player.transform;

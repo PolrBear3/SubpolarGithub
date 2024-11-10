@@ -31,7 +31,7 @@ public class FoodBox : MonoBehaviour, IInteractable
     {
         Give_Food();
 
-        if (_controller.Food_Icon().headData.currentAmount <= 0)
+        if (_controller.Food_Icon().currentData.currentAmount <= 0)
         {
             Empty_Destroy();
             return;
@@ -60,19 +60,19 @@ public class FoodBox : MonoBehaviour, IInteractable
         if (playerIcon.hasFood) return;
 
         // give player food
-        playerIcon.Set_CurrentData(new FoodData(_controller.Food_Icon().headData.foodScrObj));
+        playerIcon.Set_CurrentData(new FoodData(_controller.Food_Icon().currentData.foodScrObj));
         playerIcon.Show_Icon();
 
         // decrease one amount
-        _controller.Food_Icon().headData.Update_Amount(-1);
+        _controller.Food_Icon().currentData.Update_Amount(-1);
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
 
         // if has condition, transfer condition as well
-        if (_controller.Food_Icon().headData.conditionDatas.Count <= 0) return;
+        if (_controller.Food_Icon().currentData.conditionDatas.Count <= 0) return;
 
-        playerIcon.headData.Set_Condition(_controller.Food_Icon().headData.conditionDatas);
+        playerIcon.currentData.Set_Condition(_controller.Food_Icon().currentData.conditionDatas);
         playerIcon.Show_Condition();
     }
 

@@ -169,7 +169,7 @@ public class Oven : MonoBehaviour, IInteractable
         {
             yield return new WaitForSeconds(_heatIncreaseTime);
 
-            foodIcon.headData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
+            foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
             foodIcon.Show_Condition();
 
             // durability

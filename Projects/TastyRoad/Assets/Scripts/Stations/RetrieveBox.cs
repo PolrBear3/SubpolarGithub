@@ -37,11 +37,11 @@ public class RetrieveBox : Stack_Table, IInteractable
         FoodData_Controller playerFoodIcon = stationController.detection.player.foodIcon;
 
         // check if player food has no conditions
-        if (playerFoodIcon.hasFood && playerFoodIcon.headData.conditionDatas.Count > 0) return;
+        if (playerFoodIcon.hasFood && playerFoodIcon.currentData.conditionDatas.Count > 0) return;
 
         //
         FoodData_Controller foodIcon = stationController.Food_Icon();
-        FoodData foodData = foodIcon.headData;
+        FoodData foodData = foodIcon.currentData;
 
         // check if current amount is less than 1
         if (foodIcon.hasFood == true && foodData.currentAmount > 1) return;
@@ -54,7 +54,7 @@ public class RetrieveBox : Stack_Table, IInteractable
     {
         //
         FoodData_Controller foodIcon = stationController.Food_Icon();
-        FoodData foodData = foodIcon.headData;
+        FoodData foodData = foodIcon.currentData;
 
         // check if current amount is more than 1
         if (foodIcon.hasFood == false) return;
@@ -66,10 +66,10 @@ public class RetrieveBox : Stack_Table, IInteractable
         if (playerFoodIcon.hasFood == false) return;
 
         // check if current food and player food is same
-        if (playerFoodIcon.headData.foodScrObj != foodData.foodScrObj) return;
+        if (playerFoodIcon.currentData.foodScrObj != foodData.foodScrObj) return;
 
         // check if player food has no conditions
-        if (playerFoodIcon.headData.conditionDatas.Count > 0) return;
+        if (playerFoodIcon.currentData.conditionDatas.Count > 0) return;
 
         //
         base.Stack_Food();
@@ -80,7 +80,7 @@ public class RetrieveBox : Stack_Table, IInteractable
     {
         //
         FoodData_Controller foodIcon = stationController.Food_Icon();
-        FoodData foodData = foodIcon.headData;
+        FoodData foodData = foodIcon.currentData;
 
         // current amount full
         if (foodIcon.hasFood == true && foodData.currentAmount >= 6)
@@ -101,7 +101,7 @@ public class RetrieveBox : Stack_Table, IInteractable
 
         if (foodIcon.hasFood == false) return;
 
-        FoodData foodData = foodIcon.headData;
+        FoodData foodData = foodIcon.currentData;
 
         FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
         StationMenu_Controller stationMenu = stationController.mainController.currentVehicle.menu.stationMenu;

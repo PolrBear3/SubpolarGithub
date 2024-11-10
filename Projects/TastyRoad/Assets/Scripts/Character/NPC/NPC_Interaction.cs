@@ -292,7 +292,7 @@ public class NPC_Interaction : MonoBehaviour
             foodIcon.Set_CurrentData(new FoodData(randomFood));
 
             // action bubble sprite update
-            _controller.interactable.bubble.Set_Bubble(_controller.foodIcon.headData.foodScrObj, null);
+            _controller.interactable.bubble.Set_Bubble(_controller.foodIcon.currentData.foodScrObj, null);
 
             // set random state
             ConditionSprites[] allConditions = foodIcon.conditionSprites;
@@ -308,7 +308,7 @@ public class NPC_Interaction : MonoBehaviour
 
                 int randLevel = Random.Range(1, allConditions[i].sprites.Length + 1);
 
-                foodIcon.headData.Update_Condition(new FoodCondition_Data(allConditions[i].type, randLevel));
+                foodIcon.currentData.Update_Condition(new FoodCondition_Data(allConditions[i].type, randLevel));
             }
         }
     }
@@ -333,8 +333,8 @@ public class NPC_Interaction : MonoBehaviour
         }
 
         // check if order food is correct
-        FoodData playerFoodData = playerFoodIcon.headData;
-        if (playerFoodData.foodScrObj != foodIcon.headData.foodScrObj)
+        FoodData playerFoodData = playerFoodIcon.currentData;
+        if (playerFoodData.foodScrObj != foodIcon.currentData.foodScrObj)
         {
             _controller.interactable.UnInteract();
             return;
@@ -348,7 +348,7 @@ public class NPC_Interaction : MonoBehaviour
         _controller.timer.Toggle_Transparency(true);
 
         // update data
-        _servedFoodData = new FoodData(playerFoodIcon.headData);
+        _servedFoodData = new FoodData(playerFoodIcon.currentData);
         Update_ServedData();
 
         // clear player food data
@@ -395,7 +395,7 @@ public class NPC_Interaction : MonoBehaviour
     private IEnumerator Eat_Animation_Coroutine()
     {
         NPC_Movement movement = _controller.movement;
-        Food_ScrObj servedFood = _controller.foodIcon.headData.foodScrObj;
+        Food_ScrObj servedFood = _controller.foodIcon.currentData.foodScrObj;
 
         // stop free roam
         movement.Stop_FreeRoam();
@@ -443,13 +443,13 @@ public class NPC_Interaction : MonoBehaviour
     private int Calculated_FoodScore()
     {
         //
-        int defaultScore = _controller.foodIcon.headData.foodScrObj.price;
+        int defaultScore = _controller.foodIcon.currentData.foodScrObj.price;
 
         //
         int timeBlock = _controller.timer.timeBlockCount;
 
         //
-        int stateMatch = _controller.foodIcon.headData.Conditions_MatchCount(_servedFoodData.conditionDatas);
+        int stateMatch = _controller.foodIcon.currentData.Conditions_MatchCount(_servedFoodData.conditionDatas);
 
         //
         int bookMarkCount = _controller.mainController.bookmarkedFoods.Count;
@@ -472,7 +472,7 @@ public class NPC_Interaction : MonoBehaviour
         data.Update_Hunger(-data.hungerLevel);
 
         if (_servedFoodData == null) return;
-        FoodData orderFoodData = _controller.foodIcon.headData;
+        FoodData orderFoodData = _controller.foodIcon.currentData;
 
         int stateMatch = orderFoodData.Conditions_MatchCount(_servedFoodData.conditionDatas) * _generosityMultiplier;
         data.Update_Generosity(_generosityMultiplier + stateMatch);
@@ -519,7 +519,7 @@ public class NPC_Interaction : MonoBehaviour
         FoodData_Controller playerFoodIcon = player.foodIcon;
 
         if (playerFoodIcon.hasFood == false) return;
-        Food_ScrObj playerFood = playerFoodIcon.headData.foodScrObj;
+        Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
 
         // remove player current food
         playerFoodIcon.Set_CurrentData(null);

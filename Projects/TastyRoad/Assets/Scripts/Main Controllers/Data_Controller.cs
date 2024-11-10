@@ -251,8 +251,8 @@ public class Data_Controller : MonoBehaviour
         // search for cooked food
         List<FoodData> ingredients = new();
 
-        ingredients.Add(dataController1.headData);
-        ingredients.Add(dataController2.headData);
+        ingredients.Add(dataController1.currentData);
+        ingredients.Add(dataController2.currentData);
 
         Food_ScrObj cookedFood = CookedFood(ingredients);
 

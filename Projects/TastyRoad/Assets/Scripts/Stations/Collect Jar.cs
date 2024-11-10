@@ -63,7 +63,7 @@ public class CollectJar : Stack_Table, IInteractable
             FoodData_Controller foodIcon = allNPCs[i].foodIcon;
 
             if (foodIcon.hasFood == false) continue;
-            if (foodIcon.headData.foodScrObj != _collectFood) continue;
+            if (foodIcon.currentData.foodScrObj != _collectFood) continue;
 
             targetNPCs.Add(allNPCs[i]);
         }
@@ -109,7 +109,7 @@ public class CollectJar : Stack_Table, IInteractable
     private bool Jar_Empty()
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
-        return foodIcon.hasFood == false || foodIcon.headData.currentAmount <= 1;
+        return foodIcon.hasFood == false || foodIcon.currentData.currentAmount <= 1;
     }
 
 
@@ -135,7 +135,7 @@ public class CollectJar : Stack_Table, IInteractable
 
         FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
 
-        stationController.Food_Icon().headData.Update_Amount(-_retrieveAmount);
+        stationController.Food_Icon().currentData.Update_Amount(-_retrieveAmount);
         foodMenu.Add_FoodItem(_collectFood, _retrieveAmount);
 
         Update_JarSprite();
@@ -149,7 +149,7 @@ public class CollectJar : Stack_Table, IInteractable
         if (Jar_Empty() == true) return;
 
         FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
-        foodMenu.Add_FoodItem(_collectFood, stationController.Food_Icon().headData.currentAmount - 1);
+        foodMenu.Add_FoodItem(_collectFood, stationController.Food_Icon().currentData.currentAmount - 1);
     }
 
 
@@ -186,7 +186,7 @@ public class CollectJar : Stack_Table, IInteractable
         }
 
         // add to current food data
-        stationController.Food_Icon().headData.Update_Amount(interaction.foodScore);
+        stationController.Food_Icon().currentData.Update_Amount(interaction.foodScore);
 
         // clear data and leave
         interaction.Clear_Data();

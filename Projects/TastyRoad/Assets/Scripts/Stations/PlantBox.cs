@@ -27,7 +27,7 @@ public class PlantBox : Stack_Table, IInteractable
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
         if (foodIcon.hasFood == false) return;
-        if (foodIcon.headData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
+        if (foodIcon.currentData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
 
         _growthInProgress = true;
 
@@ -100,10 +100,10 @@ public class PlantBox : Stack_Table, IInteractable
         if (playerFoodIcon.hasFood == false) return;
 
         // check if player food is plantable
-        if (Food_Plantable(playerFoodIcon.headData.foodScrObj) == false) return;
+        if (Food_Plantable(playerFoodIcon.currentData.foodScrObj) == false) return;
 
         // check if player food is rotten
-        if (playerFoodIcon.headData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
+        if (playerFoodIcon.currentData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
 
         // check if food is not planted
         if (stationController.Food_Icon().hasFood == true) return;
@@ -124,14 +124,14 @@ public class PlantBox : Stack_Table, IInteractable
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
         // increase amount +1
-        foodIcon.headData.Update_Amount(1);
+        foodIcon.currentData.Update_Amount(1);
         foodIcon.Show_AmountBar();
 
         // check if growth complete
         if (foodIcon.amountBar.Is_MaxAmount())
         {
             // remove rotten state
-            foodIcon.headData.Clear_Condition(FoodCondition_Type.rotten);
+            foodIcon.currentData.Clear_Condition(FoodCondition_Type.rotten);
             foodIcon.Show_Condition();
 
             // stop growth
