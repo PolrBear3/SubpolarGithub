@@ -59,6 +59,8 @@ public class FoodData
     // Constructors
     public FoodData(FoodData data)
     {
+        if (data == null) return;
+
         _foodScrObj = data.foodScrObj;
         _currentAmount = data.currentAmount;
         _tikCount = data.tikCount;

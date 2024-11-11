@@ -122,6 +122,12 @@ public class Station_Movement : MonoBehaviour
         _rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         enabled = false;
     }
+    public void Load_Position(bool isLoad)
+    {
+        if (isLoad == false) return;
+
+        Load_Position();
+    }
 
 
     private void MathRound_Snap_Position()

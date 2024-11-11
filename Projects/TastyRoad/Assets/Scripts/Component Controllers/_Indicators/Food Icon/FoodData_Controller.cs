@@ -94,6 +94,7 @@ public class FoodData_Controller : MonoBehaviour
         _currentData = null;
         Set_CurrentData(updateDatas[updateDatas.Count - 1]);
 
+        updateDatas.RemoveAt(updateDatas.Count - 1);
         _subDatas = updateDatas;
     }
 

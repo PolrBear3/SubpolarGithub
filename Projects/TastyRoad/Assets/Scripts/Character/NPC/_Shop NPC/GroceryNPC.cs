@@ -503,7 +503,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     private void Set_QuestFood(Food_ScrObj food)
     {
-        if (food == null) return;
+        if (food == null)
+        {
+            _questFood = null;
+            return;
+        }
 
         _questFood = new(food);
 
