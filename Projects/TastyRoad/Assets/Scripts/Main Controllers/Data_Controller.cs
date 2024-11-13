@@ -5,6 +5,8 @@ using UnityEngine;
 public interface IInteractable
 {
     void Interact();
+    void Hold_Interact();
+
     void UnInteract();
 }
 

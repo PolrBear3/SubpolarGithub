@@ -62,6 +62,11 @@ public class Oven : MonoBehaviour, IInteractable
         Update_CurrentVisual();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
 

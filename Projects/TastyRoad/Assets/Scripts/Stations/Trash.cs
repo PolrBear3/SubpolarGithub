@@ -20,6 +20,11 @@ public class Trash : MonoBehaviour, IInteractable
         Trash_Food();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
 

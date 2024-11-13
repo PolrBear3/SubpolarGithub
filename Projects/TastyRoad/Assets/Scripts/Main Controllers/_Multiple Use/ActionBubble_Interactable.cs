@@ -108,6 +108,11 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         InteractEvent?.Invoke();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
         if (_unInteractLocked) return;

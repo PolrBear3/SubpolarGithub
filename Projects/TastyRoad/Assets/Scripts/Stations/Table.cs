@@ -63,6 +63,11 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.Action2_Event += Merge_Food;
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
         Action_Bubble bubble = _stationController.ActionBubble();

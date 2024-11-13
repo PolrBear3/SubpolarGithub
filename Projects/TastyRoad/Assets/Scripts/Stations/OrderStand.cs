@@ -65,6 +65,11 @@ public class OrderStand : MonoBehaviour, IInteractable
         OrderToggle();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
 

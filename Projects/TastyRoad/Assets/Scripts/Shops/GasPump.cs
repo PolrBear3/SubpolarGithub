@@ -24,7 +24,7 @@ public class GasPump : MonoBehaviour
     {
         Update_ActionBubble_Icon();
 
-        _amountBar.Toggle(true);
+        _amountBar.Toggle(false);
 
         // Subscriptions
         _interactable.InteractEvent += Toggle_AmountBar_Transparency;
@@ -127,9 +127,9 @@ public class GasPump : MonoBehaviour
     private IEnumerator Charge_AmountBar_Coroutine()
     {
         _interactable.LockInteract(true);
-        _amountBar.Toggle(false);
 
         _amountBar.Set_Amount(0);
+        _amountBar.Toggle(true);
 
         int maxBarCount = _amountBar.amountBarSprite.Length;
 
@@ -167,6 +167,7 @@ public class GasPump : MonoBehaviour
         _collectReady = false;
         Update_ActionBubble_Icon();
 
+        _amountBar.Toggle(false);
         _amountBar.Toggle_BarColor(false);
     }
 }

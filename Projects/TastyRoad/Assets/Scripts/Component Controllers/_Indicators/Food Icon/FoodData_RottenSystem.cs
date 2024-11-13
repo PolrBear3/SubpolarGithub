@@ -26,25 +26,28 @@ public class FoodData_RottenSystem : MonoBehaviour
     //
     private void Decay()
     {
-        if (_decayCount <= 0) return;
         if (_foodIcon.hasFood == false) return;
 
-        // update count calculation
-        int updateCount = _foodIcon.currentData.tikCount / _decayCount;
+        List<FoodData> allDatas = _foodIcon.AllDatas();
 
-        // check if update is required
-        if (updateCount <= 0) return;
-
-        // reset rotten data
-        _foodIcon.currentData.Clear_Condition(FoodCondition_Type.rotten);
-
-        // set rotten data 
-        for (int i = 0; i < updateCount; i++)
+        for (int i = 0; i < allDatas.Count; i++)
         {
-            _foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten));
+            // update count calculation
+            int updateCount = allDatas[i].tikCount / _decayCount;
+
+            // check if update is required
+            if (updateCount <= 0) continue;
+
+            // reset rotten data
+            allDatas[i].Clear_Condition(FoodCondition_Type.rotten);
+
+            // set rotten data 
+            for (int j = 0; j < updateCount; j++)
+            {
+                allDatas[i].Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten));
+            }
         }
 
-        //
         _foodIcon.Show_Condition();
     }
 }

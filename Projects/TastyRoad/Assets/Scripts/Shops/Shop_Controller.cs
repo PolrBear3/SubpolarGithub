@@ -26,10 +26,8 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     public event InputSystem_Event UnInteract_Event;
 
 
-
     [Header("")]
     [SerializeField] private GameObject _menuPanel;
-
 
 
     // UnityEngine
@@ -48,7 +46,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     }
 
 
-
     // OnTrigger
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -56,7 +53,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 
         UnInteract();
     }
-
 
 
     // InputSystem
@@ -67,7 +63,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 
         Action1_Event?.Invoke();
     }
-
 
 
     // ISaveLoadable
@@ -88,7 +83,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     }
 
 
-
     // IInteractable
     public void Interact()
     {
@@ -104,6 +98,11 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
         Interact_Event?.Invoke();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
         _playerInput.enabled = false;
@@ -111,7 +110,6 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
 
         UnInteract_Event?.Invoke();
     }
-
 
 
     /// <summary>

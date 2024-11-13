@@ -415,11 +415,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             StationData stationData = new(_currentStations[i].data);
             stationDatas.Add(stationData, new());
 
-            /*
             if (_currentStations[i].Food_Icon() == null || _currentStations[i].Food_Icon().hasFood == false) continue;
-            
+
             stationDatas[stationData] = new(_currentStations[i].Food_Icon().AllDatas());
-            */
         }
 
         ES3.Save("Main_Controller/stationDatas", stationDatas);
@@ -429,8 +427,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         if (ES3.KeyExists("Main_Controller/stationDatas") == false) return;
 
         // exported station datas, all food datas
-        Dictionary<StationData, List<FoodData>> stationDatas = new();
-        stationDatas = ES3.Load("Main_Controller/stationDatas", new Dictionary<StationData, List<FoodData>>());
+        Dictionary<StationData, List<FoodData>> stationDatas = ES3.Load("Main_Controller/stationDatas", new Dictionary<StationData, List<FoodData>>());
 
         foreach (var data in stationDatas)
         {
@@ -440,21 +437,23 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             // spawn saved stations
             Station_Controller station = Spawn_Station(stationData.stationScrObj, stationData.position);
 
-            // station data load
+            // load station data
             station.Set_Data(stationData);
 
             // deactivate and set station if a movement script is attached
-            station.movement.Load_Position(station.movement != null);
+            Station_Movement movement = station.movement;
 
-            /*
-            if (station.Food_Icon() == null || station.Food_Icon().hasFood == false) continue;
+            if (movement != null)
+            {
+                movement.Load_Position();
+            }
 
-            // food data load
+            // load food data
+            if (station.Food_Icon() == null) continue;
+
             station.Food_Icon().Update_AllDatas(foodDatas);
-
             station.Food_Icon().Show_Icon();
             station.Food_Icon().Show_Condition();
-            */
         }
     }
 

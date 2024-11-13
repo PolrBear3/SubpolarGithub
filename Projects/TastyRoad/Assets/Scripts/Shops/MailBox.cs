@@ -73,6 +73,11 @@ public class MailBox : MonoBehaviour, IInteractable
         Insert_Nugget();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
 

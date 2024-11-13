@@ -38,7 +38,7 @@ public class Player_Interaction : MonoBehaviour
         _controller.timer.Run_Time();
 
         yield return new WaitForSeconds(.2f);
-        _controller.timer.Toggle_Transparency(!_controller.foodIcon.hasFood);
+        _controller.timer.Toggle_Transparency(false);
     }
 
     private void OnPressEnd()
@@ -53,7 +53,7 @@ public class Player_Interaction : MonoBehaviour
 
         if (pressDuration >= _holdTime)
         {
-            HoldInteract();
+            Hold_Interact();
             return;
         }
 
@@ -61,28 +61,50 @@ public class Player_Interaction : MonoBehaviour
     }
 
 
+    private void Refresh_DetectedInteractables(IInteractable excludeInteractable)
+    {
+        Detection_Controller detection = _controller.detectionController;
+
+        for (int i = 0; i < detection.All_Interactables().Count; i++)
+        {
+            if (detection.All_Interactables()[i] == excludeInteractable) continue;
+            detection.All_Interactables()[i].UnInteract();
+        }
+    }
+
+    private IInteractable Closest_Interactable()
+    {
+        Detection_Controller detection = _controller.detectionController;
+
+        if (detection.Closest_Interactable() == null) return null;
+        if (!detection.Closest_Interactable().TryGetComponent(out IInteractable interactable)) return null;
+
+        Refresh_DetectedInteractables(interactable);
+
+        return interactable;
+    }
+
+
     private void Interact()
     {
         if (Main_Controller.gamePaused) return;
 
-        Detection_Controller detection = _controller.detectionController;
-
-        if (detection.Closest_Interactable() == null) return;
-        if (!detection.Closest_Interactable().TryGetComponent(out IInteractable interactable)) return;
-
-        // refresh and update current interacting prefab before > interactable.Interact();
-        for (int i = 0; i < detection.All_Interactables().Count; i++)
-        {
-            if (detection.All_Interactables()[i] == interactable) continue;
-            detection.All_Interactables()[i].UnInteract();
-        }
+        IInteractable interactable = Closest_Interactable();
+        if (interactable == null) return;
 
         interactable.Interact();
     }
 
-    private void HoldInteract()
+    private void Hold_Interact()
     {
+        if (Main_Controller.gamePaused) return;
+
         Drop_CurrentFood();
+
+        IInteractable interactable = Closest_Interactable();
+        if (interactable == null) return;
+
+        interactable.Hold_Interact();
     }
 
 

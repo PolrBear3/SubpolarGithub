@@ -45,6 +45,11 @@ public class Stack_Table : Table, IInteractable
         Stack_Food();
     }
 
+    public new void Hold_Interact()
+    {
+
+    }
+
 
     // Functions
     private void AmountBar_Toggle()

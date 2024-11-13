@@ -8,7 +8,7 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 
     [Header("")]
     [SerializeField] private GameObject _spawnPrefab;
-    [Range(0, 10)] [SerializeField] private int _spawnAmount;
+    [Range(0, 10)][SerializeField] private int _spawnAmount;
 
     [Header("")]
     [SerializeField] private Vector2[] _spawnPositions;
@@ -33,9 +33,14 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
         Assign_Spawn();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
-        
+
     }
 
 

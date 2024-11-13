@@ -51,6 +51,10 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private bool _iconShowLocked;
 
 
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _tikCountValue;
+
+
     // UnityEngine
     private void Awake()
     {
@@ -91,6 +95,8 @@ public class FoodData_Controller : MonoBehaviour
 
     public void Update_AllDatas(List<FoodData> updateDatas)
     {
+        if (updateDatas.Count <= 0) return;
+
         _currentData = null;
         Set_CurrentData(updateDatas[updateDatas.Count - 1]);
 
@@ -154,7 +160,10 @@ public class FoodData_Controller : MonoBehaviour
 
     private void TimeTik_Update()
     {
-        _currentData.Update_TikCount(1);
+        for (int i = 0; i < AllDatas().Count; i++)
+        {
+            AllDatas()[i].Update_TikCount(_tikCountValue);
+        }
 
         TimeTikEvent?.Invoke();
     }

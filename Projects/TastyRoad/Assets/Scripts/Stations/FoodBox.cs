@@ -40,6 +40,11 @@ public class FoodBox : MonoBehaviour, IInteractable
         _controller.Food_Icon().Show_AmountBar();
     }
 
+    public void Hold_Interact()
+    {
+
+    }
+
     public void UnInteract()
     {
 
