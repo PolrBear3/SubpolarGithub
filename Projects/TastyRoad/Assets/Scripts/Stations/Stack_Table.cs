@@ -47,7 +47,9 @@ public class Stack_Table : Table, IInteractable
 
     public new void Hold_Interact()
     {
+        base.Hold_Interact();
 
+        AmountBar_Toggle();
     }
 
 

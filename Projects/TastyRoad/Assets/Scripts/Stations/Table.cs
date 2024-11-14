@@ -65,7 +65,7 @@ public class Table : MonoBehaviour, IInteractable
 
     public void Hold_Interact()
     {
-        Transfer_Food();
+        Transfer_CurrentFood();
     }
 
     public void UnInteract()
@@ -143,22 +143,28 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-    private void Transfer_Food()
+    private void Transfer_CurrentFood()
     {
         FoodData_Controller tableIcon = _stationController.Food_Icon();
-
-        if (tableIcon.hasFood == false) return;
-
         FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
+
+        // check if table empty or player full amount
+        if (tableIcon.hasFood == false || playerIcon.subDatas.Count >= playerIcon.maxSubDataCount)
+        {
+            Basic_SwapFood();
+            return;
+        }
 
         // player
         playerIcon.Set_CurrentData(tableIcon.currentData);
+
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
         playerIcon.Toggle_SubDataBar(true);
 
         // table
         tableIcon.Set_CurrentData(null);
+
         tableIcon.Show_Icon();
         tableIcon.Show_Condition();
     }

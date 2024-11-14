@@ -126,5 +126,7 @@ public class Player_Interaction : MonoBehaviour
         foodIcon.Set_CurrentData(null);
         foodIcon.Show_Icon();
         foodIcon.Show_Condition();
+
+        foodIcon.Toggle_SubDataBar(true);
     }
 }

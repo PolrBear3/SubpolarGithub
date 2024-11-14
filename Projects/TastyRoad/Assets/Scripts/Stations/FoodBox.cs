@@ -29,20 +29,14 @@ public class FoodBox : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-        Give_Food();
-
-        if (_controller.Food_Icon().currentData.currentAmount <= 0)
-        {
-            Empty_Destroy();
-            return;
-        }
-
-        _controller.Food_Icon().Show_AmountBar();
+        Transfer_Food();
+        Empty_Destroy();
     }
 
     public void Hold_Interact()
     {
-
+        Transfer_All();
+        Empty_Destroy();
     }
 
     public void UnInteract()
@@ -58,31 +52,60 @@ public class FoodBox : MonoBehaviour, IInteractable
     }
 
 
-    private void Give_Food()
+    private void Transfer_Food()
     {
         FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
 
-        if (playerIcon.hasFood) return;
+        if (playerIcon.SubDataCount_Maxed()) return;
 
-        // give player food
-        playerIcon.Set_CurrentData(new FoodData(_controller.Food_Icon().currentData.foodScrObj));
+        FoodData_Controller stationIcon = _controller.Food_Icon();
+
+        // transfer to player
+        playerIcon.Set_CurrentData(stationIcon.currentData);
+
         playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
 
         // decrease one amount
-        _controller.Food_Icon().currentData.Update_Amount(-1);
+        stationIcon.currentData.Update_Amount(-1);
+        stationIcon.Show_AmountBar();
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
-
-        // if has condition, transfer condition as well
-        if (_controller.Food_Icon().currentData.conditionDatas.Count <= 0) return;
-
-        playerIcon.currentData.Set_Condition(_controller.Food_Icon().currentData.conditionDatas);
-        playerIcon.Show_Condition();
     }
+
+    private void Transfer_All()
+    {
+        FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
+
+        if (playerIcon.SubDataCount_Maxed()) return;
+
+        FoodData_Controller stationIcon = _controller.Food_Icon();
+
+        int transferCount = 0;
+
+        for (int i = 0; i < stationIcon.currentData.currentAmount; i++)
+        {
+            playerIcon.Set_CurrentData(stationIcon.currentData);
+            transferCount++;
+
+            if (playerIcon.SubDataCount_Maxed()) break;
+        }
+
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
+
+        stationIcon.currentData.Update_Amount(-transferCount);
+        stationIcon.Show_AmountBar();
+    }
+
 
     private void Empty_Destroy()
     {
+        if (_controller.Food_Icon().currentData.currentAmount > 0) return;
+
         // clear current food data
         _controller.Food_Icon().Set_CurrentData(null);
 
@@ -92,8 +115,7 @@ public class FoodBox : MonoBehaviour, IInteractable
         main.UnTrack_CurrentStation(_controller);
         main.UnClaim_Position(transform.position);
 
-        // sound
-        //
+        // sound !
 
         Destroy(gameObject);
     }

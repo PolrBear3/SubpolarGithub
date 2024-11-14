@@ -88,7 +88,7 @@ public class FoodData_Controller : MonoBehaviour
 
     public List<FoodData> AllDatas()
     {
-        List<FoodData> foodDatas = new List<FoodData>(_subDatas);
+        List<FoodData> foodDatas = new(_subDatas);
 
         if (_currentData == null) return foodDatas;
         foodDatas.Add(_currentData);
@@ -98,6 +98,15 @@ public class FoodData_Controller : MonoBehaviour
 
     public void Update_AllDatas(List<FoodData> updateDatas)
     {
+        // clear all data
+        if (updateDatas == null)
+        {
+            _subDatas.Clear();
+            Set_CurrentData(null);
+
+            return;
+        }
+
         if (updateDatas.Count <= 0) return;
 
         _currentData = null;
@@ -163,20 +172,23 @@ public class FoodData_Controller : MonoBehaviour
 
     private void TimeTik_Update()
     {
-        for (int i = 0; i < AllDatas().Count; i++)
-        {
-            AllDatas()[i].Update_TikCount(_tikCountValue);
-        }
+        _currentData.Update_TikCount(_tikCountValue);
 
         TimeTikEvent?.Invoke();
     }
 
 
     // Sub Data
+    public bool SubDataCount_Maxed()
+    {
+        return _subDatas.Count >= _maxSubDataCount;
+    }
+
     public void SetMax_SubDataCount(int setValue)
     {
         _maxSubDataCount = setValue;
     }
+
 
     public void Add_SubData(FoodData subData)
     {

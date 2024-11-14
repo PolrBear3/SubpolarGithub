@@ -123,6 +123,8 @@ public class FoodData
 
     public void Update_Condition(FoodCondition_Data newCondition)
     {
+        if (newCondition == null) return;
+
         // check if condition exists
         for (int i = 0; i < _conditionDatas.Count; i++)
         {
