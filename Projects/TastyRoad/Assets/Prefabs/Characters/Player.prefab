@@ -443,6 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a6a53121484c43889a62227cdd747ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _holdTime: 1
 --- !u!1001 &2354461093863969094
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -610,11 +611,11 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-      propertyPath: _amountTransparent
-      value: 1
+      propertyPath: _maxSubDataCount
+      value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 8103581470931467516, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-      propertyPath: _toggleLocked
+    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: _amountTransparent
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}

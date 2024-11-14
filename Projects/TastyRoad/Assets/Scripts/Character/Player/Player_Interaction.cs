@@ -7,8 +7,10 @@ public class Player_Interaction : MonoBehaviour
 {
     private Player_Controller _controller;
 
+    [Header("")]
+    [SerializeField][Range(0, 100)] private float _holdTime;
+
     private float _pressStartTime;
-    private float _holdTime = 1;
     private Coroutine _pressDelayCoroutine;
 
 
@@ -18,7 +20,7 @@ public class Player_Interaction : MonoBehaviour
         if (gameObject.TryGetComponent(out Player_Controller controller)) { _controller = controller; }
     }
 
-    void Start()
+    private void Start()
     {
         _controller.Player_Input().actions["Interact"].started += ctx => OnPressStart();
         _controller.Player_Input().actions["Interact"].canceled += ctx => OnPressEnd();
@@ -99,10 +101,13 @@ public class Player_Interaction : MonoBehaviour
     {
         if (Main_Controller.gamePaused) return;
 
-        Drop_CurrentFood();
-
         IInteractable interactable = Closest_Interactable();
-        if (interactable == null) return;
+
+        if (interactable == null)
+        {
+            Drop_CurrentFood();
+            return;
+        }
 
         interactable.Hold_Interact();
     }

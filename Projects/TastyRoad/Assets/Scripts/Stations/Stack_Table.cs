@@ -3,18 +3,16 @@ using System.Collections;
 
 public class Stack_Table : Table, IInteractable
 {
-    [Header("")]
-    [SerializeField][Range(0, 100)] private int _maxStackCount;
-
-
     // MonoBehaviour
     public new void Start()
     {
         base.Start();
 
         // subscriptions
-        stationController.detection.EnterEvent += AmountBar_Toggle;
-        stationController.detection.ExitEvent += AmountBar_Toggle;
+        Detection_Controller detection = stationController.detection;
+
+        detection.EnterEvent += AmountBar_Toggle;
+        detection.ExitEvent += AmountBar_Toggle;
     }
 
     public new void OnDestroy()
@@ -22,8 +20,10 @@ public class Stack_Table : Table, IInteractable
         base.OnDestroy();
 
         // subscriptions
-        stationController.detection.EnterEvent -= AmountBar_Toggle;
-        stationController.detection.ExitEvent -= AmountBar_Toggle;
+        Detection_Controller detection = stationController.detection;
+
+        detection.EnterEvent -= AmountBar_Toggle;
+        detection.ExitEvent -= AmountBar_Toggle;
     }
 
 
@@ -33,7 +33,7 @@ public class Stack_Table : Table, IInteractable
         FoodData_Controller tableIcon = stationController.Food_Icon();
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
-        bool maxStacked = tableIcon.AllDatas().Count >= _maxStackCount;
+        bool maxStacked = tableIcon.subDatas.Count >= tableIcon.maxSubDataCount;
         bool swapAvailable = tableIcon.hasFood == false || playerIcon.hasFood == false;
 
         if (maxStacked || swapAvailable)
@@ -57,7 +57,7 @@ public class Stack_Table : Table, IInteractable
         bool hasFood = stationController.Food_Icon().hasFood;
         bool playerDetected = stationController.detection.player != null;
 
-        stationController.Food_Icon().amountBar.Toggle(hasFood && playerDetected);
+        stationController.Food_Icon().Toggle_SubDataBar(hasFood && playerDetected);
     }
 
 
@@ -68,9 +68,7 @@ public class Stack_Table : Table, IInteractable
         // swap
         Basic_SwapFood();
 
-        // amount bar update
-        tableIcon.amountBar.Load_Custom(_maxStackCount, tableIcon.AllDatas().Count);
-        tableIcon.amountBar.Toggle(tableIcon.hasFood);
+        tableIcon.Toggle_SubDataBar(true);
     }
 
     public void Stack_Food()
@@ -82,12 +80,13 @@ public class Stack_Table : Table, IInteractable
         tableIcon.Set_CurrentData(playerIcon.currentData);
         tableIcon.Show_Icon();
         tableIcon.Show_Condition();
-        tableIcon.amountBar.Load_Custom(_maxStackCount, tableIcon.AllDatas().Count);
+        tableIcon.Toggle_SubDataBar(true);
 
         // empty player food
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
