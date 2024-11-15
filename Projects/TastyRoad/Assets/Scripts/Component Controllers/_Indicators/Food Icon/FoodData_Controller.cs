@@ -52,8 +52,8 @@ public class FoodData_Controller : MonoBehaviour
 
 
     [Header("")]
-    [SerializeField][Range(0, 100)] private int _maxSubDataCount;
-    public int maxSubDataCount => _maxSubDataCount;
+    [SerializeField][Range(0, 100)] private int _maxDataCount;
+    public int maxDataCount => _maxDataCount;
 
     [SerializeField][Range(0, 100)] private int _tikCountValue;
 
@@ -179,14 +179,14 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Sub Data
-    public bool SubDataCount_Maxed()
+    public bool DataCount_Maxed()
     {
-        return _subDatas.Count >= _maxSubDataCount;
+        return AllDatas().Count >= _maxDataCount;
     }
 
     public void SetMax_SubDataCount(int setValue)
     {
-        _maxSubDataCount = setValue;
+        _maxDataCount = setValue;
     }
 
 
@@ -292,7 +292,7 @@ public class FoodData_Controller : MonoBehaviour
             return;
         }
 
-        amountBar.Load_Custom(maxSubDataCount, subDatas.Count);
+        amountBar.Load_Custom(maxDataCount, AllDatas().Count);
         amountBar.Toggle(true);
     }
 

@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ConsoleWindow
+  m_Name: ProjectBrowser
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -243,14 +243,14 @@ MonoBehaviour:
     y: 0
     width: 669
     height: 242.5
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 18}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
+  m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
   - {fileID: 18}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1027,10 +1027,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 151.5}
+      scrollPos: {x: 0, y: 327.5}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 16b8f9ff1219faff5019faff3a1afaffac1afaff4a31faff684afaffae6afaffc0e6fafffe20fbff4033fbffc05ffbffec97fbffcccdfbff9012fcff4e36fcff2a64fcff969efcff36dafcffc224fdffce76fdff74befdffc0e5ffffe4830000da8400005e850000a4880000
+      m_ExpandedIDs: 10fbffff9a770000ca770000c078000044790000b67b0000f87b0000247d0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1099,7 +1099,7 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Component Controllers/_Indicators/Food Icon
+    - Assets/Prefabs/Characters
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1107,16 +1107,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 44
   m_LastFolders:
-  - Assets/Scripts/Component Controllers/_Indicators/Food Icon
+  - Assets/Prefabs/Characters
   m_LastFoldersGridSize: 44
   m_LastProjectPath: /Users/david/Subpolar/SubpolarGithub/Projects/TastyRoad
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 278.5}
-    m_SelectedIDs: 3ab50000
-    m_LastClickedID: 46394
-    m_ExpandedIDs: 00000000c2b40000c4b40000c6b40000c8b40000cab40000ccb40000ceb40000d0b40000d2b40000d4b40000d6b40000d8b40000dab40000dcb40000deb40000e0b40000e2b40000e4b40000e6b40000e8b40000eab40000ecb40000eeb40000
+    scrollPos: {x: 0, y: 26.5}
+    m_SelectedIDs: f0af0000
+    m_LastClickedID: 45040
+    m_ExpandedIDs: 00000000a0af0000a2af0000a4af0000a6af0000a8af0000aaaf0000acaf0000aeaf0000b0af0000b2af0000b4af0000b6af0000b8af0000baaf0000bcaf0000beaf0000c2af0000c4af0000c6af0000c8af0000caaf00000cb000006eb10000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1144,7 +1144,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000c2b40000c4b40000c6b40000c8b40000cab40000ccb40000ceb40000d0b40000d2b40000d4b40000d6b40000d8b40000dab40000dcb40000deb40000e0b40000e2b40000e4b40000e6b40000e8b40000eab40000ecb40000eeb40000
+    m_ExpandedIDs: 00000000a0af0000a2af0000a4af0000a6af0000a8af0000aaaf0000acaf0000aeaf0000b0af0000b2af0000b4af0000b6af0000b8af0000baaf0000bcaf0000beaf0000c0af0000c2af0000c4af0000c6af0000c8af0000caaf0000ccaf0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1169,8 +1169,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 46870000
-    m_LastClickedInstanceID: 34630
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: aa6500009866000096660000826700006a660000886d00009278000044760000ee660000e6660000b46700009466000066950000486500008a780000a4780000de6d0000c6c60000267c00000236000070710000327100002a71000008360000f8700000d67000009e720000e2720000247300004e740000fa720000f8370000d0720000ca720000b47400006c7400004cb50000c8720000c4710000c6710000d4730000ca7b0000d27400000e7500001c7500003c7500008e740000f8730000e0750000e4940000ae95000034c10000bad00000000000004c17010036960000108f0000a299000090c701001c9000003a9c00008695000040690800ce75000072730000e29100006a7300004c420400349b0000369b0000329b000064730000040200001895000076020000c6d500003ae000000aea000052810000e85100009c0f01007c9000007a900000de970000e47c0000507a0000948c0000a07e0000428c000080920000b6810000068000009c8000004c750000723a0000442b0100ee7c0000f6890000f09500000487000014810000127d0000b27d0000307700009477000042760000488a0000b4800000e6960000bc7c000048970000488300005c960000ac970000c287000078890000ba820000c6870000
     m_RenameOverlay:
@@ -1317,7 +1317,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 34630
+  m_LastSelectedObjectID: 45864
 --- !u!114 &21
 MonoBehaviour:
   m_ObjectHideFlags: 52

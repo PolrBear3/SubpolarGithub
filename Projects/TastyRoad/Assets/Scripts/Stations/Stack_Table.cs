@@ -33,10 +33,9 @@ public class Stack_Table : Table, IInteractable
         FoodData_Controller tableIcon = stationController.Food_Icon();
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
-        bool maxStacked = tableIcon.subDatas.Count >= tableIcon.maxSubDataCount;
         bool swapAvailable = tableIcon.hasFood == false || playerIcon.hasFood == false;
 
-        if (maxStacked || swapAvailable)
+        if (tableIcon.DataCount_Maxed() || swapAvailable)
         {
             Swap_Food();
             return;

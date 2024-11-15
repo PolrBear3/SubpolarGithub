@@ -48,7 +48,8 @@ public class FoodBox : MonoBehaviour, IInteractable
     // Functions
     private void Toggle_AmountBar()
     {
-        _controller.Food_Icon().Toggle_AmountBar(_controller.detection.player != null);
+        int currentAmount = _controller.Food_Icon().currentData.currentAmount;
+        _controller.Food_Icon().Toggle_AmountBar(currentAmount > 1 && _controller.detection.player != null);
     }
 
 
@@ -56,7 +57,7 @@ public class FoodBox : MonoBehaviour, IInteractable
     {
         FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
 
-        if (playerIcon.SubDataCount_Maxed()) return;
+        if (playerIcon.DataCount_Maxed()) return;
 
         FoodData_Controller stationIcon = _controller.Food_Icon();
 
@@ -69,7 +70,7 @@ public class FoodBox : MonoBehaviour, IInteractable
 
         // decrease one amount
         stationIcon.currentData.Update_Amount(-1);
-        stationIcon.Show_AmountBar();
+        stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
@@ -79,7 +80,7 @@ public class FoodBox : MonoBehaviour, IInteractable
     {
         FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
 
-        if (playerIcon.SubDataCount_Maxed()) return;
+        if (playerIcon.DataCount_Maxed()) return;
 
         FoodData_Controller stationIcon = _controller.Food_Icon();
 
@@ -90,7 +91,7 @@ public class FoodBox : MonoBehaviour, IInteractable
             playerIcon.Set_CurrentData(stationIcon.currentData);
             transferCount++;
 
-            if (playerIcon.SubDataCount_Maxed()) break;
+            if (playerIcon.DataCount_Maxed()) break;
         }
 
         playerIcon.Show_Icon();
@@ -98,13 +99,15 @@ public class FoodBox : MonoBehaviour, IInteractable
         playerIcon.Toggle_SubDataBar(true);
 
         stationIcon.currentData.Update_Amount(-transferCount);
-        stationIcon.Show_AmountBar();
+        stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
     }
 
 
     private void Empty_Destroy()
     {
         if (_controller.Food_Icon().currentData.currentAmount > 0) return;
+
+        OnDestroy();
 
         // clear current food data
         _controller.Food_Icon().Set_CurrentData(null);

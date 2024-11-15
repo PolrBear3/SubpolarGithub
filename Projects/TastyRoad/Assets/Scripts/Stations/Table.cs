@@ -149,7 +149,7 @@ public class Table : MonoBehaviour, IInteractable
         FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
 
         // check if table empty or player full amount
-        if (tableIcon.hasFood == false || playerIcon.subDatas.Count >= playerIcon.maxSubDataCount)
+        if (tableIcon.hasFood == false || playerIcon.DataCount_Maxed())
         {
             Basic_SwapFood();
             return;
