@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -29,6 +30,8 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     [SerializeField][Range(0, 100)] private int _maxAbilityPoint;
     public int maxAbilityPoint => _maxAbilityPoint;
 
+    public static Action<int> OnPointIncrease;
+
 
     // Editor
     [HideInInspector] public Ability_ScrObj editorAbility;
@@ -38,6 +41,15 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Load_ActivatedAbilities();
+
+        // subscriptions
+        OnPointIncrease += Increase_AbilityPoint;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        OnPointIncrease -= Increase_AbilityPoint;
     }
 
 
@@ -78,7 +90,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         return _currentAbilityPoint >= _maxAbilityPoint;
     }
 
-    public void Increase_AbilityPoint(int increaseValue)
+    private void Increase_AbilityPoint(int increaseValue)
     {
         if (AbilityPoint_Maxed()) return;
 
@@ -173,7 +185,7 @@ public class AbilityManager_Editor : Editor
 
         if (GUILayout.Button("Increase Ability Point"))
         {
-            manager.Increase_AbilityPoint(1);
+            AbilityManager.OnPointIncrease?.Invoke(1);
         }
 
         GUILayout.Space(20);

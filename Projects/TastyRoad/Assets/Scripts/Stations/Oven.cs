@@ -9,10 +9,6 @@ public class Oven : MonoBehaviour, IInteractable
     [SerializeField] private Station_Controller _stationController;
 
     [Header("")]
-    [SerializeField] private Sprite inActiveSprite;
-    [SerializeField] private Sprite activeSprite;
-
-    [Header("")]
     [SerializeField] private SpriteRenderer _heatEmission;
     [SerializeField] private Light2D _light;
 
@@ -148,7 +144,6 @@ public class Oven : MonoBehaviour, IInteractable
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
     }
-
 
 
     // Food Heating System

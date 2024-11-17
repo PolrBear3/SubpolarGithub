@@ -160,7 +160,7 @@ public class FoodData_Controller : MonoBehaviour
 
     public void Swap_Data(FoodData_Controller otherController)
     {
-        FoodData saveData = _currentData;
+        FoodData saveData = new(_currentData);
 
         _currentData = null;
         Set_CurrentData(otherController.currentData);

@@ -62,7 +62,7 @@ public class FoodBox : MonoBehaviour, IInteractable
         FoodData_Controller stationIcon = _controller.Food_Icon();
 
         // transfer to player
-        playerIcon.Set_CurrentData(stationIcon.currentData);
+        playerIcon.Set_CurrentData(new(stationIcon.currentData));
 
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();

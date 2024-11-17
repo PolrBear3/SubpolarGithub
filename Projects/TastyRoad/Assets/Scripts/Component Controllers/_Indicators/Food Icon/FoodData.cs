@@ -118,7 +118,7 @@ public class FoodData
     {
         if (conditionDatas.Count <= 0) return;
 
-        _conditionDatas = conditionDatas;
+        _conditionDatas = new(conditionDatas);
     }
 
     public void Update_Condition(FoodCondition_Data newCondition)
