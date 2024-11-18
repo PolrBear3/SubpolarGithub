@@ -359,6 +359,8 @@ public class NPC_Interaction : MonoBehaviour
         // save food score
         _foodScore = Calculated_FoodScore();
 
+        AbilityManager.OnPointIncrease(1);
+
         // food eat animation
         Eat_Animation();
     }
@@ -383,6 +385,8 @@ public class NPC_Interaction : MonoBehaviour
 
         // save food score
         _foodScore = Calculated_FoodScore();
+
+        AbilityManager.OnPointIncrease(1);
 
         // food eat animation
         Eat_Animation();

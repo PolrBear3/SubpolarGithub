@@ -46,14 +46,13 @@ public class Stack_Table : Table, IInteractable
 
     public new void Hold_Interact()
     {
-        base.Hold_Interact();
-
+        Transfer_CurrentFood();
         AmountBar_Toggle();
     }
 
 
     // Functions
-    private void AmountBar_Toggle()
+    public void AmountBar_Toggle()
     {
         bool hasFood = stationController.Food_Icon().hasFood;
         bool playerDetected = stationController.detection.player != null;
@@ -64,11 +63,10 @@ public class Stack_Table : Table, IInteractable
 
     public void Swap_Food()
     {
-        FoodData_Controller tableIcon = stationController.Food_Icon();
-
         // swap
         Basic_SwapFood();
 
+        FoodData_Controller tableIcon = stationController.Food_Icon();
         tableIcon.Toggle_SubDataBar(true);
     }
 

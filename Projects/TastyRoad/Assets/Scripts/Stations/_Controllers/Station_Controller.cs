@@ -158,9 +158,6 @@ public class Station_Controller : MonoBehaviour
 
     public void Destroy_Station()
     {
-        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
-        _mainController.UnClaim_Position(snapPosition);
-
         _mainController.UnTrack_CurrentStation(this);
         Destroy(gameObject);
     }

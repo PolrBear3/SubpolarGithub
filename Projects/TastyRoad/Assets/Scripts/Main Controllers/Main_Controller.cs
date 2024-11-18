@@ -474,7 +474,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         for (int i = _currentStations.Count - 1; i >= 0; i--)
         {
+            UnClaim_Position(currentStations[i].transform.position);
             _currentStations[i].Destroy_Station();
+
             destroyCount++;
         }
 

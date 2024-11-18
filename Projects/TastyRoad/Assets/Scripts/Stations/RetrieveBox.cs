@@ -12,87 +12,60 @@ public class RetrieveBox : Stack_Table, IInteractable
     private new void Start()
     {
         Sprite_Update();
+
+        // subscriptions
+        Detection_Controller detection = stationController.detection;
+
+        detection.EnterEvent += AmountBar_Toggle;
+        detection.ExitEvent += AmountBar_Toggle;
     }
 
     private new void OnDestroy()
     {
         Retrieve_CurrentFood();
+
+        // subscriptions
+        Detection_Controller detection = stationController.detection;
+
+        detection.EnterEvent -= AmountBar_Toggle;
+        detection.ExitEvent -= AmountBar_Toggle;
     }
 
 
     // IInteractable
     public new void Interact()
     {
-        Swap_Food();
-        Stack_Food();
+        base.Interact();
+
+        Sprite_Update();
+    }
+
+    public new void Hold_Interact()
+    {
+        base.Hold_Interact();
 
         Sprite_Update();
     }
 
 
-    // Functions
-    private new void Swap_Food()
-    {
-        //
-        FoodData_Controller playerFoodIcon = stationController.detection.player.foodIcon;
-
-        // check if player food has no conditions
-        if (playerFoodIcon.hasFood && playerFoodIcon.currentData.conditionDatas.Count > 0) return;
-
-        //
-        FoodData_Controller foodIcon = stationController.Food_Icon();
-        FoodData foodData = foodIcon.currentData;
-
-        // check if current amount is less than 1
-        if (foodIcon.hasFood == true && foodData.currentAmount > 1) return;
-
-        //
-        base.Swap_Food();
-    }
-
-    private new void Stack_Food()
-    {
-        //
-        FoodData_Controller foodIcon = stationController.Food_Icon();
-        FoodData foodData = foodIcon.currentData;
-
-        // check if current amount is more than 1
-        if (foodIcon.hasFood == false) return;
-
-        //
-        FoodData_Controller playerFoodIcon = stationController.detection.player.foodIcon;
-
-        // check if player has food
-        if (playerFoodIcon.hasFood == false) return;
-
-        // check if current food and player food is same
-        if (playerFoodIcon.currentData.foodScrObj != foodData.foodScrObj) return;
-
-        // check if player food has no conditions
-        if (playerFoodIcon.currentData.conditionDatas.Count > 0) return;
-
-        //
-        base.Stack_Food();
-    }
-
-
+    //
     private void Sprite_Update()
     {
         //
         FoodData_Controller foodIcon = stationController.Food_Icon();
-        FoodData foodData = foodIcon.currentData;
 
         // current amount full
-        if (foodIcon.hasFood == true && foodData.currentAmount >= 6)
+        if (foodIcon.DataCount_Maxed())
         {
             stationController.spriteRenderer.sprite = _boxClosed;
+            foodIcon.Toggle_Height(true);
             return;
         }
 
         // non full
         stationController.spriteRenderer.sprite = _boxOpen;
+        foodIcon.Toggle_Height(false);
     }
-
 
     private void Retrieve_CurrentFood()
     {

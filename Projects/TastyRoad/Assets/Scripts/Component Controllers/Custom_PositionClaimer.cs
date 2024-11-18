@@ -28,14 +28,12 @@ public class Custom_PositionClaimer : MonoBehaviour
     //
     public List<Vector2> All_Positions()
     {
+        Vector2 currentPosition = transform.position;
         List<Vector2> allPositions = new();
 
         foreach (Vector2 position in _allPositions)
         {
-            float xPos = transform.position.x + position.x;
-            float yPos = transform.position.y + position.y;
-
-            allPositions.Add(new(xPos, yPos));
+            allPositions.Add(currentPosition + position);
         }
 
         return allPositions;
@@ -43,14 +41,12 @@ public class Custom_PositionClaimer : MonoBehaviour
 
     public List<Vector2> Current_Positions()
     {
+        Vector2 currentPosition = transform.position;
         List<Vector2> currentPositions = new();
 
         foreach (Vector2 position in _claimPositions)
         {
-            float xPos = transform.position.x + position.x;
-            float yPos = transform.position.y + position.y;
-
-            currentPositions.Add(new(xPos, yPos));
+            currentPositions.Add(currentPosition + position);
         }
 
         return currentPositions;

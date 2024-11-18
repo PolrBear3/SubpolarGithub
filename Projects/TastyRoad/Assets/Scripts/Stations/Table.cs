@@ -84,8 +84,9 @@ public class Table : MonoBehaviour, IInteractable
     // Functions
     public void Basic_SwapFood()
     {
-        // swap data with player
         FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
+
+        // swap data with player
         _stationController.Food_Icon().Swap_Data(playerFoodIcon);
 
         // show player food data
@@ -109,9 +110,11 @@ public class Table : MonoBehaviour, IInteractable
     private void Merge_Food()
     {
         Data_Controller data = _stationController.mainController.dataController;
-        FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
 
-        Food_ScrObj cookedFood = data.CookedFood(_stationController.Food_Icon(), playerFoodIcon);
+        FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
+        FoodData_Controller stationFoodIcon = stationController.Food_Icon();
+
+        Food_ScrObj cookedFood = data.CookedFood(stationFoodIcon, playerFoodIcon);
 
         // clear player food
         playerFoodIcon.Set_CurrentData(null);
@@ -120,10 +123,11 @@ public class Table : MonoBehaviour, IInteractable
         playerFoodIcon.Show_Condition();
 
         // assign new cooked food to this table
-        _stationController.Food_Icon().Set_CurrentData(new FoodData(cookedFood));
+        stationFoodIcon.Set_CurrentData(null);
+        stationFoodIcon.Set_CurrentData(new FoodData(cookedFood));
 
-        _stationController.Food_Icon().Show_Icon();
-        _stationController.Food_Icon().Show_Condition();
+        stationFoodIcon.Show_Icon();
+        stationFoodIcon.Show_Condition();
 
         // unlock if cooked food
         ArchiveMenu_Controller menu = _stationController.mainController.currentVehicle.menu.archiveMenu;
@@ -145,7 +149,7 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-    private void Transfer_CurrentFood()
+    public void Transfer_CurrentFood()
     {
         FoodData_Controller tableIcon = _stationController.Food_Icon();
         FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;

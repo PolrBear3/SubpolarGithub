@@ -232,6 +232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detection: {fileID: 3551917571397297857}
   _movement: {fileID: 3609195736537386832}
+  _maintenance: {fileID: 0}
   _stationAnimator: {fileID: 2050151741136552749}
   _stationScrObj: {fileID: 11400000, guid: 0ae1b32d583fb477da6041b8044d7346, type: 2}
 --- !u!114 &3609195736537386832
@@ -289,6 +290,10 @@ PrefabInstance:
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: _maxAmount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: _toggleHeight
+      value: 0.375
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: _barShowLocked

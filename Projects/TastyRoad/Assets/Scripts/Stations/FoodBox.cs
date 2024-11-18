@@ -62,13 +62,14 @@ public class FoodBox : MonoBehaviour, IInteractable
         FoodData_Controller stationIcon = _controller.Food_Icon();
 
         // transfer to player
-        playerIcon.Set_CurrentData(new(stationIcon.currentData));
+        playerIcon.Set_CurrentData(new(stationIcon.currentData.foodScrObj));
+        playerIcon.currentData.Set_Condition(stationIcon.currentData.conditionDatas);
 
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
         playerIcon.Toggle_SubDataBar(true);
 
-        // decrease one amount
+        // update current data & decrease one amount
         stationIcon.currentData.Update_Amount(-1);
         stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
 
