@@ -35,15 +35,18 @@ public class RetrieveBox : Stack_Table, IInteractable
     // IInteractable
     public new void Interact()
     {
-        base.Interact();
-
+        Perform_FoodInteraction();
         Sprite_Update();
     }
 
     public new void Hold_Interact()
     {
-        base.Hold_Interact();
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
+        bool hasCondition = playerIcon.hasFood && playerIcon.currentData.conditionDatas.Count > 0;
+        if (hasCondition) return;
+
+        base.Hold_Interact();
         Sprite_Update();
     }
 
@@ -51,7 +54,6 @@ public class RetrieveBox : Stack_Table, IInteractable
     //
     private void Sprite_Update()
     {
-        //
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
         // current amount full
@@ -67,20 +69,39 @@ public class RetrieveBox : Stack_Table, IInteractable
         foodIcon.Toggle_Height(false);
     }
 
+
+    private void Perform_FoodInteraction()
+    {
+        FoodData_Controller stationIcon = stationController.Food_Icon();
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
+
+        bool hasCondition = playerIcon.hasFood && playerIcon.currentData.conditionDatas.Count > 0;
+        if (hasCondition) return;
+
+        bool swapAvailable = playerIcon.hasFood == false || stationIcon.DataCount_Maxed();
+        if (swapAvailable)
+        {
+            Swap_Food();
+            return;
+        }
+
+        Stack_Food();
+    }
+
     private void Retrieve_CurrentFood()
     {
-        // 
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
         if (foodIcon.hasFood == false) return;
-
-        FoodData foodData = foodIcon.currentData;
 
         FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
         StationMenu_Controller stationMenu = stationController.mainController.currentVehicle.menu.stationMenu;
 
         // retrieve current food data
-        foodMenu.Add_FoodItem(foodData.foodScrObj, foodData.currentAmount);
+        foreach (FoodData data in foodIcon.AllDatas())
+        {
+            foodMenu.Add_FoodItem(data.foodScrObj, 1);
+        }
 
         // station retrieve restriction
         stationMenu.Remove_StationItem(stationController.stationScrObj, 1);

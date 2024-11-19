@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectCard : MonoBehaviour
+public class CollectCard : MonoBehaviour, IInteractable
 {
     private SpriteRenderer _sr;
     public SpriteRenderer sr => _sr;
@@ -11,11 +11,9 @@ public class CollectCard : MonoBehaviour
 
     [Header("")]
     [SerializeField] private Detection_Controller _detection;
-
-
-    [Header("")]
     [SerializeField] private CoinLauncher _launcher;
 
+    [Header("")]
     [SerializeField] private Sprite _launchSprite;
     public Sprite launchSprite => _launchSprite;
 
@@ -44,14 +42,29 @@ public class CollectCard : MonoBehaviour
     {
         Set_RandomPickup();
 
-        _detection.EnterEvent += Pickup;
         GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
     }
 
     private void OnDestroy()
     {
-        _detection.EnterEvent -= Pickup;
         GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
+    }
+
+
+    // IInteractable
+    public void Interact()
+    {
+        Pickup();
+    }
+
+    public void Hold_Interact()
+    {
+
+    }
+
+    public void UnInteract()
+    {
+
     }
 
 

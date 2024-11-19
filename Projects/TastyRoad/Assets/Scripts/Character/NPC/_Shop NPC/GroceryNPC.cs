@@ -262,7 +262,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         foreach (PlaceableStock stock in _placeableStocks)
         {
-            placeableStockData.Add(stock.placedFoods, stock.isComplete);
+            placeableStockData.Add(stock.foodIcon.AllDatas(), stock.isComplete);
         }
 
         ES3.Save("GroceryNPC/placeableStockData", placeableStockData);
@@ -565,6 +565,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // remove player food
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
+        playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
         // animation
@@ -811,7 +812,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             movement.Assign_TargetPosition(completedStocks[i].transform.position);
             while (movement.At_TargetPosition() == false) yield return null;
 
-            List<FoodData> placedDatas = completedStocks[i].placedFoods;
+            List<FoodData> placedDatas = completedStocks[i].foodIcon.AllDatas();
 
             // loops through placed foods
             for (int j = 0; j < placedDatas.Count; j++)

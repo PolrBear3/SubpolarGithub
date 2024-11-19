@@ -49,17 +49,22 @@ public class NPC_Interaction : MonoBehaviour
     {
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
 
+        _controller.itemDropper.Set_DropCount(Random.Range(0, 2));
+
+        // subscriptions
         _controller.interactable.InteractEvent += Interact;
         _controller.interactable.UnInteractEvent += UnInteract;
 
-        _controller.itemDropper.Set_DropCount(Random.Range(0, 2));
+        _controller.interactable.OnHoldInteract += Exchange_Item;
     }
 
     private void OnDestroy()
     {
+        // subscriptions
         _controller.interactable.InteractEvent -= Interact;
         _controller.interactable.UnInteractEvent -= UnInteract;
 
+        _controller.interactable.OnHoldInteract -= Exchange_Item;
         _controller.interactable.OnAction1Event -= Serve_FoodOrder;
     }
 
@@ -91,12 +96,7 @@ public class NPC_Interaction : MonoBehaviour
             return;
         }
 
-        // item drop
-        if (Main_Controller.orderOpen == false || _controller.foodIcon.hasFood == false)
-        {
-            Exchange_Item();
-            return;
-        }
+        if (Main_Controller.orderOpen == false || _controller.foodIcon.hasFood == false) return;
 
         // show current food order
         _controller.timer.Toggle_Transparency(_controller.interactable.bubble.bubbleOn);
@@ -354,6 +354,7 @@ public class NPC_Interaction : MonoBehaviour
         // clear player food data
         playerFoodIcon.Set_CurrentData(null);
         playerFoodIcon.Show_Icon();
+        playerFoodIcon.Toggle_SubDataBar(true);
         playerFoodIcon.Show_Condition();
 
         // save food score
@@ -519,6 +520,9 @@ public class NPC_Interaction : MonoBehaviour
         // check if item drop activated
         if (_controller.itemDropper.enabled == false) return;
 
+        // check if food serve waiting
+        if (_controller.foodIcon.hasFood) return;
+
         Player_Controller player = _controller.interactable.detection.player;
         FoodData_Controller playerFoodIcon = player.foodIcon;
 
@@ -528,6 +532,7 @@ public class NPC_Interaction : MonoBehaviour
         // remove player current food
         playerFoodIcon.Set_CurrentData(null);
         playerFoodIcon.Show_Icon();
+        playerFoodIcon.Toggle_SubDataBar(true);
         playerFoodIcon.Show_Condition();
 
         // disable item dropper

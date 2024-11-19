@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public event Event InteractEvent;
     public event Event UnInteractEvent;
+
+    public Action OnHoldInteract;
 
     public event Event OnInteractEvent;
     public event Event OnAction1Event;
@@ -110,7 +113,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public void Hold_Interact()
     {
-
+        OnHoldInteract?.Invoke();
     }
 
     public void UnInteract()

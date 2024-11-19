@@ -20,9 +20,6 @@ public class PlaceableStock : MonoBehaviour
     [SerializeField][Range(1, 98)] private int _maxAmount;
 
 
-    private List<FoodData> _placedFoods = new();
-    public List<FoodData> placedFoods => _placedFoods;
-
     private bool _isComplete;
     public bool isComplete => _isComplete;
 
@@ -35,66 +32,49 @@ public class PlaceableStock : MonoBehaviour
 
     private void Start()
     {
-        Update_forComplete();
-        Update_Amount();
         Update_Bubble();
+        Update_forComplete();
 
         // subscriptions
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.InteractEvent += Update_Bubble;
         _interactable.InteractEvent += Toggle_AmountBar;
         _interactable.UnInteractEvent += Toggle_AmountBar;
 
-        _interactable.OnAction1Event += Complete;
-        _interactable.OnAction1Event += Place;
-
-        _interactable.OnAction2Event += Dispose;
+        _interactable.OnHoldInteract += Transfer_CurrentFood;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         // subscriptions
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
-        _interactable.InteractEvent -= Update_Bubble;
         _interactable.InteractEvent -= Toggle_AmountBar;
         _interactable.UnInteractEvent -= Toggle_AmountBar;
 
+        _interactable.OnHoldInteract += Transfer_CurrentFood;
+
         _interactable.OnAction1Event -= Complete;
         _interactable.OnAction1Event -= Place;
-
-        _interactable.OnAction2Event -= Dispose;
     }
 
 
     // Data Control
     public void Load_Data(List<FoodData> placedData, bool completeData)
     {
-        _placedFoods = new(placedData);
+        _foodIcon.Update_AllDatas(placedData);
         _isComplete = completeData;
-
-        if (_placedFoods.Count <= 0) return;
-
-        // set recently placed food
-        Food_ScrObj recentFood = _placedFoods[_placedFoods.Count - 1].foodScrObj;
-        _foodIcon.Set_CurrentData(new(recentFood));
     }
 
     public void Reset_Data()
     {
-        _placedFoods.Clear();
+        _foodIcon.Update_AllDatas(null);
+        _foodIcon.Show_Icon();
 
         _isComplete = false;
         Update_forComplete();
-
-        _foodIcon.Set_CurrentData(null);
-        _foodIcon.Show_Icon();
-
-        Update_Amount();
-        Toggle_AmountBar();
     }
 
 
@@ -119,40 +99,77 @@ public class PlaceableStock : MonoBehaviour
     }
 
 
-    private void Update_Amount()
-    {
-        if (_placedFoods.Count <= 0) return;
-        _foodIcon.currentData.Set_Amount(_placedFoods.Count);
-    }
-
     private void Toggle_AmountBar()
     {
         bool playerDetected = _interactable.detection.player != null;
         bool bubbleOn = _interactable.bubble.bubbleOn;
 
-        _foodIcon.Toggle_AmountBar(playerDetected && !bubbleOn);
+        _foodIcon.Toggle_SubDataBar(playerDetected && !bubbleOn);
     }
-
 
     private void Update_Bubble()
     {
         Action_Bubble bubble = _interactable.bubble;
 
-        if (Place_Available())
+        bubble.Empty_Bubble();
+        _interactable.Clear_ActionSubscriptions();
+
+        if (_foodIcon.hasFood == false)
         {
-            bubble.Set_Bubble(bubble.setSprites[0], bubble.setSprites[2]);
+            bubble.Set_Bubble(bubble.setSprites[0], null);
+
+            _interactable.OnAction1Event += Place;
             return;
         }
 
-        bubble.Set_Bubble(bubble.setSprites[1], bubble.setSprites[2]);
+        if (_foodIcon.DataCount_Maxed())
+        {
+            bubble.Set_Bubble(bubble.setSprites[1], null);
 
-        if (_foodIcon.hasFood == true && _isComplete == false) return;
+            _interactable.OnAction1Event += Complete;
+            return;
+        }
 
-        _interactable.UnInteract();
+        bubble.Set_Bubble(bubble.setSprites[0], bubble.setSprites[1]);
+
+        _interactable.OnAction1Event += Place;
+        _interactable.OnAction2Event += Complete;
     }
 
 
     // Functions
+    private void Transfer_CurrentFood()
+    {
+        if (_isComplete) return;
+
+        FoodData_Controller playerIcon = _interactable.detection.player.foodIcon;
+
+        if (_foodIcon.hasFood == false || playerIcon.DataCount_Maxed())
+        {
+            // swap
+            _foodIcon.Swap_Data(playerIcon);
+        }
+        else
+        {
+            // player
+            playerIcon.Set_CurrentData(_foodIcon.currentData);
+
+            // table
+            _foodIcon.Set_CurrentData(null);
+        }
+
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
+
+        _foodIcon.Show_Icon();
+        _foodIcon.Toggle_SubDataBar(true);
+
+        Update_Bubble();
+        _interactable.UnInteract();
+    }
+
+
     private bool Place_Available()
     {
         Player_Controller player = _interactable.detection.player;
@@ -163,11 +180,11 @@ public class PlaceableStock : MonoBehaviour
         FoodData_Controller playerIcon = player.foodIcon;
         if (playerIcon.hasFood == false)
         {
-            if (_foodIcon.hasFood == false) dialog.Update_Dialog(0);
+            dialog.Update_Dialog(0);
             return false;
         }
 
-        if (_foodIcon.hasFood && _foodIcon.currentData.currentAmount >= _maxAmount)
+        if (_foodIcon.DataCount_Maxed())
         {
             dialog.Update_Dialog(4);
             return false;
@@ -182,22 +199,18 @@ public class PlaceableStock : MonoBehaviour
 
         FoodData_Controller playerIcon = _interactable.detection.player.foodIcon;
 
-        // show recently placed food
-        _foodIcon.Set_CurrentData(new(playerIcon.currentData.foodScrObj));
-        _foodIcon.Show_Icon();
-
         // add data to _placedFoods
-        _placedFoods.Add(playerIcon.currentData);
+        _foodIcon.Set_CurrentData(playerIcon.currentData);
+        _foodIcon.Show_Icon();
+        _foodIcon.Toggle_SubDataBar(true);
 
         // empty player food
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
+        playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
-        //
-        Update_Amount();
-        Toggle_AmountBar();
-
+        Update_Bubble();
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
     }
 
@@ -210,15 +223,7 @@ public class PlaceableStock : MonoBehaviour
         _isComplete = true;
         Update_forComplete();
 
+        Update_Bubble();
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(2);
-    }
-
-
-    public void Dispose()
-    {
-        if (_foodIcon.hasFood == false) return;
-
-        Reset_Data();
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(3);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DropItem : MonoBehaviour
+public class DropItem : MonoBehaviour, IInteractable
 {
     private SpriteRenderer _sr;
 
@@ -28,14 +28,29 @@ public class DropItem : MonoBehaviour
 
     private void Start()
     {
-        _detection.EnterEvent += Pickup;
         GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
     }
 
     private void OnDestroy()
     {
-        _detection.EnterEvent -= Pickup;
         GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
+    }
+
+
+    // IInteractable
+    public void Interact()
+    {
+        Pickup();
+    }
+
+    public void Hold_Interact()
+    {
+
+    }
+
+    public void UnInteract()
+    {
+
     }
 
 

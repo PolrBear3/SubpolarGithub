@@ -52,18 +52,23 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
         _playerInput = gameObject.GetComponent<PlayerInput>();
     }
 
+    private void Start()
+    {
+        _foodIcon.Toggle_SubDataBar(true);
+    }
+
 
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("Player_Controller/_foodIcon.currentData", _foodIcon.currentData);
+        ES3.Save("Player_Controller/_foodIcon.AllDatas()", _foodIcon.AllDatas());
     }
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("Player_Controller/_foodIcon.currentData") == false) return;
+        if (ES3.KeyExists("Player_Controller/_foodIcon.AllDatas()") == false) return;
 
-        _foodIcon.Set_CurrentData(ES3.Load<FoodData>("Player_Controller/_foodIcon.currentData"));
+        _foodIcon.Update_AllDatas(ES3.Load("Player_Controller/_foodIcon.AllDatas()", _foodIcon.AllDatas()));
     }
 
 
