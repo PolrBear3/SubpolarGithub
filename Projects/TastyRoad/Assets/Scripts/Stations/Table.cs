@@ -17,7 +17,7 @@ public class Table : MonoBehaviour, IInteractable
 
     public void Start()
     {
-        _stationController.maintenance.OnDurabilityBreak += Return_Food;
+        _stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
     }
 
     public void OnDestroy()
@@ -25,7 +25,7 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.Action1_Event -= Basic_SwapFood;
         _stationController.Action2_Event -= Merge_Food;
 
-        _stationController.maintenance.OnDurabilityBreak -= Return_Food;
+        _stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
     }
 
 
@@ -176,17 +176,9 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-    private void Return_Food()
+    private void Drop_CurrentFood()
     {
-        FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
-        if (playerFoodIcon.hasFood) return;
-
-        Basic_SwapFood();
-
         FoodData_Controller foodIcon = _stationController.Food_Icon();
-
-        foodIcon.Set_CurrentData(null);
-        foodIcon.Show_Icon();
-        foodIcon.Show_Condition();
+        // _stationController.itemDropper.
     }
 }

@@ -86,7 +86,6 @@ public class ItemDropper : MonoBehaviour
         _allDrops.Add(Drop_CollectCard);
     }
 
-    //
     public void Drop_Random()
     {
         _allDrops[Random.Range(0, _allDrops.Count)]?.Invoke();
@@ -94,6 +93,11 @@ public class ItemDropper : MonoBehaviour
 
 
     // Food Drop Control
+    public void Drop_DataFood(FoodData data)
+    {
+
+    }
+
     public void Drop_AssignedFood(Food_ScrObj dropFood, int amount)
     {
         if (_currentDropCount <= 0) return;
@@ -120,6 +124,7 @@ public class ItemDropper : MonoBehaviour
     }
 
 
+    // Weighted
     private Food_ScrObj Weighted_RandomFood()
     {
         // get total wieght
@@ -190,19 +195,6 @@ public class ItemDropper : MonoBehaviour
         }
 
         return Weighted_RandomFood(targetFoods);
-    }
-
-
-    private void FisherYates_FoodShuffle()
-    {
-        for (int i = _foodWeights.Length - 1; i >= 0; i--)
-        {
-            int randIndex = Random.Range(0, i + 1);
-            FoodWeight_Data randData = new(_foodWeights[randIndex].foodScrObj, _foodWeights[randIndex].weight);
-
-            _foodWeights[randIndex] = _foodWeights[i];
-            _foodWeights[i] = randData;
-        }
     }
 
 

@@ -13,6 +13,8 @@ public class Station_Controller : MonoBehaviour
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
 
+
+    [Header("")]
     [SerializeField] private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
 
@@ -24,6 +26,9 @@ public class Station_Controller : MonoBehaviour
 
     [SerializeField] private Animator _stationAnimator;
     public Animator stationAnmiator => _stationAnimator;
+
+    [SerializeField] private ItemDropper _itemDropper;
+    public ItemDropper itemDropper => _itemDropper;
 
 
     [Header("")]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,8 +12,7 @@ public class Station_Maintenance : MonoBehaviour
     [SerializeField] private GameObject _durabilityBreakIcon;
 
 
-    public delegate void MaintenenceHandler();
-    public event MaintenenceHandler OnDurabilityBreak;
+    public Action OnDurabilityBreak;
 
 
     // MonoBehaviour
