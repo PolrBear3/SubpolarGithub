@@ -10,6 +10,8 @@ public class Player_Interaction : MonoBehaviour
     [Header("")]
     [SerializeField][Range(0, 100)] private float _holdTime;
 
+    private float _defaultTimerXPos;
+
     private float _pressStartTime;
     private Coroutine _pressDelayCoroutine;
 
@@ -24,16 +26,33 @@ public class Player_Interaction : MonoBehaviour
     {
         _controller.Player_Input().actions["Interact"].started += ctx => OnPressStart();
         _controller.Player_Input().actions["Interact"].canceled += ctx => OnPressEnd();
+
+        _defaultTimerXPos = _controller.timer.transform.localPosition.x;
     }
 
 
     // Player Input
+    private void TimerPosition_Update()
+    {
+        float yPos = _controller.timer.transform.localPosition.y;
+
+        if (_controller.foodIcon.hasFood)
+        {
+            _controller.timer.transform.localPosition = new Vector2(_defaultTimerXPos, yPos);
+            return;
+        }
+
+        _controller.timer.transform.localPosition = new Vector2(0f, yPos);
+    }
+
     private void OnPressStart()
     {
         _pressDelayCoroutine = StartCoroutine(OnPressStart_Coroutine());
     }
     private IEnumerator OnPressStart_Coroutine()
     {
+        TimerPosition_Update();
+
         _pressStartTime = Time.time;  // Record the time when the button is pressed
 
         _controller.timer.Set_Time((int)_holdTime);
