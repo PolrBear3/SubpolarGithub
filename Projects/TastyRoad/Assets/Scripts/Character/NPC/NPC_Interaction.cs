@@ -49,7 +49,7 @@ public class NPC_Interaction : MonoBehaviour
     {
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
 
-        _controller.itemDropper.Set_DropCount(Random.Range(0, 2));
+        // _controller.itemDropper.Set_DropCount(Random.Range(0, 2));
 
         // subscriptions
         _controller.interactable.InteractEvent += Interact;
@@ -551,6 +551,6 @@ public class NPC_Interaction : MonoBehaviour
         }
 
         // drop food
-        dropper.Drop_AssignedFood(dropper.Weighted_RandomFood(playerFood), dropper.Random_DropAmount());
+        dropper.Drop_Food(new(dropper.Weighted_RandomFood(playerFood)));
     }
 }

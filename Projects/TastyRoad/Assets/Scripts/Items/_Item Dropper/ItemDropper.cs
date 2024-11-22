@@ -8,20 +8,8 @@ public class ItemDropper : MonoBehaviour
     private Main_Controller _main;
 
     [Header("")]
-    [SerializeField] private CoinLauncher _launcher;
-
-    [Header("")]
     [SerializeField] private GameObject _dropItem;
     [SerializeField] private GameObject _collectCard;
-
-    [Header("")]
-    [SerializeField] private Sprite _defaultLaunchSprite;
-
-    [Header("")]
-    [SerializeField][Range(0, 100)] private int _dropAmountRange;
-
-    [SerializeField][Range(0, 100)] private int _dropCount;
-    private int _currentDropCount;
 
     [Header("")]
     [SerializeField] private FoodWeight_Data[] _foodWeights;
@@ -42,40 +30,6 @@ public class ItemDropper : MonoBehaviour
     private void Start()
     {
         Set_AllDropTypes();
-
-        if (_dropCount <= 0) return;
-        Set_DropCount(_dropCount);
-    }
-
-
-    // Drop Count
-    public void Set_DropCount(int setCount)
-    {
-        _currentDropCount = setCount;
-    }
-
-    public int Random_DropAmount()
-    {
-        return Random.Range(1, _dropAmountRange);
-    }
-
-
-    // Launch
-    private IEnumerator Launch_ShowItem(GameObject dropItem, Sprite launchSprite)
-    {
-        // deactivate
-        dropItem.SetActive(false);
-
-        // launch
-        Transform playerTransform = _main.Player().transform;
-        GameObject launchCoin = _launcher.Parabola_CoinLaunch(launchSprite, playerTransform.position).gameObject;
-
-        // activate when item drops
-        while (launchCoin != null) yield return null;
-        dropItem.SetActive(true);
-
-        _coroutine = null;
-        yield break;
     }
 
 
@@ -93,34 +47,23 @@ public class ItemDropper : MonoBehaviour
 
 
     // Food Drop Control
-    public void Drop_DataFood(FoodData data)
+    public void Drop_Food(FoodData data)
     {
-
-    }
-
-    public void Drop_AssignedFood(Food_ScrObj dropFood, int amount)
-    {
-        if (_currentDropCount <= 0) return;
+        if (data == null) return;
         if (_coroutine != null) return;
 
-        Transform playerTransform = _main.Player().transform;
-        Vector2 dropPosition = Main_Controller.SnapPosition(playerTransform.position);
-
-        if (_main.Position_Claimed(dropPosition)) return;
-
-        _currentDropCount--;
+        if (_main.Position_Claimed(transform.position)) return;
 
         // spawn to nearest snap position
-        GameObject itemGameObject = Instantiate(_dropItem, dropPosition, Quaternion.identity);
+        Vector2 spawnPos = Main_Controller.SnapPosition(transform.position);
+        GameObject itemGameObject = Instantiate(_dropItem, spawnPos, Quaternion.identity);
         itemGameObject.transform.SetParent(_main.otherFile);
 
         // set drop data
         DropItem dropItem = itemGameObject.GetComponent<DropItem>();
+        FoodData dropData = new(data);
 
-        FoodData dropData = new(dropFood, amount);
         dropItem.Set_ItemData(new(dropData));
-
-        StartCoroutine(Launch_ShowItem(dropItem.gameObject, _defaultLaunchSprite));
     }
 
 
@@ -201,18 +144,13 @@ public class ItemDropper : MonoBehaviour
     // Events
     private void Drop_RandomFood()
     {
-        if (_currentDropCount <= 0) return;
         if (_foodWeights.Length <= 0) return;
 
-        _currentDropCount--;
-
-        int randAmount = Random.Range(1, _dropAmountRange);
-        Drop_AssignedFood(Weighted_RandomFood(), randAmount);
+        Drop_Food(new(Weighted_RandomFood()));
     }
 
     public void Drop_CollectCard()
     {
-        if (_currentDropCount <= 0) return;
         if (_coroutine != null) return;
 
         Transform playerTransform = _main.Player().transform;
@@ -220,13 +158,8 @@ public class ItemDropper : MonoBehaviour
 
         if (_main.Position_Claimed(dropPosition)) return;
 
-        _currentDropCount--;
-
         // spawn to nearest snap position
         GameObject itemGameObject = Instantiate(_collectCard, dropPosition, Quaternion.identity);
-        CollectCard dropCard = itemGameObject.GetComponent<CollectCard>();
         itemGameObject.transform.SetParent(_main.otherFile);
-
-        StartCoroutine(Launch_ShowItem(dropCard.gameObject, dropCard.launchSprite));
     }
 }

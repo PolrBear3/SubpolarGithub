@@ -4,10 +4,8 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using FMODUnity;
 
-public class Oven : MonoBehaviour, IInteractable
+public class Oven : Table, IInteractable
 {
-    [SerializeField] private Station_Controller _stationController;
-
     [Header("")]
     [SerializeField] private SpriteRenderer _heatEmission;
     [SerializeField] private Light2D _light;
@@ -23,49 +21,38 @@ public class Oven : MonoBehaviour, IInteractable
 
 
     // UnityEngine
-    private void Start()
+    private new void Start()
     {
+        base.Start();
+
         Heat_Food();
         Update_CurrentVisual();
 
-        Update_FoodIcon_Position(false);
+        FoodIcon_PositionToggle();
+
+        // subscriptions
+        stationController.detection.EnterEvent += FoodIcon_PositionToggle;
+        stationController.detection.ExitEvent += FoodIcon_PositionToggle;
     }
 
-
-    // OnTrigger
-    private void OnTriggerEnter2D(Collider2D collision)
+    private new void OnDestroy()
     {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
+        base.OnDestroy();
 
-        _stationController.Food_Icon().ShowIcon_LockToggle(false);
-        Update_FoodIcon_Position(true);
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        _stationController.Food_Icon().ShowIcon_LockToggle(true);
-        Update_FoodIcon_Position(false);
+        // subscriptions
+        stationController.detection.EnterEvent -= FoodIcon_PositionToggle;
+        stationController.detection.ExitEvent -= FoodIcon_PositionToggle;
     }
 
 
     // IInteractable
-    public void Interact()
+    public new void Interact()
     {
         Basic_SwapFood();
+        FoodIcon_PositionToggle();
 
         Heat_Food();
         Update_CurrentVisual();
-    }
-
-    public void Hold_Interact()
-    {
-
-    }
-
-    public void UnInteract()
-    {
-
     }
 
 
@@ -82,7 +69,7 @@ public class Oven : MonoBehaviour, IInteractable
     private IEnumerator Update_CurrentVisual_Coroutine()
     {
         // active
-        if (_stationController.Food_Icon().hasFood)
+        if (stationController.Food_Icon().hasFood)
         {
             _light.intensity = _lightValue;
             _heatEmission.color = Color.white;
@@ -107,42 +94,19 @@ public class Oven : MonoBehaviour, IInteractable
         }
     }
 
-
-    // FoodIcon Position Update
-    private void Update_FoodIcon_Position(bool playerDetected)
+    private void FoodIcon_PositionToggle()
     {
-        if (playerDetected == true)
+        float posY = stationController.Food_Icon().transform.localPosition.y;
+
+        if (stationController.detection.player != null)
         {
-            _stationController.Food_Icon().transform.localPosition = new Vector2(0f, _stationController.Food_Icon().transform.localPosition.y);
+            stationController.Food_Icon().transform.localPosition = new Vector2(0f, posY);
+            stationController.Food_Icon().Show_Icon();
+            return;
         }
-        else
-        {
-            _stationController.Food_Icon().transform.localPosition = new Vector2(-0.5f, _stationController.Food_Icon().transform.localPosition.y);
-        }
-    }
 
-
-    //
-    public void Basic_SwapFood()
-    {
-        FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
-
-        // check if food exist
-        if (_stationController.Food_Icon().hasFood == false && playerFoodIcon.hasFood == false) return;
-
-        // swap data with player
-        _stationController.Food_Icon().Swap_Data(playerFoodIcon);
-
-        // show player food data
-        playerFoodIcon.Show_Icon();
-        playerFoodIcon.Show_Condition();
-
-        // show table food data
-        _stationController.Food_Icon().Show_Icon();
-        _stationController.Food_Icon().Show_Condition();
-
-        // sound
-        Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+        stationController.Food_Icon().transform.localPosition = new Vector2(-0.5f, posY);
+        stationController.Food_Icon().Hide_Icon();
     }
 
 
@@ -155,7 +119,7 @@ public class Oven : MonoBehaviour, IInteractable
             _heatCoroutine = null;
         }
 
-        if (_stationController.Food_Icon().hasFood == false) return;
+        if (stationController.Food_Icon().hasFood == false) return;
 
         Audio_Controller.instance.Play_OneShot("Oven_switch", transform.position);
 
@@ -163,7 +127,7 @@ public class Oven : MonoBehaviour, IInteractable
     }
     private IEnumerator Heat_Food_Coroutine()
     {
-        FoodData_Controller foodIcon = _stationController.Food_Icon();
+        FoodData_Controller foodIcon = stationController.Food_Icon();
 
         while (foodIcon.hasFood)
         {
@@ -173,8 +137,8 @@ public class Oven : MonoBehaviour, IInteractable
             foodIcon.Show_Condition();
 
             // durability
-            _stationController.data.Update_Durability(-1);
-            _stationController.maintenance.Update_DurabilityBreak();
+            stationController.data.Update_Durability(-1);
+            stationController.maintenance.Update_DurabilityBreak();
         }
     }
 }

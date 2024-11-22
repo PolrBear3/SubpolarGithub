@@ -88,6 +88,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
             _foodIcon.Hide_Icon();
             _foodIcon.Hide_Condition();
+            _foodIcon.Toggle_SubDataBar(false);
 
             return;
         }
@@ -96,5 +97,6 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
         _foodIcon.Show_Icon();
         _foodIcon.Show_Condition();
+        _foodIcon.Toggle_SubDataBar(true);
     }
 }

@@ -540,6 +540,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // destroy prefab for retrieve to slot
         _interactStation.Destroy_Station();
+        _controller.vehicleController.mainController.UnClaim_Position(_interactStation.transform.position);
 
         // retrieve
         if (currentSlot.data.hasItem == false)

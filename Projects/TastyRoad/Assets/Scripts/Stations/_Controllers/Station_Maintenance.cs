@@ -37,9 +37,9 @@ public class Station_Maintenance : MonoBehaviour
 
         if (currentDurability > 0) return;
 
+        _controller.mainController.UnClaim_Position(transform.position);
         OnDurabilityBreak?.Invoke();
 
-        _controller.mainController.UnClaim_Position(transform.position);
         _controller.Destroy_Station();
     }
 }
