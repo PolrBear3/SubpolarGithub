@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DropItem : MonoBehaviour, IInteractable
+public class FoodDrop : MonoBehaviour, IInteractable
 {
     private SpriteRenderer _sr;
 
     [Header("")]
     [SerializeField] private Detection_Controller _detection;
 
+    [SerializeField] private FoodData_Controller _foodIcon;
+    public FoodData_Controller foodIcon => _foodIcon;
+
     [Header("")]
     [SerializeField][Range(0, 100)] private int _destroyTikCount;
     private int _currentTikCount;
-
-
-    private ItemSlot_Data _itemData;
 
 
     // UnityEngine
@@ -25,12 +25,22 @@ public class DropItem : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        AmountBar_Toggle();
+
+        // subscriptions
         GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
+
+        _detection.EnterEvent += AmountBar_Toggle;
+        _detection.ExitEvent += AmountBar_Toggle;
     }
 
     private void OnDestroy()
     {
+        // subscriptions
         GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
+
+        _detection.EnterEvent -= AmountBar_Toggle;
+        _detection.ExitEvent -= AmountBar_Toggle;
     }
 
 
@@ -42,7 +52,7 @@ public class DropItem : MonoBehaviour, IInteractable
 
     public void Hold_Interact()
     {
-
+        Pickup_All();
     }
 
     public void UnInteract()
@@ -51,28 +61,42 @@ public class DropItem : MonoBehaviour, IInteractable
     }
 
 
-    // Set
-    public void Set_ItemData(ItemSlot_Data setData)
-    {
-        _itemData = new(setData);
-    }
-
-
-    // Functions
+    // Food Pickup
     private void Pickup()
     {
-        if (_itemData == null) return;
-
         FoodData_Controller playerIcon = _detection.player.foodIcon;
 
         if (playerIcon.DataCount_Maxed()) return;
 
-        playerIcon.Set_CurrentData(_itemData.foodData);
+        playerIcon.Set_CurrentData(_foodIcon.currentData);
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
         playerIcon.Toggle_SubDataBar(true);
 
+        _foodIcon.Set_CurrentData(null);
+        _foodIcon.Toggle_SubDataBar(true);
+
+        if (_foodIcon.hasFood) return;
         Destroy(gameObject);
+    }
+
+    private void Pickup_All()
+    {
+        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        int pickupAmount = _foodIcon.AllDatas().Count;
+
+        for (int i = 0; i < pickupAmount; i++)
+        {
+            if (playerIcon.DataCount_Maxed()) return;
+            Pickup();
+        }
+    }
+
+
+    // Others
+    private void AmountBar_Toggle()
+    {
+        _foodIcon.Toggle_SubDataBar(_detection.player != null);
     }
 
     private void Activate_DestroyTimeTik()

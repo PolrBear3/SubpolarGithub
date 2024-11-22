@@ -8,7 +8,7 @@ public class ItemDropper : MonoBehaviour
     private Main_Controller _main;
 
     [Header("")]
-    [SerializeField] private GameObject _dropItem;
+    [SerializeField] private GameObject _foodDrop;
     [SerializeField] private GameObject _collectCard;
 
     [Header("")]
@@ -34,6 +34,19 @@ public class ItemDropper : MonoBehaviour
 
 
     // All Drops Control
+    private GameObject SnapPosition_Spawn(GameObject spawnItem, Vector2 spawnPosition)
+    {
+        Vector2 spawnSnapPos = Main_Controller.SnapPosition(spawnPosition);
+
+        if (_main.Position_Claimed(spawnSnapPos)) return null;
+
+        GameObject itemGameObject = Instantiate(spawnItem, spawnSnapPos, Quaternion.identity);
+        itemGameObject.transform.SetParent(_main.otherFile);
+
+        return itemGameObject;
+    }
+
+
     private void Set_AllDropTypes()
     {
         _allDrops.Add(Drop_RandomFood);
@@ -47,27 +60,51 @@ public class ItemDropper : MonoBehaviour
 
 
     // Food Drop Control
-    public void Drop_Food(FoodData data)
+    public FoodDrop Drop_Food(FoodData dropData)
     {
-        if (data == null) return;
+        if (dropData == null) return null;
+        if (_coroutine != null) return null;
+
+        GameObject spawnItem = SnapPosition_Spawn(_foodDrop, transform.position);
+
+        if (spawnItem == null) return null;
+
+        FoodDrop foodDrop = spawnItem.GetComponent<FoodDrop>();
+        foodDrop.foodIcon.Set_CurrentData(dropData);
+
+        return foodDrop;
+    }
+
+    public void Drop_Food(FoodData dropData, int additionalAmount)
+    {
+        FoodDrop foodDrop = Drop_Food(dropData);
+
+        for (int i = 0; i < additionalAmount; i++)
+        {
+            foodDrop.foodIcon.Set_CurrentData(dropData);
+        }
+    }
+
+    public void Drop_Food(List<FoodData> dropDatas)
+    {
+        if (dropDatas == null) return;
+        if (dropDatas.Count <= 0) return;
+
         if (_coroutine != null) return;
 
-        if (_main.Position_Claimed(transform.position)) return;
+        GameObject spawnItem = SnapPosition_Spawn(_foodDrop, transform.position);
 
-        // spawn to nearest snap position
-        Vector2 spawnPos = Main_Controller.SnapPosition(transform.position);
-        GameObject itemGameObject = Instantiate(_dropItem, spawnPos, Quaternion.identity);
-        itemGameObject.transform.SetParent(_main.otherFile);
+        if (spawnItem == null) return;
 
         // set drop data
-        DropItem dropItem = itemGameObject.GetComponent<DropItem>();
-        FoodData dropData = new(data);
-
-        dropItem.Set_ItemData(new(dropData));
+        FoodDrop dropItem = spawnItem.GetComponent<FoodDrop>();
+        dropItem.foodIcon.Update_AllDatas(dropDatas);
     }
 
 
-    // Weighted
+    /// <returns>
+    /// random weighted food from _foodWeights
+    /// </returns>
     private Food_ScrObj Weighted_RandomFood()
     {
         // get total wieght
@@ -95,6 +132,9 @@ public class ItemDropper : MonoBehaviour
         return null;
     }
 
+    /// <returns>
+    /// random weighted food from targetFoods
+    /// </returns>
     private Food_ScrObj Weighted_RandomFood(List<FoodWeight_Data> targetFoods)
     {
         // get total wieght
@@ -146,20 +186,14 @@ public class ItemDropper : MonoBehaviour
     {
         if (_foodWeights.Length <= 0) return;
 
-        Drop_Food(new(Weighted_RandomFood()));
+        Drop_Food(new FoodData(Weighted_RandomFood()));
     }
 
     public void Drop_CollectCard()
     {
         if (_coroutine != null) return;
 
-        Transform playerTransform = _main.Player().transform;
-        Vector2 dropPosition = Main_Controller.SnapPosition(playerTransform.position);
-
-        if (_main.Position_Claimed(dropPosition)) return;
-
-        // spawn to nearest snap position
-        GameObject itemGameObject = Instantiate(_collectCard, dropPosition, Quaternion.identity);
-        itemGameObject.transform.SetParent(_main.otherFile);
+        SnapPosition_Spawn(_collectCard, _main.Player().transform.position);
     }
 }
+

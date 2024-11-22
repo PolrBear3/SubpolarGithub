@@ -176,8 +176,8 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-    private void Drop_CurrentFood()
+    public void Drop_CurrentFood()
     {
-        _stationController.itemDropper.Drop_Food(_stationController.Food_Icon().currentData);
+        _stationController.itemDropper.Drop_Food(_stationController.Food_Icon().AllDatas());
     }
 }

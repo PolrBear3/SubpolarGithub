@@ -25,8 +25,13 @@ public class NPC_Interaction : MonoBehaviour
     [Header("")]
     [SerializeField][Range(0, 100)] private int _defaultTimeLimit;
     [SerializeField][Range(0, 100)] private int _generosityMultiplier;
+
+    [Header("")]
     [SerializeField][Range(0, 100)] private float _itemDropRate;
     [SerializeField][Range(0, 100)] private float _collectCardDropRate;
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _dropAmountRange;
 
 
     private FoodData _servedFoodData;
@@ -444,6 +449,7 @@ public class NPC_Interaction : MonoBehaviour
         _goldCoinSR.color = Color.white;
     }
 
+
     // Food Served 
     private int Calculated_FoodScore()
     {
@@ -543,14 +549,15 @@ public class NPC_Interaction : MonoBehaviour
 
         ItemDropper dropper = _controller.itemDropper;
 
-        // check collect card drop rate
+        // collect card drop
         if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _collectCardDropRate))
         {
             dropper.Drop_CollectCard();
             return;
         }
 
-        // drop food
-        dropper.Drop_Food(new(dropper.Weighted_RandomFood(playerFood)));
+        // food drop
+        int dropAmount = Random.Range(1, _dropAmountRange + 1);
+        dropper.Drop_Food(new FoodData(dropper.Weighted_RandomFood(playerFood)), dropAmount);
     }
 }
