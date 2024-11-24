@@ -42,6 +42,7 @@ public class NPC_Interaction : MonoBehaviour
 
     private Coroutine _startTimeCoroutine;
     private Coroutine _timeLimitCoroutine;
+    private Coroutine _eatAnimCoroutine;
 
 
     // UnityEngine
@@ -54,13 +55,15 @@ public class NPC_Interaction : MonoBehaviour
     {
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
 
-        // _controller.itemDropper.Set_DropCount(Random.Range(0, 2));
-
         // subscriptions
         _controller.interactable.InteractEvent += Interact;
         _controller.interactable.UnInteractEvent += UnInteract;
 
+        _controller.interactable.OnHoldInteract += Interact_FacePlayer;
         _controller.interactable.OnHoldInteract += Exchange_Item;
+
+        _controller.interactable.detection.EnterEvent += Collect_Coin;
+        _controller.interactable.detection.ExitEvent += Collect_Coin;
     }
 
     private void OnDestroy()
@@ -69,8 +72,13 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.InteractEvent -= Interact;
         _controller.interactable.UnInteractEvent -= UnInteract;
 
+        _controller.interactable.OnHoldInteract -= Interact_FacePlayer;
         _controller.interactable.OnHoldInteract -= Exchange_Item;
+
         _controller.interactable.OnAction1Event -= Serve_FoodOrder;
+
+        _controller.interactable.detection.EnterEvent -= Collect_Coin;
+        _controller.interactable.detection.ExitEvent -= Collect_Coin;
     }
 
 
@@ -83,21 +91,6 @@ public class NPC_Interaction : MonoBehaviour
         if (FoodOrder_Served())
         {
             Collect_Coin();
-            Clear_Data();
-
-            // toss coin to player animation
-            Sprite coinSprite = _controller.mainController.dataController.goldenNugget.sprite;
-            Transform playerDirection = _controller.interactable.detection.player.transform;
-
-            _controller.itemLauncher.Parabola_CoinLaunch(coinSprite, playerDirection.position);
-
-            // leave current location
-            NPC_Movement move = _controller.movement;
-            SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
-
-            move.Update_RoamArea(currentLocation);
-            move.Leave(move.Random_IntervalTime());
-
             return;
         }
 
@@ -400,7 +393,7 @@ public class NPC_Interaction : MonoBehaviour
 
     private void Eat_Animation()
     {
-        StartCoroutine(Eat_Animation_Coroutine());
+        _eatAnimCoroutine = StartCoroutine(Eat_Animation_Coroutine());
     }
     private IEnumerator Eat_Animation_Coroutine()
     {
@@ -447,6 +440,9 @@ public class NPC_Interaction : MonoBehaviour
 
         // activate coin sprite
         _goldCoinSR.color = Color.white;
+
+        _eatAnimCoroutine = null;
+        yield break;
     }
 
 
@@ -491,16 +487,25 @@ public class NPC_Interaction : MonoBehaviour
 
     public void Collect_Coin()
     {
-        int leftOver = _controller.mainController.Add_GoldenNugget(_foodScore);
+        if (_eatAnimCoroutine != null) return;
+        if (FoodOrder_Served() == false) return;
 
-        // check if food menu slot is available
-        if (leftOver > 0)
-        {
-            _controller.mainController.Remove_GoldenNugget(leftOver);
-            return;
-        }
-
+        _controller.mainController.Add_GoldenNugget(_foodScore);
         _foodScore = 0;
+
+        // toss coin to player animation
+        Sprite coinSprite = _controller.mainController.dataController.goldenNugget.sprite;
+
+        _controller.itemLauncher.Parabola_CoinLaunch(coinSprite, transform.position);
+
+        // leave current location
+        NPC_Movement move = _controller.movement;
+        SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
+
+        move.Update_RoamArea(currentLocation);
+        move.Leave(move.Random_IntervalTime());
+
+        Clear_Data();
 
         // dialog update
         gameObject.GetComponent<DialogTrigger>().Update_Dialog();

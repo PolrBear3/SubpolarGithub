@@ -55,6 +55,15 @@ public class Oven : Table, IInteractable
         Update_CurrentVisual();
     }
 
+    public new void Hold_Interact()
+    {
+        base.Hold_Interact();
+        FoodIcon_PositionToggle();
+
+        Heat_Food();
+        Update_CurrentVisual();
+    }
+
 
     // Oven Visual Update
     private void Update_CurrentVisual()

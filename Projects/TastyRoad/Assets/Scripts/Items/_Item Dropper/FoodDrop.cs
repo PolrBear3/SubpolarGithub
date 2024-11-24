@@ -25,6 +25,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        _foodIcon.SetMax_SubDataCount(_foodIcon.AllDatas().Count);
         AmountBar_Toggle();
 
         // subscriptions
