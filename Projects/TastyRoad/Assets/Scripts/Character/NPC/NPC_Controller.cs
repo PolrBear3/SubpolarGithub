@@ -41,6 +41,9 @@ public class NPC_Controller : MonoBehaviour
     [SerializeField] private NPC_Interaction _interaction;
     public NPC_Interaction interaction => _interaction;
 
+    [SerializeField] private NPC_GiftSystem _giftSystem;
+    public NPC_GiftSystem giftSystem => _giftSystem;
+
 
     // UnityEngine
     private void Awake()
