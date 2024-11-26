@@ -121,7 +121,7 @@ public class FoodData_Controller : MonoBehaviour
     {
         _currentData = null;
 
-        if (_subDatas.Count > 0)
+        if (AllDatas().Count > 0)
         {
             _currentData = new FoodData(_subDatas[_subDatas.Count - 1]);
             _subDatas.RemoveAt(_subDatas.Count - 1);

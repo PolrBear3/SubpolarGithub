@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Stack_Table : Table, IInteractable
 {
@@ -89,5 +90,33 @@ public class Stack_Table : Table, IInteractable
 
         // sound
         Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+    }
+
+
+    public void Transfer_All()
+    {
+        FoodData_Controller stationIcon = stationController.Food_Icon();
+        if (stationIcon.hasFood == false) return;
+
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
+        if (playerIcon.DataCount_Maxed()) return;
+
+        int transferAmount = stationIcon.AllDatas().Count;
+
+        for (int i = 0; i < transferAmount; i++)
+        {
+            playerIcon.Set_CurrentData(stationIcon.currentData);
+            stationIcon.Set_CurrentData(null);
+
+            if (playerIcon.DataCount_Maxed()) break;
+        }
+
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
+
+        stationIcon.Show_Icon();
+        stationIcon.Show_Condition();
+        stationIcon.Toggle_SubDataBar(true);
     }
 }

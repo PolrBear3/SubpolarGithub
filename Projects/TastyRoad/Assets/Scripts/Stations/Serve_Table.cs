@@ -154,8 +154,8 @@ public class Serve_Table : Table, IInteractable
         if (Main_Controller.orderOpen == false || _currentNPC == null)
         {
             _foodOrderPreview.Set_CurrentData(null);
-            _foodOrderPreview.Show_Icon();
-            _foodOrderPreview.Show_Condition();
+            _foodOrderPreview.Hide_Icon();
+            _foodOrderPreview.Hide_Condition();
 
             return;
         }

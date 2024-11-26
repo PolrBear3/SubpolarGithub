@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlantBox : Stack_Table, IInteractable
@@ -23,6 +24,8 @@ public class PlantBox : Stack_Table, IInteractable
         }
 
         Update_Sprite();
+        stationController.detection.EnterEvent += Update_AmountBar;
+        stationController.detection.ExitEvent += Update_AmountBar;
 
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
@@ -30,11 +33,6 @@ public class PlantBox : Stack_Table, IInteractable
         if (foodIcon.currentData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
 
         _growthInProgress = true;
-
-        // subscriptions
-        stationController.detection.EnterEvent += Update_AmountBar;
-        stationController.detection.ExitEvent += Update_AmountBar;
-
         GlobalTime_Controller.TimeTik_Update += Update_Growth;
     }
 
@@ -57,16 +55,16 @@ public class PlantBox : Stack_Table, IInteractable
         Update_Sprite();
     }
 
-
-    // Gets
-    private bool Food_Plantable(Food_ScrObj checkFood)
+    public new void Hold_Interact()
     {
-        for (int i = 0; i < _plantableFoods.Length; i++)
-        {
-            if (checkFood != _plantableFoods[i]) continue;
-            return true;
-        }
-        return false;
+        if (_growthInProgress) return;
+        if (stationController.Food_Icon().hasFood == false) return;
+
+        // Harvest All
+        Transfer_All();
+
+        Update_Sprite();
+        Update_AmountBar();
     }
 
 
@@ -85,37 +83,46 @@ public class PlantBox : Stack_Table, IInteractable
     private void Update_AmountBar()
     {
         stationController.Food_Icon().amountBar.Toggle_BarColor(_growthInProgress);
-        stationController.Food_Icon().Toggle_AmountBar(stationController.detection.player != null);
+        stationController.Food_Icon().Toggle_SubDataBar(stationController.detection.player != null);
     }
 
 
     // Interact Functions
-    private void Plant()
+    private bool PlayerFood_Plantable()
     {
-        if (_growthInProgress == true) return;
+        if (_growthInProgress) return false;
 
         FoodData_Controller playerFoodIcon = stationController.mainController.Player().foodIcon;
 
         // check if player has food
-        if (playerFoodIcon.hasFood == false) return;
-
-        // check if player food is plantable
-        if (Food_Plantable(playerFoodIcon.currentData.foodScrObj) == false) return;
+        if (playerFoodIcon.hasFood == false) return false;
 
         // check if player food is rotten
-        if (playerFoodIcon.currentData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
+        if (playerFoodIcon.currentData.Current_ConditionData(FoodCondition_Type.rotten) == null) return false;
 
-        // check if food is not planted
+        // check _plantableFoods contain player food
+        for (int i = 0; i < _plantableFoods.Length; i++)
+        {
+            if (playerFoodIcon.currentData.foodScrObj != _plantableFoods[i]) continue;
+            return true;
+        }
+
+        return false;
+    }
+
+    private void Plant()
+    {
+        if (_growthInProgress == true) return;
+
         if (stationController.Food_Icon().hasFood == true) return;
 
-        // plant player food
-        Swap_Food();
+        if (PlayerFood_Plantable() == false) return;
 
         _growthInProgress = true;
         GlobalTime_Controller.TimeTik_Update += Update_Growth;
 
+        Swap_Food();
         Update_AmountBar();
-        stationController.Food_Icon().Show_AmountBar();
     }
 
 
@@ -123,41 +130,44 @@ public class PlantBox : Stack_Table, IInteractable
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
-        // increase amount +1
-        foodIcon.currentData.Update_Amount(1);
-        foodIcon.Show_AmountBar();
+        // increase amount +1 growth
+        foodIcon.Set_CurrentData(foodIcon.currentData);
 
         // check if growth complete
-        if (foodIcon.amountBar.Is_MaxAmount())
+        if (foodIcon.DataCount_Maxed() == false) return;
+
+        // remove rotten state
+        for (int i = 0; i < foodIcon.AllDatas().Count; i++)
         {
-            // remove rotten state
-            foodIcon.currentData.Clear_Condition(FoodCondition_Type.rotten);
-            foodIcon.Show_Condition();
-
-            // stop growth
-            _growthInProgress = false;
-            GlobalTime_Controller.TimeTik_Update -= Update_Growth;
-
-            Update_AmountBar();
-            foodIcon.Show_AmountBar();
+            foodIcon.AllDatas()[i].Clear_Condition(FoodCondition_Type.rotten);
         }
+        foodIcon.Show_Condition();
+
+        // stop growth
+        _growthInProgress = false;
+        GlobalTime_Controller.TimeTik_Update -= Update_Growth;
+
+        Update_AmountBar();
     }
 
     private void Harvest()
     {
-        if (_growthInProgress == true) return;
+        if (_growthInProgress) return;
+
+        FoodData_Controller stationFoodIcon = stationController.Food_Icon();
+        if (stationFoodIcon.hasFood == false) return;
 
         FoodData_Controller playerFoodIcon = stationController.mainController.Player().foodIcon;
+        if (playerFoodIcon.DataCount_Maxed()) return;
 
-        if (playerFoodIcon.hasFood == true) return;
-        // give player food
-        Swap_Food();
+        playerFoodIcon.Set_CurrentData(stationFoodIcon.currentData);
+        playerFoodIcon.Show_Icon();
+        playerFoodIcon.Show_Condition();
+        playerFoodIcon.Toggle_SubDataBar(true);
 
-        FoodData_Controller foodIcon = stationController.Food_Icon();
-
-        if (foodIcon.hasFood == true) return;
-
-        _growthInProgress = false;
-        GlobalTime_Controller.TimeTik_Update -= Update_Growth;
+        stationFoodIcon.Set_CurrentData(null);
+        stationFoodIcon.Show_Icon();
+        stationFoodIcon.Show_Condition();
+        stationFoodIcon.Toggle_SubDataBar(true);
     }
 }

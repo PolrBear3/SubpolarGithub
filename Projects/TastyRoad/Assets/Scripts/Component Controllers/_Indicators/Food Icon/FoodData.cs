@@ -158,17 +158,6 @@ public class FoodData
     }
 
 
-    public FoodCondition_Data Current_ConditionData(FoodCondition_Type targetCondition)
-    {
-        for (int i = 0; i < _conditionDatas.Count; i++)
-        {
-            if (_conditionDatas[i].type != targetCondition) continue;
-            return _conditionDatas[i];
-        }
-
-        return null;
-    }
-
     public int Conditions_MatchCount(List<FoodCondition_Data> conditionsToCompare)
     {
         int matchCount = 0;
@@ -186,5 +175,16 @@ public class FoodData
         }
 
         return matchCount;
+    }
+
+    public FoodCondition_Data Current_ConditionData(FoodCondition_Type targetCondition)
+    {
+        for (int i = 0; i < _conditionDatas.Count; i++)
+        {
+            if (_conditionDatas[i].type != targetCondition) continue;
+            return _conditionDatas[i];
+        }
+
+        return null;
     }
 }
