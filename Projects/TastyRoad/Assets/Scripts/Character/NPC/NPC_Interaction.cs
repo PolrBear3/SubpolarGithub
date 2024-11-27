@@ -26,13 +26,6 @@ public class NPC_Interaction : MonoBehaviour
     [SerializeField][Range(0, 100)] private int _defaultTimeLimit;
     [SerializeField][Range(0, 100)] private int _generosityMultiplier;
 
-    [Header("")]
-    [SerializeField][Range(0, 100)] private float _itemDropRate;
-    [SerializeField][Range(0, 100)] private float _collectCardDropRate;
-
-    [Header("")]
-    [SerializeField][Range(0, 100)] private int _dropAmountRange;
-
 
     private FoodData _servedFoodData;
     public FoodData servedFoodData => _servedFoodData;
@@ -60,7 +53,6 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.UnInteractEvent += UnInteract;
 
         _controller.interactable.OnHoldInteract += Interact_FacePlayer;
-        _controller.interactable.OnHoldInteract += Exchange_Item;
 
         _controller.interactable.detection.EnterEvent += Collect_Coin;
         _controller.interactable.detection.ExitEvent += Collect_Coin;
@@ -73,7 +65,6 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.UnInteractEvent -= UnInteract;
 
         _controller.interactable.OnHoldInteract -= Interact_FacePlayer;
-        _controller.interactable.OnHoldInteract -= Exchange_Item;
 
         _controller.interactable.OnAction1Event -= Serve_FoodOrder;
 
@@ -522,47 +513,5 @@ public class NPC_Interaction : MonoBehaviour
 
         // hide coin sprite
         _goldCoinSR.color = Color.clear;
-    }
-
-
-    // Exchange Item
-    private void Exchange_Item()
-    {
-        // check if item drop activated
-        if (_controller.itemDropper.enabled == false) return;
-
-        // check if food serve waiting
-        if (_controller.foodIcon.hasFood) return;
-
-        Player_Controller player = _controller.interactable.detection.player;
-        FoodData_Controller playerFoodIcon = player.foodIcon;
-
-        if (playerFoodIcon.hasFood == false) return;
-        Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
-
-        // remove player current food
-        playerFoodIcon.Set_CurrentData(null);
-        playerFoodIcon.Show_Icon();
-        playerFoodIcon.Toggle_SubDataBar(true);
-        playerFoodIcon.Show_Condition();
-
-        // disable item dropper
-        _controller.itemDropper.enabled = false;
-
-        // check drop rate
-        if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _itemDropRate) == false) return;
-
-        ItemDropper dropper = _controller.itemDropper;
-
-        // collect card drop
-        if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _collectCardDropRate))
-        {
-            dropper.Drop_CollectCard();
-            return;
-        }
-
-        // food drop
-        int dropAmount = Random.Range(1, _dropAmountRange + 1);
-        dropper.Drop_Food(new FoodData(dropper.Weighted_RandomFood(playerFood)), dropAmount);
     }
 }

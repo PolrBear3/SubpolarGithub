@@ -85,7 +85,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -530,9 +530,6 @@ MonoBehaviour:
   _animTransitionTime: 1
   _defaultTimeLimit: 5
   _generosityMultiplier: 10
-  _itemDropRate: 50
-  _collectCardDropRate: 10
-  _dropAmountRange: 6
 --- !u!114 &2236639740272532679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,9 +545,10 @@ MonoBehaviour:
   _controller: {fileID: 9094981842974887859}
   _giftCoolTimeBar: {fileID: 1374478154645333820}
   _coolTimeBar: {fileID: 3728074003904613383}
-  _itemDropRate: 0
-  _collectCardDropRate: 0
-  _dropAmountRange: 0
+  _itemDropRate: 50
+  _collectCardDropRate: 10
+  _dropCoolTime: 3
+  _dropAmountRange: 3
 --- !u!1 &9180975415276054669
 GameObject:
   m_ObjectHideFlags: 0

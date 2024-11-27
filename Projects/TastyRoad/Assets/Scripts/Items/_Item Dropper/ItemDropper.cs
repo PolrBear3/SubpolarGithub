@@ -163,7 +163,7 @@ public class ItemDropper : MonoBehaviour
     }
 
     /// <returns>
-    /// random weighted food that is higher price than compareFood. Also excludes compareFood.
+    /// random weighted food that is higher price than compareFood.
     /// </returns>
     public Food_ScrObj Weighted_RandomFood(Food_ScrObj compareFood)
     {
@@ -176,6 +176,12 @@ public class ItemDropper : MonoBehaviour
 
             targetFoods.Add(_foodWeights[i]);
         }
+
+        // return compareFood for highest priced null item
+        if (targetFoods.Count <= 0) return compareFood;
+
+        // return all random for highest priced null item
+        if (targetFoods.Count <= 0) return Weighted_RandomFood();
 
         return Weighted_RandomFood(targetFoods);
     }
