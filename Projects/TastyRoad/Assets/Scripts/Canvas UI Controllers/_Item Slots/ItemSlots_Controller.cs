@@ -57,7 +57,7 @@ public class ItemSlots_Controller : MonoBehaviour
     }
 
 
-    // Current Slot
+    // Current Slots
     public ItemSlot ItemSlot(Vector2 gridNum)
     {
         for (int i = 0; i < _itemSlots.Count; i++)

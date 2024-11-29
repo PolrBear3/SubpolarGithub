@@ -14,6 +14,7 @@ public class RetrieveBox : Stack_Table, IInteractable
         Sprite_Update();
 
         // subscriptions
+        StationMenu_Controller menu = stationController.mainController.currentVehicle.menu.stationMenu;
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent += AmountBar_Toggle;
@@ -23,8 +24,10 @@ public class RetrieveBox : Stack_Table, IInteractable
     private new void OnDestroy()
     {
         Retrieve_CurrentFood();
+        Remove_onRetrieve();
 
         // subscriptions
+        StationMenu_Controller menu = stationController.mainController.currentVehicle.menu.stationMenu;
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent -= AmountBar_Toggle;
@@ -105,5 +108,21 @@ public class RetrieveBox : Stack_Table, IInteractable
 
         // station retrieve restriction
         stationMenu.Remove_StationItem(stationController.stationScrObj, 1);
+    }
+
+    private void Remove_onRetrieve()
+    {
+        if (stationController.Food_Icon().hasFood == false) return;
+
+        StationMenu_Controller menu = stationController.mainController.currentVehicle.menu.stationMenu;
+        List<ItemSlot> currentSlots = menu.controller.slotsController.itemSlots;
+
+        for (int i = 0; i < currentSlots.Count; i++)
+        {
+            if (currentSlots[i].data.StationData_Match(stationController.data) == false) continue;
+
+            currentSlots[i].Empty_ItemBox();
+            return;
+        }
     }
 }

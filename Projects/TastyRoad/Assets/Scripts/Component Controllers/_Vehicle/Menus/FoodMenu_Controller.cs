@@ -10,16 +10,18 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private VehicleMenu_Controller _controller;
     public VehicleMenu_Controller controller => _controller;
 
+    [Header("")]
+    [SerializeField] private Station_ScrObj _foodBox;
+    [SerializeField] private Transform[] _exportIndicators;
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _maxExportAmount;
+
 
     private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
     public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
 
     private int _currentPageNum;
-
-
-    [Header("")]
-    [SerializeField] private Station_ScrObj _foodBox;
-    [SerializeField] private Transform[] _exportIndicators;
 
 
     // Editor
@@ -45,6 +47,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnCursor_Input += InfoBox_Update;
         _controller.OnSelect_Input += InfoBox_Update;
+        _controller.OnHoldEmptySelect_Input += InfoBox_Update;
         _controller.OnOption1_Input += InfoBox_Update;
         _controller.OnOption2_Input += InfoBox_Update;
 
@@ -69,6 +72,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnCursor_Input -= InfoBox_Update;
         _controller.OnSelect_Input -= InfoBox_Update;
+        _controller.OnHoldEmptySelect_Input -= InfoBox_Update;
         _controller.OnOption1_Input -= InfoBox_Update;
         _controller.OnOption2_Input -= InfoBox_Update;
 
@@ -220,6 +224,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         string controlInfo = info.UIControl_Template(action1, "Drag 1 amount", "Export");
 
         info.Update_InfoText(amountInfo + "\n\n" + controlInfo);
+
+        _controller.infoBox.gameObject.SetActive(true);
     }
 
     private void CurrentSlots_PageUpdate()
@@ -492,7 +498,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // if there are enough space to spawn food box
         if (Available_ExportPositions().Count <= 0)
         {
-            // dialog //
+            // dialog ?
 
             Drag_Cancel();
             return;
@@ -513,18 +519,18 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         station.Food_Icon().Show_Icon();
 
         // assign exported food amount according to dragging amount
-        if (currentCursorData.currentAmount >= 6)
+        if (currentCursorData.currentAmount >= _maxExportAmount)
         {
             // max amount
-            station.Food_Icon().currentData.Set_Amount(6);
-            _controller.slotsController.cursor.data.Assign_Amount(currentCursorData.currentAmount - 6);
+            station.Food_Icon().currentData.Set_Amount(_maxExportAmount);
+            _controller.slotsController.cursor.data.Assign_Amount(currentCursorData.currentAmount - _maxExportAmount);
+
+            return;
         }
-        else
-        {
-            // bellow max amount
-            station.Food_Icon().currentData.Set_Amount(currentCursorData.currentAmount);
-            _controller.slotsController.cursor.Empty_Item();
-        }
+
+        // bellow max amount
+        station.Food_Icon().currentData.Set_Amount(currentCursorData.currentAmount);
+        _controller.slotsController.cursor.Empty_Item();
     }
 }
 

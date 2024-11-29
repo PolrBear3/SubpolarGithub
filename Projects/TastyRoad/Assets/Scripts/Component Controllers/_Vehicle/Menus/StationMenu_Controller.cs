@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
@@ -14,11 +15,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private int _currentPageNum;
     public int currentPageNum => _currentPageNum;
 
-    [Header("")]
+    private int _targetNum;
     private bool _interactionMode;
     private Station_Controller _interactStation;
-
-    private int _targetNum;
 
 
     // Editor
@@ -53,8 +52,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         // save current dragging item before menu close
         Drag_Cancel();
-        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
+        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
         _controller.vehicleController.interactArea.gameObject.SetActive(false);
 
         // subscriptions
@@ -533,45 +532,37 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (_interactionMode == false) return;
 
+        Main_Controller main = _controller.vehicleController.mainController;
+
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
         StationData interactStationData = new(_interactStation.data);
 
-        // destroy prefab for retrieve to slot
-        _interactStation.Destroy_Station();
-        _controller.vehicleController.mainController.UnClaim_Position(_interactStation.transform.position);
+        main.UnClaim_Position(_interactStation.transform.position);
 
-        // retrieve
-        if (currentSlot.data.hasItem == false)
+        // swap station
+        if (currentSlot.data.hasItem)
         {
-            currentSlot.Assign_Data(new(interactStationData));
-            currentSlot.Update_SlotIcon();
-
-            currentSlot.data.Update_StationData(interactStationData);
-        }
-        // swap
-        else
-        {
-            Main_Controller main = _controller.vehicleController.mainController;
-
-            // exporting station
             Station_Controller exportStation = main.Spawn_Station(currentSlot.data.currentStation, _interactStation.transform.position);
             exportStation.movement.Load_Position();
-
-            // retrieving station
-            currentSlot.Assign_Data(new(interactStationData));
-            currentSlot.Update_SlotIcon();
         }
+
+        // retrieving station
+        currentSlot.Assign_Data(new(interactStationData));
+        currentSlot.Update_SlotIcon();
+        currentSlot.data.Update_StationData(interactStationData);
+
+        _interactStation.Destroy_Station();
 
         // empty cursor
         cursor.Assign_Data(new());
 
-        _interactionMode = false;
         _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
         _controller.OnOption1_Input -= Retrieve_StationPrefab;
         _controller.OnExit_Input -= Cancel_Retrieve;
 
+        _interactionMode = false;
         _interactStation = null;
     }
 

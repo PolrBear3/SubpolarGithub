@@ -88,6 +88,11 @@ public class ItemSlot_Data
     }
 
 
+    public bool FoodData_Match(FoodData compareData)
+    {
+        return false;
+    }
+
     public void Update_FoodData(FoodData data)
     {
         if (data == null)
@@ -100,6 +105,18 @@ public class ItemSlot_Data
 
         _foodData = new(data);
         _currentFood = _foodData.foodScrObj;
+    }
+
+
+    public bool StationData_Match(StationData compareData)
+    {
+        if (_stationData == null || compareData == null) return false;
+
+        if (_stationData.stationScrObj != compareData.stationScrObj) return false;
+        if (_stationData.position != compareData.position) return false;
+        if (_stationData.durability != compareData.durability) return false;
+
+        return true;
     }
 
     public void Update_StationData(StationData data)

@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1440
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 327
+  controlID: 29
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 328
+  controlID: 30
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -164,8 +164,8 @@ MonoBehaviour:
     y: 0
     width: 1744
     height: 994
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 238
+  controlID: 31
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -217,8 +217,8 @@ MonoBehaviour:
     y: 0
     width: 555
     height: 396
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -270,8 +270,8 @@ MonoBehaviour:
     y: 0
     width: 816
     height: 1390
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -325,7 +325,7 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/Characters
+    - Assets/Scripts/Character/NPC/_Shop NPC
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -333,16 +333,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 44
   m_LastFolders:
-  - Assets/Prefabs/Characters
+  - Assets/Scripts/Character/NPC/_Shop NPC
   m_LastFoldersGridSize: 44
   m_LastProjectPath: /Users/larrydarrell/SubpolarGithub/Projects/TastyRoad
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 33}
-    m_SelectedIDs: caaf0000
-    m_LastClickedID: 45002
-    m_ExpandedIDs: 000000006caf00006eaf000070af000072af000074af000076af000078af00007aaf00007caf00007eaf000080af000082af000084af000086af000088af00008aaf00008caf00008eaf000090af000092af000094af000096af000098af00009aaf00009caf00009eaf0000
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 84b00000
+    m_LastClickedID: 45188
+    m_ExpandedIDs: 00000000beaf0000c0af0000c2af0000c4af0000c6af0000c8af0000caaf0000ccaf0000ceaf0000d0af0000d2af0000d4af0000d6af0000d8af0000daaf0000dcaf0000deaf0000e0af0000e2af0000e4af0000e6af0000e8af0000eaaf0000eeaf0000f0af000024b000002eb0000086b00000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -370,7 +370,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000006caf00006eaf000070af000072af000074af000076af000078af00007aaf00007caf00007eaf000080af000082af000084af000086af000088af00008aaf00008caf00008eaf000090af000092af000094af000096af000098af00009aaf00009caf00009eaf0000a0af0000
+    m_ExpandedIDs: 00000000beaf0000c0af0000c2af0000c4af0000c6af0000c8af0000caaf0000ccaf0000ceaf0000d0af0000d2af0000d4af0000d6af0000d8af0000daaf0000dcaf0000deaf0000e0af0000e2af0000e4af0000e6af0000e8af0000eaaf0000ecaf0000eeaf0000f0af0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: -2.5532339, y: -0.4930788, z: -9.918688}
     speed: 2
-    m_Value: {x: 0.3431428, y: 1.536877, z: -0.0059657563}
+    m_Value: {x: -2.5532339, y: -0.4930788, z: -9.918688}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -823,7 +823,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 5.152615
     speed: 2
-    m_Value: 3.8657672
+    m_Value: 5.152615
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -870,8 +870,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 980
-    height: 586.5
+    width: 1743
+    height: 973
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -890,7 +890,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 980, y: 551}
+  m_TargetSize: {x: 1692, y: 952}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -905,10 +905,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -490
-    m_HBaseRangeMax: 490
-    m_VBaseRangeMin: -275.5
-    m_VBaseRangeMax: 275.5
+    m_HBaseRangeMin: -846
+    m_HBaseRangeMax: 846
+    m_VBaseRangeMin: -476
+    m_VBaseRangeMax: 476
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -926,23 +926,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 980
-      height: 565.5
+      width: 1743
+      height: 952
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 490, y: 282.75}
+    m_Translation: {x: 871.5, y: 476}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -490
-      y: -282.75
-      width: 980
-      height: 565.5
+      x: -871.5
+      y: -476
+      width: 1743
+      height: 952
     m_MinimalGUI: 1
   m_defaultScale: 1
-  m_LastWindowPixelSize: {x: 980, y: 586.5}
+  m_LastWindowPixelSize: {x: 1743, y: 973}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -1139,10 +1139,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
+      scrollPos: {x: 0, y: 158}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: ecf9ffff
+      m_ExpandedIDs: 6e34f7ff04fafffffaa1000094a40000f8a4000040a50000d2a500006ea60000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1283,7 +1283,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 47152
+  m_LastSelectedObjectID: 42102
 --- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
