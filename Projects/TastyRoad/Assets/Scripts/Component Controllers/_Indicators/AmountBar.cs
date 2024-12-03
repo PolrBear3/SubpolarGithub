@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,10 @@ public class AmountBar : MonoBehaviour
 
     private bool _toggledOn;
     public bool toggledOn => _toggledOn;
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _maxAmount;
+    public int maxAmount => _maxAmount;
 
     [Header("")]
     [SerializeField] private bool _toggleLocked;
@@ -42,25 +47,19 @@ public class AmountBar : MonoBehaviour
     public void Set_Amount(int setAmount)
     {
         _currentAmount = setAmount;
-
-        if (_currentAmount >= 0) return;
-
-        _currentAmount = 0;
+        _currentAmount = Mathf.Clamp(_currentAmount, 0, _maxAmount);
     }
 
     public void Update_Amount(int updateAmount)
     {
         _currentAmount += updateAmount;
-
-        if (_currentAmount >= 0) return;
-
-        _currentAmount = 0;
+        _currentAmount = Mathf.Clamp(_currentAmount, 0, _maxAmount);
     }
 
 
     public bool Is_MaxAmount()
     {
-        return _currentAmount >= _amountBarSprites.Length;
+        return _currentAmount >= _maxAmount;
     }
 
 
@@ -70,6 +69,9 @@ public class AmountBar : MonoBehaviour
     }
     public void Load(int loadAmount)
     {
+        int spriteIndex = Mathf.FloorToInt((float)currentAmount / maxAmount * (_amountBarSprites.Length - 1));
+        spriteIndex = Mathf.Clamp(spriteIndex, 0, _amountBarSprites.Length - 1);
+
         _sr.sprite = _amountBarSprites[Mathf.Clamp(loadAmount, 0, _amountBarSprites.Length - 1)];
     }
 

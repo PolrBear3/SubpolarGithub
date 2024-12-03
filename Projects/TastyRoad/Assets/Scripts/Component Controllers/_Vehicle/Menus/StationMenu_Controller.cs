@@ -165,7 +165,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 if (_currentDatas[i][j].hasItem == false) continue;
                 if (station != _currentDatas[i][j].currentStation) continue;
 
-                _currentDatas[i][j] = new();
+                Debug.Log(station + " remove complete!");
+                _currentDatas[i][j].Empty_Item();
             }
         }
     }
@@ -184,7 +185,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 if (_currentDatas[i][j].hasItem == false) continue;
                 if (station != _currentDatas[i][j].currentStation) continue;
 
-                _currentDatas[i][j] = new();
+                _currentDatas[i][j].Empty_Item();
                 repeatAmount--;
 
                 if (repeatAmount <= 0) return;
@@ -636,7 +637,7 @@ public class StationMenu_Controller_Inspector : Editor
 
         if (GUILayout.Button("Remove Station"))
         {
-            menu.Remove_StationItem(editStation, 1);
+            menu.Remove_StationItem(editStation);
         }
 
         serializedObject.ApplyModifiedProperties();

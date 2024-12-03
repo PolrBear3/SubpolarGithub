@@ -14,6 +14,9 @@ public class StationData
     [SerializeField][ES3Serializable] private int _durability;
     public int durability => _durability;
 
+    [SerializeField][ES3Serializable] private int _amount;
+    public int amount => _amount;
+
 
     // Constructors
     public StationData(StationData data)
@@ -25,10 +28,10 @@ public class StationData
         _durability = data.durability;
     }
 
-    public StationData(Station_ScrObj stationScrObj)
+    public StationData(Station_ScrObj station)
     {
-        _stationScrObj = stationScrObj;
-        _durability = stationScrObj.durability;
+        _stationScrObj = station;
+        _durability = station.durability;
     }
 
     public StationData(Station_ScrObj station, Vector2 position)
@@ -36,6 +39,12 @@ public class StationData
         _stationScrObj = station;
         _position = position;
         _durability = station.durability;
+    }
+
+    public StationData(Station_ScrObj station, int amount)
+    {
+        _stationScrObj = station;
+        _amount = amount;
     }
 
 
@@ -48,5 +57,17 @@ public class StationData
     public void Update_Durability(int updateValue)
     {
         _durability += updateValue;
+    }
+
+
+    // Amount Control
+    public void Set_Amount(int setValue)
+    {
+        _amount = setValue;
+    }
+
+    public void Update_Amount(int updateValue)
+    {
+        _amount += updateValue;
     }
 }

@@ -21,6 +21,9 @@ public class Station_ScrObj : ScriptableObject
     public int id;
 
     [Header("")]
-    public int price;
-    public int durability;
+    [Range(0, 100)] public int price;
+    [Range(0, 100)] public int buildToArchiveCount;
+
+    [Header("")]
+    [Range(0, 100)] public int durability;
 }

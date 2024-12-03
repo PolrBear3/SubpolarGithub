@@ -316,7 +316,9 @@ MonoBehaviour:
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Currently building a blueprint station on an empty purchase stock.
   - icon: {fileID: -842560820, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Not enough scraps available!
+    info: A full scrap amount is required to build a blueprint station!
+  - icon: {fileID: 1586993584, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: The scrap amount is at full capacity!
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,6 +367,7 @@ MonoBehaviour:
   _timer: {fileID: 0}
   _movement: {fileID: 2978574373251596411}
   _interaction: {fileID: 0}
+  _giftSystem: {fileID: 0}
 --- !u!114 &2978574373251596411
 MonoBehaviour:
   m_ObjectHideFlags: 0
