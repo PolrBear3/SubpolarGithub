@@ -28,13 +28,13 @@ public class LocationData
     [SerializeField] private AnimatorOverrideController[] _npcSkinOverrides;
     public AnimatorOverrideController[] npcSkinOverrides => _npcSkinOverrides;
 
+    [Header("")]
+    [SerializeField] private StationWeight_Data[] _stationDrops;
+    public StationWeight_Data[] stationDrops => _stationDrops;
 
-    public LocationData()
-    {
 
-    }
-
-    public LocationData (LocationData data)
+    // Constructors
+    public LocationData(LocationData data)
     {
         locationScrObj = data.locationScrObj;
 
@@ -44,5 +44,33 @@ public class LocationData
         spawnIntervalTimeRange = data.spawnIntervalTimeRange;
 
         maxSpawnTimePoints = data.maxSpawnTimePoints;
+    }
+
+
+    // Data
+    public Station_ScrObj WeightRandom_Station()
+    {
+        // get total wieght
+        float totalWeight = 0;
+
+        foreach (StationWeight_Data data in _stationDrops)
+        {
+            totalWeight += data.weight;
+        }
+
+        // track values
+        float randValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0;
+
+        // get random according to weight
+        for (int i = 0; i < _stationDrops.Length; i++)
+        {
+            cumulativeWeight += _stationDrops[i].weight;
+
+            if (randValue >= cumulativeWeight) continue;
+            return _stationDrops[i].stationScrObj;
+        }
+
+        return null;
     }
 }

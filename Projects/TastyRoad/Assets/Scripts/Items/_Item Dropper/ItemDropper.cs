@@ -15,9 +15,6 @@ public class ItemDropper : MonoBehaviour
     [SerializeField] private FoodWeight_Data[] _foodWeights;
 
 
-    public delegate void Event();
-    public List<Event> _allDrops = new();
-
     private Coroutine _coroutine;
 
 
@@ -25,11 +22,6 @@ public class ItemDropper : MonoBehaviour
     private void Awake()
     {
         _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
-
-    private void Start()
-    {
-        Set_AllDropTypes();
     }
 
 
@@ -44,18 +36,6 @@ public class ItemDropper : MonoBehaviour
         itemGameObject.transform.SetParent(_main.otherFile);
 
         return itemGameObject;
-    }
-
-
-    private void Set_AllDropTypes()
-    {
-        _allDrops.Add(Drop_RandomFood);
-        _allDrops.Add(Drop_CollectCard);
-    }
-
-    public void Drop_Random()
-    {
-        _allDrops[Random.Range(0, _allDrops.Count)]?.Invoke();
     }
 
 
@@ -195,11 +175,13 @@ public class ItemDropper : MonoBehaviour
         Drop_Food(new FoodData(Weighted_RandomFood()));
     }
 
-    public void Drop_CollectCard()
+    public CollectCard Drop_CollectCard()
     {
-        if (_coroutine != null) return;
+        if (_coroutine != null) return null;
 
-        SnapPosition_Spawn(_collectCard, _main.Player().transform.position);
+        GameObject spawnObject = SnapPosition_Spawn(_collectCard, _main.Player().transform.position);
+
+        return spawnObject.GetComponent<CollectCard>();
     }
 }
 

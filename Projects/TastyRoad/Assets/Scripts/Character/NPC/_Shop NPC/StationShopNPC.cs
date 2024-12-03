@@ -281,6 +281,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         return null;
     }
 
+
     private Station_ScrObj NonDuplicate_Station()
     {
         if (_archiveDatas.Count <= 0) return null;
@@ -301,6 +302,34 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             }
 
             return randStation;
+        }
+
+        return null;
+    }
+
+    private Station_ScrObj WeightRandom_Station()
+    {
+        // get total wieght
+        float totalWeight = 0;
+
+        foreach (StationData data in _archiveDatas)
+        {
+            float dataWeight = data.amount / data.stationScrObj.buildToArchiveCount;
+            totalWeight += dataWeight;
+        }
+
+        // track values
+        float randValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0;
+
+        // get random according to weight
+        for (int i = 0; i < _archiveDatas.Count; i++)
+        {
+            float dataWeight = _archiveDatas[i].amount / _archiveDatas[i].stationScrObj.buildToArchiveCount;
+            cumulativeWeight += dataWeight;
+
+            if (randValue >= cumulativeWeight) continue;
+            return _archiveDatas[i].stationScrObj;
         }
 
         return null;
@@ -553,19 +582,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Restock_New()
     {
-        List<StationData> archivedStations = new(_archiveDatas);
-
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (archivedStations.Count <= 0) break;
-
-            int randIndex = Random.Range(0, archivedStations.Count);
-            Station_ScrObj randStation = archivedStations[randIndex].stationScrObj;
-
-            _stationStocks[i].Restock(randStation);
+            _stationStocks[i].Restock(WeightRandom_Station());
             _stationStocks[i].Toggle_Discount(false);
-
-            archivedStations.RemoveAt(randIndex);
         }
     }
 

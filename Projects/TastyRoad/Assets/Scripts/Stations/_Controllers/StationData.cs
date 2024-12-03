@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+public struct StationWeight_Data
+{
+    public Station_ScrObj stationScrObj;
+    [Range(0, 100)] public int weight;
+
+    public StationWeight_Data(Station_ScrObj stationScrObj, int weight)
+    {
+        this.stationScrObj = stationScrObj;
+        this.weight = weight;
+    }
+}
+
+[System.Serializable]
 public class StationData
 {
     [SerializeField][ES3Serializable] private Station_ScrObj _stationScrObj;
