@@ -290,14 +290,17 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         while (archivedStations.Count > 0)
         {
             int randIndex = Random.Range(0, archivedStations.Count);
+            Station_ScrObj randStation = archivedStations[randIndex].stationScrObj;
 
-            if (DuplicateAmount_Stocked(archivedStations[randIndex].stationScrObj))
+            bool buildCountMax = archivedStations[randIndex].amount >= randStation.buildToArchiveCount;
+
+            if (DuplicateAmount_Stocked(randStation) || buildCountMax == false)
             {
                 archivedStations.RemoveAt(randIndex);
                 continue;
             }
 
-            return archivedStations[randIndex].stationScrObj;
+            return randStation;
         }
 
         return null;
