@@ -69,6 +69,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent += Interact_FacePlayer;
 
         _interactable.detection.EnterEvent += Toggle_RestockBar;
+        _interactable.detection.ExitEvent += Toggle_RestockBar;
+
         _interactable.InteractEvent += Toggle_RestockBar;
         _interactable.UnInteractEvent += Toggle_RestockBar;
 
@@ -95,6 +97,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.InteractEvent -= Interact_FacePlayer;
 
         _interactable.detection.EnterEvent -= Toggle_RestockBar;
+        _interactable.detection.ExitEvent -= Toggle_RestockBar;
+
         _interactable.InteractEvent -= Toggle_RestockBar;
         _interactable.UnInteractEvent -= Toggle_RestockBar;
 
@@ -174,6 +178,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         if (bubble.bubbleOn) return;
 
+        _restockBar.Toggle_BarColor(_currentRestockCount >= _restockCount);
         _restockBar.Load_Custom(_restockCount, _currentRestockCount);
         _restockBar.Toggle(true);
     }
@@ -437,6 +442,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // increase scrap stack amount
         _scrapStack.amountBar.Update_Amount(_disposeScrapAmount);
+        _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
         _scrapStack.amountBar.Load();
         _scrapStack.Update_CurrentSprite();
 
@@ -528,6 +534,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             // collect scrap
             _scrapStack.amountBar.Set_Amount(0);
+            _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
             _scrapStack.amountBar.Load();
             _scrapStack.Update_CurrentSprite();
 
@@ -631,6 +638,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             // collect scrap
             _scrapStack.amountBar.Update_Amount(-1);
+            _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
             _scrapStack.amountBar.Load();
             _scrapStack.Update_CurrentSprite();
 

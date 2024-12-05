@@ -431,13 +431,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         return newFood;
     }
-    private void Add_toUnlockData(List<Food_ScrObj> foods)
-    {
-        foreach (Food_ScrObj food in foods)
-        {
-            Add_toUnlockData(food);
-        }
-    }
 
 
     // Basics
@@ -599,6 +592,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         if (bubble.bubbleOn) return;
 
+        _restockBar.Toggle_BarColor(_currentRestockCount >= _restockCount);
         _restockBar.Load_Custom(_restockCount, _currentRestockCount);
         _restockBar.Toggle(true);
     }

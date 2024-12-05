@@ -24,11 +24,13 @@ public class GasPump : MonoBehaviour
     {
         Update_ActionBubble_Icon();
 
+        _amountBar.Set_Amount(0);
+        _amountBar.Load();
         _amountBar.Toggle(false);
 
         // Subscriptions
-        _interactable.InteractEvent += Toggle_AmountBar_Transparency;
-        _interactable.UnInteractEvent += Toggle_AmountBar_Transparency;
+        _interactable.detection.EnterEvent += AmountBar_Toggle;
+        _interactable.detection.ExitEvent += AmountBar_Toggle;
 
         _interactable.InteractEvent += Update_Dialog;
 
@@ -39,8 +41,8 @@ public class GasPump : MonoBehaviour
     private void OnDestroy()
     {
         // Subscriptions
-        _interactable.InteractEvent -= Toggle_AmountBar_Transparency;
-        _interactable.UnInteractEvent -= Toggle_AmountBar_Transparency;
+        _interactable.detection.EnterEvent -= AmountBar_Toggle;
+        _interactable.detection.ExitEvent -= AmountBar_Toggle;
 
         _interactable.InteractEvent -= Update_Dialog;
 
@@ -61,17 +63,15 @@ public class GasPump : MonoBehaviour
         _interactable.bubble.Set_Bubble(_oilDrum.miniSprite, null);
     }
 
-    private void Toggle_AmountBar_Transparency()
+    private void AmountBar_Toggle()
     {
-        if (_collectReady == false) return;
-
-        if (_interactable.bubble.bubbleOn == true)
+        if (_coroutine == null && _collectReady == false)
         {
-            _amountBar.Toggle(true);
+            _amountBar.Toggle(false);
             return;
         }
 
-        _amountBar.Toggle(false);
+        _amountBar.Toggle(_interactable.detection.player != null);
     }
 
     private void Update_Dialog()
@@ -135,10 +135,10 @@ public class GasPump : MonoBehaviour
 
         for (int i = 0; i < maxBarCount; i++)
         {
-            _amountBar.Load();
-            _amountBar.Update_Amount(1);
-
             yield return new WaitForSeconds(1);
+
+            _amountBar.Update_Amount(1);
+            _amountBar.Load();
         }
 
         _collectReady = true;

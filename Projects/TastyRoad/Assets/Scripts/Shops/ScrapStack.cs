@@ -28,7 +28,6 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         _amountBar.Set_Amount(ES3.Load("ScrapStack/currentAmount", _amountBar.currentAmount));
-        _amountBar.Load();
 
         Toggle_AmountBar();
         Update_CurrentSprite();
@@ -81,6 +80,9 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
             return;
         }
 
+        _amountBar.Toggle_BarColor(_amountBar.Is_MaxAmount());
+        _amountBar.Load();
+
         _amountBar.Toggle(!_interactable.bubble.bubbleOn);
     }
 
@@ -116,6 +118,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         playerLauncher.Parabola_CoinLaunch(_scrap.miniSprite, transform.position);
 
         Toggle_AmountBar();
+        _amountBar.Load();
+
         Update_CurrentSprite();
     }
 
@@ -149,6 +153,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         playerLauncher.Parabola_CoinLaunch(_scrap.miniSprite, transform.position);
 
         Toggle_AmountBar();
+        _amountBar.Load();
+
         Update_CurrentSprite();
     }
 }
