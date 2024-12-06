@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 2050151741136552749}
   - component: {fileID: 2331507576810310344}
   - component: {fileID: 3551917571397297857}
+  - component: {fileID: 903723923032849525}
   - component: {fileID: -87010650432210433}
   - component: {fileID: 3609195736537386832}
   - component: {fileID: 6583535744904325927}
@@ -318,6 +319,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &903723923032849525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5231110676368674916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/FoodInteract_merge1
 --- !u!114 &-87010650432210433
 MonoBehaviour:
   m_ObjectHideFlags: 0

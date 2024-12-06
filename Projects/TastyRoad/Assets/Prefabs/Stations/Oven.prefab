@@ -299,6 +299,7 @@ GameObject:
   - component: {fileID: 6477832995663536682}
   - component: {fileID: 3558792282057709228}
   - component: {fileID: 8298693645448894692}
+  - component: {fileID: 7155682911388194378}
   - component: {fileID: -5017999228258243358}
   - component: {fileID: -7032971272813982881}
   - component: {fileID: 4184550447876101353}
@@ -530,6 +531,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &7155682911388194378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573784915183013672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/FoodInteract_merge1
+  - _reference:
+      Guid:
+        Data1: -405792680
+        Data2: 1241036917
+        Data3: 808444331
+        Data4: -2073641631
+      Path: event:/Station SFX/Oven_switch
 --- !u!114 &-5017999228258243358
 MonoBehaviour:
   m_ObjectHideFlags: 0

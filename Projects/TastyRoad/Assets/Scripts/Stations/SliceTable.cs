@@ -12,15 +12,12 @@ public class SliceTable : Table, IInteractable, ISignal
     {
         base.Start();
 
-        Audio_Controller.instance.Create_EventInstance("SliceTable_slice", gameObject);
+        Audio_Controller.instance.Create_EventInstance(gameObject, 2);
     }
 
     private new void OnDestroy()
     {
         base.OnDestroy();
-
-        // sound
-        Audio_Controller.instance.Remove_EventInstance(gameObject);
     }
 
 
@@ -36,7 +33,7 @@ public class SliceTable : Table, IInteractable, ISignal
         _hitBox.Activate_HitBox();
 
         // sound play
-        Audio_Controller.instance.EventInstance(gameObject).start();
+        Audio_Controller.instance.EventInstance(gameObject, 2).start();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -48,7 +45,7 @@ public class SliceTable : Table, IInteractable, ISignal
         _hitBox.Deactivate_HitBox();
 
         // sound stop
-        Audio_Controller.instance.EventInstance(gameObject).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        Audio_Controller.instance.EventInstance(gameObject, 2).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
 
@@ -57,20 +54,14 @@ public class SliceTable : Table, IInteractable, ISignal
     {
         Basic_SwapFood();
 
-        if (stationController.Food_Icon().hasFood == false)
-        {
-            _hitBox.Deactivate_HitBox();
+        Update_Effects();
+    }
 
-            // sound stop
-            Audio_Controller.instance.EventInstance(gameObject).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+    public new void Hold_Interact()
+    {
+        base.Hold_Interact();
 
-            return;
-        }
-
-        _hitBox.Activate_HitBox();
-
-        // sound play
-        Audio_Controller.instance.EventInstance(gameObject).start();
+        Update_Effects();
     }
 
 
@@ -85,5 +76,25 @@ public class SliceTable : Table, IInteractable, ISignal
         // durability
         stationController.data.Update_Durability(-1);
         stationController.maintenance.Update_DurabilityBreak();
+    }
+
+
+    //
+    private void Update_Effects()
+    {
+        if (stationController.Food_Icon().hasFood == false)
+        {
+            _hitBox.Deactivate_HitBox();
+
+            // sound stop
+            Audio_Controller.instance.EventInstance(gameObject, 2).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+            return;
+        }
+
+        _hitBox.Activate_HitBox();
+
+        // sound play
+        Audio_Controller.instance.EventInstance(gameObject, 2).start();
     }
 }

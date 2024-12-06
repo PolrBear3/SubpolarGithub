@@ -30,12 +30,12 @@ public class CoinLauncher : MonoBehaviour
     // UnityEngine
     private void Start()
     {
-        Audio_Controller.instance.Create_EventInstance("CoinLauncher_throw", gameObject);
+        Audio_Controller.instance.Create_EventInstance(gameObject, 0);
     }
 
     private void OnDestroy()
     {
-        Audio_Controller.instance.Remove_EventInstance(gameObject);
+        Audio_Controller.instance.Remove_EventInstance(gameObject, 0);
     }
 
 
@@ -62,9 +62,11 @@ public class CoinLauncher : MonoBehaviour
         bullet.SetData(this, sprite, direction);
         bullet.movementEvent += bullet.Parabola_Movement;
 
+        SoundData_Controller sound = gameObject.GetComponent<SoundData_Controller>();
         float pitchValue = Random.Range(0, 1f);
-        Audio_Controller.instance.Set_EventInstance_Parameter(gameObject, "Value_intensity", pitchValue);
-        Audio_Controller.instance.EventInstance(gameObject).start();
+
+        Audio_Controller.instance.Set_EventInstance_Parameter(sound.soundDatas[0], "Value_intensity", pitchValue);
+        Audio_Controller.instance.EventInstance(gameObject, 0).start();
 
         return bullet;
     }

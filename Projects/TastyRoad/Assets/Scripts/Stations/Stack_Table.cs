@@ -89,7 +89,7 @@ public class Stack_Table : Table, IInteractable
         playerIcon.Toggle_SubDataBar(true);
 
         // sound
-        Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
 

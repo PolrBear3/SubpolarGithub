@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2791255680288065517}
   - component: {fileID: 1169991202216155430}
   - component: {fileID: 258296546069528946}
+  - component: {fileID: 8759112847680937767}
   - component: {fileID: 1154708703919469280}
   m_Layer: 0
   m_Name: Food Box
@@ -170,7 +171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detection: {fileID: 258296546069528946}
   _movement: {fileID: 0}
+  _maintenance: {fileID: 0}
   _stationAnimator: {fileID: 4018874916105570401}
+  _itemDropper: {fileID: 0}
   _stationScrObj: {fileID: 11400000, guid: ddd48639fa2c1441d9f93d97f0a94b94, type: 2}
 --- !u!114 &258296546069528946
 MonoBehaviour:
@@ -185,6 +188,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &8759112847680937767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220211023236177560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/FoodInteract_merge1
 --- !u!114 &1154708703919469280
 MonoBehaviour:
   m_ObjectHideFlags: 0

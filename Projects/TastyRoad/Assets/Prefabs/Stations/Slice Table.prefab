@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 105776843876959450}
   - component: {fileID: -4442911882725095884}
   - component: {fileID: 2009275281452978819}
+  - component: {fileID: 1634544206406302433}
   - component: {fileID: 7504132898305469517}
   - component: {fileID: -7660575948742224011}
   - component: {fileID: 4752872632587438941}
@@ -318,6 +319,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &1634544206406302433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8403737644267042646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/FoodInteract_merge1
+  - _reference:
+      Guid:
+        Data1: -80457016
+        Data2: 1202517368
+        Data3: -1518920025
+        Data4: 746053890
+      Path: event:/Station SFX/SliceTable_slice
 --- !u!114 &7504132898305469517
 MonoBehaviour:
   m_ObjectHideFlags: 0

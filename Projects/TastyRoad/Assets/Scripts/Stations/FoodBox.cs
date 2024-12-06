@@ -74,7 +74,7 @@ public class FoodBox : MonoBehaviour, IInteractable
         stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
 
         // sound
-        Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
     private void Transfer_All()
@@ -101,6 +101,9 @@ public class FoodBox : MonoBehaviour, IInteractable
 
         stationIcon.currentData.Update_Amount(-transferCount);
         stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
+
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
 

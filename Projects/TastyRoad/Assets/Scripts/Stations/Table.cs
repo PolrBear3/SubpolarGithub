@@ -101,7 +101,7 @@ public class Table : MonoBehaviour, IInteractable
         // play sound on non empty food swap
         if (playerFoodIcon.hasFood || _stationController.Food_Icon().hasFood)
         {
-            Audio_Controller.instance.Play_OneShot("FoodInteract_swap", transform.position);
+            Audio_Controller.instance.Play_OneShot(gameObject, 0);
         }
 
         UnInteract();
@@ -137,7 +137,7 @@ public class Table : MonoBehaviour, IInteractable
         menu.controller.slotsController.Foods_ToggleLock(menu.currentDatas, cookedFood, data.Is_RawFood(cookedFood));
 
         // sound
-        Audio_Controller.instance.Play_OneShot("FoodInteract_merge", transform.position);
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
 
         UnInteract();
 
@@ -173,6 +173,9 @@ public class Table : MonoBehaviour, IInteractable
 
         tableIcon.Show_Icon();
         tableIcon.Show_Condition();
+
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
 

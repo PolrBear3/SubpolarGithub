@@ -406,16 +406,18 @@ public class NPC_Interaction : MonoBehaviour
 
         // eat food sprite
         _eatAnimationSR.sprite = servedFood.eatSprite;
-        // sound
-        Audio_Controller.instance.Play_OneShot("FoodInteract_eat", transform.position);
+
+        // eat sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         // wait
         yield return new WaitForSeconds(animTransitionTime);
 
         // no sprite
         _eatAnimationSR.sprite = null;
-        // sound
-        Audio_Controller.instance.Play_OneShot("FoodInteract_eat", transform.position);
+
+        // eat sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         // wait
         yield return new WaitForSeconds(animTransitionTime);

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4310127427621701475}
+  - component: {fileID: 847398406426221241}
   - component: {fileID: 2966003488704018482}
   m_Layer: 0
   m_Name: Coin Launcher
@@ -32,6 +33,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &847398406426221241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3771857720093246161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -1660709437
+        Data2: 1200014235
+        Data3: -1415380316
+        Data4: -1692421121
+      Path: event:/Basic SFX/CoinLauncher_throw
 --- !u!114 &2966003488704018482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,3 +70,4 @@ MonoBehaviour:
   _gravity: 15
   _angleUpdateDistnace: 0.5
   _distanceMultiplier: 17
+  _setCoinSprites: []
