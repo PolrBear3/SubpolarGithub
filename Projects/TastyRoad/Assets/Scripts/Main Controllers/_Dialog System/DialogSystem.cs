@@ -114,6 +114,8 @@ public class DialogSystem : MonoBehaviour
 
         _newDialogOpened = false;
 
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+
         return dialogBox;
     }
 
@@ -123,12 +125,40 @@ public class DialogSystem : MonoBehaviour
     {
         for (int i = 0; i < _snapPoints.Length; i++)
         {
-            Add_DialogBox(_customDialogs[i]);
+            GameObject addDialog = Instantiate(_dialogBox, _snapPoints[0].transform);
+            DialogBox dialogBox = addDialog.GetComponent<DialogBox>();
+
+            dialogBox.Set_Data(_customDialogs[i]);
+            dialogBox.Update_IconImage();
+
+            _currentDialogs.Insert(0, dialogBox);
         }
+
+        HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
+        _actionKey.SetActive(!_infoBox.gameObject.activeSelf);
+
+        ReOrder_CurrentDialogs();
+
+        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
+        _infoBox.Update_RectLayout();
+
+        _newDialogOpened = false;
     }
 
 
     // Information Box Control
+    private void Show_InfoBox()
+    {
+        _infoBox.gameObject.SetActive(true);
+
+        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
+        _infoBox.Update_RectLayout();
+
+        HoverToggle_CurrentDialog(true);
+
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+    }
+
     private void InfoBox_Toggle(int dialogNum)
     {
         if (_currentDialogs.Count <= dialogNum) return;
@@ -136,12 +166,7 @@ public class DialogSystem : MonoBehaviour
         if (dialogNum != _currentDialogNum)
         {
             _currentDialogNum = dialogNum;
-
-            _infoBox.gameObject.SetActive(true);
-            _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
-            _infoBox.Update_RectLayout();
-
-            HoverToggle_CurrentDialog(true);
+            Show_InfoBox();
 
             return;
         }
@@ -149,17 +174,12 @@ public class DialogSystem : MonoBehaviour
         if (_infoBox.gameObject.activeSelf == true)
         {
             _infoBox.gameObject.SetActive(false);
-
             HoverToggle_CurrentDialog(false);
 
             return;
         }
 
-        _infoBox.gameObject.SetActive(true);
-        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
-        _infoBox.Update_RectLayout();
-
-        HoverToggle_CurrentDialog(true);
+        Show_InfoBox();
     }
 
 

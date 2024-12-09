@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638692556612846627
+  lastModified: 638693523987201776
   FileSizes:
   - Name: Desktop
-    Value: 57760
+    Value: 73856
   Exists: 1
 --- !u!114 &-8782401601473127640
 MonoBehaviour:
@@ -35,10 +35,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638692556609710742
+  lastModified: 638693504401177202
   FileSizes:
   - Name: Desktop
-    Value: 1246
+    Value: 1296
   Exists: 1
 --- !u!114 &-7437292464083142477
 MonoBehaviour:
@@ -82,11 +82,38 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638692556613084650
+  lastModified: 638693440021182944
   FileSizes:
   - Name: Desktop
     Value: 9952
   Exists: 1
+--- !u!114 &-4496144220030923133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog_update
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Dialog_update
+  Guid:
+    Data1: 426935411
+    Data2: 1297006902
+    Data3: 931956614
+    Data4: 1076882755
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3642297423283502421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +193,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 577
+--- !u!114 &-3158802702358565779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog_infoBox
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Dialog_infoBox
+  Guid:
+    Data1: 1207142128
+    Data2: 1295910532
+    Data3: -529321540
+    Data4: -2063877861
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-2044609886030408810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,33 +238,6 @@ MonoBehaviour:
     Data2: 1303772983
     Data3: 243705496
     Data4: 1450492281
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-412593440693975331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Dialog_update
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Dialog_update
-  Guid:
-    Data1: -176569876
-    Data2: 1301072836
-    Data3: -596642162
-    Data4: -1270655052
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -244,13 +271,14 @@ MonoBehaviour:
   - {fileID: 2537903557918709094}
   - {fileID: -3409577683099164071}
   - {fileID: -7437292464083142477}
-  - {fileID: -412593440693975331}
+  - {fileID: -4496144220030923133}
+  - {fileID: -3158802702358565779}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638692556613084650
+  cacheTime: 638693523987201776
   cacheVersion: 131618
 --- !u!114 &510665171980663971
 MonoBehaviour:
@@ -294,7 +322,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638692556609701052
+  lastModified: 638693504401162263
   FileSizes:
   - Name: Desktop
     Value: 1036
