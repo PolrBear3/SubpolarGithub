@@ -15,10 +15,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638693523987201776
+  lastModified: 638693539884078868
   FileSizes:
   - Name: Desktop
-    Value: 73856
+    Value: 71840
   Exists: 1
 --- !u!114 &-8782401601473127640
 MonoBehaviour:
@@ -35,10 +35,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638693504401177202
+  lastModified: 638693539883855996
   FileSizes:
   - Name: Desktop
-    Value: 1296
+    Value: 1330
   Exists: 1
 --- !u!114 &-7437292464083142477
 MonoBehaviour:
@@ -82,11 +82,38 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638693440021182944
+  lastModified: 638693536804142032
   FileSizes:
   - Name: Desktop
     Value: 9952
   Exists: 1
+--- !u!114 &-4928228162108694672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog_open
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Dialog_open
+  Guid:
+    Data1: -307278929
+    Data2: 1108996358
+    Data3: 409864377
+    Data4: 781684799
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4496144220030923133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,10 +128,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Basic SFX/Dialog_update
   Guid:
-    Data1: 426935411
-    Data2: 1297006902
-    Data3: 931956614
-    Data4: 1076882755
+    Data1: 1207142128
+    Data2: 1295910532
+    Data3: -529321540
+    Data4: -2063877861
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -193,33 +220,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 577
---- !u!114 &-3158802702358565779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Dialog_infoBox
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Dialog_infoBox
-  Guid:
-    Data1: 1207142128
-    Data2: 1295910532
-    Data3: -529321540
-    Data4: -2063877861
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-2044609886030408810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,13 +272,14 @@ MonoBehaviour:
   - {fileID: -3409577683099164071}
   - {fileID: -7437292464083142477}
   - {fileID: -4496144220030923133}
-  - {fileID: -3158802702358565779}
+  - {fileID: 3664238704830813327}
+  - {fileID: -4928228162108694672}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638693523987201776
+  cacheTime: 638693539884078868
   cacheVersion: 131618
 --- !u!114 &510665171980663971
 MonoBehaviour:
@@ -322,7 +323,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638693504401162263
+  lastModified: 638693539883848416
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -345,6 +346,33 @@ MonoBehaviour:
     Data2: 1222638691
     Data3: -637841019
     Data4: 1565476813
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &3664238704830813327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog_close
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Dialog_close
+  Guid:
+    Data1: 896063100
+    Data2: 1290377101
+    Data3: -1498773083
+    Data4: -1662747862
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0

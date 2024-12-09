@@ -176,6 +176,8 @@ public class DialogSystem : MonoBehaviour
             _infoBox.gameObject.SetActive(false);
             HoverToggle_CurrentDialog(false);
 
+            Audio_Controller.instance.Play_OneShot(gameObject, 2);
+
             return;
         }
 
