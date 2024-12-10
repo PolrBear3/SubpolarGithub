@@ -227,13 +227,30 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (cursor.data.hasItem == false) return;
 
+        // save drag data
         ItemSlot_Data cursorData = new(cursor.data);
         cursor.Empty_Item();
 
-        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
+        ItemSlot emptySlot = slotsController.EmptySlot();
 
-        ItemSlot_Data emptySlot = slotsController.Empty_SlotData(_currentDatas);
-        emptySlot = new(cursorData);
+        // drop on empty slot
+        if (emptySlot != null)
+        {
+            emptySlot.Assign_Data(cursorData);
+            return;
+        }
+
+        // drop on empty data
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == true) continue;
+
+                _currentDatas[i][j] = new(cursorData);
+                return;
+            }
+        }
 
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();

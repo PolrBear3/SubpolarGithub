@@ -40,6 +40,8 @@ public class Station_Maintenance : MonoBehaviour
         _controller.mainController.UnClaim_Position(transform.position);
         OnDurabilityBreak?.Invoke();
 
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+
         _controller.Destroy_Station();
     }
 }

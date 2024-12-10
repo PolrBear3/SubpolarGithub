@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2316434854217912379}
   - component: {fileID: 3074170813001202522}
   - component: {fileID: 3824135679872606243}
+  - component: {fileID: -4096339114709284101}
   - component: {fileID: -6508325263318014687}
   - component: {fileID: -5428001685738594384}
   - component: {fileID: 3019193634138335640}
@@ -217,6 +218,26 @@ MonoBehaviour:
   m_DefaultActionMap: In Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &-4096339114709284101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366090731837522239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 1255097458
+        Data2: 1122823251
+        Data3: -911600471
+        Data4: 1970102881
+      Path: event:/Station SFX/Station_break
 --- !u!114 &-6508325263318014687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +252,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detection: {fileID: 3019193634138335640}
   _movement: {fileID: -5428001685738594384}
+  _maintenance: {fileID: 0}
   _stationAnimator: {fileID: 3074170813001202522}
+  _itemDropper: {fileID: 0}
   _stationScrObj: {fileID: 11400000, guid: 533d860f69be7472e99b1a648377fcf5, type: 2}
 --- !u!114 &-5428001685738594384
 MonoBehaviour:

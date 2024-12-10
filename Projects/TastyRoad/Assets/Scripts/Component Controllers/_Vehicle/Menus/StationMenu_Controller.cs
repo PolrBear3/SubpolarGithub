@@ -52,8 +52,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         // save current dragging item before menu close
         Drag_Cancel();
-
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
+
         _controller.vehicleController.interactArea.gameObject.SetActive(false);
 
         // subscriptions
@@ -408,6 +408,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnOption1_Input += Place_StationPrefab;
         _controller.OnExit_Input += Cancel_Export;
+
+        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
     }
 
     private void Place_StationPrefab()
@@ -565,6 +567,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _interactionMode = false;
         _interactStation = null;
+
+        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 1);
     }
 
     private void Cancel_Retrieve()

@@ -104,7 +104,7 @@ public class ItemSlot : MonoBehaviour
 
     public ItemSlot Assign_Data(ItemSlot_Data data)
     {
-        _data = data;
+        _data = new(data);
 
         return this;
     }

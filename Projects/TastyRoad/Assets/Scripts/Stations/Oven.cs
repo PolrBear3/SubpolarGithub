@@ -131,7 +131,7 @@ public class Oven : Table, IInteractable
         if (stationController.Food_Icon().hasFood == false) return;
 
         // oven switch
-        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+        Audio_Controller.instance.Play_OneShot(gameObject, 3);
 
         _heatCoroutine = StartCoroutine(Heat_Food_Coroutine());
     }

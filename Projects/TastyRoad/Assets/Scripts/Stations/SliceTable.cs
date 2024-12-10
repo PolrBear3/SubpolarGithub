@@ -12,7 +12,7 @@ public class SliceTable : Table, IInteractable, ISignal
     {
         base.Start();
 
-        Audio_Controller.instance.Create_EventInstance(gameObject, 2);
+        Audio_Controller.instance.Create_EventInstance(gameObject, 3);
     }
 
     private new void OnDestroy()
@@ -33,7 +33,7 @@ public class SliceTable : Table, IInteractable, ISignal
         _hitBox.Activate_HitBox();
 
         // sound play
-        Audio_Controller.instance.EventInstance(gameObject, 2).start();
+        Audio_Controller.instance.EventInstance(gameObject, 3).start();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -45,7 +45,7 @@ public class SliceTable : Table, IInteractable, ISignal
         _hitBox.Deactivate_HitBox();
 
         // sound stop
-        Audio_Controller.instance.EventInstance(gameObject, 2).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        Audio_Controller.instance.EventInstance(gameObject, 3).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
 
@@ -87,7 +87,7 @@ public class SliceTable : Table, IInteractable, ISignal
             _hitBox.Deactivate_HitBox();
 
             // sound stop
-            Audio_Controller.instance.EventInstance(gameObject, 2).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            Audio_Controller.instance.EventInstance(gameObject, 3).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
 
             return;
         }
@@ -95,6 +95,6 @@ public class SliceTable : Table, IInteractable, ISignal
         _hitBox.Activate_HitBox();
 
         // sound play
-        Audio_Controller.instance.EventInstance(gameObject, 2).start();
+        Audio_Controller.instance.EventInstance(gameObject, 3).start();
     }
 }
