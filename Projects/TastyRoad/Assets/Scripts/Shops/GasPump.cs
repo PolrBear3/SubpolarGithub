@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class GasPump : MonoBehaviour
 {
-    [SerializeField] private ActionBubble_Interactable _interactable;
-    [SerializeField] private AmountBar _amountBar;
-    [SerializeField] private CoinLauncher _launcher;
-
-    [SerializeField] private Station_ScrObj _oilDrum;
+    [Header("")]
+    [SerializeField] private IInteractable_Controller _interactable;
+    [SerializeField] private Detection_Controller _detection;
 
     [Header("")]
-    [SerializeField] private Sprite _purchaseSprite;
-    [SerializeField] private int _price;
+    [SerializeField] private AmountBar _amountBar;
 
-    private bool _collectReady;
+    [Header("")]
+    [SerializeField] private Station_ScrObj _oilDrum;
+    [SerializeField] private GameObject _spawnPoint;
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _price;
+    [SerializeField][Range(0, 100)] private int _fillTime;
 
     private Coroutine _coroutine;
 
@@ -22,152 +25,202 @@ public class GasPump : MonoBehaviour
     // UnityEngine
     private void Start()
     {
-        Update_ActionBubble_Icon();
-
-        _amountBar.Set_Amount(0);
+        _amountBar.Set_MaxAmount(_price);
+        _amountBar.Set_Amount(ES3.Load("GasPump/_amountBar.currentAmount", _amountBar.currentAmount));
         _amountBar.Load();
-        _amountBar.Toggle(false);
+
+        Load_Data();
+
+        AmountBar_Toggle();
+        SpawnPoint_Toggle();
 
         // Subscriptions
-        _interactable.detection.EnterEvent += AmountBar_Toggle;
-        _interactable.detection.ExitEvent += AmountBar_Toggle;
+        _detection.EnterEvent += AmountBar_Toggle;
+        _detection.ExitEvent += AmountBar_Toggle;
 
-        _interactable.InteractEvent += Update_Dialog;
+        _detection.EnterEvent += SpawnPoint_Toggle;
+        _detection.ExitEvent += SpawnPoint_Toggle;
 
-        _interactable.OnAction1Event += Purchase;
-        _interactable.OnAction1Event += Collect;
+        _interactable.OnInteract += Trigger_Dialog;
+        _interactable.OnInteract += Insert;
     }
 
     private void OnDestroy()
     {
+        Reset_OnFill();
+        Save_Data();
+
         // Subscriptions
-        _interactable.detection.EnterEvent -= AmountBar_Toggle;
-        _interactable.detection.ExitEvent -= AmountBar_Toggle;
+        _detection.EnterEvent -= AmountBar_Toggle;
+        _detection.ExitEvent -= AmountBar_Toggle;
 
-        _interactable.InteractEvent -= Update_Dialog;
+        _detection.EnterEvent -= SpawnPoint_Toggle;
+        _detection.ExitEvent -= SpawnPoint_Toggle;
 
-        _interactable.OnAction1Event -= Purchase;
-        _interactable.OnAction1Event -= Collect;
+        _interactable.OnInteract -= Trigger_Dialog;
+        _interactable.OnInteract -= Insert;
+    }
+
+
+    // ISaveLoadable
+    private void Save_Data()
+    {
+        ES3.Save("GasPump/_amountBar.currentAmount", _amountBar.currentAmount);
+    }
+
+    private void Load_Data()
+    {
+        if (_amountBar.Is_MaxAmount() == false) return;
+
+        Spawn_OilDrum();
     }
 
 
     // Indication Updates
-    private void Update_ActionBubble_Icon()
+    private void Trigger_Dialog()
     {
-        if (_collectReady == false)
+        DialogTrigger trigger = gameObject.GetComponent<DialogTrigger>();
+
+        if (_coroutine != null)
         {
-            _interactable.bubble.Set_Bubble(_purchaseSprite, null);
+            trigger.Update_Dialog(0);
             return;
         }
 
-        _interactable.bubble.Set_Bubble(_oilDrum.miniSprite, null);
+        if (Fill_Available() == false)
+        {
+            trigger.Update_Dialog(1);
+            return;
+        }
+
+        if (Insert_Available()) return;
+
+        string dialogString = "Insert " + _price + " <sprite=0> to export <sprite=5>";
+        DialogData dialog = new(trigger.defaultData.icon, dialogString);
+
+        trigger.Update_Dialog(dialog);
     }
+
 
     private void AmountBar_Toggle()
     {
-        if (_coroutine == null && _collectReady == false)
-        {
-            _amountBar.Toggle(false);
-            return;
-        }
-
-        _amountBar.Toggle(_interactable.detection.player != null);
+        _amountBar.Toggle(_detection.player != null);
     }
 
-    private void Update_Dialog()
+    private void SpawnPoint_Toggle()
     {
-        if (_interactable.bubble.bubbleOn == false) return;
-
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        if (_collectReady == true)
-        {
-            dialog.Update_Dialog(new DialogData(_oilDrum.dialogIcon, dialog.datas[0].info));
-            return;
-        }
-
-        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
-
-        /*
-        if (menu.controller.slotsController.Slots_Full())
-        {
-            dialog.Update_Dialog(new DialogData(_oilDrum.dialogIcon, dialog.datas[1].info));
-            return;
-        }
-        */
-
-        string priceDialog = _price + " Gold Nuggets for Oil Drum.";
-        dialog.Update_Dialog(new DialogData(_purchaseSprite, priceDialog));
+        _spawnPoint.SetActive(_detection.player != null);
     }
 
 
     // Functions
-    private void Purchase()
+    private bool Fill_Available()
     {
-        if (_collectReady == true) return;
+        bool insertActive = _amountBar.maxAmount - _amountBar.currentAmount <= 1;
+        bool spawnPositionClaimed = _interactable.mainController.Position_Claimed(_spawnPoint.transform.position);
 
-        Main_Controller main = _interactable.mainController;
-        if (main.GoldenNugget_Amount() < _price) return;
+        if (insertActive && spawnPositionClaimed) return false;
 
-        main.Remove_GoldenNugget(_price);
-        Charge_AmountBar();
-
-        CoinLauncher playerLauncher = main.Player().coinLauncher;
-        Sprite nuggetSprite = main.dataController.goldenNugget.sprite;
-
-        playerLauncher.Parabola_CoinLaunch(nuggetSprite, main.Player().transform.position);
+        return true;
     }
 
-    private void Charge_AmountBar()
+    private bool Insert_Available()
+    {
+        if (_coroutine != null) return false;
+
+        Food_ScrObj nugget = _interactable.mainController.dataController.goldenNugget;
+
+        // if player has nugget
+        if (_detection.player.foodIcon.Is_SameFood(nugget) == false) return false;
+
+        if (_amountBar.Is_MaxAmount()) return false;
+
+        return true;
+    }
+
+
+    private void Insert()
+    {
+        if (Insert_Available() == false) return;
+        if (Fill_Available() == false) return;
+
+        // player update
+        FoodData_Controller playerIcon = _detection.player.foodIcon;
+
+        playerIcon.Set_CurrentData(null);
+
+        playerIcon.Show_Icon();
+        playerIcon.Show_AmountBar();
+        playerIcon.Show_Condition();
+
+        // this pump update
+        _amountBar.Toggle_BarColor(false);
+        _amountBar.Update_Amount(1);
+        _amountBar.Load();
+
+        if (_amountBar.Is_MaxAmount() == false) return;
+
+        // oil drum spawn update
+        Fill_OilDrum();
+    }
+
+
+    private void Spawn_OilDrum()
+    {
+        Main_Controller main = _interactable.mainController;
+
+        Station_Controller stationController = main.Spawn_Station(_oilDrum, _spawnPoint.transform.position);
+        stationController.movement.Load_Position();
+
+        _amountBar.Toggle_BarColor(false);
+        _amountBar.Set_Amount(0);
+        _amountBar.Load();
+
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+    }
+
+    private void Fill_OilDrum()
     {
         if (_coroutine != null) return;
+        _coroutine = StartCoroutine(Fill_OilDrum_Coroutine());
 
-        _coroutine = StartCoroutine(Charge_AmountBar_Coroutine());
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
     }
-    private IEnumerator Charge_AmountBar_Coroutine()
+    private IEnumerator Fill_OilDrum_Coroutine()
     {
-        _interactable.LockInteract(true);
+        // claim position before spawn
+        _interactable.mainController.Claim_Position(_spawnPoint.transform.position);
 
+        _amountBar.Toggle_BarColor(true);
         _amountBar.Set_Amount(0);
-        _amountBar.Toggle(true);
 
-        int maxBarCount = _amountBar.amountBarSprite.Length;
-
-        for (int i = 0; i < maxBarCount; i++)
+        for (int i = 0; i < _fillTime; i++)
         {
+            _amountBar.Load();
+
             yield return new WaitForSeconds(1);
 
             _amountBar.Update_Amount(1);
-            _amountBar.Load();
         }
 
-        _collectReady = true;
-        Update_ActionBubble_Icon();
-
-        _interactable.LockInteract(false);
-
-        _amountBar.Toggle_BarColor(true);
-        _amountBar.Load();
+        Spawn_OilDrum();
 
         _coroutine = null;
         yield break;
     }
 
-    private void Collect()
+    private void Reset_OnFill()
     {
-        if (_collectReady == false) return;
+        Main_Controller main = _interactable.mainController;
 
-        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        if (_coroutine == null) return;
+        if (main.Position_Claimed(_spawnPoint.transform.position) == false) return;
 
-        // slots full check //
+        _amountBar.Set_Amount(_price);
 
-        menu.Add_StationItem(_oilDrum, 1);
-        _launcher.Parabola_CoinLaunch(_oilDrum.miniSprite, _interactable.detection.player.transform.position);
+        StopCoroutine(_coroutine);
+        _coroutine = null;
 
-        _collectReady = false;
-        Update_ActionBubble_Icon();
-
-        _amountBar.Toggle(false);
-        _amountBar.Toggle_BarColor(false);
+        main.UnClaim_Position(_spawnPoint.transform.position);
     }
 }

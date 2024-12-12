@@ -121,6 +121,17 @@ public class CollectCard : MonoBehaviour, IInteractable
         _blueprintPickup = station;
     }
 
+    /// <summary>
+    /// Set station to current location weight random data
+    /// </summary>
+    public void Set_Blueprint()
+    {
+        Location_Controller currentLocation = _mainController.currentLocation;
+
+        Set_Blueprint(currentLocation.currentData.WeightRandom_Station());
+    }
+
+
     private void StationBluePrint_toArchive()
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
@@ -131,6 +142,11 @@ public class CollectCard : MonoBehaviour, IInteractable
         {
             dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[3].info));
             return;
+        }
+
+        if (_blueprintPickup == null)
+        {
+            Set_Blueprint();
         }
 
         // add station blueprint

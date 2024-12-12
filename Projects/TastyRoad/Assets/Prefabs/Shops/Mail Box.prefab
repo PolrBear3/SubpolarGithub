@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultData:
     icon: {fileID: -243738653, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Drop a Golden Nugget for a collect card delivery!
+    info: Insert <sprite=0> for a collect card delivery.
   _datas: []
 --- !u!114 &8348303115327404211
 MonoBehaviour:
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _allPositions: []
   _claimPositions:
   - {x: 0, y: 0}
 --- !u!114 &7067362755497865247

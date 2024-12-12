@@ -128,9 +128,7 @@ public class NPC_GiftSystem : MonoBehaviour
         // collect card drop
         if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _collectCardDropRate))
         {
-            Location_Controller currentLocation = _controller.mainController.currentLocation;
-
-            dropper.Drop_CollectCard().Set_Blueprint(currentLocation.currentData.WeightRandom_Station());
+            dropper.Drop_CollectCard();
             return;
         }
 

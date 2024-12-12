@@ -57,6 +57,11 @@ public class AmountBar : MonoBehaviour
     }
 
 
+    public void Set_MaxAmount(int setAmount)
+    {
+        _maxAmount = setAmount;
+    }
+
     public bool Is_MaxAmount()
     {
         return _currentAmount >= _maxAmount;
@@ -69,7 +74,7 @@ public class AmountBar : MonoBehaviour
     }
     public void Load(int loadAmount)
     {
-        int spriteIndex = Mathf.FloorToInt((float)currentAmount / maxAmount * (_amountBarSprites.Length - 1));
+        int spriteIndex = Mathf.FloorToInt((float)currentAmount / _maxAmount * (_amountBarSprites.Length - 1));
         spriteIndex = Mathf.Clamp(spriteIndex, 0, _amountBarSprites.Length - 1);
 
         _sr.sprite = _amountBarSprites[Mathf.Clamp(loadAmount, 0, _amountBarSprites.Length - 1)];
