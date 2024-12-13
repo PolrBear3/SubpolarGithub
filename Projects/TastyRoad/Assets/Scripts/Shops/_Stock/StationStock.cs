@@ -77,8 +77,8 @@ public class StationStock : MonoBehaviour
             price = Mathf.Clamp(price - _discountPrice, 0, currentStation.price);
         }
 
-        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=0>";
-        string dialogInfo = price + " <sprite=0> to purchase." + currentAmountString;
+        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=56>";
+        string dialogInfo = price + " <sprite=56> to purchase." + currentAmountString;
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
     }

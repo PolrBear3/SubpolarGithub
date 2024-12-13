@@ -154,12 +154,12 @@ public class FoodStock : MonoBehaviour
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=0>";
+        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=56>";
 
         if (_stockData.unlocked == false)
         {
             // price to unlock + current nugget amount
-            string unlockDialog = _unlockPrice + " <sprite=0> to unlock." + currentAmountString;
+            string unlockDialog = _unlockPrice + " <sprite=56> to unlock." + currentAmountString;
             dialog.Update_Dialog(new DialogData(dialog.datas[0].icon, unlockDialog));
 
             return;
@@ -194,7 +194,7 @@ public class FoodStock : MonoBehaviour
             price = Mathf.Clamp(price, 0, stockedFood.price);
         }
 
-        string priceString = price + " <sprite=0> to purchase." + currentAmountString;
+        string priceString = price + " <sprite=56> to purchase." + currentAmountString;
 
         // price to purchase + current nugget amount
         DialogData data = new(stockedFood.sprite, priceString);

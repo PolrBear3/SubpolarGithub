@@ -95,7 +95,7 @@ public class GasPump : MonoBehaviour
 
         if (Insert_Available()) return;
 
-        string dialogString = "Insert " + _price + " <sprite=0> to export <sprite=5>";
+        string dialogString = "Insert " + _price + " <sprite=56> to export <sprite=61>";
         DialogData dialog = new(trigger.defaultData.icon, dialogString);
 
         trigger.Update_Dialog(dialog);
