@@ -74,7 +74,7 @@ public class FoodBox : MonoBehaviour, IInteractable
         stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
 
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
     private void Transfer_All()
@@ -103,7 +103,7 @@ public class FoodBox : MonoBehaviour, IInteractable
         stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
 
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 
 
@@ -122,7 +122,7 @@ public class FoodBox : MonoBehaviour, IInteractable
         main.UnTrack_CurrentStation(_controller);
         main.UnClaim_Position(transform.position);
 
-        // sound !
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         Destroy(gameObject);
     }
