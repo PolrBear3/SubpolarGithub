@@ -33,10 +33,10 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // subscriptions
         WorldMap_Controller.NewLocation_Event += Moveto_DefaultPosition;
 
-        _interactable.OnInteractEvent += Exit;
+        _interactable.OnInteractInput += Exit;
 
-        _interactable.OnAction1Event += Ride;
-        _interactable.OnAction2Event += Open_WorldMap;
+        _interactable.OnAction1Input += Ride;
+        _interactable.OnAction2Input += Open_WorldMap;
     }
 
     private void Update()
@@ -55,10 +55,10 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // subscriptions
         WorldMap_Controller.NewLocation_Event -= Moveto_DefaultPosition;
 
-        _interactable.OnInteractEvent -= Exit;
+        _interactable.OnInteractInput -= Exit;
 
-        _interactable.OnAction1Event -= Ride;
-        _interactable.OnAction2Event -= Open_WorldMap;
+        _interactable.OnAction1Input -= Ride;
+        _interactable.OnAction2Input -= Open_WorldMap;
     }
 
 

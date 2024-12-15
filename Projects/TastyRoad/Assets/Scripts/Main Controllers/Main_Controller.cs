@@ -306,7 +306,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void Track_CurrentLocaiton(Location_Controller location)
     {
         _currentLocation = location;
-        _savedLocationData = location.currentData;
+        _savedLocationData = location.data;
 
         Save_CurrentLocationData();
     }

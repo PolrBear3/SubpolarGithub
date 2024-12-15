@@ -191,7 +191,7 @@ public class CollectJar : Stack_Table, IInteractable
         // clear data and leave
         interaction.Clear_Data();
 
-        SpriteRenderer currentLocation = stationController.mainController.currentLocation.roamArea;
+        SpriteRenderer currentLocation = stationController.mainController.currentLocation.data.roamArea;
 
         movement.Update_RoamArea(currentLocation);
         movement.Leave(movement.Random_IntervalTime());

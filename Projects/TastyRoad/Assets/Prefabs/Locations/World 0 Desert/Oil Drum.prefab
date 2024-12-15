@@ -50,11 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ed28c06401734885bc861e9dde0bb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _setData:
+  _data:
     locationScrObj: {fileID: 11400000, guid: b33847ee9f3d94395b3f591b2e73fce7, type: 2}
     spawnRangeX: {x: -9, y: 9}
     spawnRangeY: {x: -4, y: -1}
-    spawnIntervalTimeRange: {x: 5, y: 10}
+    spawnIntervalTimeRange: {x: 1, y: 3}
+    _screenArea: {fileID: 5633283144350890895}
+    _roamArea: {fileID: 620701033008239444}
     maxSpawnTimePoints:
     - timePoint: 0
       maxSpawnAmount: 4
@@ -62,10 +64,10 @@ MonoBehaviour:
       maxSpawnAmount: 6
     - timePoint: 6
       maxSpawnAmount: 8
-    - timePoint: 8
+    - timePoint: 10
       maxSpawnAmount: 10
     _npcSkinOverrides:
-    - {fileID: 22100000, guid: ff6d23ff9f9b048b6ab3e0e5549c3e28, type: 2}
+    - {fileID: 22100000, guid: d793db324df1441af9ec826b924c1fc1, type: 2}
     - {fileID: 22100000, guid: c282bb5eb454848fc8d494310ff07989, type: 2}
     - {fileID: 22100000, guid: f9de128a69b1b4166974dde037f5d899, type: 2}
     - {fileID: 22100000, guid: 3bc5135db80a84fca8190faa835d5141, type: 2}
@@ -80,8 +82,6 @@ MonoBehaviour:
       weight: 10
     - stationScrObj: {fileID: 11400000, guid: 8d1e6b36626de4a3ea7b9c6ec7712fc7, type: 2}
       weight: 5
-  _environmentBoundsSR: {fileID: 5633283144350890895}
-  _roamArea: {fileID: 620701033008239444}
   _locationSetEvents:
   - {fileID: 6860735061805543654}
   - {fileID: 5660101435272790415}

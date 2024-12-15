@@ -7,38 +7,28 @@ public class Location_Controller : MonoBehaviour
     private Main_Controller _mainController;
     public Main_Controller mainController => _mainController;
 
-    [Header("")]
-    [SerializeField] private LocationData _setData;
-    public LocationData setData => _setData;
-
-    private LocationData _currentData;
-    public LocationData currentData => _currentData;
 
     [Header("")]
-    [SerializeField] private SpriteRenderer _environmentBoundsSR;
-    public SpriteRenderer environmentBoundsSR => _environmentBoundsSR;
-
-    [SerializeField] private SpriteRenderer _roamArea;
-    public SpriteRenderer roamArea => _roamArea;
-
-    private MaxSpawn_TimePoint _currentTimePoint;
+    [SerializeField] private LocationData _data;
+    public LocationData data => _data;
 
     [Header("")]
     [SerializeField] private GameObject[] _locationSetEvents;
+
+
+    private MaxSpawn_TimePoint _currentTimePoint;
 
 
     // UnityEngine
     private void Awake()
     {
         _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-
-        SetCurrent_LocationData();
     }
 
     private void Start()
     {
         // Toggle Off All Roam Area Colors On Game Start
-        _roamArea.color = Color.clear;
+        _data.roamArea.color = Color.clear;
 
         Update_Current_MaxSpawn();
         GlobalTime_Controller.TimeTik_Update += Update_Current_MaxSpawn;
@@ -52,30 +42,21 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-    // Current Data Control
-    private void SetCurrent_LocationData()
-    {
-        _currentData = _setData;
-    }
-
-
     // Gets
     /// <returns>
     /// True if checkPosition is in restricted range and position claimed, False if not
     /// </returns>
     public bool Restricted_Position(Vector2 checkPosition)
     {
-        LocationData d = _currentData;
-
         bool restricted = false;
 
         if (_mainController.Position_Claimed(checkPosition)) restricted = true;
 
         float xValue = checkPosition.x;
-        if (xValue < d.spawnRangeX.x || xValue > d.spawnRangeX.y) restricted = true;
+        if (xValue < _data.spawnRangeX.x || xValue > _data.spawnRangeX.y) restricted = true;
 
         float yValue = checkPosition.y;
-        if (yValue < d.spawnRangeY.x || yValue > d.spawnRangeY.y) restricted = true;
+        if (yValue < _data.spawnRangeY.x || yValue > _data.spawnRangeY.y) restricted = true;
 
         return restricted;
     }
@@ -88,8 +69,8 @@ public class Location_Controller : MonoBehaviour
     {
         if (Restricted_Position(restrictedPosition) == false) return restrictedPosition;
 
-        float closestXPos = Mathf.Clamp(restrictedPosition.x, _setData.spawnRangeX.x, _setData.spawnRangeX.y);
-        float closestYPos = Mathf.Clamp(restrictedPosition.y, _setData.spawnRangeY.x, _setData.spawnRangeY.y);
+        float closestXPos = Mathf.Clamp(restrictedPosition.x, _data.spawnRangeX.x, _data.spawnRangeX.y);
+        float closestYPos = Mathf.Clamp(restrictedPosition.y, _data.spawnRangeY.x, _data.spawnRangeY.y);
 
         return new Vector2(closestXPos, closestYPos);
     }
@@ -102,7 +83,7 @@ public class Location_Controller : MonoBehaviour
 
     public Vector2 Random_SnapPosition()
     {
-        Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_environmentBoundsSR));
+        Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_data.screenArea));
         return randSnapPos;
     }
 
@@ -113,7 +94,7 @@ public class Location_Controller : MonoBehaviour
     public Vector2 OuterLocation_Position(float horizontal, float vertical, float positionX, float positionY)
     {
         // Get the sprite's bounds
-        Bounds bounds = _environmentBoundsSR.bounds;
+        Bounds bounds = _data.screenArea.bounds;
 
         // Calculate the horizontal position
         float horizontalPos = horizontal;
@@ -156,13 +137,11 @@ public class Location_Controller : MonoBehaviour
     /// </summary>
     private void Update_Current_MaxSpawn()
     {
-        LocationData d = _currentData;
-
-        for (int i = 0; i < d.maxSpawnTimePoints.Count; i++)
+        for (int i = 0; i < _data.maxSpawnTimePoints.Count; i++)
         {
-            if (_mainController.globalTime.currentTime != d.maxSpawnTimePoints[i].timePoint) continue;
+            if (_mainController.globalTime.currentTime != _data.maxSpawnTimePoints[i].timePoint) continue;
 
-            _currentTimePoint = d.maxSpawnTimePoints[i];
+            _currentTimePoint = _data.maxSpawnTimePoints[i];
             Update_NPC_Population();
 
             return;
@@ -190,7 +169,7 @@ public class Location_Controller : MonoBehaviour
         {
             NPC_Movement move = currentNPCs[i].movement;
 
-            if (move.currentRoamArea != _roamArea) continue;
+            if (move.currentRoamArea != _data.roamArea) continue;
             if (move.isLeaving) continue;
 
             move.Leave(0f);
@@ -210,13 +189,11 @@ public class Location_Controller : MonoBehaviour
     }
     private IEnumerator NPC_Spawn_Control_Coroutine()
     {
-        LocationData d = _currentData;
-
         while (true)
         {
             while (_mainController.currentCharacters.Count >= _currentTimePoint.maxSpawnAmount) yield return null;
 
-            float randIntervalTime = Random.Range(d.spawnIntervalTimeRange.x, d.spawnIntervalTimeRange.y);
+            float randIntervalTime = Random.Range(_data.spawnIntervalTimeRange.x, _data.spawnIntervalTimeRange.y);
             yield return new WaitForSeconds(randIntervalTime);
 
             // spawn
@@ -226,10 +203,10 @@ public class Location_Controller : MonoBehaviour
             NPC_Controller npcController = spawnNPC.GetComponent<NPC_Controller>();
 
             // set random theme skin for current location
-            npcController.basicAnim.Set_OverrideController(_setData.npcSkinOverrides[Random.Range(0, _setData.npcSkinOverrides.Length)]);
+            npcController.basicAnim.Set_OverrideController(_data.npcSkinOverrides[Random.Range(0, _data.npcSkinOverrides.Length)]);
 
             // set npc free roam location
-            npcController.movement.Free_Roam(roamArea, 0f);
+            npcController.movement.Free_Roam(_data.roamArea, 0f);
         }
     }
 

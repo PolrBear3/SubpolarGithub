@@ -16,20 +16,27 @@ public class LocationData
     public Location_ScrObj locationScrObj;
 
     [Header("")]
-    public Vector2 spawnRangeX;
-    public Vector2 spawnRangeY;
+    [ES3NonSerializable] public Vector2 spawnRangeX;
+    [ES3NonSerializable] public Vector2 spawnRangeY;
 
     [Header("")]
-    public Vector2 spawnIntervalTimeRange;
+    [ES3NonSerializable] public Vector2 spawnIntervalTimeRange;
 
     [Header("")]
-    public List<MaxSpawn_TimePoint> maxSpawnTimePoints;
+    [SerializeField][ES3NonSerializable] private SpriteRenderer _screenArea;
+    public SpriteRenderer screenArea => _screenArea;
 
-    [SerializeField] private AnimatorOverrideController[] _npcSkinOverrides;
+    [SerializeField][ES3NonSerializable] private SpriteRenderer _roamArea;
+    public SpriteRenderer roamArea => _roamArea;
+
+    [Header("")]
+    [ES3NonSerializable] public List<MaxSpawn_TimePoint> maxSpawnTimePoints;
+
+    [SerializeField][ES3NonSerializable] private AnimatorOverrideController[] _npcSkinOverrides;
     public AnimatorOverrideController[] npcSkinOverrides => _npcSkinOverrides;
 
     [Header("")]
-    [SerializeField] private StationWeight_Data[] _stationDrops;
+    [SerializeField][ES3NonSerializable] private StationWeight_Data[] _stationDrops;
     public StationWeight_Data[] stationDrops => _stationDrops;
 
 

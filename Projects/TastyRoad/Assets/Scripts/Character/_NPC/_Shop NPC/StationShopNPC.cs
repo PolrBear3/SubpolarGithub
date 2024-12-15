@@ -65,17 +65,17 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         WorldMap_Controller.NewLocation_Event += Restock_New;
         GlobalTime_Controller.TimeTik_Update += Restock_ArchivedStation;
 
-        _interactable.InteractEvent += Cancel_Action;
-        _interactable.InteractEvent += Interact_FacePlayer;
+        _interactable.OnIInteract += Cancel_Action;
+        _interactable.OnIInteract += Interact_FacePlayer;
 
         _interactable.detection.EnterEvent += Toggle_RestockBar;
         _interactable.detection.ExitEvent += Toggle_RestockBar;
 
-        _interactable.InteractEvent += Toggle_RestockBar;
-        _interactable.UnInteractEvent += Toggle_RestockBar;
+        _interactable.OnIInteract += Toggle_RestockBar;
+        _interactable.OnUnIInteract += Toggle_RestockBar;
 
-        _interactable.OnAction1Event += Dispose_BookMarkedStation;
-        _interactable.OnAction2Event += Build_BookMarkedStations;
+        _interactable.OnAction1Input += Dispose_BookMarkedStation;
+        _interactable.OnAction2Input += Build_BookMarkedStations;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -93,17 +93,17 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         WorldMap_Controller.NewLocation_Event -= Restock_New;
         GlobalTime_Controller.TimeTik_Update -= Restock_ArchivedStation;
 
-        _interactable.InteractEvent -= Cancel_Action;
-        _interactable.InteractEvent -= Interact_FacePlayer;
+        _interactable.OnIInteract -= Cancel_Action;
+        _interactable.OnIInteract -= Interact_FacePlayer;
 
         _interactable.detection.EnterEvent -= Toggle_RestockBar;
         _interactable.detection.ExitEvent -= Toggle_RestockBar;
 
-        _interactable.InteractEvent -= Toggle_RestockBar;
-        _interactable.UnInteractEvent -= Toggle_RestockBar;
+        _interactable.OnIInteract -= Toggle_RestockBar;
+        _interactable.OnUnIInteract -= Toggle_RestockBar;
 
-        _interactable.OnAction1Event -= Dispose_BookMarkedStation;
-        _interactable.OnAction2Event -= Build_BookMarkedStations;
+        _interactable.OnAction1Input -= Dispose_BookMarkedStation;
+        _interactable.OnAction2Input -= Build_BookMarkedStations;
     }
 
 

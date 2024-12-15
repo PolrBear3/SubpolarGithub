@@ -89,19 +89,19 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         ActionBubble_Interactable interact = _npcController.interactable;
 
-        interact.InteractEvent += Cancel_Action;
-        interact.InteractEvent += Interact_FacePlayer;
+        interact.OnIInteract += Cancel_Action;
+        interact.OnIInteract += Interact_FacePlayer;
 
         interact.detection.EnterEvent += Update_RestockBar;
-        interact.InteractEvent += Update_RestockBar;
-        interact.UnInteractEvent += Update_RestockBar;
+        interact.OnIInteract += Update_RestockBar;
+        interact.OnUnIInteract += Update_RestockBar;
 
         interact.detection.EnterEvent += Update_QuestBar;
-        interact.InteractEvent += Update_QuestBar;
-        interact.UnInteractEvent += Update_QuestBar;
+        interact.OnIInteract += Update_QuestBar;
+        interact.OnUnIInteract += Update_QuestBar;
 
-        interact.OnAction1Event += Toggle_RestockMode;
-        interact.OnAction2Event += Complete_Quest;
+        interact.OnAction1Input += Toggle_RestockMode;
+        interact.OnAction2Input += Complete_Quest;
     }
 
     private void OnDestroy()
@@ -118,19 +118,19 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         ActionBubble_Interactable interact = _npcController.interactable;
 
-        interact.InteractEvent -= Cancel_Action;
-        interact.InteractEvent -= Interact_FacePlayer;
+        interact.OnIInteract -= Cancel_Action;
+        interact.OnIInteract -= Interact_FacePlayer;
 
         interact.detection.EnterEvent -= Update_RestockBar;
-        interact.InteractEvent -= Update_RestockBar;
-        interact.UnInteractEvent -= Update_RestockBar;
+        interact.OnIInteract -= Update_RestockBar;
+        interact.OnUnIInteract -= Update_RestockBar;
 
         interact.detection.EnterEvent -= Update_QuestBar;
-        interact.InteractEvent -= Update_QuestBar;
-        interact.UnInteractEvent -= Update_QuestBar;
+        interact.OnIInteract -= Update_QuestBar;
+        interact.OnUnIInteract -= Update_QuestBar;
 
-        interact.OnAction1Event -= Toggle_RestockMode;
-        interact.OnAction2Event -= Complete_Quest;
+        interact.OnAction1Input -= Toggle_RestockMode;
+        interact.OnAction2Input -= Complete_Quest;
     }
 
 

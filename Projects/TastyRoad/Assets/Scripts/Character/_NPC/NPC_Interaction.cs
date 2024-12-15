@@ -49,10 +49,10 @@ public class NPC_Interaction : MonoBehaviour
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);
 
         // subscriptions
-        _controller.interactable.InteractEvent += Interact;
-        _controller.interactable.UnInteractEvent += UnInteract;
+        _controller.interactable.OnIInteract += Interact;
+        _controller.interactable.OnUnIInteract += UnInteract;
 
-        _controller.interactable.OnHoldInteract += Interact_FacePlayer;
+        _controller.interactable.OnHoldIInteract += Interact_FacePlayer;
 
         _controller.interactable.detection.EnterEvent += Collect_Coin;
         _controller.interactable.detection.ExitEvent += Collect_Coin;
@@ -61,12 +61,12 @@ public class NPC_Interaction : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
-        _controller.interactable.InteractEvent -= Interact;
-        _controller.interactable.UnInteractEvent -= UnInteract;
+        _controller.interactable.OnIInteract -= Interact;
+        _controller.interactable.OnUnIInteract -= UnInteract;
 
-        _controller.interactable.OnHoldInteract -= Interact_FacePlayer;
+        _controller.interactable.OnHoldIInteract -= Interact_FacePlayer;
 
-        _controller.interactable.OnAction1Event -= Serve_FoodOrder;
+        _controller.interactable.OnAction1Input -= Serve_FoodOrder;
 
         _controller.interactable.detection.EnterEvent -= Collect_Coin;
         _controller.interactable.detection.ExitEvent -= Collect_Coin;
@@ -93,7 +93,7 @@ public class NPC_Interaction : MonoBehaviour
         _controller.foodIcon.Show_Condition();
         StateBox_Toggle();
 
-        _controller.interactable.OnAction1Event += Serve_FoodOrder;
+        _controller.interactable.OnAction1Input += Serve_FoodOrder;
     }
 
     private void UnInteract()
@@ -105,7 +105,7 @@ public class NPC_Interaction : MonoBehaviour
             _controller.timer.Toggle_Transparency(false);
         }
 
-        _controller.interactable.OnAction1Event -= Serve_FoodOrder;
+        _controller.interactable.OnAction1Input -= Serve_FoodOrder;
     }
 
 
@@ -223,7 +223,7 @@ public class NPC_Interaction : MonoBehaviour
         _controller.interactable.bubble.Toggle(false);
         StateBox_Toggle();
 
-        _controller.interactable.OnAction1Event -= Serve_FoodOrder;
+        _controller.interactable.OnAction1Input -= Serve_FoodOrder;
         Clear_Data();
 
         // data update
@@ -233,7 +233,7 @@ public class NPC_Interaction : MonoBehaviour
         Update_ServedData();
 
         // return roam area to current location
-        SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
+        SpriteRenderer currentLocation = _controller.mainController.currentLocation.data.roamArea;
         NPC_Movement move = _controller.movement;
         move.Stop_FreeRoam();
         move.Free_Roam(currentLocation);
@@ -493,7 +493,7 @@ public class NPC_Interaction : MonoBehaviour
 
         // leave current location
         NPC_Movement move = _controller.movement;
-        SpriteRenderer currentLocation = _controller.mainController.currentLocation.roamArea;
+        SpriteRenderer currentLocation = _controller.mainController.currentLocation.data.roamArea;
 
         move.Update_RoamArea(currentLocation);
         move.Leave(move.Random_IntervalTime());

@@ -38,7 +38,7 @@ public class SubLocation : MonoBehaviour
     private IEnumerator Exit_Coroutine()
     {
         // set load icon
-        _mainController.transitionCanvas.Set_LoadIcon(_mainController.currentLocation.setData.locationScrObj.locationIcon);
+        _mainController.transitionCanvas.Set_LoadIcon(_mainController.currentLocation.data.locationScrObj.locationIcon);
 
         // curtain scene transition
         _mainController.transitionCanvas.CurrentScene_Transition();

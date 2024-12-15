@@ -39,10 +39,10 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.InteractEvent += Toggle_AmountBar;
-        _interactable.UnInteractEvent += Toggle_AmountBar;
+        _interactable.OnIInteract += Toggle_AmountBar;
+        _interactable.OnUnIInteract += Toggle_AmountBar;
 
-        _interactable.OnHoldInteract += Transfer_CurrentFood;
+        _interactable.OnHoldIInteract += Transfer_CurrentFood;
     }
 
     private void OnDestroy()
@@ -51,13 +51,13 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
-        _interactable.InteractEvent -= Toggle_AmountBar;
-        _interactable.UnInteractEvent -= Toggle_AmountBar;
+        _interactable.OnIInteract -= Toggle_AmountBar;
+        _interactable.OnUnIInteract -= Toggle_AmountBar;
 
-        _interactable.OnHoldInteract += Transfer_CurrentFood;
+        _interactable.OnHoldIInteract += Transfer_CurrentFood;
 
-        _interactable.OnAction1Event -= Complete;
-        _interactable.OnAction1Event -= Place;
+        _interactable.OnAction1Input -= Complete;
+        _interactable.OnAction1Input -= Place;
     }
 
 
@@ -118,7 +118,7 @@ public class PlaceableStock : MonoBehaviour
         {
             bubble.Set_Bubble(bubble.setSprites[0], null);
 
-            _interactable.OnAction1Event += Place;
+            _interactable.OnAction1Input += Place;
             return;
         }
 
@@ -126,14 +126,14 @@ public class PlaceableStock : MonoBehaviour
         {
             bubble.Set_Bubble(bubble.setSprites[1], null);
 
-            _interactable.OnAction1Event += Complete;
+            _interactable.OnAction1Input += Complete;
             return;
         }
 
         bubble.Set_Bubble(bubble.setSprites[0], bubble.setSprites[1]);
 
-        _interactable.OnAction1Event += Place;
-        _interactable.OnAction2Event += Complete;
+        _interactable.OnAction1Input += Place;
+        _interactable.OnAction2Input += Complete;
     }
 
 

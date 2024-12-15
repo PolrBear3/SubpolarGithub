@@ -255,7 +255,7 @@ public class Serve_Table : Table, IInteractable
 
         if (_currentNPC == null) return;
 
-        SpriteRenderer locationRoamArea = stationController.mainController.currentLocation.roamArea;
+        SpriteRenderer locationRoamArea = stationController.mainController.currentLocation.data.roamArea;
 
         // stop coroutine
         if (_checkCoroutine != null)

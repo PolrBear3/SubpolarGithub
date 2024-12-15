@@ -142,7 +142,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             dialog.Update_Dialog(1);
 
             //
-            SpriteRenderer location = _stationController.mainController.currentLocation.roamArea;
+            SpriteRenderer location = _stationController.mainController.currentLocation.data.roamArea;
 
             // waiting npc update
             for (int i = 0; i < _waitingNPCs.Count; i++)

@@ -40,14 +40,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
 
     // UnityEngine
-    private void Start()
+    private void Awake()
     {
-        _playerInput.actions["Select"].started += ctx => OnPressStart();
-        _playerInput.actions["Select"].canceled += ctx => OnPressEnd();
-
-        _playerInput.enabled = false;
-
-
         if (ES3.KeyExists("Main_Controller/_currentLocationData"))
         {
             // set previous saved location
@@ -74,6 +68,14 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         // activate location starting events
         _mainController.currentLocation.Activate_NewSetEvents();
         _isNewLocation = false;
+    }
+
+    private void Start()
+    {
+        _playerInput.actions["Select"].started += ctx => OnPressStart();
+        _playerInput.actions["Select"].canceled += ctx => OnPressEnd();
+
+        _playerInput.enabled = false;
     }
 
 
@@ -326,7 +328,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
             if (worldNum != allLocations[i].worldNum) continue;
 
             // check if different location
-            if (_mainController.currentLocation.setData.locationScrObj == allLocations[i]) continue;
+            if (_mainController.currentLocation.data.locationScrObj == allLocations[i]) continue;
 
             worldLocation.Add(allLocations[i]);
         }

@@ -128,7 +128,7 @@ public class CollectCard : MonoBehaviour, IInteractable
     {
         Location_Controller currentLocation = _mainController.currentLocation;
 
-        Set_Blueprint(currentLocation.currentData.WeightRandom_Station());
+        Set_Blueprint(currentLocation.data.WeightRandom_Station());
     }
 
 

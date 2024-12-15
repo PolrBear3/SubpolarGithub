@@ -26,14 +26,13 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public delegate void Event();
 
-    public event Event InteractEvent;
-    public event Event UnInteractEvent;
+    public Action OnHoldIInteract;
+    public event Event OnIInteract;
+    public event Event OnUnIInteract;
 
-    public Action OnHoldInteract;
-
-    public event Event OnInteractEvent;
-    public event Event OnAction1Event;
-    public event Event OnAction2Event;
+    public event Event OnInteractInput;
+    public event Event OnAction1Input;
+    public event Event OnAction2Input;
 
 
     // MonoBehaviour
@@ -58,12 +57,12 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     // InputSystem
     private void OnInteract()
     {
-        OnInteractEvent?.Invoke();
+        OnInteractInput?.Invoke();
     }
 
     private void OnAction1()
     {
-        OnAction1Event?.Invoke();
+        OnAction1Input?.Invoke();
 
         if (_unInteractLocked) return;
 
@@ -72,8 +71,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     private void OnAction2()
     {
-        if (OnAction2Event == null) return;
-        OnAction2Event?.Invoke();
+        if (OnAction2Input == null) return;
+        OnAction2Input?.Invoke();
 
         if (_unInteractLocked) return;
 
@@ -83,8 +82,13 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     public void Clear_ActionSubscriptions()
     {
-        OnAction1Event = null;
-        OnAction2Event = null;
+        OnHoldIInteract = null;
+        OnIInteract = null;
+        OnUnIInteract = null;
+
+        OnInteractInput = null;
+        OnAction1Input = null;
+        OnAction2Input = null;
     }
 
 
@@ -108,12 +112,12 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         _bubble.Toggle(true);
 
         //
-        InteractEvent?.Invoke();
+        OnIInteract?.Invoke();
     }
 
     public void Hold_Interact()
     {
-        OnHoldInteract?.Invoke();
+        OnHoldIInteract?.Invoke();
     }
 
     public void UnInteract()
@@ -127,7 +131,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         _bubble.Toggle(false);
 
         //
-        UnInteractEvent?.Invoke();
+        OnUnIInteract?.Invoke();
     }
 
 
