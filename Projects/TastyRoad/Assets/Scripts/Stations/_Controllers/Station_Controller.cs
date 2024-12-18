@@ -65,6 +65,11 @@ public class Station_Controller : MonoBehaviour
         Set_Data();
     }
 
+    private void OnDestroy()
+    {
+        Destroy_Station();
+    }
+
 
     // InputSystem
     private void OnInteract()

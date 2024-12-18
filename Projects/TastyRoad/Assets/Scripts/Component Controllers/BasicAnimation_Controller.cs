@@ -17,7 +17,7 @@ public class BasicAnimation_Controller : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer spriteRenderer)) { _spriteRenderer = spriteRenderer; }
-        if (gameObject.TryGetComponent(out Animator animator)) { _animator = animator; }
+        _animator = gameObject.GetComponent<Animator>();
     }
 
     private void Start()

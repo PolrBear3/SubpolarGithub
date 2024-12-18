@@ -28,6 +28,10 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
 
     public delegate void Event();
+
+    /// <summary>
+    /// Event activates before current location destroy
+    /// </summary>
     public static Event NewLocation_Event;
 
     private int _currentTileNum;
@@ -42,40 +46,37 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Awake()
     {
+        // load saved location
         if (ES3.KeyExists("Main_Controller/_currentLocationData"))
         {
-            // set previous saved location
             Location_ScrObj loadScrObj = _mainController.savedLocationData.locationScrObj;
 
             Location_Controller location = _mainController.Set_Location(loadScrObj.worldNum, loadScrObj.locationNum);
             _mainController.Track_CurrentLocaiton(location);
 
-            // check if a new location was set before scene load
-            if (_isNewLocation == true)
-            {
-                // activate location starting events
-                location.Activate_NewSetEvents();
-                _isNewLocation = false;
-            }
-
             return;
         }
 
-        // set new game starting location
+        // set new location
+        _isNewLocation = true;
+
         _currentTileNum = _cursorTileNum;
         Set_RandomLocation();
-
-        // activate location starting events
-        _mainController.currentLocation.Activate_NewSetEvents();
-        _isNewLocation = false;
     }
 
     private void Start()
     {
+        // player input
         _playerInput.actions["Select"].started += ctx => OnPressStart();
         _playerInput.actions["Select"].canceled += ctx => OnPressEnd();
 
         _playerInput.enabled = false;
+
+        // new location events activation
+        if (_isNewLocation == false) return;
+
+        _mainController.currentLocation.Activate_NewSetEvents();
+        _isNewLocation = false;
     }
 
 
@@ -228,7 +229,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
         // reset settings before moving on to new location
         _mainController.Destroy_AllStations();
-        _mainController.Destroy_AllCharacters();
         _mainController.ResetAll_ClaimedPositions();
 
         // set selected tile location
