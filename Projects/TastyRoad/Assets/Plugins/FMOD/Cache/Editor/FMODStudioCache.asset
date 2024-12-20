@@ -15,11 +15,38 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638694478244307311
+  lastModified: 638693523987201776
   FileSizes:
   - Name: Desktop
-    Value: 93792
+    Value: 73856
   Exists: 1
+--- !u!114 &-8865804210918372373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog_update
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Dialog_update
+  Guid:
+    Data1: 426935411
+    Data2: 1297006902
+    Data3: 931956614
+    Data4: 1076882755
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-8782401601473127640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35,12 +62,12 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638694489710213029
+  lastModified: 638693504401177202
   FileSizes:
   - Name: Desktop
-    Value: 1536
+    Value: 1296
   Exists: 1
---- !u!114 &-8664387610903611753
+--- !u!114 &-7572553563197475887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -50,96 +77,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Vechicle/StationItem_export
+  m_Name: event:/Basic SFX/FoodInteract_merge1
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Vechicle/StationItem_export
+  Path: event:/Basic SFX/FoodInteract_merge1
   Guid:
-    Data1: -2000394434
-    Data2: 1125934655
-    Data3: 829910180
-    Data4: -31450466
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-8216469647259250799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Vechicle/StationItem_retrieve
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Vechicle/StationItem_retrieve
-  Guid:
-    Data1: 1424211625
-    Data2: 1254941790
-    Data3: -810629981
-    Data4: 1247566103
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-7902076022851681338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Interaction/CoinLauncher_throw
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Interaction/CoinLauncher_throw
-  Guid:
-    Data1: -1660709437
-    Data2: 1200014235
-    Data3: -1415380316
-    Data4: -1692421121
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters:
-  - {fileID: -1583162296857048537}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 50
---- !u!114 &-7576320596620148692
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Dialog System/Dialog_close
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Dialog System/Dialog_close
-  Guid:
-    Data1: 896063100
-    Data2: 1290377101
-    Data3: -1498773083
-    Data4: -1662747862
+    Data1: -1316452498
+    Data2: 1303772983
+    Data3: 243705496
+    Data4: 1450492281
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -176,87 +121,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-7295259112884823395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Dialog System/Dialog_open
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Dialog System/Dialog_open
-  Guid:
-    Data1: -307278929
-    Data2: 1108996358
-    Data3: 409864377
-    Data4: 781684799
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-6396571877514755563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/Station_break
-  m_EditorClassIdentifier: 
-  Path: event:/Station SFX/Station_break
-  Guid:
-    Data1: 1255097458
-    Data2: 1122823251
-    Data3: -911600471
-    Data4: 1970102881
-  Banks:
-  - {fileID: -6252724095389087783}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-6317983856529843507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Dialog System/Dialog_update
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Dialog System/Dialog_update
-  Guid:
-    Data1: 1207142128
-    Data2: 1295910532
-    Data3: -529321540
-    Data4: -2063877861
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-6252724095389087783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,12 +136,12 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638694489711597473
+  lastModified: 638693440021182944
   FileSizes:
   - Name: Desktop
-    Value: 17472
+    Value: 9952
   Exists: 1
---- !u!114 &-4014519267409611271
+--- !u!114 &-6176566575900253025
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -287,14 +151,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Food Interaction/FoodInteract_merge1
+  m_Name: event:/Basic SFX/FoodInteract_eat
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
+  Path: event:/Basic SFX/FoodInteract_eat
   Guid:
-    Data1: -1316452498
-    Data2: 1303772983
-    Data3: 243705496
-    Data4: 1450492281
+    Data1: 2088776602
+    Data2: 1222638691
+    Data3: -637841019
+    Data4: 1565476813
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-3594547964542472588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog_infoBox
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Dialog_infoBox
+  Guid:
+    Data1: 1207142128
+    Data2: 1295910532
+    Data3: -529321540
+    Data4: -2063877861
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -331,7 +222,88 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 577
---- !u!114 &-1583162296857048537
+--- !u!114 &-1954508315536472417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/CoinLauncher_throw
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/CoinLauncher_throw
+  Guid:
+    Data1: -1660709437
+    Data2: 1200014235
+    Data3: -1415380316
+    Data4: -1692421121
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 2341775419325712067}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 50
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: -8782401601473127640}
+  - {fileID: 1291012834966449344}
+  - {fileID: -9098409597259461469}
+  - {fileID: -6252724095389087783}
+  EditorEvents:
+  - {fileID: -3199232476146871466}
+  - {fileID: -7437292464083142477}
+  - {fileID: 4470842101955715157}
+  - {fileID: -7572553563197475887}
+  - {fileID: -8865804210918372373}
+  - {fileID: -6176566575900253025}
+  - {fileID: -1954508315536472417}
+  - {fileID: -3594547964542472588}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: 1291012834966449344}
+  StringsBanks:
+  - {fileID: -8782401601473127640}
+  cacheTime: 638693523987201776
+  cacheVersion: 131618
+--- !u!114 &1291012834966449344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: TastyRoad_sounds/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638693504401162263
+  FileSizes:
+  - Name: Desktop
+    Value: 1036
+  Exists: 1
+--- !u!114 &2341775419325712067
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -355,44 +327,7 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: 
-  EditorBanks:
-  - {fileID: -8782401601473127640}
-  - {fileID: 1291012834966449344}
-  - {fileID: -9098409597259461469}
-  - {fileID: -6252724095389087783}
-  EditorEvents:
-  - {fileID: -3199232476146871466}
-  - {fileID: -7437292464083142477}
-  - {fileID: 8180682511567719439}
-  - {fileID: -4014519267409611271}
-  - {fileID: -7576320596620148692}
-  - {fileID: 661908256955246460}
-  - {fileID: -7295259112884823395}
-  - {fileID: -7902076022851681338}
-  - {fileID: -6317983856529843507}
-  - {fileID: -8664387610903611753}
-  - {fileID: -8216469647259250799}
-  - {fileID: -6396571877514755563}
-  EditorParameters: []
-  MasterBanks:
-  - {fileID: 1291012834966449344}
-  StringsBanks:
-  - {fileID: -8782401601473127640}
-  cacheTime: 638694489711597473
-  cacheVersion: 131618
---- !u!114 &661908256955246460
+--- !u!114 &4470842101955715157
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -402,56 +337,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Food Interaction/FoodInteract_eat
+  m_Name: event:/Basic SFX/FoodInteract_swap2
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Food Interaction/FoodInteract_eat
-  Guid:
-    Data1: 2088776602
-    Data2: 1222638691
-    Data3: -637841019
-    Data4: 1565476813
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &1291012834966449344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
-  m_EditorClassIdentifier: 
-  Path: TastyRoad_sounds/Build/Desktop/Master.bank
-  Name: Master
-  StudioPath: bank:/Master
-  lastModified: 638694489710204572
-  FileSizes:
-  - Name: Desktop
-    Value: 1036
-  Exists: 1
---- !u!114 &8180682511567719439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Food Interaction/FoodInteract_swap2
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  Path: event:/Basic SFX/FoodInteract_swap2
   Guid:
     Data1: 1456072744
     Data2: 1090747003
