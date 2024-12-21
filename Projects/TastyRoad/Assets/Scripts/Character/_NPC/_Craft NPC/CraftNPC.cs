@@ -94,7 +94,7 @@ public class CraftNPC : MonoBehaviour, ISaveLoadable
 
 
     // Spawn
-    private Transform NPC_Transform()
+    public Transform NPC_Transform()
     {
         return transform.parent.parent;
     }

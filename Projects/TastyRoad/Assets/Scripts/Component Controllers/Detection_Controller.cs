@@ -111,7 +111,7 @@ public class Detection_Controller : MonoBehaviour
     }
 
 
-    // Check Detected Object
+    // Detection Checks
     public bool Has_Object(GameObject specificObject)
     {
         for (int i = 0; i < _detectedprefabs.Count; i++)
@@ -122,7 +122,13 @@ public class Detection_Controller : MonoBehaviour
         return false;
     }
 
-    // Box Collider Toggle On Off
+    public bool Player_Detected()
+    {
+        return _player != null;
+    }
+
+
+    // Toggle Control
     public void BoxCollider_Toggle(bool toggleOn)
     {
         _boxCollider.enabled = toggleOn;

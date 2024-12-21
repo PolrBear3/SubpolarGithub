@@ -10,11 +10,16 @@ public class Custom_PositionClaimer : MonoBehaviour
     [SerializeField] private Vector2[] _allPositions;
     [SerializeField] private List<Vector2> _claimPositions = new();
 
+    [Header("")]
+    [SerializeField] private bool _unClaimOnStart;
+
 
     // UnityEngine
     private void Awake()
     {
         _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
+
+        if (_unClaimOnStart) return;
 
         Claim_CurrentPositions();
     }
@@ -63,14 +68,32 @@ public class Custom_PositionClaimer : MonoBehaviour
         return false;
     }
 
-
-    public void Claim_CurrentPositions()
+    public bool CurrentPositions_Claimed()
     {
         foreach (Vector2 position in Current_Positions())
         {
             Vector2 snapPos = Main_Controller.SnapPosition(position);
+            if (_main.Position_Claimed(snapPos) == false) continue;
+
+            return true;
+        }
+        return false;
+    }
+
+
+    public Vector2 Claim_CurrentPositions()
+    {
+        List<Vector2> snapPositions = new();
+
+        foreach (Vector2 position in Current_Positions())
+        {
+            Vector2 snapPos = Main_Controller.SnapPosition(position);
+            snapPositions.Add(snapPos);
+
             _main.Claim_Position(snapPos);
         }
+
+        return snapPositions[snapPositions.Count / 2];
     }
 
     public void UnClaim_CurrentPositions()
