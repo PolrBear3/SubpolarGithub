@@ -5,90 +5,118 @@ using UnityEngine;
 public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 {
     [Header("")]
-    [SerializeField] private NPC_Controller _controller;
-    public NPC_Controller controller => _controller;
-
+    [SerializeField] private PrefabSpawner _npcSpawner;
 
     [Header("")]
-    [SerializeField] private CraftNPC[] _allCraftNPC;
-
-    private CraftNPC _currentCraftNPC;
-    public CraftNPC currentCraftNPC => _currentCraftNPC;
+    [SerializeField] private GameObject[] _allCraftNPC;
 
 
-    [Header("")]
-    [SerializeField] private AmountBar _nuggetBar;
-    public AmountBar nuggetBar => _nuggetBar;
-
-    [SerializeField] private AmountBar _timeBar;
-    public AmountBar timeBar => _timeBar;
+    private CraftNPC _currentNPC;
+    private int _npcIndexNum;
 
 
     // MonoBehaviour
     private void Start()
     {
-        Set_CraftNPC(_currentCraftNPC);
+        Toggle_NPCSprites(false);
 
-        // subscriptions
-        WorldMap_Controller.NewLocation_Event += _currentCraftNPC.Invoke_OnSaveInstance;
-        WorldMap_Controller.NewLocation_Event += Set_CraftNPC;
+        Vector3 spawnPos = ES3.Load("CraftNPC_Controller/_currentNPC.transform.position", Default_SpawnPosition());
+        Spawn(_npcIndexNum).transform.position = spawnPos;
+
+        // subscription
+        WorldMap_Controller.NewLocation_Event += Spawn_New;
     }
 
     private void OnDestroy()
     {
-        // subscriptions
-        WorldMap_Controller.NewLocation_Event -= _currentCraftNPC.Invoke_OnSaveInstance;
-        WorldMap_Controller.NewLocation_Event -= Set_CraftNPC;
+        // subscription
+        WorldMap_Controller.NewLocation_Event -= Spawn_New;
     }
 
 
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("CraftNPC_Controller/CraftNPC_IndexNum", CraftNPC_IndexNum(_currentCraftNPC));
+        _currentNPC.Invoke_OnSave();
+
+        ES3.Save("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
+        ES3.Save("CraftNPC_Controller/_currentNPC.transform.position", _currentNPC.transform.position);
     }
 
     public void Load_Data()
     {
-        _currentCraftNPC = _allCraftNPC[ES3.Load("CraftNPC_Controller/CraftNPC_IndexNum", 0)];
+        LoadNPC_IndexNum();
     }
 
 
-    //
-    private int CraftNPC_IndexNum(CraftNPC npc)
+    // All
+    private void Toggle_NPCSprites(bool toggle)
     {
-        for (int i = 0; i < _allCraftNPC.Length; i++)
+        foreach (Transform child in transform)
         {
-            if (_allCraftNPC[i] != npc) continue;
-            return i;
+            child.gameObject.SetActive(toggle);
         }
-        return 0;
     }
 
 
-    private void Set_CraftNPC(CraftNPC setNPC)
+    // Data
+    private int LoadNew_IndexNum()
     {
-        if (setNPC == null)
+        // remove previous index num !
+
+        _npcIndexNum = Random.Range(0, _allCraftNPC.Length);
+        return _npcIndexNum;
+    }
+
+    private void LoadNPC_IndexNum()
+    {
+        if (ES3.KeyExists("CraftNPC_Controller/_npcIndexNum") == false)
         {
-            Set_CraftNPC();
+            LoadNew_IndexNum();
             return;
         }
 
-        _currentCraftNPC = setNPC;
-        _currentCraftNPC.SetInstance_CurrentNPC();
+        _npcIndexNum = ES3.Load("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
     }
 
-    private void Set_CraftNPC()
+
+    // Spawn
+    private Vector3 Default_SpawnPosition()
     {
-        int randIndex = Random.Range(0, _allCraftNPC.Length);
-        CraftNPC setNPC = _allCraftNPC[randIndex];
+        Vector2 spawnPosition = _npcSpawner.mainController.currentLocation.OuterLocation_Position(-1);
+        return spawnPosition;
+    }
 
-        if (setNPC == null)
-        {
-            Debug.Log("Set_CraftNPC() random set null!");
-            return;
-        }
 
-        Set_CraftNPC(_allCraftNPC[randIndex]);
+    private CraftNPC Spawn(int indexNum)
+    {
+        GameObject getNPC = _allCraftNPC[indexNum];
+
+        _npcSpawner.Set_Prefab(getNPC);
+
+        GameObject spawnNPC = _npcSpawner.Spawn_Prefab(Default_SpawnPosition());
+        spawnNPC.transform.SetParent(transform);
+
+        CraftNPC craftNPC = spawnNPC.GetComponent<CraftNPC>();
+
+        _currentNPC = craftNPC;
+        _npcIndexNum = indexNum;
+
+        return craftNPC;
+    }
+
+    private void Spawn_New()
+    {
+        // save current npc data
+        _currentNPC.Invoke_OnSave();
+
+        // reset
+        GameObject destroyNPC = _currentNPC.gameObject;
+
+        _currentNPC = null;
+        Destroy(destroyNPC);
+
+        // set new npc & default position
+        Spawn(LoadNew_IndexNum()).transform.position = Default_SpawnPosition();
     }
 }

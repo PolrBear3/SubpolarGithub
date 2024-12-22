@@ -5,6 +5,8 @@ using UnityEngine;
 public class PrefabSpawner : MonoBehaviour, IInteractable
 {
     private Main_Controller _mainController;
+    public Main_Controller mainController => _mainController;
+
 
     [Header("")]
     [SerializeField] private GameObject _spawnPrefab;
@@ -45,8 +47,15 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 
 
     // Functions
-    private void Spawn_Prefab(Vector2 spawnPosition)
+    public void Set_Prefab(GameObject setPrefab)
     {
+        _spawnPrefab = setPrefab;
+    }
+
+    public GameObject Spawn_Prefab(Vector2 spawnPosition)
+    {
+        if (_spawnPrefab == null) return null;
+
         GameObject spawnPrefab = Instantiate(_spawnPrefab, spawnPosition, Quaternion.identity);
 
         // check if spawn prefab is a station
@@ -54,11 +63,12 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
         {
             // set as a child of current location file
             spawnPrefab.transform.SetParent(_mainController.otherFile);
-            return;
+            return spawnPrefab;
         }
 
         // set station
         movement.Load_Position();
+        return spawnPrefab;
     }
 
 

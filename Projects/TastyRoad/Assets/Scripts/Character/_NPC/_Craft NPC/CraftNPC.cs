@@ -1,127 +1,90 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class CraftNPC : MonoBehaviour, ISaveLoadable
+public class CraftNPC : MonoBehaviour
 {
-    [Header("")]
-    [SerializeField] private CraftNPC_Controller _controller;
+    private CraftNPC_Controller _controller;
     public CraftNPC_Controller controller => _controller;
 
 
     [Header("")]
-    [SerializeField] private AnimatorOverrideController _animOverride;
+    [SerializeField] private NPC_Controller _npcController;
+    public NPC_Controller npcController => _npcController;
 
     [Header("")]
-    [SerializeField] private UnityEvent OnSetInstance;
-    [SerializeField] private UnityEvent OnSaveInstance;
+    [SerializeField] private AmountBar _nuggetBar;
+    public AmountBar nuggetBar => _nuggetBar;
+
+    [SerializeField] private AmountBar _giftBar;
+    public AmountBar giftBar => _giftBar;
+
+
+    private Action OnSave;
 
 
     // MonoBehaviour
     public void Start()
     {
+        // amount bars
+        _nuggetBar.Load();
+        _giftBar.Load();
+
         Toggle_AmountBars();
 
-        NPC_Movement movement = _controller.controller.movement;
-        SpriteRenderer roamArea = _controller.controller.mainController.currentLocation.data.roamArea;
-
-        Load_SpawnLocation();
-        movement.Free_Roam(roamArea, 1f);
+        // starting movement
+        SpriteRenderer roamArea = _npcController.mainController.currentLocation.data.roamArea;
+        _npcController.movement.Free_Roam(roamArea, 0);
 
         // subscriptions
-        WorldMap_Controller.NewLocation_Event += Set_SpawnLocation;
-
-        Detection_Controller detection = _controller.controller.interactable.detection;
+        Detection_Controller detection = _npcController.interactable.detection;
 
         detection.EnterEvent += Toggle_AmountBars;
         detection.ExitEvent += Toggle_AmountBars;
+
+        ActionBubble_Interactable interactable = _npcController.interactable;
+
+        interactable.OnIInteract += Face_Player;
+        interactable.OnHoldIInteract += Face_Player;
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
         // subscriptions
-        WorldMap_Controller.NewLocation_Event -= Set_SpawnLocation;
-
-        Detection_Controller detection = _controller.controller.interactable.detection;
+        Detection_Controller detection = _npcController.interactable.detection;
 
         detection.EnterEvent -= Toggle_AmountBars;
         detection.ExitEvent -= Toggle_AmountBars;
 
-        // default subscriptions
-        ActionBubble_Interactable interactable = _controller.controller.interactable;
+        ActionBubble_Interactable interactable = _npcController.interactable;
 
-        interactable.OnHoldIInteract -= Pay;
-        interactable.OnHoldIInteract -= Gift;
+        interactable.OnIInteract -= Face_Player;
+        interactable.OnHoldIInteract -= Face_Player;
     }
 
 
-    // ISaveLoadable
-    public void Save_Data()
+    // OnSave Action
+    public void Subscribe_OnSave(Action action)
     {
-        Vector3 savePos = new(NPC_Transform().position.x, NPC_Transform().position.y);
-        ES3.Save("CraftNPC/position", savePos);
-
-        Invoke_OnSaveInstance();
+        OnSave += action;
     }
 
-    public void Load_Data()
+    public void Invoke_OnSave()
     {
-        if (ES3.KeyExists("CraftNPC/position") == false) return;
-        NPC_Transform().position = ES3.Load("CraftNPC/position", NPC_Transform().position);
-    }
-
-
-    // Instance Data
-    public void SetInstance_CurrentNPC()
-    {
-        NPC_Controller npc = _controller.controller;
-
-        npc.basicAnim.Set_OverrideController(_animOverride);
-        OnSetInstance?.Invoke();
-
-        // default subscriptions
-        ActionBubble_Interactable interactable = _controller.controller.interactable;
-
-        interactable.OnHoldIInteract += Pay;
-        interactable.OnHoldIInteract += Gift;
-    }
-
-    public void Invoke_OnSaveInstance()
-    {
-        OnSaveInstance?.Invoke();
-    }
-
-
-    // Spawn
-    public Transform NPC_Transform()
-    {
-        return transform.parent.parent;
-    }
-
-
-    private void Set_SpawnLocation()
-    {
-        Location_Controller location = _controller.controller.mainController.currentLocation;
-        NPC_Transform().position = location.OuterLocation_Position(-1);
-    }
-
-    private void Load_SpawnLocation()
-    {
-        if (ES3.KeyExists("CraftNPC/position")) return;
-        Set_SpawnLocation();
+        OnSave?.Invoke();
     }
 
 
     // Toggles
     private void Toggle_AmountBars()
     {
-        ActionBubble_Interactable interactable = _controller.controller.interactable;
+        ActionBubble_Interactable interactable = _npcController.interactable;
 
         bool playerDetected = interactable.detection.player != null;
         bool bubbleOn = interactable.bubble.bubbleOn;
 
-        GameObject amountBars = _controller.nuggetBar.transform.parent.parent.gameObject;
+        GameObject amountBars = _nuggetBar.transform.parent.parent.gameObject;
 
         if (playerDetected == false || bubbleOn)
         {
@@ -131,14 +94,29 @@ public class CraftNPC : MonoBehaviour, ISaveLoadable
 
         amountBars.SetActive(true);
 
-        _controller.nuggetBar.Toggle(true);
-        _controller.timeBar.Toggle(true);
+        _nuggetBar.Toggle(true);
+        _giftBar.Toggle(true);
     }
 
 
     // Main Interactions
+    private void Face_Player()
+    {
+        GameObject player = _npcController.interactable.detection.player.gameObject;
+
+        _npcController.basicAnim.Flip_Sprite(player);
+
+        NPC_Movement movement = _npcController.movement;
+        SpriteRenderer roamArea = _npcController.mainController.currentLocation.data.roamArea;
+
+        movement.Stop_FreeRoam();
+        movement.Free_Roam(roamArea, 1f);
+    }
+
+
     private void Pay()
     {
+        /*
         Food_ScrObj nugget = _controller.controller.mainController.dataController.goldenNugget;
         FoodData_Controller playerIcon = _controller.controller.interactable.detection.player.foodIcon;
 
@@ -151,10 +129,12 @@ public class CraftNPC : MonoBehaviour, ISaveLoadable
 
         _controller.nuggetBar.Update_Amount(1);
         _controller.nuggetBar.Load();
+        */
     }
 
     private void Gift()
     {
+        /*
         Food_ScrObj nugget = _controller.controller.mainController.dataController.goldenNugget;
         FoodData_Controller playerIcon = _controller.controller.interactable.detection.player.foodIcon;
 
@@ -172,5 +152,6 @@ public class CraftNPC : MonoBehaviour, ISaveLoadable
 
         _controller.timeBar.Update_Amount(1);
         _controller.timeBar.Load();
+        */
     }
 }

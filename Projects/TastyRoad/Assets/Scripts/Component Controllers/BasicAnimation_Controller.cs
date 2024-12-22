@@ -70,6 +70,9 @@ public class BasicAnimation_Controller : MonoBehaviour
             Flip_Sprite(false);
         }
     }
+    /// <summary>
+    /// Flips to the direction of target object
+    /// </summary>
     public void Flip_Sprite(GameObject targetObject)
     {
         if (transform.position.x > targetObject.transform.position.x)

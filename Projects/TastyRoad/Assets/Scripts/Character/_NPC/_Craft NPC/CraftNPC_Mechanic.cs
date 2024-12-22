@@ -4,53 +4,29 @@ using UnityEngine;
 
 public class CraftNPC_Mechanic : CraftNPC
 {
+    [Header("")]
     [SerializeField] private ActionSelector _toolBox;
-    [SerializeField] private Sprite[] _actionIcons;
 
 
     // MonoBehaviour
-    private new void Start()
+    private void Awake()
     {
-        base.Start();
-
-        AmountBar timeBar = controller.timeBar;
-
-        timeBar.Set_Amount(controller.controller.foodIcon.AllDatas().Count);
-        timeBar.Load();
-
-        controller.nuggetBar.Load();
-
-        _toolBox.transform.localPosition = Vector2.zero;
-        _toolBox.gameObject.SetActive(false);
+        Subscribe_OnSave(Save_Data);
+        Load_Data();
     }
 
 
-    // Current Instance
-    public void Set_Instance()
+    // Private Save and Load
+    private void Load_Data()
     {
-        if (controller.currentCraftNPC != this) return;
-
-        // load data
-        AmountBar nuggetBar = controller.nuggetBar;
-        nuggetBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/nuggetAmount", nuggetBar.currentAmount));
-
-        FoodData_Controller foodIcon = controller.controller.foodIcon;
-        foodIcon.Update_AllDatas(ES3.Load("CraftNPC_Mechanic/foodData", foodIcon.AllDatas()));
-
-        // subscriptions
-        controller.controller.interactable.OnHoldIInteract += Drop_ToolBox;
+        nuggetBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount));
+        giftBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/giftBar.currentAmount", giftBar.currentAmount));
     }
 
-    public void Save_Instacne()
+    private void Save_Data()
     {
-        if (controller.currentCraftNPC != this) return;
-
-        // save data
-        ES3.Save("CraftNPC_Mechanic/nuggetAmount", controller.nuggetBar.currentAmount);
-        ES3.Save("CraftNPC_Mechanic/foodData", controller.controller.foodIcon.AllDatas());
-
-        // subscriptions
-        controller.controller.interactable.OnHoldIInteract -= Drop_ToolBox;
+        ES3.Save("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount);
+        ES3.Save("CraftNPC_Mechanic/giftBar.currentAmount", giftBar.currentAmount);
     }
 
 
@@ -70,7 +46,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         if (_toolBox.gameObject.activeSelf) return;
 
-        Main_Controller main = controller.controller.mainController;
+        Main_Controller main = npcController.mainController;
 
         if (_toolBox.positionClaimer.CurrentPositions_Claimed()) return;
 
