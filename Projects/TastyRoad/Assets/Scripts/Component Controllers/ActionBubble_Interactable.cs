@@ -96,22 +96,18 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public void Interact()
     {
         if (_interactLocked) return;
-
-        // bubble empty
         if (_bubble == null) return;
 
-        // bubble off
         if (_bubble.bubbleOn)
         {
+            // bubble off
             UnInteract();
             return;
         }
 
-        // bubble on
         InputToggle(true);
         _bubble.Toggle(true);
 
-        //
         OnIInteract?.Invoke();
     }
 
@@ -123,7 +119,6 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public void UnInteract()
     {
         if (_unInteractLocked) return;
-
         if (_bubble == null) return;
 
         // bubble off

@@ -374,6 +374,7 @@ MonoBehaviour:
   - {x: -1, y: 0}
   - {x: 0, y: 0}
   - {x: 1, y: 0}
+  _unClaimOnStart: 0
 --- !u!114 &7023176493674794937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +395,10 @@ MonoBehaviour:
   _positionClaimer: {fileID: 2342190877690906068}
   _spritesFile: {fileID: 6678037125461081039}
   _interactArea: {fileID: 2822506792041360295}
+  _areaSizes:
+  - {x: 5, y: 3}
+  - {x: 6, y: 3}
+  - {x: 7, y: 4}
   _transparencyPoint: {fileID: 1081486458950851603}
   _stationSpawnPoint: {fileID: 1075718707391883764}
   _driverSeatPoint: {fileID: 2598355576462302171}

@@ -13,6 +13,7 @@ public class CraftNPC : MonoBehaviour
     [SerializeField] private NPC_Controller _npcController;
     public NPC_Controller npcController => _npcController;
 
+
     [Header("")]
     [SerializeField] private AmountBar _nuggetBar;
     public AmountBar nuggetBar => _nuggetBar;
@@ -29,6 +30,8 @@ public class CraftNPC : MonoBehaviour
     {
         // amount bars
         _nuggetBar.Load();
+
+        _giftBar.Set_Amount(_npcController.foodIcon.AllDatas().Count);
         _giftBar.Load();
 
         Toggle_AmountBars();
@@ -47,6 +50,9 @@ public class CraftNPC : MonoBehaviour
 
         interactable.OnIInteract += Face_Player;
         interactable.OnHoldIInteract += Face_Player;
+
+        interactable.OnHoldIInteract += Pay;
+        interactable.OnHoldIInteract += Gift;
     }
 
     public void OnDestroy()
@@ -61,6 +67,9 @@ public class CraftNPC : MonoBehaviour
 
         interactable.OnIInteract -= Face_Player;
         interactable.OnHoldIInteract -= Face_Player;
+
+        interactable.OnHoldIInteract -= Pay;
+        interactable.OnHoldIInteract -= Gift;
     }
 
 
@@ -77,7 +86,7 @@ public class CraftNPC : MonoBehaviour
 
 
     // Toggles
-    private void Toggle_AmountBars()
+    public void Toggle_AmountBars()
     {
         ActionBubble_Interactable interactable = _npcController.interactable;
 
@@ -116,9 +125,8 @@ public class CraftNPC : MonoBehaviour
 
     private void Pay()
     {
-        /*
-        Food_ScrObj nugget = _controller.controller.mainController.dataController.goldenNugget;
-        FoodData_Controller playerIcon = _controller.controller.interactable.detection.player.foodIcon;
+        Food_ScrObj nugget = _npcController.mainController.dataController.goldenNugget;
+        FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
 
         if (playerIcon.Is_SameFood(nugget) == false) return;
 
@@ -127,16 +135,14 @@ public class CraftNPC : MonoBehaviour
         playerIcon.Show_AmountBar();
         playerIcon.Show_Condition();
 
-        _controller.nuggetBar.Update_Amount(1);
-        _controller.nuggetBar.Load();
-        */
+        _nuggetBar.Update_Amount(1);
+        _nuggetBar.Load();
     }
 
     private void Gift()
     {
-        /*
-        Food_ScrObj nugget = _controller.controller.mainController.dataController.goldenNugget;
-        FoodData_Controller playerIcon = _controller.controller.interactable.detection.player.foodIcon;
+        Food_ScrObj nugget = _npcController.mainController.dataController.goldenNugget;
+        FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
 
         if (playerIcon.hasFood == false) return;
         if (playerIcon.Is_SameFood(nugget)) return;
@@ -148,10 +154,9 @@ public class CraftNPC : MonoBehaviour
         playerIcon.Show_AmountBar();
         playerIcon.Show_Condition();
 
-        _controller.controller.foodIcon.Set_CurrentData(playerFood);
+        _npcController.foodIcon.Set_CurrentData(playerFood);
 
-        _controller.timeBar.Update_Amount(1);
-        _controller.timeBar.Load();
-        */
+        _giftBar.Update_Amount(1);
+        _giftBar.Load();
     }
 }

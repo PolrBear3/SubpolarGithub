@@ -23,6 +23,8 @@ public class Vehicle_Controller : ActionBubble_Interactable
     [SerializeField] private SpriteRenderer _interactArea;
     public SpriteRenderer interactArea => _interactArea;
 
+    [SerializeField] private Vector2[] _areaSizes;
+
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
 
@@ -98,6 +100,27 @@ public class Vehicle_Controller : ActionBubble_Interactable
     {
         Bounds bounds = _interactArea.bounds;
         return bounds.Contains(checkPosition);
+    }
+
+
+    public int InteractAreaSize_IndexNum(Vector2 areaSize)
+    {
+        for (int i = 0; i < _areaSizes.Length; i++)
+        {
+            if (areaSize != _areaSizes[i]) continue;
+            return i;
+        }
+
+        Debug.Log("Interact area size index num not found!");
+        return 0;
+    }
+
+    public void Update_InteractArea(int sizeIndexNum)
+    {
+        sizeIndexNum = Mathf.Clamp(sizeIndexNum, 0, _areaSizes.Length - 1);
+        Vector2 updateSize = _areaSizes[sizeIndexNum];
+
+        _interactArea.size = updateSize;
     }
 
 

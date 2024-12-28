@@ -1,81 +1,127 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class CraftNPC_Mechanic : CraftNPC
 {
     [Header("")]
-    [SerializeField] private ActionSelector _toolBox;
+    [SerializeField] private GameObject _toolBox;
+
+    private ActionSelector _droppedToolBox;
 
 
     // MonoBehaviour
     private void Awake()
     {
-        Subscribe_OnSave(Save_Data);
         Load_Data();
+    }
+
+    private new void Start()
+    {
+        base.Start();
+        Subscribe_OnSave(Save_Data);
+
+        Upgrade_ExportRange();
+
+        // subscriptions
+        ActionBubble_Interactable interactable = npcController.interactable;
+
+        interactable.OnIInteract += Drop_ToolBox;
+        interactable.OnIInteract += Update_ActionBubble;
+    }
+
+    private new void OnDestroy()
+    {
+        base.OnDestroy();
+
+        // subscriptions
+        ActionBubble_Interactable interactable = npcController.interactable;
+
+        interactable.OnIInteract -= Drop_ToolBox;
+        interactable.OnIInteract -= Update_ActionBubble;
     }
 
 
     // Private Save and Load
-    private void Load_Data()
-    {
-        nuggetBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount));
-        giftBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/giftBar.currentAmount", giftBar.currentAmount));
-    }
-
     private void Save_Data()
     {
         ES3.Save("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount);
-        ES3.Save("CraftNPC_Mechanic/giftBar.currentAmount", giftBar.currentAmount);
+        ES3.Save("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", npcController.foodIcon.AllDatas());
     }
 
-
-    //
-    private void Upgrade_ExportRange()
+    private void Load_Data()
     {
-        Debug.Log("Upgrade_ExportRange");
+        nuggetBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount));
+        npcController.foodIcon.Update_AllDatas(ES3.Load("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", npcController.foodIcon.AllDatas()));
     }
 
-    private void Upgrade_MoveSpeed()
+
+    // Indications
+    private void Update_ActionBubble()
     {
-        Debug.Log("Upgrade_MoveSpeed");
+        Toggle_AmountBars();
+
+        ActionBubble_Interactable interactable = npcController.interactable;
+        Action_Bubble bubble = interactable.bubble;
+
+        if (_droppedToolBox == null)
+        {
+            bubble.Empty_Bubble();
+            return;
+        }
+
+        bubble.Set_Bubble(_droppedToolBox.indicatorIcon.sprite, null);
     }
 
 
+    // Basic Actions
     private void Drop_ToolBox()
     {
-        if (_toolBox.gameObject.activeSelf) return;
+        if (_droppedToolBox != null) return;
 
-        Main_Controller main = npcController.mainController;
+        Vector2 dropPos = Main_Controller.SnapPosition(transform.position);
 
-        if (_toolBox.positionClaimer.CurrentPositions_Claimed()) return;
+        if (npcController.mainController.Position_Claimed(dropPos)) return;
 
-        _toolBox.gameObject.SetActive(true);
+        GameObject drop = Instantiate(_toolBox, dropPos, quaternion.identity);
+        drop.transform.SetParent(npcController.mainController.otherFile);
 
-        // drop on current snap point
-        Vector2 dropPosition = _toolBox.positionClaimer.Claim_CurrentPositions();
-
-        _toolBox.transform.position = dropPosition;
-        _toolBox.transform.SetParent(main.otherFile);
+        _droppedToolBox = drop.GetComponent<ActionSelector>();
 
         // subscriptions
-        _toolBox.Subscribe_Action(Upgrade_ExportRange);
-        _toolBox.Subscribe_Action(Upgrade_MoveSpeed);
+        _droppedToolBox.Subscribe_Action(Upgrade_ExportRange);
+        _droppedToolBox.Subscribe_Action(Upgrade_MoveSpeed);
+
+        _droppedToolBox.OnActionToggle += Update_ActionBubble;
     }
 
     private void Collect_ToolBox()
     {
-        if (_toolBox.gameObject.activeSelf == false) return;
+        if (_droppedToolBox == null) return;
 
-        _toolBox.gameObject.SetActive(false);
+        GameObject currentToolBox = _droppedToolBox.gameObject;
 
-        // collect
-        _toolBox.positionClaimer.UnClaim_CurrentPositions();
+        _droppedToolBox = null;
+        Destroy(currentToolBox);
+    }
 
-        _toolBox.transform.SetParent(transform);
-        _toolBox.transform.position = Vector2.zero;
 
-        // reset subscriptions
-        _toolBox.Reset_Subscriptions();
+    // Purchase Upgrades
+    private void Upgrade_ExportRange()
+    {
+        // check nugget amount
+
+        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        int currentIndexNum = vehicle.InteractAreaSize_IndexNum(vehicle.interactArea.size);
+
+        vehicle.Update_InteractArea(currentIndexNum + 1);
+    }
+
+    private void Upgrade_MoveSpeed()
+    {
+        // check nugget amount
+
+        Debug.Log("Upgrade_MoveSpeed");
     }
 }

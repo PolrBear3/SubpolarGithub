@@ -76,7 +76,8 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        _npcIndexNum = ES3.Load("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
+        int loadIndexNum = ES3.Load("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
+        _npcIndexNum = Mathf.Clamp(loadIndexNum, 0, _allCraftNPC.Length - 1);
     }
 
 

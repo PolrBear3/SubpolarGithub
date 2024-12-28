@@ -15,16 +15,21 @@ public class ActionSelector : MonoBehaviour
 
     [Header("")]
     [SerializeField] private GameObject _indicatorObject;
+
     [SerializeField] private SpriteRenderer _indicatorIcon;
+    public SpriteRenderer indicatorIcon => _indicatorIcon;
 
     [Header("")]
     [SerializeField] private Sprite[] _indicatorSprites;
 
 
     private Action OnAction;
+    public Action OnActionToggle;
 
     private int _subscriptionCount;
     private int _currentIndex;
+
+    private bool _selectingAction;
 
 
     // MonoBehaviour
@@ -33,18 +38,14 @@ public class ActionSelector : MonoBehaviour
         Toggle_CurrentAction();
 
         // subscriptions
-        _detection.EnterEvent += Toggle_CurrentAction;
         _detection.ExitEvent += Toggle_CurrentAction;
-
         _interactable.OnInteract += Set_NextAction;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        _detection.EnterEvent -= Toggle_CurrentAction;
         _detection.ExitEvent -= Toggle_CurrentAction;
-
         _interactable.OnInteract -= Set_NextAction;
     }
 
@@ -54,11 +55,21 @@ public class ActionSelector : MonoBehaviour
     {
         if (_detection.Player_Detected() == false || _subscriptionCount <= 0 || _indicatorSprites.Length <= 0)
         {
+            _selectingAction = false;
+
             _indicatorObject.SetActive(false);
             return;
         }
 
+        Update_IndicatorSprite();
         _indicatorObject.SetActive(true);
+
+        OnActionToggle?.Invoke();
+    }
+
+    private void Update_IndicatorSprite()
+    {
+        if (_subscriptionCount <= 0 || _indicatorSprites.Length <= 0) return;
 
         int spriteNum = Mathf.Clamp(_currentIndex, 0, _indicatorSprites.Length - 1);
         _indicatorIcon.sprite = _indicatorSprites[spriteNum];
@@ -84,9 +95,16 @@ public class ActionSelector : MonoBehaviour
 
     private void Set_NextAction()
     {
-        _currentIndex = (_currentIndex + 1) % _subscriptionCount;
-
         Toggle_CurrentAction();
+
+        if (_selectingAction == false)
+        {
+            _selectingAction = true;
+            return;
+        }
+
+        _currentIndex = (_currentIndex + 1) % _subscriptionCount;
+        Update_IndicatorSprite();
     }
 
 
