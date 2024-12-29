@@ -1,5 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9144155032706007725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Food Interaction/FoodInteract_eat
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Food Interaction/FoodInteract_eat
+  Guid:
+    Data1: 2088776602
+    Data2: 1222638691
+    Data3: -637841019
+    Data4: 1565476813
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-9113675709811392843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog System/Dialog_update
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Dialog System/Dialog_update
+  Guid:
+    Data1: 1207142128
+    Data2: 1295910532
+    Data3: -529321540
+    Data4: -2063877861
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-9098409597259461469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,10 +69,34 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638693523987201776
+  lastModified: 638710701150296936
   FileSizes:
   - Name: Desktop
-    Value: 73856
+    Value: 93792
+  Exists: 1
+--- !u!114 &-8842336582695762211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/CoinLauncher_throw/Value_intensity
+  m_EditorClassIdentifier: 
+  Name: Value_intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1104856012
+    data2: 3748696620
+  Type: 0
+  IsGlobal: 0
+  Labels: []
   Exists: 1
 --- !u!114 &-8782401601473127640
 MonoBehaviour:
@@ -35,10 +113,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638693504401177202
+  lastModified: 638710701148049237
   FileSizes:
   - Name: Desktop
-    Value: 1296
+    Value: 1536
   Exists: 1
 --- !u!114 &-7437292464083142477
 MonoBehaviour:
@@ -67,6 +145,61 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-6867150284731850622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  Guid:
+    Data1: 1456072744
+    Data2: 1090747003
+    Data3: 1181122708
+    Data4: 1048100260
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-6624307689126360385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Interaction/CoinLauncher_throw
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Interaction/CoinLauncher_throw
+  Guid:
+    Data1: -1660709437
+    Data2: 1200014235
+    Data3: -1415380316
+    Data4: -1692421121
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -8842336582695762211}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 50
 --- !u!114 &-6252724095389087783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,12 +215,12 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638693440021182944
+  lastModified: 638710701150886396
   FileSizes:
   - Name: Desktop
-    Value: 9952
+    Value: 17472
   Exists: 1
---- !u!114 &-5764894003455197280
+--- !u!114 &-3857188148246927821
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,14 +230,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/FoodInteract_swap2
+  m_Name: event:/Basic SFX/Vechicle/StationItem_export
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/FoodInteract_swap2
+  Path: event:/Basic SFX/Vechicle/StationItem_export
   Guid:
-    Data1: 1456072744
-    Data2: 1090747003
-    Data3: 1181122708
-    Data4: 1048100260
+    Data1: -2000394434
+    Data2: 1125934655
+    Data3: 829910180
+    Data4: -31450466
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -141,7 +274,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 577
---- !u!114 &-918234035858499176
+--- !u!114 &-1847966958500974043
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,14 +284,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Dialog_update
+  m_Name: event:/Basic SFX/Food Interaction/FoodInteract_merge1
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Dialog_update
+  Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
   Guid:
-    Data1: 426935411
-    Data2: 1297006902
-    Data3: 931956614
-    Data4: 1076882755
+    Data1: -1316452498
+    Data2: 1303772983
+    Data3: 243705496
+    Data4: 1450492281
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -168,7 +301,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-367835179990698518
+--- !u!114 &-271862431893857347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,21 +310,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/CoinLauncher_throw/Value_intensity
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Dialog System/Dialog_close
   m_EditorClassIdentifier: 
-  Name: Value_intensity
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0
-  ID:
-    data1: 1104856012
-    data2: 3748696620
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
+  Path: event:/Basic SFX/Dialog System/Dialog_close
+  Guid:
+    Data1: 896063100
+    Data2: 1290377101
+    Data3: -1498773083
+    Data4: -1662747862
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,18 +348,22 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: -3199232476146871466}
   - {fileID: -7437292464083142477}
-  - {fileID: -5764894003455197280}
-  - {fileID: 3907373714213662415}
-  - {fileID: -918234035858499176}
-  - {fileID: 6367108483144980521}
-  - {fileID: 6538109731290740338}
-  - {fileID: 5754896983138178239}
+  - {fileID: -6867150284731850622}
+  - {fileID: -3857188148246927821}
+  - {fileID: -1847966958500974043}
+  - {fileID: -271862431893857347}
+  - {fileID: -9144155032706007725}
+  - {fileID: 3758027296563283760}
+  - {fileID: 6924463659752812726}
+  - {fileID: -6624307689126360385}
+  - {fileID: -9113675709811392843}
+  - {fileID: 9149461416140641624}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638693523987201776
+  cacheTime: 638710701150886396
   cacheVersion: 131618
 --- !u!114 &1291012834966449344
 MonoBehaviour:
@@ -240,12 +380,12 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638693504401162263
+  lastModified: 638710701148036312
   FileSizes:
   - Name: Desktop
     Value: 1036
   Exists: 1
---- !u!114 &3907373714213662415
+--- !u!114 &3758027296563283760
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -255,14 +395,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/FoodInteract_merge1
+  m_Name: event:/Basic SFX/Vechicle/StationItem_retrieve
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/FoodInteract_merge1
+  Path: event:/Basic SFX/Vechicle/StationItem_retrieve
   Guid:
-    Data1: -1316452498
-    Data2: 1303772983
-    Data3: 243705496
-    Data4: 1450492281
+    Data1: 1424211625
+    Data2: 1254941790
+    Data3: -810629981
+    Data4: 1247566103
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -272,7 +412,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &5754896983138178239
+--- !u!114 &6924463659752812726
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,14 +422,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Dialog_infoBox
+  m_Name: event:/Basic SFX/Dialog System/Dialog_open
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Dialog_infoBox
+  Path: event:/Basic SFX/Dialog System/Dialog_open
   Guid:
-    Data1: 1207142128
-    Data2: 1295910532
-    Data3: -529321540
-    Data4: -2063877861
+    Data1: -307278929
+    Data2: 1108996358
+    Data3: 409864377
+    Data4: 781684799
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -299,7 +439,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &6367108483144980521
+--- !u!114 &9149461416140641624
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -309,16 +449,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/FoodInteract_eat
+  m_Name: event:/Station SFX/Station_break
   m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/FoodInteract_eat
+  Path: event:/Station SFX/Station_break
   Guid:
-    Data1: 2088776602
-    Data2: 1222638691
-    Data3: -637841019
-    Data4: 1565476813
+    Data1: 1255097458
+    Data2: 1122823251
+    Data3: -911600471
+    Data4: 1970102881
   Banks:
-  - {fileID: -9098409597259461469}
+  - {fileID: -6252724095389087783}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -326,31 +466,3 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &6538109731290740338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/CoinLauncher_throw
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/CoinLauncher_throw
-  Guid:
-    Data1: -1660709437
-    Data2: 1200014235
-    Data3: -1415380316
-    Data4: -1692421121
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters:
-  - {fileID: -367835179990698518}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 50
