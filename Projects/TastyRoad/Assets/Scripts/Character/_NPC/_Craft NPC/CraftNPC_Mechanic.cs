@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -22,12 +23,15 @@ public class CraftNPC_Mechanic : CraftNPC
         base.Start();
         Subscribe_OnSave(Save_Data);
 
+        Set_ToolBox();
+
         // subscriptions
+        GlobalTime_Controller.TimeTik_Update += Set_ToolBox;
+        GlobalTime_Controller.TimeTik_Update += Collect_ToolBox;
+
         ActionBubble_Interactable interactable = npcController.interactable;
 
-        interactable.OnIInteract += Drop_ToolBox;
         interactable.OnIInteract += Update_ActionBubble;
-
         interactable.OnAction1Input += Purchase;
     }
 
@@ -36,11 +40,12 @@ public class CraftNPC_Mechanic : CraftNPC
         base.OnDestroy();
 
         // subscriptions
+        GlobalTime_Controller.TimeTik_Update -= Set_ToolBox;
+        GlobalTime_Controller.TimeTik_Update -= Collect_ToolBox;
+
         ActionBubble_Interactable interactable = npcController.interactable;
 
-        interactable.OnIInteract -= Drop_ToolBox;
         interactable.OnIInteract -= Update_ActionBubble;
-
         interactable.OnAction1Input -= Purchase;
     }
 
@@ -69,6 +74,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
         if (_droppedToolBox == null)
         {
+            bubble.Toggle(false);
             bubble.Empty_Bubble();
             return;
         }
@@ -98,15 +104,103 @@ public class CraftNPC_Mechanic : CraftNPC
         _droppedToolBox.OnActionToggle += Update_ActionBubble;
     }
 
+
+    private Vector2 ToolBox_SetPosition()
+    {
+        Main_Controller main = npcController.mainController;
+        Vehicle_Controller vehicle = main.currentVehicle;
+
+        List<Vector2> allPositions = vehicle.positionClaimer.All_Positions();
+
+        for (int i = allPositions.Count - 1; i >= 0; i--)
+        {
+            if (main.Position_Claimed(allPositions[i])) continue;
+            return allPositions[i];
+        }
+
+        return Vector2.zero;
+    }
+
+    private void Set_ToolBox()
+    {
+        if (coroutine != null) return;
+        if (_droppedToolBox != null) return;
+
+        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        if (vehicle.movement.onBoard) return;
+
+        Set_Coroutine(StartCoroutine(Set_ToolBox_Coroutine()));
+    }
+    private IEnumerator Set_ToolBox_Coroutine()
+    {
+        NPC_Movement movement = npcController.movement;
+
+        movement.Stop_FreeRoam();
+        movement.Assign_TargetPosition(ToolBox_SetPosition());
+
+        while (movement.At_TargetPosition() == false) yield return null;
+
+        Drop_ToolBox();
+
+        movement.Free_Roam(0);
+
+        Set_Coroutine(null);
+        yield break;
+    }
+
+
+    private bool ToolBox_NearbyVehicle()
+    {
+        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        List<Vector2> allPositions = vehicle.positionClaimer.All_Positions();
+
+        for (int i = allPositions.Count - 1; i >= 0; i--)
+        {
+            if ((Vector2)_droppedToolBox.transform.position == allPositions[i]) return true;
+        }
+
+        return false;
+    }
+
     private void Collect_ToolBox()
     {
+        if (coroutine != null) return;
         if (_droppedToolBox == null) return;
+        if (ToolBox_NearbyVehicle()) return;
+
+        Set_Coroutine(StartCoroutine(Collect_ToolBox_Coroutine()));
+    }
+    private IEnumerator Collect_ToolBox_Coroutine()
+    {
+        NPC_Movement movement = npcController.movement;
+
+        movement.Stop_FreeRoam();
+        movement.Assign_TargetPosition(_droppedToolBox.transform.position);
+
+        while (movement.At_TargetPosition(_droppedToolBox.transform.position) == false)
+        {
+            // cancel collect action if interact during action
+            if (movement.Is_Moving() == false)
+            {
+                Set_Coroutine(null);
+                yield break;
+            }
+
+            yield return null;
+        }
 
         GameObject currentToolBox = _droppedToolBox.gameObject;
-
         _droppedToolBox = null;
+
         Destroy(currentToolBox);
+        Update_ActionBubble();
+
+        movement.Free_Roam(0);
+
+        Set_Coroutine(null);
+        yield break;
     }
+
 
     private void Purchase()
     {

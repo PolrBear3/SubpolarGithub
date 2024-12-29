@@ -183,6 +183,14 @@ public class NPC_Movement : MonoBehaviour
         _currentRoamArea = roamArea;
         _moveCoroutine = StartCoroutine(Free_Roam_Coroutine(roamArea, startDelayTime));
     }
+    /// <summary>
+    /// Default roam area of current location
+    /// </summary>
+    public void Free_Roam(float startDelayTime)
+    {
+        SpriteRenderer roamArea = _controller.mainController.currentLocation.data.roamArea;
+        Free_Roam(roamArea, startDelayTime);
+    }
     private IEnumerator Free_Roam_Coroutine(SpriteRenderer roamArea, float startDelayTime)
     {
         yield return new WaitForSeconds(startDelayTime);

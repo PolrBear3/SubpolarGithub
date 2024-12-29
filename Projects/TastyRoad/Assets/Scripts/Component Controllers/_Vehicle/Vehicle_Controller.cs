@@ -10,6 +10,7 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     public VehicleMenu_Controller menu => _menu;
 
     [SerializeField] private VehicleMovement_Controller _movement;
+    public VehicleMovement_Controller movement => _movement;
 
     [Header("")]
     [SerializeField] private Custom_PositionClaimer _positionClaimer;

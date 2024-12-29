@@ -24,6 +24,9 @@ public class CraftNPC : MonoBehaviour
 
     private Action OnSave;
 
+    private Coroutine _coroutine;
+    public Coroutine coroutine => _coroutine;
+
 
     // MonoBehaviour
     public void Start()
@@ -37,8 +40,7 @@ public class CraftNPC : MonoBehaviour
         Toggle_AmountBars();
 
         // starting movement
-        SpriteRenderer roamArea = _npcController.mainController.currentLocation.data.roamArea;
-        _npcController.movement.Free_Roam(roamArea, 0);
+        _npcController.movement.Free_Roam(0);
 
         // subscriptions
         Detection_Controller detection = _npcController.interactable.detection;
@@ -70,6 +72,20 @@ public class CraftNPC : MonoBehaviour
 
         interactable.OnHoldIInteract -= Pay;
         interactable.OnHoldIInteract -= Gift;
+    }
+
+
+    // Data
+    public Coroutine Set_Coroutine(Coroutine coroutine)
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+
+        _coroutine = coroutine;
+        return _coroutine;
     }
 
 

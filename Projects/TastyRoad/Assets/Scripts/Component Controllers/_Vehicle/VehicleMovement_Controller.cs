@@ -11,6 +11,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
 
     private bool _onBoard;
+    public bool onBoard => _onBoard;
+
     private Vector2 _currentDirection;
 
     private Vector2 _defaultPosition;
