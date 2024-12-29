@@ -22,13 +22,13 @@ public class CraftNPC_Mechanic : CraftNPC
         base.Start();
         Subscribe_OnSave(Save_Data);
 
-        Upgrade_ExportRange();
-
         // subscriptions
         ActionBubble_Interactable interactable = npcController.interactable;
 
         interactable.OnIInteract += Drop_ToolBox;
         interactable.OnIInteract += Update_ActionBubble;
+
+        interactable.OnAction1Input += Purchase;
     }
 
     private new void OnDestroy()
@@ -40,6 +40,8 @@ public class CraftNPC_Mechanic : CraftNPC
 
         interactable.OnIInteract -= Drop_ToolBox;
         interactable.OnIInteract -= Update_ActionBubble;
+
+        interactable.OnAction1Input -= Purchase;
     }
 
 
@@ -90,8 +92,8 @@ public class CraftNPC_Mechanic : CraftNPC
         _droppedToolBox = drop.GetComponent<ActionSelector>();
 
         // subscriptions
-        _droppedToolBox.Subscribe_Action(Upgrade_ExportRange);
         _droppedToolBox.Subscribe_Action(Upgrade_MoveSpeed);
+        _droppedToolBox.Subscribe_Action(Upgrade_ExportRange);
 
         _droppedToolBox.OnActionToggle += Update_ActionBubble;
     }
@@ -106,6 +108,13 @@ public class CraftNPC_Mechanic : CraftNPC
         Destroy(currentToolBox);
     }
 
+    private void Purchase()
+    {
+        if (_droppedToolBox == null) return;
+
+        _droppedToolBox.Invoke_Action();
+    }
+
 
     // Purchase Upgrades
     private void Upgrade_ExportRange()
@@ -116,6 +125,8 @@ public class CraftNPC_Mechanic : CraftNPC
         int currentIndexNum = vehicle.InteractAreaSize_IndexNum(vehicle.interactArea.size);
 
         vehicle.Update_InteractArea(currentIndexNum + 1);
+
+        Debug.Log("Upgrade_ExportRange");
     }
 
     private void Upgrade_MoveSpeed()

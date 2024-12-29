@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Vehicle_Controller : ActionBubble_Interactable
+public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 {
     [Header("")]
     [SerializeField] private VehicleMenu_Controller _menu;
@@ -65,6 +65,18 @@ public class Vehicle_Controller : ActionBubble_Interactable
     private void Update()
     {
         Transparency_Update();
+    }
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        ES3.Save("Vehicle_Controller/_interactArea.size", _interactArea.size);
+    }
+
+    public void Load_Data()
+    {
+        _interactArea.size = ES3.Load("Vehicle_Controller/_interactArea.size", _interactArea.size);
     }
 
 
