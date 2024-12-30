@@ -124,6 +124,7 @@ public class CraftNPC_Mechanic : CraftNPC
     private void Set_ToolBox()
     {
         if (coroutine != null) return;
+
         if (_droppedToolBox != null) return;
 
         Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
@@ -165,6 +166,7 @@ public class CraftNPC_Mechanic : CraftNPC
     private void Collect_ToolBox()
     {
         if (coroutine != null) return;
+
         if (_droppedToolBox == null) return;
         if (ToolBox_NearbyVehicle()) return;
 
@@ -204,9 +206,33 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private void Purchase()
     {
+        if (coroutine != null) return;
         if (_droppedToolBox == null) return;
 
+        Set_Coroutine(StartCoroutine(Purchase_Coroutine()));
+    }
+    private IEnumerator Purchase_Coroutine()
+    {
+        npcController.interactable.LockInteract(true);
+
+        NPC_Movement movement = npcController.movement;
+        movement.Stop_FreeRoam();
+
+        movement.Assign_TargetPosition(_droppedToolBox.transform.position);
+        while (movement.At_TargetPosition() == false) yield return null;
+
+        Vector2 vehicle = npcController.mainController.currentVehicle.transform.position;
+
+        movement.Assign_TargetPosition(vehicle);
+        while (movement.At_TargetPosition() == false) yield return null;
+
         _droppedToolBox.Invoke_Action();
+        movement.Free_Roam(0);
+
+        npcController.interactable.LockInteract(false);
+
+        Set_Coroutine(null);
+        yield break;
     }
 
 
