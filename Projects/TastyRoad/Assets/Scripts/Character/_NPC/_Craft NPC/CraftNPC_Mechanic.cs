@@ -9,6 +9,12 @@ public class CraftNPC_Mechanic : CraftNPC
     [Header("")]
     [SerializeField] private GameObject _toolBox;
 
+    [Header("")]
+    [SerializeField] private Vector2[] _interactRanges;
+
+    [SerializeField][Range(0, 1)] private float _moveSpeedValue;
+
+
     private ActionSelector _droppedToolBox;
 
 
@@ -22,8 +28,6 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         base.Start();
         Subscribe_OnSave(Save_Data);
-
-        Set_ToolBox();
 
         // subscriptions
         GlobalTime_Controller.TimeTik_Update += Set_ToolBox;
@@ -99,7 +103,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
         // subscriptions
         _droppedToolBox.Subscribe_Action(Upgrade_MoveSpeed);
-        _droppedToolBox.Subscribe_Action(Upgrade_ExportRange);
+        _droppedToolBox.Subscribe_Action(Upgrade_InteractRange);
 
         _droppedToolBox.OnActionToggle += Update_ActionBubble;
     }
@@ -237,22 +241,36 @@ public class CraftNPC_Mechanic : CraftNPC
 
 
     // Purchase Upgrades
-    private void Upgrade_ExportRange()
+    private void Upgrade_InteractRange()
     {
-        // check nugget amount
-
         Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
-        int currentIndexNum = vehicle.InteractAreaSize_IndexNum(vehicle.interactArea.size);
+        Vector2 currentRange = vehicle.interactArea.size;
 
-        vehicle.Update_InteractArea(currentIndexNum + 1);
+        for (int i = 0; i < _interactRanges.Length; i++)
+        {
+            if (_interactRanges[i] != currentRange) continue;
+            if (i >= _interactRanges.Length - 1) break;
 
-        Debug.Log("Upgrade_ExportRange");
+            vehicle.Update_InteractArea_Range(_interactRanges[i + 1]);
+            return;
+        }
+
+        Refund();
+        // dialog //
     }
 
     private void Upgrade_MoveSpeed()
     {
-        // check nugget amount
+        VehicleMovement_Controller vehicle = npcController.mainController.currentVehicle.movement;
 
-        Debug.Log("Upgrade_MoveSpeed");
+        if (vehicle.moveSpeed >= vehicle.maxMoveSpeed)
+        {
+            Refund();
+            // dialog //
+
+            return;
+        }
+
+        vehicle.Update_MovementSpeed(_moveSpeedValue);
     }
 }

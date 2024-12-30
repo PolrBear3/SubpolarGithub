@@ -9,6 +9,14 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Vehicle_Controller _controller;
     [SerializeField] private ActionBubble_Interactable _interactable;
 
+    [Header("")]
+    [SerializeField][Range(0, 10)] private float _defaultMoveSpeed;
+
+    [SerializeField][Range(0, 10)] private float _maxMoveSpeed;
+    public float maxMoveSpeed => _maxMoveSpeed;
+
+    private float _moveSpeed;
+    public float moveSpeed => _moveSpeed;
 
     private bool _onBoard;
     public bool onBoard => _onBoard;
@@ -22,6 +30,9 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Start()
     {
+        // move speed
+        _moveSpeed = _defaultMoveSpeed;
+
         // set to recent position
         _controller.positionClaimer.UnClaim_CurrentPositions();
 
@@ -75,12 +86,16 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        ES3.Save("VehicleMovement_Controller/_moveSpeed", _moveSpeed);
+
         ES3.Save("VehicleMovement_Controller/_defaultPosition", _defaultPosition);
         ES3.Save("VehicleMovement_Controller/_recentPosition", _recentPosition);
     }
 
     public void Load_Data()
     {
+        _moveSpeed = ES3.Load("VehicleMovement_Controller/_moveSpeed", _defaultMoveSpeed);
+
         if (ES3.KeyExists("VehicleMovement_Controller/_recentPosition") == false)
         {
             _recentPosition = _controller.transform.position;
@@ -99,11 +114,15 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (_onBoard == false) return;
 
-        float moveSpeed = 2f;
-
         Vector2 moveDirection = new(_currentDirection.x, _currentDirection.y);
-        _controller.transform.Translate(moveSpeed * Time.deltaTime * moveDirection);
+        _controller.transform.Translate(_moveSpeed * Time.deltaTime * moveDirection);
     }
+
+    public void Update_MovementSpeed(float updateValue)
+    {
+        _moveSpeed = Mathf.Clamp(_moveSpeed + updateValue, 0, _maxMoveSpeed);
+    }
+
 
     private void ResrictPosition_Update()
     {
@@ -116,7 +135,6 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         vehicle.position = location.Redirected_Position(vehicle.position);
     }
-
 
     private void ExitRestricted_IndicationUpdate()
     {

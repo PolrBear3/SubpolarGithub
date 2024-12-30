@@ -227,13 +227,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7492899775058685991}
+  - {fileID: 6159379447971834147}
+  - {fileID: 4048123379781644011}
   - {fileID: 1317300597564469170}
   - {fileID: 1081486458950851603}
   - {fileID: 4509474956324539718}
   - {fileID: 8060614526370568925}
   - {fileID: 1617839239778359926}
-  - {fileID: 6159379447971834147}
-  - {fileID: 4048123379781644011}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &653949399699014468
@@ -395,10 +395,6 @@ MonoBehaviour:
   _positionClaimer: {fileID: 2342190877690906068}
   _spritesFile: {fileID: 6678037125461081039}
   _interactArea: {fileID: 2822506792041360295}
-  _areaSizes:
-  - {x: 5, y: 3}
-  - {x: 6, y: 3}
-  - {x: 7, y: 4}
   _transparencyPoint: {fileID: 1081486458950851603}
   _stationSpawnPoint: {fileID: 1075718707391883764}
   _driverSeatPoint: {fileID: 2598355576462302171}
@@ -506,7 +502,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875846079922781687}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -631,6 +627,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 7023176493674794937}
   _interactable: {fileID: 4401101128229260073}
+  _defaultMoveSpeed: 1.5
+  _maxMoveSpeed: 3.5
 --- !u!1 &900042385387526337
 GameObject:
   m_ObjectHideFlags: 0

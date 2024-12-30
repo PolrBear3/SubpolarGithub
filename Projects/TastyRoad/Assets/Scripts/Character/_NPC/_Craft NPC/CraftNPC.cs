@@ -175,4 +175,9 @@ public class CraftNPC : MonoBehaviour
         _giftBar.Update_Amount(1);
         _giftBar.Load();
     }
+
+    public void Refund()
+    {
+
+    }
 }
