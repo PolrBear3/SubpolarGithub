@@ -25,6 +25,7 @@ public class NPC_Movement : MonoBehaviour
     [Header("")]
     [SerializeField] private float _moveSpeed;
 
+
     [Header("")]
     [SerializeField] private Vector2 _intervalTimeRange;
     public Vector2 intervalTimeRange => _intervalTimeRange;
@@ -93,7 +94,7 @@ public class NPC_Movement : MonoBehaviour
     }
 
 
-    // Movement Update
+    // Update
     private void TargetPosition_Movement()
     {
         if (At_TargetPosition() == false)
@@ -103,6 +104,7 @@ public class NPC_Movement : MonoBehaviour
     }
 
 
+    // Control
     /// <summary>
     /// updates the current roam area variable
     /// </summary>

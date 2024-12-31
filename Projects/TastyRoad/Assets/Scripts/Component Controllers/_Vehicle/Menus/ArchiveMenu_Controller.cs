@@ -109,6 +109,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return false;
     }
 
+    public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas()
+    {
+        return _currentDatas;
+    }
+
 
     // Slot and Cursor Control
     private void Select_Slot()

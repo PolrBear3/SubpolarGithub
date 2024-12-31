@@ -8,12 +8,15 @@ public class ItemSlots_Controller : MonoBehaviour
     [SerializeField] private ItemSlot_Cursor _cursor;
     public ItemSlot_Cursor cursor => _cursor;
 
-    [Header("")]
     [SerializeField] private List<ItemSlot> _itemSlots = new();
     public List<ItemSlot> itemSlots => _itemSlots;
 
+    [Header("")]
     [SerializeField][Range(0, 1000)] private int _singleSlotCapacity;
     public int singleSlotCapacity => _singleSlotCapacity;
+
+    [SerializeField][Range(0, 10)] private int _maxPageNum;
+    public int maxPageNum => _maxPageNum;
 
 
     // UnityEngine
@@ -152,6 +155,8 @@ public class ItemSlots_Controller : MonoBehaviour
     // Data
     public void AddNewPage_ItemSlotDatas(Dictionary<int, List<ItemSlot_Data>> targetData)
     {
+        if (targetData.Count >= _maxPageNum) return;
+
         // set new slot datas, amount of current _itemSlots
         List<ItemSlot_Data> newDatas = new();
         for (int i = 0; i < _itemSlots.Count; i++)

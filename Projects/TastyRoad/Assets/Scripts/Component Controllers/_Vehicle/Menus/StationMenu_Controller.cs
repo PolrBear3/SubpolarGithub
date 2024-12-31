@@ -103,6 +103,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return _interactionMode;
     }
 
+    public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas()
+    {
+        return _currentDatas;
+    }
+
 
     // Menu Control
     public ItemSlot_Data Add_StationItem(Station_ScrObj station, int amount)
@@ -227,7 +232,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         InformationBox info = _controller.infoBox;
 
         // Retrieve Status
-        string retrieveStatus = "Hold <sprite=2> on empty to retrieve\n\n";
+        string retrieveStatus = "Hold <sprite=15> on empty to retrieve\n\n";
 
         // Action key 1
         string action1 = "Swap";

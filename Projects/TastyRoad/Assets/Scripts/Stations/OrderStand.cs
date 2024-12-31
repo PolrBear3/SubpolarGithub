@@ -189,6 +189,8 @@ public class OrderStand : MonoBehaviour, IInteractable
             if (!allCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
 
             NPC_Interaction interaction = npc.interaction;
+            if (interaction == null) continue;
+
             NPC_Movement move = npc.movement;
 
             // check if already ordered food

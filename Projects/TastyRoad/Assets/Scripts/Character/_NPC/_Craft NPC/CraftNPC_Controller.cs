@@ -19,9 +19,7 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Toggle_NPCSprites(false);
-
-        Vector3 spawnPos = ES3.Load("CraftNPC_Controller/_currentNPC.transform.position", Default_SpawnPosition());
-        Spawn(_npcIndexNum).transform.position = spawnPos;
+        Spawn(_npcIndexNum).transform.position = Default_SpawnPosition();
 
         // subscription
         WorldMap_Controller.NewLocation_Event += Spawn_New;
@@ -40,7 +38,6 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
         _currentNPC.Invoke_OnSave();
 
         ES3.Save("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
-        ES3.Save("CraftNPC_Controller/_currentNPC.transform.position", _currentNPC.transform.position);
     }
 
     public void Load_Data()

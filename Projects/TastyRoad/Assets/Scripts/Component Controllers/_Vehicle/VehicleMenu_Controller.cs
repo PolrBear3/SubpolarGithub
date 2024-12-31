@@ -8,6 +8,7 @@ using System.Linq;
 public interface IVehicleMenu
 {
     public bool MenuInteraction_Active();
+    public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas();
 }
 
 public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
@@ -42,6 +43,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField] private List<GameObject> _menus = new();
+    public List<GameObject> menus => _menus;
 
     [SerializeField] private Sprite[] _menuCursorSprites;
     public Sprite[] menuCursorSprites => _menuCursorSprites;
@@ -377,12 +379,18 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _slotsController.cursor.cursorImage.sprite = updateSprite;
     }
 
-    public void Update_PageDots(int pageAmount, int currentPageNum)
+    public void Update_PageDots(int pageAmount)
     {
         int pageCount = pageAmount;
 
         for (int i = 0; i < _pageDots.Length; i++)
         {
+            if (_pageDots[i].sprite == _dotSprites[2])
+            {
+                pageCount--;
+                continue;
+            }
+
             // lock
             if (pageCount <= 0)
             {
@@ -394,8 +402,18 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             _pageDots[i].sprite = _dotSprites[1];
             pageCount--;
         }
+    }
+    public void Update_PageDots(int pageAmount, int currentPageNum)
+    {
+        // reset
+        foreach (Image dot in _pageDots)
+        {
+            dot.sprite = null;
+        }
 
         // indicate
         _pageDots[currentPageNum].sprite = _dotSprites[2];
+
+        Update_PageDots(pageAmount);
     }
 }

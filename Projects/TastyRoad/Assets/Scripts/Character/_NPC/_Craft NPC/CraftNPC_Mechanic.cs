@@ -9,10 +9,13 @@ public class CraftNPC_Mechanic : CraftNPC
     [Header("")]
     [SerializeField] private GameObject _toolBox;
 
+
     [Header("")]
     [SerializeField] private Vector2[] _interactRanges;
 
     [SerializeField][Range(0, 1)] private float _moveSpeedValue;
+
+    private int _recentMenuNum;
 
 
     private ActionSelector _droppedToolBox;
@@ -30,6 +33,8 @@ public class CraftNPC_Mechanic : CraftNPC
         Subscribe_OnSave(Save_Data);
 
         // subscriptions
+        npcController.mainController.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
+
         GlobalTime_Controller.TimeTik_Update += Set_ToolBox;
         GlobalTime_Controller.TimeTik_Update += Collect_ToolBox;
 
@@ -44,6 +49,8 @@ public class CraftNPC_Mechanic : CraftNPC
         base.OnDestroy();
 
         // subscriptions
+        npcController.mainController.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
+
         GlobalTime_Controller.TimeTik_Update -= Set_ToolBox;
         GlobalTime_Controller.TimeTik_Update -= Collect_ToolBox;
 
@@ -104,6 +111,7 @@ public class CraftNPC_Mechanic : CraftNPC
         // subscriptions
         _droppedToolBox.Subscribe_Action(Upgrade_MoveSpeed);
         _droppedToolBox.Subscribe_Action(Upgrade_InteractRange);
+        _droppedToolBox.Subscribe_Action(Upgrade_StorageSpace);
 
         _droppedToolBox.OnActionToggle += Update_ActionBubble;
     }
@@ -139,11 +147,22 @@ public class CraftNPC_Mechanic : CraftNPC
     private IEnumerator Set_ToolBox_Coroutine()
     {
         NPC_Movement movement = npcController.movement;
+        Vector2 setPos = ToolBox_SetPosition();
 
         movement.Stop_FreeRoam();
-        movement.Assign_TargetPosition(ToolBox_SetPosition());
+        movement.Assign_TargetPosition(setPos);
 
-        while (movement.At_TargetPosition() == false) yield return null;
+        while (movement.At_TargetPosition(setPos) == false)
+        {
+            // cancel collect action if interact during action
+            if (movement.Is_Moving() == false)
+            {
+                Set_Coroutine(null);
+                yield break;
+            }
+
+            yield return null;
+        }
 
         Drop_ToolBox();
 
@@ -212,6 +231,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         if (coroutine != null) return;
         if (_droppedToolBox == null) return;
+        if (nuggetBar.Is_MaxAmount() == false) return;
 
         Set_Coroutine(StartCoroutine(Purchase_Coroutine()));
     }
@@ -252,10 +272,16 @@ public class CraftNPC_Mechanic : CraftNPC
             if (i >= _interactRanges.Length - 1) break;
 
             vehicle.Update_InteractArea_Range(_interactRanges[i + 1]);
+
+            nuggetBar.Set_Amount(0);
+            nuggetBar.Load();
+
             return;
         }
 
-        Refund();
+        nuggetBar.Set_Amount(nuggetBar.maxAmount);
+        nuggetBar.Load();
+
         // dialog //
     }
 
@@ -265,12 +291,51 @@ public class CraftNPC_Mechanic : CraftNPC
 
         if (vehicle.moveSpeed >= vehicle.maxMoveSpeed)
         {
-            Refund();
             // dialog //
-
             return;
         }
 
         vehicle.Update_MovementSpeed(_moveSpeedValue);
+
+        nuggetBar.Set_Amount(0);
+        nuggetBar.Load();
+    }
+
+
+    private void Update_RecentMenuNum()
+    {
+        VehicleMenu_Controller vehicle = npcController.mainController.currentVehicle.menu;
+        GameObject recentMenu = vehicle.menus[vehicle.currentMenuNum];
+
+        bool foodMenuOpened = recentMenu.TryGetComponent<FoodMenu_Controller>(out _);
+        bool stationMenuOpened = recentMenu.TryGetComponent<StationMenu_Controller>(out _);
+
+        if (foodMenuOpened == false && stationMenuOpened == false) return;
+
+        _recentMenuNum = vehicle.currentMenuNum;
+    }
+
+    private void Upgrade_StorageSpace()
+    {
+        VehicleMenu_Controller menuController = npcController.mainController.currentVehicle.menu;
+        ItemSlots_Controller slotsController = menuController.slotsController;
+
+        GameObject recentMenu = menuController.menus[_recentMenuNum];
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = recentMenu.GetComponent<IVehicleMenu>().ItemSlot_Datas();
+
+        if (slotDatas.Count >= slotsController.maxPageNum)
+        {
+            // dialog //
+            return;
+        }
+
+        slotsController.AddNewPage_ItemSlotDatas(slotDatas);
+
+        nuggetBar.Set_Amount(0);
+        nuggetBar.Load();
+
+        if (recentMenu.activeSelf == false) return;
+
+        menuController.Update_PageDots(slotDatas.Count);
     }
 }

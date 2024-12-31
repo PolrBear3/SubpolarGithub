@@ -39,11 +39,6 @@ public class NPC_Interaction : MonoBehaviour
 
 
     // UnityEngine
-    private void Awake()
-    {
-        if (gameObject.TryGetComponent(out NPC_Controller controller)) { _controller = controller; }
-    }
-
     private void Start()
     {
         Main_Controller.Change_SpriteAlpha(_wakeSpriteRenderer, 0f);

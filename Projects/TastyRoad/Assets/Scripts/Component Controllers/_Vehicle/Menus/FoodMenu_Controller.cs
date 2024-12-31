@@ -111,6 +111,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return false;
     }
 
+    public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas()
+    {
+        return _currentDatas;
+    }
+
 
     // Menu Control
     public int Add_FoodItem(Food_ScrObj food, int amount)

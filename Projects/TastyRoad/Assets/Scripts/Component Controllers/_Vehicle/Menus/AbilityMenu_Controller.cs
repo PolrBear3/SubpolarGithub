@@ -56,6 +56,11 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return false;
     }
 
+    public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas()
+    {
+        return _currentDatas;
+    }
+
 
     // ISaveLoadable
     public void Save_Data()
@@ -150,7 +155,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             return;
         }
 
-        string holdSelect = "Hold <sprite=2> to level up";
+        string holdSelect = "Hold <sprite=15> to level up";
         infoBox.Update_InfoText(currentAbility.description + "\n\n" + holdSelect);
 
         infoBox.gameObject.SetActive(true);

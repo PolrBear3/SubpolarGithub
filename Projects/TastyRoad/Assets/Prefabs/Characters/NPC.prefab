@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 2630561444930076325}
   - component: {fileID: 9094981842974887859}
   - component: {fileID: 2978574373251596411}
-  - component: {fileID: 1602899645111724261}
+  - component: {fileID: 6697651477228405809}
   - component: {fileID: 2236639740272532679}
   m_Layer: 0
   m_Name: NPC
@@ -476,7 +476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 1331804926663461836}
   _animOverride: {fileID: 0}
   _defaultAnimation: 
 --- !u!114 &2630561444930076325
@@ -514,7 +513,8 @@ MonoBehaviour:
   _itemDropper: {fileID: 3320073790108978212}
   _timer: {fileID: 5143084945135055206}
   _movement: {fileID: 2978574373251596411}
-  _interaction: {fileID: 1602899645111724261}
+  _interaction: {fileID: 0}
+  _foodInteraction: {fileID: 6697651477228405809}
   _giftSystem: {fileID: 2236639740272532679}
 --- !u!114 &2978574373251596411
 MonoBehaviour:
@@ -532,7 +532,7 @@ MonoBehaviour:
   _moveSpeed: 5
   _intervalTimeRange: {x: 5, y: 10}
   _searchAttempts: 50
---- !u!114 &1602899645111724261
+--- !u!114 &6697651477228405809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -541,17 +541,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5817206134798704318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b5b608fb3a2242b8b2a63bfbcd61c38, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f8182b4ffd7446e0a0ce7144fb32c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
-  _stateBoxes: {fileID: 1769571539367528716}
-  _wakeSpriteRenderer: {fileID: 2264966909282092729}
-  _eatAnimationSR: {fileID: 532419520745837338}
-  _goldCoinSR: {fileID: 1526801472330999249}
-  _animTransitionTime: 1
-  _defaultTimeLimit: 5
-  _generosityMultiplier: 10
 --- !u!114 &2236639740272532679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1150,11 +1143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94e5c44617d64486196e532775169a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1769571539367528716 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5676929509273313230, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-  m_PrefabInstance: {fileID: 6216734122313750210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3004582541908958015 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
