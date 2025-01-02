@@ -192,12 +192,12 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         Location_Controller location = _controller.mainController.currentLocation;
         Custom_PositionClaimer claimer = _controller.positionClaimer;
 
-        for (int i = 0; i < claimer.All_Positions().Count; i++)
+        for (int i = 0; i < claimer.All_InteractPositions().Count; i++)
         {
-            if (location.Restricted_Position(claimer.All_Positions()[i])) return false;
+            if (location.Restricted_Position(claimer.All_InteractPositions()[i])) return false;
 
-            if (claimer.Is_ClaimPosition(claimer.All_Positions()[i]) == false) continue;
-            Vector2 redirectedPos = location.Redirected_SnapPosition(claimer.All_Positions()[i]);
+            if (claimer.Is_ClaimPosition(claimer.All_InteractPositions()[i]) == false) continue;
+            Vector2 redirectedPos = location.Redirected_SnapPosition(claimer.All_InteractPositions()[i]);
 
             if (_controller.mainController.Position_Claimed(redirectedPos)) return false;
         }

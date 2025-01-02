@@ -79,7 +79,7 @@ public class FoodData_Controller : MonoBehaviour
     // Data Control
     public bool Is_SameFood(Food_ScrObj compareFood)
     {
-        if (_hasFood == false) return false;
+        if (compareFood == null || _hasFood == false) return false;
         if (compareFood != _currentData.foodScrObj) return false;
 
         return true;
@@ -239,6 +239,36 @@ public class FoodData_Controller : MonoBehaviour
         _foodIcon.transform.localPosition = _currentData.foodScrObj.centerPosition / 100f;
         _foodIcon.color = Color.white;
     }
+
+    public void Show_Icon(float transparencyValue)
+    {
+        Show_Icon();
+
+        if (_iconShowLocked == true || _hasFood == false) return;
+
+        Main_Controller.Change_SpriteAlpha(_foodIcon, transparencyValue);
+    }
+
+    public void Show_EatIcon()
+    {
+        if (_iconShowLocked == true || _hasFood == false)
+        {
+            Hide_Icon();
+            return;
+        }
+
+        if (_currentData.foodScrObj == null)
+        {
+            Set_CurrentData(null);
+            Hide_Icon();
+            return;
+        }
+
+        _foodIcon.sprite = _currentData.foodScrObj.eatSprite;
+        _foodIcon.transform.localPosition = _currentData.foodScrObj.centerPosition / 100f;
+        _foodIcon.color = Color.white;
+    }
+
 
     public void Hide_Icon()
     {

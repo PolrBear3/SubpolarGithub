@@ -7,7 +7,9 @@ public class Custom_PositionClaimer : MonoBehaviour
     private Main_Controller _main;
 
     [Header("")]
-    [SerializeField] private Vector2[] _allPositions;
+    [SerializeField] private Vector2[] _surroundPositions;
+    [SerializeField] private Vector2[] _interactPositions;
+
     [SerializeField] private List<Vector2> _claimPositions = new();
 
     [Header("")]
@@ -30,20 +32,6 @@ public class Custom_PositionClaimer : MonoBehaviour
     }
 
 
-    //
-    public List<Vector2> All_Positions()
-    {
-        Vector2 currentPosition = transform.position;
-        List<Vector2> allPositions = new();
-
-        foreach (Vector2 position in _allPositions)
-        {
-            allPositions.Add(currentPosition + position);
-        }
-
-        return allPositions;
-    }
-
     public List<Vector2> Current_Positions()
     {
         Vector2 currentPosition = transform.position;
@@ -56,6 +44,39 @@ public class Custom_PositionClaimer : MonoBehaviour
 
         return currentPositions;
     }
+
+    /// <summary>
+    /// Claimed positions included
+    /// </summary>
+    public List<Vector2> All_InteractPositions()
+    {
+        Vector2 currentPosition = transform.position;
+        List<Vector2> allPositions = new();
+
+        foreach (Vector2 position in _interactPositions)
+        {
+            allPositions.Add(currentPosition + position);
+        }
+
+        return allPositions;
+    }
+
+    /// <summary>
+    /// Claimed positions excluded
+    /// </summary>
+    public List<Vector2> All_SurroundPositions()
+    {
+        Vector2 currentPosition = transform.position;
+        List<Vector2> surroundPositions = new();
+
+        foreach (Vector2 position in _surroundPositions)
+        {
+            surroundPositions.Add(currentPosition + position);
+        }
+
+        return surroundPositions;
+    }
+
 
 
     public bool Is_ClaimPosition(Vector2 checkPosition)

@@ -160,6 +160,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         image.color = color;
     }
 
+
     /// <returns>
     /// True if inserted percentage amount is activated, False if not activated
     /// </returns>
@@ -169,11 +170,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return percentage >= comparePercentage;
     }
 
-    public static bool Percentage_Activated(float percentage, float rangePercentage)
-    {
-        float comparePercentage = 100f - rangePercentage;
-        return percentage >= comparePercentage;
-    }
 
     /// <returns>
     /// Mathf Round floats of inserted vector x and y value

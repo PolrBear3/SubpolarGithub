@@ -117,17 +117,33 @@ public class CraftNPC_Mechanic : CraftNPC
     }
 
 
+    private bool ToolBox_SetAvailable()
+    {
+        Main_Controller main = npcController.mainController;
+        Vehicle_Controller vehicle = main.currentVehicle;
+
+        List<Vector2> surroundPositions = vehicle.positionClaimer.All_SurroundPositions();
+
+        for (int i = 0; i < surroundPositions.Count; i++)
+        {
+            if (main.Position_Claimed(surroundPositions[i])) continue;
+            return true;
+        }
+
+        return false;
+    }
+
     private Vector2 ToolBox_SetPosition()
     {
         Main_Controller main = npcController.mainController;
         Vehicle_Controller vehicle = main.currentVehicle;
 
-        List<Vector2> allPositions = vehicle.positionClaimer.All_Positions();
+        List<Vector2> surroundPositions = vehicle.positionClaimer.All_SurroundPositions();
 
-        for (int i = allPositions.Count - 1; i >= 0; i--)
+        for (int i = 0; i < surroundPositions.Count; i++)
         {
-            if (main.Position_Claimed(allPositions[i])) continue;
-            return allPositions[i];
+            if (main.Position_Claimed(surroundPositions[i])) continue;
+            return surroundPositions[i];
         }
 
         return Vector2.zero;
@@ -136,8 +152,9 @@ public class CraftNPC_Mechanic : CraftNPC
     private void Set_ToolBox()
     {
         if (coroutine != null) return;
-
         if (_droppedToolBox != null) return;
+
+        if (ToolBox_SetAvailable() == false) return;
 
         Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
         if (vehicle.movement.onBoard) return;
@@ -154,7 +171,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
         while (movement.At_TargetPosition(setPos) == false)
         {
-            // cancel collect action if interact during action
+            // cancel set action if interact during action
             if (movement.Is_Moving() == false)
             {
                 Set_Coroutine(null);
@@ -162,6 +179,14 @@ public class CraftNPC_Mechanic : CraftNPC
             }
 
             yield return null;
+        }
+
+        if (npcController.mainController.Position_Claimed(setPos))
+        {
+            Set_Coroutine(null);
+            Set_ToolBox();
+
+            yield break;
         }
 
         Drop_ToolBox();
@@ -176,7 +201,7 @@ public class CraftNPC_Mechanic : CraftNPC
     private bool ToolBox_NearbyVehicle()
     {
         Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
-        List<Vector2> allPositions = vehicle.positionClaimer.All_Positions();
+        List<Vector2> allPositions = vehicle.positionClaimer.All_SurroundPositions();
 
         for (int i = allPositions.Count - 1; i >= 0; i--)
         {

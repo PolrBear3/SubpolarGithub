@@ -545,6 +545,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
+  _foodOrderRate: 50
+  _transferTime: 30
+  _additionalTime: 3
 --- !u!114 &2236639740272532679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1087,13 +1090,17 @@ PrefabInstance:
       propertyPath: _iconTransparent
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8720598385154043323, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.974
+      value: 0.563
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1158,11 +1165,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2463160998973575963, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.03
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2463160998973575963, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.52
+      value: 0.978
       objectReference: {fileID: 0}
     - target: {fileID: 2463160998973575963, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1219,10 +1226,6 @@ PrefabInstance:
     - target: {fileID: 3788136335572471749, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5133560639816156417, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
-      propertyPath: m_Color.a
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

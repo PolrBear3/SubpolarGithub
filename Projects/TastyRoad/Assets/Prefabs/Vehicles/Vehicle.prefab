@@ -363,7 +363,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allPositions:
+  _surroundPositions:
+  - {x: -1, y: -1}
+  - {x: -2, y: -1}
+  - {x: 0, y: -1}
+  - {x: 1, y: -1}
+  - {x: 2, y: -1}
+  - {x: 2, y: 0}
+  - {x: -2, y: 0}
+  - {x: -2, y: 1}
+  - {x: 2, y: 1}
+  - {x: -1, y: 1}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  _interactPositions:
   - {x: -1, y: 0}
   - {x: 0, y: 0}
   - {x: 1, y: 0}

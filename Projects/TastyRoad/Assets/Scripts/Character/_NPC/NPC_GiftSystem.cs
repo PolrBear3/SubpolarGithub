@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class NPC_GiftSystem : MonoBehaviour
     [SerializeField][Range(0, 100)] private int _dropCoolTime;
     [SerializeField][Range(0, 100)] private int _dropAmountRange;
 
+
+    public Action<bool> OnDurationToggle;
 
     private Coroutine _coroutine;
 
@@ -58,10 +61,13 @@ public class NPC_GiftSystem : MonoBehaviour
     private IEnumerator ToggleBar_Duration_Coroutine()
     {
         Update_CoolTimBar();
+
+        OnDurationToggle?.Invoke(false);
         _giftCoolTimeBar.SetActive(true);
 
         yield return new WaitForSeconds(2f);
 
+        OnDurationToggle?.Invoke(true);
         _giftCoolTimeBar.SetActive(false);
 
         _coroutine = null;
@@ -121,19 +127,19 @@ public class NPC_GiftSystem : MonoBehaviour
         Update_CoolTimBar();
 
         // check drop rate
-        if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _itemDropRate) == false) return;
+        if (_controller.characterData.generosityLevel >= _itemDropRate) return;
 
         ItemDropper dropper = _controller.itemDropper;
 
         // collect card drop
-        if (Main_Controller.Percentage_Activated(_controller.characterData.generosityLevel, _collectCardDropRate))
+        if (_controller.characterData.generosityLevel >= _collectCardDropRate)
         {
             dropper.Drop_CollectCard();
             return;
         }
 
         // food drop
-        int dropAmount = Random.Range(1, _dropAmountRange + 1);
+        int dropAmount = UnityEngine.Random.Range(1, _dropAmountRange + 1);
         dropper.Drop_Food(new FoodData(dropper.Weighted_RandomFood(playerFood)), dropAmount);
     }
 }
