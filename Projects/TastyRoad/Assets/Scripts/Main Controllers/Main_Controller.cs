@@ -43,12 +43,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
 
     public static bool gamePaused;
-    public static bool orderOpen;
 
 
     public delegate void Event();
-
-    public static event Event OrderOpen_ToggleEvent;
 
     public static event Event TestButton1Event;
     public static event Event TestButton2Event;
@@ -69,7 +66,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         gamePaused = false;
-        orderOpen = false;
 
         UnClaim_CustomPositions();
         ES3.Save("_claimedPositions", _claimedPositions);
@@ -270,14 +266,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
         foodMenu.Remove_FoodItem(dataController.goldenNugget, removeAmount);
-    }
-
-
-    // Order Open Control
-    public static void OrderOpen_Toggle(bool toggleOn)
-    {
-        orderOpen = toggleOn;
-        OrderOpen_ToggleEvent?.Invoke();
     }
 
 

@@ -177,6 +177,7 @@ public class FoodData
         return matchCount;
     }
 
+
     public FoodCondition_Data Current_ConditionData(FoodCondition_Type targetCondition)
     {
         for (int i = 0; i < _conditionDatas.Count; i++)
@@ -186,5 +187,13 @@ public class FoodData
         }
 
         return null;
+    }
+
+    public int Current_ConditionLevel(FoodCondition_Type targetCondition)
+    {
+        FoodCondition_Data targetData = Current_ConditionData(targetCondition);
+
+        if (targetData == null) return 0;
+        return targetData.level;
     }
 }

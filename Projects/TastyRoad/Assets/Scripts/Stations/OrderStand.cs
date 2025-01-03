@@ -79,11 +79,13 @@ public class OrderStand : MonoBehaviour, IInteractable
     // Gets
     private Sprite Station_Sprite()
     {
+        /*
         // order closed
         if (Main_Controller.orderOpen == false)
         {
-            return _closedStand;
+        return _closedStand;
         }
+        */
 
         // order open
         return _openStand;
@@ -104,13 +106,16 @@ public class OrderStand : MonoBehaviour, IInteractable
             return;
         }
 
+        /*
         // if other order stand currenlty toggled on, return
         if (Main_Controller.orderOpen == true && _orderOpen == false)
         {
             dialog.Update_Dialog(3);
             return;
         }
+        */
 
+        /*
         // order open
         if (Main_Controller.orderOpen == false)
         {
@@ -159,6 +164,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             //
             _waitingNPCs.Clear();
         }
+        */
 
         // sprite update
         _spriteRenderer.sprite = Station_Sprite();
@@ -171,7 +177,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     private void TimeTik_Attract()
     {
         // check if order is open
-        if (Main_Controller.orderOpen == false) return;
+        // if (Main_Controller.orderOpen == false) return;
 
         // check if there is at least 1 food bookmarked
         if (_stationController.mainController.bookmarkedFoods.Count <= 0) return;
@@ -196,6 +202,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             // check if already ordered food
             if (npc.foodIcon.hasFood) continue;
 
+            /*
             // check if food is already served and left ordering area
             if (interaction.servedFoodData != null && move.currentRoamArea != _orderingArea)
             {
@@ -225,6 +232,7 @@ public class OrderStand : MonoBehaviour, IInteractable
             // start waiting time limit
             interaction.Start_TimeLimit();
             npc.timer.Toggle_Transparency(false, interaction.animTransitionTime);
+            */
         }
     }
 
@@ -233,70 +241,7 @@ public class OrderStand : MonoBehaviour, IInteractable
     /// </summary>
     private void Attract()
     {
-        if (_attractCoroutine != null) StopCoroutine(_attractCoroutine);
 
-        _attractCoroutine = StartCoroutine(Attract_Coroutine());
-    }
-    private IEnumerator Attract_Coroutine()
-    {
-        while (Main_Controller.orderOpen == true)
-        {
-            while (_stationController.mainController.bookmarkedFoods.Count <= 0)
-            {
-                yield return null;
-            }
-
-            // all current npc
-            List<GameObject> allCharacters = _stationController.mainController.currentCharacters;
-
-            Refresh_WaitingNPCs();
-
-            for (int i = 0; i < allCharacters.Count; i++)
-            {
-                // check max waiting npc amount
-                if (_waitingNPCs.Count >= _maxWaitings) continue;
-
-                if (!allCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
-
-                NPC_Interaction interaction = npc.interaction;
-                NPC_Movement move = npc.movement;
-
-                // check if already ordered food
-                if (npc.foodIcon.hasFood) continue;
-
-                // check if food is already served and left ordering area
-                if (interaction.servedFoodData != null && move.currentRoamArea != _orderingArea)
-                {
-                    _waitingNPCs.Remove(npc);
-                    continue;
-                }
-
-                // check if npc want to order food
-                if (interaction.Want_FoodOrder() == false) continue;
-
-                // keep track of currently waiting npc
-                _waitingNPCs.Add(npc);
-
-                // assign food
-                interaction.Assign_FoodOrder();
-
-                // attract wake animtion
-                interaction.Wake_Animation();
-
-                // refresh
-                npc.interactable.UnInteract();
-
-                // attract npc > ordering area
-                move.Stop_FreeRoam();
-                move.Free_Roam(_orderingArea, 0f);
-
-                // start waiting time limit
-                interaction.Start_TimeLimit();
-                npc.timer.Toggle_Transparency(false, interaction.animTransitionTime);
-            }
-
-            yield return new WaitForSeconds(_attractIntervalTime);
-        }
     }
 
 

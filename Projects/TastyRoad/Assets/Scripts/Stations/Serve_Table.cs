@@ -16,16 +16,16 @@ public class Serve_Table : Table, IInteractable
     // UnityEngine
     private new void Start()
     {
-        Main_Controller.OrderOpen_ToggleEvent += Find_AttractedNPC;
-        Main_Controller.OrderOpen_ToggleEvent += CloseOrder;
+        // Main_Controller.OrderOpen_ToggleEvent += Find_AttractedNPC;
+        // Main_Controller.OrderOpen_ToggleEvent += CloseOrder;
     }
 
     private new void OnDestroy()
     {
         base.OnDestroy();
 
-        Main_Controller.OrderOpen_ToggleEvent -= Find_AttractedNPC;
-        Main_Controller.OrderOpen_ToggleEvent -= CloseOrder;
+        // Main_Controller.OrderOpen_ToggleEvent -= Find_AttractedNPC;
+        // Main_Controller.OrderOpen_ToggleEvent -= CloseOrder;
     }
 
 
@@ -94,7 +94,7 @@ public class Serve_Table : Table, IInteractable
         if (stationController.Food_Icon().currentData.foodScrObj != _currentNPC.foodIcon.currentData.foodScrObj) return false;
 
         // check if food is already served
-        if (_currentNPC.interaction.servedFoodData != null) return false;
+        // if (_currentNPC.interaction.servedFoodData != null) return false;
 
         //
         return true;
@@ -112,7 +112,7 @@ public class Serve_Table : Table, IInteractable
 
         _currentNPC = null;
 
-        if (Main_Controller.orderOpen == false) return;
+        // if (Main_Controller.orderOpen == false) return;
 
         _coroutine = StartCoroutine(Find_AttractedNPC_Coroutine());
     }
@@ -139,7 +139,7 @@ public class Serve_Table : Table, IInteractable
         for (int i = 0; i < allNPCs.Count; i++)
         {
             if (allNPCs[i].foodIcon.hasFood == false) continue;
-            if (allNPCs[i].interaction.servedFoodData != null) continue;
+            // if (allNPCs[i].interaction.servedFoodData != null) continue;
             if (Other_ServeTable_OrderTaken(allNPCs[i]) == true) continue;
 
             // set current npc
@@ -151,6 +151,7 @@ public class Serve_Table : Table, IInteractable
 
     private void FoodOrder_PreviewUpdate()
     {
+        /*
         if (Main_Controller.orderOpen == false || _currentNPC == null)
         {
             _foodOrderPreview.Set_CurrentData(null);
@@ -159,6 +160,7 @@ public class Serve_Table : Table, IInteractable
 
             return;
         }
+        */
 
         _foodOrderPreview.Set_CurrentData(_currentNPC.foodIcon.currentData);
         _foodOrderPreview.Show_Icon();
@@ -183,7 +185,7 @@ public class Serve_Table : Table, IInteractable
     private IEnumerator Check_FoodServe_Coroutine()
     {
         // current npc assigned, waiting for food order, time not ended
-        while (_currentNPC != null && _currentNPC.interaction.servedFoodData == null && _currentNPC.foodIcon.hasFood) yield return null;
+        while (_currentNPC != null && _currentNPC.foodIcon.hasFood) yield return null; // && _currentNPC.interaction.servedFoodData == null
 
         Find_AttractedNPC();
     }
@@ -196,7 +198,7 @@ public class Serve_Table : Table, IInteractable
         if (_coroutine != null) return;
 
         // check if order is currently open
-        if (Main_Controller.orderOpen == false) return;
+        // if (Main_Controller.orderOpen == false) return;
 
         // check if food order is set
         if (_currentNPC == null) return;
@@ -236,7 +238,7 @@ public class Serve_Table : Table, IInteractable
         }
 
         // serve npc food
-        npc.interaction.Serve_FoodOrder(stationController.Food_Icon().currentData);
+        // npc.interaction.Serve_FoodOrder(stationController.Food_Icon().currentData);
 
         // empty current food
         stationController.Food_Icon().Set_CurrentData(null);

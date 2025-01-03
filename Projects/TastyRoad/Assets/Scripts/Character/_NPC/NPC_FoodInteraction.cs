@@ -9,12 +9,23 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private GameObject _collectIndicator;
+
+
+    [Header("")]
     [SerializeField][Range(0, 100)] private float _foodOrderRate;
+    [SerializeField][Range(0, 100)] private float _conditionRequestRate;
 
     [Header("")]
     [SerializeField][Range(0, 300)] private int _transferTime;
     [SerializeField][Range(0, 100)] private int _additionalTime;
 
+    [Header("")]
+    [SerializeField][Range(0, 100)] private float _bonusPayPercentage;
+
+
+    private FoodData _transferData;
+    private bool _payAvailable;
 
     private Coroutine _timeCoroutine;
     private Coroutine _transferCoroutine;
@@ -23,6 +34,8 @@ public class NPC_FoodInteraction : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
+        _collectIndicator.SetActive(false);
+
         // subscriptions
         GlobalTime_Controller.TimeTik_Update += Set_FoodOrder;
 
@@ -31,6 +44,10 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
         giftSystem.OnDurationToggle += Toggle_FoodOrder;
+
+        Detection_Controller detection = interactable.detection;
+        detection.EnterEvent += Collect_Payment;
+        detection.ExitEvent += Collect_Payment;
     }
 
     private void OnDestroy()
@@ -43,6 +60,10 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
         giftSystem.OnDurationToggle -= Toggle_FoodOrder;
+
+        Detection_Controller detection = interactable.detection;
+        detection.EnterEvent -= Collect_Payment;
+        detection.ExitEvent -= Collect_Payment;
     }
 
 
@@ -54,8 +75,6 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         if (toggle == false)
         {
-            if (foodIcon.hasFood == false) return;
-
             foodIcon.Hide_Icon();
             foodIcon.Hide_Condition();
 
@@ -63,6 +82,8 @@ public class NPC_FoodInteraction : MonoBehaviour
 
             return;
         }
+
+        if (foodIcon.hasFood == false) return;
 
         foodIcon.Show_Icon();
         foodIcon.Show_Condition();
@@ -104,6 +125,8 @@ public class NPC_FoodInteraction : MonoBehaviour
     {
         if (_timeCoroutine != null) return false;
 
+        if (_payAvailable) return false;
+
         // check if additional food orders are left
         if (_controller.foodIcon.AllDatas().Count > 0) return false;
 
@@ -128,10 +151,19 @@ public class NPC_FoodInteraction : MonoBehaviour
         for (int i = 0; i < maxOrders; i++)
         {
             foodIcon.Set_CurrentData(FoodOrder());
+
+            if (Main_Controller.Percentage_Activated(_conditionRequestRate) == false) continue;
+
+            FoodCondition_Type randCondition = (FoodCondition_Type)Random.Range(0, 2);
+            int randLevel = Random.Range(1, 4);
+
+            foodIcon.currentData.Update_Condition(new FoodCondition_Data(randCondition, randLevel));
         }
 
         if (foodIcon.hasFood == false) return;
+
         foodIcon.Show_Icon(0.5f);
+        foodIcon.Show_Condition();
 
         Run_OrderTime();
         Update_RoamArea();
@@ -162,10 +194,15 @@ public class NPC_FoodInteraction : MonoBehaviour
 
     private void Fail_OrderTime()
     {
+        _transferData = null;
+
+        _collectIndicator.SetActive(false);
+
         FoodData_Controller foodIcon = _controller.foodIcon;
 
         foodIcon.Update_AllDatas(null);
         foodIcon.Show_Icon();
+        foodIcon.Show_Condition();
 
         Update_RoamArea();
     }
@@ -184,14 +221,18 @@ public class NPC_FoodInteraction : MonoBehaviour
         _timeCoroutine = null;
 
         _controller.timer.Stop_Time();
-        _transferCoroutine = StartCoroutine(Transfer_FoodOrder_Coroutine(transferData));
+        _transferCoroutine = StartCoroutine(Transfer_FoodOrder_Coroutine());
+
+        _transferData = new(transferData);
 
         return true;
     }
-    private IEnumerator Transfer_FoodOrder_Coroutine(FoodData transferData)
+    private IEnumerator Transfer_FoodOrder_Coroutine()
     {
         FoodData_Controller foodIcon = _controller.foodIcon;
+
         foodIcon.Show_Icon();
+        foodIcon.Hide_Condition();
 
         yield return new WaitForSeconds(1f);
 
@@ -199,24 +240,13 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        foodIcon.Hide_Icon();
+        _controller.timer.Toggle_Transparency(true);
+
         Character_Data data = _controller.characterData;
         data.Update_Hunger((100 - data.hungerLevel) / foodIcon.AllDatas().Count);
 
-        foodIcon.Set_CurrentData(null);
-        foodIcon.Hide_Icon();
-
-        _controller.timer.Toggle_Transparency(true);
-
-        yield return new WaitForSeconds(1f);
-
-        if (foodIcon.hasFood == false)
-        {
-            _transferCoroutine = null;
-            yield break;
-        }
-
-        Run_OrderTime();
-        foodIcon.Show_Icon(0.5f);
+        if (Set_Payment() <= 0) Fail_OrderTime();
 
         _transferCoroutine = null;
         yield break;
@@ -232,17 +262,69 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
     }
 
 
     // Payment
-    private int Pay_FoodOrder()
+    private int Set_Payment()
     {
         int payAmount = 0;
 
-        // remaining time calculation
-        // food price
+        FoodData_Controller foodIcon = _controller.foodIcon;
+        Food_ScrObj foodOrder = foodIcon.currentData.foodScrObj;
+
+        int bonusAmount = Mathf.CeilToInt(_bonusPayPercentage * 0.01f * foodOrder.price);
+
+        // defalut calculation
+        payAmount += foodOrder.price;
+
+        // condition match calculation
+        if (foodIcon.currentData.Conditions_MatchCount(_transferData.conditionDatas) >= foodIcon.currentData.conditionDatas.Count)
+        {
+            foreach (FoodCondition_Data data in foodIcon.currentData.conditionDatas)
+            {
+                payAmount += data.level * bonusAmount;
+            }
+        }
+
+        // order time calculation
+        payAmount += _controller.timer.timeBlockCount * bonusAmount;
+
+        // rotten condition calculation
+        payAmount -= payAmount / 3 * _transferData.Current_ConditionLevel(FoodCondition_Type.rotten);
+
+        _payAvailable = payAmount > 0;
+        _collectIndicator.SetActive(payAmount > 0);
 
         return payAmount;
+    }
+
+    private void Collect_Payment()
+    {
+        if (_payAvailable == false) return;
+
+        _controller.mainController.Add_GoldenNugget(Set_Payment());
+
+        FoodData_Controller foodIcon = _controller.foodIcon;
+        foodIcon.Set_CurrentData(null);
+
+        _payAvailable = false;
+        _collectIndicator.SetActive(false);
+
+        _transferData = null;
+
+        Sprite nuggetSprite = _controller.mainController.dataController.goldenNugget.sprite;
+        _controller.itemLauncher.Parabola_CoinLaunch(nuggetSprite, transform.position);
+
+        Update_RoamArea();
+
+        if (foodIcon.hasFood == false) return;
+
+        // run next food order
+        Run_OrderTime();
+
+        foodIcon.Show_Icon(0.5f);
+        foodIcon.Show_Condition();
     }
 }

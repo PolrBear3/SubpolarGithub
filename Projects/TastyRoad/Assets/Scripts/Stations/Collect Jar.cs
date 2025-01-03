@@ -79,7 +79,7 @@ public class CollectJar : Stack_Table, IInteractable
         for (int i = 0; i < allNPCs.Count; i++)
         {
             if (allNPCs[i].foodIcon.hasFood == false) continue;
-            if (allNPCs[i].interaction.FoodOrder_Served() == false) continue;
+            // if (allNPCs[i].interaction.FoodOrder_Served() == false) continue;
 
             servedNPCs.Add(allNPCs[i]);
         }
@@ -174,6 +174,8 @@ public class CollectJar : Stack_Table, IInteractable
         while (movement.At_TargetPosition(transform.position) == false)
         {
             // cancel function if player collects nugget
+
+            /*
             if (interaction.FoodOrder_Served() == false)
             {
                 _coroutine = null;
@@ -181,15 +183,16 @@ public class CollectJar : Stack_Table, IInteractable
 
                 yield break;
             }
+            */
 
             yield return null;
         }
 
         // add to current food data
-        stationController.Food_Icon().currentData.Update_Amount(interaction.foodScore);
+        // stationController.Food_Icon().currentData.Update_Amount(interaction.foodScore);
 
         // clear data and leave
-        interaction.Clear_Data();
+        // interaction.Clear_Data();
 
         SpriteRenderer currentLocation = stationController.mainController.currentLocation.data.roamArea;
 
