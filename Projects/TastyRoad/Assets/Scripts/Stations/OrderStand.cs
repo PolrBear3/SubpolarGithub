@@ -1,271 +1,165 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.InputSystem;
 
-public class OrderStand : MonoBehaviour, IInteractable
+public class OrderStand : MonoBehaviour
 {
-    private SpriteRenderer _spriteRenderer;
+    [Header("")]
+    [SerializeField] private Station_Controller _stationController;
 
-    private Station_Controller _stationController;
+    [Header("")]
+    [SerializeField] private Clock_Timer _coolTimer;
+    [SerializeField] private AmountBar _npcCountBar;
 
-    [SerializeField] private Clock_Timer _timer;
-
-    [Header("Order Stand Sprites")]
-    [SerializeField] private Sprite _openStand;
-    [SerializeField] private Sprite _closedStand;
-
-    [Header("Action Bubble Sprites")]
-    [SerializeField] private Sprite _lineOpenSprite;
-    [SerializeField] private Sprite _lineClosedSprite;
-
-    [Header("Order Control")]
+    [Header("")]
+    [SerializeField] private Sprite[] _toggleSprites;
     [SerializeField] private SpriteRenderer _orderingArea;
-    public SpriteRenderer orderingArea => _orderingArea;
 
-    [SerializeField] private int _maxWaitings;
-    private List<NPC_Controller> _waitingNPCs = new();
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _searchTime;
+    [SerializeField][Range(0, 100)] private int _maxCount;
 
-    [SerializeField] private float _attractIntervalTime;
-    private Coroutine _attractCoroutine;
 
-    private bool _orderOpen;
-    public bool orderOpen => _orderOpen;
+    private List<NPC_Controller> _currentNPCs = new();
+
+    private Coroutine _coroutine;
 
 
     // UnityEngine
-    private void Awake()
-    {
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
-        if (gameObject.TryGetComponent(out Station_Controller controller)) { _stationController = controller; }
-    }
-
     private void Start()
     {
-        _orderingArea.color = Color.clear;
-        _timer.Toggle_Transparency(true);
+        // subscriptions
+        IInteractable_Controller iInteractable = _stationController.iInteractable;
+
+        iInteractable.OnHoldInteract += Toggle_Activation;
+        iInteractable.OnHoldInteract += Toggle_Sprite;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        IInteractable_Controller iInteractable = _stationController.iInteractable;
+
+        iInteractable.OnHoldInteract -= Toggle_Activation;
+        iInteractable.OnHoldInteract += Toggle_Sprite;
     }
 
 
-    // OnTrigger
-    private void OnTriggerExit2D(Collider2D collision)
+    // Indications
+    private void Toggle_Sprite()
     {
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        UnInteract();
-    }
-
-
-    // IInteractable
-    public void Interact()
-    {
-        if (_timer.timeRunning) return;
-
-        OrderToggle();
-    }
-
-    public void Hold_Interact()
-    {
-
-    }
-
-    public void UnInteract()
-    {
-
-    }
-
-
-    // Gets
-    private Sprite Station_Sprite()
-    {
-        /*
-        // order closed
-        if (Main_Controller.orderOpen == false)
+        if (_coroutine == null)
         {
-        return _closedStand;
-        }
-        */
-
-        // order open
-        return _openStand;
-    }
-
-
-    // Functions
-    private void OrderToggle()
-    {
-        bool hasBookMark = _stationController.mainController.bookmarkedFoods.Count > 0;
-
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        // if no bookmarked foods, return
-        if (hasBookMark == false)
-        {
-            dialog.Update_Dialog(2);
+            _stationController.spriteRenderer.sprite = _toggleSprites[0];
             return;
         }
 
-        /*
-        // if other order stand currenlty toggled on, return
-        if (Main_Controller.orderOpen == true && _orderOpen == false)
+        _stationController.spriteRenderer.sprite = _toggleSprites[1];
+    }
+
+
+    // NPC
+    private void Toggle_Activation()
+    {
+        if (_coroutine == null)
         {
-            dialog.Update_Dialog(3);
+            Update_RoamArea();
             return;
         }
-        */
 
-        /*
-        // order open
-        if (Main_Controller.orderOpen == false)
+        StopCoroutine(_coroutine);
+        _coroutine = null;
+
+        Reset_CurrentNPCs();
+
+        _coolTimer.Stop_Time();
+        _coolTimer.Toggle_Transparency(true);
+    }
+
+
+    /// <returns>
+    /// All npcs with food order & time running & at vehicle area
+    /// </returns>
+    private List<NPC_Controller> FoodOrder_NPCs()
+    {
+        SpriteRenderer vehicleArea = _stationController.mainController.currentVehicle.interactArea;
+
+        List<NPC_Controller> allNPCs = _stationController.mainController.All_NPCs();
+        List<NPC_Controller> orderNPCs = new();
+
+        for (int i = 0; i < allNPCs.Count; i++)
         {
-            Main_Controller.OrderOpen_Toggle(true);
-            _orderOpen = true;
+            if (allNPCs[i].movement.currentRoamArea != vehicleArea) continue;
+            if (allNPCs[i].gameObject.TryGetComponent(out NPC_FoodInteraction foodInteract) == false) continue;
+            if (foodInteract.timeCoroutine == null) continue;
 
-            _stationController.RoamArea_Toggle(true);
-
-            GlobalTime_Controller.TimeTik_Update += TimeTik_Attract;
-            dialog.Update_Dialog(0);
+            orderNPCs.Add(allNPCs[i]);
         }
 
-        // order closed
-        else
+        return orderNPCs;
+    }
+
+    private void Update_RoamArea()
+    {
+        _coroutine = StartCoroutine(Update_RoamArea_Coroutine());
+    }
+    private IEnumerator Update_RoamArea_Coroutine()
+    {
+        _coolTimer.Toggle_Transparency(false);
+
+        while (true)
         {
-            // order stand toggle cooltime
-            _timer.Set_Time((int)_attractIntervalTime);
-            _timer.Run_Time();
-            _timer.Toggle_Transparency(false);
+            _coolTimer.Set_Time(_searchTime);
+            _coolTimer.Run_Time();
 
-            // order close
-            Main_Controller.OrderOpen_Toggle(false);
-            _orderOpen = false;
+            yield return new WaitForSeconds(_searchTime);
 
-            _stationController.RoamArea_Toggle(false);
+            Refresh_CurrentNPCs();
 
-            // subscription update
-            GlobalTime_Controller.TimeTik_Update -= TimeTik_Attract;
-            dialog.Update_Dialog(1);
-
-            //
-            SpriteRenderer location = _stationController.mainController.currentLocation.data.roamArea;
-
-            // waiting npc update
-            for (int i = 0; i < _waitingNPCs.Count; i++)
+            for (int i = 0; i < FoodOrder_NPCs().Count; i++)
             {
-                _waitingNPCs[i].timer.Toggle_Transparency(true);
+                if (_currentNPCs.Count >= _maxCount) continue;
+                if (_currentNPCs.Contains(FoodOrder_NPCs()[i])) continue;
 
-                // set time limit current time to 0 to activate TimeLimit_Over() from npc interaction
-                _waitingNPCs[i].timer.Update_CurrentTime(-(int)_waitingNPCs[i].timer.currentTime);
+                _currentNPCs.Add(FoodOrder_NPCs()[i]);
+                FoodOrder_NPCs()[i].movement.Free_Roam(_orderingArea, 0f);
 
-                // reset all npc roam area (just in case for if not updating on order close)
-                _waitingNPCs[i].movement.Free_Roam(location);
+                break;
             }
 
-            //
-            _waitingNPCs.Clear();
+            _npcCountBar.Load_Custom(_maxCount, _currentNPCs.Count);
         }
-        */
-
-        // sprite update
-        _spriteRenderer.sprite = Station_Sprite();
-
-        //
-        UnInteract();
     }
 
 
-    private void TimeTik_Attract()
+    private void Refresh_CurrentNPCs()
     {
-        // check if order is open
-        // if (Main_Controller.orderOpen == false) return;
-
-        // check if there is at least 1 food bookmarked
-        if (_stationController.mainController.bookmarkedFoods.Count <= 0) return;
-
-        // all current npc
-        List<GameObject> allCharacters = _stationController.mainController.currentCharacters;
-
-        Refresh_WaitingNPCs();
-
-        for (int i = 0; i < allCharacters.Count; i++)
+        for (int i = _currentNPCs.Count - 1; i >= 0; i--)
         {
-            // check max waiting npc amount
-            if (_waitingNPCs.Count >= _maxWaitings) continue;
+            bool atCurrentArea = _currentNPCs[i].movement.currentRoamArea == _orderingArea;
+            bool timeRunning = _currentNPCs[i].foodInteraction.timeCoroutine != null;
 
-            if (!allCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
+            if (atCurrentArea && timeRunning) continue;
+            _currentNPCs.RemoveAt(i);
+        }
+    }
 
-            NPC_Interaction interaction = npc.interaction;
-            if (interaction == null) continue;
+    private void Reset_CurrentNPCs()
+    {
+        SpriteRenderer vehicleArea = _stationController.mainController.currentVehicle.interactArea;
+        SpriteRenderer locationArea = _stationController.mainController.currentLocation.data.roamArea;
 
-            NPC_Movement move = npc.movement;
-
-            // check if already ordered food
-            if (npc.foodIcon.hasFood) continue;
-
-            /*
-            // check if food is already served and left ordering area
-            if (interaction.servedFoodData != null && move.currentRoamArea != _orderingArea)
+        for (int i = 0; i < _currentNPCs.Count; i++)
+        {
+            if (_currentNPCs[i].foodInteraction.timeCoroutine != null)
             {
-                _waitingNPCs.Remove(npc);
+                _currentNPCs[i].movement.Free_Roam(vehicleArea, 0f);
                 continue;
             }
-
-            // check if npc want to order food
-            if (interaction.Want_FoodOrder() == false) continue;
-
-            // keep track of currently waiting npc
-            _waitingNPCs.Add(npc);
-
-            // assign food
-            interaction.Assign_FoodOrder();
-
-            // attract wake animtion
-            interaction.Wake_Animation();
-
-            // refresh
-            npc.interactable.UnInteract();
-
-            // attract npc > ordering area
-            move.Stop_FreeRoam();
-            move.Free_Roam(_orderingArea, 0f);
-
-            // start waiting time limit
-            interaction.Start_TimeLimit();
-            npc.timer.Toggle_Transparency(false, interaction.animTransitionTime);
-            */
+            _currentNPCs[i].movement.Free_Roam(locationArea, 0f);
         }
-    }
+        _currentNPCs.Clear();
 
-    /// <summary>
-    /// All current NPCc will decide every interval time wheather on they want to come and order food
-    /// </summary>
-    private void Attract()
-    {
-
-    }
-
-
-    /// <summary>
-    /// Removes npcs in list that are destroyed or missing
-    /// </summary>
-    private void Refresh_WaitingNPCs()
-    {
-        List<NPC_Controller> refreshList = new();
-
-        for (int i = 0; i < _waitingNPCs.Count; i++)
-        {
-            NPC_Controller target = _waitingNPCs[i];
-
-            // npc left current location
-            if (target == null) continue;
-
-            // waiting npc time expired
-            if (target.foodIcon.hasFood == false) continue;
-
-            refreshList.Add(_waitingNPCs[i]);
-        }
-
-        _waitingNPCs = refreshList;
-        // Debug.Log("waiting list refresh complete");
+        _npcCountBar.Load_Custom(_maxCount, _currentNPCs.Count);
     }
 }

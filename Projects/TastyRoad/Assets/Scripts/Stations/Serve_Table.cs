@@ -57,22 +57,6 @@ public class Serve_Table : Table, IInteractable
         return others;
     }
 
-    private OrderStand Opened_OrderStand()
-    {
-        Station_ScrObj orderStandScrObj = stationController.mainController.dataController.Station_ScrObj("Order Stand");
-        List<Station_Controller> orderStands = stationController.mainController.CurrentStations(orderStandScrObj);
-
-        for (int i = 0; i < orderStands.Count; i++)
-        {
-            OrderStand orderStand = orderStands[i].GetComponent<OrderStand>();
-
-            if (orderStand.orderOpen == false) continue;
-            return orderStand;
-        }
-
-        return null;
-    }
-
 
     // Checks
     private bool Other_ServeTable_OrderTaken(NPC_Controller npc)
@@ -205,49 +189,6 @@ public class Serve_Table : Table, IInteractable
 
         // condition check
         if (Serve_Available() == false) return;
-
-        //
-        _coroutine = StartCoroutine(Serve_FoodOrder_toNPC_Coroutine());
-    }
-    private IEnumerator Serve_FoodOrder_toNPC_Coroutine()
-    {
-        NPC_Controller npc = _currentNPC;
-        NPC_Movement movement = _currentNPC.movement;
-
-        // interact lock
-        npc.interactable.LockInteract(true);
-
-        // set npc destination to this serve table
-        movement.Stop_FreeRoam();
-        movement.Assign_TargetPosition(transform.position);
-
-        // wait until npc arrives
-        while (movement.At_TargetPosition(transform.position) == false) yield return null;
-
-        // interact unlock
-        npc.interactable.LockInteract(false);
-
-        // set npc roam area to opened order stand
-        movement.Free_Roam(Opened_OrderStand().orderingArea, 0f);
-
-        // condition check
-        if (Serve_Available() == false)
-        {
-            _coroutine = null;
-            yield break;
-        }
-
-        // serve npc food
-        // npc.interaction.Serve_FoodOrder(stationController.Food_Icon().currentData);
-
-        // empty current food
-        stationController.Food_Icon().Set_CurrentData(null);
-        stationController.Food_Icon().Show_Icon();
-        stationController.Food_Icon().Show_Condition();
-
-        // reset data
-        Find_AttractedNPC();
-        FoodOrder_PreviewUpdate();
     }
 
 

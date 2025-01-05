@@ -40,6 +40,7 @@ public class AmountBar : MonoBehaviour
         _sr = gameObject.GetComponent<SpriteRenderer>();
 
         Toggle(false);
+        Load();
     }
 
 
@@ -74,10 +75,10 @@ public class AmountBar : MonoBehaviour
     }
     public void Load(int loadAmount)
     {
-        int spriteIndex = Mathf.FloorToInt((float)currentAmount / _maxAmount * (_amountBarSprites.Length - 1));
+        int spriteIndex = Mathf.FloorToInt((float)loadAmount / _maxAmount * (_amountBarSprites.Length - 1));
         spriteIndex = Mathf.Clamp(spriteIndex, 0, _amountBarSprites.Length - 1);
 
-        _sr.sprite = _amountBarSprites[Mathf.Clamp(loadAmount, 0, _amountBarSprites.Length - 1)];
+        _sr.sprite = _amountBarSprites[spriteIndex];
     }
 
     public void Load_Custom(int maxAmount, int currentAmount)

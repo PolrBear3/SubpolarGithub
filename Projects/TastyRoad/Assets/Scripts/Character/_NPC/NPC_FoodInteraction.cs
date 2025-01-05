@@ -28,6 +28,8 @@ public class NPC_FoodInteraction : MonoBehaviour
     private bool _payAvailable;
 
     private Coroutine _timeCoroutine;
+    public Coroutine timeCoroutine => _timeCoroutine;
+
     private Coroutine _transferCoroutine;
 
 
@@ -41,13 +43,13 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         ActionBubble_Interactable interactable = _controller.interactable;
         interactable.OnIInteract += Transfer_FoodOrder;
+        interactable.OnIInteract += Collect_Payment;
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
         giftSystem.OnDurationToggle += Toggle_FoodOrder;
 
         Detection_Controller detection = interactable.detection;
         detection.EnterEvent += Collect_Payment;
-        detection.ExitEvent += Collect_Payment;
     }
 
     private void OnDestroy()
@@ -57,13 +59,13 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         ActionBubble_Interactable interactable = _controller.interactable;
         interactable.OnIInteract -= Transfer_FoodOrder;
+        interactable.OnIInteract -= Collect_Payment;
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
         giftSystem.OnDurationToggle -= Toggle_FoodOrder;
 
         Detection_Controller detection = interactable.detection;
         detection.EnterEvent -= Collect_Payment;
-        detection.ExitEvent -= Collect_Payment;
     }
 
 
@@ -106,7 +108,6 @@ public class NPC_FoodInteraction : MonoBehaviour
             return;
         }
 
-        if (movement.currentRoamArea != locationRoamArea) return;
         movement.Free_Roam(_controller.mainController.currentVehicle.interactArea, 0f);
     }
 
@@ -194,6 +195,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
     private void Fail_OrderTime()
     {
+        _timeCoroutine = null;
         _transferData = null;
 
         _collectIndicator.SetActive(false);
@@ -247,6 +249,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         data.Update_Hunger((100 - data.hungerLevel) / foodIcon.AllDatas().Count);
 
         if (Set_Payment() <= 0) Fail_OrderTime();
+
+        Update_RoamArea();
 
         _transferCoroutine = null;
         yield break;

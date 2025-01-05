@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,9 @@ public class Station_Controller : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private IInteractable_Controller _iInteractable;
+    public IInteractable_Controller iInteractable => _iInteractable;
+
     [SerializeField] private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
 
@@ -35,18 +39,15 @@ public class Station_Controller : MonoBehaviour
     [SerializeField] private Station_ScrObj _stationScrObj;
     public Station_ScrObj stationScrObj => _stationScrObj;
 
+
     private StationData _data;
     public StationData data => _data;
 
     private bool _isRoamArea;
     public bool isRoamArea => _isRoamArea;
 
-
-    public delegate void Action_Event();
-
-    public event Action_Event Interact_Event;
-    public event Action_Event Action1_Event;
-    public event Action_Event Action2_Event;
+    public Action Action1_Event;
+    public Action Action2_Event;
 
 
     // UnityEngine
@@ -72,15 +73,11 @@ public class Station_Controller : MonoBehaviour
 
 
     // InputSystem
-    private void OnInteract()
-    {
-        Interact_Event?.Invoke();
-    }
-
     private void OnAction1()
     {
         Action1_Event?.Invoke();
     }
+
     private void OnAction2()
     {
         Action2_Event?.Invoke();

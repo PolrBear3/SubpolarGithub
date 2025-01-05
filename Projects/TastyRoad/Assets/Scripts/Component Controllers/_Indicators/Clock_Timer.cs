@@ -43,8 +43,6 @@ public class Clock_Timer : MonoBehaviour
             return;
         }
 
-        if (_currentTime <= 0) return;
-
         _spriteRenderer.color = Color.white;
     }
 
@@ -89,7 +87,9 @@ public class Clock_Timer : MonoBehaviour
         }
 
         _timeRunning = false;
-        Toggle_Transparency(true);
+
+        _timeCoroutine = null;
+        yield break;
     }
 
     private IEnumerator TimeSprite_Update_Coroutine()
@@ -103,6 +103,9 @@ public class Clock_Timer : MonoBehaviour
 
             yield return new WaitForSeconds(spriteTransitionTime);
         }
+
+        _timeSpriteCoroutine = null;
+        yield break;
     }
 
 
@@ -112,6 +115,9 @@ public class Clock_Timer : MonoBehaviour
 
         if (_timeCoroutine != null) StopCoroutine(_timeCoroutine);
         if (_timeSpriteCoroutine != null) StopCoroutine(_timeSpriteCoroutine);
+
+        _timeCoroutine = null;
+        _timeSpriteCoroutine = null;
     }
 
 

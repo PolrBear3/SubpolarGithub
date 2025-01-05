@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -30,12 +29,14 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("_currentTime", _currentTime);
+        ES3.Save("GlobalTime_Controller/_currentTime", _currentTime);
+        ES3.Save("GlobalTime_Controller/_isIncrease", _isIncrease);
     }
 
     public void Load_Data()
     {
-        _currentTime = ES3.Load("_currentTime", _currentTime);
+        _currentTime = ES3.Load("GlobalTime_Controller/_currentTime", _currentTime);
+        _isIncrease = ES3.Load("GlobalTime_Controller/_isIncrease", _isIncrease);
     }
 
 

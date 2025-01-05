@@ -31,8 +31,9 @@ public class Detection_Controller : MonoBehaviour
 
         _detectedprefabs.Add(collision.gameObject);
 
-        if (collision.TryGetComponent(out Player_Controller player)) { _player = player; }
+        if (collision.TryGetComponent(out Player_Controller player) == false) return;
 
+        _player = player;
         EnterEvent?.Invoke();
     }
 
@@ -42,8 +43,9 @@ public class Detection_Controller : MonoBehaviour
 
         _detectedprefabs.Remove(collision.gameObject);
 
-        if (collision.TryGetComponent(out Player_Controller player)) { _player = null; }
+        if (collision.TryGetComponent(out Player_Controller player) == false) return;
 
+        _player = null;
         ExitEvent?.Invoke();
     }
 
