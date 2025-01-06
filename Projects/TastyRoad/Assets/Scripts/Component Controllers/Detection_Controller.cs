@@ -12,6 +12,7 @@ public class Detection_Controller : MonoBehaviour
     private Player_Controller _player;
     public Player_Controller player => _player;
 
+
     public delegate void OnTriggerEvent();
     public event OnTriggerEvent EnterEvent;
     public event OnTriggerEvent ExitEvent;
@@ -124,14 +125,9 @@ public class Detection_Controller : MonoBehaviour
         return false;
     }
 
-    public bool Player_Detected()
-    {
-        return _player != null;
-    }
-
 
     // Toggle Control
-    public void BoxCollider_Toggle(bool toggleOn)
+    public void Toggle_BoxCollider(bool toggleOn)
     {
         _boxCollider.enabled = toggleOn;
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -162,7 +163,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     /// </returns>
     public static bool Percentage_Activated(float percentage)
     {
-        float comparePercentage = Mathf.Round(Random.Range(0f, 100f)) * 1f;
+        float comparePercentage = Mathf.Round(UnityEngine.Random.Range(0f, 100f)) * 1f;
         return percentage >= comparePercentage;
     }
 
@@ -197,8 +198,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     {
         Vector2 centerPosition = area.bounds.center;
 
-        float randX = Random.Range(centerPosition.x - area.bounds.extents.x, centerPosition.x + area.bounds.extents.x);
-        float randY = Random.Range(centerPosition.y - area.bounds.extents.y, centerPosition.y + area.bounds.extents.y);
+        float randX = UnityEngine.Random.Range(centerPosition.x - area.bounds.extents.x, centerPosition.x + area.bounds.extents.x);
+        float randY = UnityEngine.Random.Range(centerPosition.y - area.bounds.extents.y, centerPosition.y + area.bounds.extents.y);
 
         return new Vector2(randX, randY);
     }
@@ -550,6 +551,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
 
+    public static Action OnFoodBookmark;
+
     private void Save_BookmarkedFood()
     {
         List<int> foodIDs = new();
@@ -595,16 +598,18 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         if (food == null) return;
 
         _bookmarkedFoods.Add(food);
-
         RemoveDuplicates_fromBookmark();
+
+        OnFoodBookmark?.Invoke();
     }
     public void RemoveFood_fromBookmark(Food_ScrObj food)
     {
         if (food == null) return;
 
         _bookmarkedFoods.Remove(food);
-
         RemoveDuplicates_fromBookmark();
+
+        OnFoodBookmark?.Invoke();
     }
 
     public bool Is_BookmarkedFood(Food_ScrObj food)

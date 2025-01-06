@@ -1,213 +1,230 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CollectJar : Stack_Table, IInteractable
+public class CollectJar : MonoBehaviour
 {
-    [SerializeField] private CoinLauncher _launcher;
+    [Header("")]
+    [SerializeField] private Station_Controller _controller;
 
     [Header("")]
     [SerializeField] private Sprite[] _jarSprites;
 
     [Header("")]
-    [SerializeField] private Food_ScrObj _collectFood;
-    [SerializeField][Range(1, 10)] private int _retrieveAmount;
+    [SerializeField][Range(0, 100)] private int _searchTime;
+
 
     private Coroutine _coroutine;
 
 
-    // UnityEngine
-    private new void Start()
+    // MonoBehaviour
+    private void Start()
     {
-        GlobalTime_Controller.TimeTik_Update += CollectNuggets;
+        Collect();
+        Update_Sprite();
 
-        FoodData_Controller foodIcon = stationController.Food_Icon();
+        // subscriptions
+        Main_Controller.OnFoodBookmark += Collect;
 
-        // deactivate rotten system
-        foodIcon.gameObject.GetComponent<FoodData_RottenSystem>().enabled = false;
+        Detection_Controller detection = _controller.detection;
 
-        Update_JarSprite();
+        detection.EnterEvent += Toggle_Indications;
+        detection.ExitEvent += Toggle_Indications;
 
-        if (foodIcon.hasFood == true) return;
+        IInteractable_Controller iInteractable = _controller.iInteractable;
 
-        // set basic data
-        foodIcon.Set_CurrentData(new FoodData(_collectFood));
+        iInteractable.OnInteract += Insert;
+        iInteractable.OnInteract += Update_Sprite;
+
+        iInteractable.OnHoldInteract += Transfer;
     }
 
-    private new void OnDestroy()
-    {
-        Retrieve_All();
-
-        GlobalTime_Controller.TimeTik_Update -= CollectNuggets;
-    }
-
-
-    // IInteractable
-    public new void Interact()
+    private void OnDestroy()
     {
         Retrieve();
+
+        // subscriptions
+        Main_Controller.OnFoodBookmark -= Collect;
+
+        Detection_Controller detection = _controller.detection;
+
+        detection.EnterEvent -= Toggle_Indications;
+        detection.ExitEvent -= Toggle_Indications;
+
+        IInteractable_Controller iInteractable = _controller.iInteractable;
+
+        iInteractable.OnInteract -= Insert;
+        iInteractable.OnInteract -= Update_Sprite;
+
+        iInteractable.OnHoldInteract -= Transfer;
     }
 
 
-    // Gets and Checks
-    /// <returns>
-    /// All NPCs with _collectFood
-    /// </returns>
-    private List<NPC_Controller> CollectFood_NPCs()
+    // Indications
+    private void Update_Sprite()
     {
-        List<NPC_Controller> allNPCs = stationController.mainController.All_NPCs();
-        List<NPC_Controller> targetNPCs = new();
-
-        for (int i = 0; i < allNPCs.Count; i++)
+        if (_controller.Food_Icon().hasFood == false)
         {
-            FoodData_Controller foodIcon = allNPCs[i].foodIcon;
-
-            if (foodIcon.hasFood == false) continue;
-            if (foodIcon.currentData.foodScrObj != _collectFood) continue;
-
-            targetNPCs.Add(allNPCs[i]);
-        }
-
-        return targetNPCs;
-    }
-
-    private List<NPC_Controller> FoodOrderServed_NPCs()
-    {
-        List<NPC_Controller> allNPCs = stationController.mainController.All_NPCs();
-        List<NPC_Controller> servedNPCs = new();
-
-        for (int i = 0; i < allNPCs.Count; i++)
-        {
-            if (allNPCs[i].foodIcon.hasFood == false) continue;
-            // if (allNPCs[i].interaction.FoodOrder_Served() == false) continue;
-
-            servedNPCs.Add(allNPCs[i]);
-        }
-
-        return servedNPCs;
-    }
-
-    private NPC_Controller Closest_NPC(List<NPC_Controller> compareNPCs)
-    {
-        NPC_Controller closestNPC = null;
-        float closestDistance = Mathf.Infinity;
-
-        foreach (NPC_Controller npc in compareNPCs)
-        {
-            float distance = Vector2.Distance(transform.position, npc.transform.position);
-
-            if (distance > closestDistance) continue;
-
-            closestDistance = distance;
-            closestNPC = npc;
-        }
-
-        return closestNPC;
-    }
-
-
-    private bool Jar_Empty()
-    {
-        FoodData_Controller foodIcon = stationController.Food_Icon();
-        return foodIcon.hasFood == false || foodIcon.currentData.currentAmount <= 1;
-    }
-
-
-    // Sprite Control
-    private void Update_JarSprite()
-    {
-        SpriteRenderer sr = stationController.spriteRenderer;
-
-        if (Jar_Empty() == true)
-        {
-            sr.sprite = _jarSprites[0];
+            _controller.spriteRenderer.sprite = _jarSprites[0];
             return;
         }
 
-        sr.sprite = _jarSprites[1];
+        _controller.spriteRenderer.sprite = _jarSprites[1];
+    }
+
+    private void Toggle_Indications()
+    {
+        _controller.Food_Icon().Toggle_AmountBar(_controller.detection.player != null);
     }
 
 
-    // Functions
+    // Main
     private void Retrieve()
     {
-        if (Jar_Empty() == true) return;
+        FoodData_Controller foodIcon = _controller.Food_Icon();
 
-        FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
+        if (foodIcon.hasFood == false) return;
 
-        stationController.Food_Icon().currentData.Update_Amount(-_retrieveAmount);
-        foodMenu.Add_FoodItem(_collectFood, _retrieveAmount);
+        FoodMenu_Controller foodMenu = _controller.mainController.currentVehicle.menu.foodMenu;
+        Food_ScrObj nugget = foodIcon.currentData.foodScrObj;
 
-        Update_JarSprite();
-
-        Transform launchDirection = stationController.detection.player.transform;
-        _launcher.Parabola_CoinLaunch(_collectFood.sprite, launchDirection.position);
-    }
-
-    private void Retrieve_All()
-    {
-        if (Jar_Empty() == true) return;
-
-        FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
-        foodMenu.Add_FoodItem(_collectFood, stationController.Food_Icon().currentData.currentAmount - 1);
+        foodMenu.Add_FoodItem(nugget, foodIcon.currentData.currentAmount);
     }
 
 
-    private void CollectNuggets()
+    // NPC
+    private List<NPC_Controller> PayAvailable_NPCs()
     {
-        if (_coroutine != null) return;
-        if (FoodOrderServed_NPCs().Count <= 0) return;
+        List<NPC_Controller> allNPCs = _controller.mainController.All_NPCs();
+        List<NPC_Controller> availableNPCs = new();
 
-        _coroutine = StartCoroutine(CollectNuggets_Coroutine());
-    }
-    private IEnumerator CollectNuggets_Coroutine()
-    {
-        NPC_Controller targetNPC = Closest_NPC(FoodOrderServed_NPCs());
-        NPC_Movement movement = targetNPC.movement;
-        NPC_Interaction interaction = targetNPC.interaction;
-
-        // move to current jar
-        movement.Stop_FreeRoam();
-        movement.Assign_TargetPosition(transform.position);
-
-        // wait until arrival
-        while (movement.At_TargetPosition(transform.position) == false)
+        for (int i = 0; i < allNPCs.Count; i++)
         {
-            // cancel function if player collects nugget
+            if (allNPCs[i].TryGetComponent(out NPC_FoodInteraction interaction) == false) continue;
+            if (interaction.payAvailable == false) continue;
 
-            /*
-            if (interaction.FoodOrder_Served() == false)
-            {
-                _coroutine = null;
-                CollectNuggets();
-
-                yield break;
-            }
-            */
-
-            yield return null;
+            availableNPCs.Add(allNPCs[i]);
         }
 
-        // add to current food data
-        // stationController.Food_Icon().currentData.Update_Amount(interaction.foodScore);
+        return availableNPCs;
+    }
 
-        // clear data and leave
-        // interaction.Clear_Data();
 
-        SpriteRenderer currentLocation = stationController.mainController.currentLocation.data.roamArea;
+    private bool Collect_Available()
+    {
+        if (PayAvailable_NPCs().Count > 0) return true;
+        if (_controller.mainController.bookmarkedFoods.Count > 0) return true;
 
-        movement.Update_RoamArea(currentLocation);
-        movement.Leave(movement.Random_IntervalTime());
+        return false;
+    }
 
-        // launch nugget from npc to current jar
-        targetNPC.itemLauncher.Parabola_CoinLaunch(_collectFood.sprite, transform.position);
+    private void Collect()
+    {
+        if (_coroutine != null) StopCoroutine(_coroutine);
+        _coroutine = null;
 
-        //
-        Update_JarSprite();
+        if (Collect_Available() == false) return;
+
+        _coroutine = StartCoroutine(Collect_Coroutine());
+    }
+    private IEnumerator Collect_Coroutine()
+    {
+        while (Collect_Available())
+        {
+            yield return new WaitForSeconds(_searchTime);
+
+            for (int i = 0; i < PayAvailable_NPCs().Count; i++)
+            {
+                NPC_Movement movement = PayAvailable_NPCs()[i].movement;
+
+                movement.Stop_FreeRoam();
+                movement.Assign_TargetPosition(transform.position);
+
+                if (movement.At_TargetPosition(transform.position) == false) continue;
+
+                NPC_FoodInteraction interaction = PayAvailable_NPCs()[i].foodInteraction;
+
+                Insert(interaction.Set_Payment());
+                interaction.Collect_Payment();
+            }
+        }
 
         _coroutine = null;
-        CollectNuggets();
-
         yield break;
+    }
+
+
+    private void Insert(int insertAmount)
+    {
+        FoodData_Controller stationIcon = _controller.Food_Icon();
+        if (stationIcon.Is_MaxAmount()) return;
+
+        Food_ScrObj nugget = _controller.mainController.dataController.goldenNugget;
+        stationIcon.Update_Amount(nugget, insertAmount);
+
+        Toggle_Indications();
+        Update_Sprite();
+    }
+
+
+    // Player
+    private void Insert()
+    {
+        Food_ScrObj nugget = _controller.mainController.dataController.goldenNugget;
+        FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
+
+        if (playerIcon.Is_SameFood(nugget) == false)
+        {
+            Transfer();
+            return;
+        }
+
+        FoodData_Controller stationIcon = _controller.Food_Icon();
+        if (stationIcon.Is_MaxAmount()) return;
+
+        Insert(1);
+
+        playerIcon.Set_CurrentData(null);
+        playerIcon.Show_Icon();
+        playerIcon.Toggle_SubDataBar(true);
+        playerIcon.Show_Condition();
+    }
+
+
+    private bool Transfer_Available()
+    {
+        FoodData_Controller stationIcon = _controller.Food_Icon();
+
+        if (stationIcon.hasFood == false) return false;
+        if (stationIcon.currentData.currentAmount <= 0) return false;
+
+        return true;
+    }
+
+    private void Transfer()
+    {
+        if (Transfer_Available() == false) return;
+
+        FoodData_Controller stationIcon = _controller.Food_Icon();
+        FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
+
+        Food_ScrObj nugget = _controller.mainController.dataController.goldenNugget;
+
+        for (int i = 0; i < _controller.Food_Icon().maxAmount; i++)
+        {
+            if (Transfer_Available() == false) break;
+            if (playerIcon.DataCount_Maxed()) break;
+
+            playerIcon.Set_CurrentData(new(nugget));
+            stationIcon.Update_Amount(nugget, -1);
+        }
+
+        playerIcon.Show_Icon();
+        playerIcon.Toggle_SubDataBar(true);
+        playerIcon.Show_Condition();
+
+        Update_Sprite();
+        Toggle_Indications();
     }
 }

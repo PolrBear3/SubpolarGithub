@@ -53,7 +53,7 @@ public class ActionSelector : MonoBehaviour
     // Indication
     private void Toggle_CurrentAction()
     {
-        if (_detection.Player_Detected() == false || _subscriptionCount <= 0 || _indicatorSprites.Length <= 0)
+        if (_detection.player == null || _subscriptionCount <= 0 || _indicatorSprites.Length <= 0)
         {
             _selectingAction = false;
 

@@ -123,6 +123,7 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     private void Open_VehicleMenu()
     {
         detection.player.Player_Input().enabled = false;
+        detection.player.detectionController.Toggle_BoxCollider(false);
 
         _menu.VehicleMenu_Toggle(true);
     }

@@ -25,7 +25,10 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     private FoodData _transferData;
+
     private bool _payAvailable;
+    public bool payAvailable => _payAvailable;
+
 
     private Coroutine _timeCoroutine;
     public Coroutine timeCoroutine => _timeCoroutine;
@@ -271,7 +274,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     // Payment
-    private int Set_Payment()
+    public int Set_Payment()
     {
         int payAmount = 0;
 
@@ -304,7 +307,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         return payAmount;
     }
 
-    private void Collect_Payment()
+    public void Collect_Payment()
     {
         if (_payAvailable == false) return;
 

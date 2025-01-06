@@ -99,12 +99,12 @@ GameObject:
   - component: {fileID: 8674345196182619832}
   - component: {fileID: 2945511885247835956}
   - component: {fileID: 2590409151805977061}
-  - component: {fileID: 4577814523018153117}
+  - component: {fileID: 8450629839311239787}
+  - component: {fileID: 7464045914392838951}
   - component: {fileID: -2053434029941282818}
   - component: {fileID: -8110685917489673981}
   - component: {fileID: 8111960285723048442}
   - component: {fileID: 4891559847948586382}
-  - component: {fileID: 8450629839311239787}
   m_Layer: 0
   m_Name: Order Stand
   m_TagString: Untagged
@@ -327,7 +327,7 @@ MonoBehaviour:
         Data3: -911600471
         Data4: 1970102881
       Path: event:/Station SFX/Station_break
---- !u!114 &4577814523018153117
+--- !u!114 &8450629839311239787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -336,9 +336,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 5587925294155870417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: 0}
+    info: 
+  _datas:
+  - icon: {fileID: -847429947, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    info: Food order "Open" !
+  - icon: {fileID: 1976312001, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    info: Food order "Closed" !
+  - icon: {fileID: 900435712, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: No food currently Bookmarked!
+  - icon: {fileID: 900435712, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    info: Another 'Order Stand' is currenlty opened!
+--- !u!114 &7464045914392838951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587925294155870417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6680efb1d64c94cb481bd828ccf7fe4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _input: {fileID: 2945511885247835956}
+  _detection: {fileID: 8111960285723048442}
+  _bubble: {fileID: 903259749758274977}
 --- !u!114 &-2053434029941282818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iInteractable: {fileID: 4577814523018153117}
+  _interactable: {fileID: 0}
+  _iInteractable: {fileID: 0}
   _detection: {fileID: 8111960285723048442}
   _movement: {fileID: -8110685917489673981}
   _maintenance: {fileID: 0}
@@ -402,33 +430,12 @@ MonoBehaviour:
   _toggleSprites:
   - {fileID: 934698014, guid: efc963dc4f222479caa64033825131e4, type: 3}
   - {fileID: 1232175325, guid: efc963dc4f222479caa64033825131e4, type: 3}
+  _bubbleSprites:
+  - {fileID: 1976312001, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  - {fileID: -847429947, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
   _orderingArea: {fileID: 2985785251230923003}
   _searchTime: 3
   _maxCount: 3
---- !u!114 &8450629839311239787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5587925294155870417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultData:
-    icon: {fileID: 0}
-    info: 
-  _datas:
-  - icon: {fileID: -847429947, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    info: Food order "Open" !
-  - icon: {fileID: 1976312001, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
-    info: Food order "Closed" !
-  - icon: {fileID: 900435712, guid: efc963dc4f222479caa64033825131e4, type: 3}
-    info: No food currently Bookmarked!
-  - icon: {fileID: 900435712, guid: efc963dc4f222479caa64033825131e4, type: 3}
-    info: Another 'Order Stand' is currenlty opened!
 --- !u!1001 &1516621449351040894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -668,7 +675,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.7
+      value: 0.81
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.z
@@ -680,15 +687,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -707,6 +714,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+--- !u!114 &903259749758274977 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+  m_PrefabInstance: {fileID: 4713369555785363097}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30505787c5e974c94ab610c0b4a0b7e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2865440851040039759 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}

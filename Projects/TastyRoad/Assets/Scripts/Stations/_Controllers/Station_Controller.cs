@@ -16,6 +16,9 @@ public class Station_Controller : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private ActionBubble_Interactable _interactable;
+    public ActionBubble_Interactable interactable => _interactable;
+
     [SerializeField] private IInteractable_Controller _iInteractable;
     public IInteractable_Controller iInteractable => _iInteractable;
 
@@ -45,6 +48,7 @@ public class Station_Controller : MonoBehaviour
 
     private bool _isRoamArea;
     public bool isRoamArea => _isRoamArea;
+
 
     public Action Action1_Event;
     public Action Action2_Event;

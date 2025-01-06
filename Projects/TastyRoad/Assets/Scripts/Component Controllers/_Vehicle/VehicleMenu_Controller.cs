@@ -304,6 +304,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (_vehicleController.detection.player == null) return;
 
         _vehicleController.detection.player.Player_Input().enabled = true;
+        _vehicleController.detection.player.detectionController.Toggle_BoxCollider(true);
     }
 
 

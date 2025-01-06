@@ -15,12 +15,14 @@ public class FoodBox : MonoBehaviour, IInteractable
 
     private void Start()
     {
+        // subscriptions
         _controller.detection.EnterEvent += Toggle_AmountBar;
         _controller.detection.ExitEvent += Toggle_AmountBar;
     }
 
     private void OnDestroy()
     {
+        // subscriptions
         _controller.detection.EnterEvent -= Toggle_AmountBar;
         _controller.detection.ExitEvent -= Toggle_AmountBar;
     }
@@ -48,8 +50,10 @@ public class FoodBox : MonoBehaviour, IInteractable
     // Functions
     private void Toggle_AmountBar()
     {
-        int currentAmount = _controller.Food_Icon().currentData.currentAmount;
-        _controller.Food_Icon().Toggle_AmountBar(currentAmount > 1 && _controller.detection.player != null);
+        FoodData_Controller foodIcon = _controller.Food_Icon();
+        int currentAmount = foodIcon.currentData.currentAmount;
+
+        foodIcon.Toggle_AmountBar(currentAmount > 1 && _controller.detection.player != null);
     }
 
 

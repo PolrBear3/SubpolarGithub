@@ -11,8 +11,13 @@ public class OrderStand : MonoBehaviour
     [SerializeField] private Clock_Timer _coolTimer;
     [SerializeField] private AmountBar _npcCountBar;
 
+
     [Header("")]
     [SerializeField] private Sprite[] _toggleSprites;
+    [SerializeField] private Sprite[] _bubbleSprites;
+
+
+    [Header("")]
     [SerializeField] private SpriteRenderer _orderingArea;
 
     [Header("")]
@@ -28,33 +33,65 @@ public class OrderStand : MonoBehaviour
     // UnityEngine
     private void Start()
     {
-        // subscriptions
-        IInteractable_Controller iInteractable = _stationController.iInteractable;
+        Toggle_Sprite();
 
-        iInteractable.OnHoldInteract += Toggle_Activation;
-        iInteractable.OnHoldInteract += Toggle_Sprite;
+        // subscriptions
+        ActionBubble_Interactable interactable = _stationController.interactable;
+
+        interactable.OnAction1Input += Toggle_Activation;
+        interactable.OnAction1Input += Toggle_Sprite;
+
+        interactable.OnIInteract += Toggle_Indications;
+        interactable.OnUnIInteract += Toggle_Indications;
+
+        Detection_Controller detection = _stationController.detection;
+
+        detection.EnterEvent += Toggle_Indications;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        IInteractable_Controller iInteractable = _stationController.iInteractable;
+        ActionBubble_Interactable interactable = _stationController.interactable;
 
-        iInteractable.OnHoldInteract -= Toggle_Activation;
-        iInteractable.OnHoldInteract += Toggle_Sprite;
+        interactable.OnAction1Input -= Toggle_Activation;
+        interactable.OnAction1Input -= Toggle_Sprite;
+
+        interactable.OnIInteract -= Toggle_Indications;
+        interactable.OnUnIInteract -= Toggle_Indications;
+
+        Detection_Controller detection = _stationController.detection;
+
+        detection.EnterEvent -= Toggle_Indications;
     }
 
 
     // Indications
     private void Toggle_Sprite()
     {
+        Action_Bubble bubble = _stationController.interactable.bubble;
+
         if (_coroutine == null)
         {
             _stationController.spriteRenderer.sprite = _toggleSprites[0];
+            bubble.Set_Bubble(_bubbleSprites[1], null);
+
             return;
         }
 
         _stationController.spriteRenderer.sprite = _toggleSprites[1];
+        bubble.Set_Bubble(_bubbleSprites[0], null);
+    }
+
+    private void Toggle_Indications()
+    {
+        Action_Bubble bubble = _stationController.interactable.bubble;
+
+        bool playerDetected = _stationController.detection.player != null;
+        bool toggleOn = bubble.bubbleOn == false & playerDetected & _coroutine != null;
+
+        _coolTimer.Toggle_Transparency(!toggleOn);
+        _npcCountBar.Toggle(toggleOn);
     }
 
 
@@ -105,8 +142,6 @@ public class OrderStand : MonoBehaviour
     }
     private IEnumerator Update_RoamArea_Coroutine()
     {
-        _coolTimer.Toggle_Transparency(false);
-
         while (true)
         {
             _coolTimer.Set_Time(_searchTime);

@@ -55,6 +55,9 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField][Range(0, 100)] private int _maxDataCount;
     public int maxDataCount => _maxDataCount;
 
+    [SerializeField][Range(0, 100)] private int _maxAmount;
+    public int maxAmount => _maxAmount;
+
     [SerializeField][Range(0, 100)] private int _tikCountValue;
 
 
@@ -167,6 +170,28 @@ public class FoodData_Controller : MonoBehaviour
 
         otherController._currentData = null;
         otherController.Set_CurrentData(saveData);
+    }
+
+
+    public bool Is_MaxAmount()
+    {
+        if (hasFood == false) return false;
+        return _currentData.currentAmount >= _maxAmount;
+    }
+
+    public void Update_Amount(Food_ScrObj targetFood, int updateValue)
+    {
+        if (_hasFood == false || _currentData.foodScrObj != targetFood)
+        {
+            Set_CurrentData(new(targetFood, updateValue));
+            return;
+        }
+
+        if (_currentData.currentAmount >= _maxAmount) return;
+        _currentData.Update_Amount(updateValue);
+
+        if (_currentData.currentAmount > 0) return;
+        Set_CurrentData(null);
     }
 
 
@@ -287,30 +312,20 @@ public class FoodData_Controller : MonoBehaviour
             return;
         }
 
+        _amountBar.Load();
         _amountBar.Toggle(true);
-
-        int maxAmount = _amountBar.amountBarSprite.Length;
-
-        // full bar check
-        if (_currentData.currentAmount >= maxAmount)
-        {
-            _amountBar.Load(maxAmount);
-            return;
-        }
-
-        // update bar sprite
-        _amountBar.Load(_currentData.currentAmount);
     }
 
     public void Toggle_AmountBar(bool toggle)
     {
-        if (toggle == false)
+        if (hasFood == false || toggle == false)
         {
             _amountBar.Toggle(false);
             return;
         }
 
-        Show_AmountBar();
+        _amountBar.Load_Custom(_maxAmount, _currentData.currentAmount);
+        _amountBar.Toggle(true);
     }
 
 
@@ -318,12 +333,12 @@ public class FoodData_Controller : MonoBehaviour
     {
         if (toggle == false || subDatas.Count <= 0)
         {
-            amountBar.Toggle(false);
+            _amountBar.Toggle(false);
             return;
         }
 
-        amountBar.Load_Custom(maxDataCount, AllDatas().Count);
-        amountBar.Toggle(true);
+        _amountBar.Load_Custom(maxDataCount, AllDatas().Count);
+        _amountBar.Toggle(true);
     }
 
 
