@@ -111,7 +111,6 @@ public class Station_Movement : MonoBehaviour
         Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
 
         _stationController.Action1_Event -= Set_Position;
-
         _stationController.PlayerInput_Activation(false);
 
         _stationController.TransparentBlink_Toggle(false);

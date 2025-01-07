@@ -6,7 +6,13 @@ public class Clock_Timer : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
 
-    [SerializeField] private List<Sprite> _clockSprites = new();
+
+    private Sprite[] _clockSprites;
+
+    [Header("")]
+    [SerializeField] private Sprite[] _defaultSprites;
+    [SerializeField] private Sprite[] _greenSprites;
+
 
     private float _currentTime;
     public float currentTime => _currentTime;
@@ -22,7 +28,7 @@ public class Clock_Timer : MonoBehaviour
     public bool timeRunning => _timeRunning;
 
 
-    // UnityEngine
+    // MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
@@ -31,10 +37,12 @@ public class Clock_Timer : MonoBehaviour
     private void Start()
     {
         _spriteRenderer.color = Color.clear;
+
+        Toggle_ClockColor(false);
     }
 
 
-    // clock transparency toggle
+    // Toggles
     public void Toggle_Transparency(bool isTransparent)
     {
         if (isTransparent)
@@ -63,11 +71,23 @@ public class Clock_Timer : MonoBehaviour
     }
 
 
-    // time control
+    public void Toggle_ClockColor(bool colorGreen)
+    {
+        if (colorGreen == false)
+        {
+            _clockSprites = _defaultSprites;
+            return;
+        }
+
+        _clockSprites = _greenSprites;
+    }
+
+
+    // Time Control
     public void Set_Time(int setTime)
     {
         _currentTime = setTime;
-        _timeBlockCount = _clockSprites.Count;
+        _timeBlockCount = _clockSprites.Length;
     }
 
 
@@ -94,9 +114,9 @@ public class Clock_Timer : MonoBehaviour
 
     private IEnumerator TimeSprite_Update_Coroutine()
     {
-        float spriteTransitionTime = _currentTime / _clockSprites.Count;
+        float spriteTransitionTime = _currentTime / _clockSprites.Length;
 
-        for (int i = 0; i < _clockSprites.Count; i++)
+        for (int i = 0; i < _clockSprites.Length; i++)
         {
             _spriteRenderer.sprite = _clockSprites[i];
             _timeBlockCount--;
@@ -119,7 +139,6 @@ public class Clock_Timer : MonoBehaviour
         _timeCoroutine = null;
         _timeSpriteCoroutine = null;
     }
-
 
     public void Update_CurrentTime(int updateTime)
     {

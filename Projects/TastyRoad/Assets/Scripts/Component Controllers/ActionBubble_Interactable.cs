@@ -18,10 +18,11 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     [SerializeField] private Action_Bubble _bubble;
     public Action_Bubble bubble => _bubble;
 
-    private bool _interactLocked;
+    [Header("")]
+    [SerializeField] private bool _interactLocked;
     public bool interactLocked => _interactLocked;
 
-    private bool _unInteractLocked;
+    [SerializeField] private bool _unInteractLocked;
     public bool unInteractLocked => _unInteractLocked;
 
     public delegate void Event();
@@ -62,20 +63,18 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     private void OnAction1()
     {
+        if (_interactLocked) return;
+
         OnAction1Input?.Invoke();
-
-        if (_unInteractLocked) return;
-
         UnInteract();
     }
 
     private void OnAction2()
     {
         if (OnAction2Input == null) return;
+        if (_interactLocked) return;
+
         OnAction2Input?.Invoke();
-
-        if (_unInteractLocked) return;
-
         UnInteract();
     }
 

@@ -159,6 +159,11 @@ public class Station_Controller : MonoBehaviour
     public void PlayerInput_Activation(bool isEnabled)
     {
         _playerInput.enabled = isEnabled;
+
+        if (_interactable == null) return;
+
+        _interactable.LockInteract(isEnabled);
+        _interactable.LockUnInteract(isEnabled);
     }
 
     public void RoamArea_Toggle(bool toggleOn)

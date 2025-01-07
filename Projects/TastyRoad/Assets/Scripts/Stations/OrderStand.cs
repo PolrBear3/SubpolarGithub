@@ -88,7 +88,7 @@ public class OrderStand : MonoBehaviour
         Action_Bubble bubble = _stationController.interactable.bubble;
 
         bool playerDetected = _stationController.detection.player != null;
-        bool toggleOn = bubble.bubbleOn == false & playerDetected & _coroutine != null;
+        bool toggleOn = bubble.bubbleOn == false && playerDetected && _coroutine != null;
 
         _coolTimer.Toggle_Transparency(!toggleOn);
         _npcCountBar.Toggle(toggleOn);
@@ -104,7 +104,7 @@ public class OrderStand : MonoBehaviour
             return;
         }
 
-        StopCoroutine(_coroutine);
+        if (_coroutine != null) StopCoroutine(_coroutine);
         _coroutine = null;
 
         Reset_CurrentNPCs();

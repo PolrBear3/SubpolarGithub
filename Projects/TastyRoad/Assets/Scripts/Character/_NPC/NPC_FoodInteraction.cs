@@ -24,7 +24,11 @@ public class NPC_FoodInteraction : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _bonusPayPercentage;
 
 
+    private int _foodOrderCount;
+
     private FoodData _transferData;
+
+    private List<FoodData> _transferDatas = new();
 
     private bool _payAvailable;
     public bool payAvailable => _payAvailable;
@@ -127,6 +131,8 @@ public class NPC_FoodInteraction : MonoBehaviour
 
     private bool SetOrder_Active()
     {
+        if (_foodOrderCount > 0) return false;
+
         if (_timeCoroutine != null) return false;
 
         if (_payAvailable) return false;
@@ -154,14 +160,18 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         for (int i = 0; i < maxOrders; i++)
         {
-            foodIcon.Set_CurrentData(FoodOrder());
+            FoodData setData = new(FoodOrder());
+            if (setData == null) continue;
+
+            foodIcon.Set_CurrentData(setData);
+            _foodOrderCount++;
 
             if (Main_Controller.Percentage_Activated(_conditionRequestRate) == false) continue;
 
             FoodCondition_Type randCondition = (FoodCondition_Type)Random.Range(0, 2);
             int randLevel = Random.Range(1, 4);
 
-            foodIcon.currentData.Update_Condition(new FoodCondition_Data(randCondition, randLevel));
+            setData.Update_Condition(new FoodCondition_Data(randCondition, randLevel));
         }
 
         if (foodIcon.hasFood == false) return;
@@ -191,6 +201,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         while (orderTimer.timeRunning) yield return null;
 
         Fail_OrderTime();
+        orderTimer.Toggle_Transparency(true);
 
         _timeCoroutine = null;
         yield break;
@@ -226,9 +237,12 @@ public class NPC_FoodInteraction : MonoBehaviour
         _timeCoroutine = null;
 
         _controller.timer.Stop_Time();
+        _controller.timer.Toggle_ClockColor(true);
+
         _transferCoroutine = StartCoroutine(Transfer_FoodOrder_Coroutine());
 
         _transferData = new(transferData);
+        _transferDatas.Add(new(transferData));
 
         return true;
     }
@@ -324,14 +338,22 @@ public class NPC_FoodInteraction : MonoBehaviour
         Sprite nuggetSprite = _controller.mainController.dataController.goldenNugget.sprite;
         _controller.itemLauncher.Parabola_CoinLaunch(nuggetSprite, transform.position);
 
-        Update_RoamArea();
+        if (foodIcon.hasFood == false || _controller.mainController.bookmarkedFoods.Count <= 0)
+        {
+            foodIcon.Update_AllDatas(null);
+            foodIcon.Show_Icon();
+            foodIcon.Show_Condition();
 
-        if (foodIcon.hasFood == false) return;
+            Update_RoamArea();
+            return;
+        }
 
         // run next food order
         Run_OrderTime();
 
         foodIcon.Show_Icon(0.5f);
         foodIcon.Show_Condition();
+
+        Update_RoamArea();
     }
 }
