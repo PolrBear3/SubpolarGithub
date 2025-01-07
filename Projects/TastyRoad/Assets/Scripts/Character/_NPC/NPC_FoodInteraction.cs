@@ -194,6 +194,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         Clock_Timer orderTimer = _controller.timer;
         int additionalTime = Mathf.CeilToInt(_controller.characterData.patienceLevel / 10 * _additionalTime);
 
+        orderTimer.Toggle_ClockColor(false);
         orderTimer.Set_Time(_transferTime + additionalTime);
         orderTimer.Run_Time();
         orderTimer.Toggle_Transparency(false);

@@ -398,7 +398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 6814453907926638889}
   _animOverride: {fileID: 0}
   _defaultAnimation: 
 --- !u!114 &385993438348478003
@@ -542,6 +541,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _defaultSprites.Array.data[4]
+      value: 
+      objectReference: {fileID: -353815851, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - target: {fileID: 3788136335572471749, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: m_Name
       value: Clock Timer

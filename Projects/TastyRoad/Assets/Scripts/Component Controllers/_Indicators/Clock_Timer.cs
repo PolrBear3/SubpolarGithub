@@ -38,6 +38,7 @@ public class Clock_Timer : MonoBehaviour
     {
         _spriteRenderer.color = Color.clear;
 
+        _clockSprites = _defaultSprites;
         Toggle_ClockColor(false);
     }
 
@@ -73,13 +74,17 @@ public class Clock_Timer : MonoBehaviour
 
     public void Toggle_ClockColor(bool colorGreen)
     {
+        int indexNum = Mathf.Clamp(_clockSprites.Length - _timeBlockCount, 0, _clockSprites.Length - 1);
+
         if (colorGreen == false)
         {
             _clockSprites = _defaultSprites;
+            _spriteRenderer.sprite = _clockSprites[indexNum];
             return;
         }
 
         _clockSprites = _greenSprites;
+        _spriteRenderer.sprite = _clockSprites[indexNum];
     }
 
 
@@ -119,9 +124,9 @@ public class Clock_Timer : MonoBehaviour
         for (int i = 0; i < _clockSprites.Length; i++)
         {
             _spriteRenderer.sprite = _clockSprites[i];
-            _timeBlockCount--;
 
             yield return new WaitForSeconds(spriteTransitionTime);
+            _timeBlockCount--;
         }
 
         _timeSpriteCoroutine = null;

@@ -408,6 +408,8 @@ MonoBehaviour:
   _input: {fileID: 4272241710382912556}
   _detection: {fileID: -2268305881826384539}
   _bubble: {fileID: 936463578848434098}
+  _interactLocked: 0
+  _unInteractLocked: 0
 --- !u!114 &9094981842974887859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,6 +1053,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _greenSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _defaultSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: _clockSprites.Array.data[0]
       value: 
       objectReference: {fileID: -321259351, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
@@ -1066,6 +1076,46 @@ PrefabInstance:
       propertyPath: _clockSprites.Array.data[4]
       value: 
       objectReference: {fileID: -2091510253, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _greenSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: -353815851, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _greenSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: -557145571, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _greenSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 176214855, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _greenSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: 1024634137, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _greenSprites.Array.data[4]
+      value: 
+      objectReference: {fileID: -261249770, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _defaultSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: -321259351, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _defaultSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 1638288721, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _defaultSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 587819176, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _defaultSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: -2091510253, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+    - target: {fileID: 3694919507012420122, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
+      propertyPath: _defaultSprites.Array.data[4]
+      value: 
+      objectReference: {fileID: -261249770, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
     - target: {fileID: 3788136335572471749, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
       propertyPath: m_Name
       value: Clock_Timer
