@@ -23,7 +23,10 @@ public class NPC_Movement : MonoBehaviour
 
 
     [Header("")]
-    [SerializeField] private float _moveSpeed;
+    [SerializeField][Range(0, 100)] private float _defaultMoveSpeed;
+    public float defaultMoveSpeed => _defaultMoveSpeed;
+
+    private float _moveSpeed;
 
 
     [Header("")]
@@ -43,13 +46,14 @@ public class NPC_Movement : MonoBehaviour
     {
         if (gameObject.TryGetComponent(out NPC_Controller controller)) { _controller = controller; }
 
+        _moveSpeed += _defaultMoveSpeed;
         _targetPosition = transform.position;
     }
 
     private void Update()
     {
         _controller.basicAnim.Idle_Move(Is_Moving());
-        TargetPosition_Movement();
+        Movement_Update();
     }
 
 
@@ -94,13 +98,18 @@ public class NPC_Movement : MonoBehaviour
     }
 
 
-    // Update
-    private void TargetPosition_Movement()
+    // Movement
+    private void Movement_Update()
     {
         if (At_TargetPosition() == false)
         {
             transform.position = Vector2.MoveTowards(transform.position, _targetPosition, _moveSpeed * 0.1f * Time.deltaTime);
         }
+    }
+
+    public void Set_MoveSpeed(float setValue)
+    {
+        _moveSpeed = Mathf.Clamp(setValue, _defaultMoveSpeed, 100f);
     }
 
 

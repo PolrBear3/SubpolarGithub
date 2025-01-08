@@ -30,7 +30,8 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     [SerializeField][Range(0, 100)] private int _maxAbilityPoint;
     public int maxAbilityPoint => _maxAbilityPoint;
 
-    public static Action<int> OnPointIncrease;
+    public static Action<int> IncreasePoint;
+    public static Action OnPointIncrease;
 
 
     // Editor
@@ -43,13 +44,13 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         Load_ActivatedAbilities();
 
         // subscriptions
-        OnPointIncrease += Increase_AbilityPoint;
+        IncreasePoint += Increase_AbilityPoint;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        OnPointIncrease -= Increase_AbilityPoint;
+        IncreasePoint -= Increase_AbilityPoint;
     }
 
 
@@ -90,11 +91,15 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         return _currentAbilityPoint >= _maxAbilityPoint;
     }
 
+    /// <summary>
+    /// AbilityManager.OnPointIncrease(increase value);
+    /// </summary>
     private void Increase_AbilityPoint(int increaseValue)
     {
         if (AbilityPoint_Maxed()) return;
 
         _currentAbilityPoint += increaseValue;
+        OnPointIncrease?.Invoke();
     }
 
 
@@ -185,7 +190,7 @@ public class AbilityManager_Editor : Editor
 
         if (GUILayout.Button("Increase Ability Point"))
         {
-            AbilityManager.OnPointIncrease?.Invoke(1);
+            AbilityManager.IncreasePoint?.Invoke(1);
         }
 
         GUILayout.Space(20);

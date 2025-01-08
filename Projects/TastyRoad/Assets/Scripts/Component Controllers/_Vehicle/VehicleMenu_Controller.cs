@@ -359,6 +359,17 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
+    public void Update_ItemSlots(GameObject menu, List<ItemSlot_Data> currentPageSlots)
+    {
+        if (menu.activeSelf == false) return;
+
+        ItemSlots_Controller controller = _slotsController;
+
+        controller.Set_Datas(currentPageSlots);
+        controller.SlotsAssign_Update();
+    }
+
+
     // UI Control
     private void InfoBox_FlipUpdate(int prevSlotNumX)
     {

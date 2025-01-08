@@ -256,17 +256,23 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return slotsController.FoodAmount(foodMenu.currentDatas, dataController.goldenNugget);
     }
 
+    public int AddAvailable_GoldenNuggets()
+    {
+        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
+        return foodMenu.AddAvailable_Amount(_dataController.goldenNugget);
+    }
+
 
     public int Add_GoldenNugget(int addAmount)
     {
         FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
-        return foodMenu.Add_FoodItem(dataController.goldenNugget, addAmount);
+        return foodMenu.Add_FoodItem(_dataController.goldenNugget, addAmount);
     }
 
     public void Remove_GoldenNugget(int removeAmount)
     {
         FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
-        foodMenu.Remove_FoodItem(dataController.goldenNugget, removeAmount);
+        foodMenu.Remove_FoodItem(_dataController.goldenNugget, removeAmount);
     }
 
 

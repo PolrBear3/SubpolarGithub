@@ -141,7 +141,7 @@ public class Table : MonoBehaviour, IInteractable
 
         UnInteract();
 
-        AbilityManager.OnPointIncrease(1);
+        AbilityManager.IncreasePoint(1);
 
         // durability
         _stationController.data.Update_Durability(-1);

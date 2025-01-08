@@ -37,6 +37,8 @@ public class NPC_FoodInteraction : MonoBehaviour
     private Coroutine _timeCoroutine;
     public Coroutine timeCoroutine => _timeCoroutine;
 
+    private Coroutine _movementCoroutine;
+
     private Coroutine _transferCoroutine;
 
 
@@ -263,9 +265,13 @@ public class NPC_FoodInteraction : MonoBehaviour
         foodIcon.Hide_Icon();
         _controller.timer.Toggle_Transparency(true);
 
+        // updates
         Character_Data data = _controller.characterData;
         data.Update_Hunger((100 - data.hungerLevel) / foodIcon.AllDatas().Count);
 
+        AbilityManager.IncreasePoint(1);
+
+        // fail
         if (Set_Payment() <= 0) Fail_OrderTime();
 
         Update_RoamArea();
@@ -326,7 +332,12 @@ public class NPC_FoodInteraction : MonoBehaviour
     {
         if (_payAvailable == false) return;
 
-        _controller.mainController.Add_GoldenNugget(Set_Payment());
+        Main_Controller main = _controller.mainController;
+
+        // food menu max slots capacity
+        if (main.AddAvailable_GoldenNuggets() < Set_Payment()) return;
+
+        main.Add_GoldenNugget(Set_Payment());
 
         FoodData_Controller foodIcon = _controller.foodIcon;
         foodIcon.Set_CurrentData(null);
@@ -336,10 +347,10 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         _transferData = null;
 
-        Sprite nuggetSprite = _controller.mainController.dataController.goldenNugget.sprite;
+        Sprite nuggetSprite = main.dataController.goldenNugget.sprite;
         _controller.itemLauncher.Parabola_CoinLaunch(nuggetSprite, transform.position);
 
-        if (foodIcon.hasFood == false || _controller.mainController.bookmarkedFoods.Count <= 0)
+        if (foodIcon.hasFood == false || main.bookmarkedFoods.Count <= 0)
         {
             foodIcon.Update_AllDatas(null);
             foodIcon.Show_Icon();

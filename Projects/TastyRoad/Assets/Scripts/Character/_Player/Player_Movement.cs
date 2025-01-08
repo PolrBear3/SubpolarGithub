@@ -9,14 +9,15 @@ public class Player_Movement : MonoBehaviour
     private Player_Controller _playerController;
 
 
+    [Header("")]
+    [SerializeField][Range(0, 100)] private float _defaultMoveSpeed;
+    public float defaultMoveSpeed => _defaultMoveSpeed;
+
+    private float _moveSpeed;
+    public float moveSpeed => _moveSpeed;
+
     private Vector2 _currentDirection;
     public Vector2 currentDirection => _currentDirection;
-
-    [Header("")]
-    [SerializeField][Range(0, 10)] private float _defaultMoveSpeed;
-
-    private float _additionalMoveSpeed;
-    public float additionalMoveSpeed => _additionalMoveSpeed;
 
 
     // UnityEngine
@@ -24,6 +25,8 @@ public class Player_Movement : MonoBehaviour
     {
         if (gameObject.TryGetComponent(out Player_Controller playerController)) { _playerController = playerController; }
         if (gameObject.TryGetComponent(out Rigidbody2D rigidbody)) { _rigidBody = rigidbody; }
+
+        _moveSpeed += _defaultMoveSpeed;
     }
 
     private void Update()
@@ -53,7 +56,7 @@ public class Player_Movement : MonoBehaviour
     }
 
 
-    // FixedUpdate Movement Update
+    // Movement
     public bool Is_Moving()
     {
         if (_rigidBody.velocity != Vector2.zero) return true;
@@ -62,15 +65,12 @@ public class Player_Movement : MonoBehaviour
 
     private void Movement_Update()
     {
-        float moveSpeed = _defaultMoveSpeed + _additionalMoveSpeed;
-
-        _rigidBody.velocity = new Vector2(_currentDirection.x * moveSpeed, _currentDirection.y * moveSpeed);
+        _rigidBody.velocity = new Vector2(_currentDirection.x * _moveSpeed, _currentDirection.y * _moveSpeed);
     }
 
 
-    // Data Control
-    public void Update_MoveSpeed(float updateValue)
+    public void Set_MoveSpeed(float setValue)
     {
-        _additionalMoveSpeed += updateValue;
+        _moveSpeed = Mathf.Clamp(setValue, _defaultMoveSpeed, 100f);
     }
 }

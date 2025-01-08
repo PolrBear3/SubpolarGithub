@@ -126,7 +126,9 @@ public class OrderStand : MonoBehaviour
 
         for (int i = 0; i < allNPCs.Count; i++)
         {
+            if (allNPCs[i].movement.roamActive == false) continue;
             if (allNPCs[i].movement.currentRoamArea != vehicleArea) continue;
+
             if (allNPCs[i].gameObject.TryGetComponent(out NPC_FoodInteraction foodInteract) == false) continue;
             if (foodInteract.timeCoroutine == null) continue;
 

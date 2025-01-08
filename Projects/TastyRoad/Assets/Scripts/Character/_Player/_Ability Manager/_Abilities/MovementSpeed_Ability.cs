@@ -13,6 +13,6 @@ public class MovementSpeed_Ability : Ability_Behaviour, IAbility
     {
         Player_Movement movement = manager.player.movement;
 
-        movement.Update_MoveSpeed(_increaseStep);
+        movement.Set_MoveSpeed(movement.moveSpeed + _increaseStep);
     }
 }

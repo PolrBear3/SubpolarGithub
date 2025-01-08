@@ -38,6 +38,18 @@ public class Serve_Table : Stack_Table, IInteractable
 
 
     // NPC
+    private List<NPC_Controller> ClosestFiltered_NPCs(List<NPC_Controller> targetNPCs)
+    {
+        targetNPCs.Sort((npc1, npc2) =>
+        {
+            float distance1 = Vector2.Distance(transform.position, npc1.transform.position);
+            float distance2 = Vector2.Distance(transform.position, npc2.transform.position);
+            return distance1.CompareTo(distance2);
+        });
+
+        return targetNPCs;
+    }
+
     private List<NPC_Controller> FoodOrder_NPCs()
     {
         List<NPC_Controller> allNPCs = stationController.mainController.All_NPCs();
@@ -46,6 +58,7 @@ public class Serve_Table : Stack_Table, IInteractable
         for (int i = 0; i < allNPCs.Count; i++)
         {
             if (allNPCs[i].gameObject.TryGetComponent(out NPC_FoodInteraction foodInteract) == false) continue;
+
             if (foodInteract.timeCoroutine == null) continue;
             if (stationController.Food_Icon().Has_SameFood(allNPCs[i].foodIcon.currentData.foodScrObj) == false) continue;
 
@@ -53,11 +66,6 @@ public class Serve_Table : Stack_Table, IInteractable
         }
 
         return ClosestFiltered_NPCs(orderNPCs);
-    }
-
-    private List<NPC_Controller> ClosestFiltered_NPCs(List<NPC_Controller> targetNPCs)
-    {
-        return targetNPCs;
     }
 
 
@@ -86,15 +94,16 @@ public class Serve_Table : Stack_Table, IInteractable
 
             for (int i = 0; i < FoodOrder_NPCs().Count; i++)
             {
-                NPC_Movement movement = FoodOrder_NPCs()[i].movement;
+                NPC_Controller targetNPC = FoodOrder_NPCs()[i];
+                NPC_Movement movement = targetNPC.movement;
 
                 movement.Stop_FreeRoam();
                 movement.Assign_TargetPosition(transform.position);
 
                 while (movement.At_TargetPosition(transform.position) == false) yield return null;
 
-                Food_ScrObj orderFood = FoodOrder_NPCs()[i].foodIcon.currentData.foodScrObj;
-                NPC_FoodInteraction interaction = FoodOrder_NPCs()[i].foodInteraction;
+                Food_ScrObj orderFood = targetNPC.foodIcon.currentData.foodScrObj;
+                NPC_FoodInteraction interaction = targetNPC.foodInteraction;
 
                 FoodData transferData = foodIcon.Empty_TargetData(orderFood);
                 if (interaction.Transfer_FoodOrder(transferData)) break;

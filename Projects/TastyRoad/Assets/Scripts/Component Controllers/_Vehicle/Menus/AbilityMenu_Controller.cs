@@ -18,6 +18,18 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // MonoBehaviour
+    private void Start()
+    {
+        // subscriptions
+        AbilityManager.OnPointIncrease += Update_CursorFill;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        AbilityManager.OnPointIncrease -= Update_CursorFill;
+    }
+
     private void OnEnable()
     {
         _menuController.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
@@ -164,6 +176,8 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Update_CursorFill()
     {
+        if (gameObject.activeSelf == false) return;
+
         AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
 
         if (manager.AbilityPoint_Maxed())

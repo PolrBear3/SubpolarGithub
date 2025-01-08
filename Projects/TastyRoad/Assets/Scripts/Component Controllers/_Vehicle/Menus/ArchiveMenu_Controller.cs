@@ -426,6 +426,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 Data_Controller dataController = _controller.vehicleController.mainController.dataController;
                 _currentDatas[i][j].isLocked = !dataController.CookedFood(food);
 
+                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+
                 return _currentDatas[i][j];
             }
         }

@@ -125,6 +125,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 StationData addStation = new(station);
                 _currentDatas[i][j] = new(addStation);
 
+                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+
                 repeatAmount--;
 
                 if (repeatAmount > 0) continue;
@@ -147,6 +149,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
             StationData addStation = new(station);
             currentSlots[i].Assign_Data(new(addStation));
+
+            _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
 
             repeatAmount--;
 
@@ -172,6 +176,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
                 Debug.Log(station + " remove complete!");
                 _currentDatas[i][j].Empty_Item();
+
+                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+                return;
             }
         }
     }
@@ -190,12 +197,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 if (_currentDatas[i][j].hasItem == false) continue;
                 if (station != _currentDatas[i][j].currentStation) continue;
 
+                Debug.Log(station + " remove complete!");
                 _currentDatas[i][j].Empty_Item();
+
                 repeatAmount--;
 
-                if (repeatAmount <= 0) return;
+                if (repeatAmount <= 0) break;
             }
         }
+
+        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
     }
 
 
