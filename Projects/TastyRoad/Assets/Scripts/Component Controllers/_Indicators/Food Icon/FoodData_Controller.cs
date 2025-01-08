@@ -80,15 +80,6 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Data Control
-    public bool Is_SameFood(Food_ScrObj compareFood)
-    {
-        if (compareFood == null || _hasFood == false) return false;
-        if (compareFood != _currentData.foodScrObj) return false;
-
-        return true;
-    }
-
-
     public List<FoodData> AllDatas()
     {
         List<FoodData> foodDatas = new(_subDatas);
@@ -120,27 +111,43 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
-    private void Handle_EmptyData()
+    /// <returns>
+    /// empty executed data
+    /// </returns>
+    public FoodData Empty_TargetData(Food_ScrObj targetDataFood)
     {
-        _currentData = null;
+        FoodData removeData = null;
 
-        if (AllDatas().Count > 0)
+        if (_hasFood == false) return removeData;
+
+        if (_currentData.foodScrObj == targetDataFood)
         {
-            _currentData = new FoodData(_subDatas[_subDatas.Count - 1]);
-            _subDatas.RemoveAt(_subDatas.Count - 1);
+            removeData = new(_currentData);
+            Empty_CurrentData();
 
-            return;
+            return removeData;
         }
 
-        _hasFood = false;
-        GlobalTime_Controller.TimeTik_Update -= TimeTik_Update;
+        for (int i = 0; i < _subDatas.Count; i++)
+        {
+            if (_subDatas[i].foodScrObj != targetDataFood) continue;
+
+            removeData = new(_subDatas[i]);
+            _subDatas.RemoveAt(i);
+
+            return removeData;
+        }
+
+        return removeData;
     }
 
+
+    // Current Data
     public void Set_CurrentData(FoodData setData)
     {
         if (setData == null)
         {
-            Handle_EmptyData();
+            Empty_CurrentData();
             return;
         }
 
@@ -161,6 +168,22 @@ public class FoodData_Controller : MonoBehaviour
         GlobalTime_Controller.TimeTik_Update += TimeTik_Update;
     }
 
+    private void Empty_CurrentData()
+    {
+        _currentData = null;
+
+        if (AllDatas().Count > 0)
+        {
+            _currentData = new FoodData(_subDatas[_subDatas.Count - 1]);
+            _subDatas.RemoveAt(_subDatas.Count - 1);
+
+            return;
+        }
+
+        _hasFood = false;
+        GlobalTime_Controller.TimeTik_Update -= TimeTik_Update;
+    }
+
     public void Swap_Data(FoodData_Controller otherController)
     {
         FoodData saveData = _currentData;
@@ -172,6 +195,14 @@ public class FoodData_Controller : MonoBehaviour
         otherController.Set_CurrentData(saveData);
     }
 
+
+    public bool Is_SameFood(Food_ScrObj compareFood)
+    {
+        if (compareFood == null || _hasFood == false) return false;
+        if (compareFood != _currentData.foodScrObj) return false;
+
+        return true;
+    }
 
     public bool Is_MaxAmount()
     {
@@ -195,6 +226,7 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
+    // Time Tik
     private void TimeTik_Update()
     {
         _currentData.Update_TikCount(_tikCountValue);
@@ -204,6 +236,17 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Sub Data
+    public bool Has_SameFood(Food_ScrObj compareFood)
+    {
+        for (int i = 0; i < AllDatas().Count; i++)
+        {
+            if (AllDatas()[i].foodScrObj != compareFood) continue;
+            return true;
+        }
+        return false;
+    }
+
+
     public bool DataCount_Maxed()
     {
         return AllDatas().Count >= _maxDataCount;
@@ -223,7 +266,7 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
-    // All
+    // Indications
     public void Toggle_Height(bool toggle)
     {
         if (toggle)
@@ -236,7 +279,6 @@ public class FoodData_Controller : MonoBehaviour
     }
 
 
-    // Icon
     public void ShowIcon_LockToggle(bool isLock)
     {
         _iconShowLocked = isLock;

@@ -111,26 +111,16 @@ public class CollectJar : MonoBehaviour
     }
 
 
-    private bool Collect_Available()
-    {
-        if (PayAvailable_NPCs().Count > 0) return true;
-        if (_controller.mainController.bookmarkedFoods.Count > 0) return true;
-
-        return false;
-    }
-
     private void Collect()
     {
         if (_coroutine != null) StopCoroutine(_coroutine);
         _coroutine = null;
 
-        if (Collect_Available() == false) return;
-
         _coroutine = StartCoroutine(Collect_Coroutine());
     }
     private IEnumerator Collect_Coroutine()
     {
-        while (Collect_Available())
+        while (true)
         {
             yield return new WaitForSeconds(_searchTime);
 
@@ -148,6 +138,9 @@ public class CollectJar : MonoBehaviour
                 Insert(interaction.Set_Payment());
                 interaction.Collect_Payment();
             }
+
+            if (PayAvailable_NPCs().Count > 0) continue;
+            if (_controller.mainController.bookmarkedFoods.Count <= 0) break;
         }
 
         _coroutine = null;

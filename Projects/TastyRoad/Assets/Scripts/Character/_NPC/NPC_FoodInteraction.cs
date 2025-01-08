@@ -102,7 +102,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     // Movement
-    private void Update_RoamArea()
+    public void Update_RoamArea()
     {
         NPC_Movement movement = _controller.movement;
 
@@ -115,7 +115,7 @@ public class NPC_FoodInteraction : MonoBehaviour
             return;
         }
 
-        movement.Free_Roam(_controller.mainController.currentVehicle.interactArea, 0f);
+        movement.Free_Roam(_controller.mainController.currentVehicle.interactArea, 1f);
     }
 
 
@@ -226,7 +226,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     // Transfer Food Order
-    private bool Transfer_FoodOrder(FoodData transferData)
+    public bool Transfer_FoodOrder(FoodData transferData)
     {
         if (_transferCoroutine != null) return false;
         if (_timeCoroutine == null) return false;

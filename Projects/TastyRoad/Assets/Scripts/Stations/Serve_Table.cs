@@ -2,215 +2,113 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Serve_Table : Table, IInteractable
+public class Serve_Table : Stack_Table, IInteractable
 {
-    private NPC_Controller _currentNPC;
-    public NPC_Controller currentNPC => _currentNPC;
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _searchTime;
 
     private Coroutine _coroutine;
-    private Coroutine _checkCoroutine;
-
-    [SerializeField] private FoodData_Controller _foodOrderPreview;
 
 
     // UnityEngine
     private new void Start()
     {
-        // Main_Controller.OrderOpen_ToggleEvent += Find_AttractedNPC;
-        // Main_Controller.OrderOpen_ToggleEvent += CloseOrder;
+        base.Start();
+
+        Take_FoodOrder();
+
+        // subscriptions
     }
 
     private new void OnDestroy()
     {
         base.OnDestroy();
 
-        // Main_Controller.OrderOpen_ToggleEvent -= Find_AttractedNPC;
-        // Main_Controller.OrderOpen_ToggleEvent -= CloseOrder;
+        // subscriptions
     }
 
 
     // IInteractable
     public new void Interact()
     {
-        Basic_SwapFood();
-        Serve_FoodOrder_toNPC();
+        base.Interact();
+
+        Take_FoodOrder();
     }
 
 
-    // Gets
-    private List<Serve_Table> Other_ServeTables()
-    {
-        List<Station_Controller> currentStations = stationController.mainController.currentStations;
-        List<Serve_Table> others = new();
-
-        for (int i = 0; i < currentStations.Count; i++)
-        {
-            // if currentStations[i] is this serve table, continue
-            if (currentStations[i] == stationController) continue;
-
-            // if currentStations[i] is not serve table, continue
-            if (currentStations[i].stationScrObj != stationController.stationScrObj) continue;
-
-            others.Add(currentStations[i].GetComponent<Serve_Table>());
-        }
-
-        return others;
-    }
-
-
-    // Checks
-    private bool Other_ServeTable_OrderTaken(NPC_Controller npc)
-    {
-        for (int i = 0; i < Other_ServeTables().Count; i++)
-        {
-            if (npc != Other_ServeTables()[i].currentNPC) continue;
-            return true;
-        }
-        return false;
-    }
-
-    private bool Serve_Available()
-    {
-        // check if food is placed
-        if (stationController.Food_Icon().hasFood == false) return false;
-
-        // check if correct food
-        if (stationController.Food_Icon().currentData.foodScrObj != _currentNPC.foodIcon.currentData.foodScrObj) return false;
-
-        // check if food is already served
-        // if (_currentNPC.interaction.servedFoodData != null) return false;
-
-        //
-        return true;
-    }
-
-
-    // OrderOpen_ToggleEvent Functions
-    private void Find_AttractedNPC()
-    {
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
-
-        _currentNPC = null;
-
-        // if (Main_Controller.orderOpen == false) return;
-
-        _coroutine = StartCoroutine(Find_AttractedNPC_Coroutine());
-    }
-    private IEnumerator Find_AttractedNPC_Coroutine()
-    {
-        FoodOrder_PreviewUpdate();
-
-        while (_currentNPC == null)
-        {
-            Set_AttractedNPC();
-            yield return null;
-        }
-
-        FoodOrder_PreviewUpdate();
-
-        _coroutine = null;
-        yield break;
-    }
-
-    private void Set_AttractedNPC()
+    // NPC
+    private List<NPC_Controller> FoodOrder_NPCs()
     {
         List<NPC_Controller> allNPCs = stationController.mainController.All_NPCs();
+        List<NPC_Controller> orderNPCs = new();
 
         for (int i = 0; i < allNPCs.Count; i++)
         {
-            if (allNPCs[i].foodIcon.hasFood == false) continue;
-            // if (allNPCs[i].interaction.servedFoodData != null) continue;
-            if (Other_ServeTable_OrderTaken(allNPCs[i]) == true) continue;
+            if (allNPCs[i].gameObject.TryGetComponent(out NPC_FoodInteraction foodInteract) == false) continue;
+            if (foodInteract.timeCoroutine == null) continue;
+            if (stationController.Food_Icon().Has_SameFood(allNPCs[i].foodIcon.currentData.foodScrObj) == false) continue;
 
-            // set current npc
-            _currentNPC = allNPCs[i];
-
-            return;
+            orderNPCs.Add(allNPCs[i]);
         }
+
+        return ClosestFiltered_NPCs(orderNPCs);
     }
 
-    private void FoodOrder_PreviewUpdate()
+    private List<NPC_Controller> ClosestFiltered_NPCs(List<NPC_Controller> targetNPCs)
     {
-        /*
-        if (Main_Controller.orderOpen == false || _currentNPC == null)
+        return targetNPCs;
+    }
+
+
+    private void Take_FoodOrder()
+    {
+        if (stationController.Food_Icon().hasFood == false) return;
+
+        if (_coroutine != null) StopCoroutine(_coroutine);
+        _coroutine = null;
+
+        _coroutine = StartCoroutine(Take_FoodOrder_Coroutine());
+    }
+    private IEnumerator Take_FoodOrder_Coroutine()
+    {
+        FoodData_Controller foodIcon = stationController.Food_Icon();
+
+        while (true)
         {
-            _foodOrderPreview.Set_CurrentData(null);
-            _foodOrderPreview.Hide_Icon();
-            _foodOrderPreview.Hide_Condition();
+            if (FoodOrder_NPCs().Count <= 0)
+            {
+                if (foodIcon.hasFood == false) break;
 
-            return;
-        }
-        */
+                yield return new WaitForSeconds(_searchTime);
+                continue;
+            }
 
-        _foodOrderPreview.Set_CurrentData(_currentNPC.foodIcon.currentData);
-        _foodOrderPreview.Show_Icon();
-        _foodOrderPreview.Show_Condition();
+            for (int i = 0; i < FoodOrder_NPCs().Count; i++)
+            {
+                NPC_Movement movement = FoodOrder_NPCs()[i].movement;
 
-        LeanTween.alpha(_foodOrderPreview.gameObject, 0.5f, 0f);
+                movement.Stop_FreeRoam();
+                movement.Assign_TargetPosition(transform.position);
 
-        //
-        Check_FoodServe();
-    }
+                while (movement.At_TargetPosition(transform.position) == false) yield return null;
 
-    private void Check_FoodServe()
-    {
-        if (_checkCoroutine != null)
-        {
-            StopCoroutine(_checkCoroutine);
-            _checkCoroutine = null;
-        }
+                Food_ScrObj orderFood = FoodOrder_NPCs()[i].foodIcon.currentData.foodScrObj;
+                NPC_FoodInteraction interaction = FoodOrder_NPCs()[i].foodInteraction;
 
-        _checkCoroutine = StartCoroutine(Check_FoodServe_Coroutine());
-    }
-    private IEnumerator Check_FoodServe_Coroutine()
-    {
-        // current npc assigned, waiting for food order, time not ended
-        while (_currentNPC != null && _currentNPC.foodIcon.hasFood) yield return null; // && _currentNPC.interaction.servedFoodData == null
+                FoodData transferData = foodIcon.Empty_TargetData(orderFood);
+                if (interaction.Transfer_FoodOrder(transferData)) break;
 
-        Find_AttractedNPC();
-    }
+                interaction.Update_RoamArea();
+            }
 
+            foodIcon.Show_Icon();
+            foodIcon.Show_Condition();
 
-    // Interact Functions
-    private void Serve_FoodOrder_toNPC()
-    {
-        //
-        if (_coroutine != null) return;
-
-        // check if order is currently open
-        // if (Main_Controller.orderOpen == false) return;
-
-        // check if food order is set
-        if (_currentNPC == null) return;
-
-        // condition check
-        if (Serve_Available() == false) return;
-    }
-
-
-    private void CloseOrder()
-    {
-        FoodOrder_PreviewUpdate();
-
-        if (_currentNPC == null) return;
-
-        SpriteRenderer locationRoamArea = stationController.mainController.currentLocation.data.roamArea;
-
-        // stop coroutine
-        if (_checkCoroutine != null)
-        {
-            StopCoroutine(_checkCoroutine);
-            _checkCoroutine = null;
+            AmountBar_Toggle();
         }
 
-        // npc returns to current location roam area
-        _currentNPC.movement.Free_Roam(locationRoamArea);
-
-        // reset
-        _currentNPC = null;
+        _coroutine = null;
+        yield break;
     }
 }

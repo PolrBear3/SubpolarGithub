@@ -124,10 +124,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 199601707684318874}
   - {fileID: 6266888611580549495}
-  - {fileID: 7554589326083591876}
   - {fileID: 2088586490598325410}
+  - {fileID: 199601707684318874}
+  - {fileID: 7554589326083591876}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8949325426819418523
@@ -344,6 +344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: {fileID: 0}
+  _iInteractable: {fileID: 0}
   _detection: {fileID: 8412270414187220779}
   _movement: {fileID: 1839000738827018954}
   _maintenance: {fileID: 1191293295187301583}

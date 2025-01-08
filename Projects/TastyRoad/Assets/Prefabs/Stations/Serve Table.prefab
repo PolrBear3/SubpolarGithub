@@ -40,11 +40,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 288932963818729354}
+  - {fileID: 9203070088618124384}
   - {fileID: 7708737667395846320}
   - {fileID: 7857154484209982906}
-  - {fileID: 288932963818729354}
   - {fileID: 582604388991284371}
-  - {fileID: 9203070088618124384}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8178644164726041005
@@ -237,11 +237,18 @@ MonoBehaviour:
   _soundDatas:
   - _reference:
       Guid:
-        Data1: 1255097458
-        Data2: 1122823251
-        Data3: -911600471
-        Data4: 1970102881
-      Path: event:/Station SFX/Station_break
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
 --- !u!114 &3551917571397297857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,6 +274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: {fileID: 0}
+  _iInteractable: {fileID: 0}
   _detection: {fileID: 3551917571397297857}
   _movement: {fileID: 3609195736537386832}
   _maintenance: {fileID: 3928886942652671882}
@@ -312,7 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2999fa581c2094f15adaeccba6405e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _foodOrderPreview: {fileID: 5777435655744921388}
+  _searchTime: 1
 --- !u!1 &7402267931961517697
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +416,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 797686271449595940, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_Name
-      value: Food Icon (1)
+      value: Food Icon Preview
       objectReference: {fileID: 0}
     - target: {fileID: 2277072323345159646, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_SortingOrder
@@ -490,17 +499,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
---- !u!114 &5777435655744921388 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-  m_PrefabInstance: {fileID: 1368554460399882311}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94e5c44617d64486196e532775169a9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &7857154484209982906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
@@ -517,10 +515,6 @@ PrefabInstance:
     - target: {fileID: 797686271449595940, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_Name
       value: Food Icon
-      objectReference: {fileID: 0}
-    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-      propertyPath: _maxAmount
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: _barShowLocked
