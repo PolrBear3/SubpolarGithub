@@ -106,7 +106,12 @@ public class Serve_Table : Stack_Table, IInteractable
                 NPC_FoodInteraction interaction = targetNPC.foodInteraction;
 
                 FoodData transferData = foodIcon.Empty_TargetData(orderFood);
-                if (interaction.Transfer_FoodOrder(transferData)) break;
+
+                if (interaction.Transfer_FoodOrder(transferData))
+                {
+                    Audio_Controller.instance.Play_OneShot(gameObject, 1);
+                    break;
+                }
 
                 interaction.Update_RoamArea();
             }

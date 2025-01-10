@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2463160998973575963}
   - component: {fileID: 5133560639816156417}
+  - component: {fileID: 4350841206048000370}
+  - component: {fileID: 5866347413823526868}
   - component: {fileID: 3694919507012420122}
   m_Layer: 0
   m_Name: Clock Timer
@@ -85,6 +87,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4350841206048000370
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3788136335572471749}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 002a8a86fe9a04cb1b48c8cc29879211, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5866347413823526868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3788136335572471749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animOverride: {fileID: 0}
+  _defaultAnimation: 
 --- !u!114 &3694919507012420122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,6 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb7324896662345af97b30c4079eb14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animController: {fileID: 5866347413823526868}
   _defaultSprites:
   - {fileID: -261249770, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
   - {fileID: 505139417, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}

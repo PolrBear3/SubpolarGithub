@@ -345,19 +345,6 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Amount Bar
-    public void Show_AmountBar()
-    {
-        // empty
-        if (_hasFood == false || _currentData.currentAmount <= 0)
-        {
-            _amountBar.Toggle(false);
-            return;
-        }
-
-        _amountBar.Load();
-        _amountBar.Toggle(true);
-    }
-
     public void Toggle_AmountBar(bool toggle)
     {
         if (hasFood == false || toggle == false)
@@ -369,7 +356,6 @@ public class FoodData_Controller : MonoBehaviour
         _amountBar.Load_Custom(_maxAmount, _currentData.currentAmount);
         _amountBar.Toggle(true);
     }
-
 
     public void Toggle_SubDataBar(bool toggle)
     {

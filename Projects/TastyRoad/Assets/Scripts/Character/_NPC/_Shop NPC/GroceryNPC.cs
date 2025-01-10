@@ -8,6 +8,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private NPC_Controller _npcController;
 
     [Header("")]
+    [SerializeField] private Clock_Timer _actionTimer;
+
+    [Header("")]
     [SerializeField] private GameObject _restockBarObject;
     [SerializeField] private AmountBar _restockBar;
 
@@ -448,7 +451,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     private void Start_Action()
     {
+        _actionTimer.Toggle_RunAnimation(true);
+
+        _npcController.interactable.UnInteract();
         _npcController.interactable.LockInteract(true);
+
         _foodBox.color = Color.white;
 
         NPC_Movement movement = _npcController.movement;
@@ -462,6 +469,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             StopCoroutine(_actionCoroutine);
             _actionCoroutine = null;
         }
+
+        _actionTimer.Toggle_RunAnimation(false);
 
         _npcController.interactable.LockInteract(false);
         _foodBox.color = Color.clear;
@@ -477,7 +486,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         ActionBubble_Interactable interactable = _npcController.interactable;
 
-        if (interactable.detection.player == null)
+        if (interactable.detection.player == null || _actionTimer.animationRunning)
         {
             _questBarObject.SetActive(false);
             return;
@@ -580,7 +589,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         ActionBubble_Interactable interactable = _npcController.interactable;
 
-        if (interactable.detection.player == null)
+        if (interactable.detection.player == null || _actionTimer.animationRunning)
         {
             _restockBarObject.SetActive(false);
             return;
@@ -642,7 +651,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
             // set new food and update to full amount
             _foodStocks[i].Set_FoodData(new(restockFood));
-            _foodStocks[i].Update_Amount(_foodStocks[i].maxAmount - 1);
+            _foodStocks[i].Update_Amount(_foodStocks[i].foodIcon.maxAmount - 1);
         }
     }
 
@@ -714,7 +723,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             _currentRestockCount = Mathf.Clamp(_currentRestockCount - 1, 0, _restockCount);
             Update_RestockBar();
 
-            for (int j = 0; j < stocks[i].maxAmount - currentAmount; j++)
+            for (int j = 0; j < stocks[i].foodIcon.maxAmount - currentAmount; j++)
             {
                 stocks[i].Update_Amount(1);
 

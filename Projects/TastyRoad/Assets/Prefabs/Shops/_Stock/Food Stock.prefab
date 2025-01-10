@@ -238,6 +238,8 @@ MonoBehaviour:
   _input: {fileID: 1066009703802829180}
   _detection: {fileID: 3521912711758190000}
   _bubble: {fileID: 9010983189097042859}
+  _interactLocked: 0
+  _unInteractLocked: 0
 --- !u!114 &7604224372020232355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +472,10 @@ PrefabInstance:
     - target: {fileID: 797686271449595940, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_Name
       value: Food Icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: _maxAmount
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8720598385154043323, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_Enabled

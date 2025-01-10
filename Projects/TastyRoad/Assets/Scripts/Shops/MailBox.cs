@@ -155,7 +155,7 @@ public class MailBox : MonoBehaviour, IInteractable
 
         playerFood.Set_CurrentData(null);
         playerFood.Show_Icon();
-        playerFood.Show_AmountBar();
+        playerFood.Toggle_SubDataBar(true);
         playerFood.Show_Condition();
 
         // increase amount

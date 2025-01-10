@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 {
+    private Main_Controller _main;
+
+
     [Header("")]
     [SerializeField] private PrefabSpawner _npcSpawner;
 
@@ -16,8 +19,15 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 
 
     // MonoBehaviour
+    private void Awake()
+    {
+        _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
+    }
+
     private void Start()
     {
+        transform.SetParent(_main.characterFile);
+
         Toggle_NPCSprites(false);
         Spawn(_npcIndexNum).transform.position = Default_SpawnPosition();
 

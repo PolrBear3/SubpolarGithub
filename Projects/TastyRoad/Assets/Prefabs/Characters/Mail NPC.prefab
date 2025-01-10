@@ -194,7 +194,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 6260163432043520910}
   _animOverride: {fileID: 22100000, guid: 0405d9e2e81e344ae85f5b83cf0a0deb, type: 2}
   _defaultAnimation: 
 --- !u!114 &4227975373425043441
@@ -218,6 +217,7 @@ MonoBehaviour:
   _timer: {fileID: 0}
   _movement: {fileID: 7911999239264299065}
   _interaction: {fileID: 0}
+  _foodInteraction: {fileID: 0}
   _giftSystem: {fileID: 0}
 --- !u!114 &7911999239264299065
 MonoBehaviour:
@@ -232,6 +232,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 4227975373425043441}
-  _moveSpeed: 7
+  _defaultMoveSpeed: 5
   _intervalTimeRange: {x: 5, y: 10}
   _searchAttempts: 0

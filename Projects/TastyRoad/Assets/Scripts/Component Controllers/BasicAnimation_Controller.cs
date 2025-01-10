@@ -26,6 +26,16 @@ public class BasicAnimation_Controller : MonoBehaviour
         Set_DefaultAnimation();
     }
 
+    private void OnEnable()
+    {
+        _animator.enabled = true;
+    }
+
+    private void OnDisable()
+    {
+        _animator.enabled = false;
+    }
+
 
     // Custon Animation Play
     private void Set_OverrideController()
@@ -86,7 +96,7 @@ public class BasicAnimation_Controller : MonoBehaviour
     }
 
 
-    // Basic Animation Control
+    // Movement Animation Control
     public void Idle_Move(bool isMoving)
     {
         _animator.SetBool("isMoving", isMoving);

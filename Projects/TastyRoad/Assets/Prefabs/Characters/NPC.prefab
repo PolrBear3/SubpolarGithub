@@ -333,11 +333,18 @@ MonoBehaviour:
   _soundDatas:
   - _reference:
       Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  - _reference:
+      Guid:
         Data1: 2088776602
         Data2: 1222638691
         Data3: -637841019
         Data4: 1565476813
-      Path: event:/Basic SFX/FoodInteract_eat
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_eat
 --- !u!114 &8199780205900472995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,7 +454,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
   _defaultMoveSpeed: 5
-  _moveSpeed: 0
   _intervalTimeRange: {x: 0, y: 3}
   _searchAttempts: 50
 --- !u!114 &6217879069349174343

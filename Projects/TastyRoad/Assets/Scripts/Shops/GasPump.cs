@@ -150,7 +150,7 @@ public class GasPump : MonoBehaviour
         playerIcon.Set_CurrentData(null);
 
         playerIcon.Show_Icon();
-        playerIcon.Show_AmountBar();
+        playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
         // this pump update

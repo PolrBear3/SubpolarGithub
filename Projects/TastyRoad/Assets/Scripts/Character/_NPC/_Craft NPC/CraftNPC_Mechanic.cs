@@ -262,6 +262,9 @@ public class CraftNPC_Mechanic : CraftNPC
     }
     private IEnumerator Purchase_Coroutine()
     {
+        actionTimer.Toggle_RunAnimation(true);
+        Toggle_AmountBars();
+
         npcController.interactable.LockInteract(true);
 
         NPC_Movement movement = npcController.movement;
@@ -277,6 +280,9 @@ public class CraftNPC_Mechanic : CraftNPC
 
         _droppedToolBox.Invoke_Action();
         movement.Free_Roam(0);
+
+        actionTimer.Toggle_RunAnimation(false);
+        Toggle_AmountBars();
 
         npcController.interactable.LockInteract(false);
 

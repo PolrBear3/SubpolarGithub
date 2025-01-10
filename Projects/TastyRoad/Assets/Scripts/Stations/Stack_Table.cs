@@ -88,8 +88,15 @@ public class Stack_Table : Table, IInteractable
         playerIcon.Show_Condition();
         playerIcon.Toggle_SubDataBar(true);
 
+        if (tableIcon.DataCount_Maxed() == false)
+        {
+            // sound
+            Audio_Controller.instance.Play_OneShot(gameObject, 1);
+            return;
+        }
+
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 
 
@@ -118,5 +125,8 @@ public class Stack_Table : Table, IInteractable
         stationIcon.Show_Icon();
         stationIcon.Show_Condition();
         stationIcon.Toggle_SubDataBar(true);
+
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 }

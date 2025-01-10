@@ -37,8 +37,6 @@ public class NPC_FoodInteraction : MonoBehaviour
     private Coroutine _timeCoroutine;
     public Coroutine timeCoroutine => _timeCoroutine;
 
-    private Coroutine _movementCoroutine;
-
     private Coroutine _transferCoroutine;
 
 
@@ -254,16 +252,23 @@ public class NPC_FoodInteraction : MonoBehaviour
         FoodData_Controller foodIcon = _controller.foodIcon;
 
         foodIcon.Show_Icon();
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+
         foodIcon.Hide_Condition();
 
         yield return new WaitForSeconds(1f);
 
         foodIcon.Show_EatIcon();
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
 
         yield return new WaitForSeconds(1f);
 
         foodIcon.Hide_Icon();
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+
         _controller.timer.Toggle_Transparency(true);
+
+        yield return new WaitForSeconds(1f);
 
         // updates
         Character_Data data = _controller.characterData;

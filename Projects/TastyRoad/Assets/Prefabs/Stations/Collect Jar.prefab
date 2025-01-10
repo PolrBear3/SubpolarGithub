@@ -804,6 +804,20 @@ MonoBehaviour:
         Data3: -911600471
         Data4: 1970102881
       Path: event:/Station SFX/Station_break
+  - _reference:
+      Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
 --- !u!114 &7041178694425679705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,7 +915,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: _maxAmount
-      value: 99
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5624889644451024210, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.y

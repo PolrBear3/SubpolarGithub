@@ -25,11 +25,7 @@ public class FoodStock : MonoBehaviour
     [SerializeField] private Sprite[] _tagSprites;
 
     [Header("")]
-    [Range(1, 99)][SerializeField] private int _maxAmount;
-    public int maxAmount => _maxAmount;
-
     [Range(0, 99)][SerializeField] private int _unlockPrice;
-
     [Range(0, 99)][SerializeField] private int _discountPrice;
 
 

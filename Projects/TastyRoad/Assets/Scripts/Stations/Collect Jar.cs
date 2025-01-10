@@ -182,6 +182,9 @@ public class CollectJar : MonoBehaviour
         playerIcon.Show_Icon();
         playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
+
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
 
@@ -219,5 +222,8 @@ public class CollectJar : MonoBehaviour
 
         Update_Sprite();
         Toggle_Indications();
+
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 }

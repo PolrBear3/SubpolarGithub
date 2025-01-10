@@ -6,6 +6,9 @@ public class Clock_Timer : MonoBehaviour
 {
     private SpriteRenderer _spriteRenderer;
 
+    [Header("")]
+    [SerializeField] private BasicAnimation_Controller _animController;
+
 
     private Sprite[] _clockSprites;
 
@@ -20,6 +23,7 @@ public class Clock_Timer : MonoBehaviour
     private int _timeBlockCount;
     public int timeBlockCount => _timeBlockCount;
 
+
     private Coroutine _timeCoroutine;
     private Coroutine _timeSpriteCoroutine;
     private Coroutine _toggleCoroutine;
@@ -27,16 +31,21 @@ public class Clock_Timer : MonoBehaviour
     private bool _timeRunning;
     public bool timeRunning => _timeRunning;
 
+    private bool _animationRunning;
+    public bool animationRunning => _animationRunning;
+
 
     // MonoBehaviour
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out SpriteRenderer sr)) { _spriteRenderer = sr; }
+        _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
     private void Start()
     {
         _spriteRenderer.color = Color.clear;
+
+        Toggle_RunAnimation(false);
 
         _clockSprites = _defaultSprites;
         Toggle_ClockColor(false);
@@ -71,7 +80,6 @@ public class Clock_Timer : MonoBehaviour
         Toggle_Transparency(isTransparent);
     }
 
-
     public void Toggle_ClockColor(bool colorGreen)
     {
         int indexNum = Mathf.Clamp(_clockSprites.Length - _timeBlockCount, 0, _clockSprites.Length - 1);
@@ -85,6 +93,19 @@ public class Clock_Timer : MonoBehaviour
 
         _clockSprites = _greenSprites;
         _spriteRenderer.sprite = _clockSprites[indexNum];
+    }
+
+
+    public void Toggle_RunAnimation(bool toggle)
+    {
+        Toggle_Transparency(!toggle);
+
+        _animController.enabled = toggle;
+        _animationRunning = toggle;
+
+        if (toggle == false) return;
+
+        _animController.Play_Animation("ClockTimer_run");
     }
 
 

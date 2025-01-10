@@ -15,6 +15,9 @@ public class CraftNPC : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private Clock_Timer _actionTimer;
+    public Clock_Timer actionTimer => _actionTimer;
+
     [SerializeField] private AmountBar _nuggetBar;
     public AmountBar nuggetBar => _nuggetBar;
 
@@ -111,7 +114,7 @@ public class CraftNPC : MonoBehaviour
 
         GameObject amountBars = _nuggetBar.transform.parent.parent.gameObject;
 
-        if (playerDetected == false || bubbleOn)
+        if (playerDetected == false || bubbleOn || _actionTimer.animationRunning)
         {
             amountBars.SetActive(false);
             return;
@@ -148,7 +151,7 @@ public class CraftNPC : MonoBehaviour
 
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
-        playerIcon.Show_AmountBar();
+        playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
         _nuggetBar.Update_Amount(1);
@@ -167,7 +170,7 @@ public class CraftNPC : MonoBehaviour
 
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
-        playerIcon.Show_AmountBar();
+        playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
         _npcController.foodIcon.Set_CurrentData(playerFood);
