@@ -403,6 +403,8 @@ MonoBehaviour:
   _input: {fileID: 2742599872401450708}
   _detection: {fileID: 8095772719313856644}
   _bubble: {fileID: 4110360785583018332}
+  _interactLocked: 0
+  _unInteractLocked: 0
   _menu: {fileID: 8508866487849260274}
   _movement: {fileID: 7736443948201978939}
   _positionClaimer: {fileID: 2342190877690906068}
@@ -626,6 +628,8 @@ MonoBehaviour:
   _input: {fileID: 5814033916193496685}
   _detection: {fileID: 4486792330137985799}
   _bubble: {fileID: 4451972151034505292}
+  _interactLocked: 0
+  _unInteractLocked: 0
 --- !u!114 &7736443948201978939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2281,7 +2285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -185.78, y: -228.3}
+  m_AnchoredPosition: {x: -185.78, y: -211}
   m_SizeDelta: {x: 350, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &902235544096569602

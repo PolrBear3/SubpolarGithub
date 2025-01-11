@@ -9,6 +9,7 @@ public class GasPump : MonoBehaviour
     [SerializeField] private Detection_Controller _detection;
 
     [Header("")]
+    [SerializeField] private Clock_Timer _fillClock;
     [SerializeField] private AmountBar _amountBar;
 
     [Header("")]
@@ -104,7 +105,13 @@ public class GasPump : MonoBehaviour
 
     private void AmountBar_Toggle()
     {
-        _amountBar.Toggle(_detection.player != null);
+        bool toggle = _coroutine != null || _detection.player != null;
+
+        _amountBar.transform.parent.gameObject.SetActive(toggle);
+
+        if (toggle == false) return;
+
+        _amountBar.Toggle(true);
     }
 
     private void SpawnPoint_Toggle()
@@ -194,6 +201,9 @@ public class GasPump : MonoBehaviour
         _amountBar.Toggle_BarColor(true);
         _amountBar.Set_Amount(0);
 
+        AmountBar_Toggle();
+        _fillClock.Toggle_RunAnimation(true);
+
         for (int i = 0; i < _fillTime; i++)
         {
             _amountBar.Load();
@@ -205,7 +215,11 @@ public class GasPump : MonoBehaviour
 
         Spawn_OilDrum();
 
+        _fillClock.Toggle_RunAnimation(false);
+
         _coroutine = null;
+        AmountBar_Toggle();
+
         yield break;
     }
 

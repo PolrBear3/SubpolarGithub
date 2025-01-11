@@ -161,6 +161,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
+    public ItemSlot_Data Toggle_DataLock(ItemSlot_Data lockData, bool toggle)
+    {
+        if (lockData == null) return null;
+
+        lockData.isLocked = toggle;
+        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+
+        return lockData;
+    }
+
 
     /// <summary>
     /// Removes all
@@ -197,7 +207,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 if (_currentDatas[i][j].hasItem == false) continue;
                 if (station != _currentDatas[i][j].currentStation) continue;
 
-                Debug.Log(station + " remove complete!");
                 _currentDatas[i][j].Empty_Item();
 
                 repeatAmount--;
@@ -649,7 +658,7 @@ public class StationMenu_Controller_Inspector : Editor
 
         if (GUILayout.Button("Add Station"))
         {
-            menu.Add_StationItem(editStation, 1).isLocked = lockStation;
+            menu.Toggle_DataLock(menu.Add_StationItem(editStation, 1), lockStation);
         }
 
         EditorGUILayout.EndHorizontal();

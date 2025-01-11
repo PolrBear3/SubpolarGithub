@@ -132,7 +132,7 @@ public class NPC_GiftSystem : MonoBehaviour
         ItemDropper dropper = _controller.itemDropper;
 
         // collect card drop
-        if (_controller.characterData.generosityLevel >= _collectCardDropRate)
+        if (_controller.characterData.generosityLevel <= _collectCardDropRate)
         {
             dropper.Drop_CollectCard();
             return;

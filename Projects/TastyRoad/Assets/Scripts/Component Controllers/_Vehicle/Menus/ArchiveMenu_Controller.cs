@@ -174,7 +174,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         string ingredientStatus = "Toggle ingredients";
         if (FoodIngredient_Unlocked(cursorData.currentFood) == false)
         {
-            ingredientStatus = "Drop";
+            ingredientStatus = "Return";
         }
 
         string controlInfo = info.UIControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
@@ -242,6 +242,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (emptySlot != null)
         {
             emptySlot.Assign_Data(cursorData);
+            emptySlot.Update_SlotIcon();
+
+            emptySlot.Toggle_BookMark(emptySlot.data.bookMarked);
+            emptySlot.Toggle_Lock(emptySlot.data.isLocked);
+
             return;
         }
 
@@ -435,6 +440,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
+    public ItemSlot_Data Toggle_DataLock(ItemSlot_Data lockData, bool toggle)
+    {
+        if (lockData == null) return null;
+
+        lockData.isLocked = toggle;
+        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+
+        return lockData;
+    }
+
 
     private bool FoodIngredient_Unlocked(Food_ScrObj food)
     {
@@ -448,11 +463,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Unlock_FoodIngredient(Food_ScrObj food)
     {
-        for (int i = 0; i < _ingredientUnlocks.Count; i++)
-        {
-            if (food != _ingredientUnlocks[i].foodScrObj) continue;
-            return;
-        }
+        if (FoodIngredient_Unlocked(food)) return;
 
         _ingredientUnlocks.Add(new(food));
     }

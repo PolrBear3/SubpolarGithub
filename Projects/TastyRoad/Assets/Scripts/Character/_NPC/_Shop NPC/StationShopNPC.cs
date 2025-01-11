@@ -9,6 +9,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private ActionBubble_Interactable _interactable;
 
     [Header("")]
+    [SerializeField] private Clock_Timer _actionTimer;
+
+    [Header("")]
     [SerializeField] private GameObject _restockBarObject;
     [SerializeField] private AmountBar _restockBar;
 
@@ -166,7 +169,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     {
         ActionBubble_Interactable interactable = _npcController.interactable;
 
-        if (interactable.detection.player == null)
+        if (_actionCoroutine != null || interactable.detection.player == null)
         {
             _restockBarObject.SetActive(false);
             return;
@@ -351,6 +354,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         _npcController.interactable.LockInteract(false);
 
+        Toggle_RestockBar();
+        _actionTimer.Toggle_RunAnimation(false);
+
         CarryObject_SpriteToggle(false, null);
 
         // return to free roam
@@ -421,6 +427,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         movement.Stop_FreeRoam();
 
         _npcController.interactable.LockInteract(true);
+
+        Toggle_RestockBar();
+        _actionTimer.Toggle_RunAnimation(true);
 
         // remove dispose station
         ItemSlot_Data disposeData = Dispose_SlotData();
@@ -505,6 +514,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         movement.Stop_FreeRoam();
 
         _npcController.interactable.LockInteract(true);
+
+        Toggle_RestockBar();
+        _actionTimer.Toggle_RunAnimation(true);
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
@@ -621,6 +633,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             // start action
             _npcController.interactable.LockInteract(true);
+
+            Toggle_RestockBar();
+            _actionTimer.Toggle_RunAnimation(true);
 
             NPC_Movement movement = _npcController.movement;
             movement.Stop_FreeRoam();

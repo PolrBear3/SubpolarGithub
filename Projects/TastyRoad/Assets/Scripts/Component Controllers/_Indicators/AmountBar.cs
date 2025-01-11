@@ -7,18 +7,21 @@ public class AmountBar : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
-    [SerializeField] private Sprite[] _amountBarSprites;
+
+    private Sprite[] _amountBarSprites;
     public Sprite[] amountBarSprite => _amountBarSprites;
 
     [Header("")]
     [SerializeField] private Sprite[] _defaultBarSprites;
     [SerializeField] private Sprite[] _greenBarSprites;
 
+
     private int _currentAmount;
     public int currentAmount => _currentAmount;
 
     private bool _toggledOn;
     public bool toggledOn => _toggledOn;
+
 
     [Header("")]
     [SerializeField][Range(0, 100)] private int _maxAmount;
@@ -40,6 +43,8 @@ public class AmountBar : MonoBehaviour
         _sr = gameObject.GetComponent<SpriteRenderer>();
 
         Toggle(false);
+        Toggle_BarColor(false);
+
         Load();
     }
 

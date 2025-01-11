@@ -100,7 +100,7 @@ public class CollectCard : MonoBehaviour, IInteractable
         if (menu.Food_Archived(randFood) == false)
         {
             // add food and lock bookmarking
-            menu.Archive_Food(randFood).isLocked = true;
+            menu.Toggle_DataLock(menu.Archive_Food(randFood), true);
 
             // unlcok food ingredient
             menu.Unlock_FoodIngredient(randFood);
@@ -150,7 +150,7 @@ public class CollectCard : MonoBehaviour, IInteractable
         }
 
         // add station blueprint
-        menu.Add_StationItem(_blueprintPickup, 1).isLocked = true;
+        menu.Toggle_DataLock(menu.Add_StationItem(_blueprintPickup, 1), true);
 
         // dialog
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[1].info));

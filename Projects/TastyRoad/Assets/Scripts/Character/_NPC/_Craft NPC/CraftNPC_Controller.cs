@@ -45,6 +45,8 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
+        if (_currentNPC == null) return;
+
         _currentNPC.Invoke_OnSave();
 
         ES3.Save("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
