@@ -16,6 +16,9 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     public Player_Controller player => _player;
 
     [Header("")]
+    [SerializeField] private AmountBar _abilityBar;
+
+    [Header("")]
     [SerializeField] private Ability_Behaviour[] _allAbilities;
     public Ability_Behaviour[] allAbilities => _allAbilities;
 
@@ -45,12 +48,22 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
 
         // subscriptions
         IncreasePoint += Increase_AbilityPoint;
+
+        FoodData_Controller playerIcon = _player.foodIcon;
+
+        playerIcon.OnFoodShow += Toggle_AbilityBar;
+        playerIcon.OnFoodHide += Toggle_AbilityBar;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         IncreasePoint -= Increase_AbilityPoint;
+
+        FoodData_Controller playerIcon = _player.foodIcon;
+
+        playerIcon.OnFoodShow -= Toggle_AbilityBar;
+        playerIcon.OnFoodHide -= Toggle_AbilityBar;
     }
 
 
@@ -82,6 +95,20 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
                 abilityInterface.Activate();
             }
         }
+    }
+
+
+    // Indications
+    private void Toggle_AbilityBar()
+    {
+        if (_currentAbilityPoint <= _maxAbilityPoint / 2 || _player.foodIcon.hasFood)
+        {
+            _abilityBar.Toggle(false);
+            return;
+        }
+
+        _abilityBar.Load_Custom(_maxAbilityPoint, _currentAbilityPoint);
+        _abilityBar.Toggle_Duration();
     }
 
 

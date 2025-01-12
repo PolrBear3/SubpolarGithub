@@ -122,6 +122,12 @@ public class AmountBar : MonoBehaviour
             return;
         }
 
+        if (_amountBarCoroutine != null)
+        {
+            StopCoroutine(_amountBarCoroutine);
+            _amountBarCoroutine = null;
+        }
+
         _sr.color = Color.clear;
     }
 

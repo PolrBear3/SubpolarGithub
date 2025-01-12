@@ -28,6 +28,9 @@ public class FoodData_Controller : MonoBehaviour
     public delegate void Event();
     public event Event TimeTikEvent;
 
+    public event Event OnFoodShow;
+    public event Event OnFoodHide;
+
 
     [Header("")]
     [SerializeField] private SpriteRenderer _foodIcon;
@@ -305,6 +308,8 @@ public class FoodData_Controller : MonoBehaviour
         _foodIcon.sprite = _currentData.foodScrObj.sprite;
         _foodIcon.transform.localPosition = _currentData.foodScrObj.centerPosition / 100f;
         _foodIcon.color = Color.white;
+
+        OnFoodShow?.Invoke();
     }
 
     public void Show_Icon(float transparencyValue)
@@ -341,6 +346,8 @@ public class FoodData_Controller : MonoBehaviour
     {
         _foodIcon.color = Color.clear;
         _foodIcon.sprite = null;
+
+        OnFoodHide?.Invoke();
     }
 
 
