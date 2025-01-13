@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,9 @@ public class Station_Movement : MonoBehaviour
 
     [SerializeField] private GameObject _movementArrows;
     public GameObject movementArrows => _movementArrows;
+
+
+    public Action OnLoadPosition;
 
 
     // UnityEngine
@@ -117,6 +121,8 @@ public class Station_Movement : MonoBehaviour
         _movementArrows.SetActive(false);
 
         MathRound_Snap_Position();
+
+        OnLoadPosition?.Invoke();
 
         _rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         enabled = false;

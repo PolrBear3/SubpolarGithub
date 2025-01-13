@@ -28,13 +28,14 @@ public class CraftNPC : MonoBehaviour
     private Action OnSave;
 
     private Coroutine _coroutine;
-    public Coroutine coroutine => _coroutine;
+    public Coroutine coroutine;
 
 
     // MonoBehaviour
     public void Start()
     {
         // amount bars
+        _nuggetBar.Toggle_BarColor(_nuggetBar.Is_MaxAmount());
         _nuggetBar.Load();
 
         _giftBar.Set_Amount(_npcController.foodIcon.AllDatas().Count);
@@ -53,9 +54,6 @@ public class CraftNPC : MonoBehaviour
 
         ActionBubble_Interactable interactable = _npcController.interactable;
 
-        interactable.OnIInteract += Face_Player;
-        interactable.OnHoldIInteract += Face_Player;
-
         interactable.OnHoldIInteract += Pay;
         interactable.OnHoldIInteract += Gift;
     }
@@ -70,9 +68,6 @@ public class CraftNPC : MonoBehaviour
 
         ActionBubble_Interactable interactable = _npcController.interactable;
 
-        interactable.OnIInteract -= Face_Player;
-        interactable.OnHoldIInteract -= Face_Player;
-
         interactable.OnHoldIInteract -= Pay;
         interactable.OnHoldIInteract -= Gift;
     }
@@ -81,12 +76,6 @@ public class CraftNPC : MonoBehaviour
     // Data
     public Coroutine Set_Coroutine(Coroutine coroutine)
     {
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
-
         _coroutine = coroutine;
         return _coroutine;
     }
@@ -114,7 +103,7 @@ public class CraftNPC : MonoBehaviour
 
         GameObject amountBars = _nuggetBar.transform.parent.parent.gameObject;
 
-        if (playerDetected == false || bubbleOn || _actionTimer.animationRunning)
+        if (_coroutine != null || playerDetected == false || bubbleOn)
         {
             amountBars.SetActive(false);
             return;
@@ -128,20 +117,6 @@ public class CraftNPC : MonoBehaviour
 
 
     // Main Interactions
-    private void Face_Player()
-    {
-        GameObject player = _npcController.interactable.detection.player.gameObject;
-
-        _npcController.basicAnim.Flip_Sprite(player);
-
-        NPC_Movement movement = _npcController.movement;
-        SpriteRenderer roamArea = _npcController.mainController.currentLocation.data.roamArea;
-
-        movement.Stop_FreeRoam();
-        movement.Free_Roam(roamArea, 1f);
-    }
-
-
     private void Pay()
     {
         Food_ScrObj nugget = _npcController.mainController.dataController.goldenNugget;
@@ -155,11 +130,16 @@ public class CraftNPC : MonoBehaviour
         playerIcon.Show_Condition();
 
         _nuggetBar.Update_Amount(1);
+        _nuggetBar.Toggle_BarColor(_nuggetBar.Is_MaxAmount());
         _nuggetBar.Load();
     }
 
     private void Gift()
     {
+        FoodData_Controller foodIcon = _npcController.foodIcon;
+
+        if (foodIcon.DataCount_Maxed()) return;
+
         Food_ScrObj nugget = _npcController.mainController.dataController.goldenNugget;
         FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
 
@@ -173,9 +153,7 @@ public class CraftNPC : MonoBehaviour
         playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
-        _npcController.foodIcon.Set_CurrentData(playerFood);
-
-        _giftBar.Update_Amount(1);
-        _giftBar.Load();
+        foodIcon.Set_CurrentData(playerFood);
+        _giftBar.Load_Custom(foodIcon.maxDataCount, foodIcon.AllDatas().Count);
     }
 }

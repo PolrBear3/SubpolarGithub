@@ -21,11 +21,13 @@ public class CollectJar : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
-        Collect();
         Update_Sprite();
+
+        Collect(_controller.movement.enabled == false);
 
         // subscriptions
         Main_Controller.OnFoodBookmark += Collect;
+        _controller.movement.OnLoadPosition += Collect;
 
         Detection_Controller detection = _controller.detection;
 
@@ -46,6 +48,7 @@ public class CollectJar : MonoBehaviour
 
         // subscriptions
         Main_Controller.OnFoodBookmark -= Collect;
+        _controller.movement.OnLoadPosition -= Collect;
 
         Detection_Controller detection = _controller.detection;
 
@@ -111,10 +114,17 @@ public class CollectJar : MonoBehaviour
     }
 
 
+    private void Collect(bool activate)
+    {
+        if (activate == false) return;
+
+        Collect();
+    }
+
     private void Collect()
     {
-        if (_coroutine != null) StopCoroutine(_coroutine);
-        _coroutine = null;
+        if (_coroutine != null) return;
+        if (_controller.Food_Icon().Is_MaxAmount()) return;
 
         _coroutine = StartCoroutine(Collect_Coroutine());
     }
@@ -127,24 +137,25 @@ public class CollectJar : MonoBehaviour
             for (int i = 0; i < PayAvailable_NPCs().Count; i++)
             {
                 NPC_Movement movement = PayAvailable_NPCs()[i].movement;
+                NPC_FoodInteraction interaction = PayAvailable_NPCs()[i].foodInteraction;
+
+                if (_controller.Food_Icon().Is_MaxAmount(interaction.Set_Payment()))
+                {
+                    if (movement.roamActive) continue;
+
+                    interaction.Update_RoamArea();
+                    continue;
+                }
 
                 movement.Stop_FreeRoam();
                 movement.Assign_TargetPosition(transform.position);
 
                 if (movement.At_TargetPosition(transform.position) == false) continue;
 
-                NPC_FoodInteraction interaction = PayAvailable_NPCs()[i].foodInteraction;
-
                 Insert(interaction.Set_Payment());
                 interaction.Collect_Payment();
             }
-
-            if (PayAvailable_NPCs().Count > 0) continue;
-            if (_controller.mainController.bookmarkedFoods.Count <= 0) break;
         }
-
-        _coroutine = null;
-        yield break;
     }
 
 
@@ -222,6 +233,8 @@ public class CollectJar : MonoBehaviour
 
         Update_Sprite();
         Toggle_Indications();
+
+        Collect();
 
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 2);

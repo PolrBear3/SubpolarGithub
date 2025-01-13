@@ -15,7 +15,7 @@ public class Serve_Table : Stack_Table, IInteractable
     {
         base.Start();
 
-        Take_FoodOrder();
+        Take_FoodOrder(stationController.movement.enabled == false);
 
         // subscriptions
     }
@@ -69,12 +69,17 @@ public class Serve_Table : Stack_Table, IInteractable
     }
 
 
+    private void Take_FoodOrder(bool activate)
+    {
+        if (activate == false) return;
+
+        Take_FoodOrder();
+    }
+
     private void Take_FoodOrder()
     {
+        if (_coroutine != null) return;
         if (stationController.Food_Icon().hasFood == false) return;
-
-        if (_coroutine != null) StopCoroutine(_coroutine);
-        _coroutine = null;
 
         _coroutine = StartCoroutine(Take_FoodOrder_Coroutine());
     }

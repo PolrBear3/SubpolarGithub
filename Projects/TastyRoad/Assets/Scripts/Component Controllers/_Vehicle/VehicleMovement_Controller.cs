@@ -30,9 +30,6 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Start()
     {
-        // move speed
-        _moveSpeed = _defaultMoveSpeed;
-
         // set to recent position
         _controller.positionClaimer.UnClaim_CurrentPositions();
 

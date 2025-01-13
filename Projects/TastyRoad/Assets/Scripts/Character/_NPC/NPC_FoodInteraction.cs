@@ -294,6 +294,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         if (Transfer_FoodOrder(playerIcon.currentData) == false) return;
 
         playerIcon.Set_CurrentData(null);
+        playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
     }
@@ -340,7 +341,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         Main_Controller main = _controller.mainController;
 
         // food menu max slots capacity
-        if (main.AddAvailable_GoldenNuggets() < Set_Payment()) return;
+        // if (main.AddAvailable_GoldenNuggets() < Set_Payment()) return;
 
         main.Add_GoldenNugget(Set_Payment());
 

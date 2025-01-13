@@ -17,9 +17,12 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private List<FoodData> _ingredientUnlocks = new();
 
+
+    [Header("")]
+    [SerializeField] private Sprite _panelSprite;
+
     [Header("")]
     [SerializeField] private RectTransform _ingredientBox;
-
     [SerializeField] private FoodCondition_Indicator[] _indicators;
 
 
@@ -30,6 +33,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
+        _controller.Update_PanelSprite(_panelSprite);
+
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
@@ -53,6 +58,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnDisable()
     {
+        _controller.Update_PanelSprite(null);
+
         // save current showing slots contents to _currentDatas
         Drag_Cancel();
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();

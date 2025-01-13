@@ -24,8 +24,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
     [Header("")]
-    [SerializeField] private GameObject _menuPanel;
-    public GameObject menuPanel => _menuPanel;
+    [SerializeField] private Image _menuPanel;
+    public Image menuPanel => _menuPanel;
+
+    private Sprite _defaultPanelSprite;
 
 
     [Header("")]
@@ -97,6 +99,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         _playerInput.actions["Select"].started += ctx => OnPressStart();
         _playerInput.actions["Select"].canceled += ctx => OnPressEnd();
+
+        _defaultPanelSprite = _menuPanel.sprite;
 
         VehicleMenu_Toggle(false);
     }
@@ -245,9 +249,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Toggle_NavigatedMenu();
 
         cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
-
-        // current menu update dialog
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
     }
 
     private void OnOption2()
@@ -277,9 +278,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Toggle_NavigatedMenu();
 
         cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
-
-        // current menu update dialog
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(_currentMenuNum);
     }
 
     private void OnExit()
@@ -312,7 +310,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         if (toggleOn == false)
         {
-            _menuPanel.SetActive(false);
+            _menuPanel.gameObject.SetActive(false);
             _playerInput.enabled = false;
 
             for (int i = 0; i < _menus.Count; i++)
@@ -323,7 +321,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        _menuPanel.SetActive(true);
+        _menuPanel.gameObject.SetActive(true);
         _playerInput.enabled = true;
 
         Toggle_NavigatedMenu();
@@ -381,6 +379,18 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (navigateRight == false && navigateLeft == false) return;
 
         _infoBox.Flip();
+    }
+
+
+    public void Update_PanelSprite(Sprite updateSprite)
+    {
+        if (updateSprite == null)
+        {
+            _menuPanel.sprite = _defaultPanelSprite;
+            return;
+        }
+
+        _menuPanel.sprite = updateSprite;
     }
 
 

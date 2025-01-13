@@ -212,6 +212,18 @@ public class FoodData_Controller : MonoBehaviour
         if (hasFood == false) return false;
         return _currentData.currentAmount >= _maxAmount;
     }
+    public bool Is_MaxAmount(int updateAmount)
+    {
+        if (hasFood == false) return false;
+        return _currentData.currentAmount + updateAmount > _maxAmount;
+    }
+
+    public int Current_Amount()
+    {
+        if (_hasFood == false) return 0;
+        return _currentData.currentAmount;
+    }
+
 
     public void Update_Amount(Food_ScrObj targetFood, int updateValue)
     {
@@ -221,7 +233,6 @@ public class FoodData_Controller : MonoBehaviour
             return;
         }
 
-        if (_currentData.currentAmount >= _maxAmount) return;
         _currentData.Update_Amount(updateValue);
 
         if (_currentData.currentAmount > 0) return;

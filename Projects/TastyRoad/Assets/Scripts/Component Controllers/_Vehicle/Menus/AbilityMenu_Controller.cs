@@ -8,6 +8,9 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private VehicleMenu_Controller _menuController;
 
     [Header("")]
+    [SerializeField] private Sprite _panelSprite;
+
+    [Header("")]
     [SerializeField] private Sprite[] _cursorFillSprites;
 
 
@@ -32,6 +35,8 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnEnable()
     {
+        _menuController.Update_PanelSprite(_panelSprite);
+
         _menuController.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         _menuController.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
@@ -49,6 +54,8 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnDisable()
     {
+        _menuController.Update_PanelSprite(null);
+
         // subscriptions
         _menuController.MenuOpen_Event -= Update_CursorFill;
         _menuController.MenuOpen_Event -= Update_AbilityIcons;

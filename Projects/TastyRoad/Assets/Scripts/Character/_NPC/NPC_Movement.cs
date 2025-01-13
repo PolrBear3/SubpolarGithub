@@ -186,14 +186,6 @@ public class NPC_Movement : MonoBehaviour
     {
         Free_Roam(roamArea, Random_IntervalTime());
     }
-    public void Free_Roam(SpriteRenderer roamArea, float startDelayTime)
-    {
-        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
-
-        _roamActive = true;
-        _currentRoamArea = roamArea;
-        _moveCoroutine = StartCoroutine(Free_Roam_Coroutine(roamArea, startDelayTime));
-    }
     /// <summary>
     /// Default roam area of current location
     /// </summary>
@@ -202,10 +194,25 @@ public class NPC_Movement : MonoBehaviour
         SpriteRenderer roamArea = _controller.mainController.currentLocation.data.roamArea;
         Free_Roam(roamArea, startDelayTime);
     }
+
+    public void Free_Roam(SpriteRenderer roamArea, float startDelayTime)
+    {
+        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+
+        _roamActive = true;
+        _currentRoamArea = roamArea;
+        _moveCoroutine = StartCoroutine(Free_Roam_Coroutine(roamArea, startDelayTime));
+    }
     private IEnumerator Free_Roam_Coroutine(SpriteRenderer roamArea, float startDelayTime)
     {
         yield return new WaitForSeconds(startDelayTime);
-        // Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+
+        if (_roamActive == false)
+        {
+            _moveCoroutine = null;
+            yield break;
+        }
+
         Assign_TargetPosition(roamArea);
 
         // repeat until free roam deactivates
@@ -220,9 +227,13 @@ public class NPC_Movement : MonoBehaviour
             float randIntervalTime = Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
 
             yield return new WaitForSeconds(randIntervalTime);
-            // Assign_TargetPosition(Main_Controller.Random_AreaPoint(roamArea));
+            if (_roamActive == false) break;
+
             Assign_TargetPosition(roamArea);
         }
+
+        _moveCoroutine = null;
+        yield break;
     }
 
     public void Stop_FreeRoam()

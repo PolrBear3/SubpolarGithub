@@ -11,10 +11,17 @@ public class CraftNPC_Mechanic : CraftNPC
 
 
     [Header("")]
+    [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
+
+
+    [Header("")]
+    // interact range upgradge
     [SerializeField] private Vector2[] _interactRanges;
 
-    [SerializeField][Range(0, 1)] private float _moveSpeedValue;
+    // vehicle movement speed upgrade
+    [SerializeField][Range(0, 1)] private float _speedUpgradeValue;
 
+    // vehicle menu slot page upgrade
     private int _recentMenuNum;
 
 
@@ -40,6 +47,8 @@ public class CraftNPC_Mechanic : CraftNPC
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
+        interactable.OnHoldIInteract += Set_ToolBox;
+
         interactable.OnIInteract += Update_ActionBubble;
         interactable.OnAction1Input += Purchase;
     }
@@ -55,6 +64,8 @@ public class CraftNPC_Mechanic : CraftNPC
         GlobalTime_Controller.TimeTik_Update -= Collect_ToolBox;
 
         ActionBubble_Interactable interactable = npcController.interactable;
+
+        interactable.OnHoldIInteract -= Set_ToolBox;
 
         interactable.OnIInteract -= Update_ActionBubble;
         interactable.OnAction1Input -= Purchase;
@@ -119,6 +130,11 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private bool ToolBox_SetAvailable()
     {
+        if (coroutine != null) return false;
+        if (_droppedToolBox != null) return false;
+
+        if (nuggetBar.Is_MaxAmount() == false) return false;
+
         Main_Controller main = npcController.mainController;
         Vehicle_Controller vehicle = main.currentVehicle;
 
@@ -151,15 +167,17 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private void Set_ToolBox()
     {
-        if (coroutine != null) return;
-        if (_droppedToolBox != null) return;
-
         if (ToolBox_SetAvailable() == false) return;
 
         Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
         if (vehicle.movement.onBoard) return;
 
         Set_Coroutine(StartCoroutine(Set_ToolBox_Coroutine()));
+
+        actionTimer.Toggle_RunAnimation(true);
+        npcController.interactable.LockInteract(true);
+
+        Toggle_AmountBars();
     }
     private IEnumerator Set_ToolBox_Coroutine()
     {
@@ -183,17 +201,21 @@ public class CraftNPC_Mechanic : CraftNPC
 
         if (npcController.mainController.Position_Claimed(setPos))
         {
-            Set_Coroutine(null);
             Set_ToolBox();
 
+            Set_Coroutine(null);
             yield break;
         }
 
         Drop_ToolBox();
-
         movement.Free_Roam(0);
 
+        actionTimer.Toggle_RunAnimation(false);
+        npcController.interactable.LockInteract(false);
+
         Set_Coroutine(null);
+        Toggle_AmountBars();
+
         yield break;
     }
 
@@ -211,6 +233,17 @@ public class CraftNPC_Mechanic : CraftNPC
         return false;
     }
 
+    private void ToolBox_Collect()
+    {
+        if (_droppedToolBox == null) return;
+
+        GameObject currentToolBox = _droppedToolBox.gameObject;
+        _droppedToolBox = null;
+
+        Destroy(currentToolBox);
+        Update_ActionBubble();
+    }
+
     private void Collect_ToolBox()
     {
         if (coroutine != null) return;
@@ -219,6 +252,11 @@ public class CraftNPC_Mechanic : CraftNPC
         if (ToolBox_NearbyVehicle()) return;
 
         Set_Coroutine(StartCoroutine(Collect_ToolBox_Coroutine()));
+
+        actionTimer.Toggle_RunAnimation(true);
+        npcController.interactable.LockInteract(true);
+
+        Toggle_AmountBars();
     }
     private IEnumerator Collect_ToolBox_Coroutine()
     {
@@ -227,27 +265,17 @@ public class CraftNPC_Mechanic : CraftNPC
         movement.Stop_FreeRoam();
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
 
-        while (movement.At_TargetPosition(_droppedToolBox.transform.position) == false)
-        {
-            // cancel collect action if interact during action
-            if (movement.Is_Moving() == false)
-            {
-                Set_Coroutine(null);
-                yield break;
-            }
+        while (movement.At_TargetPosition(_droppedToolBox.transform.position) == false) yield return null;
 
-            yield return null;
-        }
-
-        GameObject currentToolBox = _droppedToolBox.gameObject;
-        _droppedToolBox = null;
-
-        Destroy(currentToolBox);
-        Update_ActionBubble();
-
+        ToolBox_Collect();
         movement.Free_Roam(0);
 
+        actionTimer.Toggle_RunAnimation(false);
+        npcController.interactable.LockInteract(false);
+
         Set_Coroutine(null);
+        Toggle_AmountBars();
+
         yield break;
     }
 
@@ -263,30 +291,44 @@ public class CraftNPC_Mechanic : CraftNPC
     private IEnumerator Purchase_Coroutine()
     {
         actionTimer.Toggle_RunAnimation(true);
-        Toggle_AmountBars();
-
         npcController.interactable.LockInteract(true);
+
+        Toggle_AmountBars();
 
         NPC_Movement movement = npcController.movement;
         movement.Stop_FreeRoam();
 
+        // move to tool box
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
         while (movement.At_TargetPosition() == false) yield return null;
 
         Vector2 vehicle = npcController.mainController.currentVehicle.transform.position;
 
+        // move to vehicle
         movement.Assign_TargetPosition(vehicle);
         while (movement.At_TargetPosition() == false) yield return null;
 
+        // upgrade time delay
+        yield return new WaitForSeconds(_upgradeTimeValue);
+
+        // upgrade
         _droppedToolBox.Invoke_Action();
+
+        // collect tool box
+        movement.Assign_TargetPosition(_droppedToolBox.transform.position);
+        while (movement.At_TargetPosition() == false) yield return null;
+
+        ToolBox_Collect();
+
+        // end action
         movement.Free_Roam(0);
 
         actionTimer.Toggle_RunAnimation(false);
-        Toggle_AmountBars();
-
         npcController.interactable.LockInteract(false);
 
         Set_Coroutine(null);
+        Toggle_AmountBars();
+
         yield break;
     }
 
@@ -305,15 +347,13 @@ public class CraftNPC_Mechanic : CraftNPC
             vehicle.Update_InteractArea_Range(_interactRanges[i + 1]);
 
             nuggetBar.Set_Amount(0);
+            nuggetBar.Toggle_BarColor(false);
             nuggetBar.Load();
 
             return;
         }
 
-        nuggetBar.Set_Amount(nuggetBar.maxAmount);
-        nuggetBar.Load();
-
-        // dialog //
+        // upgrade fail dialog //
     }
 
     private void Upgrade_MoveSpeed()
@@ -322,13 +362,14 @@ public class CraftNPC_Mechanic : CraftNPC
 
         if (vehicle.moveSpeed >= vehicle.maxMoveSpeed)
         {
-            // dialog //
+            // upgrade fail dialog //
             return;
         }
 
-        vehicle.Update_MovementSpeed(_moveSpeedValue);
+        vehicle.Update_MovementSpeed(_speedUpgradeValue);
 
         nuggetBar.Set_Amount(0);
+        nuggetBar.Toggle_BarColor(false);
         nuggetBar.Load();
     }
 
@@ -356,13 +397,14 @@ public class CraftNPC_Mechanic : CraftNPC
 
         if (slotDatas.Count >= slotsController.maxPageNum)
         {
-            // dialog //
+            // upgrade fail dialog //
             return;
         }
 
         slotsController.AddNewPage_ItemSlotDatas(slotDatas);
 
         nuggetBar.Set_Amount(0);
+        nuggetBar.Toggle_BarColor(false);
         nuggetBar.Load();
 
         if (recentMenu.activeSelf == false) return;
