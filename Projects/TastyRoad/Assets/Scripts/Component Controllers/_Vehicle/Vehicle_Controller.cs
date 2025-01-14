@@ -6,15 +6,21 @@ using UnityEngine.InputSystem;
 public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 {
     [Header("")]
+    [SerializeField] private VehicleMovement_Controller _movement;
+    public VehicleMovement_Controller movement => _movement;
+
     [SerializeField] private VehicleMenu_Controller _menu;
     public VehicleMenu_Controller menu => _menu;
 
-    [SerializeField] private VehicleMovement_Controller _movement;
-    public VehicleMovement_Controller movement => _movement;
+    [SerializeField] private LocationMenu_Controller _locationMenu;
+    public LocationMenu_Controller locationMenu => _locationMenu;
+
+
 
     [Header("")]
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
+
 
     [Header("")]
     [SerializeField] private GameObject _spritesFile;
@@ -26,6 +32,7 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
+
 
     private bool _transparencyLocked;
 
@@ -119,12 +126,14 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     }
 
 
-    // Action Options
+    // Menu Toggles
     private void Open_VehicleMenu()
     {
-        detection.player.Player_Input().enabled = false;
-        detection.player.detectionController.Toggle_BoxCollider(false);
-
         _menu.VehicleMenu_Toggle(true);
+    }
+
+    public void Open_LocationMenu()
+    {
+        _locationMenu.Toggle_Menu(true);
     }
 }

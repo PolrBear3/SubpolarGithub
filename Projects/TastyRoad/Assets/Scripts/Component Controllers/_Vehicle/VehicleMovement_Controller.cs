@@ -44,9 +44,20 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         WorldMap_Controller.NewLocation_Event += Moveto_DefaultPosition;
 
         _interactable.OnInteractInput += Exit;
-
         _interactable.OnAction1Input += Ride;
-        _interactable.OnAction2Input += Open_WorldMap;
+
+        _interactable.OnAction2Input += _controller.Open_LocationMenu;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        WorldMap_Controller.NewLocation_Event -= Moveto_DefaultPosition;
+
+        _interactable.OnInteractInput -= Exit;
+        _interactable.OnAction1Input -= Ride;
+
+        _interactable.OnAction2Input -= _controller.Open_LocationMenu;
     }
 
     private void Update()
@@ -58,17 +69,6 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     private void FixedUpdate()
     {
         Movement_Update();
-    }
-
-    private void OnDestroy()
-    {
-        // subscriptions
-        WorldMap_Controller.NewLocation_Event -= Moveto_DefaultPosition;
-
-        _interactable.OnInteractInput -= Exit;
-
-        _interactable.OnAction1Input -= Ride;
-        _interactable.OnAction2Input -= Open_WorldMap;
     }
 
 
@@ -147,14 +147,6 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    // World Map
-    private void Open_WorldMap()
-    {
-        if (_onBoard) return;
-
-        _interactable.mainController.worldMap.Map_Toggle(true);
-    }
-
     private void Moveto_DefaultPosition()
     {
         _controller.positionClaimer.UnClaim_CurrentPositions();
@@ -166,7 +158,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Actions
+    // Ride Actions
     private void Ride()
     {
         _interactable.LockUnInteract(true);

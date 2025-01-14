@@ -99,4 +99,13 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
         _foodIcon.Show_Condition();
         _foodIcon.Toggle_SubDataBar(true);
     }
+
+    /// <summary>
+    /// Disables all movement controls, detections and interactions
+    /// </summary>
+    public void Toggle_Controllers(bool toggle)
+    {
+        _playerInput.enabled = toggle;
+        _detectionController.Toggle_BoxCollider(toggle);
+    }
 }
