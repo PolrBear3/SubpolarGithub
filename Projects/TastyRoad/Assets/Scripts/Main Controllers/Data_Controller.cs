@@ -18,6 +18,10 @@ public interface ISignal
 public class Data_Controller : MonoBehaviour
 {
     [Header("")]
+    [SerializeField] private WorldData[] _worldData;
+    public WorldData[] worldData => _worldData;
+
+    [Header("")]
     public List<Location_ScrObj> locations = new();
     public List<Station_ScrObj> stations = new();
     public List<GameObject> characters = new();
@@ -54,6 +58,25 @@ public class Data_Controller : MonoBehaviour
 
         if (matchCount > 0) return false;
         else return true;
+    }
+
+
+    // Get World and Location
+    public WorldData World_Data(int targetWorldNum)
+    {
+        targetWorldNum = Mathf.Clamp(targetWorldNum, 0, _worldData.Length - 1);
+        return _worldData[targetWorldNum];
+    }
+
+    public int LocationCount_inWorld(int targetWorldNum)
+    {
+        for (int i = 0; i < _worldData.Length; i++)
+        {
+            if (targetWorldNum != i) continue;
+            return _worldData[i].locations.Length;
+        }
+
+        return 0;
     }
 
 

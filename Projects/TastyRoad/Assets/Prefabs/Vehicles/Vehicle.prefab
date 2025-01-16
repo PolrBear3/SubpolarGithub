@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 5147911964513717916}
   - component: {fileID: 4001944415501354762}
   - component: {fileID: 8041821409065946295}
+  - component: {fileID: 401385385552270577}
   m_Layer: 5
   m_Name: Location Tile (2)
   m_TagString: Untagged
@@ -231,6 +232,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.8
+--- !u!114 &401385385552270577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531212182054371149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6848f7702c3fa43fd8701d9b4396570f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &699851387819695624
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,9 +516,9 @@ MonoBehaviour:
   _bubble: {fileID: 4110360785583018332}
   _interactLocked: 0
   _unInteractLocked: 0
+  _movement: {fileID: 7736443948201978939}
   _menu: {fileID: 8508866487849260274}
   _locationMenu: {fileID: 277122501829671610}
-  _movement: {fileID: 7736443948201978939}
   _positionClaimer: {fileID: 2342190877690906068}
   _spritesFile: {fileID: 6678037125461081039}
   _interactArea: {fileID: 2822506792041360295}
@@ -1167,6 +1180,7 @@ GameObject:
   - component: {fileID: 6192686321054579613}
   - component: {fileID: 3604523492136750729}
   - component: {fileID: 7945534620985722853}
+  - component: {fileID: 1220326464746040951}
   m_Layer: 5
   m_Name: Location Tile (6)
   m_TagString: Untagged
@@ -1252,6 +1266,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.8
+--- !u!114 &1220326464746040951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627251719963658405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6848f7702c3fa43fd8701d9b4396570f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1643738805745198434
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,6 +1501,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vehicle: {fileID: 7023176493674794937}
   _menuPanel: {fileID: 8972849356739649489}
+  _tiles:
+  - {fileID: 8702729134802325803}
+  - {fileID: 4845030772612964376}
+  - {fileID: 401385385552270577}
+  - {fileID: 34053890427909538}
+  - {fileID: 3396952233668700358}
+  - {fileID: 4731908379075109355}
+  - {fileID: 1220326464746040951}
 --- !u!1 &2307853866635692646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,6 +1724,7 @@ GameObject:
   - component: {fileID: 744953469433306021}
   - component: {fileID: 8548366042544247389}
   - component: {fileID: 7020344214002152229}
+  - component: {fileID: 34053890427909538}
   m_Layer: 5
   m_Name: Location Tile (3)
   m_TagString: Untagged
@@ -1775,6 +1810,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.8
+--- !u!114 &34053890427909538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3127879589144682202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6848f7702c3fa43fd8701d9b4396570f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3410262930378930444
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,6 +2071,7 @@ GameObject:
   - component: {fileID: 3947103800809221207}
   - component: {fileID: 1287093546755913571}
   - component: {fileID: 7943749832178480806}
+  - component: {fileID: 4845030772612964376}
   m_Layer: 5
   m_Name: Location Tile (1)
   m_TagString: Untagged
@@ -2109,6 +2157,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.8
+--- !u!114 &4845030772612964376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841535721572863559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6848f7702c3fa43fd8701d9b4396570f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4636912997676986378
 GameObject:
   m_ObjectHideFlags: 0
@@ -2627,6 +2687,7 @@ GameObject:
   - component: {fileID: 5194477836416637789}
   - component: {fileID: 2529666753862617612}
   - component: {fileID: 8324292530854192365}
+  - component: {fileID: 4731908379075109355}
   m_Layer: 5
   m_Name: Location Tile (5)
   m_TagString: Untagged
@@ -2712,6 +2773,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.8
+--- !u!114 &4731908379075109355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5826264936272923510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6848f7702c3fa43fd8701d9b4396570f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5894186996984629141
 GameObject:
   m_ObjectHideFlags: 0
@@ -2868,6 +2941,7 @@ GameObject:
   - component: {fileID: 6781437872233210864}
   - component: {fileID: 3358103774437436693}
   - component: {fileID: 8755952254232740799}
+  - component: {fileID: 8702729134802325803}
   m_Layer: 5
   m_Name: Location Tile
   m_TagString: Untagged
@@ -2953,6 +3027,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.8
+--- !u!114 &8702729134802325803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6160138536369562815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6848f7702c3fa43fd8701d9b4396570f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6678037125461081039
 GameObject:
   m_ObjectHideFlags: 0
@@ -3506,6 +3592,7 @@ GameObject:
   - component: {fileID: 1184749788485561471}
   - component: {fileID: 6665469261736205828}
   - component: {fileID: 8027269867499740077}
+  - component: {fileID: 3396952233668700358}
   m_Layer: 5
   m_Name: Location Tile (4)
   m_TagString: Untagged
@@ -3591,6 +3678,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.8
+--- !u!114 &3396952233668700358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9035807676592855230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6848f7702c3fa43fd8701d9b4396570f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9071997068513480413
 GameObject:
   m_ObjectHideFlags: 0

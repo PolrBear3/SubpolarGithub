@@ -26,13 +26,11 @@ public class Location_Tile : MonoBehaviour
     public int worldNum => _worldNum;
 
 
-
     // UnityEngine
     private void Awake()
     {
         _anim = gameObject.GetComponent<Animator>();
     }
-
 
 
     // Data Control
@@ -42,7 +40,6 @@ public class Location_Tile : MonoBehaviour
 
         // update tile sprite according to world type
     }
-
 
 
     // Animation Control
@@ -60,7 +57,6 @@ public class Location_Tile : MonoBehaviour
     {
         _anim.Play("LocationTile_hover");
     }
-
 
 
     // Gas Coin Indicator Control

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,17 +28,23 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Location_Tile[] _tiles;
 
 
-    public delegate void Event();
-
     /// <summary>
     /// Event activates before current location destroy
     /// </summary>
-    public static Event NewLocation_Event;
+    public static Action OnNewLocation;
+
+    private bool _isNewLocation;
+
+    private int _currentWorldNum;
+    public int currentWorldNum => _currentWorldNum;
+
+    private int _currentLocationNum;
+    public int currentLocationNum => _currentLocationNum;
+
 
     private int _currentTileNum;
     private int _cursorTileNum;
 
-    private bool _isNewLocation;
 
     private bool _onHold;
     private float _pressStartTime;
@@ -60,6 +67,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         // set new location
         _isNewLocation = true;
 
+        // old system
         _currentTileNum = _cursorTileNum;
         Set_RandomLocation();
     }
@@ -139,13 +147,23 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("WorldMap_Controller/_currentTileNum", _currentTileNum);
+
+        // new system
         ES3.Save("WorldMap_Controller/_isNewLocation", _isNewLocation);
+
+        ES3.Save("WorldMap_Controller/_currentWorldNum", _currentWorldNum);
+        ES3.Save("WorldMap_Controller/_currentLocationNum", _currentLocationNum);
     }
 
     public void Load_Data()
     {
         _currentTileNum = ES3.Load("WorldMap_Controller/_currentTileNum", _currentTileNum);
+
+        // new system
         _isNewLocation = ES3.Load("WorldMap_Controller/_isNewLocation", _isNewLocation);
+
+        _currentWorldNum = ES3.Load("WorldMap_Controller/_currentWorldNum", _currentWorldNum);
+        _currentLocationNum = ES3.Load("WorldMap_Controller/_currentLocationNum", _currentLocationNum);
     }
 
 
@@ -175,7 +193,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Single Tile to Tile Control
-    private void Update_CursorTile(int cursorDirection)
+    private void Update_CursorTile(int cursorDirection) //
     {
         // cursor postion
         _cursorTileNum += cursorDirection;
@@ -225,7 +243,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 
-        NewLocation_Event?.Invoke();
+        OnNewLocation?.Invoke();
 
         // reset settings before moving on to new location
         _mainController.Destroy_AllStations();
@@ -304,7 +322,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         }
 
         // set random location num
-        int randLocationNum = Random.Range(0, worldLocation.Count);
+        int randLocationNum = UnityEngine.Random.Range(0, worldLocation.Count);
 
         // set location
         Location_Controller location = _mainController.Set_Location(worldNum, worldLocation[randLocationNum].locationNum);
@@ -334,7 +352,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         }
 
         // set random location num
-        int randLocationNum = Random.Range(0, worldLocation.Count);
+        int randLocationNum = UnityEngine.Random.Range(0, worldLocation.Count);
 
         // set location
         Location_Controller location = _mainController.Set_Location(worldNum, worldLocation[randLocationNum].locationNum);

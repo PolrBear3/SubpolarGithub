@@ -41,7 +41,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         player.transform.position = _controller.driverSeatPoint.position;
 
         // subscriptions
-        WorldMap_Controller.NewLocation_Event += Moveto_DefaultPosition;
+        WorldMap_Controller.OnNewLocation += Moveto_DefaultPosition;
 
         _interactable.OnInteractInput += Exit;
         _interactable.OnAction1Input += Ride;
@@ -52,7 +52,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
-        WorldMap_Controller.NewLocation_Event -= Moveto_DefaultPosition;
+        WorldMap_Controller.OnNewLocation -= Moveto_DefaultPosition;
 
         _interactable.OnInteractInput -= Exit;
         _interactable.OnAction1Input -= Ride;
