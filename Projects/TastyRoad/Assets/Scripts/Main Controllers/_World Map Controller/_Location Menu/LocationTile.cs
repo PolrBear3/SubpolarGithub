@@ -11,8 +11,15 @@ public class LocationTile : MonoBehaviour
     public Animator anim => _anim;
 
 
+    [Header("")]
+    [SerializeField] private RectTransform _cursorPoint;
+    public RectTransform cursorPoint => _cursorPoint;
+
     private bool _locked;
     public bool locked => _locked;
+
+    private WorldMap_Data _data;
+    public WorldMap_Data data => _data;
 
 
     // UnityEngine
@@ -24,6 +31,11 @@ public class LocationTile : MonoBehaviour
 
 
     // Sets
+    public void Set_WorldMapData(WorldMap_Data data)
+    {
+        _data = new(data);
+    }
+
     public Animator Set_AnimatorOverrider(AnimatorOverrideController overrider)
     {
         _anim.runtimeAnimatorController = overrider;
@@ -35,10 +47,14 @@ public class LocationTile : MonoBehaviour
     public void Toggle_Lock(bool toggle)
     {
         _locked = toggle;
+        _anim.enabled = !toggle;
 
-        if (toggle == false) return;
+        if (toggle == false)
+        {
+            _image.color = Color.white;
+            return;
+        }
 
-        _anim.enabled = false;
         _image.color = Color.black;
     }
 }

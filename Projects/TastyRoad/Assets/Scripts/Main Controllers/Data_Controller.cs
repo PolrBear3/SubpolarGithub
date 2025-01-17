@@ -64,12 +64,15 @@ public class Data_Controller : MonoBehaviour
     // Get World and Location
     public WorldData World_Data(int targetWorldNum)
     {
-        targetWorldNum = Mathf.Clamp(targetWorldNum, 0, _worldData.Length - 1);
+        if (targetWorldNum < 0 || targetWorldNum > worldData.Length - 1) return null;
+
         return _worldData[targetWorldNum];
     }
 
     public int LocationCount_inWorld(int targetWorldNum)
     {
+        if (targetWorldNum < 0 || targetWorldNum > _worldData.Length - 1) return 0;
+
         for (int i = 0; i < _worldData.Length; i++)
         {
             if (targetWorldNum != i) continue;

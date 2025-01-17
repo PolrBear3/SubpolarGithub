@@ -120,12 +120,6 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
         // save current npc data
         _currentNPC.Invoke_OnSave();
 
-        // reset
-        GameObject destroyNPC = _currentNPC.gameObject;
-
-        _currentNPC = null;
-        Destroy(destroyNPC);
-
         // set new npc & default position
         Spawn(LoadNew_IndexNum()).transform.position = Default_SpawnPosition();
     }

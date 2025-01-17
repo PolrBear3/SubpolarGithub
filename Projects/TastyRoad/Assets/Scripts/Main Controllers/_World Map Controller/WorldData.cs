@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class WorldData
 {
+    [SerializeField] private Sprite _worldIcon;
+    public Sprite worldIcon => _worldIcon;
+
     [SerializeField] private Sprite _panelSprite;
     public Sprite panelSprite => _panelSprite;
 

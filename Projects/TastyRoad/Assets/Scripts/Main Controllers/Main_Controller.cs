@@ -72,8 +72,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         ES3.Save("_claimedPositions", _claimedPositions);
 
         Save_BookmarkedFood();
-
-        Save_CurrentLocationData();
         Save_CurrentStations();
     }
 
@@ -82,8 +80,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);
 
         Load_bookmarkedFood();
-
-        Load_CurrentLocationData();
         Load_CurrentStations();
     }
 
@@ -280,44 +276,20 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private Location_Controller _currentLocation;
     public Location_Controller currentLocation => _currentLocation;
 
-    private LocationData _savedLocationData;
-    public LocationData savedLocationData => _savedLocationData;
-
-    private void Save_CurrentLocationData()
-    {
-        ES3.Save("Main_Controller/_currentLocationData", _savedLocationData);
-    }
-    public void Load_CurrentLocationData()
-    {
-        if (ES3.KeyExists("Main_Controller/_currentLocationData") == false) return;
-
-        _savedLocationData = ES3.Load("Main_Controller/_currentLocationData", _savedLocationData);
-    }
-
     public void Track_CurrentLocaiton(Location_Controller location)
     {
         _currentLocation = location;
-        _savedLocationData = location.data;
-
-        Save_CurrentLocationData();
     }
 
-    public Location_Controller Set_Location(int worldNum, int locationNum)
+    public Location_Controller Set_Location(WorldMap_Data data)
     {
-        List<Location_ScrObj> allLocations = _dataController.locations;
+        WorldData worldData = _dataController.World_Data(data.worldNum);
+        Location_ScrObj location = worldData.locations[data.locationNum];
 
-        for (int i = 0; i < allLocations.Count; i++)
-        {
-            if (worldNum != allLocations[i].worldNum) continue;
-            if (locationNum != allLocations[i].locationNum) continue;
+        GameObject setLocation = Instantiate(location.locationPrefab, Vector2.zero, Quaternion.identity);
+        setLocation.transform.parent = _locationFile;
 
-            GameObject location = Instantiate(allLocations[i].locationPrefab, Vector2.zero, Quaternion.identity);
-            location.transform.parent = _locationFile;
-
-            return location.GetComponent<Location_Controller>();
-        }
-
-        return null;
+        return setLocation.GetComponent<Location_Controller>();
     }
 
 

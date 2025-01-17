@@ -161,6 +161,10 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     // Ride Actions
     private void Ride()
     {
+        if (_onBoard) return;
+
+        _interactable.OnAction2Input -= _controller.Open_LocationMenu;
+
         _interactable.LockUnInteract(true);
         _interactable.bubble.Toggle(false);
 
@@ -169,7 +173,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         Player_Controller player = _interactable.mainController.Player();
 
-        player.Player_Input().enabled = false;
+        player.Toggle_Controllers(false);
         player.Toggle_Hide(true);
 
         _onBoard = true;
@@ -178,6 +182,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
     private bool Exit_Available()
     {
+        if (_onBoard == false) return false;
+
         Location_Controller location = _controller.mainController.currentLocation;
         Custom_PositionClaimer claimer = _controller.positionClaimer;
 
@@ -196,12 +202,12 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
     private void Exit()
     {
-        if (_onBoard == false) return;
-
         if (Exit_Available() == false) return;
 
         _interactable.LockUnInteract(false);
         _interactable.UnInteract();
+
+        _interactable.OnAction2Input += _controller.Open_LocationMenu;
 
         // set vehicle to snap point
         Location_Controller location = _controller.mainController.currentLocation;
@@ -216,8 +222,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // update player
         Player_Controller player = _interactable.mainController.Player();
 
-        player.Player_Input().enabled = true;
         player.Toggle_Hide(false);
+        player.Toggle_Controllers(true);
 
         player.transform.position = _controller.driverSeatPoint.position;
 
