@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayerID: 1862457933
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -268384869, guid: efc963dc4f222479caa64033825131e4, type: 3}
+  m_Sprite: {fileID: 724607070, guid: efc963dc4f222479caa64033825131e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -251,6 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: {fileID: 0}
+  _iInteractable: {fileID: 0}
   _detection: {fileID: 3551917571397297857}
   _movement: {fileID: 3609195736537386832}
   _maintenance: {fileID: 0}
@@ -331,7 +333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.437
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.z

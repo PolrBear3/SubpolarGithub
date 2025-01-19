@@ -1146,6 +1146,7 @@ MonoBehaviour:
   _controller: {fileID: 8508866487849260274}
   _panelSprite: {fileID: 1192490535, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
   _ingredientBox: {fileID: 4451544458008270599}
+  _ingredientBoxPoint: {fileID: 2812856246410060557}
   _indicators:
   - {fileID: 2659626740563591084}
   - {fileID: 8909905084411257416}
@@ -1850,6 +1851,41 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &2619139479992789922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2812856246410060557}
+  m_Layer: 5
+  m_Name: Ingredient Box Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2812856246410060557
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2619139479992789922}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.1241211, y: 1.1241211, z: 1.1241211}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6566044857676089461}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 262.49982, y: -201.69995}
+  m_SizeDelta: {x: 350, y: 260}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3080299786986664504
 GameObject:
   m_ObjectHideFlags: 0
@@ -2637,6 +2673,7 @@ RectTransform:
   - {fileID: 2493993902637394304}
   - {fileID: 4570522584232588373}
   - {fileID: 4393910875431448884}
+  - {fileID: 2812856246410060557}
   - {fileID: 120391151439684013}
   m_Father: {fileID: 6871736045534458602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

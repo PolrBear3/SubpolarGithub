@@ -59,13 +59,9 @@ public class Action_Bubble : MonoBehaviour
     public void Set_Bubble(Sprite leftIcon, Sprite rightIcon)
     {
         if (leftIcon == null) return;
-
-        _leftIcon.transform.localPosition = Vector2.zero;
         _leftIcon.sprite = leftIcon;
 
         if (rightIcon == null) return;
-
-        _rightIcon.transform.localPosition = Vector2.zero;
         _rightIcon.sprite = rightIcon;
     }
 

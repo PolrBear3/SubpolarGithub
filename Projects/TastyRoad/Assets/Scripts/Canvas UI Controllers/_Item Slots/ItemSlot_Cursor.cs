@@ -67,7 +67,6 @@ public class ItemSlot_Cursor : MonoBehaviour
         _data.Empty_Item();
 
         _cursorImage.sprite = _recentCursorSprite;
-        _cursorImage.rectTransform.anchoredPosition = Vector2.zero;
 
         _data.currentAmount = 0;
         _amountText.text = "";
@@ -80,7 +79,6 @@ public class ItemSlot_Cursor : MonoBehaviour
         {
             _cursorImage.sprite = _data.stationData.stationScrObj.dialogIcon;
             _cursorImage.color = Color.white;
-            _cursorImage.rectTransform.anchoredPosition = new Vector2(0f, -6.5f);
 
             return;
         }
@@ -89,7 +87,6 @@ public class ItemSlot_Cursor : MonoBehaviour
         {
             _cursorImage.sprite = _data.currentFood.sprite;
             _cursorImage.color = Color.white;
-            _cursorImage.rectTransform.anchoredPosition = Vector2.zero;
 
             return;
         }

@@ -113,7 +113,6 @@ public class ItemSlot : MonoBehaviour
 
         _iconImage.sprite = null;
         _iconImage.color = Color.clear;
-        _iconImage.rectTransform.anchoredPosition = Vector2.zero;
 
         _data.currentAmount = 0;
         _amountText.text = "";
