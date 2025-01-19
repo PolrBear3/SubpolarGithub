@@ -1149,7 +1149,8 @@ MonoBehaviour:
   _indicators:
   - {fileID: 2659626740563591084}
   - {fileID: 8909905084411257416}
-  archiveFood: {fileID: 0}
+  archiveFood: {fileID: 11400000, guid: 93f468edd125c4322bd0f18fa9ba6a7b, type: 2}
+  unlockIngredient: 1
 --- !u!1 &1203113308141388044
 GameObject:
   m_ObjectHideFlags: 0
@@ -2836,7 +2837,7 @@ MonoBehaviour:
   - {fileID: 4772758237972630517}
   - {fileID: 3116370623158019660}
   - {fileID: 653951572882133916}
-  _singleSlotCapacity: 99
+  _singleSlotCapacity: 200
   _maxPageNum: 4
 --- !u!114 &8508866487849260274
 MonoBehaviour:
@@ -3423,7 +3424,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -185.5, y: -253.2}
+  m_AnchoredPosition: {x: -160, y: -253.2}
   m_SizeDelta: {x: 350, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &902235544096569602

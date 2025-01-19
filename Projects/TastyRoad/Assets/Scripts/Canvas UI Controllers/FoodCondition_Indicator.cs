@@ -19,7 +19,6 @@ public class FoodCondition_Indicator : MonoBehaviour
 
         // food icon
         _foodIcon.sprite = ingredientFood.sprite;
-        _foodIcon.rectTransform.anchoredPosition = ingredientFood.uiCenterPosition;
 
         int conditionCount = ingredient.conditionDatas.Count;
 

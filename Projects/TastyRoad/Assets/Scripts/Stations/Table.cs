@@ -56,7 +56,7 @@ public class Table : MonoBehaviour, IInteractable
 
         Action_Bubble bubble = _stationController.ActionBubble();
 
-        bubble.Update_Bubble(_stationController.Food_Icon().currentData.foodScrObj, cookedFood);
+        bubble.Update_Bubble(_stationController.Food_Icon().currentData.foodScrObj.sprite, cookedFood.sprite);
 
         _stationController.PlayerInput_Activation(true);
         _stationController.Action1_Event += Basic_SwapFood;

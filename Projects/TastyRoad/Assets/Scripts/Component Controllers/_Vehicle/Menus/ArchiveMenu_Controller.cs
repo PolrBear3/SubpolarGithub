@@ -28,6 +28,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     // Editor
     [HideInInspector] public Food_ScrObj archiveFood;
+    [HideInInspector] public bool unlockIngredient;
 
 
     // UnityEngine
@@ -347,7 +348,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Data Control
+    // Archive Data
     private List<Food_ScrObj> Archived_Foods()
     {
         List<Food_ScrObj> archivedFoods = new();
@@ -458,7 +459,18 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    private bool FoodIngredient_Unlocked(Food_ScrObj food)
+    // Ingredient Data
+    private FoodData IngredientUnlocked_FoodData(Food_ScrObj food)
+    {
+        for (int i = 0; i < _ingredientUnlocks.Count; i++)
+        {
+            if (food != _ingredientUnlocks[i].foodScrObj) continue;
+            return _ingredientUnlocks[i];
+        }
+        return null;
+    }
+
+    public bool FoodIngredient_Unlocked(Food_ScrObj food)
     {
         for (int i = 0; i < _ingredientUnlocks.Count; i++)
         {
@@ -468,11 +480,25 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return false;
     }
 
+    public int FoodIngredient_UnlockCount(Food_ScrObj food)
+    {
+        FoodData targetData = IngredientUnlocked_FoodData(food);
+
+        if (targetData == null) return 0;
+        return targetData.currentAmount;
+    }
+
+
     public void Unlock_FoodIngredient(Food_ScrObj food)
     {
-        if (FoodIngredient_Unlocked(food)) return;
+        if (FoodIngredient_Unlocked(food))
+        {
+            IngredientUnlocked_FoodData(food).Update_Amount(1);
+            return;
+        }
 
         _ingredientUnlocks.Add(new(food));
+        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
     }
 
 
@@ -497,6 +523,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Hide_IngredientBox();
     }
 
+
     private void Show_IngredientBox()
     {
         if (_ingredientBox.gameObject.activeSelf) return;
@@ -505,19 +532,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _ingredientBox.gameObject.SetActive(true);
 
         // update position to info box
-        float infoBoxX = _controller.infoBox.transform.position.x - 25f;
+        float infoBoxX = _controller.infoBox.transform.position.x - 15f;
         _ingredientBox.transform.position = new Vector2(infoBoxX, _ingredientBox.transform.position.y);
 
         Update_IngredientBox();
     }
-
-    private void Hide_IngredientBox()
-    {
-        if (_ingredientBox.gameObject.activeSelf == false) return;
-
-        _ingredientBox.gameObject.SetActive(false);
-    }
-
 
     private void Update_IngredientBox()
     {
@@ -531,6 +550,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             _indicators[i].Indicate(cursorData.currentFood.ingredients[i]);
         }
     }
+
+
+    private void Hide_IngredientBox()
+    {
+        if (_ingredientBox.gameObject.activeSelf == false) return;
+
+        _ingredientBox.gameObject.SetActive(false);
+    }
 }
 
 
@@ -540,10 +567,12 @@ public class ArchiveMenu_Controller_Controller_Inspector : Editor
 {
     //
     private SerializedProperty _archiveFoodProp;
+    private SerializedProperty _unlockIngredientProp;
 
     private void OnEnable()
     {
         _archiveFoodProp = serializedObject.FindProperty("archiveFood");
+        _unlockIngredientProp = serializedObject.FindProperty("unlockIngredient");
     }
 
 
@@ -563,9 +592,17 @@ public class ArchiveMenu_Controller_Controller_Inspector : Editor
         EditorGUILayout.PropertyField(_archiveFoodProp, GUIContent.none);
         Food_ScrObj archiveFood = (Food_ScrObj)_archiveFoodProp.objectReferenceValue;
 
+        EditorGUILayout.PropertyField(_unlockIngredientProp, GUIContent.none);
+        bool unlockIngredient = _unlockIngredientProp.boolValue;
+
         if (GUILayout.Button("Archive Food"))
         {
-            menu.Archive_Food(archiveFood);
+            if (unlockIngredient)
+            {
+                menu.Unlock_FoodIngredient(archiveFood);
+            }
+
+            menu.Toggle_DataLock(menu.Archive_Food(archiveFood), !menu.FoodIngredient_Unlocked(archiveFood));
         }
 
         EditorGUILayout.EndHorizontal();

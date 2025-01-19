@@ -29,9 +29,4 @@ public class DialogBox : MonoBehaviour
     {
         _iconImage.sprite = _data.icon;
     }
-
-    public void UpdateIcon_CenterPosition(Vector2 centerPosition)
-    {
-        _iconImage.rectTransform.localPosition = centerPosition;
-    }
 }

@@ -10,10 +10,6 @@ public class Food_ScrObj : ScriptableObject
     public Sprite eatSprite;
 
     [Header("")]
-    public Vector2 centerPosition;
-    public Vector2 uiCenterPosition;
-
-    [Header("")]
     public string foodName;
     public int id;
 

@@ -85,10 +85,10 @@ public class CollectCard : MonoBehaviour, IInteractable
     // Food Ingredient
     private void FoodIngredient_toArchive()
     {
-        Food_ScrObj randFood = _mainController.dataController.CookedFood();
         ArchiveMenu_Controller menu = _mainController.currentVehicle.menu.archiveMenu;
-
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        Food_ScrObj randFood = _mainController.dataController.CookedFood();
 
         // available slots check
         if (menu.controller.slotsController.Empty_SlotData(menu.currentDatas) == null)
@@ -102,7 +102,7 @@ public class CollectCard : MonoBehaviour, IInteractable
             // add food and lock bookmarking
             menu.Toggle_DataLock(menu.Archive_Food(randFood), true);
 
-            // unlcok food ingredient
+            // unlock food ingredient
             menu.Unlock_FoodIngredient(randFood);
         }
 

@@ -194,9 +194,7 @@ public class FoodStock : MonoBehaviour
 
         // price to purchase + current nugget amount
         DialogData data = new(stockedFood.sprite, priceString);
-        DialogBox dialogBox = dialog.Update_Dialog(data);
-
-        dialogBox.UpdateIcon_CenterPosition(stockedFood.uiCenterPosition);
+        dialog.Update_Dialog(data);
     }
 
 

@@ -516,7 +516,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         ActionBubble_Interactable interactable = _npcController.interactable;
         Action_Bubble bubble = interactable.bubble;
 
-        bubble.Set_Bubble(food, food);
+        bubble.Set_Bubble(food.sprite, food.sprite);
         Update_RestockBubble();
 
         interactable.UnInteract();

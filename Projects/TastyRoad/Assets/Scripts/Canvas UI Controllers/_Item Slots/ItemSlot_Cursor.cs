@@ -89,7 +89,7 @@ public class ItemSlot_Cursor : MonoBehaviour
         {
             _cursorImage.sprite = _data.currentFood.sprite;
             _cursorImage.color = Color.white;
-            _cursorImage.rectTransform.anchoredPosition = _data.currentFood.uiCenterPosition;
+            _cursorImage.rectTransform.anchoredPosition = Vector2.zero;
 
             return;
         }

@@ -317,7 +317,6 @@ public class FoodData_Controller : MonoBehaviour
         }
 
         _foodIcon.sprite = _currentData.foodScrObj.sprite;
-        _foodIcon.transform.localPosition = _currentData.foodScrObj.centerPosition / 100f;
         _foodIcon.color = Color.white;
 
         OnFoodShow?.Invoke();
@@ -348,7 +347,6 @@ public class FoodData_Controller : MonoBehaviour
         }
 
         _foodIcon.sprite = _currentData.foodScrObj.eatSprite;
-        _foodIcon.transform.localPosition = _currentData.foodScrObj.centerPosition / 100f;
         _foodIcon.color = Color.white;
     }
 
