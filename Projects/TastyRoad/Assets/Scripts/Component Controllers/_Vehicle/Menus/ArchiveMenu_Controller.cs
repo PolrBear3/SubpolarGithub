@@ -505,7 +505,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _ingredientBox.gameObject.SetActive(true);
 
         // update position to info box
-        float infoBoxX = _controller.infoBox.transform.position.x - 21f;
+        float infoBoxX = _controller.infoBox.transform.position.x - 25f;
         _ingredientBox.transform.position = new Vector2(infoBoxX, _ingredientBox.transform.position.y);
 
         Update_IngredientBox();

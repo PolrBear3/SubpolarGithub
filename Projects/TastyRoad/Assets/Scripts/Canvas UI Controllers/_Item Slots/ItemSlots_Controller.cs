@@ -250,6 +250,24 @@ public class ItemSlots_Controller : MonoBehaviour
         return targetDatas;
     }
 
+
+    public int StationAmount(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation)
+    {
+        int stationCount = 0;
+
+        for (int i = 0; i < datas.Count; i++)
+        {
+            for (int j = 0; j < datas[i].Count; j++)
+            {
+                if (datas[i][j].hasItem == false) continue;
+                if (targetStation != datas[i][j].currentStation) continue;
+                stationCount++;
+            }
+        }
+
+        return stationCount;
+    }
+
     public void Stations_ToggleLock(Dictionary<int, List<ItemSlot_Data>> datas, Station_ScrObj targetStation, bool isLock)
     {
         for (int i = 0; i < datas.Count; i++)

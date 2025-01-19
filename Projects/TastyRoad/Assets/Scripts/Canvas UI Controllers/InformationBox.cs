@@ -15,6 +15,9 @@ public class InformationBox : MonoBehaviour
 
     [SerializeField] private float _heightIncreaseValue;
 
+    private bool _flipped;
+    public bool flipped => _flipped;
+
 
     // UnityEngine
     private void Awake()
@@ -43,6 +46,8 @@ public class InformationBox : MonoBehaviour
     // Panel Layout Control
     public void Flip()
     {
+        _flipped = !_flipped;
+
         float currentX = _rect.anchoredPosition.x;
         _rect.anchoredPosition = new Vector2(currentX * -1, _rect.anchoredPosition.y);
     }

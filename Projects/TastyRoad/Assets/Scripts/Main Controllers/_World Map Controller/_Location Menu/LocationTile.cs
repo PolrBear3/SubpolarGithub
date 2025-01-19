@@ -12,6 +12,10 @@ public class LocationTile : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private Sprite _lockedTile;
+
+
+    [Header("")]
     [SerializeField] private RectTransform _cursorPoint;
     public RectTransform cursorPoint => _cursorPoint;
 
@@ -49,12 +53,8 @@ public class LocationTile : MonoBehaviour
         _locked = toggle;
         _anim.enabled = !toggle;
 
-        if (toggle == false)
-        {
-            _image.color = Color.white;
-            return;
-        }
+        if (toggle == false) return;
 
-        _image.color = Color.black;
+        _image.sprite = _lockedTile;
     }
 }

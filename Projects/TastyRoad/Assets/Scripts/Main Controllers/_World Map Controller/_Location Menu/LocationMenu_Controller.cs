@@ -17,10 +17,13 @@ public class LocationMenu_Controller : MonoBehaviour
 
     [Header("")]
     [SerializeField] private Image _menuPanel;
+    [SerializeField] private LocationTile[] _tiles;
 
     [Header("")]
-    [SerializeField] private LocationTile[] _tiles;
     [SerializeField] private Image _cursor;
+    [SerializeField] private UI_ClockTimer _holdClock;
+
+    [SerializeField] private InformationBox _infoBox;
 
 
     private int _hoverTileNum;
@@ -32,13 +35,19 @@ public class LocationMenu_Controller : MonoBehaviour
         Toggle_Menu(false);
 
         // subscriptions
-        _holdInput.OnHoldComplete += Select_HoverTile;
+        _holdInput.OnComplete += Select_HoverTile;
+
+        _holdInput.OnStart += _holdClock.Run_ClockSprite;
+        _holdInput.OnEnd += _holdClock.Stop_ClockSpriteRun;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        _holdInput.OnHoldComplete -= Select_HoverTile;
+        _holdInput.OnComplete -= Select_HoverTile;
+
+        _holdInput.OnStart -= _holdClock.Run_ClockSprite;
+        _holdInput.OnEnd -= _holdClock.Stop_ClockSpriteRun;
     }
 
 
@@ -51,7 +60,9 @@ public class LocationMenu_Controller : MonoBehaviour
         int xInput = (int)input.x;
 
         Update_HoverTileNum(xInput);
+
         Update_Cursor();
+        Update_InfoBox();
 
         Update_TilesAnimation();
     }
@@ -83,7 +94,9 @@ public class LocationMenu_Controller : MonoBehaviour
         _menuPanel.sprite = panelSprite;
 
         _hoverTileNum = _tiles.Length / 2;
+
         Update_Cursor();
+        Update_InfoBox();
 
         Update_Tiles();
         Update_LockedTiles();
@@ -117,13 +130,74 @@ public class LocationMenu_Controller : MonoBehaviour
         _cursor.rectTransform.localPosition = Vector2.zero;
     }
 
+    private void Update_InfoBox()
+    {
+        int centerNum = _tiles.Length / 2;
+
+        _infoBox.gameObject.SetActive(_hoverTileNum != centerNum);
+
+        if (_hoverTileNum == centerNum) return;
+
+        Main_Controller main = _vehicle.mainController;
+        Data_Controller data = main.dataController;
+
+        StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
+
+        int oilAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj(79025));
+        int requireOil = Mathf.Abs(centerNum - _hoverTileNum);
+
+        string requireString = requireOil + " <sprite=61> required\n";
+        string currentString = "you have " + oilAmount + " <sprite=61> in <sprite=57> menu";
+
+        _infoBox.Update_InfoText(requireString + currentString);
+        _infoBox.Update_RectLayout();
+
+        if (_hoverTileNum <= centerNum)
+        {
+            _infoBox.Flip_toDefault();
+            return;
+        }
+
+        if (_infoBox.flipped) return;
+
+        _infoBox.Flip();
+    }
+
+
+    private bool Select_Available()
+    {
+        int centerNum = _tiles.Length / 2;
+
+        if (_hoverTileNum == centerNum) return false;
+        if (_tiles[_hoverTileNum].locked) return false;
+
+        Main_Controller main = _vehicle.mainController;
+        Data_Controller data = main.dataController;
+
+        StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
+
+        int oilAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj(79025));
+        int requireOil = Mathf.Abs(centerNum - _hoverTileNum);
+
+        if (oilAmount < requireOil) return false;
+
+        return true;
+    }
 
     private void Select_HoverTile()
     {
-        if (_hoverTileNum == _tiles.Length / 2) return;
-        if (_tiles[_hoverTileNum].locked) return;
+        if (Select_Available() == false) return;
 
-        WorldMap_Controller worldMap = _vehicle.mainController.worldMap;
+        Main_Controller main = _vehicle.mainController;
+        Data_Controller data = main.dataController;
+
+        WorldMap_Controller worldMap = main.worldMap;
+        StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
+
+        int removeAmount = Mathf.Abs(_tiles.Length / 2 - _hoverTileNum);
+        stationMenu.Remove_StationItem(data.Station_ScrObj(79025), removeAmount);
 
         _input.enabled = false;
         worldMap.Update_Location(_tiles[_hoverTileNum].data);

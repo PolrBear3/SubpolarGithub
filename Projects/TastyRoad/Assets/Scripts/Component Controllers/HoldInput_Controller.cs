@@ -14,8 +14,12 @@ public class HoldInput_Controller : MonoBehaviour
     [SerializeField] private string _holdKeyAction;
     [SerializeField][Range(0, 10)] private float _holdTime;
 
-    public Action OnHoldComplete;
-    public Action OnHoldInComplete;
+
+    public Action OnStart;
+    public Action OnEnd;
+
+    public Action OnComplete;
+    public Action OnInComplete;
 
 
     private bool _onHold;
@@ -36,12 +40,15 @@ public class HoldInput_Controller : MonoBehaviour
     private void OnHoldStart()
     {
         _pressStartTime = Time.time;
+
         _onHold = true;
+        OnStart?.Invoke();
     }
 
     private void OnHoldEnd()
     {
         _onHold = false;
+        OnEnd?.Invoke();
 
         float holdDuration = Time.time - _pressStartTime;
 
@@ -49,10 +56,10 @@ public class HoldInput_Controller : MonoBehaviour
 
         if (holdDuration < _holdTime)
         {
-            OnHoldInComplete?.Invoke();
+            OnInComplete?.Invoke();
             return;
         }
 
-        OnHoldComplete?.Invoke();
+        OnComplete?.Invoke();
     }
 }

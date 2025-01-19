@@ -9,7 +9,9 @@ public class UI_ClockTimer : MonoBehaviour
     [SerializeField] private Image _clockImage;
     [SerializeField] private List<Sprite> _clockSprites = new();
 
-    private const float _inputHoldTime = 1f;
+    [Header("")]
+    [SerializeField][Range(0, 10)] private float _inputHoldTime;
+
     private Coroutine _timeCoroutine;
 
 
