@@ -89,7 +89,7 @@ public class FoodStock : MonoBehaviour
     // Public Constructors
     public StockData Set_StockData(StockData data)
     {
-        _stockData = new(data.unlocked);
+        _stockData = new(data);
         return _stockData;
     }
 
@@ -109,11 +109,21 @@ public class FoodStock : MonoBehaviour
         return _foodIcon.currentData.currentAmount;
     }
 
-    public void Update_Amount(int updateAmount)
+    public void Set_Amount(int setValue)
     {
         if (_foodIcon.hasFood == false) return;
 
-        _foodIcon.currentData.Update_Amount(updateAmount);
+        _foodIcon.currentData.Set_Amount(setValue);
+
+        Toggle_AmountBar();
+        Update_TagSprite();
+    }
+
+    public void Update_Amount(int updateValue)
+    {
+        if (_foodIcon.hasFood == false) return;
+
+        _foodIcon.currentData.Update_Amount(updateValue);
 
         Toggle_AmountBar();
         Update_TagSprite();
