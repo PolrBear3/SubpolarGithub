@@ -40,7 +40,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
+
         // subscriptions
+        _controller.MenuOpen_Event += GoldShine_MaxUnlockedSlots;
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input += Select_Slot;
@@ -67,6 +69,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
         // subscriptions
+        _controller.MenuOpen_Event -= GoldShine_MaxUnlockedSlots;
         _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input -= Select_Slot;
@@ -500,6 +503,18 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _ingredientUnlocks.Add(new(food));
         _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+    }
+
+    public void GoldShine_MaxUnlockedSlots() // change function name
+    {
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        List<ItemSlot> itemSlots = slotsController.itemSlots;
+
+        for (int i = 0; i < itemSlots.Count; i++)
+        {
+            if (itemSlots[i].data.hasItem == false) continue;
+            itemSlots[i].Toggle_Material(true);
+        }
     }
 
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using Unity.VisualScripting;
 
 public class ItemSlot : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class ItemSlot : MonoBehaviour
 
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
+
+    private Coroutine _materialCoroutine;
 
 
     [Header("")]
@@ -41,7 +44,9 @@ public class ItemSlot : MonoBehaviour
     {
         _rectTransform = gameObject.GetComponent<RectTransform>();
 
+        _iconImage.material = new Material(_iconImage.material);
         _iconImage.color = Color.clear;
+
         _bookmarkIcon.color = Color.clear;
     }
 
@@ -103,13 +108,14 @@ public class ItemSlot : MonoBehaviour
     }
 
 
-    // Visual Control
+    // Indications
     public void Empty_ItemBox()
     {
         _data.Empty_Item();
 
         Toggle_BookMark(false);
         Toggle_Icons(false, false);
+        Toggle_Material(false);
 
         _iconImage.sprite = null;
         _iconImage.color = Color.clear;
@@ -171,5 +177,23 @@ public class ItemSlot : MonoBehaviour
         }
 
         _amountText.text = _data.currentAmount.ToString();
+    }
+
+
+    // Effects
+    public void Toggle_Material(bool toggle)
+    {
+        if (toggle == false)
+        {
+            _iconImage.material.SetFloat("_ShineGlow", 0f);
+            return;
+        }
+
+        _materialCoroutine = StartCoroutine(Material_Coroutine());
+    }
+    private IEnumerator Material_Coroutine()
+    {
+        _materialCoroutine = null;
+        yield break;
     }
 }

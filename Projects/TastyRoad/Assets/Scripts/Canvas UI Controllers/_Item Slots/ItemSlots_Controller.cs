@@ -56,6 +56,8 @@ public class ItemSlots_Controller : MonoBehaviour
 
             slot.Toggle_BookMark(slot.data.bookMarked);
             slot.Toggle_Lock(slot.data.isLocked);
+
+            slot.Toggle_Material(false);
         }
     }
 
