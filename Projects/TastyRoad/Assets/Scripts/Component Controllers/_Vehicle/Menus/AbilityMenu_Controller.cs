@@ -25,12 +25,14 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         // subscriptions
         AbilityManager.OnPointIncrease += Update_CursorFill;
+        AbilityManager.OnPointIncrease += Show_AbilityDiscription;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         AbilityManager.OnPointIncrease -= Update_CursorFill;
+        AbilityManager.OnPointIncrease -= Show_AbilityDiscription;
     }
 
     private void OnEnable()
@@ -150,18 +152,14 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Control Functions
-    private Ability_ScrObj CurrentSlot_Ability()
+    // Indications
+    private string HoldSelect_InfoText()
     {
         AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
-        ItemSlot_Cursor cursor = _menuController.slotsController.cursor;
 
-        int currentSlotNum = (int)cursor.currentSlot.gridNum.x;
-
-        if (currentSlotNum > manager.allAbilities.Length - 1) return null;
-        return manager.allAbilities[currentSlotNum].abilityScrObj;
+        if (manager.AbilityPoint_Maxed()) return "Hold <sprite=15> to level up";
+        return manager.currentAbilityPoint + "/" + manager.maxAbilityPoint + "\nNot enough <sprite=79> points!";
     }
-
 
     private void Show_AbilityDiscription()
     {
@@ -174,12 +172,12 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             return;
         }
 
-        string holdSelect = "Hold <sprite=15> to level up";
-        infoBox.Update_InfoText(currentAbility.description + "\n\n" + holdSelect);
+        infoBox.Update_InfoText(currentAbility.description + "\n\n" + HoldSelect_InfoText());
 
         infoBox.gameObject.SetActive(true);
         infoBox.Update_RectLayout();
     }
+
 
     private void Update_CursorFill()
     {
@@ -199,6 +197,18 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _menuController.Update_MenuCursorSprite(_cursorFillSprites[spriteIndex]);
     }
 
+
+    // Activation
+    private Ability_ScrObj CurrentSlot_Ability()
+    {
+        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        ItemSlot_Cursor cursor = _menuController.slotsController.cursor;
+
+        int currentSlotNum = (int)cursor.currentSlot.gridNum.x;
+
+        if (currentSlotNum > manager.allAbilities.Length - 1) return null;
+        return manager.allAbilities[currentSlotNum].abilityScrObj;
+    }
 
     private void ActivateAbility_onSelect()
     {

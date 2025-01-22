@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 public class Player_Controller : MonoBehaviour, ISaveLoadable
 {
     private SpriteRenderer _sr;
+    public SpriteRenderer sr => _sr;
+
     private PlayerInput _playerInput;
 
     private Main_Controller _mainController;

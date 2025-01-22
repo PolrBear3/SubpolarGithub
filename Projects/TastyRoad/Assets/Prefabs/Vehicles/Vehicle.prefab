@@ -366,6 +366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6191139167133184309}
+  - component: {fileID: 8396981506455088875}
   - component: {fileID: 4272963676511979}
   m_Layer: 5
   m_Name: Food
@@ -393,6 +394,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0.0000017285, y: 0}
   m_SizeDelta: {x: 1195, y: 214}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8396981506455088875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699851387819695624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: 0}
+    info: 
+  _datas:
+  - icon: {fileID: -1889772576, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not enough  <sprite=87> export positions!
 --- !u!114 &4272963676511979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1103,6 +1122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1908141811356381471}
+  - component: {fileID: 5425501975407929133}
   - component: {fileID: 6819107497965341309}
   m_Layer: 5
   m_Name: Archive
@@ -1131,6 +1151,22 @@ RectTransform:
   m_AnchoredPosition: {x: -0, y: 0}
   m_SizeDelta: {x: 1195, y: 214}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5425501975407929133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142200799194987385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultData:
+    icon: {fileID: 0}
+    info: 
+  _datas: []
 --- !u!114 &6819107497965341309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1150,6 +1186,7 @@ MonoBehaviour:
   _indicators:
   - {fileID: 2659626740563591084}
   - {fileID: 8909905084411257416}
+  _maxIngredientUnlocks: 1
   archiveFood: {fileID: 11400000, guid: 93f468edd125c4322bd0f18fa9ba6a7b, type: 2}
   unlockIngredient: 1
 --- !u!1 &1203113308141388044

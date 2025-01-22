@@ -37,6 +37,11 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     public static Action OnPointIncrease;
 
 
+    [Header("")]
+    [SerializeField][Range(0, 10)] private float _shineSpeed;
+    [SerializeField][Range(0, 10)] private float _delayTime;
+
+
     // Editor
     [HideInInspector] public Ability_ScrObj editorAbility;
 

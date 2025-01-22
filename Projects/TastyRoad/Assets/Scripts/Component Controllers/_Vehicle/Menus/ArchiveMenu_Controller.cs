@@ -26,6 +26,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private RectTransform _ingredientBoxPoint;
     [SerializeField] private FoodCondition_Indicator[] _indicators;
 
+    [Header("")]
+    [SerializeField][Range(0, 500)] private int _maxIngredientUnlocks;
+
 
     // Editor
     [HideInInspector] public Food_ScrObj archiveFood;
@@ -42,7 +45,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
         // subscriptions
-        _controller.MenuOpen_Event += GoldShine_MaxUnlockedSlots;
+        _controller.MenuOpen_Event += Update_MaterialShineSlots;
         _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input += Select_Slot;
@@ -69,7 +72,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
         // subscriptions
-        _controller.MenuOpen_Event -= GoldShine_MaxUnlockedSlots;
+        _controller.MenuOpen_Event -= Update_MaterialShineSlots;
         _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
 
         _controller.OnSelect_Input -= Select_Slot;
@@ -235,6 +238,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         cursor.Assign_Data(slotData);
         cursor.Update_SlotIcon();
+
+        Update_MaterialShineSlot(currentSlot);
     }
 
     private void Drag_Cancel()
@@ -292,6 +297,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
+
+        Update_MaterialShineSlot(currentSlot);
     }
 
     private void Swap_Food()
@@ -505,15 +512,23 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
     }
 
-    public void GoldShine_MaxUnlockedSlots() // change function name
+
+    private void Update_MaterialShineSlot(ItemSlot targetSlot)
+    {
+        ItemSlot_Data data = targetSlot.data;
+        bool unlocked = FoodIngredient_UnlockCount(data.currentFood) >= _maxIngredientUnlocks;
+
+        targetSlot.Toggle_MaterialShine(data.hasItem && unlocked);
+    }
+
+    private void Update_MaterialShineSlots()
     {
         ItemSlots_Controller slotsController = _controller.slotsController;
         List<ItemSlot> itemSlots = slotsController.itemSlots;
 
         for (int i = 0; i < itemSlots.Count; i++)
         {
-            if (itemSlots[i].data.hasItem == false) continue;
-            itemSlots[i].Toggle_Material(true);
+            Update_MaterialShineSlot(itemSlots[i]);
         }
     }
 
@@ -614,7 +629,8 @@ public class ArchiveMenu_Controller_Controller_Inspector : Editor
                 menu.Unlock_FoodIngredient(archiveFood);
             }
 
-            menu.Toggle_DataLock(menu.Archive_Food(archiveFood), !menu.FoodIngredient_Unlocked(archiveFood));
+            bool rawFood = menu.controller.vehicleController.mainController.dataController.Is_RawFood(archiveFood);
+            menu.Toggle_DataLock(menu.Archive_Food(archiveFood), rawFood || !menu.FoodIngredient_Unlocked(archiveFood));
         }
 
         EditorGUILayout.EndHorizontal();

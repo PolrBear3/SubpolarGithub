@@ -17,8 +17,6 @@ public class ItemSlot : MonoBehaviour
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
 
-    private Coroutine _materialCoroutine;
-
 
     [Header("")]
     [SerializeField] private Image _iconImage;
@@ -37,6 +35,13 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private GameObject _ingredientUnlockedIcon;
 
     [SerializeField][Range(0, 1)] private float _transparentValue;
+
+
+    [Header("")]
+    [SerializeField][Range(0, 10)] private float _shineSpeed;
+    [SerializeField][Range(0, 10)] private float _materialLoopTime;
+
+    private Coroutine _materialCoroutine;
 
 
     // UnityEngine
@@ -115,7 +120,7 @@ public class ItemSlot : MonoBehaviour
 
         Toggle_BookMark(false);
         Toggle_Icons(false, false);
-        Toggle_Material(false);
+        Toggle_MaterialShine(false);
 
         _iconImage.sprite = null;
         _iconImage.color = Color.clear;
@@ -181,19 +186,37 @@ public class ItemSlot : MonoBehaviour
 
 
     // Effects
-    public void Toggle_Material(bool toggle)
+    public void Toggle_MaterialShine(bool toggle)
     {
-        if (toggle == false)
+        if (toggle)
         {
-            _iconImage.material.SetFloat("_ShineGlow", 0f);
+            _iconImage.material.SetFloat("_ShineGlow", 1f);
+            _materialCoroutine = StartCoroutine(MaterialShine_Coroutine());
+
             return;
         }
 
-        _materialCoroutine = StartCoroutine(Material_Coroutine());
+        _iconImage.material.SetFloat("_ShineGlow", 0f);
+
+        if (_materialCoroutine == null) return;
+        StopCoroutine(_materialCoroutine);
     }
-    private IEnumerator Material_Coroutine()
+    private IEnumerator MaterialShine_Coroutine()
     {
-        _materialCoroutine = null;
-        yield break;
+        float locationValue = 0f;
+
+        while (true)
+        {
+            while (locationValue < 1)
+            {
+                locationValue += Time.deltaTime * _shineSpeed;
+                _iconImage.material.SetFloat("_ShineLocation", locationValue);
+
+                yield return null;
+            }
+
+            locationValue = 0;
+            yield return new WaitForSeconds(_materialLoopTime);
+        }
     }
 }

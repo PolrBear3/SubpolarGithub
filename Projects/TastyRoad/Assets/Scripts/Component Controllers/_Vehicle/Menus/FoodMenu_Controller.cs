@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEditor;
 
@@ -548,7 +546,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // if there are enough space to spawn food box
         if (Available_ExportPositions().Count <= 0)
         {
-            // dialog ?
+            gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
 
             Drag_Cancel();
             return;
