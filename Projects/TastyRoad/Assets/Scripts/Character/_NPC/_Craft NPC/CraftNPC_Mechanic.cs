@@ -9,6 +9,8 @@ public class CraftNPC_Mechanic : CraftNPC
     [Header("")]
     [SerializeField] private GameObject _toolBox;
 
+    private ActionSelector _droppedToolBox;
+
 
     [Header("")]
     [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
@@ -25,7 +27,6 @@ public class CraftNPC_Mechanic : CraftNPC
     private int _recentMenuNum;
 
 
-    private ActionSelector _droppedToolBox;
 
 
     // MonoBehaviour
@@ -94,14 +95,23 @@ public class CraftNPC_Mechanic : CraftNPC
         ActionBubble_Interactable interactable = npcController.interactable;
         Action_Bubble bubble = interactable.bubble;
 
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
         if (_droppedToolBox == null)
         {
             bubble.Toggle(false);
             bubble.Empty_Bubble();
+
+            dialog.Update_Dialog(Current_PayCount());
+
             return;
         }
 
         bubble.Set_Bubble(_droppedToolBox.indicatorIcon.sprite, null);
+
+        if (bubble.bubbleOn == false) return;
+
+        dialog.Update_Dialog(_droppedToolBox.currentIndex);
     }
 
 
@@ -302,10 +312,11 @@ public class CraftNPC_Mechanic : CraftNPC
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
         while (movement.At_TargetPosition() == false) yield return null;
 
-        Vector2 vehicle = npcController.mainController.currentVehicle.transform.position;
+        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        Vector2 vehiclePosition = vehicle.transform.position;
 
         // move to vehicle
-        movement.Assign_TargetPosition(vehicle);
+        movement.Assign_TargetPosition(vehiclePosition);
         while (movement.At_TargetPosition() == false) yield return null;
 
         // upgrade time delay
@@ -313,6 +324,8 @@ public class CraftNPC_Mechanic : CraftNPC
 
         // upgrade
         _droppedToolBox.Invoke_Action();
+
+        vehicle.SilverShine_VehicleBody();
 
         // collect tool box
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
@@ -355,6 +368,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
         // upgrade fail dialog //
     }
+
 
     private void Upgrade_MoveSpeed()
     {

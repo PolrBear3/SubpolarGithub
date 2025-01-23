@@ -115,6 +115,16 @@ public class CraftNPC : MonoBehaviour
         _giftBar.Toggle(true);
     }
 
+    public DialogData Current_PayCount()
+    {
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        string holdToPay = "Hold <sprite=15> to pay <sprite=56>\n";
+        string currentPayCount = _nuggetBar.currentAmount + "/" + _nuggetBar.maxAmount + " <sprite=56> currently payed";
+
+        return new DialogData(dialog.defaultData.icon, holdToPay + currentPayCount);
+    }
+
 
     // Main Interactions
     private void Pay()
@@ -132,6 +142,8 @@ public class CraftNPC : MonoBehaviour
         _nuggetBar.Update_Amount(1);
         _nuggetBar.Toggle_BarColor(_nuggetBar.Is_MaxAmount());
         _nuggetBar.Load();
+
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(Current_PayCount());
     }
 
     private void Gift()

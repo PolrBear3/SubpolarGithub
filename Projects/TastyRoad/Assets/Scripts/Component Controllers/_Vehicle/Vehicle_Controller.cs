@@ -16,8 +16,6 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     public LocationMenu_Controller locationMenu => _locationMenu;
 
 
-
-    [Header("")]
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
 
@@ -26,21 +24,27 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     [SerializeField] private GameObject _spritesFile;
     public GameObject spritesFile => _spritesFile;
 
-    [Header("")]
     [SerializeField] private SpriteRenderer _interactArea;
     public SpriteRenderer interactArea => _interactArea;
 
+
     [Header("")]
     [SerializeField] private Transform _transparencyPoint;
-
-
-    private bool _transparencyLocked;
 
     [SerializeField] private Transform _stationSpawnPoint;
     public Transform stationSpawnPoint => _stationSpawnPoint;
 
     [SerializeField] private Transform _driverSeatPoint;
     public Transform driverSeatPoint => _driverSeatPoint;
+
+    private bool _transparencyLocked;
+
+
+    [Header("")]
+    [SerializeField] private SpriteRenderer _vehicleBody;
+    [SerializeField][Range(0, 10)] private float _materialShineSpeed;
+
+    private Coroutine _materialCoroutine;
 
 
     // UnityEngine
@@ -110,6 +114,34 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
         if (toggle == false) return;
         LeanTween.alpha(_spritesFile, 1f, 0f);
+    }
+
+
+    public void SilverShine_VehicleBody()
+    {
+        if (_materialCoroutine != null) return;
+
+        _materialCoroutine = StartCoroutine(SilverShine_VehicleBody_Coroutine());
+    }
+    private IEnumerator SilverShine_VehicleBody_Coroutine()
+    {
+        Material vehicleBody = _vehicleBody.material;
+
+        vehicleBody.SetFloat("_ShineGlow", 0.1f);
+        float locationValue = 0;
+
+        while (locationValue < 1)
+        {
+            locationValue += Time.deltaTime * _materialShineSpeed;
+            vehicleBody.SetFloat("_ShineLocation", locationValue);
+
+            yield return null;
+        }
+
+        vehicleBody.SetFloat("_ShineGlow", 0f);
+
+        _materialCoroutine = null;
+        yield break;
     }
 
 

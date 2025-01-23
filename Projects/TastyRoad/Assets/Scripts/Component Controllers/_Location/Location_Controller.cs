@@ -167,6 +167,8 @@ public class Location_Controller : MonoBehaviour
         // current location roaming npc only leave
         for (int i = 0; i < currentNPCs.Count; i++)
         {
+            if (currentNPCs[i].foodInteraction == null) continue;
+
             NPC_Movement move = currentNPCs[i].movement;
 
             if (move.currentRoamArea != _data.roamArea) continue;

@@ -27,9 +27,11 @@ public class ActionSelector : MonoBehaviour
     public Action OnActionToggle;
 
     private int _subscriptionCount;
-    private int _currentIndex;
 
-    private bool _selectingAction;
+    private int _currentIndex;
+    public int currentIndex => _currentIndex;
+
+    private bool _isSelecting;
 
 
     // MonoBehaviour
@@ -55,7 +57,7 @@ public class ActionSelector : MonoBehaviour
     {
         if (_detection.player == null || _subscriptionCount <= 0 || _indicatorSprites.Length <= 0)
         {
-            _selectingAction = false;
+            _isSelecting = false;
 
             _indicatorObject.SetActive(false);
             return;
@@ -97,9 +99,9 @@ public class ActionSelector : MonoBehaviour
     {
         Toggle_CurrentAction();
 
-        if (_selectingAction == false)
+        if (_isSelecting == false)
         {
-            _selectingAction = true;
+            _isSelecting = true;
             return;
         }
 
