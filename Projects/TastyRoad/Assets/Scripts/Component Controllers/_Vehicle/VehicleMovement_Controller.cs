@@ -9,6 +9,12 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Vehicle_Controller _controller;
     [SerializeField] private ActionBubble_Interactable _interactable;
 
+
+    [Header("")]
+    [SerializeField] private Animator _wheelsAnim;
+    [SerializeField] private Sprite _wheelsSprite;
+
+
     [Header("")]
     [SerializeField][Range(0, 10)] private float _defaultMoveSpeed;
 
@@ -106,6 +112,22 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
+    // Visual Control
+    private void Toggle_WheelsAnimation(bool toggle)
+    {
+        _wheelsAnim.enabled = toggle;
+
+        if (toggle)
+        {
+            _wheelsAnim.Play("VehicleWheels_movement");
+            return;
+        }
+
+        SpriteRenderer wheelsRenderer = _wheelsAnim.gameObject.GetComponent<SpriteRenderer>();
+        wheelsRenderer.sprite = _wheelsSprite;
+    }
+
+
     // Movement
     private void Movement_Update()
     {
@@ -171,6 +193,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         _controller.Toggle_TransparencyLock(true);
         _controller.positionClaimer.UnClaim_CurrentPositions();
 
+        Toggle_WheelsAnimation(true);
+
         Player_Controller player = _interactable.mainController.Player();
 
         player.Toggle_Controllers(false);
@@ -218,6 +242,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         _controller.Toggle_TransparencyLock(false);
         _controller.positionClaimer.Claim_CurrentPositions();
+
+        Toggle_WheelsAnimation(false);
 
         // update player
         Player_Controller player = _interactable.mainController.Player();

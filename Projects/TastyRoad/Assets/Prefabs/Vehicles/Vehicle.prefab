@@ -442,9 +442,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5419941011623935099}
-  - component: {fileID: 653949399699014468}
   - component: {fileID: 4976745120457246418}
   - component: {fileID: 2742599872401450708}
+  - component: {fileID: 653949399699014468}
   - component: {fileID: 8095772719313856644}
   - component: {fileID: 2342190877690906068}
   - component: {fileID: 7023176493674794937}
@@ -479,33 +479,6 @@ Transform:
   - {fileID: 1617839239778359926}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &653949399699014468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745308525293917770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _soundDatas:
-  - _reference:
-      Guid:
-        Data1: -2000394434
-        Data2: 1125934655
-        Data3: 829910180
-        Data4: -31450466
-      Path: event:/Basic SFX/Vechicle/StationItem_export
-  - _reference:
-      Guid:
-        Data1: 1424211625
-        Data2: 1254941790
-        Data3: -810629981
-        Data4: 1247566103
-      Path: event:/Basic SFX/Vechicle/StationItem_retrieve
 --- !u!61 &4976745120457246418
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -581,6 +554,33 @@ MonoBehaviour:
   m_DefaultActionMap: In Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &653949399699014468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745308525293917770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -2000394434
+        Data2: 1125934655
+        Data3: 829910180
+        Data4: -31450466
+      Path: event:/Basic SFX/Vechicle/StationItem_export
+  - _reference:
+      Guid:
+        Data1: 1424211625
+        Data2: 1254941790
+        Data3: -810629981
+        Data4: 1247566103
+      Path: event:/Basic SFX/Vechicle/StationItem_retrieve
 --- !u!114 &8095772719313856644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -890,6 +890,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 7023176493674794937}
   _interactable: {fileID: 4401101128229260073}
+  _wheelsSprite: {fileID: -1198686160, guid: 58fdbbbcace114789bf1c99178141f91, type: 3}
+  _wheelsAnim: {fileID: 4583853956592263026}
   _defaultMoveSpeed: 1.5
   _maxMoveSpeed: 3.5
 --- !u!1 &900042385387526337
@@ -3863,6 +3865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8875636739911798517}
   - component: {fileID: 849942250446988615}
+  - component: {fileID: 4583853956592263026}
   m_Layer: 0
   m_Name: Wheels
   m_TagString: Untagged
@@ -3937,6 +3940,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4583853956592263026
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8160791472592907770}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2ab4e4f353595450eb4070cb9e844c4b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8477275718635783491
 GameObject:
   m_ObjectHideFlags: 0
