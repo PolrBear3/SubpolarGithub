@@ -147,7 +147,8 @@ Transform:
   - {fileID: 8221914883767629033}
   - {fileID: 2385123215373655531}
   - {fileID: 3286016751768556617}
-  - {fileID: 5747260966458961036}
+  - {fileID: 7102414880081578070}
+  - {fileID: 5566266311988361965}
   m_Father: {fileID: 2074082356524549681}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3682427322221016570
@@ -684,7 +685,69 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &2451892134499522539
+--- !u!1001 &1104605896263873329
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3633663164192583111}
+    m_Modifications:
+    - target: {fileID: 3118358391304406027, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_Name
+      value: Gas Pump
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+--- !u!4 &7102414880081578070 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7909589239995186023, guid: a912960894b1f478d8ca6c235c39fe3f, type: 3}
+  m_PrefabInstance: {fileID: 1104605896263873329}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2376730971490746762
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -694,11 +757,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3118358391304406027, guid: 0b2ed6eda6a20411b93186cea871311e, type: 3}
       propertyPath: m_Name
-      value: Gas Pump
+      value: Loot Box
       objectReference: {fileID: 0}
     - target: {fileID: 7909589239995186023, guid: 0b2ed6eda6a20411b93186cea871311e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 7909589239995186023, guid: 0b2ed6eda6a20411b93186cea871311e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -741,10 +804,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b2ed6eda6a20411b93186cea871311e, type: 3}
---- !u!4 &5747260966458961036 stripped
+--- !u!4 &5566266311988361965 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7909589239995186023, guid: 0b2ed6eda6a20411b93186cea871311e, type: 3}
-  m_PrefabInstance: {fileID: 2451892134499522539}
+  m_PrefabInstance: {fileID: 2376730971490746762}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3471565662315655162
 PrefabInstance:
