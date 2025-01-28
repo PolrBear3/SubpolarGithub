@@ -11,6 +11,9 @@ public class GridCell_Controller : MonoBehaviour
     public GridCell data => _data;
 
 
+    [Header("")]
+    [SerializeField] private Sprite _defaultSprite;
+
 
     // MonoBehaviour
     private void Awake()
@@ -37,5 +40,16 @@ public class GridCell_Controller : MonoBehaviour
         }
 
         _sr.color = Color.white;
+    }
+
+    public void Update_CurrentSprite()
+    {
+        if (_data.occupied == false)
+        {
+            _sr.sprite = _defaultSprite;
+            return;
+        }
+
+        _sr.sprite = _data.occupiedBlock.data.blockType.cellSprite;
     }
 }

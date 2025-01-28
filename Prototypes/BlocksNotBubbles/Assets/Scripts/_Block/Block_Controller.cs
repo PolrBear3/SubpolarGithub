@@ -28,10 +28,17 @@ public class Block_Controller : MonoBehaviour
 
 
     // Visual
-    public void Update_CurrentSprite()
+    public void Update_CurrentSprite(bool occupiedBlock)
     {
         if (_data == null) return;
 
-        _sr.sprite = _data.blockType.blockSprite;
+        Block_ScrObj blockType = _data.blockType;
+
+        if (occupiedBlock)
+        {
+            _sr.sprite = blockType.setSprite;
+            return;
+        }
+        _sr.sprite = blockType.blockSprite;
     }
 }

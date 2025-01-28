@@ -42,7 +42,7 @@ public class Launcher : MonoBehaviour
         // load block test
         Block_ScrObj[] allBlockTypes = Main_Controller.instance.blockTypes;
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < _maxLoadAmount; i++)
         {
             int randIndex = UnityEngine.Random.Range(0, allBlockTypes.Length);
             Load_Block(allBlockTypes[randIndex]);
@@ -94,7 +94,7 @@ public class Launcher : MonoBehaviour
         Block_Controller blockController = placeObject.GetComponent<Block_Controller>();
 
         blockController.Set_Data(placeBlockData);
-        blockController.Update_CurrentSprite();
+        blockController.Update_CurrentSprite(false);
 
         _currentBlock = placeObject;
     }
@@ -124,13 +124,15 @@ public class Launcher : MonoBehaviour
     {
         if (_loadedBlocks.Count <= 0) return;
 
-        Destroy(_currentBlock);
-
         GridManager manager = Main_Controller.instance.gridManager;
+
+        Destroy(_currentBlock);
         manager.Set_Block(_loadedBlocks[0], _currentXPos);
 
         _loadedBlocks.RemoveAt(0);
         Place_NextBlock();
+
+        manager.Process_MatchingAndGaps();
     }
     private IEnumerator Launch_Block_Coroutine()
     {

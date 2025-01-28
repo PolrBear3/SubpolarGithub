@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,9 @@ public class GridManager : MonoBehaviour
 
     private List<GridCell_Controller> _launchCells = new();
     public List<GridCell_Controller> launchCells => _launchCells;
+
+
+    public Action OnBlockDestroy;
 
 
     // MonoBehaviour
@@ -105,7 +109,7 @@ public class GridManager : MonoBehaviour
 
 
     // Blocks
-    public Block_Controller Set_Block(Block blockData, int xPos)
+    public GridCell_Controller Set_Block(Block blockData, int xPos)
     {
         if (xPos < -1 || xPos > _gridSize.x - 1) return null;
 
@@ -130,35 +134,109 @@ public class GridManager : MonoBehaviour
 
             // block update
             blockController.Set_Data(blockData);
-            blockController.sr.sprite = blockData.blockType.setSprite;
+            blockController.Update_CurrentSprite(true);
 
             // cell update
             cell.Update_Block(blockController);
-            cellController.sr.sprite = blockData.blockType.cellSprite;
+            cellController.Update_CurrentSprite();
 
-            return blockController;
+            return cellController;
         }
 
         return null;
     }
 
-    public void Destroy_BlockMatch(Vector2 startingPos)
+
+    private bool Destroy_MatchingBlocks()
     {
-        GridCell_Controller startingCell = GridCell_Controller(startingPos);
+        HashSet<GridCell_Controller> destroyBlockCells = new();
 
-        // check if starting position cell has block
-        if (startingCell == null || startingCell.data.occupied == false) return;
-
-        Block_Controller startingBlock = startingCell.data.occupiedBlock;
-
-        List<GridCell_Controller> cellsToCheck = new();
-        List<Block_Controller> blocksToDestroy = new();
-
-        /*
-        while (cellsToCheck.Count > 0)
+        for (int i = 0; i < _cellControllers.Count; i++)
         {
+            GridCell targetCell = _cellControllers[i].data;
 
+            if (targetCell.occupied == false) continue;
+
+            Block targetBlock = targetCell.occupiedBlock.data;
+
+            for (int j = 0; j < targetCell.surroundingPos.Count; j++)
+            {
+                GridCell_Controller surroundingCell = GridCell_Controller(targetCell.surroundingPos[j]);
+                GridCell surroundingData = surroundingCell.data;
+
+                if (surroundingData.occupied == false) continue;
+                if (surroundingData.occupiedBlock.data.blockType != targetBlock.blockType) continue;
+
+                destroyBlockCells.Add(surroundingCell);
+            }
         }
-        */
+
+        if (destroyBlockCells.Count <= 0) return false;
+
+        // destroy
+        foreach (GridCell_Controller cell in destroyBlockCells)
+        {
+            GridCell cellData = cell.data;
+
+            Destroy(cellData.occupiedBlock.gameObject);
+
+            cellData.Update_Block(null);
+            cell.Update_CurrentSprite();
+
+            OnBlockDestroy?.Invoke();
+        }
+
+        return true;
+    }
+
+    private void Update_EmptyGaps()
+    {
+        for (int x = 0; x < (int)_gridSize.x; x++)
+        {
+            for (int y = 0; y < (int)_gridSize.y; y++)
+            {
+                Vector2 targetPos = new(x, y);
+                GridCell_Controller targetCell = GridCell_Controller(targetPos);
+
+                if (targetCell == null || targetCell.data.occupied) continue;
+
+                for (int belowY = y + 1; belowY < (int)_gridSize.y; belowY++)
+                {
+                    Vector2 abovePos = new(x, belowY);
+                    GridCell_Controller aboveCell = GridCell_Controller(abovePos);
+
+                    if (aboveCell == null || !aboveCell.data.occupied) continue;
+
+                    Block_Controller block = aboveCell.data.occupiedBlock;
+
+                    aboveCell.data.Update_Block(null);
+                    aboveCell.Update_CurrentSprite();
+
+                    block.transform.position = targetCell.transform.position;
+
+                    targetCell.data.Update_Block(block);
+                    targetCell.Update_CurrentSprite();
+
+                    break;
+                }
+            }
+        }
+    }
+
+
+    public void Process_MatchingAndGaps()
+    {
+        int maxLoopCount = _cellControllers.Count;
+        bool matchBlocksFound;
+
+        do
+        {
+            maxLoopCount--;
+            matchBlocksFound = Destroy_MatchingBlocks();
+
+            if (matchBlocksFound == false) break;
+            Update_EmptyGaps();
+        }
+        while (matchBlocksFound && maxLoopCount > 0);
     }
 }
