@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,6 +66,12 @@ public class FoodDrop : MonoBehaviour, IInteractable
     // Food Pickup
     private void Pickup()
     {
+        if (_foodIcon.hasFood == false)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         FoodData_Controller playerIcon = _detection.player.foodIcon;
 
         if (playerIcon.DataCount_Maxed()) return;
@@ -87,6 +94,12 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
     private void Pickup_All()
     {
+        if (_foodIcon.hasFood == false)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         FoodData_Controller playerIcon = _detection.player.foodIcon;
         int pickupAmount = _foodIcon.AllDatas().Count;
 

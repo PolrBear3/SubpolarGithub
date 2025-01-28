@@ -210,7 +210,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _surroundPositions: []
-  _interactPositions: []
+  _interactPositions:
+  - {x: 1, y: 0}
+  - {x: 1, y: -1}
+  - {x: 0, y: -1}
+  - {x: -1, y: -1}
+  - {x: -1, y: 0}
+  - {x: -1, y: 1}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
   _claimPositions:
   - {x: 0, y: 0}
   _unClaimOnStart: 0
@@ -251,6 +259,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8cf87929e3004d38b227ea9aa9a618e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _iInteractable: {fileID: 7238873677323794373}
+  _itemDropper: {fileID: 6053733618592686646}
+  _positionClaimer: {fileID: 5647837897336662785}
+  _toggleSprites:
+  - {fileID: 969461119, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  - {fileID: -1247966275, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
+  _lootDatas:
+  - _foodScrObj: {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
+    _currentAmount: 3
+    _tikCount: 0
+    _conditionDatas: []
+  - _foodScrObj: {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
+    _currentAmount: 3
+    _tikCount: 0
+    _conditionDatas: []
 --- !u!1001 &9146671217573443003
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -313,3 +336,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
   m_PrefabInstance: {fileID: 9146671217573443003}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6053733618592686646 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+  m_PrefabInstance: {fileID: 9146671217573443003}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2379166bc1046648d1fa9d02a32776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

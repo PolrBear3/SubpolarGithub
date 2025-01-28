@@ -40,6 +40,15 @@ public class ItemDropper : MonoBehaviour
 
 
     // Food Drop Control
+    public FoodDrop Drop_Food(Vector2 spawnPosition)
+    {
+        GameObject dropObject = SnapPosition_Spawn(_foodDrop, spawnPosition);
+
+        if (dropObject == null) return null;
+
+        return dropObject.GetComponent<FoodDrop>();
+    }
+
     public FoodDrop Drop_Food(FoodData dropData)
     {
         if (dropData == null) return null;
@@ -55,7 +64,7 @@ public class ItemDropper : MonoBehaviour
         return foodDrop;
     }
 
-    public void Drop_Food(FoodData dropData, int additionalAmount)
+    public FoodDrop Drop_Food(FoodData dropData, int additionalAmount)
     {
         FoodDrop foodDrop = Drop_Food(dropData);
 
@@ -63,22 +72,26 @@ public class ItemDropper : MonoBehaviour
         {
             foodDrop.foodIcon.Set_CurrentData(dropData);
         }
+
+        return foodDrop;
     }
 
-    public void Drop_Food(List<FoodData> dropDatas)
+    public FoodDrop Drop_Food(List<FoodData> dropDatas)
     {
-        if (dropDatas == null) return;
-        if (dropDatas.Count <= 0) return;
+        if (dropDatas == null) return null;
+        if (dropDatas.Count <= 0) return null;
 
-        if (_coroutine != null) return;
+        if (_coroutine != null) return null;
 
         GameObject spawnItem = SnapPosition_Spawn(_foodDrop, transform.position);
 
-        if (spawnItem == null) return;
+        if (spawnItem == null) return null;
 
         // set drop data
         FoodDrop dropItem = spawnItem.GetComponent<FoodDrop>();
         dropItem.foodIcon.Update_AllDatas(dropDatas);
+
+        return dropItem;
     }
 
 

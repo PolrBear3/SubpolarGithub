@@ -46,7 +46,7 @@ public class FoodData
     [SerializeField][ES3Serializable] private Food_ScrObj _foodScrObj;
     public Food_ScrObj foodScrObj => _foodScrObj;
 
-    [ES3Serializable] private int _currentAmount;
+    [SerializeField][ES3Serializable] private int _currentAmount;
     public int currentAmount => _currentAmount;
 
     [SerializeField][ES3Serializable] private int _tikCount;
