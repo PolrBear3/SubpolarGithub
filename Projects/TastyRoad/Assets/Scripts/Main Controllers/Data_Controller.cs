@@ -22,16 +22,15 @@ public class Data_Controller : MonoBehaviour
     public WorldData[] worldData => _worldData;
 
     [Header("")]
-    public List<Location_ScrObj> locations = new();
     public List<Station_ScrObj> stations = new();
     public List<GameObject> characters = new();
 
     [Header("")]
-    public List<Food_ScrObj> rawFoods = new();
-    public List<Food_ScrObj> cookedFoods = new();
-
     [SerializeField] private Food_ScrObj _goldenNugget;
     public Food_ScrObj goldenNugget => _goldenNugget;
+
+    public List<Food_ScrObj> rawFoods = new();
+    public List<Food_ScrObj> cookedFoods = new();
 
 
     // Check if State Data Matches (checks if visitor data matches home data)

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -43,9 +45,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public Transform otherFile => _otherFile;
 
 
-    public static bool gamePaused;
-
-
     public delegate void Event();
 
     public static event Event TestButton1Event;
@@ -66,8 +65,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        gamePaused = false;
-
         UnClaim_CustomPositions();
         ES3.Save("_claimedPositions", _claimedPositions);
 
@@ -601,3 +598,26 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return false;
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Main_Controller))]
+public class Main_Controller_Inspector : Editor
+{
+    //
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        serializedObject.Update();
+
+        GUILayout.Space(60);
+
+        if (GUILayout.Button("Reload Game"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+#endif

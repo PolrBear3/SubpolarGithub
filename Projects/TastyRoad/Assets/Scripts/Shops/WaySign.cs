@@ -10,7 +10,6 @@ public class WaySign : ActionBubble_Interactable
     [Header("")]
     [SerializeField] private GameObject _subLocationPrefab;
 
-    [Header("Exit Settings")]
     [SerializeField] private bool _isExit;
     [SerializeField] private SubLocation _subLocation;
 
@@ -66,6 +65,9 @@ public class WaySign : ActionBubble_Interactable
     }
     private IEnumerator Moveto_SubLocation_Coroutine()
     {
+        Player_Controller player = mainController.Player();
+        player.Toggle_Controllers(false);
+
         // curtain scene transition
         mainController.transitionCanvas.Set_LoadIcon(_signIcon.sprite);
         mainController.transitionCanvas.CurrentScene_Transition();
@@ -81,5 +83,7 @@ public class WaySign : ActionBubble_Interactable
 
         // move camera to sub location
         mainController.cameraController.UpdatePosition(_subLocation.transform.position);
+
+        player.Toggle_Controllers(true);
     }
 }

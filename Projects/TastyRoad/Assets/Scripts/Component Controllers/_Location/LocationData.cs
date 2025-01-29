@@ -35,7 +35,11 @@ public class LocationData
     [SerializeField][ES3NonSerializable] private AnimatorOverrideController[] _npcSkinOverrides;
     public AnimatorOverrideController[] npcSkinOverrides => _npcSkinOverrides;
 
+
     [Header("")]
+    [SerializeField][ES3NonSerializable] private FoodWeight_Data[] _ingredientUnlocks;
+    public FoodWeight_Data[] ingredientUnlocks => _ingredientUnlocks;
+
     [SerializeField][ES3NonSerializable] private StationWeight_Data[] _stationDrops;
     public StationWeight_Data[] stationDrops => _stationDrops;
 
@@ -55,6 +59,32 @@ public class LocationData
 
 
     // Data
+    public Food_ScrObj WeightRandom_Food()
+    {
+        // get total wieght
+        float totalWeight = 0;
+
+        foreach (FoodWeight_Data data in _ingredientUnlocks)
+        {
+            totalWeight += data.weight;
+        }
+
+        // track values
+        float randValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0;
+
+        // get random according to weight
+        for (int i = 0; i < ingredientUnlocks.Length; i++)
+        {
+            cumulativeWeight += ingredientUnlocks[i].weight;
+
+            if (randValue >= cumulativeWeight) continue;
+            return ingredientUnlocks[i].foodScrObj;
+        }
+
+        return null;
+    }
+
     public Station_ScrObj WeightRandom_Station()
     {
         // get total wieght

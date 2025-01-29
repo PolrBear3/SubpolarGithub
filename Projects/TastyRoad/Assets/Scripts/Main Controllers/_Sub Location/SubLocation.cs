@@ -37,6 +37,9 @@ public class SubLocation : MonoBehaviour
     }
     private IEnumerator Exit_Coroutine()
     {
+        Player_Controller player = _mainController.Player();
+        player.Toggle_Controllers(false);
+
         // set load icon
         _mainController.transitionCanvas.Set_LoadIcon(_mainController.currentLocation.data.locationScrObj.locationIcon);
 
@@ -51,5 +54,7 @@ public class SubLocation : MonoBehaviour
 
         // move camera to current location
         _mainController.cameraController.UpdatePosition(_mainController.currentLocation.transform.position);
+
+        player.Toggle_Controllers(true);
     }
 }

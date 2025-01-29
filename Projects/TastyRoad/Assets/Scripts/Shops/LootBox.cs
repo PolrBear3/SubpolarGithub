@@ -34,12 +34,16 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         Update_CurrentSprite();
 
         // subscriptions
+        WorldMap_Controller.OnNewLocation += Reset_Data;
+
         _iInteractable.OnInteract += Drop_LootBoxItem;
     }
 
     private void OnDestroy()
     {
         // subscriptions
+        WorldMap_Controller.OnNewLocation -= Reset_Data;
+
         _iInteractable.OnInteract -= Drop_LootBoxItem;
     }
 
@@ -63,6 +67,19 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         droppedData = ES3.Load("LootBox/_droppedData", droppedData);
 
         Drop_LootBoxItem(droppedData);
+    }
+
+
+    private void Reset_Data()
+    {
+        _itemDropped = false;
+
+        if (_droppedItem == null) return;
+
+        GameObject droppedItem = _droppedItem.gameObject;
+        _droppedItem = null;
+
+        Destroy(droppedItem);
     }
 
 

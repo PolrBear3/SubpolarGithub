@@ -14,9 +14,11 @@ public class TransitionCanvas_Controller : MonoBehaviour
     [SerializeField] private LeanTweenType _leanTweenType;
 
     [Header("")]
-    [SerializeField] [Range(0F, 10F)] private float _loadTime;
-    [SerializeField] [Range(0F, 10F)] private float _transitionTime;
+    [SerializeField][Range(0F, 10F)] private float _loadTime;
+    [SerializeField][Range(0F, 10F)] private float _transitionTime;
 
+
+    public static TransitionCanvas_Controller instance;
     public static bool transitionPlaying;
 
 
@@ -41,7 +43,6 @@ public class TransitionCanvas_Controller : MonoBehaviour
     private IEnumerator CurrentScene_Transition_Coroutine()
     {
         transitionPlaying = true;
-        Main_Controller.gamePaused = true;
 
         LeanTween.alpha(_curtain, 1f, 0f);
 
@@ -60,7 +61,6 @@ public class TransitionCanvas_Controller : MonoBehaviour
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0.1f);
 
         transitionPlaying = false;
-        Main_Controller.gamePaused = false;
     }
 
 

@@ -500,11 +500,13 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // get all locked bookmark stations
-        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
-        ItemSlots_Controller slots = menu.controller.slotsController;
+        VehicleMenu_Controller menu = _npcController.mainController.currentVehicle.menu;
+        StationMenu_Controller stationMenu = menu.stationMenu;
+
+        ItemSlots_Controller slots = stationMenu.controller.slotsController;
 
         // get recent bookmarked station
-        List<ItemSlot_Data> bookmarkedDatas = slots.BookMarked_Datas(menu.currentDatas, true);
+        List<ItemSlot_Data> bookmarkedDatas = slots.BookMarked_Datas(stationMenu.currentDatas, true);
 
         ItemSlot_Data bookmarkedData = bookmarkedDatas[bookmarkedDatas.Count - 1];
         Station_ScrObj recentStation = bookmarkedData.currentStation;
@@ -553,6 +555,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             // remove bookmarked station
             bookmarkedDatas[bookmarkedDatas.Count - 1].Empty_Item();
             bookmarkedDatas.RemoveAt(bookmarkedDatas.Count - 1);
+
+            menu.Update_ItemSlots(stationMenu.gameObject, stationMenu.currentDatas[stationMenu.currentPageNum]);
 
             // move to random box stack
             movement.Assign_TargetPosition(_boxStackPoints[Random.Range(0, _boxStackPoints.Length)].position);

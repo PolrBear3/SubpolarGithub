@@ -47,8 +47,6 @@ public class Player_Interaction : MonoBehaviour
 
     private void OnPressStart()
     {
-        if (Main_Controller.gamePaused) return;
-
         _pressDelayCoroutine = StartCoroutine(OnPressStart_Coroutine());
     }
     private IEnumerator OnPressStart_Coroutine()
@@ -66,8 +64,6 @@ public class Player_Interaction : MonoBehaviour
 
     private void OnPressEnd()
     {
-        if (Main_Controller.gamePaused) return;
-
         StopCoroutine(_pressDelayCoroutine);
         _pressDelayCoroutine = null;
 
@@ -112,8 +108,6 @@ public class Player_Interaction : MonoBehaviour
 
     private void Interact()
     {
-        if (Main_Controller.gamePaused) return;
-
         IInteractable interactable = Closest_Interactable();
         if (interactable == null) return;
 
@@ -122,8 +116,6 @@ public class Player_Interaction : MonoBehaviour
 
     private void Hold_Interact()
     {
-        if (Main_Controller.gamePaused) return;
-
         IInteractable interactable = Closest_Interactable();
 
         if (interactable == null)

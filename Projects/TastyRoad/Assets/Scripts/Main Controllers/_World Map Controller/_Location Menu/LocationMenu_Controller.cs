@@ -201,6 +201,8 @@ public class LocationMenu_Controller : MonoBehaviour
 
         _input.enabled = false;
         worldMap.Update_Location(_tiles[_hoverTileNum].data);
+
+        main.Player().Toggle_Controllers(false);
     }
 
 

@@ -23,8 +23,7 @@ public class CollectCard : MonoBehaviour, IInteractable
     private int _currentTikCount;
 
 
-    private Station_ScrObj _blueprintPickup;
-    // private Food_ScrObj _ingredientPickup;
+    private ItemSlot_Data _collectData;
 
     private List<Action> Pickup_Actions = new();
     private Action OnPickup;
@@ -80,36 +79,41 @@ public class CollectCard : MonoBehaviour, IInteractable
     }
 
 
-
-
     // Food Ingredient
+    public void Set_FoodIngredient(Food_ScrObj food)
+    {
+        _collectData = new(new FoodData(food));
+    }
+
+    public void SetLocation_FoodIngredient(bool set)
+    {
+        if (set == false) return;
+
+        Location_Controller currentLocation = _mainController.currentLocation;
+
+        Set_FoodIngredient(currentLocation.data.WeightRandom_Food());
+    }
+
+
     private void FoodIngredient_toArchive()
     {
         ArchiveMenu_Controller menu = _mainController.currentVehicle.menu.archiveMenu;
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        Food_ScrObj randFood = _mainController.dataController.CookedFood();
+        SetLocation_FoodIngredient(_collectData == null);
 
-        // available slots check
-        if (menu.controller.slotsController.Empty_SlotData(menu.currentDatas) == null)
-        {
-            dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[2].info));
-            return;
-        }
+        Food_ScrObj archiveFood = _collectData.currentFood;
+        ItemSlot_Data foodData = menu.Archived_FoodData(archiveFood);
 
-        if (menu.Food_Archived(randFood) == false)
-        {
-            // add food and lock bookmarking
-            menu.Toggle_DataLock(menu.Archive_Food(randFood), true);
+        bool foodUnlocked = foodData != null && foodData.isLocked == false;
 
-            // unlock food ingredient
-            menu.Unlock_FoodIngredient(randFood);
-        }
+        menu.Toggle_DataLock(menu.Archive_Food(archiveFood), foodUnlocked == false);
+        menu.Unlock_FoodIngredient(archiveFood);
 
         // dialog
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[0].info));
 
-        // pickup
+        // pickup animation
         _launcher.Parabola_CoinLaunch(_launchSprite, _detection.player.transform.position);
         Destroy(gameObject, 0.1f);
     }
@@ -118,14 +122,13 @@ public class CollectCard : MonoBehaviour, IInteractable
     // Station Bluepirnt
     public void Set_Blueprint(Station_ScrObj station)
     {
-        _blueprintPickup = station;
+        _collectData = new(new StationData(station));
     }
 
-    /// <summary>
-    /// Set station to current location weight random data
-    /// </summary>
-    public void Set_Blueprint()
+    public void SetLocation_Blueprint(bool set)
     {
+        if (set == false) return;
+
         Location_Controller currentLocation = _mainController.currentLocation;
 
         Set_Blueprint(currentLocation.data.WeightRandom_Station());
@@ -144,13 +147,11 @@ public class CollectCard : MonoBehaviour, IInteractable
             return;
         }
 
-        if (_blueprintPickup == null)
-        {
-            Set_Blueprint();
-        }
+        SetLocation_Blueprint(_collectData == null);
 
         // add station blueprint
-        menu.Toggle_DataLock(menu.Add_StationItem(_blueprintPickup, 1), true);
+        Station_ScrObj addStation = _collectData.currentStation;
+        menu.Toggle_DataLock(menu.Add_StationItem(addStation, 1), true);
 
         // dialog
         dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[1].info));

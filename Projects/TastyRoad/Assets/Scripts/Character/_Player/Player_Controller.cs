@@ -44,6 +44,10 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public Clock_Timer timer => _timer;
 
 
+    private bool _hidden;
+    public bool hidden => _hidden;
+
+
     // UnityEngine
     private void Awake()
     {
@@ -84,6 +88,8 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     // Functions
     public void Toggle_Hide(bool toggleOn)
     {
+        _hidden = toggleOn;
+
         if (toggleOn)
         {
             _sr.color = Color.clear;

@@ -93,22 +93,6 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
     public void Update_Location(WorldMap_Data updateData)
     {
-        // oil drum amount = _hoverTileNum
-
-        /*
-        ItemSlots_Controller slotsController = _mainController.currentVehicle.menu.slotsController;
-        StationMenu_Controller menu = _mainController.currentVehicle.menu.stationMenu;
-
-        Station_ScrObj oilDrum = _mainController.dataController.Station_ScrObj(79025);
-        int oilAmount = Mathf.Abs(_cursorTileNum - _currentTileNum);
-
-        // check if has enough oil drum in station menu
-        if (slotsController.Station_SlotDatas(menu.currentDatas, oilDrum).Count < oilAmount) return;
-
-        // use oil drum
-        menu.Remove_StationItem(oilDrum, oilAmount);
-        */
-
         StartCoroutine(Update_Location_Coroutine(updateData));
     }
     private IEnumerator Update_Location_Coroutine(WorldMap_Data updateData)
@@ -132,10 +116,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         _newLocation = true;
         OnNewLocation?.Invoke();
 
-        // reload game scene
-        Main_Controller.gamePaused = false;
         SaveLoad_Controller.SaveAll_ISaveLoadable();
 
+        // reload game scene
         SceneManager.LoadScene(0);
     }
 }

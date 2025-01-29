@@ -106,7 +106,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     // Indications
     private void Toggle_AbilityBar()
     {
-        if (_currentAbilityPoint <= _maxAbilityPoint / 2 || _player.foodIcon.hasFood)
+        if (_player.hidden || _currentAbilityPoint <= _maxAbilityPoint / 2 || _player.foodIcon.hasFood)
         {
             _abilityBar.Toggle(false);
             return;

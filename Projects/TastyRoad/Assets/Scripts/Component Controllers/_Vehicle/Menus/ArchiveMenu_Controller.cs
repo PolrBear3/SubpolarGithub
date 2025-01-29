@@ -378,6 +378,22 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return archivedFoods;
     }
 
+    public ItemSlot_Data Archived_FoodData(Food_ScrObj targetFood)
+    {
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (_currentDatas[i][j].hasItem == false) continue;
+                if (targetFood != _currentDatas[i][j].currentFood) continue;
+
+                return _currentDatas[i][j];
+            }
+        }
+        return null;
+    }
+
+
     public bool Food_Archived(Food_ScrObj food)
     {
         return _controller.slotsController.FoodAmount(_currentDatas, food) > 0;
@@ -429,11 +445,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public ItemSlot_Data Archive_Food(Food_ScrObj food)
     {
-        // check if non duplicate food
-        if (Food_Archived(food)) return null;
-
         // check if food has ingredients
         if (food.ingredients.Count <= 0) return null;
+
+        // check if non duplicate food
+        if (Food_Archived(food)) return Archived_FoodData(food);
 
         AddNewPage_onFull();
 
@@ -459,6 +475,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
+
     public ItemSlot_Data Toggle_DataLock(ItemSlot_Data lockData, bool toggle)
     {
         if (lockData == null) return null;
@@ -467,6 +484,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
 
         return lockData;
+    }
+
+    public ItemSlot_Data Toggle_DataLock(ItemSlot_Data lockData)
+    {
+        if (lockData == null) return lockData;
+        if (lockData.isLocked) return lockData;
+
+        return Toggle_DataLock(lockData, true);
     }
 
 
