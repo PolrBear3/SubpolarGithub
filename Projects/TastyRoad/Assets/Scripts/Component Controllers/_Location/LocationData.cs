@@ -85,6 +85,16 @@ public class LocationData
         return null;
     }
 
+    public Food_ScrObj WeightRandom_FoodIngredient()
+    {
+        Food_ScrObj ingredientFood = WeightRandom_Food();
+        List<Food_ScrObj> ingredients = ingredientFood.Ingredients();
+
+        if (ingredients.Count <= 0) return ingredientFood;
+        return ingredients[Random.Range(0, ingredients.Count)];
+    }
+
+
     public Station_ScrObj WeightRandom_Station()
     {
         // get total wieght

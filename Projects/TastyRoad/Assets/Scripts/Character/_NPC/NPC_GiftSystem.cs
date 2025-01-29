@@ -139,7 +139,11 @@ public class NPC_GiftSystem : MonoBehaviour
         }
 
         // food drop
+        LocationData currentLocation = _controller.mainController.currentLocation.data;
+
+        Food_ScrObj dropFood = currentLocation.WeightRandom_FoodIngredient();
         int dropAmount = UnityEngine.Random.Range(1, _dropAmountRange + 1);
-        dropper.Drop_Food(new FoodData(dropper.Weighted_RandomFood(playerFood)), dropAmount);
+
+        dropper.Drop_Food(new(dropFood), dropAmount);
     }
 }

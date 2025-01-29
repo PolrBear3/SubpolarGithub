@@ -185,15 +185,19 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             }
         }
 
+        Food_ScrObj dragFood = cursorData.currentFood;
+
         // ingredient available status
         string ingredientStatus = "Toggle ingredients";
-        if (FoodIngredient_Unlocked(cursorData.currentFood) == false)
+        if (FoodIngredient_Unlocked(dragFood) == false)
         {
             ingredientStatus = "Return";
         }
 
+        string unlockCount = FoodIngredient_UnlockCount(dragFood) + "/" + _maxIngredientUnlocks + "\n";
         string controlInfo = info.UIControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
-        info.Update_InfoText(lockStatus + controlInfo);
+
+        info.Update_InfoText(unlockCount + lockStatus + controlInfo);
     }
 
     private void CurrentSlots_PageUpdate()

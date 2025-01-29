@@ -117,6 +117,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         OnNewLocation?.Invoke();
 
         SaveLoad_Controller.SaveAll_ISaveLoadable();
+        Save_Data();
 
         // reload game scene
         SceneManager.LoadScene(0);

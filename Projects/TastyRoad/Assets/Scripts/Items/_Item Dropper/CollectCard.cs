@@ -103,11 +103,13 @@ public class CollectCard : MonoBehaviour, IInteractable
         SetLocation_FoodIngredient(_collectData == null);
 
         Food_ScrObj archiveFood = _collectData.currentFood;
-        ItemSlot_Data foodData = menu.Archived_FoodData(archiveFood);
 
-        bool foodUnlocked = foodData != null && foodData.isLocked == false;
+        ItemSlot_Data existingData = menu.Archived_FoodData(archiveFood);
+        ItemSlot_Data newData = menu.Archive_Food(archiveFood);
 
-        menu.Toggle_DataLock(menu.Archive_Food(archiveFood), foodUnlocked == false);
+        bool foodUnlocked = existingData != null && existingData.isLocked == false;
+
+        menu.Toggle_DataLock(newData, foodUnlocked == false);
         menu.Unlock_FoodIngredient(archiveFood);
 
         // dialog

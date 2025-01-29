@@ -13,6 +13,7 @@ public class ItemDropper : MonoBehaviour
 
     [Header("")]
     [SerializeField] private FoodWeight_Data[] _foodWeights;
+    public FoodWeight_Data[] foodWeights => _foodWeights;
 
 
     private Coroutine _coroutine;
