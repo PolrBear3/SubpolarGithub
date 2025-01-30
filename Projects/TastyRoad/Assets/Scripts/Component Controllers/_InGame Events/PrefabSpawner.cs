@@ -10,6 +10,9 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 
     [Header("")]
     [SerializeField] private GameObject _spawnPrefab;
+
+    [Header("")]
+    [SerializeField] private bool _randomAmountSpawn;
     [Range(0, 10)][SerializeField] private int _spawnAmount;
 
     [Header("")]
@@ -72,11 +75,23 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
     }
 
 
+    private int Spawn_Amount()
+    {
+        if (_randomAmountSpawn)
+        {
+            int randAmount = Random.Range(1, _spawnAmount);
+            return randAmount;
+        }
+
+        return _spawnAmount;
+    }
+
+
     private void Random_Spawn()
     {
         Location_Controller location = _mainController.currentLocation;
 
-        for (int i = 0; i < _spawnAmount; i++)
+        for (int i = 0; i < Spawn_Amount(); i++)
         {
             // find available position
             Vector2 setPosition = location.Random_SnapPosition();
@@ -94,7 +109,7 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
     {
         Location_Controller location = _mainController.currentLocation;
 
-        int spawnCount = _spawnAmount;
+        int spawnCount = Spawn_Amount();
 
         for (int i = 0; i < _spawnPositions.Length; i++)
         {

@@ -42,6 +42,10 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     public WorldMap_Data data => _data;
 
 
+    [Header("")]
+    [SerializeField] private Location_ScrObj _startingLocation;
+
+
     // UnityEngine
     private void Start()
     {
@@ -59,8 +63,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         }
 
         // new game location
-        int randLocationNum = UnityEngine.Random.Range(0, _mainController.dataController.LocationCount_inWorld(0));
-        Set_Location(new WorldMap_Data(0, randLocationNum));
+        WorldMap_Data newLocation = new(_startingLocation.worldNum, _startingLocation.locationNum);
+        Set_Location(newLocation);
 
         _newLocation = false;
         _mainController.currentLocation.Activate_NewSetEvents();
