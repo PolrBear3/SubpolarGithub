@@ -13,6 +13,10 @@ public class NPC_GiftSystem : MonoBehaviour
     [SerializeField] private AmountBar _coolTimeBar;
 
     [Header("")]
+    [SerializeField]
+    [Range(0, 100)] private float _generosityImpact;
+
+    [Header("")]
     [SerializeField][Range(0, 100)] private float _itemDropRate;
     [SerializeField][Range(0, 100)] private float _collectCardDropRate;
 
@@ -98,13 +102,21 @@ public class NPC_GiftSystem : MonoBehaviour
         // check if food serve waiting
         if (_controller.foodIcon.hasFood) return false;
 
+        Main_Controller main = _controller.mainController;
+
         // check if current position is claimed
-        if (_controller.mainController.Position_Claimed(Main_Controller.SnapPosition(transform.position))) return false;
+        if (main.Position_Claimed(Main_Controller.SnapPosition(transform.position))) return false;
 
         FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
 
         // check if player has gift food
         if (playerFoodIcon.hasFood == false) return false;
+
+        Data_Controller data = main.dataController;
+        Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
+
+        // check if player food is cooked food
+        if (data.Is_RawFood(playerFood)) return false;
 
         return true;
     }
@@ -126,13 +138,16 @@ public class NPC_GiftSystem : MonoBehaviour
         _coolTimeBar.Set_Amount(0);
         Update_CoolTimBar();
 
+        float generosity = _controller.characterData.generosityLevel;
+
         // check drop rate
-        if (_controller.characterData.generosityLevel >= _itemDropRate) return;
+        if (Main_Controller.Percentage_Activated(200f, _itemDropRate + generosity) == false) return;
 
         ItemDropper dropper = _controller.itemDropper;
+        float calculatedGenerosity = generosity / (_generosityImpact * 0.1f);
 
         // collect card drop
-        if (_controller.characterData.generosityLevel <= _collectCardDropRate)
+        if (Main_Controller.Percentage_Activated(200f, _collectCardDropRate + calculatedGenerosity))
         {
             dropper.Drop_CollectCard();
             return;
@@ -141,7 +156,10 @@ public class NPC_GiftSystem : MonoBehaviour
         // food drop
         LocationData currentLocation = _controller.mainController.currentLocation.data;
 
-        Food_ScrObj dropFood = currentLocation.WeightRandom_FoodIngredient();
+        Food_ScrObj randWeightedFood = currentLocation.WeightRandom_Food(playerFood);
+        List<Food_ScrObj> foodIngredients = randWeightedFood.Ingredients();
+
+        Food_ScrObj dropFood = foodIngredients[UnityEngine.Random.Range(0, foodIngredients.Count)];
         int dropAmount = UnityEngine.Random.Range(1, _dropAmountRange + 1);
 
         dropper.Drop_Food(new(dropFood), dropAmount);

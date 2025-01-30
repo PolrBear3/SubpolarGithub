@@ -59,14 +59,16 @@ public class LocationData
 
 
     // Data
-    public Food_ScrObj WeightRandom_Food()
+    public Food_ScrObj WeightRandom_Food(List<FoodWeight_Data> data)
     {
+        if (data.Count <= 0) return null;
+
         // get total wieght
         float totalWeight = 0;
 
-        foreach (FoodWeight_Data data in _ingredientUnlocks)
+        foreach (FoodWeight_Data foodData in data)
         {
-            totalWeight += data.weight;
+            totalWeight += foodData.weight;
         }
 
         // track values
@@ -74,24 +76,45 @@ public class LocationData
         float cumulativeWeight = 0;
 
         // get random according to weight
-        for (int i = 0; i < ingredientUnlocks.Length; i++)
+        for (int i = 0; i < data.Count; i++)
         {
-            cumulativeWeight += ingredientUnlocks[i].weight;
+            cumulativeWeight += data[i].weight;
 
             if (randValue >= cumulativeWeight) continue;
-            return ingredientUnlocks[i].foodScrObj;
+            return data[i].foodScrObj;
         }
 
         return null;
     }
-
-    public Food_ScrObj WeightRandom_FoodIngredient()
+    public Food_ScrObj WeightRandom_Food()
     {
-        Food_ScrObj ingredientFood = WeightRandom_Food();
-        List<Food_ScrObj> ingredients = ingredientFood.Ingredients();
+        List<FoodWeight_Data> ingredientUnlocks = new();
 
-        if (ingredients.Count <= 0) return ingredientFood;
-        return ingredients[Random.Range(0, ingredients.Count)];
+        foreach (FoodWeight_Data data in _ingredientUnlocks)
+        {
+            ingredientUnlocks.Add(data);
+        }
+
+        return WeightRandom_Food(ingredientUnlocks);
+    }
+
+    /// <returns>
+    /// higher cost data from _ingredientUnlocks Food_ScrObj compare to compareFood
+    /// </returns>
+    public Food_ScrObj WeightRandom_Food(Food_ScrObj compareFood)
+    {
+        List<FoodWeight_Data> data = new();
+
+        for (int i = 0; i < _ingredientUnlocks.Length; i++)
+        {
+            if (compareFood.price < _ingredientUnlocks[i].foodScrObj.price) continue;
+
+            data.Add(_ingredientUnlocks[i]);
+        }
+
+        if (data.Count <= 0) return compareFood;
+
+        return WeightRandom_Food(data);
     }
 
 

@@ -160,6 +160,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return percentage >= comparePercentage;
     }
 
+    public static bool Percentage_Activated(float rangeValue, float percentage)
+    {
+        float comparePercentage = Mathf.Round(UnityEngine.Random.Range(0f, rangeValue)) * 1f;
+        return percentage >= comparePercentage;
+    }
+
 
     /// <returns>
     /// Mathf Round floats of inserted vector x and y value
