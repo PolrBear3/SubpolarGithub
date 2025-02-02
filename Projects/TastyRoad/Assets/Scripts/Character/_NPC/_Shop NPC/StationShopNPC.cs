@@ -283,35 +283,48 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    private Station_ScrObj PriceWeight_ArchivedStation(List<StationData> stationDatas)
+    private List<Station_ScrObj> BuildArchiveCount_MaxStations()
     {
-        float totalWeight = 0;
+        List<Station_ScrObj> archivedStations = new();
 
-        foreach (StationData data in stationDatas)
+        for (int i = 0; i < _archiveDatas.Count; i++)
         {
-            if (BuildArchiveCount_Maxed(data.stationScrObj) == false) continue;
-            totalWeight += data.stationScrObj.price;
+            Station_ScrObj station = _archiveDatas[i].stationScrObj;
+
+            if (_archiveDatas[i].amount < station.buildToArchiveCount) continue;
+            archivedStations.Add(station);
         }
 
-        float randValue = Random.Range(0, totalWeight);
-        float cumulativeWeight = 0;
+        return archivedStations;
+    }
 
-        for (int i = 0; i < stationDatas.Count; i++)
+    private Station_ScrObj MaxBuildCount_RandomStation()
+    {
+        int totalWeight = 0;
+
+        foreach (StationData data in _archiveDatas)
         {
-            if (BuildArchiveCount_Maxed(stationDatas[i].stationScrObj) == false) continue;
+            if (data.amount < data.stationScrObj.buildToArchiveCount) continue;
+            totalWeight += data.amount;
+        }
 
-            cumulativeWeight += stationDatas[i].stationScrObj.price;
+        int randValue = Random.Range(0, totalWeight);
+        int cumulativeWeight = 0;
+
+        for (int i = 0; i < _archiveDatas.Count; i++)
+        {
+            Station_ScrObj archiveStation = _archiveDatas[i].stationScrObj;
+            int buildCount = _archiveDatas[i].amount;
+
+            if (buildCount < archiveStation.buildToArchiveCount) continue;
+
+            cumulativeWeight += buildCount;
 
             if (randValue >= cumulativeWeight) continue;
-            return stationDatas[i].stationScrObj;
+            return archiveStation;
         }
 
         return null;
-    }
-
-    private Station_ScrObj PriceWeight_ArchivedStation()
-    {
-        return PriceWeight_ArchivedStation(_archiveDatas);
     }
 
 
@@ -334,20 +347,18 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    private Station_ScrObj NonDuplicate_Station()
+    private Station_ScrObj NonDuplicate_RandomStation(List<Station_ScrObj> stations)
     {
-        if (_archiveDatas.Count <= 0) return null;
+        if (stations.Count <= 0) return null;
 
-        List<StationData> archivedStations = new(_archiveDatas);
+        List<Station_ScrObj> archivedStations = new(stations);
 
-        while (archivedStations.Count > 0)
+        while (stations.Count > 0)
         {
-            int randIndex = Random.Range(0, archivedStations.Count);
-            Station_ScrObj randStation = archivedStations[randIndex].stationScrObj;
+            int randIndex = Random.Range(0, stations.Count);
+            Station_ScrObj randStation = stations[randIndex];
 
-            bool buildCountMax = archivedStations[randIndex].amount >= randStation.buildToArchiveCount;
-
-            if (DuplicateAmount_Stocked(randStation) || buildCountMax == false)
+            if (DuplicateAmount_Stocked(randStation))
             {
                 archivedStations.RemoveAt(randIndex);
                 continue;
@@ -359,28 +370,22 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         return null;
     }
 
-    private List<Station_ScrObj> NonDuplicate_Stations()
+    private List<Station_ScrObj> NonDuplicate_Stations(List<Station_ScrObj> stations)
     {
-        if (_archiveDatas.Count <= 0) return null;
+        List<Station_ScrObj> targetStations = new();
 
-        List<StationData> archivedData = new(_archiveDatas);
-        List<Station_ScrObj> archivedStations = new();
-
-        for (int i = 0; i < archivedData.Count; i++)
+        for (int i = 0; i < stations.Count; i++)
         {
-            Station_ScrObj archivedStation = archivedData[i].stationScrObj;
-            bool buildCountMax = archivedData[i].amount >= archivedStation.buildToArchiveCount;
+            if (DuplicateAmount_Stocked(stations[i])) continue;
 
-            if (DuplicateAmount_Stocked(archivedStation) || buildCountMax == false) continue;
-
-            archivedStations.Add(archivedStation);
+            targetStations.Add(stations[i]);
         }
 
-        return archivedStations;
+        return targetStations;
     }
 
 
-    // All Actions
+    // Action Control
     private void Cancel_Action()
     {
         if (_actionCoroutine == null) return;
@@ -630,11 +635,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private bool Restock_Available()
     {
         if (_actionCoroutine != null) return false;
+        if (_scrapStack.amountBar.currentAmount <= 0) return false;
 
         if (StationStocks_Full()) return false;
-        if (NonDuplicate_Station() == null) return false;
-
-        if (_scrapStack.amountBar.currentAmount <= 0) return false;
+        if (NonDuplicate_Stations(BuildArchiveCount_MaxStations()).Count <= 0) return false;
 
         return true;
     }
@@ -654,7 +658,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            _stationStocks[i].Restock(PriceWeight_ArchivedStation());
+            Station_ScrObj restockStation = MaxBuildCount_RandomStation();
+
+            if (DuplicateAmount_Stocked(restockStation)) continue;
+
+            _stationStocks[i].Restock(MaxBuildCount_RandomStation());
             _stationStocks[i].Toggle_Discount(false);
         }
     }
@@ -722,7 +730,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             while (movement.At_TargetPosition() == false) yield return null;
 
             // restock
-            _stationStocks[i].Restock(NonDuplicate_Station());
+            Station_ScrObj restockStation = NonDuplicate_RandomStation(BuildArchiveCount_MaxStations());
+            _stationStocks[i].Restock(restockStation);
 
             // discount tag update
             if (DiscountStock_Amount() <= 1)
