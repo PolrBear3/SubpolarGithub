@@ -151,8 +151,7 @@ public class StationStock : MonoBehaviour
         Update_toSold();
     }
 
-
-    private void Update_toSold()
+    public void Update_toSold()
     {
         // set data
         _sold = true;

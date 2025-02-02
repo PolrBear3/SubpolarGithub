@@ -244,24 +244,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
 
     // Archived Station Data
-    private bool DuplicateAmount_Stocked(Station_ScrObj checkStation)
-    {
-        int checkCount = 0;
-
-        for (int i = 0; i < _stationStocks.Length; i++)
-        {
-            if (_stationStocks[i].sold == true) continue;
-            if (_stationStocks[i].currentStation.stationScrObj != checkStation) continue;
-            checkCount++;
-        }
-
-        if (_duplicateAmount <= 0) _duplicateAmount = 1;
-
-        if (checkCount < _duplicateAmount) return false;
-        return true;
-    }
-
-
     private void Archive_Station(Station_ScrObj station)
     {
         for (int i = 0; i < _archiveDatas.Count; i++)
@@ -279,7 +261,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _archiveDatas.Add(new(station, 1));
     }
 
-    private StationData Archived_Data(Station_ScrObj station)
+    private StationData Archived_StationData(Station_ScrObj station)
     {
         for (int i = 0; i < _archiveDatas.Count; i++)
         {
@@ -287,6 +269,68 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             return _archiveDatas[i];
         }
         return null;
+    }
+
+
+    private bool BuildArchiveCount_Maxed(Station_ScrObj station)
+    {
+        StationData targetData = Archived_StationData(station);
+
+        if (targetData == null) return false;
+        if (targetData.amount < station.buildToArchiveCount) return false;
+
+        return true;
+    }
+
+
+    private Station_ScrObj PriceWeight_ArchivedStation(List<StationData> stationDatas)
+    {
+        float totalWeight = 0;
+
+        foreach (StationData data in stationDatas)
+        {
+            if (BuildArchiveCount_Maxed(data.stationScrObj) == false) continue;
+            totalWeight += data.stationScrObj.price;
+        }
+
+        float randValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0;
+
+        for (int i = 0; i < stationDatas.Count; i++)
+        {
+            if (BuildArchiveCount_Maxed(stationDatas[i].stationScrObj) == false) continue;
+
+            cumulativeWeight += stationDatas[i].stationScrObj.price;
+
+            if (randValue >= cumulativeWeight) continue;
+            return stationDatas[i].stationScrObj;
+        }
+
+        return null;
+    }
+
+    private Station_ScrObj PriceWeight_ArchivedStation()
+    {
+        return PriceWeight_ArchivedStation(_archiveDatas);
+    }
+
+
+    // Duplicate Check Station Data
+    private bool DuplicateAmount_Stocked(Station_ScrObj checkStation)
+    {
+        int checkCount = 0;
+
+        for (int i = 0; i < _stationStocks.Length; i++)
+        {
+            if (_stationStocks[i].sold == true) continue;
+            if (_stationStocks[i].currentStation.stationScrObj != checkStation) continue;
+            checkCount++;
+        }
+
+        if (_duplicateAmount <= 0) _duplicateAmount = 1;
+
+        if (checkCount < _duplicateAmount) return false;
+        return true;
     }
 
 
@@ -315,32 +359,24 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         return null;
     }
 
-    private Station_ScrObj WeightRandom_Station()
+    private List<Station_ScrObj> NonDuplicate_Stations()
     {
-        // get total wieght
-        float totalWeight = 0;
+        if (_archiveDatas.Count <= 0) return null;
 
-        foreach (StationData data in _archiveDatas)
+        List<StationData> archivedData = new(_archiveDatas);
+        List<Station_ScrObj> archivedStations = new();
+
+        for (int i = 0; i < archivedData.Count; i++)
         {
-            float dataWeight = data.amount / data.stationScrObj.buildToArchiveCount;
-            totalWeight += dataWeight;
+            Station_ScrObj archivedStation = archivedData[i].stationScrObj;
+            bool buildCountMax = archivedData[i].amount >= archivedStation.buildToArchiveCount;
+
+            if (DuplicateAmount_Stocked(archivedStation) || buildCountMax == false) continue;
+
+            archivedStations.Add(archivedStation);
         }
 
-        // track values
-        float randValue = Random.Range(0, totalWeight);
-        float cumulativeWeight = 0;
-
-        // get random according to weight
-        for (int i = 0; i < _archiveDatas.Count; i++)
-        {
-            float dataWeight = _archiveDatas[i].amount / _archiveDatas[i].stationScrObj.buildToArchiveCount;
-            cumulativeWeight += dataWeight;
-
-            if (randValue >= cumulativeWeight) continue;
-            return _archiveDatas[i].stationScrObj;
-        }
-
-        return null;
+        return archivedStations;
     }
 
 
@@ -572,7 +608,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             Archive_Station(recentStation);
 
             // dialog
-            string buildComplete = "Build Complete" + "\n\nBuild count    " + Archived_Data(recentStation).amount + "/" + recentStation.buildToArchiveCount;
+            string buildComplete = "Build Complete" + "\n\nBuild count    " + Archived_StationData(recentStation).amount + "/" + recentStation.buildToArchiveCount;
             dialog.Update_Dialog(new DialogData(recentStation.dialogIcon, buildComplete));
 
             // restock locked bookmark station
@@ -603,14 +639,26 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         return true;
     }
 
+
+    private void Clear_StationStocks()
+    {
+        foreach (StationStock stock in _stationStocks)
+        {
+            stock.Update_toSold();
+        }
+    }
+
     private void Restock_New()
     {
+        Clear_StationStocks();
+
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            _stationStocks[i].Restock(WeightRandom_Station());
+            _stationStocks[i].Restock(PriceWeight_ArchivedStation());
             _stationStocks[i].Toggle_Discount(false);
         }
     }
+
 
     private void Restock_ArchivedStation()
     {
