@@ -19,7 +19,7 @@ public class StationStock : MonoBehaviour
     [SerializeField] private Sprite[] _signSprites;
 
     [Header("")]
-    [Range(0, 99)][SerializeField] private int _discountPrice;
+    [Range(0, 99)][SerializeField] private int _discountPercentage;
 
 
     private StationData _currentStation;
@@ -42,8 +42,6 @@ public class StationStock : MonoBehaviour
     {
         // load data
         Restock();
-
-        _stockData = new(_stockData);
         Toggle_Discount(_stockData.isDiscount);
 
         // subscriptions
@@ -74,7 +72,8 @@ public class StationStock : MonoBehaviour
 
         if (_stockData.isDiscount && price > 0)
         {
-            price = Mathf.Clamp(price - _discountPrice, 0, currentStation.price);
+            float discountValue = 1f - (_discountPercentage / 100f);
+            price = Mathf.RoundToInt(price * discountValue);
         }
 
         string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=56>";
@@ -114,14 +113,16 @@ public class StationStock : MonoBehaviour
 
         Station_ScrObj currentStation = _currentStation.stationScrObj;
 
-        // calculation
+        // discount calculation
         int price = currentStation.price;
 
         if (_stockData.isDiscount && price > 0)
         {
-            price = Mathf.Clamp(price - _discountPrice, 0, currentStation.price);
+            float discountValue = 1f - (_discountPercentage / 100f);
+            price = Mathf.RoundToInt(price * discountValue);
         }
 
+        // pay calculation
         if (_interactable.mainController.GoldenNugget_Amount() < price)
         {
             // Not Enough nuggets to purchase!
@@ -149,14 +150,13 @@ public class StationStock : MonoBehaviour
 
         // 
         Update_toSold();
+        Toggle_Discount(false);
     }
 
     public void Update_toSold()
     {
         // set data
         _sold = true;
-        Toggle_Discount(false);
-
         _currentStation = null;
 
         // set sprite
@@ -203,7 +203,7 @@ public class StationStock : MonoBehaviour
     }
     public void Toggle_Discount(bool toggleOn)
     {
-        _stockData = new(toggleOn);
+        _stockData.Toggle_Discount(toggleOn);
 
         if (_stockData.isDiscount)
         {

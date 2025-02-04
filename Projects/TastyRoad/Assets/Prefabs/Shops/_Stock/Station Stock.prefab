@@ -200,7 +200,7 @@ MonoBehaviour:
   - icon: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not Enough <sprite=56> to purchase!
   - icon: {fileID: -1672774169, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Not Enough slots in vehicle storage!
+    info: Not Enough slots in vehicle <sprite=70> storage!
   - icon: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     info: Currently out of stock!
   - icon: {fileID: 1923143937, guid: f311721b981194c6ba14962d17b64207, type: 3}
@@ -224,6 +224,8 @@ MonoBehaviour:
   _input: {fileID: 2332701602423248623}
   _detection: {fileID: 911833588703104063}
   _bubble: {fileID: 6500178620303943577}
+  _interactLocked: 0
+  _unInteractLocked: 0
 --- !u!114 &6578831391503598057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,7 +246,7 @@ MonoBehaviour:
   - {fileID: 1615136246, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   - {fileID: -957326405, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   - {fileID: 1353327767, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
-  _discountPrice: 1
+  _discountPercentage: 50
 --- !u!1 &6121253042431113937
 GameObject:
   m_ObjectHideFlags: 0

@@ -353,10 +353,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         List<Station_ScrObj> archivedStations = new(stations);
 
-        while (stations.Count > 0)
+        while (archivedStations.Count > 0)
         {
-            int randIndex = Random.Range(0, stations.Count);
-            Station_ScrObj randStation = stations[randIndex];
+            int randIndex = Random.Range(0, archivedStations.Count);
+            Station_ScrObj randStation = archivedStations[randIndex];
 
             if (DuplicateAmount_Stocked(randStation))
             {
@@ -662,7 +662,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             if (DuplicateAmount_Stocked(restockStation)) continue;
 
-            _stationStocks[i].Restock(MaxBuildCount_RandomStation());
+            _stationStocks[i].Restock(restockStation);
             _stationStocks[i].Toggle_Discount(false);
         }
     }

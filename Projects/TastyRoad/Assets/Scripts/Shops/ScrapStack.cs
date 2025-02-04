@@ -37,8 +37,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         _interactable.OnIInteract += Toggle_AmountBar;
         _interactable.OnUnIInteract += Toggle_AmountBar;
 
-        _interactable.OnAction1Input += Stack_ExistingScrap;
-        _interactable.OnAction2Input += Stack_BookmarkedScrap;
+        _interactable.OnAction1Input += Stack;
+        _interactable.OnAction2Input += Retrieve;
     }
 
     private void OnDestroy()
@@ -48,8 +48,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         _interactable.OnIInteract -= Toggle_AmountBar;
         _interactable.OnUnIInteract -= Toggle_AmountBar;
 
-        _interactable.OnAction1Input -= Stack_ExistingScrap;
-        _interactable.OnAction2Input -= Stack_BookmarkedScrap;
+        _interactable.OnAction1Input -= Stack;
+        _interactable.OnAction2Input -= Retrieve;
     }
 
 
@@ -87,8 +87,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Stack
-    private void Stack_ExistingScrap()
+    // Interactions
+    private void Stack()
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -99,62 +99,58 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         }
 
         StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        ItemSlots_Controller slots = menu.controller.slotsController;
-        List<ItemSlot_Data> scrapDatas = slots.Station_SlotDatas(menu.currentDatas, _scrap);
+        int vehicleAmount = slotsController.StationAmount(menu.currentDatas, _scrap);
 
-        if (scrapDatas.Count <= 0)
+        if (vehicleAmount <= 0)
         {
             dialog.Update_Dialog(1);
             return;
         }
 
-        scrapDatas[scrapDatas.Count - 1].Empty_Item();
+        for (int i = 0; i < vehicleAmount; i++)
+        {
+            menu.Remove_StationItem(_scrap);
+            _amountBar.Update_Amount(1);
 
-        _amountBar.Update_Amount(1);
-        _amountBar.Load();
-
-        CoinLauncher playerLauncher = _interactable.detection.player.coinLauncher;
-        playerLauncher.Parabola_CoinLaunch(_scrap.miniSprite, transform.position);
+            if (_amountBar.Is_MaxAmount()) break;
+        }
 
         Toggle_AmountBar();
-        _amountBar.Load();
-
         Update_CurrentSprite();
     }
 
-    private void Stack_BookmarkedScrap()
+    private void Retrieve()
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        if (_amountBar.Is_MaxAmount())
-        {
-            dialog.Update_Dialog(0);
-            return;
-        }
-
-        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
-
-        ItemSlots_Controller slots = menu.controller.slotsController;
-        List<ItemSlot_Data> scrapDatas = slots.Station_SlotDatas(menu.currentDatas, _scrap, true);
-
-        if (scrapDatas.Count <= 0)
+        if (_amountBar.currentAmount <= 0)
         {
             dialog.Update_Dialog(2);
             return;
         }
 
-        scrapDatas[scrapDatas.Count - 1].Empty_Item();
+        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        _amountBar.Update_Amount(1);
-        _amountBar.Load();
+        if (slotsController.Empty_SlotData(menu.currentDatas) == null)
+        {
+            dialog.Update_Dialog(3);
+            return;
+        }
 
-        CoinLauncher playerLauncher = _interactable.detection.player.coinLauncher;
-        playerLauncher.Parabola_CoinLaunch(_scrap.miniSprite, transform.position);
+        int retrieveAmount = _amountBar.currentAmount;
+
+        for (int i = 0; i < retrieveAmount; i++)
+        {
+            _amountBar.Update_Amount(-1);
+            menu.Add_StationItem(_scrap, 1);
+
+            if (slotsController.Empty_SlotData(menu.currentDatas) == null) break;
+        }
 
         Toggle_AmountBar();
-        _amountBar.Load();
-
         Update_CurrentSprite();
     }
 }

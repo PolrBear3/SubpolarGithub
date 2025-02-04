@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8039675154155897468}
   - component: {fileID: 6773271685758279233}
   - component: {fileID: 6267698384129414439}
-  - component: {fileID: 8581474301994803958}
   - component: {fileID: 6948281148128099821}
   - component: {fileID: 1884194309886730735}
   - component: {fileID: 1137932207672738685}
@@ -139,27 +138,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.4}
   m_EdgeRadius: 0
---- !u!95 &8581474301994803958
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4194232272499663455}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4b7e28b3b80ca46baa084ddf526140bc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6948281148128099821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +196,8 @@ MonoBehaviour:
   _input: {fileID: 6948281148128099821}
   _detection: {fileID: 1884194309886730735}
   _bubble: {fileID: 6042405659515121192}
+  _interactLocked: 0
+  _unInteractLocked: 0
 --- !u!114 &2780657938899932068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,12 +214,14 @@ MonoBehaviour:
     icon: {fileID: 0}
     info: 
   _datas:
-  - icon: {fileID: -842560820, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Stack amount currently full!
-  - icon: {fileID: -842560820, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Not enough <sprite=62> in vehicle!
-  - icon: {fileID: 881204055, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Not enough <sprite=68><sprite=62> in vehicle!
+  - icon: {fileID: -1642525101, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: <sprite=62> Stack amount currently full!
+  - icon: {fileID: -1642525101, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Export <sprite=62> from vehicle <sprite=70> storage
+  - icon: {fileID: 1559987172, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Retrieve current <sprite=62> into vehicle <sprite=70> storage
+  - icon: {fileID: -1642525101, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Not enough space in vehicle <sprite=70> storage!
 --- !u!114 &9104879486881281373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +340,7 @@ PrefabInstance:
     - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 881204055, guid: f311721b981194c6ba14962d17b64207, type: 3}
+      objectReference: {fileID: 1559987172, guid: f311721b981194c6ba14962d17b64207, type: 3}
     - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -382,7 +364,7 @@ PrefabInstance:
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -842560820, guid: f311721b981194c6ba14962d17b64207, type: 3}
+      objectReference: {fileID: -1642525101, guid: f311721b981194c6ba14962d17b64207, type: 3}
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1

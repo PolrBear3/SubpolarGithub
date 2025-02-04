@@ -172,9 +172,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    /// <summary>
-    /// Removes all
-    /// </summary>
     public void Remove_StationItem(Station_ScrObj station)
     {
         for (int i = 0; i < _currentDatas.Count; i++)
@@ -184,10 +181,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 if (_currentDatas[i][j].hasItem == false) continue;
                 if (station != _currentDatas[i][j].currentStation) continue;
 
-                Debug.Log(station + " remove complete!");
                 _currentDatas[i][j].Empty_Item();
-
                 _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+
                 return;
             }
         }
