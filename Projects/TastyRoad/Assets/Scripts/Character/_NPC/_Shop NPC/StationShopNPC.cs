@@ -272,6 +272,14 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
 
 
+    private int ArchivedStation_BuildCount(Station_ScrObj station)
+    {
+        StationData archivedData = Archived_StationData(station);
+
+        if (archivedData == null) return 0;
+        return archivedData.amount;
+    }
+
     private bool BuildArchiveCount_Maxed(Station_ScrObj station)
     {
         StationData targetData = Archived_StationData(station);

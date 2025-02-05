@@ -146,9 +146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allPositions: []
+  _surroundPositions: []
+  _interactPositions: []
   _claimPositions:
   - {x: 0, y: 0}
+  _unClaimOnStart: 0
 --- !u!114 &5739883101272452172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +179,7 @@ MonoBehaviour:
   _detection: {fileID: 5739883101272452172}
   _foodIcon: {fileID: 648301248028170091}
   _destroyTikCount: 5
+  _transparencyStep: 0.075
 --- !u!1001 &5344854207438133248
 PrefabInstance:
   m_ObjectHideFlags: 0

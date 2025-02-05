@@ -40,6 +40,8 @@ public class StationStock : MonoBehaviour
 
     private void Start()
     {
+        if (_stockData == null) _stockData = new(false);
+
         // load data
         Restock();
         Toggle_Discount(_stockData.isDiscount);
@@ -60,7 +62,7 @@ public class StationStock : MonoBehaviour
     }
 
 
-    private void Set_Dialog()
+    public void Set_Dialog()
     {
         if (_sold) return;
 
@@ -75,7 +77,6 @@ public class StationStock : MonoBehaviour
             float discountValue = 1f - (_discountPercentage / 100f);
             price = Mathf.RoundToInt(price * discountValue);
         }
-
         string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=56>";
         string dialogInfo = price + " <sprite=56> to purchase." + currentAmountString;
 
@@ -94,6 +95,8 @@ public class StationStock : MonoBehaviour
 
     public StockData Set_StockData(StockData data)
     {
+        if (data == null) return null;
+
         _stockData = new(data);
         return _stockData;
     }

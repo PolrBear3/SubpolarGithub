@@ -202,9 +202,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allPositions: []
+  _surroundPositions: []
+  _interactPositions: []
   _claimPositions:
   - {x: 0, y: 0}
+  _unClaimOnStart: 0
 --- !u!114 &5739883101272452172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,19 +235,8 @@ MonoBehaviour:
   _detection: {fileID: 5739883101272452172}
   _launcher: {fileID: 4653407473077677712}
   _launchSprite: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
-  _bluePrintStations:
-  - {fileID: 11400000, guid: 533d860f69be7472e99b1a648377fcf5, type: 2}
-  - {fileID: 11400000, guid: 3264c6e5229014a67bd03e468bead6c8, type: 2}
-  - {fileID: 11400000, guid: 2d159bd0995db474498c96e00ccc654a, type: 2}
-  - {fileID: 11400000, guid: 274ee32ff1ff346cea9879afe6146486, type: 2}
-  - {fileID: 11400000, guid: 0ae1b32d583fb477da6041b8044d7346, type: 2}
-  - {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
-  - {fileID: 11400000, guid: a1ca9265c35084055ae852fb82aaf7cd, type: 2}
-  - {fileID: 11400000, guid: 8d1e6b36626de4a3ea7b9c6ec7712fc7, type: 2}
-  - {fileID: 11400000, guid: 0f31023eefe2544a0bd111e3e4514df6, type: 2}
-  - {fileID: 11400000, guid: 4340d4a463bc04e91bf54de1f75d2888, type: 2}
-  - {fileID: 11400000, guid: c32ff8ce5146c45c79af7acf780abf86, type: 2}
   _destroyTikCount: 5
+  _transparencyStep: 0.075
 --- !u!1001 &7619357214468527778
 PrefabInstance:
   m_ObjectHideFlags: 0

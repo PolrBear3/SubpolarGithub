@@ -15,6 +15,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
     [Header("")]
     [SerializeField][Range(0, 100)] private int _destroyTikCount;
+    [SerializeField][Range(0, 1)] private float _transparencyStep;
     private int _currentTikCount;
 
 
@@ -119,10 +120,8 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
     private void Activate_DestroyTimeTik()
     {
-        float alphaStepSize = 100 / _destroyTikCount * 0.01f;
-
         _currentTikCount++;
-        Main_Controller.Change_SpriteAlpha(_sr, _sr.color.a - alphaStepSize);
+        Main_Controller.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
 
         if (_currentTikCount < _destroyTikCount) return;
         Destroy(gameObject, 0.1f);
