@@ -19,7 +19,7 @@ public class StationStock : MonoBehaviour
     [SerializeField] private Sprite[] _signSprites;
 
     [Header("")]
-    [Range(0, 99)][SerializeField] private int _discountPercentage;
+    [Range(0, 100)][SerializeField] private int _discountPercentage;
 
 
     private StationData _currentStation;

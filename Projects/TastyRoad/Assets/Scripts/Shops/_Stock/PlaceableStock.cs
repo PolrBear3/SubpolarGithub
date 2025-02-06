@@ -75,6 +75,8 @@ public class PlaceableStock : MonoBehaviour
 
         _isComplete = false;
         Update_forComplete();
+
+        _interactable.LockInteract(false);
     }
 
 
@@ -222,6 +224,8 @@ public class PlaceableStock : MonoBehaviour
 
         _isComplete = true;
         Update_forComplete();
+
+        _interactable.LockInteract(true);
 
         Update_Bubble();
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(2);

@@ -28,6 +28,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // UnityEngine
+    private void Start()
+    {
+        _controller.vehicleController.OnAction2Input += Retrieve_PlayerFood;
+    }
+
     private void OnEnable()
     {
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
@@ -80,6 +85,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnDestroy()
     {
         OnDisable();
+
+        _controller.vehicleController.OnAction2Input -= Retrieve_PlayerFood;
     }
 
 
@@ -582,6 +589,38 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // bellow max amount
         station.Food_Icon().currentData.Set_Amount(currentCursorData.currentAmount);
         _controller.slotsController.cursor.Empty_Item();
+    }
+
+
+    // Player Food Retrieve
+    private bool PlayerFood_Retrievable()
+    {
+        FoodData_Controller playerFood = _controller.vehicleController.detection.player.foodIcon;
+
+        if (playerFood.hasFood == false) return false;
+        return true;
+    }
+
+    private void Retrieve_PlayerFood()
+    {
+        if (PlayerFood_Retrievable() == false) return;
+
+        FoodData_Controller playerFood = _controller.vehicleController.detection.player.foodIcon;
+        int foodAmount = playerFood.AllDatas().Count;
+
+        for (int i = 0; i < foodAmount; i++)
+        {
+            Food_ScrObj dataFood = playerFood.currentData.foodScrObj;
+
+            if (AddAvailable_Amount(dataFood) <= 0) continue;
+
+            Add_FoodItem(dataFood, 1);
+            playerFood.Set_CurrentData(null);
+        }
+
+        playerFood.Show_Icon();
+        playerFood.Show_Condition();
+        playerFood.Toggle_SubDataBar(true);
     }
 }
 

@@ -25,8 +25,8 @@ public class FoodStock : MonoBehaviour
     [SerializeField] private Sprite[] _tagSprites;
 
     [Header("")]
-    [Range(0, 99)][SerializeField] private int _unlockPrice;
-    [Range(0, 99)][SerializeField] private int _discountPrice;
+    [Range(0, 999)][SerializeField] private int _unlockPrice;
+    [Range(0, 100)][SerializeField] private int _discountPercentage;
 
 
     private StockData _stockData;
@@ -196,8 +196,8 @@ public class FoodStock : MonoBehaviour
 
         if (_stockData.isDiscount && price > 0)
         {
-            price -= _discountPrice;
-            price = Mathf.Clamp(price, 0, stockedFood.price);
+            float discountValue = 1f - (_discountPercentage / 100f);
+            price = Mathf.RoundToInt(price * discountValue);
         }
 
         string priceString = price + " <sprite=56> to purchase." + currentAmountString;
@@ -279,8 +279,8 @@ public class FoodStock : MonoBehaviour
 
         if (_stockData.isDiscount && price > 0)
         {
-            price -= _discountPrice * purchaseAmount;
-            price = Mathf.Clamp(price, 0, stockedFood.price * purchaseAmount);
+            float discountValue = 1f - (_discountPercentage / 100f);
+            price = Mathf.RoundToInt(price * discountValue);
         }
 
         // check nugget amount

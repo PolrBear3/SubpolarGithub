@@ -40,10 +40,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private List<FoodData> _archivedBundles = new();
     private List<FoodData> _unlockDatas = new();
 
+
     private int _currentQuestCool;
     private int _currentQuestCount;
 
     private FoodData _questFood;
+    private FoodData _previousQuestFood;
 
 
     private Coroutine _actionCoroutine;
@@ -89,7 +91,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.OnIInteract += Toggle_QuestBar;
         interact.OnUnIInteract += Toggle_QuestBar;
 
-        interact.OnAction1Input += Complete_Quest;
+        interact.OnAction1Input += DialogUpdate_UnlockCount;
+        interact.OnAction2Input += Complete_Quest;
     }
 
     private void OnDestroy()
@@ -115,7 +118,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.OnIInteract -= Toggle_QuestBar;
         interact.OnUnIInteract -= Toggle_QuestBar;
 
-        interact.OnAction1Input -= Complete_Quest;
+        interact.OnAction1Input -= DialogUpdate_UnlockCount;
+        interact.OnAction2Input -= Complete_Quest;
     }
 
 
@@ -127,7 +131,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         ES3.Save("GroceryNPC/_currentQuestCool", _currentQuestCool);
         ES3.Save("GroceryNPC/_currentQuestCount", _currentQuestCount);
+
         ES3.Save("GroceryNPC/_questFood", _questFood);
+        ES3.Save("GroceryNPC/_previousQuestFood", _previousQuestFood);
 
         Save_CurrentFoodStocks();
         Save_PlaceableStocks();
@@ -160,7 +166,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         _currentQuestCool = ES3.Load("GroceryNPC/_currentQuestCool", _currentQuestCool);
         _currentQuestCount = ES3.Load("GroceryNPC/_currentQuestCount", _currentQuestCount);
+
         _questFood = new(ES3.Load("GroceryNPC/_questFood", _questFood));
+        _previousQuestFood = new(ES3.Load("GroceryNPC/_previousQuestFood", _previousQuestFood));
 
         Set_QuestFood(_questFood.foodScrObj);
 
@@ -274,7 +282,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         return false;
     }
 
-
     private bool Is_Archived(Food_ScrObj food)
     {
         for (int i = 0; i < _archivedBundles.Count; i++)
@@ -284,6 +291,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
         return false;
     }
+
 
     private void Archive_toBundles(Food_ScrObj food)
     {
@@ -298,6 +306,24 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _archivedBundles.Add(archiveData);
     }
 
+    private void Update_BundleData(Food_ScrObj food, int updateValue)
+    {
+        if (Is_Archived(food) == false) return;
+
+        FoodData updateData = Archived_BundleData(food);
+        int currentAmount = updateData.currentAmount;
+
+        if (currentAmount + updateValue <= 0)
+        {
+            if (Is_StartingBundle(food)) return;
+
+            _archivedBundles.Remove(updateData);
+            return;
+        }
+
+        updateData.Update_Amount(updateValue);
+    }
+
 
     private FoodData Archived_BundleData(Food_ScrObj food)
     {
@@ -310,9 +336,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         return null;
     }
 
-    /// <returns>
-    /// random food data according to it's _currentAmount
-    /// </returns>
     private FoodData RandomWeighted_BundleData()
     {
         // get total wieght
@@ -341,31 +364,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    /// <summary>
-    /// Decreases amount (min 1) of bundleData
-    /// </summary>
-    /// <returns>Ingredient foods of bundleData food</returns>
-    private List<Food_ScrObj> AmountDecreased_BundleIngredients(FoodData bundleData)
-    {
-        List<Food_ScrObj> ingredients = new(bundleData.foodScrObj.Ingredients());
-
-        // always set starting bundle foods to stay in _archivedBundles
-        if (Is_StartingBundle(bundleData.foodScrObj))
-        {
-            bundleData.Set_Amount(Mathf.Clamp(bundleData.currentAmount - 1, 1, bundleData.currentAmount));
-        }
-        else
-        {
-            bundleData.Update_Amount(-1);
-        }
-
-        // remove from _archivedBundles if amount is 0
-        if (bundleData.currentAmount <= 0) _archivedBundles.Remove(bundleData);
-
-        return ingredients;
-    }
-
-
     // Unlock Datas
     private bool Is_Unlocked(Food_ScrObj food)
     {
@@ -390,6 +388,26 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         return false;
     }
 
+    private int Unlock_Count(Food_ScrObj food)
+    {
+        if (Is_Unlocked(food) == false) return 0;
+
+        return UnlockData(food).currentAmount;
+    }
+
+
+    private FoodData UnlockData(Food_ScrObj food)
+    {
+        if (Is_Unlocked(food) == false) return null;
+
+        for (int i = 0; i < _unlockDatas.Count; i++)
+        {
+            if (food != _unlockDatas[i].foodScrObj) continue;
+            return _unlockDatas[i];
+        }
+
+        return null;
+    }
 
     private FoodData Add_toUnlockData(Food_ScrObj food)
     {
@@ -398,9 +416,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         for (int i = 0; i < _unlockDatas.Count; i++)
         {
             if (_unlockDatas[i].foodScrObj != food) continue;
-            if (_unlockDatas[i].currentAmount >= food.unlockAmount) return null;
 
-            _unlockDatas[i].Update_Amount(1);
+            int currentAmount = _unlockDatas[i].currentAmount;
+            int setAmount = Mathf.Clamp(currentAmount + 1, 0, food.unlockAmount);
+
+            _unlockDatas[i].Set_Amount(setAmount);
+
             return _unlockDatas[i];
         }
 
@@ -490,16 +511,17 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
 
         _questFood = new(food);
+        _previousQuestFood = new(food);
 
         ActionBubble_Interactable interactable = _npcController.interactable;
         Action_Bubble bubble = interactable.bubble;
 
-        bubble.Set_Bubble(food.sprite, null);
+        bubble.Set_Bubble(bubble.leftIcon.sprite, food.sprite);
         interactable.UnInteract();
     }
 
     /// <summary>
-    /// Sets a random quest food from one of _unlockData foods
+    /// Sets a random quest food that was not previously set
     /// </summary>
     private void Set_QuestFood()
     {
@@ -512,8 +534,20 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        // get random cooked food from _archivedCooks
-        Food_ScrObj questFood = _unlockDatas[Random.Range(0, _unlockDatas.Count)].foodScrObj;
+        List<FoodData> unlockedDatas = new(_unlockDatas);
+
+        for (int i = 0; i < unlockedDatas.Count; i++)
+        {
+            if (_previousQuestFood == null) break;
+            if (_previousQuestFood.foodScrObj != unlockedDatas[i].foodScrObj) continue;
+
+            unlockedDatas.RemoveAt(i);
+            break;
+        }
+
+        int randIndex = Random.Range(0, unlockedDatas.Count);
+        Food_ScrObj questFood = unlockedDatas[randIndex].foodScrObj;
+
         Set_QuestFood(questFood);
     }
 
@@ -560,7 +594,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _questFood = null;
 
         Action_Bubble bubble = _npcController.interactable.bubble;
-        bubble.Empty_Bubble();
+        bubble.Set_Bubble(bubble.leftIcon.sprite, null);
 
         dialog.Update_Dialog(4);
 
@@ -580,9 +614,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             // clear data
             _foodStocks[i].foodIcon.Set_CurrentData(null);
 
-            List<Food_ScrObj> restockFoods = AmountDecreased_BundleIngredients(RandomWeighted_BundleData());
-            Food_ScrObj restockFood = restockFoods[Random.Range(0, restockFoods.Count)];
+            // get food
+            Food_ScrObj bundleFood = RandomWeighted_BundleData().foodScrObj;
+            Update_BundleData(bundleFood, -1);
 
+            List<Food_ScrObj> foodIngredients = bundleFood.Ingredients();
+
+            Food_ScrObj restockFood = foodIngredients[Random.Range(0, foodIngredients.Count)];
+            Update_BundleData(restockFood, -1);
+
+            // restock
             _foodStocks[i].Set_FoodData(new(restockFood));
             _foodStocks[i].Update_Amount(_foodStocks[i].foodIcon.maxAmount - 1);
             _foodStocks[i].Toggle_Discount(false);
@@ -611,9 +652,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             movement.Assign_TargetPosition(stocks[i].transform.position);
             while (movement.At_TargetPosition() == false) yield return null;
 
-            List<Food_ScrObj> restockFoods = AmountDecreased_BundleIngredients(RandomWeighted_BundleData());
-            Food_ScrObj restockFood = restockFoods[Random.Range(0, restockFoods.Count)];
+            // get food
+            Food_ScrObj bundleFood = RandomWeighted_BundleData().foodScrObj;
+            Update_BundleData(bundleFood, -1);
 
+            List<Food_ScrObj> foodIngredients = bundleFood.Ingredients();
+
+            Food_ScrObj restockFood = foodIngredients[Random.Range(0, foodIngredients.Count)];
+            Update_BundleData(restockFood, -1);
+
+            // restock
             stocks[i].Set_FoodData(new(restockFood, stocks[i].foodIcon.maxAmount));
 
             yield return new WaitForSeconds(_actionSpeed);
@@ -644,9 +692,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             movement.Assign_TargetPosition(stocks[i].transform.position);
             while (movement.At_TargetPosition() == false) yield return null;
 
-            List<Food_ScrObj> restockFoods = AmountDecreased_BundleIngredients(RandomWeighted_BundleData());
-            Food_ScrObj restockFood = restockFoods[Random.Range(0, restockFoods.Count)];
+            // get food
+            Food_ScrObj bundleFood = RandomWeighted_BundleData().foodScrObj;
+            Update_BundleData(bundleFood, -1);
 
+            List<Food_ScrObj> foodIngredients = bundleFood.Ingredients();
+
+            Food_ScrObj restockFood = foodIngredients[Random.Range(0, foodIngredients.Count)];
+            Update_BundleData(restockFood, -1);
+
+            // restock
             stocks[i].Set_FoodData(new(restockFood, stocks[i].foodIcon.maxAmount));
 
             yield return new WaitForSeconds(_actionSpeed);
@@ -768,5 +823,26 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         Cancel_Action();
         yield break;
+    }
+
+
+    private void DialogUpdate_UnlockCount()
+    {
+        FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
+
+        if (playerIcon.hasFood == false) return;
+
+        Data_Controller data = _npcController.mainController.dataController;
+        Food_ScrObj playerFood = playerIcon.currentData.foodScrObj;
+
+        if (data.Is_RawFood(playerFood)) return;
+
+        Sprite playerFoodSprite = playerFood.sprite;
+        string dialogInfo = Unlock_Count(playerFood) + "/" + playerFood.unlockAmount + " collected from bundle";
+
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+        DialogData dialogData = new(playerFoodSprite, dialogInfo);
+
+        dialog.Update_Dialog(dialogData);
     }
 }
