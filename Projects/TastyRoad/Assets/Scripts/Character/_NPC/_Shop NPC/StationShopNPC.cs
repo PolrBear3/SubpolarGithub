@@ -627,6 +627,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             // restock locked bookmark station
             _stationStocks[i].Toggle_Discount(false);
             _stationStocks[i].Restock(recentStation);
+            _stationStocks[i].currentStation.Set_Amount(0);
 
             CarryObject_SpriteToggle(false, null);
 

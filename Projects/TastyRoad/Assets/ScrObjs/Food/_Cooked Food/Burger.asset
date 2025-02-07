@@ -14,19 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 352959033, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
   eatSprite: {fileID: -53871503, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
-  centerPosition: {x: 0, y: -0.031}
-  uiCenterPosition: {x: 0, y: -12.5}
   foodName: Burger
   id: 16592
   price: 7
   ingredients:
   - _foodScrObj: {fileID: 11400000, guid: fa306448d687242e6b9cc99ccc1727cc, type: 2}
+    _currentAmount: 0
     _tikCount: 0
     _conditionDatas:
     - type: 1
       level: 2
   - _foodScrObj: {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
+    _currentAmount: 0
     _tikCount: 0
     _conditionDatas:
     - type: 1
       level: 1
+  unlockAmount: 60
+  unlocks: []

@@ -59,7 +59,7 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
                 _isIncrease = false;
 
                 // after noon day tik dialog
-                DialogData dayDialog = new DialogData(dialog.datas[2].icon, "Current time phase is after noon");
+                DialogData dayDialog = new DialogData(dialog.datas[1].icon, "Current time phase is after noon");
                 dialog.Update_Dialog(dayDialog);
             }
             else if (_currentTime <= 0)
@@ -75,19 +75,13 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
             if (_isIncrease)
             {
                 _currentTime++;
-
-                // before noon tik dialog
-                DialogData dayDialog = new DialogData(dialog.datas[1].icon, "Current time is " + _currentTime + " before noon");
-                dialog.Update_Dialog(dayDialog);
             }
             else
             {
                 _currentTime--;
-
-                // after noon tik dialog
-                DialogData nightDialog = new DialogData(dialog.datas[3].icon, "Current time is " + (12 - _currentTime) + " after noon");
-                dialog.Update_Dialog(nightDialog);
             }
+
+            Debug.Log(_currentTime);
 
             // Time Tik Event
             TimeTik_Update?.Invoke();

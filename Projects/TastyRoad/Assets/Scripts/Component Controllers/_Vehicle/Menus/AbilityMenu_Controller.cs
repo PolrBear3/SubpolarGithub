@@ -212,11 +212,14 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void ActivateAbility_onSelect()
     {
-        if (CurrentSlot_Ability() == null) return;
-
         AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
 
         if (manager.AbilityPoint_Maxed() == false) return;
+
+        Ability_ScrObj currentAbility = CurrentSlot_Ability();
+
+        if (currentAbility == null) return;
+        if (manager.Ability_ActivateCount(currentAbility) >= currentAbility.maxActivationCount) return;
 
         manager.Activate_Ability(CurrentSlot_Ability());
 

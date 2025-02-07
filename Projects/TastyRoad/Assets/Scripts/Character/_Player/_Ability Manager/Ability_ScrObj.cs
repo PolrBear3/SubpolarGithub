@@ -16,9 +16,16 @@ public class Ability_ScrObj : ScriptableObject
     [SerializeField] private Sprite[] _progressIcons;
     public Sprite[] progressIcons => _progressIcons;
 
+    [Header("")]
+    [SerializeField][Range(0, 100)] private int _maxActivationCount;
+    public int maxActivationCount => _maxActivationCount;
+
 
     public Sprite ProgressIcon(int levelValue)
     {
-        return progressIcons[Mathf.Clamp(levelValue, 0, _progressIcons.Length - 1)];
+        levelValue = Mathf.Clamp(levelValue, 0, maxActivationCount);
+        int spriteIndex = Mathf.FloorToInt((float)levelValue / maxActivationCount * (progressIcons.Length - 1));
+
+        return _progressIcons[spriteIndex];
     }
 }

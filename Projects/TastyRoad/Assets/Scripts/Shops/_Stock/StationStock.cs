@@ -70,7 +70,7 @@ public class StationStock : MonoBehaviour
         Sprite stationIcon = currentStation.dialogIcon;
 
         // calculation
-        int price = currentStation.price;
+        int price = _currentStation.amount;
 
         if (_stockData.isDiscount && price > 0)
         {
@@ -117,7 +117,7 @@ public class StationStock : MonoBehaviour
         Station_ScrObj currentStation = _currentStation.stationScrObj;
 
         // discount calculation
-        int price = currentStation.price;
+        int price = _currentStation.amount;
 
         if (_stockData.isDiscount && price > 0)
         {
@@ -234,6 +234,8 @@ public class StationStock : MonoBehaviour
 
         // set data
         _currentStation = new(restockStation);
+        _currentStation.Set_Amount(restockStation.price);
+
         _sold = false;
 
         // set sprite

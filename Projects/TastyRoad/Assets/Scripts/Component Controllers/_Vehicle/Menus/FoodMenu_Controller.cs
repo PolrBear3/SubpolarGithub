@@ -592,20 +592,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    // Player Food Retrieve
-    private bool PlayerFood_Retrievable()
-    {
-        FoodData_Controller playerFood = _controller.vehicleController.detection.player.foodIcon;
-
-        if (playerFood.hasFood == false) return false;
-        return true;
-    }
-
+    // Food Retrieve System
     private void Retrieve_PlayerFood()
     {
-        if (PlayerFood_Retrievable() == false) return;
-
         FoodData_Controller playerFood = _controller.vehicleController.detection.player.foodIcon;
+
+        if (playerFood.hasFood == false) return;
+
         int foodAmount = playerFood.AllDatas().Count;
 
         for (int i = 0; i < foodAmount; i++)
@@ -621,6 +614,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         playerFood.Show_Icon();
         playerFood.Show_Condition();
         playerFood.Toggle_SubDataBar(true);
+
+        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 2);
     }
 }
 
