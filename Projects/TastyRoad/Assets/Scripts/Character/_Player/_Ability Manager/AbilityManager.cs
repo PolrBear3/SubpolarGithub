@@ -151,6 +151,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         return false;
     }
 
+
     public int Ability_ActivateCount(Ability_ScrObj checkAbility)
     {
         Ability targetAbility = Activated_Ability(checkAbility);
@@ -158,6 +159,13 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         if (targetAbility == null) return 0;
 
         return targetAbility.activationCount;
+    }
+
+    public bool Ability_ActivateMaxed(Ability_ScrObj checkAbility)
+    {
+        if (checkAbility == null) return false;
+
+        return Ability_ActivateCount(checkAbility) >= checkAbility.maxActivationCount;
     }
 
 

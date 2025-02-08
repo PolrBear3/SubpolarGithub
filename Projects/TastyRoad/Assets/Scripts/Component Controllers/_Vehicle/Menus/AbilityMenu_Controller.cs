@@ -157,8 +157,10 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
 
-        if (manager.AbilityPoint_Maxed()) return "Hold <sprite=15> to level up";
-        return manager.currentAbilityPoint + "/" + manager.maxAbilityPoint + "\nNot enough <sprite=79> points!";
+        if (manager.Ability_ActivateMaxed(CurrentSlot_Ability())) return null;
+
+        if (manager.AbilityPoint_Maxed()) return "\n\nHold <sprite=15> to level up";
+        return "\n\n" + manager.currentAbilityPoint + "/" + manager.maxAbilityPoint + "  <sprite=79> points";
     }
 
     private void Show_AbilityDiscription()
@@ -172,7 +174,10 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             return;
         }
 
-        infoBox.Update_InfoText(currentAbility.description + "\n\n" + HoldSelect_InfoText());
+        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        string activationCount = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.maxActivationCount;
+
+        infoBox.Update_InfoText(activationCount + "\n\n" + currentAbility.description + HoldSelect_InfoText());
 
         infoBox.gameObject.SetActive(true);
         infoBox.Update_RectLayout();
@@ -213,17 +218,34 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void ActivateAbility_onSelect()
     {
         AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
-
         if (manager.AbilityPoint_Maxed() == false) return;
 
         Ability_ScrObj currentAbility = CurrentSlot_Ability();
-
         if (currentAbility == null) return;
-        if (manager.Ability_ActivateCount(currentAbility) >= currentAbility.maxActivationCount) return;
+
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        if (manager.Ability_ActivateMaxed(currentAbility))
+        {
+            // current ability is fully leveled up!
+            dialog.Update_Dialog(0);
+
+            return;
+        }
 
         manager.Activate_Ability(CurrentSlot_Ability());
 
         Update_CursorFill();
         Update_AbilityIcons();
+
+        // dialog
+        int activationCount = manager.Ability_ActivateCount(currentAbility);
+        Sprite abilitySprite = currentAbility.ProgressIcon(activationCount);
+
+        string abilityInfo = currentAbility.abilityName + "\n\n";
+        string activationInfo = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.maxActivationCount + " ";
+
+        DialogData dialogData = new(abilitySprite, abilityInfo + activationInfo + "leveled up");
+        dialog.Update_Dialog(dialogData);
     }
 }
