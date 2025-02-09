@@ -163,6 +163,9 @@ public class MailBox : MonoBehaviour, IInteractable
         _amountBar.Load();
 
         Update_Sprite();
+
+        // sfx
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
     private void Drop_CollectCard()

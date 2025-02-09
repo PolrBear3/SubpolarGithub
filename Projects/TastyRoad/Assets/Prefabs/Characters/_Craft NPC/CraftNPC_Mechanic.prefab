@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 1331804926663461836}
   - component: {fileID: 4272241710382912556}
   - component: {fileID: 2855206062070600141}
+  - component: {fileID: 8503040837155109127}
   - component: {fileID: -2268305881826384539}
   - component: {fileID: -7268301005637499790}
   - component: {fileID: 6346170206518977991}
@@ -283,6 +284,26 @@ MonoBehaviour:
     info: Expands <sprite=57> export range
   - icon: {fileID: -1080054068, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Increase the amount of recently opened menu slots
+--- !u!114 &8503040837155109127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 1142844002
+        Data2: 1318623512
+        Data3: 349587073
+        Data4: -1502948816
+      Path: event:/Basic SFX/Interaction/Nugget_pay
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0

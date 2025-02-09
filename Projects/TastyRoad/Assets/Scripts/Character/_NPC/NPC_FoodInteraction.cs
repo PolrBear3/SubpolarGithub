@@ -356,6 +356,9 @@ public class NPC_FoodInteraction : MonoBehaviour
         Sprite nuggetSprite = main.dataController.goldenNugget.sprite;
         _controller.itemLauncher.Parabola_CoinLaunch(nuggetSprite, transform.position);
 
+        // sfx
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+
         if (foodIcon.hasFood == false || main.bookmarkedFoods.Count <= 0)
         {
             foodIcon.Update_AllDatas(null);

@@ -144,6 +144,9 @@ public class CraftNPC : MonoBehaviour
         _nuggetBar.Load();
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(Current_PayCount());
+
+        // sfx
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
     private void Gift()

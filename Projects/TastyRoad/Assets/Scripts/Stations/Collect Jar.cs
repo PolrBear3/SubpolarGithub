@@ -161,6 +161,8 @@ public class CollectJar : MonoBehaviour
 
     private void Insert(int insertAmount)
     {
+        if (insertAmount <= 0) return;
+
         FoodData_Controller stationIcon = _controller.Food_Icon();
         if (stationIcon.Is_MaxAmount()) return;
 
@@ -169,6 +171,9 @@ public class CollectJar : MonoBehaviour
 
         Toggle_Indications();
         Update_Sprite();
+
+        // sfx
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 
 
@@ -193,9 +198,6 @@ public class CollectJar : MonoBehaviour
         playerIcon.Show_Icon();
         playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
-
-        // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
 
@@ -237,6 +239,6 @@ public class CollectJar : MonoBehaviour
         Collect();
 
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 }

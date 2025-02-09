@@ -165,6 +165,9 @@ public class GasPump : MonoBehaviour
         _amountBar.Update_Amount(1);
         _amountBar.Load();
 
+        // sfx
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+
         if (_amountBar.Is_MaxAmount() == false) return;
 
         // oil drum spawn update

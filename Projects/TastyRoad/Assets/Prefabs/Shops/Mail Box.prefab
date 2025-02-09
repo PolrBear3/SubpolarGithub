@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 8560400286164753659}
   - component: {fileID: 4756805454820804306}
   - component: {fileID: 2124824075837300683}
+  - component: {fileID: 3661075259181940387}
   - component: {fileID: 1177498976196956477}
   - component: {fileID: 8348303115327404211}
   - component: {fileID: 7067362755497865247}
@@ -167,6 +168,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
+--- !u!114 &3661075259181940387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180495848804328051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -697551012
+        Data2: 1078128834
+        Data3: -1591251052
+        Data4: -1705396606
+      Path: event:/Basic SFX/Interaction/Nugget_insertPay
 --- !u!114 &1177498976196956477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,9 +216,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allPositions: []
+  _surroundPositions: []
+  _interactPositions: []
   _claimPositions:
   - {x: 0, y: 0}
+  _unClaimOnStart: 0
 --- !u!114 &7067362755497865247
 MonoBehaviour:
   m_ObjectHideFlags: 0
