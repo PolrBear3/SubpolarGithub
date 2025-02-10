@@ -20,7 +20,7 @@ public class LocationData
     [ES3NonSerializable] public Vector2 spawnRangeY;
 
     [Header("")]
-    [ES3NonSerializable] public Vector2 spawnIntervalTimeRange;
+    [ES3NonSerializable] public float spawnIntervalTime;
 
     [Header("")]
     [SerializeField][ES3NonSerializable] private SpriteRenderer _screenArea;
@@ -52,7 +52,7 @@ public class LocationData
         spawnRangeX = data.spawnRangeX;
         spawnRangeY = data.spawnRangeY;
 
-        spawnIntervalTimeRange = data.spawnIntervalTimeRange;
+        spawnIntervalTime = data.spawnIntervalTime;
 
         maxSpawnTimePoints = data.maxSpawnTimePoints;
     }

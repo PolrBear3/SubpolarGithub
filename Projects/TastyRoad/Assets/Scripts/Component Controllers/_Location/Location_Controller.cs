@@ -30,15 +30,19 @@ public class Location_Controller : MonoBehaviour
         // Toggle Off All Roam Area Colors On Game Start
         _data.roamArea.color = Color.clear;
 
-        Update_Current_MaxSpawn();
-        GlobalTime_Controller.instance.OnTimeTik += Update_Current_MaxSpawn;
+        Update_CurrentTimePoint();
+        Cycle_NPCSpawn();
 
-        NPC_Spawn_Control();
+        // subscriptions
+        GlobalTime_Controller.instance.OnTimeTik += Update_CurrentTimePoint;
+        GlobalTime_Controller.instance.OnTimeTik += Update_npcPopulation;
     }
 
     private void OnDestroy()
     {
-        GlobalTime_Controller.instance.OnTimeTik -= Update_Current_MaxSpawn;
+        // subscriptions
+        GlobalTime_Controller.instance.OnTimeTik -= Update_CurrentTimePoint;
+        GlobalTime_Controller.instance.OnTimeTik -= Update_npcPopulation;
     }
 
 
@@ -132,23 +136,18 @@ public class Location_Controller : MonoBehaviour
 
 
     // NPC Control
-    /// <summary>
-    /// Also updates current npc population (global time tik update event)
-    /// </summary>
-    private void Update_Current_MaxSpawn()
+    private void Update_CurrentTimePoint()
     {
         for (int i = 0; i < _data.maxSpawnTimePoints.Count; i++)
         {
-            if (_mainController.globalTime.currentTime != _data.maxSpawnTimePoints[i].timePoint) continue;
+            if (GlobalTime_Controller.instance.currentTime != _data.maxSpawnTimePoints[i].timePoint) continue;
 
             _currentTimePoint = _data.maxSpawnTimePoints[i];
-            Update_NPC_Population();
-
             return;
         }
     }
 
-    private void Update_NPC_Population()
+    private void Update_npcPopulation()
     {
         // get current npc and amount
         List<GameObject> currentCharacters = _mainController.currentCharacters;
@@ -185,18 +184,17 @@ public class Location_Controller : MonoBehaviour
     /// <summary>
     /// Update function for npc spawn and amount control
     /// </summary>
-    public void NPC_Spawn_Control()
+    public void Cycle_NPCSpawn()
     {
-        StartCoroutine(NPC_Spawn_Control_Coroutine());
+        StartCoroutine(Cycle_NPCSpawn_Coroutine());
     }
-    private IEnumerator NPC_Spawn_Control_Coroutine()
+    private IEnumerator Cycle_NPCSpawn_Coroutine()
     {
         while (true)
         {
             while (_mainController.currentCharacters.Count >= _currentTimePoint.maxSpawnAmount) yield return null;
 
-            float randIntervalTime = Random.Range(_data.spawnIntervalTimeRange.x, _data.spawnIntervalTimeRange.y);
-            yield return new WaitForSeconds(randIntervalTime);
+            yield return new WaitForSeconds(_data.spawnIntervalTime);
 
             // spawn
             GameObject spawnNPC = _mainController.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
