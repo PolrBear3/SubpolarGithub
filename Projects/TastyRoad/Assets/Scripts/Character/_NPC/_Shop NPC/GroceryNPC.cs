@@ -74,11 +74,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // action subscription
         WorldMap_Controller.OnNewLocation += Restock_Instant;
 
-        GlobalTime_Controller.DayTik_Update += Restock;
-        GlobalTime_Controller.TimeTik_Update += Restock_Unlocks;
+        GlobalTime_Controller.instance.OnDayTime += Restock;
+        GlobalTime_Controller.instance.OnTimeTik += Restock_Unlocks;
 
-        GlobalTime_Controller.TimeTik_Update += Collect_FoodBundles;
-        GlobalTime_Controller.TimeTik_Update += Set_QuestFood;
+        GlobalTime_Controller.instance.OnTimeTik += Collect_FoodBundles;
+        GlobalTime_Controller.instance.OnTimeTik += Set_QuestFood;
 
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
 
@@ -101,11 +101,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         WorldMap_Controller.OnNewLocation -= Restock_Instant;
 
-        GlobalTime_Controller.DayTik_Update -= Restock;
-        GlobalTime_Controller.TimeTik_Update -= Restock_Unlocks;
+        GlobalTime_Controller.instance.OnDayTime -= Restock;
+        GlobalTime_Controller.instance.OnTimeTik -= Restock_Unlocks;
 
-        GlobalTime_Controller.TimeTik_Update -= Collect_FoodBundles;
-        GlobalTime_Controller.TimeTik_Update -= Set_QuestFood;
+        GlobalTime_Controller.instance.OnTimeTik -= Collect_FoodBundles;
+        GlobalTime_Controller.instance.OnTimeTik -= Set_QuestFood;
 
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
 

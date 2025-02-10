@@ -66,7 +66,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // subscription
         WorldMap_Controller.OnNewLocation += Restock_New;
-        GlobalTime_Controller.TimeTik_Update += Restock_ArchivedStation;
+        GlobalTime_Controller.instance.OnTimeTik += Restock_ArchivedStation;
 
         _interactable.OnIInteract += Cancel_Action;
         _interactable.OnIInteract += Interact_FacePlayer;
@@ -94,7 +94,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // interaction subscription
         WorldMap_Controller.OnNewLocation -= Restock_New;
-        GlobalTime_Controller.TimeTik_Update -= Restock_ArchivedStation;
+        GlobalTime_Controller.instance.OnTimeTik -= Restock_ArchivedStation;
 
         _interactable.OnIInteract -= Cancel_Action;
         _interactable.OnIInteract -= Interact_FacePlayer;

@@ -33,7 +33,7 @@ public class PlantBox : Stack_Table, IInteractable
         if (foodIcon.currentData.Current_ConditionData(FoodCondition_Type.rotten) == null) return;
 
         _growthInProgress = true;
-        GlobalTime_Controller.TimeTik_Update += Update_Growth;
+        GlobalTime_Controller.instance.OnTimeTik += Update_Growth;
     }
 
     private new void OnDestroy()
@@ -42,7 +42,7 @@ public class PlantBox : Stack_Table, IInteractable
         stationController.detection.EnterEvent -= Update_AmountBar;
         stationController.detection.ExitEvent -= Update_AmountBar;
 
-        GlobalTime_Controller.TimeTik_Update -= Update_Growth;
+        GlobalTime_Controller.instance.OnTimeTik -= Update_Growth;
     }
 
 
@@ -119,7 +119,7 @@ public class PlantBox : Stack_Table, IInteractable
         if (PlayerFood_Plantable() == false) return;
 
         _growthInProgress = true;
-        GlobalTime_Controller.TimeTik_Update += Update_Growth;
+        GlobalTime_Controller.instance.OnTimeTik += Update_Growth;
 
         Swap_Food();
         Update_AmountBar();
@@ -145,7 +145,7 @@ public class PlantBox : Stack_Table, IInteractable
 
         // stop growth
         _growthInProgress = false;
-        GlobalTime_Controller.TimeTik_Update -= Update_Growth;
+        GlobalTime_Controller.instance.OnTimeTik -= Update_Growth;
 
         Update_AmountBar();
     }

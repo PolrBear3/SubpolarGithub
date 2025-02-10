@@ -41,12 +41,12 @@ public class CollectCard : MonoBehaviour, IInteractable
     {
         Set_RandomPickup();
 
-        GlobalTime_Controller.TimeTik_Update += Activate_DestroyTimeTik;
+        GlobalTime_Controller.instance.OnTimeTik += Activate_DestroyTimeTik;
     }
 
     private void OnDestroy()
     {
-        GlobalTime_Controller.TimeTik_Update -= Activate_DestroyTimeTik;
+        GlobalTime_Controller.instance.OnTimeTik -= Activate_DestroyTimeTik;
     }
 
 

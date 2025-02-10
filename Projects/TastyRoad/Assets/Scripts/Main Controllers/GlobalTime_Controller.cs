@@ -1,28 +1,40 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
 {
-    /// <summary>
-    /// Current time range is 0 ~ 12
-    /// </summary>
+    public static GlobalTime_Controller instance;
+
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private float _tikDelayTime;
+    [SerializeField][Range(0, 24)] private int _startingNightTime;
+
+
     private int _currentTime;
     public int currentTime => _currentTime;
 
-    [Header("")]
-    [SerializeField][Range(0, 100)] private float _tikTime;
-    private bool _isIncrease;
+    private bool _isNightTime;
 
-    public delegate void OnEvent();
-    public static event OnEvent TimeTik_Update;
-    public static event OnEvent DayTik_Update;
+
+    public Action OnTimeTik;
+
+    public Action OnDayTime;
+    public Action OnNightTime;
+
 
 
     // UnityEngine
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
-        GlobalTime_Update();
+        CycleTime();
     }
 
 
@@ -30,64 +42,54 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("GlobalTime_Controller/_currentTime", _currentTime);
-        ES3.Save("GlobalTime_Controller/_isIncrease", _isIncrease);
+        ES3.Save("GlobalTime_Controller/_isNightTime", _isNightTime);
     }
 
     public void Load_Data()
     {
         _currentTime = ES3.Load("GlobalTime_Controller/_currentTime", _currentTime);
-        _isIncrease = ES3.Load("GlobalTime_Controller/_isIncrease", _isIncrease);
+        _isNightTime = ES3.Load("GlobalTime_Controller/_isNightTime", _isNightTime);
     }
 
 
     //
-    private void GlobalTime_Update()
+    private void CycleTime()
     {
-        StartCoroutine(GlobalTime_Update_Coroutine());
+        StartCoroutine(CycleTime_Corountine());
     }
-    private IEnumerator GlobalTime_Update_Coroutine()
+    private IEnumerator CycleTime_Corountine()
     {
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
         while (true)
         {
-            yield return new WaitForSeconds(_tikTime);
+            yield return new WaitForSeconds(_tikDelayTime);
 
-            // increase check
-            if (_currentTime >= 12)
-            {
-                _isIncrease = false;
-
-                // after noon day tik dialog
-                DialogData dayDialog = new DialogData(dialog.datas[1].icon, "Current time phase is after noon");
-                dialog.Update_Dialog(dayDialog);
-            }
-            else if (_currentTime <= 0)
-            {
-                _isIncrease = true;
-
-                // before noon day tik dialog
-                DialogData nightDialog = new DialogData(dialog.datas[0].icon, "Current time phase is before noon");
-                dialog.Update_Dialog(nightDialog);
-            }
-
-            // value update
-            if (_isIncrease)
-            {
-                _currentTime++;
-            }
-            else
-            {
-                _currentTime--;
-            }
+            _currentTime = (_currentTime + 1) % 24;
+            OnTimeTik?.Invoke();
 
             Debug.Log(_currentTime);
 
-            // Time Tik Event
-            TimeTik_Update?.Invoke();
-
-            // Day Tik Event
-            if (_currentTime == 0) DayTik_Update?.Invoke();
+            Toggle_TimePhase();
         }
+    }
+
+    private void Toggle_TimePhase()
+    {
+        bool timePhaseToggle = _currentTime >= _startingNightTime;
+
+        if (_isNightTime == timePhaseToggle) return;
+        _isNightTime = timePhaseToggle;
+
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        if (_isNightTime)
+        {
+            OnNightTime?.Invoke();
+            dialog.Update_Dialog(1);
+
+            return;
+        }
+
+        OnDayTime?.Invoke();
+        dialog.Update_Dialog(0);
     }
 }

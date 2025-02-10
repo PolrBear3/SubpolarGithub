@@ -31,14 +31,14 @@ public class Location_Controller : MonoBehaviour
         _data.roamArea.color = Color.clear;
 
         Update_Current_MaxSpawn();
-        GlobalTime_Controller.TimeTik_Update += Update_Current_MaxSpawn;
+        GlobalTime_Controller.instance.OnTimeTik += Update_Current_MaxSpawn;
 
         NPC_Spawn_Control();
     }
 
     private void OnDestroy()
     {
-        GlobalTime_Controller.TimeTik_Update -= Update_Current_MaxSpawn;
+        GlobalTime_Controller.instance.OnTimeTik -= Update_Current_MaxSpawn;
     }
 
 

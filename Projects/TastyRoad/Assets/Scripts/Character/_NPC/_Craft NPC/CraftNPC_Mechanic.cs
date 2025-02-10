@@ -43,8 +43,8 @@ public class CraftNPC_Mechanic : CraftNPC
         // subscriptions
         npcController.mainController.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
 
-        GlobalTime_Controller.TimeTik_Update += Set_ToolBox;
-        GlobalTime_Controller.TimeTik_Update += Collect_ToolBox;
+        GlobalTime_Controller.instance.OnTimeTik += Set_ToolBox;
+        GlobalTime_Controller.instance.OnTimeTik += Collect_ToolBox;
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
@@ -61,8 +61,8 @@ public class CraftNPC_Mechanic : CraftNPC
         // subscriptions
         npcController.mainController.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
 
-        GlobalTime_Controller.TimeTik_Update -= Set_ToolBox;
-        GlobalTime_Controller.TimeTik_Update -= Collect_ToolBox;
+        GlobalTime_Controller.instance.OnTimeTik -= Set_ToolBox;
+        GlobalTime_Controller.instance.OnTimeTik -= Collect_ToolBox;
 
         ActionBubble_Interactable interactable = npcController.interactable;
 

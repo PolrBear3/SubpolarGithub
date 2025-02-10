@@ -40,7 +40,7 @@ public class MailBox : MonoBehaviour, IInteractable
         _detection.EnterEvent += Toggle_AmountBar;
         _detection.ExitEvent += Toggle_AmountBar;
 
-        GlobalTime_Controller.TimeTik_Update += Drop_CollectCard;
+        GlobalTime_Controller.instance.OnTimeTik += Drop_CollectCard;
     }
 
     private void OnDestroy()
@@ -51,7 +51,7 @@ public class MailBox : MonoBehaviour, IInteractable
         _detection.EnterEvent -= Toggle_AmountBar;
         _detection.ExitEvent -= Toggle_AmountBar;
 
-        GlobalTime_Controller.TimeTik_Update -= Drop_CollectCard;
+        GlobalTime_Controller.instance.OnTimeTik -= Drop_CollectCard;
     }
 
 
