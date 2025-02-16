@@ -2,61 +2,87 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trash : MonoBehaviour, IInteractable
+public class Trash : Stack_Table, IInteractable
 {
-    private Detection_Controller _detection;
+    [Header("")]
+    [SerializeField] private GameObject _rat;
 
-    private List<FoodData> _trashedFoodData = new();
 
-    // UnityEngine
-    private void Awake()
+    // MonoBehaviour
+    private new void Start()
     {
-        if (gameObject.TryGetComponent(out Detection_Controller detection)) { _detection = detection; }
+        base.Start();
+
+        stationController.Food_Icon().ShowIcon_LockToggle(true);
     }
+
 
     // IInteractable
-    public void Interact()
+    public new void Interact()
     {
         Trash_Food();
+        Empty_MaxAmount();
+
+        AmountBar_Toggle();
     }
 
-    public void Hold_Interact()
+    public new void Hold_Interact()
     {
+        Trash_AllFood();
+        Empty_MaxAmount();
 
+        AmountBar_Toggle();
     }
-
-    public void UnInteract()
-    {
-
-    }
-
 
 
     // Trash Food
-    private void Trash_Food()
+    private bool TrashFood_Available()
     {
-        FoodData_Controller playerFoodIcon = _detection.player.foodIcon;
+        FoodData_Controller playerFoodIcon = stationController.detection.player.foodIcon;
+        if (!playerFoodIcon.hasFood) return false;
 
-        if (playerFoodIcon.hasFood == true)
+        FoodData_Controller trashFoodIcon = stationController.Food_Icon();
+        if (trashFoodIcon.DataCount_Maxed()) return false;
+
+        return true;
+    }
+
+
+    private bool Trash_Food()
+    {
+        if (!TrashFood_Available()) return false;
+
+        FoodData_Controller playerFoodIcon = stationController.detection.player.foodIcon;
+        FoodData_Controller trashIcon = stationController.Food_Icon();
+
+        FoodData trashData = new(playerFoodIcon.currentData);
+
+        playerFoodIcon.Set_CurrentData(null);
+        playerFoodIcon.Show_Icon();
+        playerFoodIcon.Show_Condition();
+        playerFoodIcon.Toggle_SubDataBar(true);
+
+        trashIcon.Set_CurrentData(trashData);
+
+        return true;
+    }
+
+    private void Trash_AllFood()
+    {
+        int repeatAmount = stationController.detection.player.foodIcon.AllDatas().Count;
+
+        for (int i = 0; i < repeatAmount; i++)
         {
-            Save_TrashedFood_Data(playerFoodIcon.currentData);
-
-            playerFoodIcon.Set_CurrentData(null);
-            playerFoodIcon.Show_Icon();
-            playerFoodIcon.Show_Condition();
+            if (!Trash_Food()) return;
         }
     }
 
 
-
-    // Save Trashed Data
-    private void Save_TrashedFood_Data(FoodData data)
+    private void Empty_MaxAmount()
     {
-        _trashedFoodData.Add(data);
+        FoodData_Controller trashFoodIcon = stationController.Food_Icon();
+        if (!trashFoodIcon.DataCount_Maxed()) return;
 
-        if (_trashedFoodData.Count >= 11)
-        {
-            _trashedFoodData.RemoveAt(0);
-        }
+        trashFoodIcon.Update_AllDatas(null);
     }
 }

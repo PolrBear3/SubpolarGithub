@@ -490,11 +490,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
   _collectIndicator: {fileID: 9200125171288622632}
-  _foodOrderRate: 50
   _conditionRequestRate: 10
+  _bonusPayPercentage: 5
   _transferTime: 30
   _additionalTime: 3
-  _bonusPayPercentage: 5
 --- !u!114 &2236639740272532679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,6 +872,10 @@ PrefabInstance:
     - target: {fileID: 797686271449595940, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_Name
       value: Food Icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: _maxDataCount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: _iconTransparent

@@ -324,8 +324,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6611359413510040293}
   - {fileID: 100066585910003650}
+  - {fileID: 6611359413510040293}
   - {fileID: 3796178187905833690}
   - {fileID: 8891003516133280006}
   - {fileID: 7815865657518710556}
@@ -584,6 +584,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: {fileID: 0}
+  _iInteractable: {fileID: 0}
   _detection: {fileID: 8298693645448894692}
   _movement: {fileID: -7032971272813982881}
   _maintenance: {fileID: 4184550447876101353}

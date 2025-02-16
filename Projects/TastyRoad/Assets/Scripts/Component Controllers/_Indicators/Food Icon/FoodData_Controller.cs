@@ -61,7 +61,10 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField][Range(0, 100)] private int _maxAmount;
     public int maxAmount => _maxAmount;
 
+
     [SerializeField][Range(0, 100)] private int _tikCountValue;
+
+    private bool _tikCountLocked;
 
 
     // UnityEngine
@@ -241,9 +244,26 @@ public class FoodData_Controller : MonoBehaviour
 
 
     // Time Tik
+    public void Toggle_TikCount(bool toggle)
+    {
+        _tikCountLocked = !toggle;
+    }
+
     private void TimeTik_Update()
     {
-        _currentData.Update_TikCount(_tikCountValue);
+        if (_tikCountLocked)
+        {
+            TimeTikEvent?.Invoke();
+            return;
+        }
+
+        List<FoodData> allDatas = AllDatas();
+
+        foreach (FoodData data in allDatas)
+        {
+            data.Update_TikCount(_tikCountValue);
+        }
+        Update_AllDatas(allDatas);
 
         TimeTikEvent?.Invoke();
     }
@@ -260,17 +280,40 @@ public class FoodData_Controller : MonoBehaviour
         return false;
     }
 
+    public int FoodCount(Food_ScrObj countFood)
+    {
+        int foodCount = 0;
+
+        for (int i = 0; i < AllDatas().Count; i++)
+        {
+            if (AllDatas()[i].foodScrObj != countFood) continue;
+            foodCount++;
+        }
+
+        return foodCount;
+    }
+
 
     public bool DataCount_Maxed()
     {
         return AllDatas().Count >= _maxDataCount;
     }
 
+    public int Empty_DataCount()
+    {
+        int currentDataCount = AllDatas().Count;
+        int emptyDataCount = _maxDataCount - currentDataCount;
+
+        Mathf.Clamp(emptyDataCount, 0, _maxDataCount);
+
+        return emptyDataCount;
+    }
+
+
     public void SetMax_SubDataCount(int setValue)
     {
         _maxDataCount = setValue;
     }
-
 
     public void Add_SubData(FoodData subData)
     {

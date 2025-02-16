@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public interface IVehicleMenu
 {
+    public void Start_Menu();
+
     public bool MenuInteraction_Active();
     public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas();
 }
@@ -102,6 +104,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         _defaultPanelSprite = _menuPanel.sprite;
 
+        Start_AllMenus();
+
         VehicleMenu_Toggle(false);
     }
 
@@ -134,6 +138,16 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return false;
         if (currentMenu.MenuInteraction_Active()) return true;
         return false;
+    }
+
+    private void Start_AllMenus()
+    {
+        for (int i = 0; i < _menus.Count; i++)
+        {
+            if (!_menus[i].TryGetComponent(out IVehicleMenu menu)) continue;
+
+            menu.Start_Menu();
+        }
     }
 
 

@@ -16,7 +16,8 @@ public class Location_Controller : MonoBehaviour
     [SerializeField] private GameObject[] _locationSetEvents;
 
 
-    private MaxSpawn_TimePoint _currentTimePoint;
+    private int _currentPopulation;
+    private TimePhase_Population _maxPopulationData;
 
 
     // UnityEngine
@@ -30,19 +31,18 @@ public class Location_Controller : MonoBehaviour
         // Toggle Off All Roam Area Colors On Game Start
         _data.roamArea.color = Color.clear;
 
-        Update_CurrentTimePoint();
+        _maxPopulationData = _data.Max_PopulationData(GlobalTime_Controller.instance.currentTimePhase);
+
         Cycle_NPCSpawn();
 
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik += Update_CurrentTimePoint;
-        GlobalTime_Controller.instance.OnTimeTik += Update_npcPopulation;
+        GlobalTime_Controller.instance.OnTimeTik += Update_MaxPopulation;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik -= Update_CurrentTimePoint;
-        GlobalTime_Controller.instance.OnTimeTik -= Update_npcPopulation;
+        GlobalTime_Controller.instance.OnTimeTik -= Update_MaxPopulation;
     }
 
 
@@ -136,53 +136,73 @@ public class Location_Controller : MonoBehaviour
 
 
     // NPC Control
-    private void Update_CurrentTimePoint()
+    private List<NPC_Controller> Current_npcControllers()
     {
-        for (int i = 0; i < _data.maxSpawnTimePoints.Count; i++)
-        {
-            if (GlobalTime_Controller.instance.currentTime != _data.maxSpawnTimePoints[i].timePoint) continue;
-
-            _currentTimePoint = _data.maxSpawnTimePoints[i];
-            return;
-        }
-    }
-
-    private void Update_npcPopulation()
-    {
-        // get current npc and amount
         List<GameObject> currentCharacters = _mainController.currentCharacters;
         List<NPC_Controller> currentNPCs = new();
 
         for (int i = 0; i < currentCharacters.Count; i++)
         {
             if (!currentCharacters[i].TryGetComponent(out NPC_Controller npc)) continue;
+            if (npc.foodInteraction == null) continue;
+
             currentNPCs.Add(npc);
         }
 
+        return currentNPCs;
+    }
+
+
+    /// <summary>
+    /// for _maxPopulation data update
+    /// </summary>
+    private void Update_MaxPopulation()
+    {
+        TimePhase currentTimePhase = _data.Max_PopulationData(GlobalTime_Controller.instance.currentTimePhase).timePhase;
+
+        if (_maxPopulationData.timePhase == currentTimePhase) return;
+
+        _maxPopulationData = _data.Max_PopulationData(currentTimePhase);
+    }
+
+    /// <summary>
+    /// for leave (decrease)
+    /// </summary>
+    private void Decrease_npcPopulation()
+    {
+        List<NPC_Controller> npcs = Current_npcControllers();
+
         // if current npc amount is more than _currentMaxSpawn
-        int npcOverFlowCount = currentCharacters.Count - _currentTimePoint.maxSpawnAmount;
+        int npcOverFlowCount = npcs.Count - _maxPopulationData.maxPopulation;
+
         if (npcOverFlowCount <= 0) return;
 
         // current location roaming npc only leave
-        for (int i = 0; i < currentNPCs.Count; i++)
+        for (int i = 0; i < npcs.Count; i++)
         {
-            if (currentNPCs[i].foodInteraction == null) continue;
+            if (npcs[i].foodInteraction == null) continue;
 
-            NPC_Movement move = currentNPCs[i].movement;
+            NPC_Movement move = npcs[i].movement;
 
             if (move.currentRoamArea != _data.roamArea) continue;
-            if (move.isLeaving) continue;
-
-            move.Leave(0f);
+            if (npcOverFlowCount <= 0) break;
 
             npcOverFlowCount--;
-            if (npcOverFlowCount <= 0) break;
+
+            if (move.isLeaving)
+            {
+                npcOverFlowCount--;
+                continue;
+            }
+
+            npcOverFlowCount--;
+            move.Leave(0f);
         }
     }
 
 
     /// <summary>
-    /// Update function for npc spawn and amount control
+    /// for spawn
     /// </summary>
     public void Cycle_NPCSpawn()
     {
@@ -192,7 +212,13 @@ public class Location_Controller : MonoBehaviour
     {
         while (true)
         {
-            while (_mainController.currentCharacters.Count >= _currentTimePoint.maxSpawnAmount) yield return null;
+            while (Current_npcControllers().Count >= _maxPopulationData.maxPopulation)
+            {
+                Decrease_npcPopulation();
+
+                yield return new WaitForSeconds(1);
+                yield return null;
+            }
 
             yield return new WaitForSeconds(_data.spawnIntervalTime);
 

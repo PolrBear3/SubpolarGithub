@@ -13,21 +13,17 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     [Header("")]
-    [SerializeField][Range(0, 100)] private float _foodOrderRate;
     [SerializeField][Range(0, 100)] private float _conditionRequestRate;
+    [SerializeField][Range(0, 100)] private float _bonusPayPercentage;
 
     [Header("")]
     [SerializeField][Range(0, 300)] private int _transferTime;
     [SerializeField][Range(0, 100)] private int _additionalTime;
 
-    [Header("")]
-    [SerializeField][Range(0, 100)] private float _bonusPayPercentage;
-
 
     private int _foodOrderCount;
 
     private FoodData _transferData;
-
     private List<FoodData> _transferDatas = new();
 
     private bool _payAvailable;
@@ -106,6 +102,13 @@ public class NPC_FoodInteraction : MonoBehaviour
     {
         NPC_Movement movement = _controller.movement;
 
+        // check if food order time failed || tranfer complete
+        if (_foodOrderCount > 0 && _timeCoroutine == null && !_payAvailable)
+        {
+            movement.Leave(movement.Random_IntervalTime());
+            return;
+        }
+
         Location_Controller currentLocation = _controller.mainController.currentLocation;
         SpriteRenderer locationRoamArea = currentLocation.data.roamArea;
 
@@ -120,14 +123,46 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     // Set Food Order
-    private FoodData FoodOrder()
+    private FoodData New_FoodOrder()
     {
         List<Food_ScrObj> bookMarks = _controller.mainController.bookmarkedFoods;
         if (bookMarks.Count <= 0) return null;
 
-        return new FoodData(bookMarks[Random.Range(0, bookMarks.Count)]);
-    }
+        List<FoodWeight_Data> foodWeights = new();
+        float totalWeight = 0f;
 
+        FoodData_Controller foodIcon = _controller.foodIcon;
+
+        foreach (Food_ScrObj food in bookMarks)
+        {
+            float duplicatePenalty = 100f / foodIcon.maxDataCount * foodIcon.FoodCount(food);
+            float setWeight = Mathf.Clamp(100f - duplicatePenalty, 0f, 100f);
+
+            totalWeight += setWeight;
+            foodWeights.Add(new FoodWeight_Data(food, Mathf.RoundToInt(setWeight)));
+        }
+
+        float randValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0f;
+
+        while (foodWeights.Count > 0)
+        {
+            int randomIndex = Random.Range(0, foodWeights.Count);
+            FoodWeight_Data randomFood = foodWeights[randomIndex];
+
+            cumulativeWeight += randomFood.weight;
+
+            if (randValue > cumulativeWeight)
+            {
+                foodWeights.Remove(randomFood);
+                continue;
+            }
+
+            return new FoodData(randomFood.foodScrObj);
+        }
+
+        return null;
+    }
 
     private bool SetOrder_Active()
     {
@@ -153,14 +188,14 @@ public class NPC_FoodInteraction : MonoBehaviour
         FoodData_Controller foodIcon = _controller.foodIcon;
         Character_Data characterData = _controller.characterData;
 
-        float calculatedHunger = (100 - characterData.hungerLevel) / 100;
-        float foodOrderRate = _foodOrderRate / 100;
+        float hungerPercentage = Mathf.Clamp01((100 - characterData.hungerLevel) / 100f);
 
-        int maxOrders = Mathf.CeilToInt(calculatedHunger * foodIcon.maxDataCount * foodOrderRate);
+        int maxOrders = Mathf.CeilToInt(hungerPercentage * foodIcon.maxDataCount);
+        maxOrders = Mathf.Clamp(maxOrders, 0, foodIcon.maxDataCount);
 
         for (int i = 0; i < maxOrders; i++)
         {
-            FoodData setData = new(FoodOrder());
+            FoodData setData = new(New_FoodOrder());
             if (setData == null) continue;
 
             foodIcon.Set_CurrentData(setData);

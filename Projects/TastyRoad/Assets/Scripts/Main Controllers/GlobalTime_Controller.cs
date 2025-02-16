@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public enum TimePhase { Day, Night }
+
 public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
 {
     public static GlobalTime_Controller instance;
@@ -16,7 +19,8 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     private int _currentTime;
     public int currentTime => _currentTime;
 
-    private bool _isNightTime;
+    private TimePhase _currentTimePhase;
+    public TimePhase currentTimePhase => _currentTimePhase;
 
 
     public Action OnTimeTik;
@@ -42,13 +46,13 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("GlobalTime_Controller/_currentTime", _currentTime);
-        ES3.Save("GlobalTime_Controller/_isNightTime", _isNightTime);
+        ES3.Save("GlobalTime_Controller/_currentTimePhase", _currentTimePhase);
     }
 
     public void Load_Data()
     {
         _currentTime = ES3.Load("GlobalTime_Controller/_currentTime", _currentTime);
-        _isNightTime = ES3.Load("GlobalTime_Controller/_isNightTime", _isNightTime);
+        _currentTimePhase = ES3.Load("GlobalTime_Controller/_currentTimePhase", _currentTimePhase);
     }
 
 
@@ -74,14 +78,15 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
 
     private void Toggle_TimePhase()
     {
-        bool timePhaseToggle = _currentTime >= _startingNightTime;
+        TimePhase recentPhase = _currentTimePhase;
 
-        if (_isNightTime == timePhaseToggle) return;
-        _isNightTime = timePhaseToggle;
+        _currentTimePhase = (TimePhase)Convert.ToInt32(_currentTime >= _startingNightTime);
+
+        if (_currentTimePhase == recentPhase) return;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        if (_isNightTime)
+        if (_currentTimePhase == TimePhase.Night)
         {
             OnNightTime?.Invoke();
             dialog.Update_Dialog(1);

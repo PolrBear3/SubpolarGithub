@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 3074170813001202522}
   - component: {fileID: 3824135679872606243}
   - component: {fileID: -4096339114709284101}
+  - component: {fileID: 3019193634138335640}
   - component: {fileID: -6508325263318014687}
   - component: {fileID: -5428001685738594384}
-  - component: {fileID: 3019193634138335640}
+  - component: {fileID: 3520185296310609668}
   - component: {fileID: 1223891824540390070}
   m_Layer: 0
   m_Name: Fridge
@@ -41,6 +42,7 @@ Transform:
   m_Children:
   - {fileID: 7666728237551876698}
   - {fileID: 8273738825930080584}
+  - {fileID: 3781205976295299365}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2597302355250505212
@@ -238,6 +240,33 @@ MonoBehaviour:
         Data3: -911600471
         Data4: 1970102881
       Path: event:/Station SFX/Station_break
+  - _reference:
+      Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
+--- !u!114 &3019193634138335640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366090731837522239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectedprefabs: []
 --- !u!114 &-6508325263318014687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,9 +279,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: {fileID: 0}
+  _iInteractable: {fileID: 0}
   _detection: {fileID: 3019193634138335640}
   _movement: {fileID: -5428001685738594384}
-  _maintenance: {fileID: 0}
+  _maintenance: {fileID: 3520185296310609668}
   _stationAnimator: {fileID: 3074170813001202522}
   _itemDropper: {fileID: 0}
   _stationScrObj: {fileID: 11400000, guid: 533d860f69be7472e99b1a648377fcf5, type: 2}
@@ -269,7 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementArrows: {fileID: 6549519839148828657}
---- !u!114 &3019193634138335640
+--- !u!114 &3520185296310609668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,10 +309,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7366090731837522239}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
+  m_Script: {fileID: 11500000, guid: 445f8f028848a4ece8af41ca86d257c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectedprefabs: []
+  _controller: {fileID: -6508325263318014687}
+  _durabilityBreakIcon: {fileID: 9150957638827360907}
 --- !u!114 &1223891824540390070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +326,91 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f285d22b4c3d4bac8f0856970a32eeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _freezeDelayTime: 5
+--- !u!1 &9150957638827360907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3781205976295299365}
+  - component: {fileID: 3784194661286237055}
+  m_Layer: 0
+  m_Name: Durability Break Indication
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3781205976295299365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9150957638827360907}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.3125, y: -0.1875, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8419198045815295846}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &3784194661286237055
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9150957638827360907}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 1862457933
+  m_SortingLayer: 2
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 1482856902, guid: cbd6f1d6a6b4f463b8abe7a748b81fa9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &1554196994092775335
 PrefabInstance:
   m_ObjectHideFlags: 0

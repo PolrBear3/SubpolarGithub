@@ -28,11 +28,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // UnityEngine
-    private void Start()
-    {
-        _controller.vehicleController.OnAction2Input += Retrieve_PlayerFood;
-    }
-
     private void OnEnable()
     {
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
@@ -111,6 +106,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // IVehicleMenu
+    public void Start_Menu()
+    {
+        _controller.vehicleController.OnAction2Input += Retrieve_PlayerFood;
+    }
+
+
     public bool MenuInteraction_Active()
     {
         return false;
@@ -597,7 +598,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         FoodData_Controller playerFood = _controller.vehicleController.detection.player.foodIcon;
 
-        if (playerFood.hasFood == false) return;
+        if (playerFood.hasFood == false)
+        {
+            ActionBubble_Interactable interactable = _controller.vehicleController;
+
+            interactable.UnInteract();
+            return;
+        }
 
         int foodAmount = playerFood.AllDatas().Count;
 

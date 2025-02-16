@@ -16,7 +16,7 @@ public struct FoodWeight_Data
 }
 
 
-public enum FoodCondition_Type { sliced, heated, rotten }
+public enum FoodCondition_Type { sliced, heated, frozen, rotten }
 
 [System.Serializable]
 public class FoodCondition_Data
@@ -39,6 +39,7 @@ public class FoodCondition_Data
         this.level = level;
     }
 }
+
 
 [System.Serializable]
 public class FoodData

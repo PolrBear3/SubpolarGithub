@@ -55,18 +55,14 @@ MonoBehaviour:
     locationScrObj: {fileID: 11400000, guid: b33847ee9f3d94395b3f591b2e73fce7, type: 2}
     spawnRangeX: {x: -9, y: 9}
     spawnRangeY: {x: -4, y: -1}
-    spawnIntervalTimeRange: {x: 1, y: 3}
+    spawnIntervalTime: 1
     _screenArea: {fileID: 5633283144350890895}
     _roamArea: {fileID: 620701033008239444}
-    maxSpawnTimePoints:
-    - timePoint: 0
-      maxSpawnAmount: 4
-    - timePoint: 3
-      maxSpawnAmount: 6
-    - timePoint: 6
-      maxSpawnAmount: 8
-    - timePoint: 10
-      maxSpawnAmount: 10
+    populationData:
+    - timePhase: 0
+      maxPopulation: 10
+    - timePhase: 1
+      maxPopulation: 5
     _npcSkinOverrides:
     - {fileID: 22100000, guid: d793db324df1441af9ec826b924c1fc1, type: 2}
     - {fileID: 22100000, guid: c282bb5eb454848fc8d494310ff07989, type: 2}

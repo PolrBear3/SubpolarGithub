@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct MaxSpawn_TimePoint
+public struct TimePhase_Population
 {
-    [Range(0, 12)]
-    public int timePoint;
-    public int maxSpawnAmount;
+    public TimePhase timePhase;
+
+    [Range(0, 100)] public int maxPopulation;
 }
 
 [System.Serializable]
@@ -30,7 +30,7 @@ public class LocationData
     public SpriteRenderer roamArea => _roamArea;
 
     [Header("")]
-    [ES3NonSerializable] public List<MaxSpawn_TimePoint> maxSpawnTimePoints;
+    [ES3NonSerializable] public TimePhase_Population[] populationData;
 
     [SerializeField][ES3NonSerializable] private AnimatorOverrideController[] _npcSkinOverrides;
     public AnimatorOverrideController[] npcSkinOverrides => _npcSkinOverrides;
@@ -54,11 +54,11 @@ public class LocationData
 
         spawnIntervalTime = data.spawnIntervalTime;
 
-        maxSpawnTimePoints = data.maxSpawnTimePoints;
+        populationData = data.populationData;
     }
 
 
-    // Data
+    // Food and Station Datas
     public Food_ScrObj WeightRandom_Food(List<FoodWeight_Data> data)
     {
         if (data.Count <= 0) return null;
@@ -142,5 +142,19 @@ public class LocationData
         }
 
         return null;
+    }
+
+
+    // Time Phase Max Spawn Data
+    public TimePhase_Population Max_PopulationData(TimePhase timePhase)
+    {
+        for (int i = 0; i < populationData.Length; i++)
+        {
+            if (timePhase != populationData[i].timePhase) continue;
+
+            return populationData[i];
+        }
+
+        return populationData[0];
     }
 }

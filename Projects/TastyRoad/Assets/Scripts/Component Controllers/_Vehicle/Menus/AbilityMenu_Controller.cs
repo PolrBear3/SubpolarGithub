@@ -72,6 +72,12 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // IVehicleMenu
+    public void Start_Menu()
+    {
+
+    }
+
+
     public bool MenuInteraction_Active()
     {
         return false;
