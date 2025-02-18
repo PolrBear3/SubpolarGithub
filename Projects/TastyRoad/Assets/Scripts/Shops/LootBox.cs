@@ -99,8 +99,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     // Control
     private Vector2 Drop_SpawnPoint()
     {
-        Main_Controller main = _iInteractable.mainController;
-        Location_Controller currentLocation = main.currentLocation;
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
 
         List<Vector2> surroundingPositions = _positionClaimer.All_InteractPositions();
 
@@ -119,7 +118,6 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         if (_itemDropped) return;
         if (_lootDatas.Length <= 0) return;
 
-        Main_Controller main = _iInteractable.mainController;
         Vector2 dropPoint = Drop_SpawnPoint();
 
         if (dropPoint == (Vector2)transform.position) return;

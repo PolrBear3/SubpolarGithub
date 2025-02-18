@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class PrefabSpawner : MonoBehaviour, IInteractable
 {
-    private Main_Controller _mainController;
-    public Main_Controller mainController => _mainController;
-
-
     [Header("")]
     [SerializeField] private GameObject _spawnPrefab;
 
@@ -17,13 +13,6 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 
     [Header("")]
     [SerializeField] private Vector2[] _spawnPositions;
-
-
-    // UnityEngine
-    private void Awake()
-    {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
 
 
     // IInteractable
@@ -65,7 +54,7 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
         if (spawnPrefab.TryGetComponent(out Station_Movement movement) == false)
         {
             // set as a child of current location file
-            spawnPrefab.transform.SetParent(_mainController.otherFile);
+            spawnPrefab.transform.SetParent(Main_Controller.instance.otherFile);
             return spawnPrefab;
         }
 
@@ -89,7 +78,7 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 
     private void Random_Spawn()
     {
-        Location_Controller location = _mainController.currentLocation;
+        Location_Controller location = Main_Controller.instance.currentLocation;
 
         for (int i = 0; i < Spawn_Amount(); i++)
         {
@@ -107,7 +96,7 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
 
     private void Assign_Spawn()
     {
-        Location_Controller location = _mainController.currentLocation;
+        Location_Controller location = Main_Controller.instance.currentLocation;
 
         int spawnCount = Spawn_Amount();
 

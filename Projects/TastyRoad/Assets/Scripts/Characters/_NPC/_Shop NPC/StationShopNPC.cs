@@ -59,7 +59,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         Toggle_RestockBar();
 
         // untrack
-        _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
+        Main_Controller.instance.UnTrack_CurrentCharacter(gameObject);
 
         // event subscriptions
         _npcController.movement.TargetPosition_UpdateEvent += CarryObject_DirectionUpdate;
@@ -430,7 +430,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private ItemSlot_Data Dispose_SlotData()
     {
-        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slots = menu.controller.slotsController;
 
         List<ItemSlot_Data> bookmarkedDatas = slots.BookMarked_Datas(menu.currentDatas, false);
@@ -528,7 +528,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         }
 
         // get all locked bookmark stations
-        StationMenu_Controller menu = _npcController.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slots = menu.controller.slotsController;
 
         List<ItemSlot_Data> bookmarkedData = slots.BookMarked_Datas(menu.currentDatas, true);
@@ -549,7 +549,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // get all locked bookmark stations
-        VehicleMenu_Controller menu = _npcController.mainController.currentVehicle.menu;
+        VehicleMenu_Controller menu = Main_Controller.instance.currentVehicle.menu;
         StationMenu_Controller stationMenu = menu.stationMenu;
 
         ItemSlots_Controller slots = stationMenu.controller.slotsController;

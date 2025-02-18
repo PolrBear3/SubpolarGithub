@@ -10,9 +10,6 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
     private PlayerInput _playerInput;
 
-    private Main_Controller _mainController;
-    public Main_Controller mainController => _mainController;
-
 
     [Header("")]
     [SerializeField] private Player_Movement _movement;
@@ -51,11 +48,10 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Awake()
     {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-        _mainController.Track_CurrentCharacter(gameObject);
-
         _sr = gameObject.GetComponent<SpriteRenderer>();
         _playerInput = gameObject.GetComponent<PlayerInput>();
+
+        Main_Controller.instance.Track_CurrentCharacter(gameObject);
     }
 
     private void Start()

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Custom_PositionClaimer : MonoBehaviour
 {
-    private Main_Controller _main;
-
     [Header("")]
     [SerializeField] private Vector2[] _surroundPositions;
     [SerializeField] private Vector2[] _interactPositions;
@@ -19,8 +17,6 @@ public class Custom_PositionClaimer : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-
         if (_unClaimOnStart) return;
 
         Claim_CurrentPositions();
@@ -91,10 +87,12 @@ public class Custom_PositionClaimer : MonoBehaviour
 
     public bool CurrentPositions_Claimed()
     {
+        Main_Controller main = Main_Controller.instance;
+
         foreach (Vector2 position in Current_Positions())
         {
-            Vector2 snapPos = Main_Controller.SnapPosition(position);
-            if (_main.Position_Claimed(snapPos) == false) continue;
+            Vector2 snapPos = main.SnapPosition(position);
+            if (main.Position_Claimed(snapPos) == false) continue;
 
             return true;
         }
@@ -104,14 +102,16 @@ public class Custom_PositionClaimer : MonoBehaviour
 
     public Vector2 Claim_CurrentPositions()
     {
+        Main_Controller main = Main_Controller.instance;
+
         List<Vector2> snapPositions = new();
 
         foreach (Vector2 position in Current_Positions())
         {
-            Vector2 snapPos = Main_Controller.SnapPosition(position);
+            Vector2 snapPos = main.SnapPosition(position);
             snapPositions.Add(snapPos);
 
-            _main.Claim_Position(snapPos);
+            main.Claim_Position(snapPos);
         }
 
         return snapPositions[snapPositions.Count / 2];
@@ -119,10 +119,12 @@ public class Custom_PositionClaimer : MonoBehaviour
 
     public void UnClaim_CurrentPositions()
     {
+        Main_Controller main = Main_Controller.instance;
+
         foreach (Vector2 position in Current_Positions())
         {
-            Vector2 snapPos = Main_Controller.SnapPosition(position);
-            _main.UnClaim_Position(snapPos);
+            Vector2 snapPos = main.SnapPosition(position);
+            main.UnClaim_Position(snapPos);
         }
     }
 }

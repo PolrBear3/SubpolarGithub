@@ -16,6 +16,14 @@ public class Station_Controller : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private Animator _stationAnimator;
+    public Animator stationAnmiator => _stationAnimator;
+
+    [SerializeField] private BasicAnimation_Controller _animController;
+    public BasicAnimation_Controller animController => _animController;
+
+
+    [Header("")]
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
 
@@ -25,22 +33,21 @@ public class Station_Controller : MonoBehaviour
     [SerializeField] private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
 
+
+    [Header("")]
     [SerializeField] private Station_Movement _movement;
     public Station_Movement movement => _movement;
 
     [SerializeField] private Station_Maintenance _maintenance;
     public Station_Maintenance maintenance => _maintenance;
 
-    [SerializeField] private Animator _stationAnimator;
-    public Animator stationAnmiator => _stationAnimator;
-
-    [SerializeField] private ItemDropper _itemDropper;
-    public ItemDropper itemDropper => _itemDropper;
+    [SerializeField] private Station_ScrObj _stationScrObj;
+    public Station_ScrObj stationScrObj => _stationScrObj;
 
 
     [Header("")]
-    [SerializeField] private Station_ScrObj _stationScrObj;
-    public Station_ScrObj stationScrObj => _stationScrObj;
+    [SerializeField] private ItemDropper _itemDropper;
+    public ItemDropper itemDropper => _itemDropper;
 
 
     private StationData _data;
@@ -107,13 +114,11 @@ public class Station_Controller : MonoBehaviour
     {
         if (toggleOn == true)
         {
-            _stationAnimator.enabled = true;
             _stationAnimator.Play("TransparencyBlinker_blink");
             return;
         }
 
-        _stationAnimator.enabled = false;
-        _spriteRenderer.color = Color.white;
+        _stationAnimator.Play("stop");
     }
     public void RestrictionBlink_Toggle(bool toggleOn)
     {

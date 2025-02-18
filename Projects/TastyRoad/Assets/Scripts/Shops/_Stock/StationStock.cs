@@ -77,7 +77,7 @@ public class StationStock : MonoBehaviour
             float discountValue = 1f - (_discountPercentage / 100f);
             price = Mathf.RoundToInt(price * discountValue);
         }
-        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=56>";
+        string currentAmountString = "\nyou have " + Main_Controller.instance.GoldenNugget_Amount() + " <sprite=56>";
         string dialogInfo = price + " <sprite=56> to purchase." + currentAmountString;
 
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
@@ -125,15 +125,17 @@ public class StationStock : MonoBehaviour
             price = Mathf.RoundToInt(price * discountValue);
         }
 
+        Main_Controller main = Main_Controller.instance;
+
         // pay calculation
-        if (_interactable.mainController.GoldenNugget_Amount() < price)
+        if (main.GoldenNugget_Amount() < price)
         {
             // Not Enough nuggets to purchase!
             dialog.Update_Dialog(0);
             return;
         }
 
-        StationMenu_Controller stationMenu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
 
         bool slotFull = slotsController.Empty_SlotData(stationMenu.currentDatas) == null;

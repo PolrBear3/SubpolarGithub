@@ -357,7 +357,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
 
         // main data update
-        Main_Controller main = _controller.vehicleController.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         if (currentSlot.data.bookMarked == true)
         {
@@ -473,7 +473,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 _currentDatas[i][j] = new(archiveData);
 
                 // lock toggle according to cooked food
-                Data_Controller dataController = _controller.vehicleController.mainController.dataController;
+                Data_Controller dataController = Main_Controller.instance.dataController;
                 _currentDatas[i][j].isLocked = !dataController.CookedFood(food);
 
                 _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
@@ -664,7 +664,7 @@ public class ArchiveMenu_Controller_Controller_Inspector : Editor
                 menu.Unlock_FoodIngredient(archiveFood);
             }
 
-            bool rawFood = menu.controller.vehicleController.mainController.dataController.Is_RawFood(archiveFood);
+            bool rawFood = Main_Controller.instance.dataController.Is_RawFood(archiveFood);
             menu.Toggle_DataLock(menu.Archive_Food(archiveFood), rawFood || !menu.FoodIngredient_Unlocked(archiveFood));
         }
 

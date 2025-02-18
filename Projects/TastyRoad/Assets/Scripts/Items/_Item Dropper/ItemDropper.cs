@@ -29,7 +29,7 @@ public class ItemDropper : MonoBehaviour
     // All Drops Control
     private GameObject SnapPosition_Spawn(GameObject spawnItem, Vector2 spawnPosition)
     {
-        Vector2 spawnSnapPos = Main_Controller.SnapPosition(spawnPosition);
+        Vector2 spawnSnapPos = Main_Controller.instance.SnapPosition(spawnPosition);
 
         if (_main.Position_Claimed(spawnSnapPos)) return null;
 

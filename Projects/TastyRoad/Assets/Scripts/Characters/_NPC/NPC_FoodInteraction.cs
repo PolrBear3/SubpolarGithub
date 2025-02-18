@@ -109,7 +109,9 @@ public class NPC_FoodInteraction : MonoBehaviour
             return;
         }
 
-        Location_Controller currentLocation = _controller.mainController.currentLocation;
+        Main_Controller main = Main_Controller.instance;
+
+        Location_Controller currentLocation = main.currentLocation;
         SpriteRenderer locationRoamArea = currentLocation.data.roamArea;
 
         if (_controller.foodIcon.hasFood == false)
@@ -118,14 +120,14 @@ public class NPC_FoodInteraction : MonoBehaviour
             return;
         }
 
-        movement.Free_Roam(_controller.mainController.currentVehicle.interactArea, 1f);
+        movement.Free_Roam(main.currentVehicle.interactArea, 1f);
     }
 
 
     // Set Food Order
     private FoodData New_FoodOrder()
     {
-        List<Food_ScrObj> bookMarks = _controller.mainController.bookmarkedFoods;
+        List<Food_ScrObj> bookMarks = Main_Controller.instance.bookmarkedFoods;
         if (bookMarks.Count <= 0) return null;
 
         List<FoodWeight_Data> foodWeights = new();
@@ -175,7 +177,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         // check if additional food orders are left
         if (_controller.foodIcon.AllDatas().Count > 0) return false;
 
-        List<Food_ScrObj> bookMarks = _controller.mainController.bookmarkedFoods;
+        List<Food_ScrObj> bookMarks = Main_Controller.instance.bookmarkedFoods;
         if (bookMarks.Count <= 0) return false;
 
         return true;
@@ -201,7 +203,7 @@ public class NPC_FoodInteraction : MonoBehaviour
             foodIcon.Set_CurrentData(setData);
             _foodOrderCount++;
 
-            if (Main_Controller.Percentage_Activated(_conditionRequestRate) == false) continue;
+            if (Main_Controller.instance.Percentage_Activated(_conditionRequestRate) == false) continue;
 
             FoodCondition_Type randCondition = (FoodCondition_Type)Random.Range(0, 2);
             int randLevel = Random.Range(1, 4);
@@ -373,7 +375,7 @@ public class NPC_FoodInteraction : MonoBehaviour
     {
         if (_payAvailable == false) return;
 
-        Main_Controller main = _controller.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         // food menu max slots capacity
         // if (main.AddAvailable_GoldenNuggets() < Set_Payment()) return;

@@ -4,19 +4,12 @@ using UnityEngine;
 
 public class Environment_Movement : MonoBehaviour
 {
-    private Main_Controller _mainController;
-
     private Transform _playerPosition;
     [SerializeField] private float farDistance;
 
 
 
     // UnityEngine
-    private void Awake()
-    {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
-
     private void Start()
     {
         Get_PlayerPosition();
@@ -32,7 +25,7 @@ public class Environment_Movement : MonoBehaviour
     // Settings
     private void Get_PlayerPosition()
     {
-        List<GameObject> currentCharacters = _mainController.currentCharacters;
+        List<GameObject> currentCharacters = Main_Controller.instance.currentCharacters;
 
         for (int i = 0; i < currentCharacters.Count; i++)
         {

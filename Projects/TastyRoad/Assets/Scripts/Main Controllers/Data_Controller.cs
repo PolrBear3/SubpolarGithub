@@ -15,6 +15,13 @@ public interface ISignal
     void Signal();
 }
 
+[System.Serializable]
+public class Multiple_PositionData
+{
+    [SerializeField] private Vector2[] _positionData;
+    public Vector2[] positionData => _positionData;
+}
+
 public class Data_Controller : MonoBehaviour
 {
     [Header("")]
@@ -29,35 +36,13 @@ public class Data_Controller : MonoBehaviour
     [SerializeField] private Food_ScrObj _goldenNugget;
     public Food_ScrObj goldenNugget => _goldenNugget;
 
+    [Header("")]
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
 
-
-    // Check if State Data Matches (checks if visitor data matches home data)
-    public bool FoodCondition_DataMatch(List<FoodCondition_Data> visitorData, List<FoodCondition_Data> homeData)
-    {
-        // state count match check
-        if (visitorData.Count != homeData.Count) return false;
-
-        int matchCount = homeData.Count;
-
-        for (int i = 0; i < visitorData.Count; i++)
-        {
-            for (int j = 0; j < homeData.Count; j++)
-            {
-                // type check 
-                if (visitorData[i].type != homeData[j].type) continue;
-                // level check
-                if (visitorData[i].level != homeData[j].level) continue;
-
-                // match found !
-                matchCount--;
-            }
-        }
-
-        if (matchCount > 0) return false;
-        else return true;
-    }
+    [Header("")]
+    [SerializeField] private Multiple_PositionData[] _positionDatas;
+    public Multiple_PositionData[] positionDatas => _positionDatas;
 
 
     // Get World and Location
@@ -216,6 +201,35 @@ public class Data_Controller : MonoBehaviour
 
 
     // Get Cooked Food
+    /// <summary>
+    /// Check if State Data Matches (checks if visitor data matches home data)
+    /// </summary>
+    public bool FoodCondition_DataMatch(List<FoodCondition_Data> visitorData, List<FoodCondition_Data> homeData)
+    {
+        // state count match check
+        if (visitorData.Count != homeData.Count) return false;
+
+        int matchCount = homeData.Count;
+
+        for (int i = 0; i < visitorData.Count; i++)
+        {
+            for (int j = 0; j < homeData.Count; j++)
+            {
+                // type check 
+                if (visitorData[i].type != homeData[j].type) continue;
+                // level check
+                if (visitorData[i].level != homeData[j].level) continue;
+
+                // match found !
+                matchCount--;
+            }
+        }
+
+        if (matchCount > 0) return false;
+        else return true;
+    }
+
+
     public Food_ScrObj CookedFood()
     {
         return cookedFoods[Random.Range(0, cookedFoods.Count)];
@@ -312,5 +326,22 @@ public class Data_Controller : MonoBehaviour
         }
 
         return cookedFood;
+    }
+
+
+    // Get Position Data
+    public List<Vector2> Centered_PositionDatas(Vector2 centerPos, int dataNum)
+    {
+        dataNum = Mathf.Clamp(dataNum, 0, _positionDatas.Length - 1);
+
+        Vector2[] dataPositions = _positionDatas[dataNum].positionData;
+        List<Vector2> centeredPositions = new();
+
+        foreach (Vector2 pos in dataPositions)
+        {
+            centeredPositions.Add(centerPos + pos);
+        }
+
+        return centeredPositions;
     }
 }

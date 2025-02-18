@@ -77,7 +77,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
         if (playerIcon.DataCount_Maxed()) return;
 
-        ArchiveMenu_Controller archive = _detection.player.mainController.currentVehicle.menu.archiveMenu;
+        ArchiveMenu_Controller archive = Main_Controller.instance.currentVehicle.menu.archiveMenu;
 
         archive.Toggle_DataLock(archive.Archive_Food(_foodIcon.currentData.foodScrObj), true);
 
@@ -121,7 +121,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
     private void Activate_DestroyTimeTik()
     {
         _currentTikCount++;
-        Main_Controller.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
+        Main_Controller.instance.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
 
         if (_currentTikCount < _destroyTikCount) return;
         Destroy(gameObject, 0.1f);

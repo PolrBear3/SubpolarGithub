@@ -26,7 +26,7 @@ public class CollectJar : MonoBehaviour
         Collect(_controller.movement.enabled == false);
 
         // subscriptions
-        Main_Controller.OnFoodBookmark += Collect;
+        Main_Controller.instance.OnFoodBookmark += Collect;
         _controller.movement.OnLoadPosition += Collect;
 
         Detection_Controller detection = _controller.detection;
@@ -47,7 +47,7 @@ public class CollectJar : MonoBehaviour
         Retrieve();
 
         // subscriptions
-        Main_Controller.OnFoodBookmark -= Collect;
+        Main_Controller.instance.OnFoodBookmark -= Collect;
         _controller.movement.OnLoadPosition -= Collect;
 
         Detection_Controller detection = _controller.detection;

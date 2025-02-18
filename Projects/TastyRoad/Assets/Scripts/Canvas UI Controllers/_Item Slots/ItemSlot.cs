@@ -78,14 +78,16 @@ public class ItemSlot : MonoBehaviour
 
         _data.isLocked = isLock;
 
+        Main_Controller main = Main_Controller.instance;
+
         // transparency control
         if (_data.isLocked == true)
         {
-            Main_Controller.Change_ImageAlpha(_iconImage, _transparentValue);
+            main.Change_ImageAlpha(_iconImage, _transparentValue);
         }
         else
         {
-            Main_Controller.Change_ImageAlpha(_iconImage, 1f);
+            main.Change_ImageAlpha(_iconImage, 1f);
         }
     }
 

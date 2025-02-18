@@ -5,10 +5,6 @@ using UnityEngine.InputSystem;
 
 public class NPC_Controller : MonoBehaviour
 {
-    private Main_Controller _mainController;
-    public Main_Controller mainController => _mainController;
-
-
     [Header("")]
     [SerializeField] private Character_Data _characterData;
     public Character_Data characterData => _characterData;
@@ -51,12 +47,11 @@ public class NPC_Controller : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-        _mainController.Track_CurrentCharacter(gameObject);
+        Main_Controller.instance.Track_CurrentCharacter(gameObject);
     }
 
     private void OnDestroy()
     {
-        _mainController.UnTrack_CurrentCharacter(gameObject);
+        Main_Controller.instance.UnTrack_CurrentCharacter(gameObject);
     }
 }

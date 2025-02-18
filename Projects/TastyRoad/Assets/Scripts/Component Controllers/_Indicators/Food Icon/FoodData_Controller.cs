@@ -371,7 +371,7 @@ public class FoodData_Controller : MonoBehaviour
 
         if (_iconShowLocked == true || _hasFood == false) return;
 
-        Main_Controller.Change_SpriteAlpha(_foodIcon, transparencyValue);
+        Main_Controller.instance.Change_SpriteAlpha(_foodIcon, transparencyValue);
     }
 
     public void Show_EatIcon()

@@ -61,7 +61,7 @@ public class Station_Movement : MonoBehaviour
         if (_rigidBody.velocity != Vector2.zero) return;
 
         Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
-        transform.position = Main_Controller.SnapPosition(transform.position, vehicle.interactArea.bounds);
+        transform.position = Main_Controller.instance.SnapPosition(transform.position, vehicle.interactArea.bounds);
     }
 
 
@@ -70,7 +70,7 @@ public class Station_Movement : MonoBehaviour
     /// </returns>
     public bool PositionSet_Available()
     {
-        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+        Vector2 snapPosition = Main_Controller.instance.SnapPosition(transform.position);
         if (_stationController.mainController.Position_Claimed(snapPosition)) return false;
 
         Location_Controller location = _stationController.mainController.currentLocation;
@@ -112,7 +112,7 @@ public class Station_Movement : MonoBehaviour
     /// </summary>
     public void Load_Position()
     {
-        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+        Vector2 snapPosition = Main_Controller.instance.SnapPosition(transform.position);
 
         _stationController.Action1_Event -= Set_Position;
         _stationController.PlayerInput_Activation(false);
@@ -131,7 +131,7 @@ public class Station_Movement : MonoBehaviour
 
     private void MathRound_Snap_Position()
     {
-        Vector2 snapPosition = Main_Controller.SnapPosition(transform.position);
+        Vector2 snapPosition = Main_Controller.instance.SnapPosition(transform.position);
 
         transform.localPosition = snapPosition;
         _stationController.mainController.Claim_Position(snapPosition);

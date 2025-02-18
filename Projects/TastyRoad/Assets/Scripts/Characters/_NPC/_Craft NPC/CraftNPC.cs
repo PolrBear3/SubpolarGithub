@@ -11,7 +11,7 @@ public class CraftNPC : MonoBehaviour
 
     [Header("")]
     [SerializeField] private NPC_Controller _npcController;
-    public NPC_Controller npcController => _npcController;
+    public NPC_Controller main => _npcController;
 
 
     [Header("")]
@@ -129,7 +129,7 @@ public class CraftNPC : MonoBehaviour
     // Main Interactions
     private void Pay()
     {
-        Food_ScrObj nugget = _npcController.mainController.dataController.goldenNugget;
+        Food_ScrObj nugget = Main_Controller.instance.dataController.goldenNugget;
         FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
 
         if (playerIcon.Is_SameFood(nugget) == false) return;
@@ -155,7 +155,7 @@ public class CraftNPC : MonoBehaviour
 
         if (foodIcon.DataCount_Maxed()) return;
 
-        Food_ScrObj nugget = _npcController.mainController.dataController.goldenNugget;
+        Food_ScrObj nugget = Main_Controller.instance.dataController.goldenNugget;
         FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
 
         if (playerIcon.hasFood == false) return;

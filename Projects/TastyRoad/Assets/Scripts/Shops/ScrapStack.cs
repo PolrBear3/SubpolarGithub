@@ -98,7 +98,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
         int vehicleAmount = slotsController.StationAmount(menu.currentDatas, _scrap);
@@ -131,7 +131,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        StationMenu_Controller menu = _interactable.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
         if (slotsController.Empty_SlotData(menu.currentDatas) == null)

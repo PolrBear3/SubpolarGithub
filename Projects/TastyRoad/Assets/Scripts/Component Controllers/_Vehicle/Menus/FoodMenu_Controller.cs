@@ -518,12 +518,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private List<Transform> Available_ExportPositions()
     {
-        Main_Controller main = _controller.vehicleController.mainController;
         List<Transform> exportPositions = new();
 
         for (int i = 0; i < _exportIndicators.Length; i++)
         {
-            if (main.Position_Claimed(_exportIndicators[i].position)) continue;
+            if (Main_Controller.instance.Position_Claimed(_exportIndicators[i].position)) continue;
             exportPositions.Add(_exportIndicators[i]);
         }
 
@@ -560,12 +559,11 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             return;
         }
 
-        // get vehicle 
-        Vehicle_Controller vehicle = _controller.vehicleController;
+        Main_Controller main = Main_Controller.instance;
 
         // spawn and track food box
-        Station_Controller station = vehicle.mainController.Spawn_Station(_foodBox, Available_ExportPosition());
-        vehicle.mainController.Claim_Position(station.transform.position);
+        Station_Controller station = main.Spawn_Station(_foodBox, Available_ExportPosition());
+        main.Claim_Position(station.transform.position);
 
         // assign exported food to food box
         FoodData cursorFood = new(currentCursorData.currentFood);

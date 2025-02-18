@@ -41,12 +41,12 @@ public class CraftNPC_Mechanic : CraftNPC
         Subscribe_OnSave(Save_Data);
 
         // subscriptions
-        npcController.mainController.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
+        Main_Controller.instance.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
 
         GlobalTime_Controller.instance.OnTimeTik += Set_ToolBox;
         GlobalTime_Controller.instance.OnTimeTik += Collect_ToolBox;
 
-        ActionBubble_Interactable interactable = npcController.interactable;
+        ActionBubble_Interactable interactable = main.interactable;
 
         interactable.OnHoldIInteract += Set_ToolBox;
 
@@ -59,12 +59,12 @@ public class CraftNPC_Mechanic : CraftNPC
         base.OnDestroy();
 
         // subscriptions
-        npcController.mainController.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
+        Main_Controller.instance.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
 
         GlobalTime_Controller.instance.OnTimeTik -= Set_ToolBox;
         GlobalTime_Controller.instance.OnTimeTik -= Collect_ToolBox;
 
-        ActionBubble_Interactable interactable = npcController.interactable;
+        ActionBubble_Interactable interactable = main.interactable;
 
         interactable.OnHoldIInteract -= Set_ToolBox;
 
@@ -77,13 +77,13 @@ public class CraftNPC_Mechanic : CraftNPC
     private void Save_Data()
     {
         ES3.Save("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount);
-        ES3.Save("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", npcController.foodIcon.AllDatas());
+        ES3.Save("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", main.foodIcon.AllDatas());
     }
 
     private void Load_Data()
     {
         nuggetBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount));
-        npcController.foodIcon.Update_AllDatas(ES3.Load("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", npcController.foodIcon.AllDatas()));
+        main.foodIcon.Update_AllDatas(ES3.Load("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", main.foodIcon.AllDatas()));
     }
 
 
@@ -92,7 +92,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         Toggle_AmountBars();
 
-        ActionBubble_Interactable interactable = npcController.interactable;
+        ActionBubble_Interactable interactable = main.interactable;
         Action_Bubble bubble = interactable.bubble;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
@@ -120,12 +120,13 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         if (_droppedToolBox != null) return;
 
-        Vector2 dropPos = Main_Controller.SnapPosition(transform.position);
+        Main_Controller main = Main_Controller.instance;
+        Vector2 dropPos = main.SnapPosition(transform.position);
 
-        if (npcController.mainController.Position_Claimed(dropPos)) return;
+        if (main.Position_Claimed(dropPos)) return;
 
         GameObject drop = Instantiate(_toolBox, dropPos, quaternion.identity);
-        drop.transform.SetParent(npcController.mainController.otherFile);
+        drop.transform.SetParent(main.otherFile);
 
         _droppedToolBox = drop.GetComponent<ActionSelector>();
 
@@ -145,7 +146,9 @@ public class CraftNPC_Mechanic : CraftNPC
 
         if (nuggetBar.Is_MaxAmount() == false) return false;
 
-        Main_Controller main = npcController.mainController;
+        Main_Controller main = Main_Controller.instance;
+
+        Location_Controller location = main.currentLocation;
         Vehicle_Controller vehicle = main.currentVehicle;
 
         List<Vector2> surroundPositions = vehicle.positionClaimer.All_SurroundPositions();
@@ -153,6 +156,8 @@ public class CraftNPC_Mechanic : CraftNPC
         for (int i = 0; i < surroundPositions.Count; i++)
         {
             if (main.Position_Claimed(surroundPositions[i])) continue;
+            if (location.Restricted_Position(surroundPositions[i])) continue;
+
             return true;
         }
 
@@ -161,7 +166,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private Vector2 ToolBox_SetPosition()
     {
-        Main_Controller main = npcController.mainController;
+        Main_Controller main = Main_Controller.instance;
         Vehicle_Controller vehicle = main.currentVehicle;
 
         List<Vector2> surroundPositions = vehicle.positionClaimer.All_SurroundPositions();
@@ -179,19 +184,19 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         if (ToolBox_SetAvailable() == false) return;
 
-        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
         if (vehicle.movement.onBoard) return;
 
         Set_Coroutine(StartCoroutine(Set_ToolBox_Coroutine()));
 
         actionTimer.Toggle_RunAnimation(true);
-        npcController.interactable.LockInteract(true);
+        main.interactable.LockInteract(true);
 
         Toggle_AmountBars();
     }
     private IEnumerator Set_ToolBox_Coroutine()
     {
-        NPC_Movement movement = npcController.movement;
+        NPC_Movement movement = main.movement;
         Vector2 setPos = ToolBox_SetPosition();
 
         movement.Stop_FreeRoam();
@@ -209,7 +214,7 @@ public class CraftNPC_Mechanic : CraftNPC
             yield return null;
         }
 
-        if (npcController.mainController.Position_Claimed(setPos))
+        if (Main_Controller.instance.Position_Claimed(setPos))
         {
             Set_ToolBox();
 
@@ -221,7 +226,7 @@ public class CraftNPC_Mechanic : CraftNPC
         movement.Free_Roam(0);
 
         actionTimer.Toggle_RunAnimation(false);
-        npcController.interactable.LockInteract(false);
+        main.interactable.LockInteract(false);
 
         Set_Coroutine(null);
         Toggle_AmountBars();
@@ -232,7 +237,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private bool ToolBox_NearbyVehicle()
     {
-        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
         List<Vector2> allPositions = vehicle.positionClaimer.All_SurroundPositions();
 
         for (int i = allPositions.Count - 1; i >= 0; i--)
@@ -264,13 +269,13 @@ public class CraftNPC_Mechanic : CraftNPC
         Set_Coroutine(StartCoroutine(Collect_ToolBox_Coroutine()));
 
         actionTimer.Toggle_RunAnimation(true);
-        npcController.interactable.LockInteract(true);
+        main.interactable.LockInteract(true);
 
         Toggle_AmountBars();
     }
     private IEnumerator Collect_ToolBox_Coroutine()
     {
-        NPC_Movement movement = npcController.movement;
+        NPC_Movement movement = main.movement;
 
         movement.Stop_FreeRoam();
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
@@ -281,7 +286,7 @@ public class CraftNPC_Mechanic : CraftNPC
         movement.Free_Roam(0);
 
         actionTimer.Toggle_RunAnimation(false);
-        npcController.interactable.LockInteract(false);
+        main.interactable.LockInteract(false);
 
         Set_Coroutine(null);
         Toggle_AmountBars();
@@ -301,18 +306,18 @@ public class CraftNPC_Mechanic : CraftNPC
     private IEnumerator Purchase_Coroutine()
     {
         actionTimer.Toggle_RunAnimation(true);
-        npcController.interactable.LockInteract(true);
+        main.interactable.LockInteract(true);
 
         Toggle_AmountBars();
 
-        NPC_Movement movement = npcController.movement;
+        NPC_Movement movement = main.movement;
         movement.Stop_FreeRoam();
 
         // move to tool box
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
         while (movement.At_TargetPosition() == false) yield return null;
 
-        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
         Vector2 vehiclePosition = vehicle.transform.position;
 
         // move to vehicle
@@ -337,7 +342,7 @@ public class CraftNPC_Mechanic : CraftNPC
         movement.Free_Roam(0);
 
         actionTimer.Toggle_RunAnimation(false);
-        npcController.interactable.LockInteract(false);
+        main.interactable.LockInteract(false);
 
         Set_Coroutine(null);
         Toggle_AmountBars();
@@ -349,7 +354,7 @@ public class CraftNPC_Mechanic : CraftNPC
     // Purchase Upgrades
     private void Upgrade_InteractRange()
     {
-        Vehicle_Controller vehicle = npcController.mainController.currentVehicle;
+        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
         Vector2 currentRange = vehicle.interactArea.size;
 
         for (int i = 0; i < _interactRanges.Length; i++)
@@ -372,7 +377,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private void Upgrade_MoveSpeed()
     {
-        VehicleMovement_Controller vehicle = npcController.mainController.currentVehicle.movement;
+        VehicleMovement_Controller vehicle = Main_Controller.instance.currentVehicle.movement;
 
         if (vehicle.moveSpeed >= vehicle.maxMoveSpeed)
         {
@@ -390,7 +395,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private void Update_RecentMenuNum()
     {
-        VehicleMenu_Controller vehicle = npcController.mainController.currentVehicle.menu;
+        VehicleMenu_Controller vehicle = Main_Controller.instance.currentVehicle.menu;
         GameObject recentMenu = vehicle.menus[vehicle.currentMenuNum];
 
         bool foodMenuOpened = recentMenu.TryGetComponent<FoodMenu_Controller>(out _);
@@ -403,7 +408,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
     private void Upgrade_StorageSpace()
     {
-        VehicleMenu_Controller menuController = npcController.mainController.currentVehicle.menu;
+        VehicleMenu_Controller menuController = Main_Controller.instance.currentVehicle.menu;
         ItemSlots_Controller slotsController = menuController.slotsController;
 
         GameObject recentMenu = menuController.menus[_recentMenuNum];

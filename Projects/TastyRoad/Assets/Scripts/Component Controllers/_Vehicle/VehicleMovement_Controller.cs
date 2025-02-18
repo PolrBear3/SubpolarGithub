@@ -43,7 +43,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         _controller.positionClaimer.Claim_CurrentPositions();
 
         // set player position
-        Player_Controller player = _interactable.mainController.Player();
+        Player_Controller player = Main_Controller.instance.Player();
         player.transform.position = _controller.driverSeatPoint.position;
 
         // subscriptions
@@ -147,7 +147,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (_onBoard == false) return;
 
-        Location_Controller location = _controller.mainController.currentLocation;
+        Location_Controller location = Main_Controller.instance.currentLocation;
         Transform vehicle = _controller.transform;
 
         if (location.Restricted_Position(vehicle.position) == false) return;
@@ -195,7 +195,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         Toggle_WheelsAnimation(true);
 
-        Player_Controller player = _interactable.mainController.Player();
+        Player_Controller player = Main_Controller.instance.Player();
 
         player.Toggle_Controllers(false);
         player.Toggle_Hide(true);
@@ -208,7 +208,9 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (_onBoard == false) return false;
 
-        Location_Controller location = _controller.mainController.currentLocation;
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller location = main.currentLocation;
+
         Custom_PositionClaimer claimer = _controller.positionClaimer;
 
         for (int i = 0; i < claimer.All_InteractPositions().Count; i++)
@@ -218,7 +220,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
             if (claimer.Is_ClaimPosition(claimer.All_InteractPositions()[i]) == false) continue;
             Vector2 redirectedPos = location.Redirected_SnapPosition(claimer.All_InteractPositions()[i]);
 
-            if (_controller.mainController.Position_Claimed(redirectedPos)) return false;
+            if (main.Position_Claimed(redirectedPos)) return false;
         }
 
         return true;
@@ -234,7 +236,9 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         _interactable.OnAction2Input += _controller.Open_LocationMenu;
 
         // set vehicle to snap point
-        Location_Controller location = _controller.mainController.currentLocation;
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller location = main.currentLocation;
+
         Transform vehicle = _controller.transform;
 
         Vector2 targetPos = location.Redirected_SnapPosition(vehicle.position);
@@ -246,7 +250,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         Toggle_WheelsAnimation(false);
 
         // update player
-        Player_Controller player = _interactable.mainController.Player();
+        Player_Controller player = main.Player();
 
         player.Toggle_Hide(false);
         player.Toggle_Controllers(true);

@@ -48,10 +48,9 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
 
     // UnityEngine
-    private new void Awake()
+    private void Awake()
     {
-        base.Awake();
-        mainController.Track_CurrentVehicle(this);
+        Main_Controller.instance.Track_CurrentVehicle(this);
     }
 
     private new void Start()

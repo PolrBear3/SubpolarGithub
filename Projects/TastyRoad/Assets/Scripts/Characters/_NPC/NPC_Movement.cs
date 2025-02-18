@@ -139,13 +139,15 @@ public class NPC_Movement : MonoBehaviour
     /// </summary>
     public void Assign_TargetPosition(SpriteRenderer searchArea)
     {
+        Main_Controller main = Main_Controller.instance;
+
         int attemptCount = _searchAttempts;
         Vector2 targetPosition;
 
         do
         {
-            targetPosition = Main_Controller.Random_AreaPoint(searchArea);
-            bool stationPlaced = _controller.mainController.Is_StationArea(targetPosition);
+            targetPosition = main.Random_AreaPoint(searchArea);
+            bool stationPlaced = main.Is_StationArea(targetPosition);
 
             if (stationPlaced == false)
             {
@@ -191,7 +193,7 @@ public class NPC_Movement : MonoBehaviour
     /// </summary>
     public void Free_Roam(float startDelayTime)
     {
-        SpriteRenderer roamArea = _controller.mainController.currentLocation.data.roamArea;
+        SpriteRenderer roamArea = Main_Controller.instance.currentLocation.data.roamArea;
         Free_Roam(roamArea, startDelayTime);
     }
 
@@ -267,7 +269,7 @@ public class NPC_Movement : MonoBehaviour
     {
         yield return new WaitForSeconds(startDelayTime);
 
-        Main_Controller main = _controller.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         // random left or right side of camera
         Vector2 targetPosition = main.currentLocation.OuterLocation_Position(direction);

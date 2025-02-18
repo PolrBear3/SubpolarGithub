@@ -124,7 +124,7 @@ public class GasPump : MonoBehaviour
     private bool Fill_Available()
     {
         bool insertActive = _amountBar.maxAmount - _amountBar.currentAmount <= 1;
-        bool spawnPositionClaimed = _interactable.mainController.Position_Claimed(_spawnPoint.transform.position);
+        bool spawnPositionClaimed = Main_Controller.instance.Position_Claimed(_spawnPoint.transform.position);
 
         if (insertActive && spawnPositionClaimed) return false;
 
@@ -135,7 +135,7 @@ public class GasPump : MonoBehaviour
     {
         if (_coroutine != null) return false;
 
-        Food_ScrObj nugget = _interactable.mainController.dataController.goldenNugget;
+        Food_ScrObj nugget = Main_Controller.instance.dataController.goldenNugget;
 
         // if player has nugget
         if (_detection.player.foodIcon.Is_SameFood(nugget) == false) return false;
@@ -177,9 +177,9 @@ public class GasPump : MonoBehaviour
 
     private void Spawn_OilDrum()
     {
-        Main_Controller main = _interactable.mainController;
-
+        Main_Controller main = Main_Controller.instance;
         Station_Controller stationController = main.Spawn_Station(_oilDrum, _spawnPoint.transform.position);
+
         stationController.movement.Load_Position();
 
         _amountBar.Toggle_BarColor(false);
@@ -199,7 +199,7 @@ public class GasPump : MonoBehaviour
     private IEnumerator Fill_OilDrum_Coroutine()
     {
         // claim position before spawn
-        _interactable.mainController.Claim_Position(_spawnPoint.transform.position);
+        Main_Controller.instance.Claim_Position(_spawnPoint.transform.position);
 
         _amountBar.Toggle_BarColor(true);
         _amountBar.Set_Amount(0);
@@ -228,7 +228,7 @@ public class GasPump : MonoBehaviour
 
     private void Reset_OnFill()
     {
-        Main_Controller main = _interactable.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         if (_coroutine == null) return;
         if (main.Position_Claimed(_spawnPoint.transform.position) == false) return;

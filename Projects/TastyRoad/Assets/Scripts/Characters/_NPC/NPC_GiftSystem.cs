@@ -102,10 +102,10 @@ public class NPC_GiftSystem : MonoBehaviour
         // check if food serve waiting
         if (_controller.foodIcon.hasFood) return false;
 
-        Main_Controller main = _controller.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         // check if current position is claimed
-        if (main.Position_Claimed(Main_Controller.SnapPosition(transform.position))) return false;
+        if (main.Position_Claimed(main.SnapPosition(transform.position))) return false;
 
         FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
 
@@ -125,6 +125,8 @@ public class NPC_GiftSystem : MonoBehaviour
     {
         if (Gift_Available() == false) return;
 
+        Main_Controller main = Main_Controller.instance;
+
         FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
         Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
 
@@ -141,20 +143,20 @@ public class NPC_GiftSystem : MonoBehaviour
         float generosity = _controller.characterData.generosityLevel;
 
         // check drop rate
-        if (Main_Controller.Percentage_Activated(200f, _itemDropRate + generosity) == false) return;
+        if (main.Percentage_Activated(200f, _itemDropRate + generosity) == false) return;
 
         ItemDropper dropper = _controller.itemDropper;
         float calculatedGenerosity = generosity / (_generosityImpact * 0.1f);
 
         // collect card drop
-        if (Main_Controller.Percentage_Activated(200f, _collectCardDropRate + calculatedGenerosity))
+        if (main.Percentage_Activated(200f, _collectCardDropRate + calculatedGenerosity))
         {
             dropper.Drop_CollectCard();
             return;
         }
 
         // food drop
-        LocationData currentLocation = _controller.mainController.currentLocation.data;
+        LocationData currentLocation = main.currentLocation.data;
 
         Food_ScrObj randWeightedFood = currentLocation.WeightRandom_Food(playerFood);
         List<Food_ScrObj> foodIngredients = randWeightedFood.Ingredients();

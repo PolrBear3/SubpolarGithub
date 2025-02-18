@@ -8,6 +8,10 @@ using UnityEditor;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
+    public static Main_Controller instance;
+
+
+    [Header("")]
     [SerializeField] private Camera_Controller _cameraController;
     public Camera_Controller cameraController => _cameraController;
 
@@ -45,17 +49,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public Transform otherFile => _otherFile;
 
 
-    public delegate void Event();
-
-    public static event Event TestButton1Event;
-    public static event Event TestButton2Event;
-    public static event Event TestButton3Event;
-
-
-    // GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-
-
     // MonoBehaviour
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -78,26 +77,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         Load_bookmarkedFood();
         Load_CurrentStations();
-    }
-
-
-    // Test Buttons
-    public void TestButton1()
-    {
-        TestButton1Event?.Invoke();
-
-        FoodMenu_Controller menu = _currentVehicle.menu.foodMenu;
-        menu.Add_FoodItem(_dataController.RawFood(15367), 100);
-    }
-
-    public void TestButton2()
-    {
-        TestButton2Event?.Invoke();
-    }
-
-    public void TestButton3()
-    {
-        TestButton3Event?.Invoke();
     }
 
 
@@ -136,14 +115,14 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     /// <summary>
     /// Changes inserted sprite to target transparency
     /// </summary>
-    public static void Change_SpriteAlpha(SpriteRenderer sr, float alpha)
+    public void Change_SpriteAlpha(SpriteRenderer sr, float alpha)
     {
         Color color = sr.color;
         color.a = alpha;
         sr.color = color;
     }
 
-    public static void Change_ImageAlpha(Image image, float alpha)
+    public void Change_ImageAlpha(Image image, float alpha)
     {
         Color color = image.color;
         color.a = alpha;
@@ -154,13 +133,13 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     /// <returns>
     /// True if inserted percentage amount is activated, False if not activated
     /// </returns>
-    public static bool Percentage_Activated(float percentage)
+    public bool Percentage_Activated(float percentage)
     {
         float comparePercentage = Mathf.Round(UnityEngine.Random.Range(0f, 100f)) * 1f;
         return percentage >= comparePercentage;
     }
 
-    public static bool Percentage_Activated(float rangeValue, float percentage)
+    public bool Percentage_Activated(float rangeValue, float percentage)
     {
         float comparePercentage = Mathf.Round(UnityEngine.Random.Range(0f, rangeValue)) * 1f;
         return percentage >= comparePercentage;
@@ -170,14 +149,14 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     /// <returns>
     /// Mathf Round floats of inserted vector x and y value
     /// </returns>
-    public static Vector2 SnapPosition(Vector2 position)
+    public Vector2 SnapPosition(Vector2 position)
     {
         float snapX = (float)Mathf.Round(position.x);
         float snapY = (float)Mathf.Round(position.y);
 
         return new Vector2(snapX, snapY);
     }
-    public static Vector2 SnapPosition(Vector2 position, Bounds bounds)
+    public Vector2 SnapPosition(Vector2 position, Bounds bounds)
     {
         // Round the position to the nearest integer
         int snapX = Mathf.RoundToInt(position.x);
@@ -193,7 +172,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     /// <returns>
     /// Random point inside the boundary of inserted sprite renderer
     /// </returns>
-    public static Vector2 Random_AreaPoint(SpriteRenderer area)
+    public Vector2 Random_AreaPoint(SpriteRenderer area)
     {
         Vector2 centerPosition = area.bounds.center;
 
@@ -532,7 +511,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private List<Food_ScrObj> _bookmarkedFoods = new();
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
 
-    public static Action OnFoodBookmark;
+    public Action OnFoodBookmark;
 
     private void Save_BookmarkedFood()
     {

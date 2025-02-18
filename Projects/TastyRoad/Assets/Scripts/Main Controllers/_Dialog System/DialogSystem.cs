@@ -209,11 +209,13 @@ public class DialogSystem : MonoBehaviour
 
     private void HoverToggle_CurrentDialog(bool toggleOn)
     {
+        Main_Controller main = Main_Controller.instance;
+
         if (toggleOn == false)
         {
             foreach (var dialog in _currentDialogs)
             {
-                Main_Controller.Change_ImageAlpha(dialog.iconImage, 1f);
+                main.Change_ImageAlpha(dialog.iconImage, 1f);
             }
             return;
         }
@@ -222,10 +224,11 @@ public class DialogSystem : MonoBehaviour
         {
             if (i != _currentDialogNum)
             {
-                Main_Controller.Change_ImageAlpha(_currentDialogs[i].iconImage, 0.5f);
+                main.Change_ImageAlpha(_currentDialogs[i].iconImage, 0.5f);
                 continue;
             }
-            Main_Controller.Change_ImageAlpha(_currentDialogs[i].iconImage, 1f);
+
+            main.Change_ImageAlpha(_currentDialogs[i].iconImage, 1f);
         }
     }
 }

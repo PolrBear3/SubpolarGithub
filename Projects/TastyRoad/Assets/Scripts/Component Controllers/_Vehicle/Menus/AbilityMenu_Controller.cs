@@ -145,7 +145,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Update_AbilityIcons()
     {
-        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         ItemSlots_Controller slotsController = _menuController.slotsController;
 
         for (int i = 0; i < manager.allAbilities.Length; i++)
@@ -161,7 +161,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Indications
     private string HoldSelect_InfoText()
     {
-        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
 
         if (manager.Ability_ActivateMaxed(CurrentSlot_Ability())) return null;
 
@@ -180,7 +180,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             return;
         }
 
-        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         string activationCount = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.maxActivationCount;
 
         infoBox.Update_InfoText(activationCount + "\n\n" + currentAbility.description + HoldSelect_InfoText());
@@ -194,7 +194,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (gameObject.activeSelf == false) return;
 
-        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
 
         if (manager.AbilityPoint_Maxed())
         {
@@ -212,7 +212,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // Activation
     private Ability_ScrObj CurrentSlot_Ability()
     {
-        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         ItemSlot_Cursor cursor = _menuController.slotsController.cursor;
 
         int currentSlotNum = (int)cursor.currentSlot.gridNum.x;
@@ -223,7 +223,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void ActivateAbility_onSelect()
     {
-        AbilityManager manager = _menuController.vehicleController.mainController.Player().abilityManager;
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         if (manager.AbilityPoint_Maxed() == false) return;
 
         Ability_ScrObj currentAbility = CurrentSlot_Ability();

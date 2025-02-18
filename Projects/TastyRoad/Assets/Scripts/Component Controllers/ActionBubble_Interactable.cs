@@ -9,14 +9,12 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     [Header("")]
     [SerializeField] private PlayerInput _input;
 
-    private Main_Controller _mainController;
-    public Main_Controller mainController => _mainController;
-
     [SerializeField] private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
 
     [SerializeField] private Action_Bubble _bubble;
     public Action_Bubble bubble => _bubble;
+
 
     [Header("")]
     [SerializeField] private bool _interactLocked;
@@ -24,6 +22,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     [SerializeField] private bool _unInteractLocked;
     public bool unInteractLocked => _unInteractLocked;
+
 
     public delegate void Event();
 
@@ -37,11 +36,6 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
 
     // MonoBehaviour
-    public void Awake()
-    {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
-
     public void Start()
     {
         UnInteract();

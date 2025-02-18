@@ -76,7 +76,7 @@ public class LocationMenu_Controller : MonoBehaviour
     // Controls
     public void Toggle_Menu(bool toggle)
     {
-        Main_Controller main = _vehicle.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         // disable player controls
         main.Player().Toggle_Controllers(!toggle);
@@ -138,7 +138,7 @@ public class LocationMenu_Controller : MonoBehaviour
 
         if (_hoverTileNum == centerNum) return;
 
-        Main_Controller main = _vehicle.mainController;
+        Main_Controller main = Main_Controller.instance;
         Data_Controller data = main.dataController;
 
         StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
@@ -172,7 +172,7 @@ public class LocationMenu_Controller : MonoBehaviour
         if (_hoverTileNum == centerNum) return false;
         if (_tiles[_hoverTileNum].locked) return false;
 
-        Main_Controller main = _vehicle.mainController;
+        Main_Controller main = Main_Controller.instance;
         Data_Controller data = main.dataController;
 
         StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
@@ -190,7 +190,7 @@ public class LocationMenu_Controller : MonoBehaviour
     {
         if (Select_Available() == false) return;
 
-        Main_Controller main = _vehicle.mainController;
+        Main_Controller main = Main_Controller.instance;
         Data_Controller data = main.dataController;
 
         WorldMap_Controller worldMap = main.worldMap;
@@ -209,9 +209,10 @@ public class LocationMenu_Controller : MonoBehaviour
     // Tiles
     private void Update_Tiles()
     {
-        Data_Controller data = _vehicle.mainController.dataController;
-        WorldMap_Controller worldMap = _vehicle.mainController.worldMap;
+        Main_Controller main = Main_Controller.instance;
+        Data_Controller data = main.dataController;
 
+        WorldMap_Controller worldMap = main.worldMap;
         WorldMap_Data currentData = worldMap.data;
 
         int worldNum = currentData.worldNum;
@@ -259,8 +260,10 @@ public class LocationMenu_Controller : MonoBehaviour
 
     private void Update_LockedTiles()
     {
-        Data_Controller data = _vehicle.mainController.dataController;
-        WorldMap_Controller worldMap = _vehicle.mainController.worldMap;
+        Main_Controller main = Main_Controller.instance;
+        Data_Controller data = main.dataController;
+
+        WorldMap_Controller worldMap = main.worldMap;
 
         Update_PreviousTiles(data, worldMap);
         Update_NextTiles(data, worldMap);

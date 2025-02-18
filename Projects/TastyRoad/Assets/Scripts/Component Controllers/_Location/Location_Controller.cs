@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Location_Controller : MonoBehaviour
 {
-    private Main_Controller _mainController;
-    public Main_Controller mainController => _mainController;
-
-
     [Header("")]
     [SerializeField] private LocationData _data;
     public LocationData data => _data;
@@ -16,16 +12,10 @@ public class Location_Controller : MonoBehaviour
     [SerializeField] private GameObject[] _locationSetEvents;
 
 
-    private int _currentPopulation;
     private TimePhase_Population _maxPopulationData;
 
 
     // UnityEngine
-    private void Awake()
-    {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
-
     private void Start()
     {
         // Toggle Off All Roam Area Colors On Game Start
@@ -54,7 +44,7 @@ public class Location_Controller : MonoBehaviour
     {
         bool restricted = false;
 
-        if (_mainController.Position_Claimed(checkPosition)) restricted = true;
+        if (Main_Controller.instance.Position_Claimed(checkPosition)) restricted = true;
 
         float xValue = checkPosition.x;
         if (xValue < _data.spawnRangeX.x || xValue > _data.spawnRangeX.y) restricted = true;
@@ -81,13 +71,17 @@ public class Location_Controller : MonoBehaviour
 
     public Vector2 Redirected_SnapPosition(Vector2 targetPosition)
     {
-        return Main_Controller.SnapPosition(Redirected_Position(targetPosition));
+        return Main_Controller.instance.SnapPosition(Redirected_Position(targetPosition));
     }
 
 
     public Vector2 Random_SnapPosition()
     {
-        Vector2 randSnapPos = Main_Controller.SnapPosition(Main_Controller.Random_AreaPoint(_data.screenArea));
+        Main_Controller main = Main_Controller.instance;
+
+        Vector2 randomPoint = main.Random_AreaPoint(_data.screenArea);
+        Vector2 randSnapPos = main.SnapPosition(randomPoint);
+
         return randSnapPos;
     }
 
@@ -138,7 +132,7 @@ public class Location_Controller : MonoBehaviour
     // NPC Control
     private List<NPC_Controller> Current_npcControllers()
     {
-        List<GameObject> currentCharacters = _mainController.currentCharacters;
+        List<GameObject> currentCharacters = Main_Controller.instance.currentCharacters;
         List<NPC_Controller> currentNPCs = new();
 
         for (int i = 0; i < currentCharacters.Count; i++)
@@ -223,7 +217,7 @@ public class Location_Controller : MonoBehaviour
             yield return new WaitForSeconds(_data.spawnIntervalTime);
 
             // spawn
-            GameObject spawnNPC = _mainController.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
+            GameObject spawnNPC = Main_Controller.instance.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
 
             // get npc controller
             NPC_Controller npcController = spawnNPC.GetComponent<NPC_Controller>();

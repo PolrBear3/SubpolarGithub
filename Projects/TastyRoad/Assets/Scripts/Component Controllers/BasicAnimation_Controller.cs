@@ -9,6 +9,8 @@ public class BasicAnimation_Controller : MonoBehaviour
 
     private Animator _animator;
 
+
+    [Header("")]
     [SerializeField] private AnimatorOverrideController _animOverride;
     [SerializeField] private string _defaultAnimation;
 
@@ -17,6 +19,8 @@ public class BasicAnimation_Controller : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out SpriteRenderer spriteRenderer)) { _spriteRenderer = spriteRenderer; }
+
+        if (_animator != null) return;
         _animator = gameObject.GetComponent<Animator>();
     }
 
@@ -46,6 +50,8 @@ public class BasicAnimation_Controller : MonoBehaviour
     }
     public void Set_OverrideController(AnimatorOverrideController setOverrider)
     {
+        if (setOverrider == null) return;
+
         _animOverride = setOverrider;
 
         Set_OverrideController();
@@ -53,6 +59,7 @@ public class BasicAnimation_Controller : MonoBehaviour
 
     private void Set_DefaultAnimation()
     {
+        if (_animOverride == null) return;
         if (_defaultAnimation == null) return;
 
         _animator.Play(_defaultAnimation);
@@ -60,7 +67,7 @@ public class BasicAnimation_Controller : MonoBehaviour
 
     public void Play_Animation(string animationName)
     {
-        _animator.Play(animationName);
+        _animator.Play(animationName, -1, 0f);
     }
 
 
@@ -99,6 +106,9 @@ public class BasicAnimation_Controller : MonoBehaviour
     // Movement Animation Control
     public void Idle_Move(bool isMoving)
     {
+        if (_animator == null) return;
+        if (_animator.runtimeAnimatorController == null) return;
+
         _animator.SetBool("isMoving", isMoving);
     }
 }

@@ -426,7 +426,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Vehicle_Controller vehicle = _controller.vehicleController;
         Station_ScrObj cursorStation = cursor.data.currentStation;
 
-        _interactStation = vehicle.mainController.Spawn_Station(cursorStation, vehicle.stationSpawnPoint.position);
+        _interactStation = Main_Controller.instance.Spawn_Station(cursorStation, vehicle.stationSpawnPoint.position);
         _interactStation.Set_Data(new(cursor.data.stationData));
 
         Station_Movement movement = _interactStation.movement;
@@ -442,9 +442,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Place_StationPrefab()
     {
         if (_interactionMode == false) return;
-
-        Vehicle_Controller vehicle = _controller.vehicleController;
-
         if (_interactStation.movement.PositionSet_Available() == false) return;
 
         Complete_StationPlace();
@@ -452,15 +449,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Complete_StationPlace()
     {
+        Vehicle_Controller vehicle = _controller.vehicleController;
+
         _controller.slotsController.cursor.Empty_Item();
 
         _interactionMode = false;
         _interactStation = null;
 
-        Vehicle_Controller vehicle = _controller.vehicleController;
-        Main_Controller main = vehicle.mainController;
-
-        main.Sort_CurrentStation_fromClosest(vehicle.transform);
+        Main_Controller.instance.Sort_CurrentStation_fromClosest(vehicle.transform);
 
         _controller.OnOption1_Input -= Place_StationPrefab;
         _controller.OnExit_Input -= Cancel_Export;
@@ -489,7 +485,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private List<Station_Controller> Retrieve_Stations()
     {
         Vehicle_Controller vehicle = _controller.vehicleController;
-        List<Station_Controller> currentStations = new(vehicle.mainController.CurrentStations(false));
+        List<Station_Controller> currentStations = new(Main_Controller.instance.CurrentStations(false));
 
         for (int i = currentStations.Count - 1; i >= 0; i--)
         {
@@ -562,7 +558,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (_interactionMode == false) return;
 
-        Main_Controller main = _controller.vehicleController.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;

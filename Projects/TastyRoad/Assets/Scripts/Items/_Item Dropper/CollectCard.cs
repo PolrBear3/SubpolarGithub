@@ -169,7 +169,7 @@ public class CollectCard : MonoBehaviour, IInteractable
     private void Activate_DestroyTimeTik()
     {
         _currentTikCount++;
-        Main_Controller.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
+        Main_Controller.instance.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
 
         if (_currentTikCount < _destroyTikCount) return;
         Destroy(gameObject, 0.1f);

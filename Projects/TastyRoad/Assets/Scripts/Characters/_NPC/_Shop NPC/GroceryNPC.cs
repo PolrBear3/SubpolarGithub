@@ -63,7 +63,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         Toggle_QuestBar();
 
         // untrack
-        _npcController.mainController.UnTrack_CurrentCharacter(gameObject);
+        Main_Controller.instance.UnTrack_CurrentCharacter(gameObject);
 
         // food box toggle
         _foodBox.color = Color.clear;
@@ -832,7 +832,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         if (playerIcon.hasFood == false) return;
 
-        Data_Controller data = _npcController.mainController.dataController;
+        Data_Controller data = Main_Controller.instance.dataController;
         Food_ScrObj playerFood = playerIcon.currentData.foodScrObj;
 
         if (data.Is_RawFood(playerFood)) return;

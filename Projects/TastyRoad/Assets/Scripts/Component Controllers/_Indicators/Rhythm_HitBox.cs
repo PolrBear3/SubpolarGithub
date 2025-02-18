@@ -41,7 +41,7 @@ public class Rhythm_HitBox : MonoBehaviour
     private void Start()
     {
         Deactivate_HitBox();
-        Main_Controller.Change_SpriteAlpha(_hitBox, 0f);
+        Main_Controller.instance.Change_SpriteAlpha(_hitBox, 0f);
     }
 
 
@@ -136,11 +136,13 @@ public class Rhythm_HitBox : MonoBehaviour
     }
     private IEnumerator Indicate_HitBox_Sprite_Coroutine(Sprite _hitBoxSprite)
     {
+        Main_Controller main = Main_Controller.instance;
+
         _hitBox.sprite = _hitBoxSprite;
-        Main_Controller.Change_SpriteAlpha(_hitBox, 1f);
+        main.Change_SpriteAlpha(_hitBox, 1f);
 
         yield return new WaitForSeconds(_transitionTime);
 
-        Main_Controller.Change_SpriteAlpha(_hitBox, 0f);
+        main.Change_SpriteAlpha(_hitBox, 0f);
     }
 }

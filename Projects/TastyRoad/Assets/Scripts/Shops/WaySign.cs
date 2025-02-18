@@ -39,7 +39,7 @@ public class WaySign : ActionBubble_Interactable
         GameObject locationObj = Instantiate(_subLocationPrefab);
         SubLocation subLocation = locationObj.GetComponent<SubLocation>();
 
-        SubLocations_Controller controller = mainController.subLocation;
+        SubLocations_Controller controller = Main_Controller.instance.subLocation;
 
         // track
         _subLocation = subLocation;
@@ -65,24 +65,26 @@ public class WaySign : ActionBubble_Interactable
     }
     private IEnumerator Moveto_SubLocation_Coroutine()
     {
-        Player_Controller player = mainController.Player();
+        Main_Controller main = Main_Controller.instance;
+        Player_Controller player = main.Player();
+
         player.Toggle_Controllers(false);
 
         // curtain scene transition
-        mainController.transitionCanvas.Set_LoadIcon(_signIcon.sprite);
-        mainController.transitionCanvas.CurrentScene_Transition();
+        main.transitionCanvas.Set_LoadIcon(_signIcon.sprite);
+        main.transitionCanvas.CurrentScene_Transition();
 
         // wait until curtain closes
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 
         // set return point for sub location exit
-        _subLocation.Set_ReturnPoint(mainController.Player().transform);
+        _subLocation.Set_ReturnPoint(player.transform);
 
         // move player to sub location spawn point
-        mainController.Player().transform.position = _subLocation.spawnPoint.position;
+        player.transform.position = _subLocation.spawnPoint.position;
 
         // move camera to sub location
-        mainController.cameraController.UpdatePosition(_subLocation.transform.position);
+        main.cameraController.UpdatePosition(_subLocation.transform.position);
 
         player.Toggle_Controllers(true);
     }

@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Trash : Stack_Table, IInteractable
 {
-    [Header("")]
-    [SerializeField] private GameObject _rat;
-
-
     // MonoBehaviour
     private new void Start()
     {
@@ -20,7 +17,9 @@ public class Trash : Stack_Table, IInteractable
     // IInteractable
     public new void Interact()
     {
+        PlayAnimation_TrashFood();
         Trash_Food();
+
         Empty_MaxAmount();
 
         AmountBar_Toggle();
@@ -28,7 +27,9 @@ public class Trash : Stack_Table, IInteractable
 
     public new void Hold_Interact()
     {
+        PlayAnimation_TrashFood();
         Trash_AllFood();
+
         Empty_MaxAmount();
 
         AmountBar_Toggle();
@@ -78,11 +79,75 @@ public class Trash : Stack_Table, IInteractable
     }
 
 
+    private void PlayAnimation_TrashFood()
+    {
+        if (!TrashFood_Available()) return;
+
+        stationController.animController.Play_Animation("TransparencyBlinker_play");
+    }
+
     private void Empty_MaxAmount()
     {
         FoodData_Controller trashFoodIcon = stationController.Food_Icon();
         if (!trashFoodIcon.DataCount_Maxed()) return;
 
         trashFoodIcon.Update_AllDatas(null);
+    }
+
+
+    // Reward
+    private bool RewardDrop_PositionEmpty()
+    {
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller currentLocation = main.currentLocation;
+
+        List<Vector2> positions = main.dataController.Centered_PositionDatas(transform.position, 1);
+
+        for (int i = 0; i < positions.Count; i++)
+        {
+            if (main.Position_Claimed(positions[i])) continue;
+            if (currentLocation.Restricted_Position(positions[i])) continue;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool RewardDrop_Available()
+    {
+        FoodData_Controller trashFoodIcon = stationController.Food_Icon();
+        if (trashFoodIcon.DataCount_Maxed()) return false;
+
+        if (!RewardDrop_PositionEmpty()) return false;
+
+        return true;
+    }
+
+
+    private Vector2 RewardDrop_Position()
+    {
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller currentLocation = main.currentLocation;
+
+        List<Vector2> positions = main.dataController.Centered_PositionDatas(transform.position, 1);
+
+        for (int i = 0; i < positions.Count; i++)
+        {
+            if (main.Position_Claimed(positions[i])) continue;
+            if (currentLocation.Restricted_Position(positions[i])) continue;
+
+            return positions[i];
+        }
+
+        return Vector2.zero;
+    }
+
+    private void Drop_Reward()
+    {
+        if (!RewardDrop_Available()) return;
+
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
+        ItemDropper item = stationController.itemDropper;
     }
 }

@@ -160,7 +160,7 @@ public class FoodStock : MonoBehaviour
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        string currentAmountString = "\nyou have " + _interactable.mainController.GoldenNugget_Amount() + " <sprite=56>";
+        string currentAmountString = "\nyou have " + Main_Controller.instance.GoldenNugget_Amount() + " <sprite=56>";
 
         if (_stockData.unlocked == false)
         {
@@ -283,8 +283,10 @@ public class FoodStock : MonoBehaviour
             price = Mathf.RoundToInt(price * discountValue);
         }
 
+        Main_Controller main = Main_Controller.instance;
+
         // check nugget amount
-        if (_interactable.mainController.GoldenNugget_Amount() < price)
+        if (main.GoldenNugget_Amount() < price)
         {
             // Not enough golden nuggets to purchase!
             dialog.Update_Dialog(4);
@@ -294,10 +296,10 @@ public class FoodStock : MonoBehaviour
         }
 
 
-        _interactable.mainController.Remove_GoldenNugget(price);
+        main.Remove_GoldenNugget(price);
 
         // add food
-        FoodMenu_Controller foodMenu = _interactable.mainController.currentVehicle.menu.foodMenu;
+        FoodMenu_Controller foodMenu = main.currentVehicle.menu.foodMenu;
         int leftOverAmount = foodMenu.Add_FoodItem(stockedFood, purchaseAmount);
 
         if (leftOverAmount > 0)
@@ -306,7 +308,7 @@ public class FoodStock : MonoBehaviour
             foodMenu.Remove_FoodItem(stockedFood, purchaseAmount - leftOverAmount);
 
             // return golden nuggets
-            _interactable.mainController.Add_GoldenNugget(stockedFood.price);
+            main.Add_GoldenNugget(stockedFood.price);
 
             // Not enough space in food storage!
             dialog.Update_Dialog(5);
@@ -320,7 +322,7 @@ public class FoodStock : MonoBehaviour
         Update_TagSprite();
 
         // add purchased food to archive
-        ArchiveMenu_Controller archiveMenu = _interactable.mainController.currentVehicle.menu.archiveMenu;
+        ArchiveMenu_Controller archiveMenu = main.currentVehicle.menu.archiveMenu;
         archiveMenu.Archive_Food(stockedFood);
 
         // deactivate discount on empty amount
@@ -356,7 +358,7 @@ public class FoodStock : MonoBehaviour
     {
         if (_stockData.unlocked) return;
 
-        if (_interactable.mainController.GoldenNugget_Amount() < _unlockPrice)
+        if (Main_Controller.instance.GoldenNugget_Amount() < _unlockPrice)
         {
             // Not enough golden nuggets to purchase!
             gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
