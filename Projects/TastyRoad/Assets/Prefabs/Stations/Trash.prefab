@@ -343,6 +343,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0799bbf3b5414d6d8642d86a591bb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rewardDropActions:
+  - probability: 10
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1154879421862044317}
+          m_TargetAssemblyTypeName: Trash, Assembly-CSharp
+          m_MethodName: Drop_Food
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - probability: 10
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8020069481616058364}
+          m_TargetAssemblyTypeName: ItemDropper, Assembly-CSharp
+          m_MethodName: Drop_CollectCard
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - probability: 10
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1154879421862044317}
+          m_TargetAssemblyTypeName: Trash, Assembly-CSharp
+          m_MethodName: Drop_Stations
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _dropStations: []
 --- !u!1 &4246218407212968166
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,6 +622,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1727866339024762158}
     m_Modifications:
+    - target: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: _foodWeights.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: _foodWeights.Array.data[0].weight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: _foodWeights.Array.data[0].foodScrObj
+      value: 
+      objectReference: {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
     - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

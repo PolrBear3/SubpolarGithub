@@ -16,6 +16,8 @@ public class ItemDropper : MonoBehaviour
     public FoodWeight_Data[] foodWeights => _foodWeights;
 
 
+    private Vector2 _dropPosition;
+
     private Coroutine _coroutine;
 
 
@@ -27,6 +29,18 @@ public class ItemDropper : MonoBehaviour
 
 
     // All Drops Control
+    public void Set_DropPosition(Vector2 setPos)
+    {
+        _dropPosition = setPos;
+    }
+
+    private Vector2 DropPosition()
+    {
+        if (_dropPosition == Vector2.zero) return transform.position;
+        return _dropPosition;
+    }
+
+
     private GameObject SnapPosition_Spawn(GameObject spawnItem, Vector2 spawnPosition)
     {
         Vector2 spawnSnapPos = Main_Controller.instance.SnapPosition(spawnPosition);
@@ -55,7 +69,7 @@ public class ItemDropper : MonoBehaviour
         if (dropData == null) return null;
         if (_coroutine != null) return null;
 
-        GameObject spawnItem = SnapPosition_Spawn(_foodDrop, transform.position);
+        GameObject spawnItem = SnapPosition_Spawn(_foodDrop, DropPosition());
 
         if (spawnItem == null) return null;
 
@@ -84,7 +98,7 @@ public class ItemDropper : MonoBehaviour
 
         if (_coroutine != null) return null;
 
-        GameObject spawnItem = SnapPosition_Spawn(_foodDrop, transform.position);
+        GameObject spawnItem = SnapPosition_Spawn(_foodDrop, DropPosition());
 
         if (spawnItem == null) return null;
 
@@ -99,7 +113,7 @@ public class ItemDropper : MonoBehaviour
     /// <returns>
     /// random weighted food from _foodWeights
     /// </returns>
-    private Food_ScrObj Weighted_RandomFood()
+    public Food_ScrObj Weighted_RandomFood()
     {
         // get total wieght
         int totalWeight = 0;
@@ -181,19 +195,19 @@ public class ItemDropper : MonoBehaviour
     }
 
 
-    // Events
-    private void Drop_RandomFood()
+    // Collect Card Drop Control
+    public void Drop_CollectCard()
     {
-        if (_foodWeights.Length <= 0) return;
+        if (_coroutine != null) return;
 
-        Drop_Food(new FoodData(Weighted_RandomFood()));
+        SnapPosition_Spawn(_collectCard, DropPosition());
     }
 
-    public CollectCard Drop_CollectCard()
+    public CollectCard Dropreturn_CollectCard()
     {
         if (_coroutine != null) return null;
 
-        GameObject spawnObject = SnapPosition_Spawn(_collectCard, _main.Player().transform.position);
+        GameObject spawnObject = SnapPosition_Spawn(_collectCard, DropPosition());
 
         return spawnObject.GetComponent<CollectCard>();
     }

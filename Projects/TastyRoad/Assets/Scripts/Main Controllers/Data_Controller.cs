@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public interface IInteractable
 {
@@ -15,12 +16,21 @@ public interface ISignal
     void Signal();
 }
 
+
+[System.Serializable]
+public struct UnityEvent_Data
+{
+    [Range(0, 100)] public float probability;
+    public UnityEvent action;
+}
+
 [System.Serializable]
 public class Multiple_PositionData
 {
     [SerializeField] private Vector2[] _positionData;
     public Vector2[] positionData => _positionData;
 }
+
 
 public class Data_Controller : MonoBehaviour
 {

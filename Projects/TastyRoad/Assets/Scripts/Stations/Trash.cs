@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Trash : Stack_Table, IInteractable
 {
+    [Header("")]
+    [SerializeField] private UnityEvent_Data[] _rewardDropActions;
+
+    [Header("")]
+    [SerializeField] private Station_ScrObj[] _dropStations;
+
+
     // MonoBehaviour
     private new void Start()
     {
@@ -17,10 +24,16 @@ public class Trash : Stack_Table, IInteractable
     // IInteractable
     public new void Interact()
     {
+        if (Drop_Reward())
+        {
+            PlayAnimation_TrashFood();
+            AmountBar_Toggle();
+
+            return;
+        }
+
         PlayAnimation_TrashFood();
         Trash_Food();
-
-        Empty_MaxAmount();
 
         AmountBar_Toggle();
     }
@@ -29,8 +42,6 @@ public class Trash : Stack_Table, IInteractable
     {
         PlayAnimation_TrashFood();
         Trash_AllFood();
-
-        Empty_MaxAmount();
 
         AmountBar_Toggle();
     }
@@ -96,58 +107,100 @@ public class Trash : Stack_Table, IInteractable
 
 
     // Reward
-    private bool RewardDrop_PositionEmpty()
+    private bool RewardDrop_Available()
+    {
+        FoodData_Controller trashFoodIcon = stationController.Food_Icon();
+        if (!trashFoodIcon.DataCount_Maxed()) return false;
+
+        return true;
+    }
+
+    private List<Vector2> RewardDrop_Positions()
     {
         Main_Controller main = Main_Controller.instance;
         Location_Controller currentLocation = main.currentLocation;
 
-        List<Vector2> positions = main.dataController.Centered_PositionDatas(transform.position, 1);
+        List<Vector2> centeredPositions = main.dataController.Centered_PositionDatas(transform.position, 1);
+        List<Vector2> dropPositions = new();
 
-        for (int i = 0; i < positions.Count; i++)
+        for (int i = 0; i < centeredPositions.Count; i++)
         {
-            if (main.Position_Claimed(positions[i])) continue;
-            if (currentLocation.Restricted_Position(positions[i])) continue;
+            if (main.Position_Claimed(centeredPositions[i])) continue;
+            if (currentLocation.Restricted_Position(centeredPositions[i])) continue;
 
-            return true;
+            dropPositions.Add(centeredPositions[i]);
         }
 
-        return false;
+        return dropPositions;
     }
 
-    private bool RewardDrop_Available()
-    {
-        FoodData_Controller trashFoodIcon = stationController.Food_Icon();
-        if (trashFoodIcon.DataCount_Maxed()) return false;
 
-        if (!RewardDrop_PositionEmpty()) return false;
+    private UnityEvent RandomWeight_DropAction()
+    {
+        if (_rewardDropActions.Length <= 0) return null;
+
+        float totalWeight = 0f;
+
+        // Calculate total weight
+        foreach (var action in _rewardDropActions)
+        {
+            totalWeight += action.probability;
+        }
+
+        if (totalWeight <= 0) return null;
+
+        // Select a weighted random action
+        float randValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0f;
+
+        foreach (var action in _rewardDropActions)
+        {
+            cumulativeWeight += action.probability;
+
+            if (randValue > cumulativeWeight) continue;
+            return action.action;
+        }
+
+        return null;
+    }
+
+    private bool Drop_Reward()
+    {
+        if (!RewardDrop_Available()) return false;
+
+        List<Vector2> dropPositions = RewardDrop_Positions();
+        if (dropPositions.Count <= 0) return false;
+
+        Vector2 dropPos = dropPositions[0];
+
+        ItemDropper item = stationController.itemDropper;
+        item.Set_DropPosition(dropPos);
+
+        RandomWeight_DropAction()?.Invoke();
+        Empty_MaxAmount();
 
         return true;
     }
 
 
-    private Vector2 RewardDrop_Position()
+    // Reward Drops
+    public void Drop_Food()
     {
-        Main_Controller main = Main_Controller.instance;
-        Location_Controller currentLocation = main.currentLocation;
+        ItemDropper item = stationController.itemDropper;
 
-        List<Vector2> positions = main.dataController.Centered_PositionDatas(transform.position, 1);
+        // set food drop amount //
 
-        for (int i = 0; i < positions.Count; i++)
-        {
-            if (main.Position_Claimed(positions[i])) continue;
-            if (currentLocation.Restricted_Position(positions[i])) continue;
+        Food_ScrObj randFood = item.Weighted_RandomFood();
+        FoodDrop dropFood = item.Drop_Food(new FoodData(randFood));
 
-            return positions[i];
-        }
+        // set rotten condition level //
 
-        return Vector2.zero;
+        FoodCondition_Data condition = new(FoodCondition_Type.rotten, 3);
+        dropFood.foodIcon.currentData.Update_Condition(condition);
     }
 
-    private void Drop_Reward()
+    public void Drop_Stations()
     {
-        if (!RewardDrop_Available()) return;
-
-        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
-        ItemDropper item = stationController.itemDropper;
+        Debug.Log("Drop_Stations");
     }
 }

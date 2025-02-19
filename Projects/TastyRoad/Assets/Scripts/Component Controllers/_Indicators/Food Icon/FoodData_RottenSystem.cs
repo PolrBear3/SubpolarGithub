@@ -32,14 +32,8 @@ public class FoodData_RottenSystem : MonoBehaviour
 
         for (int i = 0; i < allDatas.Count; i++)
         {
-            // reset rotten data
-            allDatas[i].Clear_Condition(FoodCondition_Type.rotten);
-
             // update count calculation
             int updateCount = allDatas[i].tikCount / _decayCount;
-
-            // check if update is required
-            if (updateCount <= 0) continue;
 
             // set rotten data 
             for (int j = 0; j < updateCount; j++)

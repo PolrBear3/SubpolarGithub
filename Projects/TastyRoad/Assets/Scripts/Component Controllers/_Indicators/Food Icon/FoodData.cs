@@ -33,10 +33,7 @@ public class FoodCondition_Data
     public FoodCondition_Data(FoodCondition_Type type, int level)
     {
         this.type = type;
-
-        if (level > 3) level = 3;
-
-        this.level = level;
+        this.level = Mathf.Clamp(level, 0, 3);
     }
 }
 
@@ -132,7 +129,7 @@ public class FoodData
             // if so +level
             if (newCondition.type != _conditionDatas[i].type) continue;
 
-            // set max level
+            // set max level limits
             int calculatedLevel = _conditionDatas[i].level + newCondition.level;
             if (calculatedLevel > 3) return;
 
