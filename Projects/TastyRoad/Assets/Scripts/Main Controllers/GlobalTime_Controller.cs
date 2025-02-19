@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [System.Serializable]
 public enum TimePhase { Day, Night }
@@ -14,6 +15,10 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField][Range(0, 100)] private float _tikDelayTime;
     [SerializeField][Range(0, 24)] private int _startingNightTime;
+
+    [Header("")]
+    [SerializeField] private Color _nightColor;
+    [SerializeField][Range(0, 1)] private float _transitionSpeed;
 
 
     private int _currentTime;
@@ -29,6 +34,9 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     public Action OnNightTime;
 
 
+    private Coroutine _lightCoroutine;
+
+
 
     // UnityEngine
     private void Awake()
@@ -39,6 +47,9 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         CycleTime();
+
+        bool isDayTime = currentTimePhase == TimePhase.Day;
+        Main_Controller.instance.globalLight.color = isDayTime ? Color.white : _nightColor;
     }
 
 
@@ -79,10 +90,11 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
     private void Toggle_TimePhase()
     {
         TimePhase recentPhase = _currentTimePhase;
-
         _currentTimePhase = (TimePhase)Convert.ToInt32(_currentTime >= _startingNightTime);
 
         if (_currentTimePhase == recentPhase) return;
+
+        Update_LightAtmosphere();
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -96,5 +108,41 @@ public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
 
         OnDayTime?.Invoke();
         dialog.Update_Dialog(0);
+    }
+
+
+    // Global Light
+    private void Update_LightAtmosphere()
+    {
+        if (_lightCoroutine != null)
+        {
+            StopCoroutine(_lightCoroutine);
+            _lightCoroutine = null;
+        }
+
+        bool isDayTime = currentTimePhase == TimePhase.Day;
+        Color targetColor = isDayTime ? Color.white : _nightColor;
+
+        _lightCoroutine = StartCoroutine(Update_LightAtmosphere_Coroutine(targetColor));
+    }
+    private IEnumerator Update_LightAtmosphere_Coroutine(Color targetColor)
+    {
+        Main_Controller main = Main_Controller.instance;
+
+        Color startColor = main.globalLight.color;
+        float t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime * _transitionSpeed;
+            main.globalLight.color = Color.Lerp(startColor, targetColor, t);
+
+            yield return null;
+        }
+
+        main.globalLight.color = targetColor;
+
+        _lightCoroutine = null;
+        yield break;
     }
 }

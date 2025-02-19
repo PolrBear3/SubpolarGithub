@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FoodData_RottenSystem : MonoBehaviour
 {
+    [Header("")]
     [SerializeField] private FoodData_Controller _foodIcon;
 
     [Header("")]
@@ -32,14 +33,12 @@ public class FoodData_RottenSystem : MonoBehaviour
 
         for (int i = 0; i < allDatas.Count; i++)
         {
-            // update count calculation
             int updateCount = allDatas[i].tikCount / _decayCount;
+            int currentCount = allDatas[i].Current_ConditionLevel(FoodCondition_Type.rotten);
 
-            // set rotten data 
-            for (int j = 0; j < updateCount; j++)
-            {
-                allDatas[i].Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten));
-            }
+            if (updateCount <= currentCount) continue;
+
+            allDatas[i].Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten, 1));
         }
 
         _foodIcon.Update_AllDatas(allDatas);

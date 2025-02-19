@@ -83,6 +83,8 @@ public class ItemDropper : MonoBehaviour
     {
         FoodDrop foodDrop = Drop_Food(dropData);
 
+        if (additionalAmount <= 0) return foodDrop;
+
         for (int i = 0; i < additionalAmount; i++)
         {
             foodDrop.foodIcon.Set_CurrentData(dropData);

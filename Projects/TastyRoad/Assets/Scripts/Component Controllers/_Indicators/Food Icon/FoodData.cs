@@ -33,7 +33,7 @@ public class FoodCondition_Data
     public FoodCondition_Data(FoodCondition_Type type, int level)
     {
         this.type = type;
-        this.level = Mathf.Clamp(level, 0, 3);
+        this.level = Mathf.Clamp(level, 1, 3);
     }
 }
 
@@ -122,6 +122,7 @@ public class FoodData
     public void Update_Condition(FoodCondition_Data newCondition)
     {
         if (newCondition == null) return;
+        if (newCondition.level <= 0) return;
 
         // check if condition exists
         for (int i = 0; i < _conditionDatas.Count; i++)

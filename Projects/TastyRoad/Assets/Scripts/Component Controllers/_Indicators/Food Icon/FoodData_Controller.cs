@@ -51,7 +51,9 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private float _toggleHeight;
     private float _defaultHeight;
 
+    [Header("")]
     [SerializeField] private bool _iconShowLocked;
+    [SerializeField] private bool _conditionShowLocked;
 
 
     [Header("")]
@@ -444,6 +446,12 @@ public class FoodData_Controller : MonoBehaviour
 
     public void Show_Condition()
     {
+        if (_conditionShowLocked)
+        {
+            Hide_Condition();
+            return;
+        }
+
         bool conditionEmpty = _hasFood == false || _currentData.conditionDatas == null;
 
         for (int i = 0; i < _conditionBoxes.Length; i++)
@@ -457,9 +465,11 @@ public class FoodData_Controller : MonoBehaviour
             }
 
             ConditionSprites conditionSprites = Get_ConditionSprites(_currentData.conditionDatas[i].type);
-            int conditionLevel = _currentData.conditionDatas[i].level;
 
-            _conditionBoxes[i].sprite = conditionSprites.sprites[conditionLevel - 1];
+            int conditionLevel = _currentData.conditionDatas[i].level;
+            conditionLevel = Mathf.Clamp(conditionLevel - 1, 0, conditionSprites.sprites.Length - 1);
+
+            _conditionBoxes[i].sprite = conditionSprites.sprites[conditionLevel];
             _conditionBoxes[i].color = Color.white;
         }
     }

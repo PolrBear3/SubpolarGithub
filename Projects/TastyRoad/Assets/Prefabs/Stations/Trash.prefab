@@ -376,13 +376,13 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - probability: 10
+  - probability: 90
     action:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1154879421862044317}
           m_TargetAssemblyTypeName: Trash, Assembly-CSharp
-          m_MethodName: Drop_Stations
+          m_MethodName: Drop_Station
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -392,7 +392,11 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  _dropStations: []
+  _dropStations:
+  - stationScrObj: {fileID: 11400000, guid: e40c6696d07554a4da102f46dcd59515, type: 2}
+    weight: 90
+  - stationScrObj: {fileID: 11400000, guid: d05e05d026cda44a9a011f51eba3b83a, type: 2}
+    weight: 10
 --- !u!1 &4246218407212968166
 GameObject:
   m_ObjectHideFlags: 0
@@ -490,8 +494,12 @@ PrefabInstance:
       value: Food Icon
       objectReference: {fileID: 0}
     - target: {fileID: 4815339870781394795, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
-      propertyPath: _toggleHeight
-      value: 0.375
+      propertyPath: _conditionShowLocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720598385154043323, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
+      propertyPath: _decayCount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9220044194110590461, guid: 5298146dd359b47abadb95de00a12cbc, type: 3}
       propertyPath: m_LocalPosition.x

@@ -7,9 +7,7 @@ public class Trash : Stack_Table, IInteractable
 {
     [Header("")]
     [SerializeField] private UnityEvent_Data[] _rewardDropActions;
-
-    [Header("")]
-    [SerializeField] private Station_ScrObj[] _dropStations;
+    [SerializeField] private StationWeight_Data[] _dropStations;
 
 
     // MonoBehaviour
@@ -18,22 +16,19 @@ public class Trash : Stack_Table, IInteractable
         base.Start();
 
         stationController.Food_Icon().ShowIcon_LockToggle(true);
+        AmountBar_Toggle();
     }
 
 
     // IInteractable
     public new void Interact()
     {
-        if (Drop_Reward())
-        {
-            PlayAnimation_TrashFood();
-            AmountBar_Toggle();
-
-            return;
-        }
-
         PlayAnimation_TrashFood();
-        Trash_Food();
+
+        if (!Drop_Reward())
+        {
+            Trash_Food();
+        }
 
         AmountBar_Toggle();
     }
@@ -44,6 +39,17 @@ public class Trash : Stack_Table, IInteractable
         Trash_AllFood();
 
         AmountBar_Toggle();
+    }
+
+
+    // Indications
+    public new void AmountBar_Toggle()
+    {
+        FoodData_Controller trashFoodIcon = stationController.Food_Icon();
+        AmountBar bar = trashFoodIcon.amountBar;
+
+        bar.Toggle_BarColor(trashFoodIcon.DataCount_Maxed());
+        base.AmountBar_Toggle();
     }
 
 
@@ -142,9 +148,9 @@ public class Trash : Stack_Table, IInteractable
         float totalWeight = 0f;
 
         // Calculate total weight
-        foreach (var action in _rewardDropActions)
+        foreach (UnityEvent_Data data in _rewardDropActions)
         {
-            totalWeight += action.probability;
+            totalWeight += data.probability;
         }
 
         if (totalWeight <= 0) return null;
@@ -153,12 +159,12 @@ public class Trash : Stack_Table, IInteractable
         float randValue = Random.Range(0, totalWeight);
         float cumulativeWeight = 0f;
 
-        foreach (var action in _rewardDropActions)
+        foreach (UnityEvent_Data data in _rewardDropActions)
         {
-            cumulativeWeight += action.probability;
+            cumulativeWeight += data.probability;
 
             if (randValue > cumulativeWeight) continue;
-            return action.action;
+            return data.action;
         }
 
         return null;
@@ -184,23 +190,88 @@ public class Trash : Stack_Table, IInteractable
 
 
     // Reward Drops
-    public void Drop_Food()
+    private List<FoodData> FoodDrops()
     {
-        ItemDropper item = stationController.itemDropper;
+        List<FoodData> foodDrops = new();
 
-        // set food drop amount //
+        Data_Controller data = Main_Controller.instance.dataController;
 
-        Food_ScrObj randFood = item.Weighted_RandomFood();
-        FoodDrop dropFood = item.Drop_Food(new FoodData(randFood));
+        FoodData_Controller food = stationController.Food_Icon();
+        List<FoodData> currentDatas = food.AllDatas();
 
-        // set rotten condition level //
+        int dropCount = 0;
 
-        FoodCondition_Data condition = new(FoodCondition_Type.rotten, 3);
-        dropFood.foodIcon.currentData.Update_Condition(condition);
+        for (int i = 0; i < currentDatas.Count; i++)
+        {
+            if (data.Is_RawFood(currentDatas[i].foodScrObj)) continue;
+
+            int randIndex = Random.Range(0, currentDatas[i].foodScrObj.Ingredients().Count);
+            Food_ScrObj randIngredient = currentDatas[i].foodScrObj.Ingredients()[randIndex];
+
+            foodDrops.Add(new(randIngredient));
+            dropCount++;
+        }
+
+        if (dropCount <= 0)
+        {
+            Food_ScrObj defaultFood = stationController.itemDropper.foodWeights[0].foodScrObj;
+            foodDrops.Add(new(defaultFood));
+        }
+
+        return foodDrops;
     }
 
-    public void Drop_Stations()
+    public void Drop_Food()
     {
-        Debug.Log("Drop_Stations");
+        FoodData_Controller food = stationController.Food_Icon();
+        List<FoodData> currentDatas = food.AllDatas();
+
+        FoodData recentData = currentDatas[food.AllDatas().Count - 1];
+        int rottenLevel = recentData.Current_ConditionLevel(FoodCondition_Type.rotten);
+
+        // if (rottenLevel <= 0) return;
+
+        List<FoodData> foodDrops = FoodDrops();
+        FoodCondition_Data condition = new(FoodCondition_Type.rotten, rottenLevel);
+
+        foreach (FoodData data in foodDrops)
+        {
+            data.Update_Condition(condition);
+        }
+
+        stationController.itemDropper.Drop_Food(foodDrops);
+    }
+
+
+    public void Drop_Station()
+    {
+        if (_dropStations.Length <= 0) return;
+
+        float totalWeight = 0f;
+
+        // Calculate total weight
+        foreach (StationWeight_Data data in _dropStations)
+        {
+            totalWeight += data.weight;
+        }
+
+        if (totalWeight <= 0) return;
+
+        // Select a weighted random action
+        float randValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0f;
+
+        for (int i = 0; i < _dropStations.Length; i++)
+        {
+            cumulativeWeight += _dropStations[i].weight;
+
+            if (randValue > cumulativeWeight) continue;
+
+            GameObject spawnStation = Instantiate(_dropStations[i].stationScrObj.prefab, RewardDrop_Positions()[0], Quaternion.identity);
+            Station_Movement stationMovement = spawnStation.GetComponent<Station_Movement>();
+
+            stationMovement.Load_Position();
+            return;
+        }
     }
 }
