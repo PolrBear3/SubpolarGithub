@@ -5,7 +5,7 @@ using UnityEngine;
 public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
     [Header("")]
-    [SerializeField] private VehicleMenu_Controller _menuController;
+    [SerializeField] private VehicleMenu_Controller _controller;
 
     [Header("")]
     [SerializeField] private Sprite _panelSprite;
@@ -37,37 +37,41 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void OnEnable()
     {
-        _menuController.Update_PanelSprite(_panelSprite);
+        _controller.Update_PanelSprite(_panelSprite);
 
-        _menuController.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
-        _menuController.Update_PageDots(_currentDatas.Count, _currentPageNum);
+        _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
         // subscriptions
-        _menuController.MenuOpen_Event += Update_CursorFill;
-        _menuController.MenuOpen_Event += Update_AbilityIcons;
-        _menuController.MenuOpen_Event += Show_AbilityDiscription;
+        _controller.MenuOpen_Event += Update_CursorFill;
+        _controller.MenuOpen_Event += Update_AbilityIcons;
+        _controller.MenuOpen_Event += Show_AbilityDiscription;
 
-        _menuController.OnCursor_Input += Show_AbilityDiscription;
-        _menuController.OnCursor_Outer += CurrentSlots_PageUpdate;
+        _controller.OnCursor_Input += Show_AbilityDiscription;
 
-        _menuController.OnHoldEmptySelect_Input += ActivateAbility_onSelect;
-        _menuController.OnHoldEmptySelect_Input += Show_AbilityDiscription;
+        _controller.OnCursor_OuterInput += Clamp_CursorPosition;
+        _controller.OnCursor_YInput += Update_CurrentPage;
+
+        _controller.OnHoldEmptySelect_Input += ActivateAbility_onSelect;
+        _controller.OnHoldEmptySelect_Input += Show_AbilityDiscription;
     }
 
     private void OnDisable()
     {
-        _menuController.Update_PanelSprite(null);
+        _controller.Update_PanelSprite(null);
 
         // subscriptions
-        _menuController.MenuOpen_Event -= Update_CursorFill;
-        _menuController.MenuOpen_Event -= Update_AbilityIcons;
-        _menuController.MenuOpen_Event -= Show_AbilityDiscription;
+        _controller.MenuOpen_Event -= Update_CursorFill;
+        _controller.MenuOpen_Event -= Update_AbilityIcons;
+        _controller.MenuOpen_Event -= Show_AbilityDiscription;
 
-        _menuController.OnCursor_Input -= Show_AbilityDiscription;
-        _menuController.OnCursor_Outer -= CurrentSlots_PageUpdate;
+        _controller.OnCursor_Input -= Show_AbilityDiscription;
 
-        _menuController.OnHoldEmptySelect_Input -= ActivateAbility_onSelect;
-        _menuController.OnHoldEmptySelect_Input -= Show_AbilityDiscription;
+        _controller.OnCursor_OuterInput -= Clamp_CursorPosition;
+        _controller.OnCursor_YInput -= Update_CurrentPage;
+
+        _controller.OnHoldEmptySelect_Input -= ActivateAbility_onSelect;
+        _controller.OnHoldEmptySelect_Input -= Show_AbilityDiscription;
     }
 
 
@@ -105,48 +109,75 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         // set new slot datas
-        _menuController.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
+        _controller.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
     }
 
 
     // Data Set Functions
-    private void CurrentSlots_PageUpdate()
+    private void Clamp_CursorPosition() // outer input
     {
-        ItemSlots_Controller slotsController = _menuController.slotsController;
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
+        int lastSlotNum = slotsController.itemSlots.Count - 1;
+        float cursorGridNum = cursor.currentSlot.gridNum.x;
+
+        bool nextSlots = false;
+
+        if (cursorGridNum == 0)
+        {
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
+        }
+        else if (cursorGridNum == lastSlotNum)
+        {
+            nextSlots = true;
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
+        }
+
+        if (_currentDatas.Count <= 1) return;
+
+        int direction = nextSlots ? 1 : -1;
+        Update_CurrentPage(direction);
+    }
+
+    private void Update_PageNum(float direction)
+    {
+        if (direction == 1)
+        {
+            // next slots
+            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
+            return;
+        }
+
+        // previous slots
+        _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
+    }
+
+    private void Update_CurrentPage(float yInputValue) // y input
+    {
+        if (_currentDatas.Count <= 1) return;
+
+        ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
         // save current slots data to current page data, before moving on to next page
         _currentDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
 
-        int lastSlotNum = slotsController.itemSlots.Count - 1;
-
-        // previous slots
-        if (cursor.currentSlot.gridNum.x <= 0)
-        {
-            _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
-            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
-        }
-        // next slots
-        else if (cursor.currentSlot.gridNum.x >= lastSlotNum)
-        {
-            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
-            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
-        }
+        Update_PageNum(yInputValue);
 
         // load data to slots
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
 
-        Update_AbilityIcons();
-
         // indicator
-        _menuController.Update_PageDots(_currentDatas.Count, _currentPageNum);
+        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
     }
+
 
     private void Update_AbilityIcons()
     {
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
-        ItemSlots_Controller slotsController = _menuController.slotsController;
+        ItemSlots_Controller slotsController = _controller.slotsController;
 
         for (int i = 0; i < manager.allAbilities.Length; i++)
         {
@@ -171,7 +202,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Show_AbilityDiscription()
     {
-        InformationBox infoBox = _menuController.infoBox;
+        InformationBox infoBox = _controller.infoBox;
         Ability_ScrObj currentAbility = CurrentSlot_Ability();
 
         if (currentAbility == null)
@@ -198,14 +229,14 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (manager.AbilityPoint_Maxed())
         {
-            _menuController.Update_MenuCursorSprite(_cursorFillSprites[_cursorFillSprites.Length - 1]);
+            _controller.Update_MenuCursorSprite(_cursorFillSprites[_cursorFillSprites.Length - 1]);
             return;
         }
 
         int currentIndex = manager.currentAbilityPoint * (_cursorFillSprites.Length - 1) / manager.maxAbilityPoint;
         int spriteIndex = Mathf.Clamp(currentIndex, 0, _cursorFillSprites.Length - 2);
 
-        _menuController.Update_MenuCursorSprite(_cursorFillSprites[spriteIndex]);
+        _controller.Update_MenuCursorSprite(_cursorFillSprites[spriteIndex]);
     }
 
 
@@ -213,7 +244,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private Ability_ScrObj CurrentSlot_Ability()
     {
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
-        ItemSlot_Cursor cursor = _menuController.slotsController.cursor;
+        ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
         int currentSlotNum = (int)cursor.currentSlot.gridNum.x;
 

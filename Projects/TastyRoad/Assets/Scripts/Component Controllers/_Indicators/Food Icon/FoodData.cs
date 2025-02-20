@@ -119,19 +119,18 @@ public class FoodData
         _conditionDatas = new(conditionDatas);
     }
 
-    public void Update_Condition(FoodCondition_Data newCondition)
+    public void Update_Condition(FoodCondition_Data updateCondition)
     {
-        if (newCondition == null) return;
-        if (newCondition.level <= 0) return;
+        if (updateCondition == null) return;
+        if (updateCondition.level <= 0) return;
 
         // check if condition exists
         for (int i = 0; i < _conditionDatas.Count; i++)
         {
-            // if so +level
-            if (newCondition.type != _conditionDatas[i].type) continue;
+            if (updateCondition.type != _conditionDatas[i].type) continue;
 
             // set max level limits
-            int calculatedLevel = _conditionDatas[i].level + newCondition.level;
+            int calculatedLevel = _conditionDatas[i].level + updateCondition.level;
             if (calculatedLevel > 3) return;
 
             _conditionDatas[i].level = calculatedLevel;
@@ -139,7 +138,7 @@ public class FoodData
         }
 
         // if not add new type
-        _conditionDatas.Add(new(newCondition.type, newCondition.level));
+        _conditionDatas.Add(new(updateCondition.type, updateCondition.level));
     }
 
 
@@ -186,6 +185,11 @@ public class FoodData
         }
 
         return null;
+    }
+
+    public bool Has_Condition(FoodCondition_Type targetCondition)
+    {
+        return Current_ConditionData(targetCondition) != null;
     }
 
     public int Current_ConditionLevel(FoodCondition_Type targetCondition)

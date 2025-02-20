@@ -22,6 +22,9 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private int _currentPageNum;
 
 
+    private List<FoodData> _rottenDatas = new();
+
+
     // Editor
     [HideInInspector] public Food_ScrObj foodToAdd;
     [HideInInspector] public int amountToAdd;
@@ -34,7 +37,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
         // subscriptions
-        _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
+        _controller.OnCursor_OuterInput += Clamp_CursorPosition;
+        _controller.OnCursor_YInput += Update_CurrentPage;
 
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnHoldSelect_Input += Export_Food;
@@ -59,7 +63,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drag_Cancel();
 
         // subscriptions
-        _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
+        _controller.OnCursor_OuterInput -= Clamp_CursorPosition;
+        _controller.OnCursor_YInput -= Update_CurrentPage;
 
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Export_Food;
@@ -89,6 +94,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("FoodMenu_Controller/_currentDatas", _currentDatas);
+        ES3.Save("FoodMenu_Controller/_rottenDatas", _rottenDatas);
     }
 
     public void Load_Data()
@@ -97,6 +103,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (ES3.KeyExists("FoodMenu_Controller/_currentDatas"))
         {
             _currentDatas = ES3.Load("FoodMenu_Controller/_currentDatas", _currentDatas);
+            _rottenDatas = ES3.Load("FoodMenu_Controller/_rottenDatas", _rottenDatas);
+
             return;
         }
 
@@ -271,28 +279,57 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.infoBox.gameObject.SetActive(true);
     }
 
-    private void CurrentSlots_PageUpdate()
+
+    private void Clamp_CursorPosition() // outer input
     {
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
+        int lastSlotNum = slotsController.itemSlots.Count - 1;
+        float cursorGridNum = cursor.currentSlot.gridNum.x;
+
+        bool nextSlots = false;
+
+        if (cursorGridNum == 0)
+        {
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
+        }
+        else if (cursorGridNum == lastSlotNum)
+        {
+            nextSlots = true;
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
+        }
+
+        if (_currentDatas.Count <= 1) return;
+
+        int direction = nextSlots ? 1 : -1;
+        Update_CurrentPage(direction);
+    }
+
+    private void Update_PageNum(float direction)
+    {
+        if (direction == 1)
+        {
+            // next slots
+            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
+            return;
+        }
+
+        // previous slots
+        _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
+    }
+
+    private void Update_CurrentPage(float yInputValue) // y input
+    {
+        if (_currentDatas.Count <= 1) return;
+
         ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
         // save current slots data to current page data, before moving on to next page
         _currentDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
 
-        int lastSlotNum = slotsController.itemSlots.Count - 1;
-
-        // previous slots
-        if (cursor.currentSlot.gridNum.x <= 0)
-        {
-            _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
-            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
-        }
-        // next slots
-        else if (cursor.currentSlot.gridNum.x >= lastSlotNum)
-        {
-            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
-            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
-        }
+        Update_PageNum(yInputValue);
 
         // load data to slots
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
@@ -565,12 +602,14 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Station_Controller station = main.Spawn_Station(_foodBox, Available_ExportPosition());
         main.Claim_Position(station.transform.position);
 
+        FoodData_Controller foodBoxIcon = station.Food_Icon();
+
         // assign exported food to food box
         FoodData cursorFood = new(currentCursorData.currentFood);
-        station.Food_Icon().Set_CurrentData(cursorFood);
+        foodBoxIcon.Set_CurrentData(cursorFood);
 
         // show food icon
-        station.Food_Icon().Show_Icon();
+        foodBoxIcon.Show_Icon();
 
         // sound
         Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
@@ -579,19 +618,96 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (currentCursorData.currentAmount >= _maxExportAmount)
         {
             // max amount
-            station.Food_Icon().currentData.Set_Amount(_maxExportAmount);
+            foodBoxIcon.currentData.Set_Amount(_maxExportAmount);
             _controller.slotsController.cursor.data.Assign_Amount(currentCursorData.currentAmount - _maxExportAmount);
-
-            return;
+        }
+        else
+        {
+            // bellow max amount
+            foodBoxIcon.currentData.Set_Amount(currentCursorData.currentAmount);
+            _controller.slotsController.cursor.Empty_Item();
         }
 
-        // bellow max amount
-        station.Food_Icon().currentData.Set_Amount(currentCursorData.currentAmount);
-        _controller.slotsController.cursor.Empty_Item();
+        RottenFood_DataUpdate(foodBoxIcon);
     }
 
 
     // Food Retrieve System
+    private FoodData RottenFood_Data(Food_ScrObj targetFood)
+    {
+        for (int i = 0; i < _rottenDatas.Count; i++)
+        {
+            if (targetFood != _rottenDatas[i].foodScrObj) continue;
+            return _rottenDatas[i];
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// for Export
+    /// </summary>
+    private void RottenFood_DataUpdate(FoodData_Controller dataController)
+    {
+        FoodData controllerData = dataController.currentData;
+        FoodData updateData = RottenFood_Data(controllerData.foodScrObj);
+
+        if (updateData == null) return;
+        updateData.Update_Amount(-controllerData.currentAmount);
+
+        int rottenLevel = updateData.Current_ConditionLevel(FoodCondition_Type.rotten);
+
+        controllerData.Update_Condition(new(FoodCondition_Type.rotten, rottenLevel));
+        dataController.Show_Condition();
+
+        if (updateData.currentAmount > 0) return;
+        _rottenDatas.Remove(updateData);
+    }
+
+    /// <summary>
+    /// for Retrieve
+    /// </summary>
+    private void RottenFood_DataUpdate(FoodData data)
+    {
+        if (!data.Has_Condition(FoodCondition_Type.rotten)) return;
+
+        Food_ScrObj rottenFood = data.foodScrObj;
+        FoodData rottenData = RottenFood_Data(rottenFood);
+
+        if (rottenData == null)
+        {
+            _rottenDatas.Add(new(data));
+            return;
+        }
+
+        rottenData.Update_Amount(1);
+
+        int dataLevel = data.Current_ConditionLevel(FoodCondition_Type.rotten);
+        int storedDataLevel = rottenData.Current_ConditionLevel(FoodCondition_Type.rotten);
+
+        if (dataLevel <= storedDataLevel) return;
+
+        rottenData.Clear_Condition(FoodCondition_Type.rotten);
+        rottenData.Update_Condition(new(FoodCondition_Type.rotten, dataLevel));
+    }
+
+
+    private bool SlicedFood_Retrievable(List<FoodData> foodDatas, FoodData targetData)
+    {
+        Food_ScrObj dataFood = targetData.foodScrObj;
+        int foodAmount = 0;
+
+        for (int i = 0; i < foodDatas.Count; i++)
+        {
+            if (dataFood != foodDatas[i].foodScrObj) continue;
+            if (!foodDatas[i].Has_Condition(FoodCondition_Type.sliced)) continue;
+
+            foodAmount++;
+        }
+
+        return foodAmount % 2 == 0;
+    }
+
+
     private void Retrieve_PlayerFood()
     {
         FoodData_Controller playerFood = _controller.vehicleController.detection.player.foodIcon;
@@ -604,17 +720,28 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             return;
         }
 
-        int foodAmount = playerFood.AllDatas().Count;
+        List<FoodData> foodDatas = playerFood.AllDatas();
 
-        for (int i = 0; i < foodAmount; i++)
+        for (int i = foodDatas.Count - 1; i >= 0; i--)
         {
-            Food_ScrObj dataFood = playerFood.currentData.foodScrObj;
-
+            Food_ScrObj dataFood = foodDatas[i].foodScrObj;
             if (AddAvailable_Amount(dataFood) <= 0) continue;
 
+            if (foodDatas[i].Has_Condition(FoodCondition_Type.heated)) continue;
+
+            if (!SlicedFood_Retrievable(foodDatas, foodDatas[i]))
+            {
+                foodDatas.RemoveAt(i);
+                continue;
+            }
+
+            RottenFood_DataUpdate(foodDatas[i]);
+
             Add_FoodItem(dataFood, 1);
-            playerFood.Set_CurrentData(null);
+            foodDatas.RemoveAt(i);
         }
+
+        playerFood.Update_AllDatas(foodDatas);
 
         playerFood.Show_Icon();
         playerFood.Show_Condition();

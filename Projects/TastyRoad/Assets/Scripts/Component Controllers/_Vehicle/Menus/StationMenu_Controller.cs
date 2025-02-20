@@ -34,7 +34,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.vehicleController.interactArea.gameObject.SetActive(true);
 
         // subscriptions
-        _controller.OnCursor_Outer += CurrentSlots_PageUpdate;
+        _controller.OnCursor_OuterInput += Clamp_CursorPosition;
+        _controller.OnCursor_YInput += Update_CurrentPage;
 
         _controller.OnSelect_Input += Select_Slot;
         _controller.OnHoldSelect_Input += Toggle_RetrieveStations;
@@ -57,7 +58,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.vehicleController.interactArea.gameObject.SetActive(false);
 
         // subscriptions
-        _controller.OnCursor_Outer -= CurrentSlots_PageUpdate;
+        _controller.OnCursor_OuterInput -= Clamp_CursorPosition;
+        _controller.OnCursor_YInput -= Update_CurrentPage;
 
         _controller.OnSelect_Input -= Select_Slot;
         _controller.OnHoldSelect_Input -= Toggle_RetrieveStations;
@@ -275,28 +277,57 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         info.Update_InfoText(retrieveStatus + controlInfo);
     }
 
-    private void CurrentSlots_PageUpdate()
+
+    private void Clamp_CursorPosition() // outer input
     {
+        ItemSlots_Controller slotsController = _controller.slotsController;
+        ItemSlot_Cursor cursor = slotsController.cursor;
+
+        int lastSlotNum = slotsController.itemSlots.Count - 1;
+        float cursorGridNum = cursor.currentSlot.gridNum.x;
+
+        bool nextSlots = false;
+
+        if (cursorGridNum == 0)
+        {
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
+        }
+        else if (cursorGridNum == lastSlotNum)
+        {
+            nextSlots = true;
+            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
+        }
+
+        if (_currentDatas.Count <= 1) return;
+
+        int direction = nextSlots ? 1 : -1;
+        Update_CurrentPage(direction);
+    }
+
+    private void Update_PageNum(float direction)
+    {
+        if (direction == 1)
+        {
+            // next slots
+            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
+            return;
+        }
+
+        // previous slots
+        _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
+    }
+
+    private void Update_CurrentPage(float yInputValue) // y input
+    {
+        if (_currentDatas.Count <= 1) return;
+
         ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
         // save current slots data to current page data, before moving on to next page
         _currentDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
 
-        int lastSlotNum = slotsController.itemSlots.Count - 1;
-
-        // previous slots
-        if (cursor.currentSlot.gridNum.x <= 0)
-        {
-            _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
-            cursor.Navigate_toSlot(slotsController.ItemSlot(new(lastSlotNum, 0f)));
-        }
-        // next slots
-        else if (cursor.currentSlot.gridNum.x >= lastSlotNum)
-        {
-            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
-            cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
-        }
+        Update_PageNum(yInputValue);
 
         // load data to slots
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);

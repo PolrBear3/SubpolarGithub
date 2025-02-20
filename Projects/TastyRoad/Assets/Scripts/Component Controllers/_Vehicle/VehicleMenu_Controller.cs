@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,28 +68,26 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public int currentMenuNum => _currentMenuNum;
 
 
-    public delegate void Menu_Event();
-    public delegate void Cursor_Event(float value);
+    public Action MenuOpen_Event;
 
-    public event Menu_Event MenuOpen_Event;
+    public Action OnCursor_Input;
+    public Action OnCursor_OuterInput;
 
-    public event Cursor_Event OnCursorControl_Input;
+    public Action<float> OnCursorControl_Input;
+    public Action<float> OnCursor_YInput;
 
-    public event Menu_Event OnCursor_Input;
-    public event Menu_Event OnCursor_Outer;
+    public Action OnSelect_Input;
+    public Action OnHoldSelect_Input;
+    public Action OnHoldEmptySelect_Input;
 
-    public event Menu_Event OnSelect_Input;
+    public Action OnOption1_Input;
+    public Action OnOption2_Input;
 
-    public event Menu_Event OnHoldSelect_Input;
-    public event Menu_Event OnHoldEmptySelect_Input;
+    public Action OnExit_Input;
+
 
     private bool _onHold;
     private float _pressStartTime;
-
-    public event Menu_Event OnOption1_Input;
-    public event Menu_Event OnOption2_Input;
-
-    public event Menu_Event OnExit_Input;
 
 
     // UnityEngine
@@ -159,8 +158,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Vector2 input = value.Get<Vector2>();
 
         OnCursorControl_Input?.Invoke(input.x);
-
         if (MenuInteraction_Active()) return;
+
+        if (input.x == 0)
+        {
+            OnCursor_YInput?.Invoke(input.y);
+            return;
+        }
 
         int prevSlotNum = (int)_slotsController.cursor.currentSlot.gridNum.x;
 
@@ -169,16 +173,14 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         if (nextSlot == null)
         {
-            OnCursor_Outer?.Invoke();
-            OnCursor_Input?.Invoke();
-
-            InfoBox_FlipUpdate(prevSlotNum);
-            return;
+            OnCursor_OuterInput?.Invoke();
+        }
+        else
+        {
+            cursor.Navigate_toSlot(nextSlot);
         }
 
-        cursor.Navigate_toSlot(nextSlot);
         OnCursor_Input?.Invoke();
-
         InfoBox_FlipUpdate(prevSlotNum);
     }
 

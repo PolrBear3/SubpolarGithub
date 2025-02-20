@@ -101,15 +101,13 @@ public class FoodData_Controller : MonoBehaviour
     public void Update_AllDatas(List<FoodData> updateDatas)
     {
         // clear all data
-        if (updateDatas == null)
+        if (updateDatas == null || updateDatas.Count <= 0)
         {
             _subDatas.Clear();
             Set_CurrentData(null);
 
             return;
         }
-
-        if (updateDatas.Count <= 0) return;
 
         _currentData = null;
         Set_CurrentData(updateDatas[updateDatas.Count - 1]);
