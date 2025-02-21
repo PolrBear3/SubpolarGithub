@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectCard : MonoBehaviour, IInteractable
+public class CollectCard : MonoBehaviour
 {
     private SpriteRenderer _sr;
     public SpriteRenderer sr => _sr;
 
-    private Main_Controller _mainController;
 
     [Header("")]
     [SerializeField] private Detection_Controller _detection;
+    [SerializeField] private IInteractable_Controller _interactable;
     [SerializeField] private CoinLauncher _launcher;
 
     [Header("")]
@@ -27,56 +27,49 @@ public class CollectCard : MonoBehaviour, IInteractable
     private ItemSlot_Data _collectData;
 
     private List<Action> Pickup_Actions = new();
-    private Action OnPickup;
 
 
     // UnityEngine
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
     }
 
     private void Start()
     {
-        Set_RandomPickup();
-
         GlobalTime_Controller.instance.OnTimeTik += Activate_DestroyTimeTik;
+
+        _interactable.OnInteract += Pickup;
     }
 
     private void OnDestroy()
     {
         GlobalTime_Controller.instance.OnTimeTik -= Activate_DestroyTimeTik;
+
+        _interactable.OnInteract -= Pickup;
     }
 
 
-    // IInteractable
-    public void Interact()
+    // Pickup Interaction
+    public void Add_RandomPickup(Action pickupAction)
     {
-        OnPickup?.Invoke();
+        Pickup_Actions.Add(pickupAction);
     }
 
-    public void Hold_Interact()
-    {
-
-    }
-
-    public void UnInteract()
-    {
-
-    }
-
-
-    // Event Interaction
-    private void Set_RandomPickup()
+    private void Add_AllPickups()
     {
         // add all pickup Functions
         Pickup_Actions.Add(FoodIngredient_toArchive);
         Pickup_Actions.Add(StationBluePrint_toArchive);
+    }
 
-        // set random interaction from event _allInteractions
+
+    public void Pickup()
+    {
+        if (Pickup_Actions == null || Pickup_Actions.Count <= 0) Add_AllPickups();
+
         int randIndex = UnityEngine.Random.Range(0, Pickup_Actions.Count);
-        OnPickup = Pickup_Actions[randIndex];
+        Pickup_Actions[randIndex]?.Invoke();
     }
 
 
@@ -90,15 +83,14 @@ public class CollectCard : MonoBehaviour, IInteractable
     {
         if (set == false) return;
 
-        Location_Controller currentLocation = _mainController.currentLocation;
-
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
         Set_FoodIngredient(currentLocation.data.WeightRandom_Food());
     }
 
 
     private void FoodIngredient_toArchive()
     {
-        ArchiveMenu_Controller menu = _mainController.currentVehicle.menu.archiveMenu;
+        ArchiveMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.archiveMenu;
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         SetLocation_FoodIngredient(_collectData == null);
@@ -132,16 +124,15 @@ public class CollectCard : MonoBehaviour, IInteractable
     {
         if (set == false) return;
 
-        Location_Controller currentLocation = _mainController.currentLocation;
-
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
         Set_Blueprint(currentLocation.data.WeightRandom_Station());
     }
 
 
-    private void StationBluePrint_toArchive()
+    public void StationBluePrint_toArchive()
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-        StationMenu_Controller menu = _mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
 
         // available slots check
         if (menu.controller.slotsController.Empty_SlotData(menu.currentDatas) == null)
@@ -165,7 +156,7 @@ public class CollectCard : MonoBehaviour, IInteractable
     }
 
 
-    // Functions
+    // Time Tik Destroy
     private void Activate_DestroyTimeTik()
     {
         _currentTikCount++;

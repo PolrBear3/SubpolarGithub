@@ -7,13 +7,18 @@ public class ItemDropper : MonoBehaviour
 {
     private Main_Controller _main;
 
+
     [Header("")]
     [SerializeField] private GameObject _foodDrop;
     [SerializeField] private GameObject _collectCard;
 
+
     [Header("")]
     [SerializeField] private FoodWeight_Data[] _foodWeights;
     public FoodWeight_Data[] foodWeights => _foodWeights;
+
+    [SerializeField] private StationWeight_Data[] _stationWeights;
+    public StationWeight_Data[] stationWeights => _stationWeights;
 
 
     private Vector2 _dropPosition;
@@ -198,6 +203,34 @@ public class ItemDropper : MonoBehaviour
 
 
     // Collect Card Drop Control
+    private Station_ScrObj Weighted_RandomStation()
+    {
+        // get total wieght
+        int totalWeight = 0;
+
+        foreach (StationWeight_Data data in _stationWeights)
+        {
+            totalWeight += data.weight;
+        }
+
+        // track values
+        int randValue = Random.Range(0, totalWeight);
+        int cumulativeWeight = 0;
+
+        // get random food according to weight
+        for (int i = 0; i < _stationWeights.Length; i++)
+        {
+            cumulativeWeight += _stationWeights[i].weight;
+
+            if (randValue >= cumulativeWeight) continue;
+
+            return _stationWeights[i].stationScrObj;
+        }
+
+        return null;
+    }
+
+
     public void Drop_CollectCard()
     {
         if (_coroutine != null) return;
@@ -205,13 +238,22 @@ public class ItemDropper : MonoBehaviour
         SnapPosition_Spawn(_collectCard, DropPosition());
     }
 
-    public CollectCard Dropreturn_CollectCard()
+    public CollectCard DropReturn_CollectCard()
     {
         if (_coroutine != null) return null;
 
         GameObject spawnObject = SnapPosition_Spawn(_collectCard, DropPosition());
 
         return spawnObject.GetComponent<CollectCard>();
+    }
+
+
+    public void Drop_StationBluePrint()
+    {
+        CollectCard droppedCard = DropReturn_CollectCard();
+
+        droppedCard.Set_Blueprint(Weighted_RandomStation());
+        droppedCard.Add_RandomPickup(droppedCard.StationBluePrint_toArchive);
     }
 }
 

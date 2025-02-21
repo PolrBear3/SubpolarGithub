@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrefabSpawner : MonoBehaviour, IInteractable
+public class PrefabSpawner : MonoBehaviour
 {
     [Header("")]
     [SerializeField] private GameObject _spawnPrefab;
@@ -15,8 +15,8 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
     [SerializeField] private Vector2[] _spawnPositions;
 
 
-    // IInteractable
-    public void Interact()
+    // Main Activation
+    public void Spawn()
     {
         if (_spawnPositions.Length <= 0)
         {
@@ -25,16 +25,6 @@ public class PrefabSpawner : MonoBehaviour, IInteractable
         }
 
         Assign_Spawn();
-    }
-
-    public void Hold_Interact()
-    {
-
-    }
-
-    public void UnInteract()
-    {
-
     }
 
 

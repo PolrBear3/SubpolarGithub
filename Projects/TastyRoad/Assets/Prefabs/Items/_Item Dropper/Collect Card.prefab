@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8571569119331683655}
   - component: {fileID: 1871645149704256381}
   - component: {fileID: 5739883101272452172}
+  - component: {fileID: 2852422902794634500}
   - component: {fileID: 6290791405807346158}
   m_Layer: 0
   m_Name: Collect Card
@@ -220,6 +221,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &2852422902794634500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638662604626066613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6290791405807346158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detection: {fileID: 5739883101272452172}
+  _interactable: {fileID: 2852422902794634500}
   _launcher: {fileID: 4653407473077677712}
   _launchSprite: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
   _destroyTikCount: 5

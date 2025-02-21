@@ -18,8 +18,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     [SerializeField] private FoodData[] _lootDatas;
 
 
-    private bool _itemDropped;
-    private FoodDrop _droppedItem;
+    private HashSet<WorldMap_Data> _droppedMapHistory = new();
 
 
     // MonoBehaviour
@@ -34,16 +33,12 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         Update_CurrentSprite();
 
         // subscriptions
-        WorldMap_Controller.OnNewLocation += Reset_Data;
-
         _iInteractable.OnInteract += Drop_LootBoxItem;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        WorldMap_Controller.OnNewLocation -= Reset_Data;
-
         _iInteractable.OnInteract -= Drop_LootBoxItem;
     }
 
@@ -51,42 +46,19 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("LootBox/_itemDropped", _itemDropped);
-
-        List<FoodData> droppedData = new();
-        if (_droppedItem != null) droppedData = _droppedItem.foodIcon.AllDatas();
-
-        ES3.Save("LootBox/_droppedData", droppedData);
+        ES3.Save("LootBox/_droppedMapHistory", _droppedMapHistory);
     }
 
     public void Load_Data()
     {
-        _itemDropped = ES3.Load("LootBox/_itemDropped", _itemDropped);
-
-        List<FoodData> droppedData = new();
-        droppedData = ES3.Load("LootBox/_droppedData", droppedData);
-
-        Drop_LootBoxItem(droppedData);
-    }
-
-
-    private void Reset_Data()
-    {
-        _itemDropped = false;
-
-        if (_droppedItem == null) return;
-
-        GameObject droppedItem = _droppedItem.gameObject;
-        _droppedItem = null;
-
-        Destroy(droppedItem);
+        _droppedMapHistory = ES3.Load("LootBox/_droppedMapHistory", _droppedMapHistory);
     }
 
 
     // Indication
     private void Update_CurrentSprite()
     {
-        if (_itemDropped == false)
+        if (!CurrentLocation_Dropped())
         {
             _sr.sprite = _toggleSprites[0];
             return;
@@ -96,8 +68,17 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Control
-    private Vector2 Drop_SpawnPoint()
+    // Dropped Map History Datas
+    private bool CurrentLocation_Dropped()
+    {
+        WorldMap_Data currentLocationData = Main_Controller.instance.worldMap.currentData;
+
+        return _droppedMapHistory.Contains(currentLocationData);
+    }
+
+
+    // Drop
+    private Vector2 Drop_Position()
     {
         Location_Controller currentLocation = Main_Controller.instance.currentLocation;
 
@@ -112,22 +93,21 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         return transform.position;
     }
 
-
     private void Drop_LootBoxItem()
     {
-        if (_itemDropped) return;
+        if (CurrentLocation_Dropped()) return;
         if (_lootDatas.Length <= 0) return;
 
-        Vector2 dropPoint = Drop_SpawnPoint();
+        Vector2 dropPoint = Drop_Position();
 
         if (dropPoint == (Vector2)transform.position) return;
 
         FoodDrop dropLootItem = _itemDropper.Drop_Food(dropPoint);
-
-        _itemDropped = true;
-        _droppedItem = dropLootItem;
-
         FoodData_Controller dropFoodIcon = dropLootItem.foodIcon;
+
+        WorldMap_Data locationData = Main_Controller.instance.worldMap.currentData;
+        _droppedMapHistory.Add(locationData);
+
         int maxDataCount = 0;
 
         for (int i = 0; i < _lootDatas.Length; i++)
@@ -145,16 +125,5 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         }
 
         Update_CurrentSprite();
-    }
-
-    private void Drop_LootBoxItem(List<FoodData> dropData)
-    {
-        if (dropData.Count <= 0) return;
-
-        FoodDrop dropLootItem = _itemDropper.Drop_Food(Drop_SpawnPoint());
-        _droppedItem = dropLootItem;
-
-        FoodData_Controller dropIcon = dropLootItem.foodIcon;
-        dropIcon.Update_AllDatas(dropData);
     }
 }

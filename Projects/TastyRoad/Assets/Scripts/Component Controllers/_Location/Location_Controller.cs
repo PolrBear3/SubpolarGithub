@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class Location_Controller : MonoBehaviour
 {
@@ -9,7 +12,11 @@ public class Location_Controller : MonoBehaviour
     public LocationData data => _data;
 
     [Header("")]
-    [SerializeField] private GameObject[] _locationSetEvents;
+    [SerializeField] private UnityEvent _OnFirstVisit;
+    public UnityEvent OnFirstVisit => _OnFirstVisit;
+
+    [SerializeField] private UnityEvent _OnNewLocationSet;
+    public UnityEvent OnNewLocationSet => _OnNewLocationSet;
 
 
     private TimePhase_Population _maxPopulationData;
@@ -217,29 +224,16 @@ public class Location_Controller : MonoBehaviour
             yield return new WaitForSeconds(_data.spawnIntervalTime);
 
             // spawn
-            GameObject spawnNPC = Main_Controller.instance.Spawn_Character(1, OuterLocation_Position(Random.Range(0, 2)));
+            GameObject spawnNPC = Main_Controller.instance.Spawn_Character(1, OuterLocation_Position(UnityEngine.Random.Range(0, 2)));
 
             // get npc controller
             NPC_Controller npcController = spawnNPC.GetComponent<NPC_Controller>();
 
             // set random theme skin for current location
-            npcController.basicAnim.Set_OverrideController(_data.npcSkinOverrides[Random.Range(0, _data.npcSkinOverrides.Length)]);
+            npcController.basicAnim.Set_OverrideController(_data.npcSkinOverrides[UnityEngine.Random.Range(0, _data.npcSkinOverrides.Length)]);
 
             // set npc free roam location
             npcController.movement.Free_Roam(_data.roamArea, 0f);
-        }
-    }
-
-
-    /// <summary>
-    /// New Location Set Starting Events Control
-    /// </summary>
-    public void Activate_NewSetEvents()
-    {
-        for (int i = 0; i < _locationSetEvents.Length; i++)
-        {
-            if (_locationSetEvents[i].TryGetComponent(out IInteractable interactable) == false) continue;
-            interactable.Interact();
         }
     }
 }

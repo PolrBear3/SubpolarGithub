@@ -31,34 +31,32 @@ public struct WorldMap_Data
 public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 {
     [Header("")]
-    [SerializeField] private Main_Controller _mainController;
+    [SerializeField] private Location_ScrObj _startingLocation;
 
 
     public static Action OnNewLocation;
 
     private bool _newLocation;
 
-    private WorldMap_Data _data;
-    public WorldMap_Data data => _data;
+    private WorldMap_Data _currentData;
+    public WorldMap_Data currentData => _currentData;
 
 
-    [Header("")]
-    [SerializeField] private Location_ScrObj _startingLocation;
+    private HashSet<WorldMap_Data> _visitedDatas = new();
+    public HashSet<WorldMap_Data> visitedDatas => _visitedDatas;
 
 
     // UnityEngine
     private void Start()
     {
         // load saved location
-        if (ES3.KeyExists("WorldMap_Controller/_data"))
+        if (ES3.KeyExists("WorldMap_Controller/_currentData"))
         {
-            Set_Location(_data);
+            Set_Location(_currentData);
 
             if (_newLocation == false) return;
 
-            _newLocation = false;
-            _mainController.currentLocation.Activate_NewSetEvents();
-
+            Activate_NewLocationEvents();
             return;
         }
 
@@ -66,8 +64,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         WorldMap_Data newLocation = new(_startingLocation.worldNum, _startingLocation.locationNum);
         Set_Location(newLocation);
 
-        _newLocation = false;
-        _mainController.currentLocation.Activate_NewSetEvents();
+        Activate_NewLocationEvents();
     }
 
 
@@ -75,24 +72,30 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("WorldMap_Controller/_newLocation", _newLocation);
-        ES3.Save("WorldMap_Controller/_data", _data);
+
+        ES3.Save("WorldMap_Controller/_currentData", _currentData);
+        ES3.Save("WorldMap_Controller/_visitedDatas", _visitedDatas);
     }
 
     public void Load_Data()
     {
         _newLocation = ES3.Load("WorldMap_Controller/_newLocation", _newLocation);
-        _data = ES3.Load("WorldMap_Controller/_data", _data);
+
+        _currentData = ES3.Load("WorldMap_Controller/_currentData", _currentData);
+        _visitedDatas = ES3.Load("WorldMap_Controller/_visitedDatas", _visitedDatas);
     }
 
 
     // Location Control
     private void Set_Location(WorldMap_Data setData)
     {
-        _data = new(setData);
+        _currentData = new(setData);
 
         // set location
-        Location_Controller location = _mainController.Set_Location(_data);
-        _mainController.Track_CurrentLocaiton(location);
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller location = main.Set_Location(_currentData);
+
+        main.Track_CurrentLocaiton(location);
     }
 
     public void Update_Location(WorldMap_Data updateData)
@@ -101,29 +104,47 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Update_Location_Coroutine(WorldMap_Data updateData)
     {
-        Sprite worldIcon = _mainController.dataController.World_Data(updateData.worldNum).worldIcon;
+        Main_Controller main = Main_Controller.instance;
+        Sprite worldIcon = main.dataController.World_Data(updateData.worldNum).worldIcon;
 
         // transition curtain animation
-        _mainController.transitionCanvas.Set_LoadIcon(worldIcon);
-        _mainController.transitionCanvas.CloseScene_Transition();
+        main.transitionCanvas.Set_LoadIcon(worldIcon);
+        main.transitionCanvas.CloseScene_Transition();
 
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 
         // reset settings before moving on to new location
-        _mainController.Destroy_AllStations();
-        _mainController.ResetAll_ClaimedPositions();
+        main.Destroy_AllStations();
+        main.ResetAll_ClaimedPositions();
 
         // set new location
         Set_Location(updateData);
 
-        // new location events
+        // new events before save & reload
         _newLocation = true;
         OnNewLocation?.Invoke();
 
+        // save current activated events
         SaveLoad_Controller.SaveAll_ISaveLoadable();
         Save_Data();
 
         // reload game scene
         SceneManager.LoadScene(0);
+    }
+
+
+    private void Activate_NewLocationEvents()
+    {
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
+
+        _newLocation = false;
+
+        if (!_visitedDatas.Contains(_currentData))
+        {
+            _visitedDatas.Add(_currentData);
+            currentLocation.OnFirstVisit?.Invoke();
+        }
+
+        currentLocation.OnNewLocationSet?.Invoke();
     }
 }
