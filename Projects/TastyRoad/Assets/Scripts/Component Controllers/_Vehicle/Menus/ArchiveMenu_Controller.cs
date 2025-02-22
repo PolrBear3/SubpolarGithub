@@ -568,16 +568,19 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    public void Unlock_FoodIngredient(Food_ScrObj food)
+    public void Unlock_FoodIngredient(Food_ScrObj food, int unlockAmount)
     {
-        if (FoodIngredient_Unlocked(food))
+        if (!FoodIngredient_Unlocked(food))
         {
-            IngredientUnlocked_FoodData(food).Update_Amount(1);
+            _ingredientUnlocks.Add(new(food));
+            _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+
             return;
         }
 
-        _ingredientUnlocks.Add(new(food));
-        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+        if (unlockAmount <= 0) return;
+
+        IngredientUnlocked_FoodData(food).Update_Amount(unlockAmount);
     }
 
 
@@ -694,7 +697,7 @@ public class ArchiveMenu_Controller_Controller_Inspector : Editor
         {
             if (unlockIngredient)
             {
-                menu.Unlock_FoodIngredient(archiveFood);
+                menu.Unlock_FoodIngredient(archiveFood, 1);
             }
 
             bool rawFood = Main_Controller.instance.dataController.Is_RawFood(archiveFood);

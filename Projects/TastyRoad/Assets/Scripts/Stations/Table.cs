@@ -133,7 +133,7 @@ public class Table : MonoBehaviour, IInteractable
         ArchiveMenu_Controller menu = _stationController.mainController.currentVehicle.menu.archiveMenu;
 
         menu.Archive_Food(cookedFood);
-        menu.Unlock_FoodIngredient(cookedFood);
+        menu.Unlock_FoodIngredient(cookedFood, 1);
         menu.controller.slotsController.Foods_ToggleLock(menu.currentDatas, cookedFood, data.Is_RawFood(cookedFood));
 
         // sound
