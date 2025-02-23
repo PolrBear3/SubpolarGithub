@@ -73,11 +73,22 @@ public class CraftNPC : MonoBehaviour
     }
 
 
-    // Data
+    // Coroutine Action
     public Coroutine Set_Coroutine(Coroutine coroutine)
     {
         _coroutine = coroutine;
         return _coroutine;
+    }
+
+    public void Exit_CurrentAction()
+    {
+        _npcController.movement.Free_Roam(0);
+
+        actionTimer.Toggle_RunAnimation(false);
+        main.interactable.LockInteract(false);
+
+        Set_Coroutine(null);
+        Toggle_AmountBars();
     }
 
 

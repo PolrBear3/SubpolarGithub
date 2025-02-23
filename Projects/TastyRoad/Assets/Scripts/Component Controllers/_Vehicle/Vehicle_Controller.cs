@@ -40,13 +40,6 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     private bool _transparencyLocked;
 
 
-    [Header("")]
-    [SerializeField] private SpriteRenderer _vehicleBody;
-    [SerializeField][Range(0, 10)] private float _materialShineSpeed;
-
-    private Coroutine _materialCoroutine;
-
-
     // UnityEngine
     private void Awake()
     {
@@ -113,34 +106,6 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
         if (toggle == false) return;
         LeanTween.alpha(_spritesFile, 1f, 0f);
-    }
-
-
-    public void SilverShine_VehicleBody()
-    {
-        if (_materialCoroutine != null) return;
-
-        _materialCoroutine = StartCoroutine(SilverShine_VehicleBody_Coroutine());
-    }
-    private IEnumerator SilverShine_VehicleBody_Coroutine()
-    {
-        Material vehicleBody = _vehicleBody.material;
-
-        vehicleBody.SetFloat("_ShineGlow", 0.1f);
-        float locationValue = 0;
-
-        while (locationValue < 1)
-        {
-            locationValue += Time.deltaTime * _materialShineSpeed;
-            vehicleBody.SetFloat("_ShineLocation", locationValue);
-
-            yield return null;
-        }
-
-        vehicleBody.SetFloat("_ShineGlow", 0f);
-
-        _materialCoroutine = null;
-        yield break;
     }
 
 

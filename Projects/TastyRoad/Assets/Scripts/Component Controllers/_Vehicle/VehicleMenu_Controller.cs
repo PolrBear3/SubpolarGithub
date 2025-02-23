@@ -119,6 +119,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
             saveLoad.Save_Data();
         }
+
+        ES3.Save("VehicleMenu_Controller/_currentMenuNum", _currentMenuNum);
     }
 
     public void Load_Data()
@@ -128,6 +130,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
             saveLoad.Load_Data();
         }
+
+        _currentMenuNum = ES3.Load("VehicleMenu_Controller/_currentMenuNum", _currentMenuNum);
     }
 
 

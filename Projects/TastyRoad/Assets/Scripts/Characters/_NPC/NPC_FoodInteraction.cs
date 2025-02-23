@@ -14,11 +14,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
     [Header("")]
     [SerializeField][Range(0, 100)] private float _conditionRequestRate;
-    [SerializeField][Range(0, 100)] private float _bonusPayPercentage;
-
-    [Header("")]
     [SerializeField][Range(0, 300)] private int _transferTime;
-    [SerializeField][Range(0, 100)] private int _additionalTime;
 
 
     private int _foodOrderCount;
@@ -229,10 +225,9 @@ public class NPC_FoodInteraction : MonoBehaviour
     private IEnumerator Run_OrderTime_Coroutine()
     {
         Clock_Timer orderTimer = _controller.timer;
-        int additionalTime = Mathf.CeilToInt(_controller.characterData.patienceLevel / 10 * _additionalTime);
 
         orderTimer.Toggle_ClockColor(false);
-        orderTimer.Set_Time(_transferTime + additionalTime);
+        orderTimer.Set_Time(_transferTime);
         orderTimer.Run_Time();
         orderTimer.Toggle_Transparency(false);
 
@@ -342,31 +337,22 @@ public class NPC_FoodInteraction : MonoBehaviour
     {
         int payAmount = 0;
 
-        FoodData_Controller foodIcon = _controller.foodIcon;
-        Food_ScrObj foodOrder = foodIcon.currentData.foodScrObj;
-
-        int bonusAmount = Mathf.CeilToInt(_bonusPayPercentage * 0.01f * foodOrder.price);
-
-        // defalut calculation
-        payAmount += foodOrder.price;
-
-        // condition match calculation
-        if (foodIcon.currentData.Conditions_MatchCount(_transferData.conditionDatas) >= foodIcon.currentData.conditionDatas.Count)
+        if (!_transferData.Has_Condition(FoodCondition_Type.rotten))
         {
-            foreach (FoodCondition_Data data in foodIcon.currentData.conditionDatas)
-            {
-                payAmount += data.level * bonusAmount;
-            }
+            FoodData_Controller foodIcon = _controller.foodIcon;
+
+            FoodData orderData = foodIcon.currentData;
+            Food_ScrObj foodOrder = orderData.foodScrObj;
+
+            // defalut calculation
+            payAmount += foodOrder.price;
+
+            // condition match calculation
+            payAmount += orderData.Conditions_MatchCount(_transferData.conditionDatas);
         }
 
-        // order time calculation
-        payAmount += _controller.timer.timeBlockCount * bonusAmount;
-
-        // rotten condition calculation
-        payAmount -= payAmount / 3 * _transferData.Current_ConditionLevel(FoodCondition_Type.rotten);
-
         _payAvailable = payAmount > 0;
-        _collectIndicator.SetActive(payAmount > 0);
+        _collectIndicator.SetActive(_payAvailable);
 
         return payAmount;
     }

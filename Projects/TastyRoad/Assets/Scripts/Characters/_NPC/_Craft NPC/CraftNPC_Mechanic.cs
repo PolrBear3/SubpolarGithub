@@ -205,9 +205,9 @@ public class CraftNPC_Mechanic : CraftNPC
         while (movement.At_TargetPosition(setPos) == false)
         {
             // cancel set action if interact during action
-            if (movement.Is_Moving() == false)
+            if (!movement.Is_Moving())
             {
-                Set_Coroutine(null);
+                Exit_CurrentAction();
                 yield break;
             }
 
@@ -218,19 +218,13 @@ public class CraftNPC_Mechanic : CraftNPC
         {
             Set_ToolBox();
 
-            Set_Coroutine(null);
+            Exit_CurrentAction();
             yield break;
         }
 
         Drop_ToolBox();
-        movement.Free_Roam(0);
 
-        actionTimer.Toggle_RunAnimation(false);
-        main.interactable.LockInteract(false);
-
-        Set_Coroutine(null);
-        Toggle_AmountBars();
-
+        Exit_CurrentAction();
         yield break;
     }
 
@@ -283,14 +277,8 @@ public class CraftNPC_Mechanic : CraftNPC
         while (movement.At_TargetPosition(_droppedToolBox.transform.position) == false) yield return null;
 
         ToolBox_Collect();
-        movement.Free_Roam(0);
 
-        actionTimer.Toggle_RunAnimation(false);
-        main.interactable.LockInteract(false);
-
-        Set_Coroutine(null);
-        Toggle_AmountBars();
-
+        Exit_CurrentAction();
         yield break;
     }
 
@@ -318,11 +306,23 @@ public class CraftNPC_Mechanic : CraftNPC
         while (movement.At_TargetPosition() == false) yield return null;
 
         Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
-        Vector2 vehiclePosition = vehicle.transform.position;
+        VehicleMovement_Controller vehicleMovement = vehicle.movement;
 
         // move to vehicle
+        Vector2 vehiclePosition = vehicle.transform.position;
         movement.Assign_TargetPosition(vehiclePosition);
-        while (movement.At_TargetPosition() == false) yield return null;
+
+        while (movement.At_TargetPosition() == false)
+        {
+            // cancel purchase if player boards on vehicle
+            if (vehicleMovement.onBoard)
+            {
+                Exit_CurrentAction();
+                yield break;
+            }
+
+            yield return null;
+        }
 
         // upgrade time delay
         yield return new WaitForSeconds(_upgradeTimeValue);
@@ -330,23 +330,13 @@ public class CraftNPC_Mechanic : CraftNPC
         // upgrade
         _droppedToolBox.Invoke_Action();
 
-        vehicle.SilverShine_VehicleBody();
-
         // collect tool box
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
         while (movement.At_TargetPosition() == false) yield return null;
 
         ToolBox_Collect();
 
-        // end action
-        movement.Free_Roam(0);
-
-        actionTimer.Toggle_RunAnimation(false);
-        main.interactable.LockInteract(false);
-
-        Set_Coroutine(null);
-        Toggle_AmountBars();
-
+        Exit_CurrentAction();
         yield break;
     }
 

@@ -27,7 +27,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private FoodCondition_Indicator[] _indicators;
 
     [Header("")]
-    [SerializeField][Range(0, 500)] private int _maxIngredientUnlocks;
+    [SerializeField][Range(0, 500)] private int _maxUnlockAmount;
 
 
     // Editor
@@ -204,7 +204,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             ingredientStatus = "Return";
         }
 
-        string unlockCount = FoodIngredient_UnlockCount(dragFood) + "/" + _maxIngredientUnlocks + "\n";
+        string unlockCount = FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n";
         string controlInfo = info.UIControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
 
         info.Update_InfoText(unlockCount + lockStatus + controlInfo);
@@ -436,7 +436,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
-
     public bool Food_Archived(Food_ScrObj food)
     {
         return _controller.slotsController.FoodAmount(_currentDatas, food) > 0;
@@ -460,14 +459,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 if (amountCount <= 1) continue;
                 _currentDatas[i][j].Empty_Item();
             }
-        }
-    }
-
-    private void RemoveDuplicate_ArchivedFoods()
-    {
-        foreach (Food_ScrObj food in Archived_Foods())
-        {
-            RemoveDuplicate_ArchivedFood(food);
         }
     }
 
@@ -580,14 +571,17 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (unlockAmount <= 0) return;
 
-        IngredientUnlocked_FoodData(food).Update_Amount(unlockAmount);
+        int unlockCount = FoodIngredient_UnlockCount(food);
+        int setAmount = Mathf.Clamp(unlockCount + unlockAmount, 1, _maxUnlockAmount);
+
+        IngredientUnlocked_FoodData(food).Set_Amount(setAmount);
     }
 
 
     private void Update_MaterialShineSlot(ItemSlot targetSlot)
     {
         ItemSlot_Data data = targetSlot.data;
-        bool unlocked = FoodIngredient_UnlockCount(data.currentFood) >= _maxIngredientUnlocks;
+        bool unlocked = FoodIngredient_UnlockCount(data.currentFood) >= _maxUnlockAmount;
 
         targetSlot.Toggle_MaterialShine(data.hasItem && unlocked);
     }
