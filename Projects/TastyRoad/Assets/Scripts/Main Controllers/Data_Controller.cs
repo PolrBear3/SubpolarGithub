@@ -263,79 +263,17 @@ public class Data_Controller : MonoBehaviour
         return null;
     }
 
-    public Food_ScrObj CookedFood(List<Food_ScrObj> foods)
+    public Food_ScrObj CookedFood(List<FoodData> ingredientDatas)
     {
-        for (int i = 0; i < AllFoods().Count; i++)
+        if (ingredientDatas.Count <= 0) return null;
+
+        for (int i = 0; i < cookedFoods.Count; i++)
         {
-            List<Food_ScrObj> cookedFoodIngredients = new();
-
-            if (foods.Count != AllFoods()[i].ingredients.Count) continue;
-
-            // create ingredient check list
-            for (int j = 0; j < AllFoods()[i].ingredients.Count; j++)
-            {
-                cookedFoodIngredients.Add(AllFoods()[i].ingredients[j].foodScrObj);
-            }
-
-            // if match, remove from check list
-            for (int j = 0; j < foods.Count; j++)
-            {
-                if (foods[j] == null) continue;
-                if (!cookedFoodIngredients.Contains(foods[j])) continue;
-
-                cookedFoodIngredients.Remove(foods[j]);
-            }
-
-            // if check list is 0, add to matchCookedFoods list
-            if (cookedFoodIngredients.Count > 0) continue;
-
-            return AllFoods()[i];
+            if (!cookedFoods[i].Ingredients_Match(ingredientDatas)) continue;
+            return cookedFoods[i];
         }
 
         return null;
-    }
-
-    public Food_ScrObj CookedFood(FoodData_Controller dataController1, FoodData_Controller dataController2)
-    {
-        if (dataController1.hasFood == false || dataController2.hasFood == false) return null;
-
-        // search for cooked food
-        List<FoodData> ingredients = new();
-
-        ingredients.Add(dataController1.currentData);
-        ingredients.Add(dataController2.currentData);
-
-        Food_ScrObj cookedFood = CookedFood(ingredients);
-
-        return cookedFood;
-    }
-    public Food_ScrObj CookedFood(List<FoodData> foodData)
-    {
-        // get cooked food
-        List<Food_ScrObj> ingredients = new();
-
-        for (int i = 0; i < foodData.Count; i++)
-        {
-            ingredients.Add(foodData[i].foodScrObj);
-        }
-
-        Food_ScrObj cookedFood = CookedFood(ingredients);
-
-        if (cookedFood == null) return null;
-
-        // state check
-        for (int i = 0; i < foodData.Count; i++)
-        {
-            List<FoodData> ingredientsData = cookedFood.ingredients;
-
-            for (int j = 0; j < ingredientsData.Count; j++)
-            {
-                if (foodData[i].foodScrObj != cookedFood.ingredients[j].foodScrObj) continue;
-                if (FoodCondition_DataMatch(foodData[i].conditionDatas, cookedFood.ingredients[j].conditionDatas) == false) return null;
-            }
-        }
-
-        return cookedFood;
     }
 
 

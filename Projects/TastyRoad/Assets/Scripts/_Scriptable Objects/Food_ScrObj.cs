@@ -24,19 +24,6 @@ public class Food_ScrObj : ScriptableObject
     public FoodData[] unlocks;
 
 
-    public List<Food_ScrObj> Unlocks()
-    {
-        List<Food_ScrObj> unlockFoods = new();
-
-        foreach (FoodData data in unlocks)
-        {
-            unlockFoods.Add(data.foodScrObj);
-        }
-
-        return unlockFoods;
-    }
-
-
     /// <returns>
     /// all ingredients Food_ScrObj and if it is a raw food, returns this
     /// </returns>
@@ -61,10 +48,42 @@ public class Food_ScrObj : ScriptableObject
         return foods;
     }
 
+    public bool Ingredients_Match(List<FoodData> ingredientDatas)
+    {
+        int matchCount = 0;
+
+        for (int i = 0; i < ingredients.Count; i++)
+        {
+            for (int j = 0; j < ingredientDatas.Count; j++)
+            {
+                if (ingredientDatas[j] == null) continue;
+                if (ingredientDatas[j].foodScrObj != ingredients[i].foodScrObj) continue;
+                if (!ingredients[i].Conditions_Match(ingredientDatas[j].conditionDatas)) continue;
+
+                matchCount++;
+            }
+        }
+
+        return matchCount >= ingredients.Count;
+    }
+
+
+    public List<Food_ScrObj> Unlocks()
+    {
+        List<Food_ScrObj> unlockFoods = new();
+
+        foreach (FoodData data in unlocks)
+        {
+            unlockFoods.Add(data.foodScrObj);
+        }
+
+        return unlockFoods;
+    }
+
     /// <returns>
     /// all ingredients of unlocks with no duplicates
     /// </returns>
-    public List<Food_ScrObj> Unlock_Ingredients()
+    public List<Food_ScrObj> Unlocks_Ingredients()
     {
         List<Food_ScrObj> foods = new();
 

@@ -13,8 +13,11 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     [Header("")]
-    [SerializeField][Range(0, 100)] private float _conditionRequestRate;
     [SerializeField][Range(0, 300)] private int _transferTime;
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private float _conditionRequestRate;
+    [SerializeField][Range(0, 100)] private int _conditionBonusPay;
 
 
     private int _foodOrderCount;
@@ -348,7 +351,7 @@ public class NPC_FoodInteraction : MonoBehaviour
             payAmount += foodOrder.price;
 
             // condition match calculation
-            payAmount += orderData.Conditions_MatchCount(_transferData.conditionDatas);
+            payAmount += orderData.Conditions_MatchCount(_transferData.conditionDatas) * _conditionBonusPay;
         }
 
         _payAvailable = payAmount > 0;

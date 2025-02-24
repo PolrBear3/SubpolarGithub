@@ -812,7 +812,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
                 }
 
                 // loops through unlocked food ingredients
-                foreach (Food_ScrObj newIngredient in placedDatas[j].foodScrObj.Unlock_Ingredients())
+                foreach (Food_ScrObj newIngredient in placedDatas[j].foodScrObj.Unlocks_Ingredients())
                 {
                     Archive_toBundles(newIngredient);
                 }
