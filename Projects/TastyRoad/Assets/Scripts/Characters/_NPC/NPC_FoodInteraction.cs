@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NPC_FoodInteraction : MonoBehaviour
@@ -204,7 +205,9 @@ public class NPC_FoodInteraction : MonoBehaviour
 
             if (Main_Controller.instance.Percentage_Activated(_conditionRequestRate) == false) continue;
 
-            FoodCondition_Type randCondition = (FoodCondition_Type)Random.Range(0, 2);
+            List<FoodCondition_Type> availableConditions = setData.foodScrObj.Available_SetConditions();
+            FoodCondition_Type randCondition = availableConditions[Random.Range(0, availableConditions.Count)];
+
             int randLevel = Random.Range(1, 4);
 
             setData.Update_Condition(new FoodCondition_Data(randCondition, randLevel));

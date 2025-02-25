@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Food!")]
@@ -18,10 +20,27 @@ public class Food_ScrObj : ScriptableObject
 
     [Header("")]
     public List<FoodData> ingredients = new();
+    public FoodCondition_Type[] restrictedCondtions;
 
     [Header("")]
     [Range(0, 999)] public int unlockAmount;
     public FoodData[] unlocks;
+
+
+    public List<FoodCondition_Type> Available_SetConditions()
+    {
+        List<FoodCondition_Type> conditions = new();
+
+        foreach (FoodCondition_Type condition in Enum.GetValues(typeof(FoodCondition_Type)))
+        {
+            if (condition == FoodCondition_Type.rotten) continue;
+            if (restrictedCondtions.Contains(condition)) continue;
+
+            conditions.Add(condition);
+        }
+
+        return conditions;
+    }
 
 
     /// <returns>

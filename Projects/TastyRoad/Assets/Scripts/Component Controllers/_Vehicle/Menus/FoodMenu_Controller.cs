@@ -274,7 +274,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         string amountInfo = info.CurrentAmount_Template(cursorData.currentAmount);
         string controlInfo = info.UIControl_Template(action1, "Drag 1 amount", "Export");
 
-        info.Update_InfoText(amountInfo + "\n\n" + controlInfo);
+        info.Update_InfoText("<sprite=69> " + cursorData.currentFood.foodName + "\n" + amountInfo + "\n\n" + controlInfo);
 
         _controller.infoBox.gameObject.SetActive(true);
     }

@@ -7,6 +7,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     private SpriteRenderer _sr;
 
     [Header("")]
+    [SerializeField] private Detection_Controller _detection;
     [SerializeField] private IInteractable_Controller _iInteractable;
     [SerializeField] private ItemDropper _itemDropper;
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
@@ -111,9 +112,14 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     // Drop
     private Vector2 Drop_Position()
     {
-        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
-
         List<Vector2> surroundingPositions = _positionClaimer.All_InteractPositions();
+        Transform playerPos = _detection.player.transform;
+
+        surroundingPositions.Sort((a, b) =>
+        Vector2.Distance(playerPos.position, a)
+        .CompareTo(Vector2.Distance(playerPos.position, b)));
+
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
 
         for (int i = 0; i < surroundingPositions.Count; i++)
         {

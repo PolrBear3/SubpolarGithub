@@ -204,10 +204,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             ingredientStatus = "Return";
         }
 
-        string unlockCount = FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n";
+        string drafInfo = "<sprite=69> " + dragFood.foodName + "\n";
+        string unlockCount = FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n\n";
         string controlInfo = info.UIControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
 
-        info.Update_InfoText(unlockCount + lockStatus + controlInfo);
+        info.Update_InfoText(drafInfo + unlockCount + lockStatus + controlInfo);
     }
 
 
