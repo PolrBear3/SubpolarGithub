@@ -54,21 +54,21 @@ public class SliceTable : Table, IInteractable, ISignal
     {
         Basic_SwapFood();
 
-        Update_Effects();
+        Toggle_HitBox();
     }
 
     public new void Hold_Interact()
     {
         base.Hold_Interact();
 
-        Update_Effects();
+        Toggle_HitBox();
     }
 
 
     // ISignal
     public void Signal()
     {
-        if (stationController.Food_Icon().hasFood == false) return;
+        if (!Slice_Available()) return;
 
         stationController.Food_Icon().currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced));
         stationController.Food_Icon().Show_Condition();
@@ -80,7 +80,7 @@ public class SliceTable : Table, IInteractable, ISignal
 
 
     //
-    private void Update_Effects()
+    private void Toggle_HitBox()
     {
         if (stationController.Food_Icon().hasFood == false)
         {
@@ -96,5 +96,18 @@ public class SliceTable : Table, IInteractable, ISignal
 
         // sound play
         Audio_Controller.instance.EventInstance(gameObject, 3).start();
+    }
+
+
+    private bool Slice_Available()
+    {
+        if (!stationController.Food_Icon().hasFood) return false;
+
+        return true;
+    }
+
+    private void Slice()
+    {
+
     }
 }

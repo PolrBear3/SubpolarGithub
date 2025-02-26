@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using FMODUnity;
+using System.Linq;
 
 public class Oven : Table, IInteractable
 {
@@ -78,7 +79,7 @@ public class Oven : Table, IInteractable
     private IEnumerator Update_CurrentVisual_Coroutine()
     {
         // active
-        if (stationController.Food_Icon().hasFood)
+        if (HeatFood_Available())
         {
             _light.intensity = _lightValue;
             _heatEmission.color = Color.white;
@@ -120,6 +121,17 @@ public class Oven : Table, IInteractable
 
 
     // Food Heating System
+    private bool HeatFood_Available()
+    {
+        FoodData_Controller foodIcon = stationController.Food_Icon();
+        if (foodIcon.hasFood == false) return false;
+
+        FoodCondition_Type[] restrictedConditions = foodIcon.currentData.foodScrObj.restrictedCondtions;
+        if (restrictedConditions.Contains(FoodCondition_Type.heated)) return false;
+
+        return true;
+    }
+
     private void Heat_Food()
     {
         if (_heatCoroutine != null)
@@ -128,7 +140,7 @@ public class Oven : Table, IInteractable
             _heatCoroutine = null;
         }
 
-        if (stationController.Food_Icon().hasFood == false) return;
+        if (!HeatFood_Available()) return;
 
         // oven switch
         Audio_Controller.instance.Play_OneShot(gameObject, 3);
