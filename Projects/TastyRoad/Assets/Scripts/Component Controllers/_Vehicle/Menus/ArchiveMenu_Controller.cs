@@ -638,9 +638,19 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (cursorData.hasItem == false) return;
 
+        Food_ScrObj cursorFood = cursorData.currentFood;
+        int ingredientAmount = cursorData.currentFood.ingredients.Count;
+
         for (int i = 0; i < _indicators.Length; i++)
         {
-            _indicators[i].Indicate(cursorData.currentFood.ingredients[i]);
+            if (ingredientAmount <= 0)
+            {
+                _indicators[i].Clear();
+                continue;
+            }
+
+            _indicators[i].Indicate(cursorFood.ingredients[i]);
+            ingredientAmount--;
         }
     }
 

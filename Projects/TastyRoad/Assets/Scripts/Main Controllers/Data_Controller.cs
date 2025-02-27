@@ -265,8 +265,6 @@ public class Data_Controller : MonoBehaviour
 
     public Food_ScrObj CookedFood(List<FoodData> ingredientDatas)
     {
-        if (ingredientDatas.Count <= 0) return null;
-
         for (int i = 0; i < cookedFoods.Count; i++)
         {
             if (!cookedFoods[i].Ingredients_Match(ingredientDatas)) continue;

@@ -23,7 +23,7 @@ public class Table : MonoBehaviour, IInteractable
     public void OnDestroy()
     {
         _stationController.Action1_Event -= Basic_SwapFood;
-        _stationController.Action2_Event -= Merge_Food;
+        _stationController.Action2_Event -= FoodMerge;
 
         _stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
     }
@@ -61,7 +61,7 @@ public class Table : MonoBehaviour, IInteractable
 
         _stationController.PlayerInput_Activation(true);
         _stationController.Action1_Event += Basic_SwapFood;
-        _stationController.Action2_Event += Merge_Food;
+        _stationController.Action2_Event += FoodMerge;
     }
 
     public void Hold_Interact()
@@ -78,7 +78,7 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.PlayerInput_Activation(false);
 
         _stationController.Action1_Event -= Basic_SwapFood;
-        _stationController.Action2_Event -= Merge_Food;
+        _stationController.Action2_Event -= FoodMerge;
     }
 
 
@@ -120,24 +120,28 @@ public class Table : MonoBehaviour, IInteractable
         return data.CookedFood(ingredientDatas);
     }
 
-    private void Merge_Food()
+    private void FoodMerge()
     {
         Food_ScrObj mergedFood = MergedFood();
 
         FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
         FoodData_Controller stationFoodIcon = stationController.Food_Icon();
 
-        // clear player food
+        bool bothHaveFood = playerFoodIcon.hasFood && stationFoodIcon.hasFood;
+
+        // player food assign
         playerFoodIcon.Set_CurrentData(null);
 
         playerFoodIcon.Show_Icon();
+        playerFoodIcon.Toggle_SubDataBar(true);
         playerFoodIcon.Show_Condition();
 
-        // assign new cooked food to this table
+        // table food assign
         stationFoodIcon.Set_CurrentData(null);
         stationFoodIcon.Set_CurrentData(new FoodData(mergedFood));
 
         stationFoodIcon.Show_Icon();
+        stationFoodIcon.Toggle_SubDataBar(true);
         stationFoodIcon.Show_Condition();
 
         // unlock if cooked food

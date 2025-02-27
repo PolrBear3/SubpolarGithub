@@ -9,9 +9,9 @@ public class PrefabSpawner : MonoBehaviour
 
     [Header("")]
     [SerializeField] private bool _randomAmountSpawn;
-    [Range(0, 10)][SerializeField] private int _spawnAmount;
 
     [Header("")]
+    [Range(0, 10)][SerializeField] private int _spawnAmount;
     [SerializeField] private Vector2[] _spawnPositions;
 
 
@@ -58,7 +58,7 @@ public class PrefabSpawner : MonoBehaviour
     {
         if (_randomAmountSpawn)
         {
-            int randAmount = Random.Range(1, _spawnAmount);
+            int randAmount = Random.Range(1, _spawnAmount + 1);
             return randAmount;
         }
 

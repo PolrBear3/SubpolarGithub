@@ -11,7 +11,7 @@ public class Location_Controller : MonoBehaviour
     [SerializeField] private LocationData _data;
     public LocationData data => _data;
 
-    [Header("")]
+    [Header("Subscribe on Inspector")]
     [SerializeField] private UnityEvent _OnFirstVisit;
     public UnityEvent OnFirstVisit => _OnFirstVisit;
 

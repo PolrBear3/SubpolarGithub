@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SliceTable : Table, IInteractable, ISignal
@@ -54,14 +55,14 @@ public class SliceTable : Table, IInteractable, ISignal
     {
         Basic_SwapFood();
 
-        Toggle_HitBox();
+        ToggleSlice_HitBox();
     }
 
     public new void Hold_Interact()
     {
         base.Hold_Interact();
 
-        Toggle_HitBox();
+        ToggleSlice_HitBox();
     }
 
 
@@ -79,35 +80,33 @@ public class SliceTable : Table, IInteractable, ISignal
     }
 
 
-    //
-    private void Toggle_HitBox()
-    {
-        if (stationController.Food_Icon().hasFood == false)
-        {
-            _hitBox.Deactivate_HitBox();
-
-            // sound stop
-            Audio_Controller.instance.EventInstance(gameObject, 3).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-            return;
-        }
-
-        _hitBox.Activate_HitBox();
-
-        // sound play
-        Audio_Controller.instance.EventInstance(gameObject, 3).start();
-    }
-
-
+    // SliceTable
     private bool Slice_Available()
     {
-        if (!stationController.Food_Icon().hasFood) return false;
+        FoodData_Controller foodIcon = stationController.Food_Icon();
+        if (!foodIcon.hasFood) return false;
+
+        FoodCondition_Type[] restrictions = foodIcon.currentData.foodScrObj.restrictedCondtions;
+        if (restrictions.Contains(FoodCondition_Type.sliced)) return false;
 
         return true;
     }
 
-    private void Slice()
+    private void ToggleSlice_HitBox()
     {
+        if (Slice_Available())
+        {
+            _hitBox.Activate_HitBox();
 
+            // sound play
+            Audio_Controller.instance.EventInstance(gameObject, 3).start();
+
+            return;
+        }
+
+        _hitBox.Deactivate_HitBox();
+
+        // sound stop
+        Audio_Controller.instance.EventInstance(gameObject, 3).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

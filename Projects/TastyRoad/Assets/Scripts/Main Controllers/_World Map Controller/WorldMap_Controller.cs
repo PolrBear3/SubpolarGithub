@@ -143,6 +143,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         {
             _visitedDatas.Add(_currentData);
             currentLocation.OnFirstVisit?.Invoke();
+
+            return;
         }
 
         currentLocation.OnNewLocationSet?.Invoke();

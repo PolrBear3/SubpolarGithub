@@ -12,13 +12,23 @@ public class FoodCondition_Indicator : MonoBehaviour
     [SerializeField] private Image[] _conditionBoxes;
 
 
-    //
+    // Indications
+    public void Clear()
+    {
+        _foodIcon.color = Color.clear;
+
+        foreach (Image boxes in _conditionBoxes)
+        {
+            boxes.color = Color.clear;
+        }
+    }
+
     public void Indicate(FoodData ingredient)
     {
         Food_ScrObj ingredientFood = ingredient.foodScrObj;
 
-        // food icon
         _foodIcon.sprite = ingredientFood.sprite;
+        _foodIcon.color = Color.white;
 
         int conditionCount = ingredient.conditionDatas.Count;
 
