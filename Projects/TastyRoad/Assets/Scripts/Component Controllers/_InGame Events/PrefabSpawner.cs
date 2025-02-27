@@ -73,11 +73,11 @@ public class PrefabSpawner : MonoBehaviour
         for (int i = 0; i < Spawn_Amount(); i++)
         {
             // find available position
-            Vector2 setPosition = location.Random_SnapPosition();
+            Vector2 setPosition = location.Random_SpawnPosition();
 
             while (location.Restricted_Position(setPosition))
             {
-                setPosition = location.Random_SnapPosition();
+                setPosition = location.Random_SpawnPosition();
             }
 
             Spawn_Prefab(setPosition);

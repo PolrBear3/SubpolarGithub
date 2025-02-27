@@ -63,6 +63,31 @@ public class Location_Controller : MonoBehaviour
     }
 
 
+    public List<Vector2> All_SpawnPositions()
+    {
+        List<Vector2> spawnPositions = new();
+
+        Vector2 rangeX = _data.spawnRangeX;
+        Vector2 rangeY = _data.spawnRangeY;
+
+        for (int x = (int)rangeX.x; x <= (int)rangeX.y; x++)
+        {
+            for (int y = (int)rangeY.x; y <= (int)rangeY.y; y++)
+            {
+                spawnPositions.Add(new Vector2(x, y));
+            }
+        }
+
+        return spawnPositions;
+    }
+
+    public Vector2 Random_SpawnPosition()
+    {
+        int randIndex = UnityEngine.Random.Range(0, All_SpawnPositions().Count);
+        return All_SpawnPositions()[randIndex];
+    }
+
+
     /// <returns>
     /// closest available location from restrictedPosition
     /// </returns>
@@ -79,17 +104,6 @@ public class Location_Controller : MonoBehaviour
     public Vector2 Redirected_SnapPosition(Vector2 targetPosition)
     {
         return Main_Controller.instance.SnapPosition(Redirected_Position(targetPosition));
-    }
-
-
-    public Vector2 Random_SnapPosition()
-    {
-        Main_Controller main = Main_Controller.instance;
-
-        Vector2 randomPoint = main.Random_AreaPoint(_data.screenArea);
-        Vector2 randSnapPos = main.SnapPosition(randomPoint);
-
-        return randSnapPos;
     }
 
 

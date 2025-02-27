@@ -343,11 +343,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        ItemSlot_Data slotData = currentSlot.data;
-        Station_ScrObj slotStation = slotData.currentStation;
-
         currentSlot.Toggle_BookMark(false);
         ItemSlot_Data currentSlotData = new(currentSlot.data);
+
+        if (currentSlotData == null || currentSlotData.hasItem == false) return;
 
         cursor.Assign_Data(currentSlotData);
         cursor.Update_SlotIcon();
@@ -602,6 +601,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (currentSlot.data.hasItem)
         {
             Station_Controller exportStation = main.Spawn_Station(currentSlot.data.currentStation, _interactStation.transform.position);
+            StationData swapStationData = new(currentSlot.data.stationData);
+
+            exportStation.Set_Data(swapStationData);
             exportStation.movement.Load_Position();
         }
 

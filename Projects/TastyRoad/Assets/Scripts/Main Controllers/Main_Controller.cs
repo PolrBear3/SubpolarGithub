@@ -601,9 +601,9 @@ public class Main_Controller_Inspector : Editor
 
         GUILayout.Space(60);
 
-        if (GUILayout.Button("Reload Game"))
+        if (GUILayout.Button("Test Button"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Debug.Log(Main_Controller.instance.currentLocation.All_SpawnPositions());
         }
 
         serializedObject.ApplyModifiedProperties();
