@@ -123,7 +123,9 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < surroundingPositions.Count; i++)
         {
+            if (Main_Controller.instance.Position_Claimed(surroundingPositions[i])) continue;
             if (currentLocation.Restricted_Position(surroundingPositions[i])) continue;
+
             return surroundingPositions[i];
         }
 

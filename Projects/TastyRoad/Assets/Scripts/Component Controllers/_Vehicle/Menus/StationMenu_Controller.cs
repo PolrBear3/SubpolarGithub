@@ -343,10 +343,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot currentSlot = cursor.currentSlot;
 
-        currentSlot.Toggle_BookMark(false);
         ItemSlot_Data currentSlotData = new(currentSlot.data);
-
         if (currentSlotData == null || currentSlotData.hasItem == false) return;
+
+        currentSlot.Toggle_BookMark(false);
 
         cursor.Assign_Data(currentSlotData);
         cursor.Update_SlotIcon();

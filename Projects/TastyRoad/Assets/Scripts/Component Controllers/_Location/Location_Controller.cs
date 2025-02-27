@@ -51,8 +51,6 @@ public class Location_Controller : MonoBehaviour
     {
         bool restricted = false;
 
-        if (Main_Controller.instance.Position_Claimed(checkPosition)) restricted = true;
-
         float xValue = checkPosition.x;
         if (xValue < _data.spawnRangeX.x || xValue > _data.spawnRangeX.y) restricted = true;
 
@@ -65,6 +63,8 @@ public class Location_Controller : MonoBehaviour
 
     public List<Vector2> All_SpawnPositions()
     {
+        Main_Controller main = Main_Controller.instance;
+
         List<Vector2> spawnPositions = new();
 
         Vector2 rangeX = _data.spawnRangeX;
@@ -74,17 +74,12 @@ public class Location_Controller : MonoBehaviour
         {
             for (int y = (int)rangeY.x; y <= (int)rangeY.y; y++)
             {
-                spawnPositions.Add(new Vector2(x, y));
+                Vector2 spawnPos = main.SnapPosition(new Vector2(x, y));
+                spawnPositions.Add(spawnPos);
             }
         }
 
         return spawnPositions;
-    }
-
-    public Vector2 Random_SpawnPosition()
-    {
-        int randIndex = UnityEngine.Random.Range(0, All_SpawnPositions().Count);
-        return All_SpawnPositions()[randIndex];
     }
 
 
@@ -242,12 +237,13 @@ public class Location_Controller : MonoBehaviour
 
             // get npc controller
             NPC_Controller npcController = spawnNPC.GetComponent<NPC_Controller>();
+            NPC_Movement movement = npcController.movement;
 
             // set random theme skin for current location
             npcController.basicAnim.Set_OverrideController(_data.npcSkinOverrides[UnityEngine.Random.Range(0, _data.npcSkinOverrides.Length)]);
 
             // set npc free roam location
-            npcController.movement.Free_Roam(_data.roamArea, 0f);
+            movement.Free_Roam(_data.roamArea, movement.Random_IntervalTime());
         }
     }
 }

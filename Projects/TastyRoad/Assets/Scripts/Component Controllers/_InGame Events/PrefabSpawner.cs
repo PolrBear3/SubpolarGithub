@@ -11,7 +11,7 @@ public class PrefabSpawner : MonoBehaviour
     [SerializeField] private bool _randomAmountSpawn;
 
     [Header("")]
-    [Range(0, 10)][SerializeField] private int _spawnAmount;
+    [Range(0, 100)][SerializeField] private int _spawnAmount;
     [SerializeField] private Vector2[] _spawnPositions;
 
 
@@ -68,19 +68,25 @@ public class PrefabSpawner : MonoBehaviour
 
     private void Random_Spawn()
     {
-        Location_Controller location = Main_Controller.instance.currentLocation;
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller location = main.currentLocation;
+
+        List<Vector2> spawnPositions = location.All_SpawnPositions();
 
         for (int i = 0; i < Spawn_Amount(); i++)
         {
-            // find available position
-            Vector2 setPosition = location.Random_SpawnPosition();
-
-            while (location.Restricted_Position(setPosition))
+            while (spawnPositions.Count > 0)
             {
-                setPosition = location.Random_SpawnPosition();
-            }
+                int randIndex = Random.Range(0, spawnPositions.Count);
+                Vector2 randPos = spawnPositions[randIndex];
 
-            Spawn_Prefab(setPosition);
+                spawnPositions.RemoveAt(randIndex);
+
+                if (main.Position_Claimed(randPos)) continue;
+
+                Spawn_Prefab(randPos);
+                break;
+            }
         }
     }
 

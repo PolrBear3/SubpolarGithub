@@ -161,7 +161,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         NPC_Movement movement = _npcController.movement;
 
         movement.Stop_FreeRoam();
-        movement.Free_Roam(_currentSubLocation.roamArea, Random.Range(movement.intervalTimeRange.x, movement.intervalTimeRange.y));
+        movement.Free_Roam(_currentSubLocation.roamArea, movement.Random_IntervalTime());
     }
 
 

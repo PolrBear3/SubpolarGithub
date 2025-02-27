@@ -615,7 +615,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
 
         // assign exported food amount according to dragging amount
-        if (currentCursorData.currentAmount >= _maxExportAmount)
+        if (currentCursorData.currentAmount > _maxExportAmount)
         {
             // max amount
             foodBoxIcon.currentData.Set_Amount(_maxExportAmount);

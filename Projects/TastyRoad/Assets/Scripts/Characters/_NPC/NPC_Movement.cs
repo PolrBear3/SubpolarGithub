@@ -30,8 +30,8 @@ public class NPC_Movement : MonoBehaviour
 
 
     [Header("")]
-    [SerializeField] private Vector2 _intervalTimeRange;
-    public Vector2 intervalTimeRange => _intervalTimeRange;
+    [SerializeField][Range(0, 100)] private int _intervalTime;
+    public int intervalTimeRange => _intervalTime;
 
     [SerializeField][Range(0, 100)] private int _searchAttempts;
     public int searchAttempts => _searchAttempts;
@@ -68,7 +68,7 @@ public class NPC_Movement : MonoBehaviour
 
     public float Random_IntervalTime()
     {
-        return Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
+        return Random.Range(0, _intervalTime + 1);
     }
 
 
@@ -226,9 +226,7 @@ public class NPC_Movement : MonoBehaviour
                 yield return null;
             }
 
-            float randIntervalTime = Random.Range(_intervalTimeRange.x, _intervalTimeRange.y);
-
-            yield return new WaitForSeconds(randIntervalTime);
+            yield return new WaitForSeconds(Random_IntervalTime());
             if (_roamActive == false) break;
 
             Assign_TargetPosition(roamArea);
