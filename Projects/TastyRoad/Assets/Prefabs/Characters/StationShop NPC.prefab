@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
   _defaultMoveSpeed: 5
-  _intervalTimeRange: {x: 5, y: 10}
+  _intervalTime: 2
   _searchAttempts: 50
 --- !u!114 &494314912932873177
 MonoBehaviour:
@@ -428,14 +428,14 @@ MonoBehaviour:
   - {fileID: -155862245, guid: 8c99d34896b414ee9859f23993f0f708, type: 3}
   _currentSubLocation: {fileID: 0}
   _scrapStack: {fileID: 0}
-  _disposeWaitTime: 0
-  _disposeScrapAmount: 0
+  _disposeWaitTime: 1
+  _disposeScrapAmount: 1
   _restrictedDisposables:
   - {fileID: 11400000, guid: d05e05d026cda44a9a011f51eba3b83a, type: 2}
   - {fileID: 11400000, guid: e40c6696d07554a4da102f46dcd59515, type: 2}
   _boxStackPoints: []
   _stationStocks: []
-  _duplicateAmount: 2
+  _duplicateAmount: 1
   _restockCount: 12
 --- !u!1 &6140207368992471877
 GameObject:

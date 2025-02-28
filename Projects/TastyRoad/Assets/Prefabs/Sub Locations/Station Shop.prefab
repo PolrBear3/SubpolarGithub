@@ -893,6 +893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnPoint: {fileID: 6210060706156798245}
   _roamArea: {fileID: 477503098783082019}
+  _outerBlack: 1
 --- !u!1 &8829997133634074307
 GameObject:
   m_ObjectHideFlags: 0
@@ -1238,17 +1239,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3627152083992463839}
     - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
-      propertyPath: _disposeWaitTime
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
       propertyPath: _currentSubLocation
       value: 
       objectReference: {fileID: 6697486133214081430}
-    - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
-      propertyPath: _disposeScrapAmount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9076807665472467565, guid: 79e4e2c7078474b059c84da52aaf2fd2, type: 3}
       propertyPath: _boxStacks.Array.size
       value: 3

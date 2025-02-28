@@ -173,6 +173,17 @@ public class Data_Controller : MonoBehaviour
         return null;
     }
 
+    public Food_ScrObj Food(List<FoodData> ingredientDatas)
+    {
+        for (int i = 0; i < AllFoods().Count; i++)
+        {
+            if (!AllFoods()[i].Ingredients_Match(ingredientDatas)) continue;
+            return AllFoods()[i];
+        }
+
+        return null;
+    }
+
 
     // Get Raw Food
     public Food_ScrObj RawFood()

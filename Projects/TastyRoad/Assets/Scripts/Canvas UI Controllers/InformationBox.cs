@@ -6,14 +6,19 @@ using TMPro;
 
 public class InformationBox : MonoBehaviour
 {
-    [Header("")]
     private RectTransform _rect;
+
+    [Header("")]
+    [SerializeField] private Image _boxImage;
+    public Image boxImage => _boxImage;
+
     [SerializeField] private TMP_Text _infoText;
+
+    [Header("")]
+    [SerializeField] private float _heightIncreaseValue;
 
     private float _defaultHeight;
     private bool _defaultHeightSaved;
-
-    [SerializeField] private float _heightIncreaseValue;
 
     private bool _flipped;
     public bool flipped => _flipped;

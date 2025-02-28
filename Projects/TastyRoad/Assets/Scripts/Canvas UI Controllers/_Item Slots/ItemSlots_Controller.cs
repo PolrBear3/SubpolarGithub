@@ -115,7 +115,7 @@ public class ItemSlots_Controller : MonoBehaviour
 
         foreach (var slot in _itemSlots)
         {
-            currentDatas.Add(slot.data);
+            currentDatas.Add(new(slot.data));
         }
 
         return currentDatas;

@@ -117,7 +117,7 @@ public class Table : MonoBehaviour, IInteractable
         Data_Controller data = Main_Controller.instance.dataController;
         List<FoodData> ingredientDatas = new() { tableData, playerData };
 
-        return data.CookedFood(ingredientDatas);
+        return data.Food(ingredientDatas);
     }
 
     private void FoodMerge()

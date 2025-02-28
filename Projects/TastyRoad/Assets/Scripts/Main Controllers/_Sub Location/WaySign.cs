@@ -10,8 +10,11 @@ public class WaySign : ActionBubble_Interactable
     [Header("")]
     [SerializeField] private GameObject _subLocationPrefab;
 
-    [SerializeField] private bool _isExit;
+    [Header("Empty if exit")]
     [SerializeField] private SubLocation _subLocation;
+
+    [Header("")]
+    [SerializeField] private bool _isExit;
 
 
     // MonoBehaviour
@@ -76,6 +79,8 @@ public class WaySign : ActionBubble_Interactable
 
         // wait until curtain closes
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
+
+        main.dialogSystem.Toggle_PanelSprites(_subLocation.outerBlack && !_isExit);
 
         // set return point for sub location exit
         _subLocation.Set_ReturnPoint(player.transform);

@@ -8,26 +8,26 @@ using TMPro;
 public class DialogSystem : MonoBehaviour
 {
     [Header("")]
+    [SerializeField] private Image _paneImage;
+    [SerializeField] private Sprite[] _panelSprites;
+
+    [Header("")]
     [SerializeField] private GameObject _dialogBox;
     [SerializeField] private RectTransform[] _snapPoints;
-
-    private List<DialogBox> _currentDialogs = new();
-
-    private bool _newDialogOpened;
-    private int _currentDialogNum;
-
-    [Header("")]
-    [SerializeField] private List<DialogData> _customDialogs = new();
-
-    [Header("")]
-    [SerializeField] private GameObject _actionKey;
 
     [Header("")]
     [SerializeField] private InformationBox _infoBox;
 
     [Header("")]
+    [SerializeField] private List<DialogData> _customDialogs = new();
+
+    [Header("")]
     [SerializeField] private LeanTweenType _tweenType;
     [Range(0, 1)][SerializeField] private float _transitionTime;
+
+
+    private List<DialogBox> _currentDialogs = new();
+    private int _currentDialogNum;
 
 
     // UnityEngine
@@ -37,9 +37,6 @@ public class DialogSystem : MonoBehaviour
 
         Refresh_CustomDialogs();
         HoverToggle_CurrentDialog(false);
-
-        _newDialogOpened = true;
-        _actionKey.SetActive(!_newDialogOpened);
     }
 
 
@@ -47,50 +44,18 @@ public class DialogSystem : MonoBehaviour
     private void OnNumKey1()
     {
         InfoBox_Toggle(0);
-
-        _newDialogOpened = true;
-
-        if (_infoBox.gameObject.activeSelf == false) return;
-        _actionKey.SetActive(false);
     }
     private void OnNumKey2()
     {
         InfoBox_Toggle(1);
-
-        if (_infoBox.gameObject.activeSelf == true)
-        {
-            _actionKey.SetActive(false);
-            return;
-        }
-
-        if (_newDialogOpened == true) return;
-        _actionKey.SetActive(true);
     }
     private void OnNumKey3()
     {
         InfoBox_Toggle(2);
-
-        if (_infoBox.gameObject.activeSelf == true)
-        {
-            _actionKey.SetActive(false);
-            return;
-        }
-
-        if (_newDialogOpened == true) return;
-        _actionKey.SetActive(true);
     }
     private void OnNumKey4()
     {
         InfoBox_Toggle(3);
-
-        if (_infoBox.gameObject.activeSelf == true)
-        {
-            _actionKey.SetActive(false);
-            return;
-        }
-
-        if (_newDialogOpened == true) return;
-        _actionKey.SetActive(true);
     }
 
 
@@ -107,12 +72,9 @@ public class DialogSystem : MonoBehaviour
         ReOrder_CurrentDialogs();
 
         HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
-        _actionKey.SetActive(!_infoBox.gameObject.activeSelf);
 
         _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
         _infoBox.Update_RectLayout();
-
-        _newDialogOpened = false;
 
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
@@ -120,7 +82,7 @@ public class DialogSystem : MonoBehaviour
     }
 
 
-    // Custom Dialogs Control
+    // Dialogs Control
     public void Refresh_CustomDialogs()
     {
         for (int i = 0; i < _snapPoints.Length; i++)
@@ -135,14 +97,25 @@ public class DialogSystem : MonoBehaviour
         }
 
         HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
-        _actionKey.SetActive(!_infoBox.gameObject.activeSelf);
 
         ReOrder_CurrentDialogs();
 
         _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
         _infoBox.Update_RectLayout();
+    }
 
-        _newDialogOpened = false;
+    public void Toggle_PanelSprites(bool toggle)
+    {
+        if (toggle)
+        {
+            _paneImage.sprite = _panelSprites[1];
+            _infoBox.boxImage.sprite = _panelSprites[1];
+
+            return;
+        }
+
+        _paneImage.sprite = _panelSprites[0];
+        _infoBox.boxImage.sprite = _panelSprites[0];
     }
 
 

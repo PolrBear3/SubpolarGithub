@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SubLocation : MonoBehaviour
 {
-    private Main_Controller _mainController;
-
     [Header("")]
     [SerializeField] private Transform _spawnPoint;
     public Transform spawnPoint => _spawnPoint;
@@ -13,14 +11,11 @@ public class SubLocation : MonoBehaviour
     [SerializeField] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
+    [Header("")]
+    [SerializeField] private bool _outerBlack;
+    public bool outerBlack => _outerBlack;
+
     private Vector2 _returnPoint;
-
-
-    // MonoBehaviour
-    private void Awake()
-    {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
 
 
     // Set Functions
@@ -37,23 +32,27 @@ public class SubLocation : MonoBehaviour
     }
     private IEnumerator Exit_Coroutine()
     {
-        Player_Controller player = _mainController.Player();
+        Main_Controller main = Main_Controller.instance;
+        Player_Controller player = main.Player();
+
         player.Toggle_Controllers(false);
 
         // set load icon
-        _mainController.transitionCanvas.Set_LoadIcon(_mainController.currentLocation.data.locationScrObj.locationIcon);
+        main.transitionCanvas.Set_LoadIcon(main.currentLocation.data.locationScrObj.locationIcon);
 
         // curtain scene transition
-        _mainController.transitionCanvas.CurrentScene_Transition();
+        main.transitionCanvas.CurrentScene_Transition();
 
         // wait until curtain closes
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 
+        main.dialogSystem.Toggle_PanelSprites(false);
+
         // move player to current location return spawn point
-        _mainController.Player().transform.position = _returnPoint;
+        main.Player().transform.position = _returnPoint;
 
         // move camera to current location
-        _mainController.cameraController.UpdatePosition(_mainController.currentLocation.transform.position);
+        main.cameraController.UpdatePosition(main.currentLocation.transform.position);
 
         player.Toggle_Controllers(true);
     }

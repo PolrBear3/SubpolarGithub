@@ -43,6 +43,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
+        Update_CurrentDatas();
 
         // subscriptions
         _controller.MenuOpen_Event += Update_MaterialShineSlots;
@@ -404,24 +405,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Archive Data
-    private List<Food_ScrObj> Archived_Foods()
-    {
-        List<Food_ScrObj> archivedFoods = new();
-
-        for (int i = 0; i < _currentDatas.Count; i++)
-        {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
-            {
-                if (_currentDatas[i][j].hasItem == false) continue;
-                if (archivedFoods.Contains(_currentDatas[i][j].currentFood)) continue;
-
-                archivedFoods.Add(_currentDatas[i][j].currentFood);
-            }
-        }
-
-        return archivedFoods;
-    }
-
     public ItemSlot_Data Archived_FoodData(Food_ScrObj targetFood)
     {
         for (int i = 0; i < _currentDatas.Count; i++)
@@ -463,6 +446,25 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
+    private void Update_CurrentDatas()
+    {
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (!_currentDatas[i][j].hasItem) continue;
+                Food_ScrObj dataFood = _currentDatas[i][j].foodData.foodScrObj;
+
+                RemoveDuplicate_ArchivedFood(dataFood);
+
+                if (!FoodIngredient_Unlocked(dataFood)) continue;
+                Unlock_FoodIngredient(dataFood, 0);
+            }
+        }
+
+        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+    }
+
 
     private void AddNewPage_onFull()
     {
@@ -480,6 +482,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public ItemSlot_Data Archive_Food(Food_ScrObj food)
     {
+        if (food == null) return null;
+
         // check if food has ingredients
         if (food.ingredients.Count <= 0) return null;
 

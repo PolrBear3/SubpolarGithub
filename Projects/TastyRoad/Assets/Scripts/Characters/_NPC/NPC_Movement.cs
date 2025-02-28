@@ -31,7 +31,7 @@ public class NPC_Movement : MonoBehaviour
 
     [Header("")]
     [SerializeField][Range(0, 100)] private int _intervalTime;
-    public int intervalTimeRange => _intervalTime;
+    public int intervalTime => _intervalTime;
 
     [SerializeField][Range(0, 100)] private int _searchAttempts;
     public int searchAttempts => _searchAttempts;

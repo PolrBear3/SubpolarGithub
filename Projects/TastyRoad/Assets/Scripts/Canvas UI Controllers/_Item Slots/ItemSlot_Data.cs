@@ -119,7 +119,7 @@ public class ItemSlot_Data
         return true;
     }
 
-    public void Update_StationData(StationData data)
+    public void Set_StationData(StationData data)
     {
         if (data == null)
         {

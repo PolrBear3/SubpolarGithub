@@ -36,10 +36,10 @@ public class NPC_Interaction : MonoBehaviour
 
         if (movement.isLeaving == true)
         {
-            movement.Leave(movement.Random_IntervalTime());
+            movement.Leave(movement.intervalTime);
             return;
         }
 
-        movement.Free_Roam(movement.currentRoamArea, movement.Random_IntervalTime());
+        movement.Free_Roam(movement.currentRoamArea, movement.intervalTime);
     }
 }

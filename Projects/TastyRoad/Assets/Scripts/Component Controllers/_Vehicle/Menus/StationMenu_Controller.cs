@@ -365,7 +365,11 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.Empty_Item();
 
         _currentDatas[_currentPageNum] = slotsController.CurrentSlots_toDatas();
-        Add_StationItem(cursorData.currentStation, 1).isLocked = cursorData.isLocked;
+
+        ItemSlot_Data cancelData = Add_StationItem(cursorData.currentStation, 1);
+
+        cancelData.isLocked = cursorData.isLocked;
+        cancelData.Set_StationData(cursorData.stationData);
 
         slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
@@ -610,7 +614,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // retrieving station
         currentSlot.Assign_Data(new(interactStationData));
         currentSlot.Update_SlotIcon();
-        currentSlot.data.Update_StationData(interactStationData);
+        currentSlot.data.Set_StationData(interactStationData);
 
         _interactStation.Destroy_Station();
 
