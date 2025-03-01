@@ -251,10 +251,14 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return foodMenu.Add_FoodItem(_dataController.goldenNugget, addAmount);
     }
 
-    public void Remove_GoldenNugget(int removeAmount)
+    public bool Remove_GoldenNugget(int removeAmount)
     {
         FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
+
+        if (removeAmount > GoldenNugget_Amount()) return false;
+
         foodMenu.Remove_FoodItem(_dataController.goldenNugget, removeAmount);
+        return true;
     }
 
 

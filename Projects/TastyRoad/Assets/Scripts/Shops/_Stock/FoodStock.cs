@@ -358,7 +358,7 @@ public class FoodStock : MonoBehaviour
     {
         if (_stockData.unlocked) return;
 
-        if (Main_Controller.instance.GoldenNugget_Amount() < _unlockPrice)
+        if (!Main_Controller.instance.Remove_GoldenNugget(_unlockPrice))
         {
             // Not enough golden nuggets to purchase!
             gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
