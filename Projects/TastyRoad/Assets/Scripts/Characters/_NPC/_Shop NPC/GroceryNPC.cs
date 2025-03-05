@@ -91,7 +91,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.OnIInteract += Toggle_QuestBar;
         interact.OnUnIInteract += Toggle_QuestBar;
 
-        interact.OnAction1Input += DialogUpdate_UnlockCount;
         interact.OnAction2Input += Complete_Quest;
     }
 
@@ -118,7 +117,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         interact.OnIInteract -= Toggle_QuestBar;
         interact.OnUnIInteract -= Toggle_QuestBar;
 
-        interact.OnAction1Input -= DialogUpdate_UnlockCount;
         interact.OnAction2Input -= Complete_Quest;
     }
 
@@ -149,6 +147,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             Unlock(_startingBundles[i]);
         }
 
+        Load_CurrentFoodStocks();
+        Load_PlaceableStocks();
+
         if (!ES3.KeyExists("GroceryNPC/_unlockDatas")) return;
 
         _currentQuestCool = ES3.Load("GroceryNPC/_currentQuestCool", _currentQuestCool);
@@ -158,9 +159,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _previousQuestFood = new(ES3.Load("GroceryNPC/_previousQuestFood", _previousQuestFood));
 
         Set_QuestFood(_questFood.foodScrObj);
-
-        Load_CurrentFoodStocks();
-        Load_PlaceableStocks();
     }
 
 
@@ -298,35 +296,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             return true;
         }
         return false;
-    }
-
-
-    private void Save_PlaceableStocks()
-    {
-        Dictionary<List<FoodData>, bool> placeableStockData = new();
-
-        foreach (PlaceableStock stock in _placeableStocks)
-        {
-            placeableStockData.Add(stock.foodIcon.AllDatas(), stock.isComplete);
-        }
-
-        ES3.Save("GroceryNPC/placeableStockData", placeableStockData);
-    }
-
-    private void Load_PlaceableStocks()
-    {
-        Dictionary<List<FoodData>, bool> placeableStockData = new();
-        placeableStockData = new(ES3.Load("GroceryNPC/placeableStockData", placeableStockData));
-
-        List<List<FoodData>> placedDatas = new(placeableStockData.Keys);
-        List<bool> completeDatas = new(placeableStockData.Values);
-
-        for (int i = 0; i < placeableStockData.Count; i++)
-        {
-            if (i > _placeableStocks.Length - 1) return;
-
-            _placeableStocks[i].Load_Data(placedDatas[i], completeDatas[i]);
-        }
     }
 
 
@@ -540,6 +509,61 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         return null;
     }
 
+
+    /// <returns>
+    /// Unlock count (currentAmount) highest to lowest values to datas
+    /// </returns>
+    private List<FoodData> NearlyUnlocked_Datas()
+    {
+        List<FoodData> unlockDatas = new(_unlockDatas);
+
+        for (int i = 0; i < unlockDatas.Count - 1; i++)
+        {
+            int maxIndex = i;
+
+            // remove unlock count max datas
+            if (unlockDatas[i].currentAmount >= unlockDatas[i].foodScrObj.unlockAmount)
+            {
+                unlockDatas.RemoveAt(i);
+                continue;
+            }
+
+            // compare and arrange most to least unlock count datas
+            for (int j = i + 1; j < unlockDatas.Count; j++)
+            {
+                if (unlockDatas[j].currentAmount <= unlockDatas[maxIndex].currentAmount) continue;
+
+                maxIndex = j;
+            }
+
+            if (maxIndex == i) continue;
+
+            FoodData temp = unlockDatas[i];
+
+            unlockDatas[i] = unlockDatas[maxIndex];
+            unlockDatas[maxIndex] = temp;
+        }
+
+        return unlockDatas;
+    }
+
+    private FoodData UnlockProgress_Data()
+    {
+        List<FoodData> unlockedDatas = NearlyUnlocked_Datas();
+        if (unlockedDatas.Count <= 0) return null;
+
+        FoodData unlockData = unlockedDatas[0];
+
+        for (int i = 0; i < unlockedDatas.Count; i++)
+        {
+            if (UnlockPreview_Toggled(unlockedDatas[i].foodScrObj)) continue;
+            unlockData = unlockedDatas[i];
+        }
+
+        return unlockData;
+    }
+
+
     private int Unlock_Count(Food_ScrObj food)
     {
         FoodData data = UnlockData(food);
@@ -682,7 +706,41 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Food Bundle Stocks
+    // Placeable Stocks Control
+    private void Save_PlaceableStocks()
+    {
+        Dictionary<List<FoodData>, bool> placeableStockData = new();
+
+        foreach (PlaceableStock stock in _placeableStocks)
+        {
+            placeableStockData.Add(stock.foodIcon.AllDatas(), stock.isComplete);
+        }
+
+        ES3.Save("GroceryNPC/placeableStockData", placeableStockData);
+    }
+
+    private void Load_PlaceableStocks()
+    {
+        Dictionary<List<FoodData>, bool> placeableStockData = new();
+        placeableStockData = new(ES3.Load("GroceryNPC/placeableStockData", placeableStockData));
+
+        List<List<FoodData>> placedDatas = new(placeableStockData.Keys);
+        List<bool> completeDatas = new(placeableStockData.Values);
+
+        for (int i = 0; i < placeableStockData.Count; i++)
+        {
+            if (i > _placeableStocks.Length - 1) break;
+
+            _placeableStocks[i].Load_Data(placedDatas[i], completeDatas[i]);
+        }
+
+        foreach (PlaceableStock stock in _placeableStocks)
+        {
+            Toggle_UnlockPreview(stock);
+        }
+    }
+
+
     private List<PlaceableStock> Complete_Stocks()
     {
         List<PlaceableStock> stocks = new();
@@ -710,7 +768,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         List<PlaceableStock> completedStocks = new(Complete_Stocks());
 
-        // loops through placeable stocks
+        // loops through empty placeable stocks
         for (int i = 0; i < completedStocks.Count; i++)
         {
             movement.Assign_TargetPosition(completedStocks[i].transform.position);
@@ -728,6 +786,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             }
 
             completedStocks[i].Reset_Data();
+
+            // update all unlock previews for _placeableStocks
+            foreach (PlaceableStock stock in _placeableStocks)
+            {
+                Toggle_UnlockPreview(stock);
+            }
         }
 
         Cancel_Action();
@@ -735,23 +799,27 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    private void DialogUpdate_UnlockCount()
+    private void Toggle_UnlockPreview(PlaceableStock placeStock)
     {
-        FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
+        if (placeStock.foodIcon.hasFood) return;
 
-        if (playerIcon.hasFood == false) return;
+        FoodData progressData = UnlockProgress_Data();
+        if (progressData == null) return;
 
-        Data_Controller data = Main_Controller.instance.dataController;
-        Food_ScrObj playerFood = playerIcon.currentData.foodScrObj;
+        FoodData_Controller previewIcon = placeStock.previewIcon;
 
-        if (data.Is_RawFood(playerFood)) return;
+        previewIcon.Update_AllDatas(null);
+        previewIcon.Set_CurrentData(progressData);
 
-        Sprite playerFoodSprite = playerFood.sprite;
-        string dialogInfo = Unlock_Count(playerFood) + "/" + playerFood.unlockAmount + " collected from bundle";
+        previewIcon.Show_Icon(0.5f);
+    }
 
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-        DialogData dialogData = new(playerFoodSprite, dialogInfo);
-
-        dialog.Update_Dialog(dialogData);
+    private bool UnlockPreview_Toggled(Food_ScrObj checkFood)
+    {
+        for (int i = 0; i < _placeableStocks.Length; i++)
+        {
+            if (_placeableStocks[i].previewIcon.Is_SameFood(checkFood)) return true;
+        }
+        return false;
     }
 }

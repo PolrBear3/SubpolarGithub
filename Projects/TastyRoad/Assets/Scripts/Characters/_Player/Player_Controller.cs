@@ -71,6 +71,9 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
         if (ES3.KeyExists("Player_Controller/_foodIcon.AllDatas()") == false) return;
 
         _foodIcon.Update_AllDatas(ES3.Load("Player_Controller/_foodIcon.AllDatas()", _foodIcon.AllDatas()));
+
+        _foodIcon.Show_Icon();
+        _foodIcon.Show_Condition();
     }
 
 

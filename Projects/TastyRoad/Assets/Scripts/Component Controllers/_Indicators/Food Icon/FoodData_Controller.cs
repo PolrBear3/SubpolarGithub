@@ -25,6 +25,10 @@ public class FoodData_Controller : MonoBehaviour
     public List<FoodData> subDatas => _subDatas;
 
 
+    private bool _iconShowLocked;
+    private bool _conditionShowLocked;
+
+
     public delegate void Event();
     public event Event TimeTikEvent;
 
@@ -51,10 +55,6 @@ public class FoodData_Controller : MonoBehaviour
     [SerializeField] private float _toggleHeight;
     private float _defaultHeight;
 
-    [Header("")]
-    [SerializeField] private bool _iconShowLocked;
-    [SerializeField] private bool _conditionShowLocked;
-
 
     [Header("")]
     [SerializeField][Range(0, 100)] private int _maxDataCount;
@@ -77,8 +77,17 @@ public class FoodData_Controller : MonoBehaviour
 
     private void Start()
     {
-        Show_Icon();
-        Show_Condition();
+        if (!_hasFood)
+        {
+            Hide_Icon();
+            Hide_Condition();
+
+            return;
+        }
+
+        if (_currentData.conditionDatas.Count > 0) return;
+
+        Hide_Condition();
     }
 
     private void OnDestroy()

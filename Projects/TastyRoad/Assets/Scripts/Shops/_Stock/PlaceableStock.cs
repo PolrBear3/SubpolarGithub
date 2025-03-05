@@ -10,8 +10,12 @@ public class PlaceableStock : MonoBehaviour
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
 
+    [Header("")]
     [SerializeField] private FoodData_Controller _foodIcon;
     public FoodData_Controller foodIcon => _foodIcon;
+
+    [SerializeField] private FoodData_Controller _previewIcon;
+    public FoodData_Controller previewIcon => _previewIcon;
 
     [Header("")]
     [SerializeField] private Sprite[] _sprites;
@@ -41,8 +45,6 @@ public class PlaceableStock : MonoBehaviour
 
         _interactable.OnIInteract += Toggle_AmountBar;
         _interactable.OnUnIInteract += Toggle_AmountBar;
-
-        _interactable.OnHoldIInteract += Transfer_CurrentFood;
     }
 
     private void OnDestroy()
@@ -54,8 +56,6 @@ public class PlaceableStock : MonoBehaviour
         _interactable.OnIInteract -= Toggle_AmountBar;
         _interactable.OnUnIInteract -= Toggle_AmountBar;
 
-        _interactable.OnHoldIInteract += Transfer_CurrentFood;
-
         _interactable.OnAction1Input -= Complete;
         _interactable.OnAction1Input -= Place;
     }
@@ -64,6 +64,8 @@ public class PlaceableStock : MonoBehaviour
     // Data Control
     public void Load_Data(List<FoodData> placedData, bool completeData)
     {
+        if (placedData == null || placedData.Count <= 0) return;
+
         _foodIcon.Update_AllDatas(placedData);
         _isComplete = completeData;
     }
@@ -140,38 +142,6 @@ public class PlaceableStock : MonoBehaviour
 
 
     // Functions
-    private void Transfer_CurrentFood()
-    {
-        if (_isComplete) return;
-
-        FoodData_Controller playerIcon = _interactable.detection.player.foodIcon;
-
-        if (_foodIcon.hasFood == false || playerIcon.DataCount_Maxed())
-        {
-            // swap
-            _foodIcon.Swap_Data(playerIcon);
-        }
-        else
-        {
-            // player
-            playerIcon.Set_CurrentData(_foodIcon.currentData);
-
-            // table
-            _foodIcon.Set_CurrentData(null);
-        }
-
-        playerIcon.Show_Icon();
-        playerIcon.Show_Condition();
-        playerIcon.Toggle_SubDataBar(true);
-
-        _foodIcon.Show_Icon();
-        _foodIcon.Toggle_SubDataBar(true);
-
-        Update_Bubble();
-        _interactable.UnInteract();
-    }
-
-
     private bool Place_Available()
     {
         Player_Controller player = _interactable.detection.player;
@@ -198,6 +168,10 @@ public class PlaceableStock : MonoBehaviour
     private void Place()
     {
         if (Place_Available() == false) return;
+        if (!_foodIcon.hasFood) _foodIcon.Update_AllDatas(null);
+
+        _previewIcon.Update_AllDatas(null);
+        _previewIcon.Show_Icon();
 
         FoodData_Controller playerIcon = _interactable.detection.player.foodIcon;
 

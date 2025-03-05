@@ -89,16 +89,21 @@ public class FoodStock : MonoBehaviour
     // Public Constructors
     public StockData Set_StockData(StockData data)
     {
+        if (data == null) return data;
+
         _stockData = new(data);
         return _stockData;
     }
 
     public void Set_FoodData(FoodData data)
     {
+        if (data == null) return;
+
         _foodIcon.Set_CurrentData(data);
         _foodIcon.Show_Icon();
 
         if (_foodIcon.hasFood == false) return;
+
         Update_TagSprite();
     }
 
