@@ -79,14 +79,19 @@ public class PlaceableStock : MonoBehaviour
         Update_forComplete();
 
         _interactable.LockInteract(false);
+
+        Update_Bubble();
+        Toggle_AmountBar();
     }
 
 
     // Updates and Toggles
-    public void Update_forComplete() // currently used in test editor
+    public void Update_forComplete()
     {
         _foodIcon.Toggle_Height(_isComplete);
         _interactable.bubble.Toggle_Height(_isComplete);
+
+        _foodIcon.Hide_Condition();
 
         if (_isComplete == false)
         {
@@ -108,7 +113,10 @@ public class PlaceableStock : MonoBehaviour
         bool playerDetected = _interactable.detection.player != null;
         bool bubbleOn = _interactable.bubble.bubbleOn;
 
-        _foodIcon.Toggle_SubDataBar(playerDetected && !bubbleOn);
+        bool foodPlaced = _foodIcon.hasFood;
+
+        _foodIcon.Toggle_SubDataBar(foodPlaced && playerDetected && !bubbleOn);
+        _previewIcon.amountBar.Toggle(!foodPlaced && playerDetected && !bubbleOn);
     }
 
     private void Update_Bubble()
@@ -145,11 +153,12 @@ public class PlaceableStock : MonoBehaviour
     private bool Place_Available()
     {
         Player_Controller player = _interactable.detection.player;
+
         if (player == null) return false;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
         FoodData_Controller playerIcon = player.foodIcon;
+
         if (playerIcon.hasFood == false)
         {
             dialog.Update_Dialog(0);
@@ -193,8 +202,7 @@ public class PlaceableStock : MonoBehaviour
 
     private void Complete()
     {
-        if (foodIcon.hasFood == false) return;
-        if (Place_Available()) return;
+        if (!foodIcon.hasFood) return;
 
         _isComplete = true;
         Update_forComplete();
