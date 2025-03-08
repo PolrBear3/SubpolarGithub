@@ -374,9 +374,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         for (int i = 0; i < unlockedDatas.Count; i++)
         {
             if (unlockedDatas.Count <= 1) break;
-
-            if (questIcon.hasFood == false) break;
-            if (questIcon.Is_SameFood(unlockedDatas[i].foodScrObj)) continue;
+            if (!questIcon.Is_SameFood(unlockedDatas[i].foodScrObj)) continue;
 
             unlockedDatas.RemoveAt(i);
             break;

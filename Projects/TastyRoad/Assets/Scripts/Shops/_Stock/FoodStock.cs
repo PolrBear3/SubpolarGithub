@@ -33,10 +33,6 @@ public class FoodStock : MonoBehaviour
     public StockData stockData => _stockData;
 
 
-    // Editor
-    [HideInInspector] public Food_ScrObj foodToAdd;
-
-
     // UnityEngine
     private void Awake()
     {
@@ -354,7 +350,6 @@ public class FoodStock : MonoBehaviour
 
         // coin launch animation
         Transform player = _interactable.detection.player.transform;
-
         _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], player.position);
     }
 
@@ -374,62 +369,9 @@ public class FoodStock : MonoBehaviour
 
         Toggle_Unlock(true);
 
+        _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[1], transform.position);
+
         Update_Bubble();
         _interactable.UnInteract();
     }
 }
-
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(FoodStock))]
-public class FoodStock_Inspector : Editor
-{
-    //
-    private SerializedProperty foodToAddProp;
-
-    private void OnEnable()
-    {
-        foodToAddProp = serializedObject.FindProperty("foodToAdd");
-    }
-
-
-    //
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        FoodStock foodStock = (FoodStock)target;
-        serializedObject.Update();
-
-        GUILayout.Space(60);
-
-        EditorGUILayout.BeginHorizontal();
-
-        EditorGUILayout.PropertyField(foodToAddProp, GUIContent.none);
-        Food_ScrObj foodToAdd = (Food_ScrObj)foodToAddProp.objectReferenceValue;
-
-        if (GUILayout.Button("Assign Food"))
-        {
-            foodStock.Toggle_Unlock(true);
-            foodStock.Set_FoodData(new(foodToAdd));
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Increase Amount"))
-        {
-            foodStock.Update_Amount(1);
-        }
-
-        if (GUILayout.Button("Decrease Amount"))
-        {
-            foodStock.Update_Amount(-1);
-        }
-
-        EditorGUILayout.EndHorizontal();
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
-#endif

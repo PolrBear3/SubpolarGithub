@@ -266,7 +266,6 @@ MonoBehaviour:
   - {fileID: -2090806982, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   _unlockPrice: 50
   _discountPercentage: 50
-  foodToAdd: {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
 --- !u!1 &6231251741471268091
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,12 +550,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2966003488704018482, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
       propertyPath: _setCoinSprites.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2966003488704018482, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
       propertyPath: _setCoinSprites.Array.data[0]
       value: 
       objectReference: {fileID: 14751554, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    - target: {fileID: 2966003488704018482, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
+      propertyPath: _setCoinSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: -1968405323, guid: 3cdc45ba21ad247a5ac5edea62c72351, type: 3}
     - target: {fileID: 3771857720093246161, guid: 3d9342b50552e44fabb1f14e5a0762cf, type: 3}
       propertyPath: m_Name
       value: Coin Launcher
