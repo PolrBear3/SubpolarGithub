@@ -458,6 +458,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 RemoveDuplicate_ArchivedFood(dataFood);
 
                 if (!FoodIngredient_Unlocked(dataFood)) continue;
+
                 Unlock_FoodIngredient(dataFood, 0);
             }
         }
@@ -479,6 +480,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
     }
+
 
     public ItemSlot_Data Archive_Food(Food_ScrObj food)
     {
@@ -514,24 +516,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return null;
     }
 
-
-    public ItemSlot_Data Toggle_DataLock(ItemSlot_Data lockData, bool toggle)
+    public ItemSlot_Data Unlock_BookmarkToggle(ItemSlot_Data toggleData, bool toggle)
     {
-        if (lockData == null) return null;
+        if (toggleData == null) return null;
 
-        lockData.isLocked = toggle;
+        toggleData.isLocked = !toggle;
         _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
 
-        return lockData;
+        return toggleData;
     }
 
-    public ItemSlot_Data Toggle_DataLock(ItemSlot_Data lockData)
-    {
-        if (lockData == null) return lockData;
-        if (lockData.isLocked) return lockData;
-
-        return Toggle_DataLock(lockData, true);
-    }
 
 
     // Ingredient Data
@@ -566,15 +560,16 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Unlock_FoodIngredient(Food_ScrObj food, int unlockAmount)
     {
+        if (food == null) return;
+
         if (!FoodIngredient_Unlocked(food))
         {
             _ingredientUnlocks.Add(new(food));
             _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
 
+            Update_CurrentDatas();
             return;
         }
-
-        if (unlockAmount <= 0) return;
 
         int unlockCount = FoodIngredient_UnlockCount(food);
         int setAmount = Mathf.Clamp(unlockCount + unlockAmount, 1, _maxUnlockAmount);
@@ -710,7 +705,7 @@ public class ArchiveMenu_Controller_Controller_Inspector : Editor
             }
 
             bool rawFood = Main_Controller.instance.dataController.Is_RawFood(archiveFood);
-            menu.Toggle_DataLock(menu.Archive_Food(archiveFood), rawFood || !menu.FoodIngredient_Unlocked(archiveFood));
+            menu.Unlock_BookmarkToggle(menu.Archive_Food(archiveFood), rawFood || !menu.FoodIngredient_Unlocked(archiveFood));
         }
 
         EditorGUILayout.EndHorizontal();

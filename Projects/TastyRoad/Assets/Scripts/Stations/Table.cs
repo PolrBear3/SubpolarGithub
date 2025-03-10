@@ -85,7 +85,7 @@ public class Table : MonoBehaviour, IInteractable
     // Functions
     public void Basic_SwapFood()
     {
-        FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
+        FoodData_Controller playerFoodIcon = Main_Controller.instance.Player().foodIcon;
 
         // swap data with player
         _stationController.Food_Icon().Swap_Data(playerFoodIcon);
@@ -112,7 +112,7 @@ public class Table : MonoBehaviour, IInteractable
     private Food_ScrObj MergedFood()
     {
         FoodData tableData = _stationController.Food_Icon().currentData;
-        FoodData playerData = _stationController.detection.player.foodIcon.currentData;
+        FoodData playerData = Main_Controller.instance.Player().foodIcon.currentData;
 
         Data_Controller data = Main_Controller.instance.dataController;
         List<FoodData> ingredientDatas = new() { tableData, playerData };
@@ -124,7 +124,7 @@ public class Table : MonoBehaviour, IInteractable
     {
         Food_ScrObj mergedFood = MergedFood();
 
-        FoodData_Controller playerFoodIcon = _stationController.detection.player.foodIcon;
+        FoodData_Controller playerFoodIcon = Main_Controller.instance.Player().foodIcon;
         FoodData_Controller stationFoodIcon = stationController.Food_Icon();
 
         bool bothHaveFood = playerFoodIcon.hasFood && stationFoodIcon.hasFood;
@@ -137,8 +137,8 @@ public class Table : MonoBehaviour, IInteractable
         playerFoodIcon.Show_Condition();
 
         // table food assign
-        stationFoodIcon.Set_CurrentData(null);
-        stationFoodIcon.Set_CurrentData(new FoodData(mergedFood));
+        stationFoodIcon.Update_AllDatas(null);
+        stationFoodIcon.Set_CurrentData(new(mergedFood));
 
         stationFoodIcon.Show_Icon();
         stationFoodIcon.Toggle_SubDataBar(true);
@@ -148,9 +148,8 @@ public class Table : MonoBehaviour, IInteractable
         Data_Controller data = Main_Controller.instance.dataController;
         ArchiveMenu_Controller menu = _stationController.mainController.currentVehicle.menu.archiveMenu;
 
-        menu.Archive_Food(mergedFood);
+        menu.Unlock_BookmarkToggle(menu.Archive_Food(mergedFood), true);
         menu.Unlock_FoodIngredient(mergedFood, 1);
-        menu.controller.slotsController.Foods_ToggleLock(menu.currentDatas, mergedFood, data.Is_RawFood(mergedFood));
 
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
@@ -168,7 +167,7 @@ public class Table : MonoBehaviour, IInteractable
     public void Transfer_CurrentFood()
     {
         FoodData_Controller tableIcon = _stationController.Food_Icon();
-        FoodData_Controller playerIcon = _stationController.detection.player.foodIcon;
+        FoodData_Controller playerIcon = Main_Controller.instance.Player().foodIcon;
 
         // check if table empty or player full amount
         if (tableIcon.hasFood == false || playerIcon.DataCount_Maxed())

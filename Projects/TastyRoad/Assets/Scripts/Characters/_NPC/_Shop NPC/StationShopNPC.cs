@@ -12,10 +12,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private Clock_Timer _actionTimer;
 
     [Header("")]
-    [SerializeField] private GameObject _restockBarObject;
-    [SerializeField] private AmountBar _restockBar;
-
-    [Header("")]
     [SerializeField] private SpriteRenderer _carryObject;
     [SerializeField] private Sprite[] _carrySprites;
 
@@ -38,9 +34,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField][Range(0, 5)] private int _duplicateAmount;
 
-    [SerializeField][Range(0, 100)] private int _restockCount;
-    private int _currentRestockCount;
-
 
     private List<StationData> _archiveDatas = new();
 
@@ -55,9 +48,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
-        _restockBar.Toggle_BarColor(true);
-        Toggle_RestockBar();
-
         // untrack
         Main_Controller.instance.UnTrack_CurrentCharacter(gameObject);
 
@@ -66,16 +56,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // subscription
         WorldMap_Controller.OnNewLocation += Restock_New;
-        GlobalTime_Controller.instance.OnTimeTik += Restock_ArchivedStation;
+        GlobalTime_Controller.instance.OnDayTime += Restock_ArchivedStation;
 
         _interactable.OnIInteract += Cancel_Action;
         _interactable.OnIInteract += Interact_FacePlayer;
-
-        _interactable.detection.EnterEvent += Toggle_RestockBar;
-        _interactable.detection.ExitEvent += Toggle_RestockBar;
-
-        _interactable.OnIInteract += Toggle_RestockBar;
-        _interactable.OnUnIInteract += Toggle_RestockBar;
 
         _interactable.OnAction1Input += Dispose_BookMarkedStation;
         _interactable.OnAction2Input += Build_BookMarkedStations;
@@ -94,16 +78,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // interaction subscription
         WorldMap_Controller.OnNewLocation -= Restock_New;
-        GlobalTime_Controller.instance.OnTimeTik -= Restock_ArchivedStation;
+        GlobalTime_Controller.instance.OnDayTime -= Restock_ArchivedStation;
 
         _interactable.OnIInteract -= Cancel_Action;
         _interactable.OnIInteract -= Interact_FacePlayer;
-
-        _interactable.detection.EnterEvent -= Toggle_RestockBar;
-        _interactable.detection.ExitEvent -= Toggle_RestockBar;
-
-        _interactable.OnIInteract -= Toggle_RestockBar;
-        _interactable.OnUnIInteract -= Toggle_RestockBar;
 
         _interactable.OnAction1Input -= Dispose_BookMarkedStation;
         _interactable.OnAction2Input -= Build_BookMarkedStations;
@@ -114,7 +92,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         ES3.Save("StationShopNPC/_archiveDatas", _archiveDatas);
-        ES3.Save("StationShopNPC/_currentRestockCount", _currentRestockCount);
 
         Save_StationStocks();
     }
@@ -122,7 +99,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     public void Load_Data()
     {
         _archiveDatas = ES3.Load("StationShopNPC/_archiveDatas", _archiveDatas);
-        _currentRestockCount = ES3.Load("StationShopNPC/_currentRestockCount", _currentRestockCount);
 
         Load_StationStocks();
     }
@@ -162,28 +138,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         movement.Stop_FreeRoam();
         movement.Free_Roam(_currentSubLocation.roamArea, movement.intervalTime);
-    }
-
-
-    private void Toggle_RestockBar()
-    {
-        ActionBubble_Interactable interactable = _npcController.interactable;
-
-        if (_actionCoroutine != null || interactable.detection.player == null)
-        {
-            _restockBarObject.SetActive(false);
-            return;
-        }
-
-        Action_Bubble bubble = interactable.bubble;
-
-        _restockBarObject.SetActive(!bubble.bubbleOn);
-
-        if (bubble.bubbleOn) return;
-
-        _restockBar.Toggle_BarColor(_currentRestockCount >= _restockCount);
-        _restockBar.Load_Custom(_restockCount, _currentRestockCount);
-        _restockBar.Toggle(true);
     }
 
 
@@ -402,8 +356,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _actionCoroutine = null;
 
         _npcController.interactable.LockInteract(false);
-
-        Toggle_RestockBar();
         _actionTimer.Toggle_RunAnimation(false);
 
         CarryObject_SpriteToggle(false, null);
@@ -476,8 +428,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         movement.Stop_FreeRoam();
 
         _npcController.interactable.LockInteract(true);
-
-        Toggle_RestockBar();
         _actionTimer.Toggle_RunAnimation(true);
 
         // remove dispose station
@@ -565,8 +515,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         movement.Stop_FreeRoam();
 
         _npcController.interactable.LockInteract(true);
-
-        Toggle_RestockBar();
         _actionTimer.Toggle_RunAnimation(true);
 
         for (int i = 0; i < _stationStocks.Length; i++)
@@ -679,18 +627,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Restock_ArchivedStation()
     {
-        if (_currentRestockCount < _restockCount)
-        {
-            _currentRestockCount++;
-            Toggle_RestockBar();
-
-            return;
-        }
+        Debug.Log("Restock_ArchivedStation");
 
         if (Restock_Available() == false) return;
-
-        _currentRestockCount = 0;
-        Toggle_RestockBar();
 
         _actionCoroutine = StartCoroutine(Restock_ArchivedStation_Coroutine());
     }
@@ -702,8 +641,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             // start action
             _npcController.interactable.LockInteract(true);
-
-            Toggle_RestockBar();
             _actionTimer.Toggle_RunAnimation(true);
 
             NPC_Movement movement = _npcController.movement;

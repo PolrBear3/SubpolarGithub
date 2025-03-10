@@ -102,7 +102,7 @@ public class CollectCard : MonoBehaviour
 
         bool foodUnlocked = existingData != null && existingData.isLocked == false;
 
-        menu.Toggle_DataLock(newData, foodUnlocked == false);
+        menu.Unlock_BookmarkToggle(newData, foodUnlocked);
         menu.Unlock_FoodIngredient(archiveFood, 0);
 
         // dialog

@@ -302,18 +302,4 @@ public class ItemSlots_Controller : MonoBehaviour
 
         return foodCount;
     }
-
-    public void Foods_ToggleLock(Dictionary<int, List<ItemSlot_Data>> datas, Food_ScrObj targetFood, bool isLock)
-    {
-        for (int i = 0; i < datas.Count; i++)
-        {
-            for (int j = 0; j < datas[i].Count; j++)
-            {
-                if (datas[i][j].hasItem == false) continue;
-                if (targetFood != datas[i][j].currentFood) continue;
-
-                datas[i][j].isLocked = isLock;
-            }
-        }
-    }
 }

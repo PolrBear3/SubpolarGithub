@@ -77,10 +77,6 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
         if (playerIcon.DataCount_Maxed()) return;
 
-        ArchiveMenu_Controller archive = Main_Controller.instance.currentVehicle.menu.archiveMenu;
-
-        archive.Toggle_DataLock(archive.Archive_Food(_foodIcon.currentData.foodScrObj), true);
-
         playerIcon.Set_CurrentData(_foodIcon.currentData);
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
