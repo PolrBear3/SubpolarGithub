@@ -27,6 +27,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public delegate void Event();
 
     public Action OnHoldIInteract;
+
     public event Event OnIInteract;
     public event Event OnUnIInteract;
 

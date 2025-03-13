@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using Unity.VisualScripting;
 
 public class FoodStock : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
     [Header("")]
+    [SerializeField] private DialogTrigger _dialog;
+    [SerializeField] private GoldSystem_Trigger _goldTrigger;
+
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
 
@@ -17,12 +21,14 @@ public class FoodStock : MonoBehaviour
 
     [SerializeField] private CoinLauncher _launcher;
 
+
     [Header("")]
     [SerializeField] private Sprite[] _sprites;
 
     [Header("")]
     [SerializeField] private SpriteRenderer _tagSR;
     [SerializeField] private Sprite[] _tagSprites;
+
 
     [Header("")]
     [Range(0, 999)][SerializeField] private int _unlockPrice;
@@ -58,6 +64,8 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
         _interactable.OnIInteract += Set_Dialog;
+        _interactable.OnIInteract += gameObject.GetComponent<GoldSystem_Trigger>().Trigger_Data;
+
         _interactable.OnIInteract += Toggle_AmountBar;
         _interactable.OnUnIInteract += Toggle_AmountBar;
 
@@ -73,6 +81,8 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
         _interactable.OnIInteract -= Set_Dialog;
+        _interactable.OnIInteract -= gameObject.GetComponent<GoldSystem_Trigger>().Trigger_Data;
+
         _interactable.OnIInteract -= Toggle_AmountBar;
         _interactable.OnUnIInteract -= Toggle_AmountBar;
 
@@ -101,6 +111,11 @@ public class FoodStock : MonoBehaviour
         if (_foodIcon.hasFood == false) return;
 
         Update_TagSprite();
+
+        Food_ScrObj setFood = _foodIcon.currentData.foodScrObj;
+        GoldSystem_TriggerData triggerData = new(setFood.sprite, setFood.price);
+
+        _goldTrigger.Set_Data(triggerData);
     }
 
 
@@ -161,13 +176,10 @@ public class FoodStock : MonoBehaviour
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        string currentAmountString = "\nyou have " + Main_Controller.instance.GoldenNugget_Amount() + " <sprite=56>";
-
         if (_stockData.unlocked == false)
         {
-            // price to unlock + current nugget amount
-            string unlockDialog = _unlockPrice + " <sprite=56> to unlock." + currentAmountString;
-            dialog.Update_Dialog(new DialogData(dialog.datas[0].icon, unlockDialog));
+            // no food currenlty stocked!
+            dialog.Update_Dialog(0);
 
             return;
         }
@@ -175,37 +187,18 @@ public class FoodStock : MonoBehaviour
         if (_foodIcon.currentData == null)
         {
             // no food currenlty stocked!
-            dialog.Update_Dialog(2);
+            dialog.Update_Dialog(1);
 
             interactable.UnInteract();
             return;
         }
 
-        if (_foodIcon.currentData.currentAmount <= 0)
-        {
-            // not enough food amount currenlty stocked
-            dialog.Update_Dialog(3);
+        if (_foodIcon.currentData.currentAmount > 0) return;
 
-            interactable.UnInteract();
-            return;
-        }
+        // not enough food amount currenlty stocked
+        dialog.Update_Dialog(2);
 
-        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
-
-        // calculation
-        int price = _foodIcon.currentData.foodScrObj.price;
-
-        if (_stockData.isDiscount && price > 0)
-        {
-            float discountValue = 1f - (_discountPercentage / 100f);
-            price = Mathf.RoundToInt(price * discountValue);
-        }
-
-        string priceString = price + " <sprite=56> to purchase." + currentAmountString;
-
-        // price to purchase + current nugget amount
-        DialogData data = new(stockedFood.sprite, priceString);
-        dialog.Update_Dialog(data);
+        interactable.UnInteract();
     }
 
 
@@ -216,11 +209,17 @@ public class FoodStock : MonoBehaviour
 
         if (_stockData.unlocked == false)
         {
-            bubble.Set_Bubble(bubble.setSprites[0], null);
+            Sprite unlockSprite = bubble.setSprites[0];
+
+            bubble.Set_Bubble(unlockSprite, null);
             bubble.Toggle_Height(true);
+
+            GoldSystem_TriggerData triggerData = new(unlockSprite, _unlockPrice);
+            _goldTrigger.Set_Data(triggerData);
 
             return;
         }
+
         bubble.Set_Bubble(bubble.setSprites[1], bubble.setSprites[2]);
         bubble.Toggle_Height(false);
     }
@@ -275,29 +274,7 @@ public class FoodStock : MonoBehaviour
 
         if (stockedAmount <= 0) return false;
 
-        // calculation
-        int price = stockedFood.price * purchaseAmount;
-
-        if (_stockData.isDiscount && price > 0)
-        {
-            float discountValue = 1f - (_discountPercentage / 100f);
-            price = Mathf.RoundToInt(price * discountValue);
-        }
-
         Main_Controller main = Main_Controller.instance;
-
-        // check nugget amount
-        if (main.GoldenNugget_Amount() < price)
-        {
-            // Not enough golden nuggets to purchase!
-            dialog.Update_Dialog(4);
-
-            _interactable.UnInteract();
-            return false;
-        }
-
-
-        main.Remove_GoldenNugget(price);
 
         // add food
         FoodMenu_Controller foodMenu = main.currentVehicle.menu.foodMenu;
@@ -312,8 +289,24 @@ public class FoodStock : MonoBehaviour
             main.Add_GoldenNugget(stockedFood.price);
 
             // Not enough space in food storage!
-            dialog.Update_Dialog(5);
+            dialog.Update_Dialog(3);
 
+            _interactable.UnInteract();
+            return false;
+        }
+
+        // calculation
+        int price = stockedFood.price * purchaseAmount;
+
+        if (_stockData.isDiscount && price > 0)
+        {
+            float discountValue = 1f - (_discountPercentage / 100f);
+            price = Mathf.RoundToInt(price * discountValue);
+        }
+
+        // check nugget amount
+        if (GoldSystem.instance.Update_CurrentAmount(-price) == false)
+        {
             _interactable.UnInteract();
             return false;
         }
@@ -358,11 +351,8 @@ public class FoodStock : MonoBehaviour
     {
         if (_stockData.unlocked) return;
 
-        if (!Main_Controller.instance.Remove_GoldenNugget(_unlockPrice))
+        if (GoldSystem.instance.Update_CurrentAmount(-_unlockPrice) == false)
         {
-            // Not enough golden nuggets to purchase!
-            gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
-
             _interactable.UnInteract();
             return;
         }

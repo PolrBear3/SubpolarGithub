@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1606541567239210641}
   - component: {fileID: 1066009703802829180}
   - component: {fileID: 8363175670260458568}
+  - component: {fileID: 5529359057859680852}
   - component: {fileID: 3521912711758190000}
   - component: {fileID: 4975016921217486019}
   - component: {fileID: 7604224372020232355}
@@ -199,17 +200,28 @@ MonoBehaviour:
     info: 
   _datas:
   - icon: {fileID: -1337495358, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Lock State + Unlock Price
-  - icon: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Not enough <sprite=56> to unlock!
+    info: Purchase to unlock
   - icon: {fileID: 2146137284, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: No <sprite=58> currently stocked!
   - icon: {fileID: -372810078, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not enough <sprite=58> amount currently stocked!
-  - icon: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Not enough <sprite=56> to purchase!
   - icon: {fileID: -630237576, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not enough space in food storage!
+--- !u!114 &5529359057859680852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4170272217022125861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb33de6f3df724d09a82f450e83e5cb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _triggerIcon: {fileID: 0}
+    _triggerValue: 0
 --- !u!114 &3521912711758190000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,6 +264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3443e00161064495cb8d9e69e66f1d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dialog: {fileID: 8363175670260458568}
+  _goldTrigger: {fileID: 5529359057859680852}
   _interactable: {fileID: 4975016921217486019}
   _foodIcon: {fileID: 371709468030608423}
   _launcher: {fileID: 5473861017554075935}

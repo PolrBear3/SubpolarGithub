@@ -69,10 +69,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638747463424744648
+  lastModified: 638710701150296936
   FileSizes:
   - Name: Desktop
-    Value: 109152
+    Value: 93792
   Exists: 1
 --- !u!114 &-8842336582695762211
 MonoBehaviour:
@@ -113,10 +113,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638747458292363978
+  lastModified: 638710701148049237
   FileSizes:
   - Name: Desktop
-    Value: 1682
+    Value: 1536
   Exists: 1
 --- !u!114 &-7437292464083142477
 MonoBehaviour:
@@ -215,7 +215,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638747233901261518
+  lastModified: 638710701150886396
   FileSizes:
   - Name: Desktop
     Value: 17472
@@ -358,42 +358,13 @@ MonoBehaviour:
   - {fileID: -6624307689126360385}
   - {fileID: -9113675709811392843}
   - {fileID: 9149461416140641624}
-  - {fileID: 2232450825094845195}
-  - {fileID: 421665410602420751}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638747463424744648
+  cacheTime: 638710701150886396
   cacheVersion: 131618
---- !u!114 &421665410602420751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Interaction/Nugget_pay
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Interaction/Nugget_pay
-  Guid:
-    Data1: 1142844002
-    Data2: 1318623512
-    Data3: 349587073
-    Data4: -1502948816
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 369
 --- !u!114 &1291012834966449344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,38 +380,11 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638747458292353911
+  lastModified: 638710701148036312
   FileSizes:
   - Name: Desktop
-    Value: 1260
+    Value: 1036
   Exists: 1
---- !u!114 &2232450825094845195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Interaction/Nugget_insertPay
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Interaction/Nugget_insertPay
-  Guid:
-    Data1: -697551012
-    Data2: 1078128834
-    Data3: -1591251052
-    Data4: -1705396606
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 516
 --- !u!114 &3758027296563283760
 MonoBehaviour:
   m_ObjectHideFlags: 0

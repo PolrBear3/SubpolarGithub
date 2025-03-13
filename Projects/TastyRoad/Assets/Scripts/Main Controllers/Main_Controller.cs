@@ -607,7 +607,7 @@ public class Main_Controller_Inspector : Editor
 
         if (GUILayout.Button("Test Button"))
         {
-            Debug.Log(Main_Controller.instance.currentLocation.All_SpawnPositions());
+            GoldSystem.instance.Update_CurrentAmount(50);
         }
 
         serializedObject.ApplyModifiedProperties();
