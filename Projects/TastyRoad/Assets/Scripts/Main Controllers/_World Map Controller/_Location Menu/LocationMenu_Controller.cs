@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using System.Linq;
 
 public class LocationMenu_Controller : MonoBehaviour
 {
@@ -25,6 +23,8 @@ public class LocationMenu_Controller : MonoBehaviour
 
     [SerializeField] private InformationBox _infoBox;
 
+
+    public Action<bool> On_MenuToggle;
 
     private int _hoverTileNum;
 
@@ -84,6 +84,8 @@ public class LocationMenu_Controller : MonoBehaviour
         // menu toggle
         _menuPanel.gameObject.SetActive(toggle);
         _input.enabled = toggle;
+
+        On_MenuToggle?.Invoke(toggle);
 
         if (toggle == false) return;
 

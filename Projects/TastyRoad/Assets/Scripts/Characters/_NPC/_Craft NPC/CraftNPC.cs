@@ -15,61 +15,64 @@ public class CraftNPC : MonoBehaviour
 
 
     [Header("")]
+    [SerializeField] private DialogTrigger _dialog;
+
     [SerializeField] private Clock_Timer _actionTimer;
     public Clock_Timer actionTimer => _actionTimer;
 
-    [SerializeField] private AmountBar _nuggetBar;
-    public AmountBar nuggetBar => _nuggetBar;
 
-    [SerializeField] private AmountBar _giftBar;
-    public AmountBar giftBar => _giftBar;
+    [Header("")]
+    [SerializeField] private Sprite _npcIconSprite;
+    public Sprite npcIconSprite => _npcIconSprite;
+
+    [SerializeField] private SpriteRenderer _statusIcon;
+    private Sprite _defaultSprite;
 
 
-    private Action OnSave;
+    [Header("")]
+    [SerializeField][Range(0, 1000)] private int _defalutPrice;
+    public int defaultPrice => _defalutPrice;
+
+    [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
+    public float upgradeTimeValue => _upgradeTimeValue;
+
+
+    private CraftNPC_Data _data;
+    public CraftNPC_Data data => _data;
+
+
+    private Action _OnSave;
+
 
     private Coroutine _coroutine;
     public Coroutine coroutine;
 
 
     // MonoBehaviour
+    public void Awake()
+    {
+        _defaultSprite = _statusIcon.sprite;
+    }
+
     public void Start()
     {
-        // amount bars
-        _nuggetBar.Toggle_BarColor(_nuggetBar.Is_MaxAmount());
-        _nuggetBar.Load();
-
-        _giftBar.Set_Amount(_npcController.foodIcon.AllDatas().Count);
-        _giftBar.Load();
-
-        Toggle_AmountBars();
+        Toggle_PayIcon();
 
         // starting movement
         _npcController.movement.Free_Roam(0);
 
         // subscriptions
-        Detection_Controller detection = _npcController.interactable.detection;
-
-        detection.EnterEvent += Toggle_AmountBars;
-        detection.ExitEvent += Toggle_AmountBars;
-
         ActionBubble_Interactable interactable = _npcController.interactable;
 
         interactable.OnHoldIInteract += Pay;
-        interactable.OnHoldIInteract += Gift;
     }
 
     public void OnDestroy()
     {
         // subscriptions
-        Detection_Controller detection = _npcController.interactable.detection;
-
-        detection.EnterEvent -= Toggle_AmountBars;
-        detection.ExitEvent -= Toggle_AmountBars;
-
         ActionBubble_Interactable interactable = _npcController.interactable;
 
         interactable.OnHoldIInteract -= Pay;
-        interactable.OnHoldIInteract -= Gift;
     }
 
 
@@ -80,106 +83,71 @@ public class CraftNPC : MonoBehaviour
         return _coroutine;
     }
 
-    public void Exit_CurrentAction()
+    public void Toggle_Coroutine(bool toggle)
     {
+        actionTimer.Toggle_RunAnimation(toggle);
+        main.interactable.LockInteract(toggle);
+
+        if (toggle)
+        {
+            _statusIcon.gameObject.SetActive(false);
+            return;
+        }
+
+        Toggle_PayIcon();
+
         _npcController.movement.Free_Roam(0);
-
-        actionTimer.Toggle_RunAnimation(false);
-        main.interactable.LockInteract(false);
-
         Set_Coroutine(null);
-        Toggle_AmountBars();
     }
 
 
     // OnSave Action
     public void Subscribe_OnSave(Action action)
     {
-        OnSave += action;
+        _OnSave += action;
     }
 
     public void Invoke_OnSave()
     {
-        OnSave?.Invoke();
+        _OnSave?.Invoke();
     }
 
 
-    // Toggles
-    public void Toggle_AmountBars()
+    // Data
+    public void Set_Data(CraftNPC_Data data)
     {
-        ActionBubble_Interactable interactable = _npcController.interactable;
-
-        bool playerDetected = interactable.detection.player != null;
-        bool bubbleOn = interactable.bubble.bubbleOn;
-
-        GameObject amountBars = _nuggetBar.transform.parent.parent.gameObject;
-
-        if (_coroutine != null || playerDetected == false || bubbleOn)
+        if (data == null)
         {
-            amountBars.SetActive(false);
+            _data = new(false);
             return;
         }
 
-        amountBars.SetActive(true);
-
-        _nuggetBar.Toggle(true);
-        _giftBar.Toggle(true);
-    }
-
-    public DialogData Current_PayCount()
-    {
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        string holdToPay = "Hold <sprite=15> to pay <sprite=56>\n";
-        string currentPayCount = _nuggetBar.currentAmount + "/" + _nuggetBar.maxAmount + " <sprite=56> currently payed";
-
-        return new DialogData(dialog.defaultData.icon, holdToPay + currentPayCount);
+        _data = new(data);
     }
 
 
     // Main Interactions
+    public void Toggle_PayIcon()
+    {
+        if (_data.payed == false)
+        {
+            _statusIcon.gameObject.SetActive(false);
+            return;
+        }
+
+        _statusIcon.sprite = _defaultSprite;
+        _statusIcon.gameObject.SetActive(true);
+    }
+
     private void Pay()
     {
-        Food_ScrObj nugget = Main_Controller.instance.dataController.goldenNugget;
-        FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
+        if (_data == null || _data.payed) return;
+        if (GoldSystem.instance.Update_CurrentAmount(_data.price) == false) return;
 
-        if (playerIcon.Is_SameFood(nugget) == false) return;
-
-        playerIcon.Set_CurrentData(null);
-        playerIcon.Show_Icon();
-        playerIcon.Toggle_SubDataBar(true);
-        playerIcon.Show_Condition();
-
-        _nuggetBar.Update_Amount(1);
-        _nuggetBar.Toggle_BarColor(_nuggetBar.Is_MaxAmount());
-        _nuggetBar.Load();
-
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(Current_PayCount());
+        _data = new(true);
+        Toggle_PayIcon();
 
         // sfx
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
-    }
-
-    private void Gift()
-    {
-        FoodData_Controller foodIcon = _npcController.foodIcon;
-
-        if (foodIcon.DataCount_Maxed()) return;
-
-        Food_ScrObj nugget = Main_Controller.instance.dataController.goldenNugget;
-        FoodData_Controller playerIcon = _npcController.interactable.detection.player.foodIcon;
-
-        if (playerIcon.hasFood == false) return;
-        if (playerIcon.Is_SameFood(nugget)) return;
-
-        FoodData playerFood = new(playerIcon.currentData);
-
-        playerIcon.Set_CurrentData(null);
-        playerIcon.Show_Icon();
-        playerIcon.Toggle_SubDataBar(true);
-        playerIcon.Show_Condition();
-
-        foodIcon.Set_CurrentData(playerFood);
-        _giftBar.Load_Custom(foodIcon.maxDataCount, foodIcon.AllDatas().Count);
     }
 }

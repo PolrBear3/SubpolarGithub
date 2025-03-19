@@ -49,7 +49,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnCursor_Input += InfoBox_Update;
         _controller.OnSelect_Input += InfoBox_Update;
-        _controller.OnHoldEmptySelect_Input += InfoBox_Update;
+        _controller.OnHoldSelect_Input += InfoBox_Update;
         _controller.OnOption1_Input += InfoBox_Update;
         _controller.OnOption2_Input += InfoBox_Update;
 
@@ -75,7 +75,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnCursor_Input -= InfoBox_Update;
         _controller.OnSelect_Input -= InfoBox_Update;
-        _controller.OnHoldEmptySelect_Input -= InfoBox_Update;
+        _controller.OnHoldSelect_Input -= InfoBox_Update;
         _controller.OnOption1_Input -= InfoBox_Update;
         _controller.OnOption2_Input -= InfoBox_Update;
 
@@ -581,11 +581,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // if no food to export on cursor
         ItemSlot_Data currentCursorData = _controller.slotsController.cursor.data;
 
-        if (currentCursorData.hasItem == false)
-        {
-            DragAll_Food();
-            return;
-        }
+        if (currentCursorData.hasItem == false) return;
 
         // if there are enough space to spawn food box
         if (Available_ExportPositions().Count <= 0)
@@ -626,6 +622,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             // bellow max amount
             foodBoxIcon.currentData.Set_Amount(currentCursorData.currentAmount);
             _controller.slotsController.cursor.Empty_Item();
+
+            _controller.infoBox.gameObject.SetActive(false);
         }
 
         RottenFood_DataUpdate(foodBoxIcon);

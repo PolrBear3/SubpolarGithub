@@ -88,7 +88,7 @@ public class CollectCard : MonoBehaviour
     }
 
 
-    private void FoodIngredient_toArchive()
+    public void FoodIngredient_toArchive()
     {
         ArchiveMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.archiveMenu;
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();

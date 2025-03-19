@@ -11,7 +11,6 @@ public class FoodStock : MonoBehaviour
 
     [Header("")]
     [SerializeField] private DialogTrigger _dialog;
-    [SerializeField] private GoldSystem_Trigger _goldTrigger;
 
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
@@ -63,8 +62,8 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.OnIInteract += Set_Dialog;
-        _interactable.OnIInteract += gameObject.GetComponent<GoldSystem_Trigger>().Trigger_Data;
+        _interactable.OnIInteract += Toggle_Dialog;
+        _interactable.OnIInteract += Toggle_Price;
 
         _interactable.OnIInteract += Toggle_AmountBar;
         _interactable.OnUnIInteract += Toggle_AmountBar;
@@ -80,8 +79,8 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
-        _interactable.OnIInteract -= Set_Dialog;
-        _interactable.OnIInteract -= gameObject.GetComponent<GoldSystem_Trigger>().Trigger_Data;
+        _interactable.OnIInteract -= Toggle_Dialog;
+        _interactable.OnIInteract -= Toggle_Price;
 
         _interactable.OnIInteract -= Toggle_AmountBar;
         _interactable.OnUnIInteract -= Toggle_AmountBar;
@@ -111,11 +110,6 @@ public class FoodStock : MonoBehaviour
         if (_foodIcon.hasFood == false) return;
 
         Update_TagSprite();
-
-        Food_ScrObj setFood = _foodIcon.currentData.foodScrObj;
-        GoldSystem_TriggerData triggerData = new(setFood.sprite, setFood.price);
-
-        _goldTrigger.Set_Data(triggerData);
     }
 
 
@@ -172,7 +166,21 @@ public class FoodStock : MonoBehaviour
     }
 
 
-    private void Set_Dialog()
+    private void Toggle_Price()
+    {
+        if (_stockData.unlocked == false)
+        {
+            GoldSystem.instance.Indicate_TriggerData(new(_dialog.defaultData.icon, -_unlockPrice));
+            return;
+        }
+
+        if (_foodIcon.hasFood == false) return;
+
+        Food_ScrObj currentFood = _foodIcon.currentData.foodScrObj;
+        GoldSystem.instance.Indicate_TriggerData(new(currentFood.sprite, -StockedFood_Price()));
+    }
+
+    private void Toggle_Dialog()
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -213,9 +221,6 @@ public class FoodStock : MonoBehaviour
 
             bubble.Set_Bubble(unlockSprite, null);
             bubble.Toggle_Height(true);
-
-            GoldSystem_TriggerData triggerData = new(unlockSprite, _unlockPrice);
-            _goldTrigger.Set_Data(triggerData);
 
             return;
         }
@@ -263,6 +268,23 @@ public class FoodStock : MonoBehaviour
 
 
     // Functions
+    private int StockedFood_Price()
+    {
+        if (_stockData.unlocked == false || _foodIcon.hasFood == false) return 0;
+
+        Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
+        int price = stockedFood.price;
+
+        if (_stockData.isDiscount && price > 0)
+        {
+            float discountValue = 1f - (_discountPercentage / 100f);
+            price = Mathf.FloorToInt(price * discountValue);
+        }
+
+        return price;
+    }
+
+
     private bool Purchase(int purchaseAmount)
     {
         if (_stockData.unlocked == false || _foodIcon.hasFood == false) return false;
@@ -285,9 +307,6 @@ public class FoodStock : MonoBehaviour
             // set to recent amount
             foodMenu.Remove_FoodItem(stockedFood, purchaseAmount - leftOverAmount);
 
-            // return golden nuggets
-            main.Add_GoldenNugget(stockedFood.price);
-
             // Not enough space in food storage!
             dialog.Update_Dialog(3);
 
@@ -295,17 +314,8 @@ public class FoodStock : MonoBehaviour
             return false;
         }
 
-        // calculation
-        int price = stockedFood.price * purchaseAmount;
-
-        if (_stockData.isDiscount && price > 0)
-        {
-            float discountValue = 1f - (_discountPercentage / 100f);
-            price = Mathf.RoundToInt(price * discountValue);
-        }
-
         // check nugget amount
-        if (GoldSystem.instance.Update_CurrentAmount(-price) == false)
+        if (GoldSystem.instance.Update_CurrentAmount(-(StockedFood_Price() * purchaseAmount)) == false)
         {
             _interactable.UnInteract();
             return false;

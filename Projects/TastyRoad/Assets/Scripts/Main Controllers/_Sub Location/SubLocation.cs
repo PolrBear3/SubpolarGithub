@@ -46,8 +46,6 @@ public class SubLocation : MonoBehaviour
         // wait until curtain closes
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 
-        main.dialogSystem.Toggle_PanelSprites(false);
-
         // move player to current location return spawn point
         main.Player().transform.position = _returnPoint;
 

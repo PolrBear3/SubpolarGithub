@@ -80,8 +80,6 @@ public class WaySign : ActionBubble_Interactable
         // wait until curtain closes
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 
-        main.dialogSystem.Toggle_PanelSprites(_subLocation.outerBlack && !_isExit);
-
         // set return point for sub location exit
         _subLocation.Set_ReturnPoint(player.transform);
 

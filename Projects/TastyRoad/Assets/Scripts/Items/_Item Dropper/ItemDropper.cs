@@ -243,10 +243,17 @@ public class ItemDropper : MonoBehaviour
         if (_coroutine != null) return null;
 
         GameObject spawnObject = SnapPosition_Spawn(_collectCard, DropPosition());
-
         return spawnObject.GetComponent<CollectCard>();
     }
 
+
+    public void Drop_Ingredient()
+    {
+        CollectCard droppedCard = DropReturn_CollectCard();
+
+        droppedCard.Set_FoodIngredient(Weighted_RandomFood());
+        droppedCard.Add_RandomPickup(droppedCard.FoodIngredient_toArchive);
+    }
 
     public void Drop_StationBluePrint()
     {

@@ -8,10 +8,6 @@ using TMPro;
 public class DialogSystem : MonoBehaviour
 {
     [Header("")]
-    [SerializeField] private Image _paneImage;
-    [SerializeField] private Sprite[] _panelSprites;
-
-    [Header("")]
     [SerializeField] private GameObject _dialogBox;
     [SerializeField] private RectTransform[] _snapPoints;
 
@@ -102,20 +98,6 @@ public class DialogSystem : MonoBehaviour
 
         _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
         _infoBox.Update_RectLayout();
-    }
-
-    public void Toggle_PanelSprites(bool toggle)
-    {
-        if (toggle)
-        {
-            _paneImage.sprite = _panelSprites[1];
-            _infoBox.boxImage.sprite = _panelSprites[1];
-
-            return;
-        }
-
-        _paneImage.sprite = _panelSprites[0];
-        _infoBox.boxImage.sprite = _panelSprites[0];
     }
 
 

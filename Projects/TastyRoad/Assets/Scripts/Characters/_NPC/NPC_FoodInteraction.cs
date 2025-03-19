@@ -363,16 +363,13 @@ public class NPC_FoodInteraction : MonoBehaviour
         return payAmount;
     }
 
-    public void Collect_Payment()
+
+    public void Collect_Payment(int payAmount)
     {
         if (_payAvailable == false) return;
 
-        Main_Controller main = Main_Controller.instance;
-
-        // food menu max slots capacity
-        // if (main.AddAvailable_GoldenNuggets() < Set_Payment()) return;
-
-        main.Add_GoldenNugget(Set_Payment());
+        GoldSystem goldSystem = GoldSystem.instance;
+        goldSystem.Update_CurrentAmount(payAmount);
 
         FoodData_Controller foodIcon = _controller.foodIcon;
         foodIcon.Set_CurrentData(null);
@@ -382,13 +379,13 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         _transferData = null;
 
-        Sprite nuggetSprite = main.dataController.goldenNugget.sprite;
+        Sprite nuggetSprite = goldSystem.defaultIcon;
         _controller.itemLauncher.Parabola_CoinLaunch(nuggetSprite, transform.position);
 
         // sfx
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
 
-        if (foodIcon.hasFood == false || main.bookmarkedFoods.Count <= 0)
+        if (foodIcon.hasFood == false || Main_Controller.instance.bookmarkedFoods.Count <= 0)
         {
             foodIcon.Update_AllDatas(null);
             foodIcon.Show_Icon();
@@ -405,5 +402,12 @@ public class NPC_FoodInteraction : MonoBehaviour
         foodIcon.Show_Condition();
 
         Update_RoamArea();
+    }
+
+    public void Collect_Payment()
+    {
+        if (_payAvailable == false) return;
+
+        Collect_Payment(Set_Payment());
     }
 }

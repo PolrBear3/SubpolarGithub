@@ -22,6 +22,7 @@ public class CollectJar : MonoBehaviour
     private void Start()
     {
         Update_Sprite();
+        Toggle_AmountBar();
 
         Collect(_controller.movement.enabled == false);
 
@@ -31,20 +32,18 @@ public class CollectJar : MonoBehaviour
 
         Detection_Controller detection = _controller.detection;
 
-        detection.EnterEvent += Toggle_Indications;
-        detection.ExitEvent += Toggle_Indications;
+        detection.EnterEvent += Toggle_AmountBar;
+        detection.ExitEvent += Toggle_AmountBar;
 
         IInteractable_Controller iInteractable = _controller.iInteractable;
 
-        iInteractable.OnInteract += Insert;
-        iInteractable.OnInteract += Update_Sprite;
-
-        iInteractable.OnHoldInteract += Transfer;
+        iInteractable.OnInteract += Toggle_GoldAmount;
+        iInteractable.OnHoldInteract += Empty;
     }
 
     private void OnDestroy()
     {
-        Retrieve();
+        Empty();
 
         // subscriptions
         Main_Controller.instance.OnFoodBookmark -= Collect;
@@ -52,47 +51,89 @@ public class CollectJar : MonoBehaviour
 
         Detection_Controller detection = _controller.detection;
 
-        detection.EnterEvent -= Toggle_Indications;
-        detection.ExitEvent -= Toggle_Indications;
+        detection.EnterEvent -= Toggle_AmountBar;
+        detection.ExitEvent -= Toggle_AmountBar;
 
         IInteractable_Controller iInteractable = _controller.iInteractable;
 
-        iInteractable.OnInteract -= Insert;
-        iInteractable.OnInteract -= Update_Sprite;
-
-        iInteractable.OnHoldInteract -= Transfer;
+        iInteractable.OnInteract -= Toggle_GoldAmount;
+        iInteractable.OnHoldInteract -= Empty;
     }
 
 
     // Indications
     private void Update_Sprite()
     {
-        if (_controller.Food_Icon().hasFood == false)
+        SpriteRenderer sr = _controller.spriteRenderer;
+
+        if (Current_Amount() <= 0)
         {
-            _controller.spriteRenderer.sprite = _jarSprites[0];
+            sr.sprite = _jarSprites[0];
             return;
         }
 
-        _controller.spriteRenderer.sprite = _jarSprites[1];
+        sr.sprite = _jarSprites[1];
     }
 
-    private void Toggle_Indications()
+
+    private void Toggle_GoldAmount()
     {
-        _controller.Food_Icon().Toggle_AmountBar(_controller.detection.player != null);
+        if (Current_Amount() <= 0) return;
+
+        Sprite jarSprite = _controller.stationScrObj.dialogIcon;
+        int currentAmount = _controller.Food_Icon().currentData.currentAmount;
+
+        GoldSystem.instance.Indicate_TriggerData(new(jarSprite, currentAmount));
+    }
+
+    private void Toggle_AmountBar()
+    {
+        bool toggle = Current_Amount() > 0 && _controller.detection.player != null;
+
+        _controller.Food_Icon().Toggle_AmountBar(Current_Amount() > 0 && toggle);
     }
 
 
     // Main
-    private void Retrieve()
+    private int Current_Amount()
     {
         FoodData_Controller foodIcon = _controller.Food_Icon();
+        if (foodIcon.hasFood == false) return 0;
 
-        if (foodIcon.hasFood == false) return;
+        return foodIcon.currentData.currentAmount;
+    }
 
-        FoodMenu_Controller foodMenu = _controller.mainController.currentVehicle.menu.foodMenu;
-        Food_ScrObj nugget = foodIcon.currentData.foodScrObj;
 
-        foodMenu.Add_FoodItem(nugget, foodIcon.currentData.currentAmount);
+    private void Insert(int insertAmount)
+    {
+        if (insertAmount <= 0) return;
+
+        FoodData_Controller stationIcon = _controller.Food_Icon();
+        if (stationIcon.Is_MaxAmount()) return;
+
+        // set any food for only amount control
+        Food_ScrObj randFood = Main_Controller.instance.dataController.RawFood();
+        Food_ScrObj setFood = stationIcon.hasFood ? stationIcon.currentData.foodScrObj : randFood;
+
+        stationIcon.Update_Amount(setFood, insertAmount);
+
+        Update_Sprite();
+        Toggle_AmountBar();
+
+        // sfx
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+    }
+
+    private void Empty()
+    {
+        if (Current_Amount() <= 0) return;
+
+        GoldSystem.instance.Update_CurrentAmount(Current_Amount());
+
+        _controller.Food_Icon().Update_AllDatas(null);
+
+        Update_Sprite();
+        Toggle_AmountBar();
     }
 
 
@@ -153,92 +194,10 @@ public class CollectJar : MonoBehaviour
                 if (movement.At_TargetPosition(transform.position) == false) continue;
 
                 Insert(interaction.Set_Payment());
-                interaction.Collect_Payment();
+                interaction.Collect_Payment(0);
+
+                Toggle_AmountBar();
             }
         }
-    }
-
-
-    private void Insert(int insertAmount)
-    {
-        if (insertAmount <= 0) return;
-
-        FoodData_Controller stationIcon = _controller.Food_Icon();
-        if (stationIcon.Is_MaxAmount()) return;
-
-        Food_ScrObj nugget = _controller.mainController.dataController.goldenNugget;
-        stationIcon.Update_Amount(nugget, insertAmount);
-
-        Toggle_Indications();
-        Update_Sprite();
-
-        // sfx
-        Audio_Controller.instance.Play_OneShot(gameObject, 2);
-    }
-
-
-    // Player
-    private void Insert()
-    {
-        Food_ScrObj nugget = _controller.mainController.dataController.goldenNugget;
-        FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
-
-        if (playerIcon.Is_SameFood(nugget) == false)
-        {
-            Transfer();
-            return;
-        }
-
-        FoodData_Controller stationIcon = _controller.Food_Icon();
-        if (stationIcon.Is_MaxAmount()) return;
-
-        Insert(1);
-
-        playerIcon.Set_CurrentData(null);
-        playerIcon.Show_Icon();
-        playerIcon.Toggle_SubDataBar(true);
-        playerIcon.Show_Condition();
-    }
-
-
-    private bool Transfer_Available()
-    {
-        FoodData_Controller stationIcon = _controller.Food_Icon();
-
-        if (stationIcon.hasFood == false) return false;
-        if (stationIcon.currentData.currentAmount <= 0) return false;
-
-        return true;
-    }
-
-    private void Transfer()
-    {
-        if (Transfer_Available() == false) return;
-
-        FoodData_Controller stationIcon = _controller.Food_Icon();
-        FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
-
-        Food_ScrObj nugget = _controller.mainController.dataController.goldenNugget;
-
-        for (int i = 0; i < _controller.Food_Icon().maxAmount; i++)
-        {
-            if (Transfer_Available() == false) break;
-            if (playerIcon.DataCount_Maxed()) break;
-
-            playerIcon.Set_CurrentData(new(nugget));
-            stationIcon.Update_Amount(nugget, -1);
-        }
-
-        playerIcon.Show_Icon();
-        playerIcon.Toggle_SubDataBar(true);
-        playerIcon.Show_Condition();
-
-        Update_Sprite();
-        Toggle_Indications();
-
-        Collect();
-
-        // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 }

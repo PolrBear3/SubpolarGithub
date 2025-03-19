@@ -46,7 +46,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Update_CurrentDatas();
 
         // subscriptions
-        _controller.MenuOpen_Event += Update_MaterialShineSlots;
+        _controller.On_MenuToggle += Update_MaterialShineSlots;
 
         _controller.OnCursor_OuterInput += Clamp_CursorPosition;
         _controller.OnCursor_YInput += Update_CurrentPage;
@@ -75,7 +75,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
         // subscriptions
-        _controller.MenuOpen_Event -= Update_MaterialShineSlots;
+        _controller.On_MenuToggle -= Update_MaterialShineSlots;
 
         _controller.OnCursor_OuterInput -= Clamp_CursorPosition;
         _controller.OnCursor_YInput -= Update_CurrentPage;
@@ -586,8 +586,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         targetSlot.Toggle_MaterialShine(data.hasItem && unlocked);
     }
 
-    private void Update_MaterialShineSlots()
+    private void Update_MaterialShineSlots(bool menuToggle)
     {
+        if (menuToggle == false) return;
+
         ItemSlots_Controller slotsController = _controller.slotsController;
         List<ItemSlot> itemSlots = slotsController.itemSlots;
 

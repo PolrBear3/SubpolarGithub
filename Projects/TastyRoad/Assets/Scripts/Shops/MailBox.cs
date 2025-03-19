@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MailBox : MonoBehaviour, IInteractable
+public class MailBox : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
-    private Main_Controller _mainController;
 
+    [Header("")]
+    [SerializeField] private IInteractable_Controller _interactable;
     [SerializeField] private Detection_Controller _detection;
+    [SerializeField] private DialogTrigger _dialog;
+
+    [Header("")]
     [SerializeField] private AmountBar _amountBar;
 
     [Header("")]
@@ -17,16 +21,19 @@ public class MailBox : MonoBehaviour, IInteractable
     [Header("")]
     [SerializeField] private GameObject _collectCard;
 
+    [Header("")]
+    [SerializeField][Range(0, 1000)] private int _insertPrice;
+
+
     private Coroutine _coroutine;
 
 
     // UnityEngine
     private void Awake()
     {
-        Load_Data();
-
         _sr = gameObject.GetComponent<SpriteRenderer>();
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
+
+        Load_Data();
     }
 
     private void Start()
@@ -37,10 +44,13 @@ public class MailBox : MonoBehaviour, IInteractable
         Toggle_AmountBar();
 
         // subscriptions
+        GlobalTime_Controller.instance.OnTimeTik += Drop_CollectCard;
+
         _detection.EnterEvent += Toggle_AmountBar;
         _detection.ExitEvent += Toggle_AmountBar;
 
-        GlobalTime_Controller.instance.OnTimeTik += Drop_CollectCard;
+        _interactable.OnInteract += Toggle_Price;
+        _interactable.OnHoldInteract += Purchase_Insert;
     }
 
     private void OnDestroy()
@@ -48,39 +58,25 @@ public class MailBox : MonoBehaviour, IInteractable
         Save_Data();
 
         // subscriptions
+        GlobalTime_Controller.instance.OnTimeTik -= Drop_CollectCard;
+
         _detection.EnterEvent -= Toggle_AmountBar;
         _detection.ExitEvent -= Toggle_AmountBar;
 
-        GlobalTime_Controller.instance.OnTimeTik -= Drop_CollectCard;
+        _interactable.OnInteract -= Toggle_Price;
+        _interactable.OnHoldInteract -= Purchase_Insert;
     }
 
 
     // ISaveLoadable
     private void Save_Data()
     {
-        ES3.Save("MailBox/_amountBar.currentAmount", _amountBar.currentAmount);
+        ES3.Save("MailBox/AmountBar/_currentAmount", _amountBar.currentAmount);
     }
 
     private void Load_Data()
     {
-        _amountBar.Set_Amount(ES3.Load("MailBox/_amountBar.currentAmount", _amountBar.currentAmount));
-    }
-
-
-    // IInteractable
-    public void Interact()
-    {
-        Insert_Nugget();
-    }
-
-    public void Hold_Interact()
-    {
-
-    }
-
-    public void UnInteract()
-    {
-
+        _amountBar.Set_Amount(ES3.Load("MailBox/AmountBar/_currentAmount", _amountBar.currentAmount));
     }
 
 
@@ -96,6 +92,12 @@ public class MailBox : MonoBehaviour, IInteractable
         _sr.sprite = _sprites[1];
     }
 
+
+    public void Toggle_Price()
+    {
+        GoldSystem.instance.Indicate_TriggerData(new(_dialog.defaultData.icon, -_insertPrice));
+    }
+
     public void Toggle_AmountBar()
     {
         _amountBar.Toggle(_detection.player != null);
@@ -105,15 +107,17 @@ public class MailBox : MonoBehaviour, IInteractable
     // NPC Control
     private NPC_Controller Spawn_MailNPC()
     {
+        Main_Controller main = Main_Controller.instance;
+
         // get current location outer position
-        Location_Controller currentLocation = _mainController.currentLocation;
+        Location_Controller currentLocation = main.currentLocation;
         Vector2 spawnPoint = currentLocation.OuterLocation_Position(Random.Range(0, 2));
 
         // spawn
-        GameObject spawnNPC = _mainController.Spawn_Character(2, spawnPoint);
+        GameObject spawnNPC = main.Spawn_Character(2, spawnPoint);
         NPC_Controller npc = spawnNPC.GetComponent<NPC_Controller>();
 
-        _mainController.UnTrack_CurrentCharacter(spawnNPC);
+        main.UnTrack_CurrentCharacter(spawnNPC);
 
         return npc;
     }
@@ -129,7 +133,7 @@ public class MailBox : MonoBehaviour, IInteractable
 
         for (int i = 0; i < spawnPoints.Count; i++)
         {
-            if (_mainController.Position_Claimed(spawnPoints[i]) == true) continue;
+            if (Main_Controller.instance.Position_Claimed(spawnPoints[i]) == true) continue;
             return spawnPoints[i];
         }
 
@@ -138,25 +142,10 @@ public class MailBox : MonoBehaviour, IInteractable
 
 
     // Interact Functions
-    private void Insert_Nugget()
+    private void Purchase_Insert()
     {
-        // check if nugget amount is max
-        if (_amountBar.currentAmount >= _amountBar.amountBarSprite.Length - 1) return;
-
-        FoodData_Controller playerFood = _detection.player.foodIcon;
-
-        if (playerFood.Is_SameFood(_mainController.dataController.goldenNugget) == false)
-        {
-            DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-            dialog.Update_Dialog();
-            return;
-        }
-
-        playerFood.Set_CurrentData(null);
-        playerFood.Show_Icon();
-        playerFood.Toggle_SubDataBar(true);
-        playerFood.Show_Condition();
+        if (_amountBar.Is_MaxAmount()) return;
+        if (GoldSystem.instance.Update_CurrentAmount(-_insertPrice) == false) return;
 
         // increase amount
         _amountBar.Update_Amount(1);
@@ -183,12 +172,14 @@ public class MailBox : MonoBehaviour, IInteractable
         movement.Assign_TargetPosition(transform.position);
         while (movement.At_TargetPosition() == false) yield return null;
 
+        Main_Controller main = Main_Controller.instance;
+
         // check if spawn point is empty
         if (Available_SpawnPoint() != (Vector2)transform.position)
         {
             // spawn collect card
             GameObject collectCard = Instantiate(_collectCard, Available_SpawnPoint(), Quaternion.identity);
-            collectCard.transform.SetParent(_mainController.otherFile);
+            collectCard.transform.SetParent(main.otherFile);
 
             // decrease amount
             _amountBar.Update_Amount(-1);
@@ -198,7 +189,7 @@ public class MailBox : MonoBehaviour, IInteractable
         }
 
         // get current location outer position
-        Location_Controller currentLocation = _mainController.currentLocation;
+        Location_Controller currentLocation = main.currentLocation;
 
         // leave
         int direction = Random.Range(0, 2);

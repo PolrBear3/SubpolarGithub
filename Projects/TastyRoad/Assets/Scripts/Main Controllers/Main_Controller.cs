@@ -229,39 +229,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Current Golden Nugget Control
-    public int GoldenNugget_Amount()
-    {
-        ItemSlots_Controller slotsController = _currentVehicle.menu.slotsController;
-        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
-
-        return slotsController.FoodAmount(foodMenu.currentDatas, dataController.goldenNugget);
-    }
-
-    public int AddAvailable_GoldenNuggets()
-    {
-        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
-        return foodMenu.AddAvailable_Amount(_dataController.goldenNugget);
-    }
-
-
-    public int Add_GoldenNugget(int addAmount)
-    {
-        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
-        return foodMenu.Add_FoodItem(_dataController.goldenNugget, addAmount);
-    }
-
-    public bool Remove_GoldenNugget(int removeAmount)
-    {
-        FoodMenu_Controller foodMenu = _currentVehicle.menu.foodMenu;
-
-        if (removeAmount > GoldenNugget_Amount()) return false;
-
-        foodMenu.Remove_FoodItem(_dataController.goldenNugget, removeAmount);
-        return true;
-    }
-
-
     // Current Location Control
     private Location_Controller _currentLocation;
     public Location_Controller currentLocation => _currentLocation;

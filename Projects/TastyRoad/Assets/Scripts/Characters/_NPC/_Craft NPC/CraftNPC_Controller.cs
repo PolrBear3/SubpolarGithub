@@ -63,10 +63,16 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     // Data
     private int LoadNew_IndexNum()
     {
-        // remove previous index num !
+        if (_allCraftNPC.Length <= 1) return 0;
 
-        _npcIndexNum = Random.Range(0, _allCraftNPC.Length);
-        return _npcIndexNum;
+        int newIndex = Random.Range(0, _allCraftNPC.Length);
+
+        if (newIndex >= _npcIndexNum)
+        {
+            newIndex = (newIndex + 1) % _allCraftNPC.Length;
+        }
+
+        return newIndex;
     }
 
     private void LoadNPC_IndexNum()

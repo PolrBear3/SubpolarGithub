@@ -20,19 +20,19 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     [SerializeField] private FoodData[] _passiveLootDatas;
 
 
-    private bool _dropped;
-    private HashSet<WorldMap_Data> _droppedMapHistory = new();
+    private LootBox_Data _data;
 
 
     // MonoBehaviour
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
+
+        Load_Data();
     }
 
     private void Start()
     {
-        Load_Data();
         Update_CurrentSprite();
 
         // subscriptions
@@ -53,21 +53,19 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("LootBox/_dropped", _dropped);
-        ES3.Save("LootBox/_droppedMapHistory", _droppedMapHistory);
+        ES3.Save("LootBox/LootBox_Data", _data);
     }
 
     public void Load_Data()
     {
-        _dropped = ES3.Load("LootBox/_dropped", _dropped);
-        _droppedMapHistory = ES3.Load("LootBox/_droppedMapHistory", _droppedMapHistory);
+        _data = ES3.Load("LootBox/LootBox_Data", new LootBox_Data(false));
     }
 
 
     // Indication
     private void Update_CurrentSprite()
     {
-        if (!_dropped)
+        if (!_data.dropped)
         {
             _sr.sprite = _toggleSprites[0];
             return;
@@ -82,7 +80,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     {
         WorldMap_Data currentLocationData = Main_Controller.instance.worldMap.currentData;
 
-        return _droppedMapHistory.Contains(currentLocationData);
+        return _data.droppedMapHistory.Contains(currentLocationData);
     }
 
     private List<FoodData> Current_LootDatas()
@@ -105,7 +103,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
     private void Reset_DroppedState()
     {
-        _dropped = false;
+        _data.Toggle_DropStatus(false);
     }
 
 
@@ -134,7 +132,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
     private void Drop_LootBoxItem()
     {
-        if (_dropped) return;
+        if (_data.dropped) return;
 
         List<FoodData> dropDatas = Current_LootDatas();
         if (dropDatas.Count <= 0) return;
@@ -146,7 +144,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         FoodData_Controller dropFoodIcon = dropLootItem.foodIcon;
 
         WorldMap_Data locationData = Main_Controller.instance.worldMap.currentData;
-        _droppedMapHistory.Add(locationData);
+        _data.Add_MapHistory(locationData);
 
         int maxDataCount = 0;
 
@@ -164,8 +162,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
             }
         }
 
-        _dropped = true;
-
+        _data.Toggle_DropStatus(true);
         Update_CurrentSprite();
     }
 }

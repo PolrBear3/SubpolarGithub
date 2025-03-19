@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 1177498976196956477}
   - component: {fileID: 8348303115327404211}
   - component: {fileID: 7067362755497865247}
+  - component: {fileID: 7965521164876327392}
   - component: {fileID: 3782248096730551176}
   m_Layer: 0
   m_Name: Mail Box
@@ -234,6 +235,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &7965521164876327392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180495848804328051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3782248096730551176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,12 +259,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8db2905d441d4af9b198d31b22e6f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactable: {fileID: 7965521164876327392}
   _detection: {fileID: 7067362755497865247}
+  _dialog: {fileID: 1177498976196956477}
   _amountBar: {fileID: 1497128203910595586}
   _sprites:
   - {fileID: -783593983, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   - {fileID: 395755651, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   _collectCard: {fileID: 2638662604626066613, guid: 4c9b8f1dde21340eb99531069eeb91b1, type: 3}
+  _insertPrice: 50
 --- !u!1001 &3823952543688501351
 PrefabInstance:
   m_ObjectHideFlags: 0

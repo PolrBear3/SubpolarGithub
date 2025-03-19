@@ -68,7 +68,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public int currentMenuNum => _currentMenuNum;
 
 
-    public Action MenuOpen_Event;
+    public Action<bool> On_MenuToggle;
 
     public Action OnCursor_Input;
     public Action OnCursor_OuterInput;
@@ -78,7 +78,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     public Action OnSelect_Input;
     public Action OnHoldSelect_Input;
-    public Action OnHoldEmptySelect_Input;
 
     public Action OnOption1_Input;
     public Action OnOption2_Input;
@@ -222,6 +221,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _onHold = false;
     }
 
+
     private void Select()
     {
         OnSelect_Input?.Invoke();
@@ -235,10 +235,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     private void HoldSelect()
     {
         OnHoldSelect_Input?.Invoke();
-
-        _infoBox.gameObject.SetActive(false);
-
-        OnHoldEmptySelect_Input?.Invoke();
     }
 
 
@@ -340,6 +336,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
                 _menus[i].SetActive(false);
             }
 
+            On_MenuToggle?.Invoke(false);
+
             return;
         }
 
@@ -347,12 +345,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _playerInput.enabled = true;
 
         Toggle_NavigatedMenu();
-
-        ItemSlot_Cursor cursor = _slotsController.cursor;
-        cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
-
-        ItemSlot firstSlot = _slotsController.ItemSlot(Vector2.zero);
-        _slotsController.cursor.Navigate_toSlot(firstSlot);
 
         _infoBox.Flip_toDefault();
     }
@@ -371,10 +363,19 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     public void Toggle_NavigatedMenu()
     {
+        // toggle menu
         _menus[_currentMenuNum].SetActive(true);
         _slotsController.SlotsAssign_Update();
 
-        MenuOpen_Event?.Invoke();
+        // update cursor
+        ItemSlot_Cursor cursor = _slotsController.cursor;
+        cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
+
+        ItemSlot firstSlot = _slotsController.ItemSlot(Vector2.zero);
+        _slotsController.cursor.Navigate_toSlot(firstSlot);
+
+        // event
+        On_MenuToggle?.Invoke(true);
     }
 
 

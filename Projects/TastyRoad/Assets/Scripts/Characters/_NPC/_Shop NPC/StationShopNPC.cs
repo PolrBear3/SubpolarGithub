@@ -574,8 +574,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             // restock locked bookmark station
             _stationStocks[i].Toggle_Discount(false);
-            _stationStocks[i].Restock(recentStation);
-            _stationStocks[i].currentStation.Set_Amount(0);
+            _stationStocks[i].Restock(new(recentStation, 0));
 
             CarryObject_SpriteToggle(false, null);
 
@@ -617,9 +616,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         {
             Station_ScrObj restockStation = MaxBuildCount_RandomStation();
 
+            if (restockStation == null) return;
             if (DuplicateAmount_Stocked(restockStation)) continue;
 
-            _stationStocks[i].Restock(restockStation);
+            _stationStocks[i].Restock(new(restockStation, restockStation.price));
             _stationStocks[i].Toggle_Discount(false);
         }
     }
@@ -677,7 +677,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             // restock
             Station_ScrObj restockStation = NonDuplicate_RandomStation(BuildArchiveCount_MaxStations());
-            _stationStocks[i].Restock(restockStation);
+            _stationStocks[i].Restock(new StationData(restockStation, restockStation.price));
 
             // discount tag update
             if (DiscountStock_Amount() <= 1)

@@ -8,6 +8,8 @@ public class StationStock : MonoBehaviour
     private SpriteRenderer _sr;
 
     [Header("")]
+    [SerializeField] private DialogTrigger _dialog;
+
     [SerializeField] private ActionBubble_Interactable _interactable;
     [SerializeField] private CoinLauncher _launcher;
 
@@ -43,11 +45,11 @@ public class StationStock : MonoBehaviour
         if (_stockData == null) _stockData = new(false);
 
         // load data
-        Restock();
+        Restock(_currentStation);
         Toggle_Discount(_stockData.isDiscount);
 
         // subscriptions
-        _interactable.OnIInteract += Set_Dialog;
+        _interactable.OnIInteract += Toggle_Price;
 
         _interactable.OnAction1Input += Purchase;
         _interactable.OnAction2Input += Toggle_Discount;
@@ -55,32 +57,11 @@ public class StationStock : MonoBehaviour
 
     private void OnDestroy()
     {
-        _interactable.OnIInteract -= Set_Dialog;
+        // subscriptions
+        _interactable.OnIInteract -= Toggle_Price;
 
         _interactable.OnAction1Input -= Purchase;
         _interactable.OnAction2Input -= Toggle_Discount;
-    }
-
-
-    public void Set_Dialog()
-    {
-        if (_sold) return;
-
-        Station_ScrObj currentStation = _currentStation.stationScrObj;
-        Sprite stationIcon = currentStation.dialogIcon;
-
-        // calculation
-        int price = _currentStation.amount;
-
-        if (_stockData.isDiscount && price > 0)
-        {
-            float discountValue = 1f - (_discountPercentage / 100f);
-            price = Mathf.RoundToInt(price * discountValue);
-        }
-        string currentAmountString = "\nyou have " + Main_Controller.instance.GoldenNugget_Amount() + " <sprite=56>";
-        string dialogInfo = price + " <sprite=56> to purchase." + currentAmountString;
-
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(new DialogData(stationIcon, dialogInfo));
     }
 
 
@@ -90,6 +71,7 @@ public class StationStock : MonoBehaviour
         if (data == null) return null;
 
         _currentStation = new(data);
+
         return _currentStation;
     }
 
@@ -103,20 +85,10 @@ public class StationStock : MonoBehaviour
 
 
     // Functions
-    private void Purchase()
+    private int Price()
     {
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+        if (_sold) return 0;
 
-        if (_sold)
-        {
-            // Not Enough space in vehicle storage!
-            dialog.Update_Dialog(2);
-            return;
-        }
-
-        Station_ScrObj currentStation = _currentStation.stationScrObj;
-
-        // discount calculation
         int price = _currentStation.amount;
 
         if (_stockData.isDiscount && price > 0)
@@ -125,17 +97,32 @@ public class StationStock : MonoBehaviour
             price = Mathf.RoundToInt(price * discountValue);
         }
 
-        Main_Controller main = Main_Controller.instance;
+        return price;
+    }
 
-        // pay calculation
-        if (main.GoldenNugget_Amount() < price)
+    private void Toggle_Price()
+    {
+        if (_sold) return;
+
+        GoldSystem_TriggerData triggerData = new(_currentStation.stationScrObj.dialogIcon, -Price());
+        GoldSystem.instance.Indicate_TriggerData(triggerData);
+    }
+
+
+    private void Purchase()
+    {
+        if (_sold)
         {
-            // Not Enough nuggets to purchase!
-            dialog.Update_Dialog(0);
+            _dialog.Update_Dialog(2);
             return;
         }
 
-        StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
+        Station_ScrObj currentStation = _currentStation.stationScrObj;
+
+        // pay calculation
+        if (GoldSystem.instance.Update_CurrentAmount(-Price()) == false) return;
+
+        StationMenu_Controller stationMenu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
 
         bool slotFull = slotsController.Empty_SlotData(stationMenu.currentDatas) == null;
@@ -143,7 +130,7 @@ public class StationStock : MonoBehaviour
         if (slotFull)
         {
             // Not Enough space in vehicle storage!
-            dialog.Update_Dialog(1);
+            _dialog.Update_Dialog(1);
             return;
         }
 
@@ -171,18 +158,15 @@ public class StationStock : MonoBehaviour
         _sr.sortingLayerName = "Background";
         _sr.sortingOrder = 1;
 
-        //
         _interactable.bubble.Toggle_Height(true);
     }
 
 
     private void Toggle_Discount()
     {
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
         if (_sold == false)
         {
-            dialog.Update_Dialog(3);
+            _dialog.Update_Dialog(3);
             return;
         }
 
@@ -192,11 +176,11 @@ public class StationStock : MonoBehaviour
         {
             _statusSign.sprite = _signSprites[1];
 
-            dialog.Update_Dialog(4);
+            _dialog.Update_Dialog(4);
             return;
         }
 
-        dialog.Update_Dialog(5);
+        _dialog.Update_Dialog(5);
 
         if (_sold)
         {
@@ -216,27 +200,20 @@ public class StationStock : MonoBehaviour
             return;
         }
 
-        if (_sold)
-        {
-            _statusSign.sprite = _signSprites[2];
-            return;
-        }
-
-        _statusSign.sprite = _signSprites[0];
+        _statusSign.sprite = _sold ? _signSprites[2] : _signSprites[0];
     }
 
 
-    public void Restock(Station_ScrObj restockStation)
+    public void Restock(StationData restockData)
     {
-        if (restockStation == null)
+        if (restockData == null || restockData.stationScrObj == null)
         {
             Update_toSold();
             return;
         }
 
         // set data
-        _currentStation = new(restockStation);
-        _currentStation.Set_Amount(restockStation.price);
+        _currentStation = new(restockData);
 
         _sold = false;
 
@@ -246,20 +223,10 @@ public class StationStock : MonoBehaviour
         _sr.sortingLayerName = "Prefabs";
         _sr.sortingOrder = 0;
 
+        _interactable.bubble.Toggle_Height(false);
+
+        // tag sprite
         if (_stockData.isDiscount) return;
         _statusSign.sprite = _signSprites[0];
-
-        //
-        _interactable.bubble.Toggle_Height(false);
-    }
-    public void Restock()
-    {
-        if (_currentStation == null)
-        {
-            Update_toSold();
-            return;
-        }
-
-        Restock(_currentStation.stationScrObj);
     }
 }

@@ -43,17 +43,17 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
 
         // subscriptions
-        _controller.MenuOpen_Event += Update_CursorFill;
-        _controller.MenuOpen_Event += Update_AbilityIcons;
-        _controller.MenuOpen_Event += Show_AbilityDiscription;
+        _controller.On_MenuToggle += Update_CursorFill;
+        _controller.On_MenuToggle += Update_AbilityIcons;
+        _controller.On_MenuToggle += Show_AbilityDiscription;
 
         _controller.OnCursor_Input += Show_AbilityDiscription;
 
         _controller.OnCursor_OuterInput += Clamp_CursorPosition;
         _controller.OnCursor_YInput += Update_CurrentPage;
 
-        _controller.OnHoldEmptySelect_Input += ActivateAbility_onSelect;
-        _controller.OnHoldEmptySelect_Input += Show_AbilityDiscription;
+        _controller.OnHoldSelect_Input += ActivateAbility_onSelect;
+        _controller.OnHoldSelect_Input += Show_AbilityDiscription;
     }
 
     private void OnDisable()
@@ -61,17 +61,17 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.Update_PanelSprite(null);
 
         // subscriptions
-        _controller.MenuOpen_Event -= Update_CursorFill;
-        _controller.MenuOpen_Event -= Update_AbilityIcons;
-        _controller.MenuOpen_Event -= Show_AbilityDiscription;
+        _controller.On_MenuToggle -= Update_CursorFill;
+        _controller.On_MenuToggle -= Update_AbilityIcons;
+        _controller.On_MenuToggle -= Show_AbilityDiscription;
 
         _controller.OnCursor_Input -= Show_AbilityDiscription;
 
         _controller.OnCursor_OuterInput -= Clamp_CursorPosition;
         _controller.OnCursor_YInput -= Update_CurrentPage;
 
-        _controller.OnHoldEmptySelect_Input -= ActivateAbility_onSelect;
-        _controller.OnHoldEmptySelect_Input -= Show_AbilityDiscription;
+        _controller.OnHoldSelect_Input -= ActivateAbility_onSelect;
+        _controller.OnHoldSelect_Input -= Show_AbilityDiscription;
     }
 
 
@@ -174,8 +174,10 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    private void Update_AbilityIcons()
+    private void Update_AbilityIcons(bool menuToggle)
     {
+        if (menuToggle == false) return;
+
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         ItemSlots_Controller slotsController = _controller.slotsController;
 
@@ -200,8 +202,12 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return "\n\n" + manager.currentAbilityPoint + "/" + manager.maxAbilityPoint + "  <sprite=79> points";
     }
 
-    private void Show_AbilityDiscription()
+
+    private void Show_AbilityDiscription(bool menuToggle)
     {
+        if (menuToggle == false) return;
+        if (gameObject.activeSelf == false) return;
+
         InformationBox infoBox = _controller.infoBox;
         Ability_ScrObj currentAbility = CurrentSlot_Ability();
 
@@ -219,10 +225,15 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         infoBox.gameObject.SetActive(true);
         infoBox.Update_RectLayout();
     }
-
-
-    private void Update_CursorFill()
+    private void Show_AbilityDiscription()
     {
+        Show_AbilityDiscription(gameObject.activeSelf);
+    }
+
+
+    private void Update_CursorFill(bool menuToggle)
+    {
+        if (menuToggle == false) return;
         if (gameObject.activeSelf == false) return;
 
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
@@ -238,6 +249,10 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.Update_MenuCursorSprite(_cursorFillSprites[spriteIndex]);
     }
+    private void Update_CursorFill()
+    {
+        Update_CursorFill(gameObject.activeSelf);
+    }
 
 
     // Activation
@@ -246,6 +261,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
 
+        if (cursor.currentSlot == null) return null;
         int currentSlotNum = (int)cursor.currentSlot.gridNum.x;
 
         if (currentSlotNum > manager.allAbilities.Length - 1) return null;
@@ -272,8 +288,8 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         manager.Activate_Ability(CurrentSlot_Ability());
 
-        Update_CursorFill();
-        Update_AbilityIcons();
+        Update_CursorFill(true);
+        Update_AbilityIcons(true);
 
         // dialog
         int activationCount = manager.Ability_ActivateCount(currentAbility);

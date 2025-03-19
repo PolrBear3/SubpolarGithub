@@ -5,26 +5,41 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GoldSystem : MonoBehaviour
+public class GoldSystem : MonoBehaviour, ISaveLoadable
 {
     public static GoldSystem instance;
 
+    [Header("")]
+    [SerializeField] private Image _panel;
+    [SerializeField] private Sprite _indicatePanel;
+
+    private Sprite _defaultPanel;
 
     [Header("")]
     [SerializeField] private Image _iconImage;
-    [SerializeField] private Sprite _defaultIcon;
+
+    private Sprite _defaultIcon;
+    public Sprite defaultIcon => _defaultIcon;
 
     [Header("")]
     [SerializeField] private TextMeshProUGUI _amountText;
     [SerializeField] private TextMeshProUGUI _shadowText;
 
     [Header("")]
+    [SerializeField] private Color _red;
+    [SerializeField] private Color _green;
+
+    private Color _defaultColor;
+
+    [Header("")]
+    [SerializeField][Range(0, 100)] private float _shakeHeight;
+    [SerializeField] private LeanTweenType _shakeTweenType;
+
+    [Header("")]
     [SerializeField][Range(0, 10)] private float _durationTime;
 
 
-    private int _currentAmount;
-    public int currentAmont => _currentAmount;
-
+    private GoldSystem_Data _data;
 
     private Coroutine _coroutine;
 
@@ -33,18 +48,54 @@ public class GoldSystem : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        _defaultPanel = _panel.sprite;
+        _defaultIcon = _iconImage.sprite;
+        _defaultColor = _amountText.color;
     }
 
     private void Start()
     {
         _iconImage.sprite = _defaultIcon;
 
-        // _currentAmount = ES3.load //
         Update_CurrentAmount(0);
+
+        // subscriptions
+        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
+
+        vehicle.menu.On_MenuToggle += ToggleUpdate_Panel;
+        vehicle.locationMenu.On_MenuToggle += ToggleUpdate_Panel;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
+
+        vehicle.menu.On_MenuToggle -= ToggleUpdate_Panel;
+        vehicle.locationMenu.On_MenuToggle -= ToggleUpdate_Panel;
+    }
+
+
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        ES3.Save("GoldSystem/_data", _data);
+    }
+
+    public void Load_Data()
+    {
+        _data = ES3.Load("GoldSystem/_data", new GoldSystem_Data(0));
     }
 
 
     // Indication
+    private void ToggleUpdate_Panel(bool toggle)
+    {
+        _panel.gameObject.SetActive(!toggle);
+    }
+
+
     private void Cancel_Coroutine()
     {
         if (_coroutine == null) return;
@@ -52,8 +103,16 @@ public class GoldSystem : MonoBehaviour
         StopCoroutine(_coroutine);
         _coroutine = null;
 
+        _panel.sprite = _defaultPanel;
+
         _iconImage.sprite = _defaultIcon;
-        _amountText.text = _currentAmount.ToString();
+        _amountText.text = _data.goldAmount.ToString();
+
+        _amountText.color = _defaultColor;
+        _amountText.colorGradient = new VertexGradient(_defaultColor);
+
+        _amountText.gameObject.SetActive(_data.goldAmount > 0);
+        _shadowText.gameObject.SetActive(true);
     }
 
     public void Indicate_TriggerData(GoldSystem_TriggerData data)
@@ -64,46 +123,69 @@ public class GoldSystem : MonoBehaviour
     }
     private IEnumerator Indicate_TriggerData_Coroutine(GoldSystem_TriggerData data)
     {
+        _panel.sprite = _indicatePanel;
+
+        _amountText.gameObject.SetActive(true);
+        _shadowText.gameObject.SetActive(false);
+
         _iconImage.sprite = data.triggerIcon;
         _amountText.text = data.triggerValue.ToString();
 
-        // text color //
+        ColorToggle_AmountText(data.triggerValue);
 
         yield return new WaitForSeconds(_durationTime);
 
-        _iconImage.sprite = _defaultIcon;
-        _amountText.text = _currentAmount.ToString();
-
-        // text color //
-
-        _coroutine = null;
+        Cancel_Coroutine();
         yield break;
+    }
+
+
+    private void Shake_Icon()
+    {
+        RectTransform icon = _iconImage.rectTransform;
+
+        if (LeanTween.isTweening(icon.gameObject)) return;
+
+        float originalY = icon.anchoredPosition.y;
+        float duration = _durationTime / 4;
+
+        LeanTween.moveY(icon, icon.anchoredPosition.y + _shakeHeight, duration).setEase(_shakeTweenType)
+        .setOnComplete(() =>
+        {
+            LeanTween.moveY(icon, originalY, duration).setEase(_shakeTweenType);
+        });
     }
 
 
     // Calculation
     public bool Update_CurrentAmount(int updateValue)
     {
+        int currentAmount = _data.goldAmount;
+
         if (updateValue == 0)
         {
-            _amountText.text = _currentAmount.ToString();
+            _amountText.text = currentAmount.ToString();
+            _shadowText.text = currentAmount.ToString("D7");
 
-            _amountText.gameObject.SetActive(_currentAmount > 0);
+            _amountText.gameObject.SetActive(currentAmount > 0);
+
             return true;
         }
 
-        int calculateValue = _currentAmount + updateValue;
+        int calculateValue = currentAmount + updateValue;
 
         if (calculateValue < 0)
         {
-            // restricted update indication //
+            Cancel_Coroutine();
+            _coroutine = StartCoroutine(ColorToggle_AmountText_DurationCoroutine(-1));
+
             return false;
         }
 
-        // panel shake animation //
+        Update_AmountText(currentAmount, calculateValue);
+        _data.Set_GoldAmount(calculateValue);
 
-        Update_AmountText(_currentAmount, calculateValue);
-        _currentAmount = calculateValue;
+        Shake_Icon();
 
         return true;
     }
@@ -133,12 +215,40 @@ public class GoldSystem : MonoBehaviour
             yield return null;
         }
 
-        _amountText.text = _currentAmount.ToString();
-        _shadowText.text = _currentAmount.ToString("D7");
+        int currentAmount = _data.goldAmount;
 
-        _amountText.gameObject.SetActive(_currentAmount > 0);
+        _amountText.text = currentAmount.ToString();
+        _shadowText.text = currentAmount.ToString("D7");
 
-        _coroutine = null;
+        _amountText.gameObject.SetActive(currentAmount > 0);
+
+        Cancel_Coroutine();
+        yield break;
+    }
+
+
+    private void ColorToggle_AmountText(int triggerValue)
+    {
+        if (triggerValue > 0)
+        {
+            _amountText.color = _green;
+            _amountText.colorGradient = new VertexGradient(_green);
+
+            return;
+        }
+
+        _amountText.color = _red;
+        _amountText.colorGradient = new VertexGradient(_red);
+    }
+
+    private IEnumerator ColorToggle_AmountText_DurationCoroutine(int triggerValue)
+    {
+        _amountText.gameObject.SetActive(true);
+
+        ColorToggle_AmountText(triggerValue);
+        yield return new WaitForSeconds(_durationTime);
+
+        Cancel_Coroutine();
         yield break;
     }
 }

@@ -12,26 +12,17 @@ public class CraftNPC_Mechanic : CraftNPC
     private ActionSelector _droppedToolBox;
 
 
-    [Header("")]
-    [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
-
-
-    [Header("")]
-    // interact range upgradge
+    [Header("< Upgrade Values >")]
     [SerializeField] private Vector2[] _interactRanges;
-
-    // vehicle movement speed upgrade
     [SerializeField][Range(0, 1)] private float _speedUpgradeValue;
 
-    // vehicle menu slot page upgrade
     private int _recentMenuNum;
 
 
-
-
     // MonoBehaviour
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         Load_Data();
     }
 
@@ -41,16 +32,16 @@ public class CraftNPC_Mechanic : CraftNPC
         Subscribe_OnSave(Save_Data);
 
         // subscriptions
-        Main_Controller.instance.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
+        Main_Controller.instance.currentVehicle.menu.On_MenuToggle += Update_RecentMenuNum;
 
         GlobalTime_Controller.instance.OnTimeTik += Set_ToolBox;
         GlobalTime_Controller.instance.OnTimeTik += Collect_ToolBox;
 
         ActionBubble_Interactable interactable = main.interactable;
 
-        interactable.OnHoldIInteract += Set_ToolBox;
+        interactable.OnIInteract += Toggle_ActionBubble;
+        interactable.OnIInteract += Toggle_PurchasePrice;
 
-        interactable.OnIInteract += Update_ActionBubble;
         interactable.OnAction1Input += Purchase;
     }
 
@@ -59,16 +50,16 @@ public class CraftNPC_Mechanic : CraftNPC
         base.OnDestroy();
 
         // subscriptions
-        Main_Controller.instance.currentVehicle.menu.MenuOpen_Event += Update_RecentMenuNum;
+        Main_Controller.instance.currentVehicle.menu.On_MenuToggle += Update_RecentMenuNum;
 
         GlobalTime_Controller.instance.OnTimeTik -= Set_ToolBox;
         GlobalTime_Controller.instance.OnTimeTik -= Collect_ToolBox;
 
         ActionBubble_Interactable interactable = main.interactable;
 
-        interactable.OnHoldIInteract -= Set_ToolBox;
+        interactable.OnIInteract -= Toggle_ActionBubble;
+        interactable.OnIInteract -= Toggle_PurchasePrice;
 
-        interactable.OnIInteract -= Update_ActionBubble;
         interactable.OnAction1Input -= Purchase;
     }
 
@@ -76,22 +67,18 @@ public class CraftNPC_Mechanic : CraftNPC
     // Private Save and Load
     private void Save_Data()
     {
-        ES3.Save("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount);
-        ES3.Save("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", main.foodIcon.AllDatas());
+        ES3.Save("CraftNPC_Mechanic/data", data);
     }
 
     private void Load_Data()
     {
-        nuggetBar.Set_Amount(ES3.Load("CraftNPC_Mechanic/nuggetBar.currentAmount", nuggetBar.currentAmount));
-        main.foodIcon.Update_AllDatas(ES3.Load("CraftNPC_Mechanic/npcController.foodIcon.AllDatas()", main.foodIcon.AllDatas()));
+        Set_Data(ES3.Load("CraftNPC_Mechanic/data", new CraftNPC_Data(false)));
     }
 
 
     // Indications
-    private void Update_ActionBubble()
+    private void Toggle_ActionBubble()
     {
-        Toggle_AmountBars();
-
         ActionBubble_Interactable interactable = main.interactable;
         Action_Bubble bubble = interactable.bubble;
 
@@ -102,8 +89,6 @@ public class CraftNPC_Mechanic : CraftNPC
             bubble.Toggle(false);
             bubble.Empty_Bubble();
 
-            dialog.Update_Dialog(Current_PayCount());
-
             return;
         }
 
@@ -112,6 +97,19 @@ public class CraftNPC_Mechanic : CraftNPC
         if (bubble.bubbleOn == false) return;
 
         dialog.Update_Dialog(_droppedToolBox.currentIndex);
+    }
+
+    private void Toggle_PurchasePrice()
+    {
+        GoldSystem system = GoldSystem.instance;
+
+        if (_toolBox == null || data.payed == false)
+        {
+            system.Indicate_TriggerData(new(npcIconSprite, -Purchase_Price()));
+            return;
+        }
+
+        // additional price indication //
     }
 
 
@@ -135,7 +133,7 @@ public class CraftNPC_Mechanic : CraftNPC
         _droppedToolBox.Subscribe_Action(Upgrade_InteractRange);
         _droppedToolBox.Subscribe_Action(Upgrade_StorageSpace);
 
-        _droppedToolBox.OnActionToggle += Update_ActionBubble;
+        _droppedToolBox.OnActionToggle += Toggle_ActionBubble;
     }
 
 
@@ -143,8 +141,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         if (coroutine != null) return false;
         if (_droppedToolBox != null) return false;
-
-        if (nuggetBar.Is_MaxAmount() == false) return false;
+        if (data.payed == false) return false;
 
         Main_Controller main = Main_Controller.instance;
 
@@ -188,14 +185,11 @@ public class CraftNPC_Mechanic : CraftNPC
         if (vehicle.movement.onBoard) return;
 
         Set_Coroutine(StartCoroutine(Set_ToolBox_Coroutine()));
-
-        actionTimer.Toggle_RunAnimation(true);
-        main.interactable.LockInteract(true);
-
-        Toggle_AmountBars();
     }
     private IEnumerator Set_ToolBox_Coroutine()
     {
+        Toggle_Coroutine(true);
+
         NPC_Movement movement = main.movement;
         Vector2 setPos = ToolBox_SetPosition();
 
@@ -207,7 +201,7 @@ public class CraftNPC_Mechanic : CraftNPC
             // cancel set action if interact during action
             if (!movement.Is_Moving())
             {
-                Exit_CurrentAction();
+                Toggle_Coroutine(false);
                 yield break;
             }
 
@@ -218,13 +212,13 @@ public class CraftNPC_Mechanic : CraftNPC
         {
             Set_ToolBox();
 
-            Exit_CurrentAction();
+            Toggle_Coroutine(false);
             yield break;
         }
 
         Drop_ToolBox();
 
-        Exit_CurrentAction();
+        Toggle_Coroutine(false);
         yield break;
     }
 
@@ -250,7 +244,7 @@ public class CraftNPC_Mechanic : CraftNPC
         _droppedToolBox = null;
 
         Destroy(currentToolBox);
-        Update_ActionBubble();
+        Toggle_ActionBubble();
     }
 
     private void Collect_ToolBox()
@@ -261,14 +255,11 @@ public class CraftNPC_Mechanic : CraftNPC
         if (ToolBox_NearbyVehicle()) return;
 
         Set_Coroutine(StartCoroutine(Collect_ToolBox_Coroutine()));
-
-        actionTimer.Toggle_RunAnimation(true);
-        main.interactable.LockInteract(true);
-
-        Toggle_AmountBars();
     }
     private IEnumerator Collect_ToolBox_Coroutine()
     {
+        Toggle_Coroutine(true);
+
         NPC_Movement movement = main.movement;
 
         movement.Stop_FreeRoam();
@@ -278,25 +269,28 @@ public class CraftNPC_Mechanic : CraftNPC
 
         ToolBox_Collect();
 
-        Exit_CurrentAction();
+        Toggle_Coroutine(false);
         yield break;
     }
 
+
+    private int Purchase_Price()
+    {
+        if (_droppedToolBox != null) return 0;
+
+        return defaultPrice;
+    }
 
     private void Purchase()
     {
         if (coroutine != null) return;
         if (_droppedToolBox == null) return;
-        if (nuggetBar.Is_MaxAmount() == false) return;
 
         Set_Coroutine(StartCoroutine(Purchase_Coroutine()));
     }
     private IEnumerator Purchase_Coroutine()
     {
-        actionTimer.Toggle_RunAnimation(true);
-        main.interactable.LockInteract(true);
-
-        Toggle_AmountBars();
+        Toggle_Coroutine(true);
 
         NPC_Movement movement = main.movement;
         movement.Stop_FreeRoam();
@@ -317,7 +311,7 @@ public class CraftNPC_Mechanic : CraftNPC
             // cancel purchase if player boards on vehicle
             if (vehicleMovement.onBoard)
             {
-                Exit_CurrentAction();
+                Toggle_Coroutine(false);
                 yield break;
             }
 
@@ -325,7 +319,7 @@ public class CraftNPC_Mechanic : CraftNPC
         }
 
         // upgrade time delay
-        yield return new WaitForSeconds(_upgradeTimeValue);
+        yield return new WaitForSeconds(upgradeTimeValue);
 
         // upgrade
         _droppedToolBox.Invoke_Action();
@@ -336,7 +330,10 @@ public class CraftNPC_Mechanic : CraftNPC
 
         ToolBox_Collect();
 
-        Exit_CurrentAction();
+        // data update
+        Set_Data(new(defaultPrice));
+
+        Toggle_Coroutine(false);
         yield break;
     }
 
@@ -354,9 +351,11 @@ public class CraftNPC_Mechanic : CraftNPC
 
             vehicle.Update_InteractArea_Range(_interactRanges[i + 1]);
 
+            /*
             nuggetBar.Set_Amount(0);
             nuggetBar.Toggle_BarColor(false);
             nuggetBar.Load();
+            */
 
             return;
         }
@@ -377,14 +376,18 @@ public class CraftNPC_Mechanic : CraftNPC
 
         vehicle.Update_MovementSpeed(_speedUpgradeValue);
 
+        /*
         nuggetBar.Set_Amount(0);
         nuggetBar.Toggle_BarColor(false);
         nuggetBar.Load();
+        */
     }
 
 
-    private void Update_RecentMenuNum()
+    private void Update_RecentMenuNum(bool menuToggle)
     {
+        if (menuToggle == false) return;
+
         VehicleMenu_Controller vehicle = Main_Controller.instance.currentVehicle.menu;
         GameObject recentMenu = vehicle.menus[vehicle.currentMenuNum];
 
@@ -412,9 +415,11 @@ public class CraftNPC_Mechanic : CraftNPC
 
         slotsController.AddNewPage_ItemSlotDatas(slotDatas);
 
+        /*
         nuggetBar.Set_Amount(0);
         nuggetBar.Toggle_BarColor(false);
         nuggetBar.Load();
+        */
 
         if (recentMenu.activeSelf == false) return;
 

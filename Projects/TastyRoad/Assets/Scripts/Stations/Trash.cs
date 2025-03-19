@@ -185,6 +185,10 @@ public class Trash : Stack_Table, IInteractable
         RandomWeight_DropAction()?.Invoke();
         Empty_MaxAmount();
 
+        // durability
+        stationController.data.Update_Durability(-1);
+        stationController.maintenance.Update_DurabilityBreak();
+
         return true;
     }
 

@@ -23,12 +23,12 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
+
+        Load_Data();
     }
 
     private void Start()
     {
-        _amountBar.Set_Amount(ES3.Load("ScrapStack/currentAmount", _amountBar.currentAmount));
-
         Toggle_AmountBar();
         Update_CurrentSprite();
 
@@ -56,12 +56,12 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("ScrapStack/currentAmount", _amountBar.currentAmount);
+        ES3.Save("ScrapStack/AmountBar/_currentAmount", _amountBar.currentAmount);
     }
 
     public void Load_Data()
     {
-
+        _amountBar.Set_Amount(ES3.Load("ScrapStack/AmountBar/_currentAmount", _amountBar.currentAmount));
     }
 
 

@@ -39,6 +39,7 @@ public class StationData
         _stationScrObj = data.stationScrObj;
         _position = data.position;
         _durability = data.durability;
+        _amount = data.amount;
     }
 
     public StationData(Station_ScrObj station)

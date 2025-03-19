@@ -43,10 +43,6 @@ public class Data_Controller : MonoBehaviour
     public List<GameObject> characters = new();
 
     [Header("")]
-    [SerializeField] private Food_ScrObj _goldenNugget;
-    public Food_ScrObj goldenNugget => _goldenNugget;
-
-    [Header("")]
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
 
