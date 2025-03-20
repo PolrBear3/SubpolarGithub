@@ -13,12 +13,7 @@ public class CraftNPC : MonoBehaviour
     [SerializeField] private NPC_Controller _npcController;
     public NPC_Controller main => _npcController;
 
-
-    [Header("")]
     [SerializeField] private DialogTrigger _dialog;
-
-    [SerializeField] private Clock_Timer _actionTimer;
-    public Clock_Timer actionTimer => _actionTimer;
 
 
     [Header("")]
@@ -85,7 +80,7 @@ public class CraftNPC : MonoBehaviour
 
     public void Toggle_Coroutine(bool toggle)
     {
-        actionTimer.Toggle_RunAnimation(toggle);
+        _npcController.timer.Toggle_RunAnimation(toggle);
         main.interactable.LockInteract(toggle);
 
         if (toggle)

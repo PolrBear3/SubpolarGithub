@@ -11,17 +11,22 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private GameObject[] _allCraftNPC;
 
 
-    private CraftNPC _currentNPC;
-    private int _npcIndexNum;
+    private CraftNPC_ControllerData _data;
+    public CraftNPC_ControllerData data => _data;
 
 
     // MonoBehaviour
+    private void Awake()
+    {
+        Load_Data();
+    }
+
     private void Start()
     {
         transform.SetParent(Main_Controller.instance.characterFile);
 
         Toggle_NPCSprites(false);
-        Spawn(_npcIndexNum).transform.position = Default_SpawnPosition();
+        Spawn(_data.npcIndex).transform.position = Default_SpawnPosition();
 
         // subscription
         WorldMap_Controller.OnNewLocation += Spawn_New;
@@ -37,16 +42,19 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        if (_currentNPC == null) return;
+        if (_data == null) return;
 
-        _currentNPC.Invoke_OnSave();
+        _data.currentNPC.Invoke_OnSave();
 
-        ES3.Save("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
+        ES3.Save("CraftNPC_Controller/CraftNPC_ControllerData", _data);
     }
 
     public void Load_Data()
     {
-        LoadNPC_IndexNum();
+        CraftNPC_ControllerData newData = new CraftNPC_ControllerData(Random.Range(0, _allCraftNPC.Length));
+        CraftNPC_ControllerData loadData = ES3.Load("CraftNPC_Controller/CraftNPC_ControllerData", newData);
+
+        _data = loadData;
     }
 
 
@@ -61,30 +69,18 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Data
-    private int LoadNew_IndexNum()
+    private int NewNPC_IndexNum()
     {
         if (_allCraftNPC.Length <= 1) return 0;
 
-        int newIndex = Random.Range(0, _allCraftNPC.Length);
+        int currentIndex = _data.npcIndex;
+        int newIndex = currentIndex;
 
-        if (newIndex >= _npcIndexNum)
+        while (newIndex == currentIndex)
         {
-            newIndex = (newIndex + 1) % _allCraftNPC.Length;
+            newIndex = Random.Range(0, _allCraftNPC.Length);
         }
-
         return newIndex;
-    }
-
-    private void LoadNPC_IndexNum()
-    {
-        if (ES3.KeyExists("CraftNPC_Controller/_npcIndexNum") == false)
-        {
-            LoadNew_IndexNum();
-            return;
-        }
-
-        int loadIndexNum = ES3.Load("CraftNPC_Controller/_npcIndexNum", _npcIndexNum);
-        _npcIndexNum = Mathf.Clamp(loadIndexNum, 0, _allCraftNPC.Length - 1);
     }
 
 
@@ -98,17 +94,16 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 
     private CraftNPC Spawn(int indexNum)
     {
-        GameObject getNPC = _allCraftNPC[indexNum];
+        _data = new(indexNum);
 
+        GameObject getNPC = _allCraftNPC[indexNum];
         _npcSpawner.Set_Prefab(getNPC);
 
         GameObject spawnNPC = _npcSpawner.Spawn_Prefab(Default_SpawnPosition());
         spawnNPC.transform.SetParent(transform);
 
         CraftNPC craftNPC = spawnNPC.GetComponent<CraftNPC>();
-
-        _currentNPC = craftNPC;
-        _npcIndexNum = indexNum;
+        _data.Set_CurrentNPC(craftNPC);
 
         return craftNPC;
     }
@@ -116,9 +111,9 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     private void Spawn_New()
     {
         // save current npc data
-        _currentNPC.Invoke_OnSave();
+        _data.currentNPC.Invoke_OnSave();
 
         // set new npc & default position
-        Spawn(LoadNew_IndexNum()).transform.position = Default_SpawnPosition();
+        Spawn(NewNPC_IndexNum()).transform.position = Default_SpawnPosition();
     }
 }
