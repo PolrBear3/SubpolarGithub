@@ -43,6 +43,7 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         if (_data == null) return;
+        if (_data.currentNPC == null) return;
 
         _data.currentNPC.Invoke_OnSave();
 

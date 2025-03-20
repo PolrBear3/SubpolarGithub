@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CraftNPC_ControllerData
 {
-    private CraftNPC _currentNPC;
+    [ES3NonSerializable] private CraftNPC _currentNPC;
     public CraftNPC currentNPC => _currentNPC;
 
-    [ES3NonSerializable] private int _npcIndex;
+    [ES3Serializable] private int _npcIndex;
     public int npcIndex => _npcIndex;
 
 

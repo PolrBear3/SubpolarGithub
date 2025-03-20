@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 7060423572408988408}
   - component: {fileID: 9094981842974887859}
   - component: {fileID: 2978574373251596411}
+  - component: {fileID: 5035252386548271160}
   - component: {fileID: 8048547352410133038}
   m_Layer: 0
   m_Name: CraftNPC_Smith
@@ -273,7 +274,7 @@ MonoBehaviour:
   _itemDropper: {fileID: 0}
   _timer: {fileID: 170870028932478358}
   _movement: {fileID: 2978574373251596411}
-  _interaction: {fileID: 0}
+  _interaction: {fileID: 5035252386548271160}
   _foodInteraction: {fileID: 0}
   _giftSystem: {fileID: 0}
 --- !u!114 &2978574373251596411
@@ -292,6 +293,19 @@ MonoBehaviour:
   _defaultMoveSpeed: 5
   _intervalTime: 4
   _searchAttempts: 50
+--- !u!114 &5035252386548271160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5b608fb3a2242b8b2a63bfbcd61c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controller: {fileID: 9094981842974887859}
 --- !u!114 &8048547352410133038
 MonoBehaviour:
   m_ObjectHideFlags: 0
