@@ -11,7 +11,7 @@ public class CraftNPC : MonoBehaviour
 
     [Header("")]
     [SerializeField] private NPC_Controller _npcController;
-    public NPC_Controller main => _npcController;
+    public NPC_Controller npcController => _npcController;
 
     [SerializeField] private DialogTrigger _dialog;
 
@@ -74,6 +74,14 @@ public class CraftNPC : MonoBehaviour
     // Coroutine Action
     public Coroutine Set_Coroutine(Coroutine coroutine)
     {
+        if (_coroutine != null && coroutine == null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+
+            return null;
+        }
+
         _coroutine = coroutine;
         return _coroutine;
     }
@@ -81,7 +89,7 @@ public class CraftNPC : MonoBehaviour
     public void Toggle_Coroutine(bool toggle)
     {
         _npcController.timer.Toggle_RunAnimation(toggle);
-        main.interactable.LockInteract(toggle);
+        npcController.interactable.LockInteract(toggle);
 
         if (toggle)
         {

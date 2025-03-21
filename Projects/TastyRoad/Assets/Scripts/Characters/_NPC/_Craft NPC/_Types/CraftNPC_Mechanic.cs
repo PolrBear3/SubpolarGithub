@@ -37,7 +37,7 @@ public class CraftNPC_Mechanic : CraftNPC
         GlobalTime_Controller.instance.OnTimeTik += Set_ToolBox;
         GlobalTime_Controller.instance.OnTimeTik += Collect_ToolBox;
 
-        ActionBubble_Interactable interactable = main.interactable;
+        ActionBubble_Interactable interactable = npcController.interactable;
 
         interactable.OnIInteract += Toggle_ActionBubble;
         interactable.OnIInteract += Toggle_PurchasePrice;
@@ -55,7 +55,7 @@ public class CraftNPC_Mechanic : CraftNPC
         GlobalTime_Controller.instance.OnTimeTik -= Set_ToolBox;
         GlobalTime_Controller.instance.OnTimeTik -= Collect_ToolBox;
 
-        ActionBubble_Interactable interactable = main.interactable;
+        ActionBubble_Interactable interactable = npcController.interactable;
 
         interactable.OnIInteract -= Toggle_ActionBubble;
         interactable.OnIInteract -= Toggle_PurchasePrice;
@@ -79,7 +79,7 @@ public class CraftNPC_Mechanic : CraftNPC
     // Indications
     private void Toggle_ActionBubble()
     {
-        ActionBubble_Interactable interactable = main.interactable;
+        ActionBubble_Interactable interactable = npcController.interactable;
         Action_Bubble bubble = interactable.bubble;
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
@@ -190,23 +190,13 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         Toggle_Coroutine(true);
 
-        NPC_Movement movement = main.movement;
+        NPC_Movement movement = npcController.movement;
         Vector2 setPos = ToolBox_SetPosition();
 
         movement.Stop_FreeRoam();
         movement.Assign_TargetPosition(setPos);
 
-        while (movement.At_TargetPosition(setPos) == false)
-        {
-            // cancel set action if interact during action
-            if (!movement.Is_Moving())
-            {
-                Toggle_Coroutine(false);
-                yield break;
-            }
-
-            yield return null;
-        }
+        while (movement.At_TargetPosition(setPos) == false) yield return null;
 
         if (Main_Controller.instance.Position_Claimed(setPos))
         {
@@ -260,7 +250,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         Toggle_Coroutine(true);
 
-        NPC_Movement movement = main.movement;
+        NPC_Movement movement = npcController.movement;
 
         movement.Stop_FreeRoam();
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
@@ -292,7 +282,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         Toggle_Coroutine(true);
 
-        NPC_Movement movement = main.movement;
+        NPC_Movement movement = npcController.movement;
         movement.Stop_FreeRoam();
 
         // move to tool box
