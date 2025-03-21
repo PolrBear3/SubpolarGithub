@@ -99,9 +99,9 @@ GameObject:
   - component: {fileID: 4693156854110124183}
   - component: {fileID: 2408868895999470236}
   - component: {fileID: 4350875802633755867}
-  - component: {fileID: 4201477410039233555}
+  - component: {fileID: 7189925122961658879}
   m_Layer: 0
-  m_Name: Mechanic ToolBox
+  m_Name: Action Selector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5cb94d5de7b46cf94cfba2fd331a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allPositions:
-  - {x: 0, y: 0}
+  _surroundPositions: []
+  _interactPositions: []
   _claimPositions:
   - {x: 0, y: 0}
   _unClaimOnStart: 0
@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4201477410039233555
+--- !u!114 &7189925122961658879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -271,7 +271,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6136533172003908199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b3da1027e52643fb97723f63826e314, type: 3}
+  m_Script: {fileID: 11500000, guid: ce8cb25c5d27f44ef8001b914a514fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _positionClaimer: {fileID: 4693156854110124183}
@@ -279,10 +279,6 @@ MonoBehaviour:
   _interactable: {fileID: 4350875802633755867}
   _indicatorObject: {fileID: 6099169534085390160}
   _indicatorIcon: {fileID: 89041045691663973}
-  _indicatorSprites:
-  - {fileID: 1924485764, guid: f311721b981194c6ba14962d17b64207, type: 3}
-  - {fileID: 2137494065, guid: f311721b981194c6ba14962d17b64207, type: 3}
-  - {fileID: -1080054068, guid: f311721b981194c6ba14962d17b64207, type: 3}
 --- !u!1 &8804884041790807288
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,12 @@ using UnityEngine;
 public class CraftNPC_Mechanic : CraftNPC
 {
     [Header("")]
+    [SerializeField] private Sprite _toolBoxSprite;
     [SerializeField] private GameObject _toolBox;
+
+
+    [Header("")]
+    [SerializeField] private ActionSelector_Data[] _actionDatas;
 
     private ActionSelector _droppedToolBox;
 
@@ -113,7 +118,7 @@ public class CraftNPC_Mechanic : CraftNPC
     }
 
 
-    // Basic Actions
+    // Tool Box
     private void Drop_ToolBox()
     {
         if (_droppedToolBox != null) return;
@@ -127,13 +132,12 @@ public class CraftNPC_Mechanic : CraftNPC
         drop.transform.SetParent(main.otherFile);
 
         _droppedToolBox = drop.GetComponent<ActionSelector>();
+        _droppedToolBox.sr.sprite = _toolBoxSprite;
 
-        // subscriptions
-        _droppedToolBox.Subscribe_Action(Upgrade_MoveSpeed);
-        _droppedToolBox.Subscribe_Action(Upgrade_InteractRange);
-        _droppedToolBox.Subscribe_Action(Upgrade_StorageSpace);
-
-        _droppedToolBox.OnActionToggle += Toggle_ActionBubble;
+        foreach (ActionSelector_Data data in _actionDatas)
+        {
+            _droppedToolBox.Add_ActionData(data);
+        }
     }
 
 
@@ -264,6 +268,7 @@ public class CraftNPC_Mechanic : CraftNPC
     }
 
 
+    // Purchase
     private int Purchase_Price()
     {
         if (_droppedToolBox != null) return 0;
@@ -328,8 +333,8 @@ public class CraftNPC_Mechanic : CraftNPC
     }
 
 
-    // Purchase Upgrades
-    private void Upgrade_InteractRange()
+    // ActionSelector_Data
+    public void Upgrade_InteractRange()
     {
         Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
         Vector2 currentRange = vehicle.interactArea.size;
@@ -354,7 +359,7 @@ public class CraftNPC_Mechanic : CraftNPC
     }
 
 
-    private void Upgrade_MoveSpeed()
+    public void Upgrade_MoveSpeed()
     {
         VehicleMovement_Controller vehicle = Main_Controller.instance.currentVehicle.movement;
 
@@ -389,7 +394,7 @@ public class CraftNPC_Mechanic : CraftNPC
         _recentMenuNum = vehicle.currentMenuNum;
     }
 
-    private void Upgrade_StorageSpace()
+    public void Upgrade_StorageSpace()
     {
         VehicleMenu_Controller menuController = Main_Controller.instance.currentVehicle.menu;
         ItemSlots_Controller slotsController = menuController.slotsController;
@@ -404,12 +409,6 @@ public class CraftNPC_Mechanic : CraftNPC
         }
 
         slotsController.AddNewPage_ItemSlotDatas(slotDatas);
-
-        /*
-        nuggetBar.Set_Amount(0);
-        nuggetBar.Toggle_BarColor(false);
-        nuggetBar.Load();
-        */
 
         if (recentMenu.activeSelf == false) return;
 

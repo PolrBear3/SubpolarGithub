@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ActionSelector : MonoBehaviour
 {
+    private SpriteRenderer _sr;
+    public SpriteRenderer sr => _sr;
+
+
     [Header("")]
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
@@ -19,22 +24,21 @@ public class ActionSelector : MonoBehaviour
     [SerializeField] private SpriteRenderer _indicatorIcon;
     public SpriteRenderer indicatorIcon => _indicatorIcon;
 
-    [Header("")]
-    [SerializeField] private Sprite[] _indicatorSprites;
 
-
-    private Action OnAction;
-    public Action OnActionToggle;
-
-    private int _subscriptionCount;
+    private bool _isSelecting;
 
     private int _currentIndex;
     public int currentIndex => _currentIndex;
 
-    private bool _isSelecting;
+    private List<ActionSelector_Data> _currentDatas = new();
 
 
     // MonoBehaviour
+    private void Awake()
+    {
+        _sr = gameObject.GetComponent<SpriteRenderer>();
+    }
+
     private void Start()
     {
         Toggle_CurrentAction();
@@ -55,7 +59,7 @@ public class ActionSelector : MonoBehaviour
     // Indication
     private void Toggle_CurrentAction()
     {
-        if (_detection.player == null || _subscriptionCount <= 0 || _indicatorSprites.Length <= 0)
+        if (_detection.player == null || _currentDatas.Count <= 0)
         {
             _isSelecting = false;
 
@@ -65,33 +69,26 @@ public class ActionSelector : MonoBehaviour
 
         Update_IndicatorSprite();
         _indicatorObject.SetActive(true);
-
-        OnActionToggle?.Invoke();
     }
 
     private void Update_IndicatorSprite()
     {
-        if (_subscriptionCount <= 0 || _indicatorSprites.Length <= 0) return;
+        if (_currentDatas.Count <= 0) return;
 
-        int spriteNum = Mathf.Clamp(_currentIndex, 0, _indicatorSprites.Length - 1);
-        _indicatorIcon.sprite = _indicatorSprites[spriteNum];
+        _indicatorIcon.sprite = _currentDatas[_currentIndex].actionSprite;
     }
 
 
     // Control
     public void Reset_Subscriptions()
     {
-        OnAction = null;
-
-        _subscriptionCount = 0;
+        _currentDatas.Clear();
         _currentIndex = 0;
     }
 
-    public void Subscribe_Action(Action subscribeAction)
+    public void Add_ActionData(ActionSelector_Data data)
     {
-        OnAction += subscribeAction;
-
-        _subscriptionCount++;
+        _currentDatas.Add(data);
     }
 
 
@@ -105,7 +102,7 @@ public class ActionSelector : MonoBehaviour
             return;
         }
 
-        _currentIndex = (_currentIndex + 1) % _subscriptionCount;
+        _currentIndex = (_currentIndex + 1) % _currentDatas.Count;
         Update_IndicatorSprite();
     }
 
@@ -113,13 +110,7 @@ public class ActionSelector : MonoBehaviour
     // Invoke
     public void Invoke_Action(int actionIndex)
     {
-        if (OnAction == null) return;
-
-        Delegate[] allActions = OnAction.GetInvocationList();
-
-        if (actionIndex < 0 || actionIndex >= allActions.Length) return;
-
-        allActions[actionIndex].DynamicInvoke();
+        _currentDatas[actionIndex].actionEvent?.Invoke();
     }
 
     public void Invoke_Action()

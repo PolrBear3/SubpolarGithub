@@ -351,7 +351,57 @@ MonoBehaviour:
   _statusIcon: {fileID: 6953078712826172495}
   _defalutPrice: 200
   _upgradeTimeValue: 5
+  _toolBoxSprite: {fileID: 1463506893, guid: 8c99d34896b414ee9859f23993f0f708, type: 3}
   _toolBox: {fileID: 6136533172003908199, guid: f39e05fa0630541b3bdadabdb50f92e2, type: 3}
+  _actionDatas:
+  - _actionSprite: {fileID: 1924485764, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1884535810237009280}
+          m_TargetAssemblyTypeName: CraftNPC_Mechanic, Assembly-CSharp
+          m_MethodName: Upgrade_MoveSpeed
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _actionSprite: {fileID: 2137494065, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1884535810237009280}
+          m_TargetAssemblyTypeName: CraftNPC_Mechanic, Assembly-CSharp
+          m_MethodName: Upgrade_InteractRange
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _actionSprite: {fileID: -1080054068, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1884535810237009280}
+          m_TargetAssemblyTypeName: CraftNPC_Mechanic, Assembly-CSharp
+          m_MethodName: Upgrade_StorageSpace
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   _interactRanges:
   - {x: 5, y: 3}
   - {x: 6, y: 3}
