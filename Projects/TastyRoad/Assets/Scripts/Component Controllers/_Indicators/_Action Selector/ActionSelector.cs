@@ -93,6 +93,8 @@ public class ActionSelector : MonoBehaviour
     public void Add_ActionData(ActionSelector_Data data)
     {
         _currentDatas.Add(data);
+
+        Update_IndicatorSprite();
     }
 
 

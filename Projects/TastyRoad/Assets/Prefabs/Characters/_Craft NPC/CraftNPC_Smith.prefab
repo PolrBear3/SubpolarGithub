@@ -364,7 +364,26 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  _modifyStations: []
+  - _actionSprite: {fileID: 630336444, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8048547352410133038}
+          m_TargetAssemblyTypeName: CraftNPC_Smith, Assembly-CSharp
+          m_MethodName: Modify_Station
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _modifyStations:
+  - {fileID: 11400000, guid: c32ff8ce5146c45c79af7acf780abf86, type: 2}
+  - {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
+  - {fileID: 11400000, guid: 4340d4a463bc04e91bf54de1f75d2888, type: 2}
 --- !u!1 &6097925633981410829
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,6 +38,8 @@ public class CraftNPC_Smith : CraftNPC
         ActionBubble_Interactable interactable = npcController.interactable;
 
         interactable.OnIInteract += Toggle_PurchasePrice;
+        interactable.OnIInteract += Update_ActionBubble;
+
         interactable.OnAction1Input += Purchase;
     }
 
@@ -49,6 +51,8 @@ public class CraftNPC_Smith : CraftNPC
         ActionBubble_Interactable interactable = npcController.interactable;
 
         interactable.OnIInteract -= Toggle_PurchasePrice;
+        interactable.OnIInteract -= Update_ActionBubble;
+
         interactable.OnAction1Input -= Purchase;
     }
 
@@ -78,6 +82,8 @@ public class CraftNPC_Smith : CraftNPC
         }
 
         bubble.Set_Bubble(_setTable.indicatorIcon.sprite, null);
+
+        if (bubble.bubbleOn == false) return;
 
         // dialog.Update_Dialog(_setTable.currentIndex); //
     }
@@ -154,14 +160,14 @@ public class CraftNPC_Smith : CraftNPC
         drop.transform.SetParent(main.otherFile);
 
         _setTable = drop.GetComponent<ActionSelector>();
-        _setTable.interactable.OnInteract += Update_ActionBubble;
-
         _setTable.sr.sprite = _smithTableSprite;
 
         foreach (ActionSelector_Data data in _actionDatas)
         {
             _setTable.Add_ActionData(data);
         }
+
+        Update_ActionBubble();
     }
 
 
@@ -190,13 +196,9 @@ public class CraftNPC_Smith : CraftNPC
 
         // collect action selector
         GameObject currentToolBox = _setTable.gameObject;
-        _setTable.interactable.OnInteract += Update_ActionBubble;
 
         _setTable = null;
         Destroy(currentToolBox);
-
-        // reset data
-        Set_Data(new(defaultPrice));
 
         Update_ActionBubble();
 
@@ -226,16 +228,81 @@ public class CraftNPC_Smith : CraftNPC
 
     public void Increase_StationDurability()
     {
-        for (int i = 0; i < Surrounding_Stations().Count; i++)
+        List<Station_Controller> surroundingStations = Surrounding_Stations();
+
+        if (surroundingStations.Count <= 0)
+        {
+            Set_Data(new(true));
+            Toggle_PayIcon();
+
+            return;
+        }
+
+        bool increased = false;
+
+        for (int i = 0; i < surroundingStations.Count; i++)
         {
             StationData data = Surrounding_Stations()[i].data;
             Station_ScrObj station = Surrounding_Stations()[i].stationScrObj;
 
-            int updateAmount = station.durability - data.durability;
-            if (updateAmount <= 0) continue;
+            if (data.durability >= station.durability) continue;
 
-            data.Update_Amount(updateAmount);
+            data.Set_Durability(station.durability);
             Surrounding_Stations()[i].maintenance.Update_DurabilityBreak();
+
+            increased = true;
         }
+
+        if (increased == false)
+        {
+            Set_Data(new(true));
+            Toggle_PayIcon();
+
+            return;
+        }
+
+        Set_Data(new(defaultPrice));
+        Toggle_PayIcon();
+    }
+
+    public void Modify_Station()
+    {
+        List<Station_Controller> modifyStations = Surrounding_Stations();
+
+        for (int i = modifyStations.Count - 1; i >= 0; i--)
+        {
+            if (modifyStations[i].maintenance != null) continue;
+            modifyStations.RemoveAt(i);
+        }
+
+        if (modifyStations.Count <= 0)
+        {
+            Set_Data(new(true));
+            Toggle_PayIcon();
+
+            return;
+        }
+
+        // destroy
+        int randIndex = UnityEngine.Random.Range(0, modifyStations.Count);
+
+        Station_Controller modifyStation = modifyStations[randIndex];
+        StationData stationData = new(modifyStation.data);
+
+        modifyStation.Destroy_Station();
+
+        // modify
+        int newRandIndex = UnityEngine.Random.Range(0, _modifyStations.Length);
+
+        Station_ScrObj newStationScrObj = _modifyStations[newRandIndex];
+        Station_Controller newStation = Main_Controller.instance.Spawn_Station(newStationScrObj, stationData.position);
+
+        newStation.Set_Data(new(newStationScrObj, stationData.position));
+        newStation.data.Set_Durability(stationData.durability);
+
+        newStation.movement.Load_Position();
+
+        Set_Data(new(defaultPrice));
+        Toggle_PayIcon();
     }
 }
