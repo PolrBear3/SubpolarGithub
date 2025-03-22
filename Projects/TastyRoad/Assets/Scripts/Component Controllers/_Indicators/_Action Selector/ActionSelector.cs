@@ -16,7 +16,10 @@ public class ActionSelector : MonoBehaviour
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
 
     [SerializeField] private Detection_Controller _detection;
+
     [SerializeField] private IInteractable_Controller _interactable;
+    public IInteractable_Controller interactable => _interactable;
+
 
     [Header("")]
     [SerializeField] private GameObject _indicatorObject;
@@ -31,6 +34,7 @@ public class ActionSelector : MonoBehaviour
     public int currentIndex => _currentIndex;
 
     private List<ActionSelector_Data> _currentDatas = new();
+    public List<ActionSelector_Data> currentDatas => _currentDatas;
 
 
     // MonoBehaviour

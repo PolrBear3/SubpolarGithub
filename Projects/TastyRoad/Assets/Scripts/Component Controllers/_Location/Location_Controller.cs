@@ -43,7 +43,7 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-    // Gets
+    // Position Checks
     /// <returns>
     /// True if checkPosition is in restricted range and position claimed, False if not
     /// </returns>
@@ -61,6 +61,7 @@ public class Location_Controller : MonoBehaviour
     }
 
 
+    // Positions
     public List<Vector2> All_SpawnPositions()
     {
         Main_Controller main = Main_Controller.instance;
@@ -80,6 +81,32 @@ public class Location_Controller : MonoBehaviour
         }
 
         return spawnPositions;
+    }
+
+    /// <summary>
+    /// Returns a random, non claimed, spawn position
+    /// </summary>
+    public Vector2 Random_SpawnPosition()
+    {
+        Main_Controller main = Main_Controller.instance;
+
+        List<Vector2> spawnPositions = All_SpawnPositions();
+
+        while (spawnPositions.Count > 0)
+        {
+            int randIndex = UnityEngine.Random.Range(0, spawnPositions.Count);
+            Vector2 randPos = spawnPositions[randIndex];
+
+            if (main.Position_Claimed(randPos))
+            {
+                spawnPositions.RemoveAt(randIndex);
+                continue;
+            }
+
+            return randPos;
+        }
+
+        return Vector2.zero;
     }
 
 

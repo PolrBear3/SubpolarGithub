@@ -14,6 +14,7 @@ public class CraftNPC : MonoBehaviour
     public NPC_Controller npcController => _npcController;
 
     [SerializeField] private DialogTrigger _dialog;
+    public DialogTrigger dialog => _dialog;
 
 
     [Header("")]
