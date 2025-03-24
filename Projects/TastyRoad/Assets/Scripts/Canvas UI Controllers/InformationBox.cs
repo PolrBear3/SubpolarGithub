@@ -58,7 +58,9 @@ public class InformationBox : MonoBehaviour
     }
     public void Flip_toDefault()
     {
-        while (_rect.anchoredPosition.x < 0) Flip();
+        if (_flipped == false) return;
+
+        Flip();
     }
 
 

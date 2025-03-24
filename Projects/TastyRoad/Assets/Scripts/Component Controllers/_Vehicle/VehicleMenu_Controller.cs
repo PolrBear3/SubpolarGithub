@@ -118,8 +118,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
             saveLoad.Save_Data();
         }
-
-        ES3.Save("VehicleMenu_Controller/_currentMenuNum", _currentMenuNum);
     }
 
     public void Load_Data()
@@ -129,8 +127,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
             if (!_menus[i].TryGetComponent(out ISaveLoadable saveLoad)) continue;
             saveLoad.Load_Data();
         }
-
-        _currentMenuNum = ES3.Load("VehicleMenu_Controller/_currentMenuNum", _currentMenuNum);
     }
 
 
@@ -184,7 +180,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         }
 
         OnCursor_Input?.Invoke();
-        InfoBox_FlipUpdate(prevSlotNum);
+        FlipUpdate_InfoBox(prevSlotNum);
     }
 
 
@@ -376,6 +372,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         // event
         On_MenuToggle?.Invoke(true);
+
+        // info box
+        _infoBox.Flip_toDefault();
     }
 
 
@@ -389,9 +388,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         controller.SlotsAssign_Update();
     }
 
-
-    // UI Control
-    private void InfoBox_FlipUpdate(int prevSlotNumX)
+    private void FlipUpdate_InfoBox(int prevSlotNumX)
     {
         ItemSlot currentSlot = _slotsController.cursor.currentSlot;
         float flipUpdateSlotX = _flipUpdateSlot.gridNum.x;
@@ -405,6 +402,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
+    // UI Control
     public void Update_PanelSprite(Sprite updateSprite)
     {
         if (updateSprite == null)
@@ -416,12 +414,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _menuPanel.sprite = updateSprite;
     }
 
-
     public void Update_MenuCursorSprite(Sprite updateSprite)
     {
         _menuCursorSprites[currentMenuNum] = updateSprite;
         _slotsController.cursor.cursorImage.sprite = updateSprite;
     }
+
 
     public void Update_PageDots(int pageAmount)
     {
