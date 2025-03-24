@@ -58,6 +58,16 @@ public class LocationData
     }
 
 
+    // Area Datas
+    public bool Within_SpawnRange(Vector2 position)
+    {
+        bool withinX = position.x >= spawnRangeX.x && position.x <= spawnRangeX.y;
+        bool withinY = position.y >= spawnRangeY.x && position.y <= spawnRangeY.y;
+
+        return withinX && withinY;
+    }
+
+
     // Food and Station Datas
     public Food_ScrObj WeightRandom_Food(List<FoodWeight_Data> data)
     {

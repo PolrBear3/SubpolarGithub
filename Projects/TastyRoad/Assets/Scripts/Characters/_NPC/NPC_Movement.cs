@@ -113,16 +113,7 @@ public class NPC_Movement : MonoBehaviour
     }
 
 
-    // Control
-    /// <summary>
-    /// updates the current roam area variable
-    /// </summary>
-    public void Update_RoamArea(SpriteRenderer assignArea)
-    {
-        _currentRoamArea = assignArea;
-    }
-
-
+    // Position
     /// <summary>
     /// Moves to assign position
     /// </summary>
@@ -137,9 +128,10 @@ public class NPC_Movement : MonoBehaviour
     /// <summary>
     /// Attempts to find path cleared position
     /// </summary>
-    public void Assign_TargetPosition(SpriteRenderer searchArea)
+    private void Assign_TargetPosition(SpriteRenderer searchArea, bool withinSpawnRange)
     {
         Main_Controller main = Main_Controller.instance;
+        LocationData currentLocation = main.currentLocation.data;
 
         int attemptCount = _searchAttempts;
         Vector2 targetPosition;
@@ -147,37 +139,35 @@ public class NPC_Movement : MonoBehaviour
         do
         {
             targetPosition = main.Random_AreaPoint(searchArea);
-            bool stationPlaced = main.Is_StationArea(targetPosition);
 
-            if (stationPlaced == false)
+            if (withinSpawnRange && currentLocation.Within_SpawnRange(targetPosition) == false)
             {
-                Assign_TargetPosition(targetPosition);
-                return;
+                attemptCount--;
+                continue;
             }
-            attemptCount--;
+
+            if (main.Is_StationArea(targetPosition))
+            {
+                attemptCount--;
+                continue;
+            }
+
+            Assign_TargetPosition(targetPosition);
+            return;
         }
         while (attemptCount > 0);
 
         Leave(Random_IntervalTime());
     }
 
+
+    // Free Roam
     /// <summary>
-    /// Moves to assign position, after roamReturnTime pass by, returns back to Free roam
+    /// updates the current roam area variable
     /// </summary>
-    public void Assign_TargetPosition(Vector2 assignPosition, float roamReturnTime, SpriteRenderer roamReturnArea)
+    public void Update_RoamArea(SpriteRenderer assignArea)
     {
-        _moveCoroutine = StartCoroutine(Assign_TargetPosition_Coroutine(assignPosition, roamReturnTime, roamReturnArea));
-    }
-    private IEnumerator Assign_TargetPosition_Coroutine(Vector2 assignPosition, float roamReturnTime, SpriteRenderer roamReturnArea)
-    {
-        Assign_TargetPosition(assignPosition);
-
-        while (At_TargetPosition() == false)
-        {
-            yield return null;
-        }
-
-        Free_Roam(roamReturnArea, roamReturnTime);
+        _currentRoamArea = assignArea;
     }
 
 
@@ -197,6 +187,7 @@ public class NPC_Movement : MonoBehaviour
         Free_Roam(roamArea, startDelayTime);
     }
 
+
     public void Free_Roam(SpriteRenderer roamArea, float startDelayTime)
     {
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
@@ -215,7 +206,7 @@ public class NPC_Movement : MonoBehaviour
             yield break;
         }
 
-        Assign_TargetPosition(roamArea);
+        Assign_TargetPosition(roamArea, false);
 
         // repeat until free roam deactivates
         while (_roamActive == true)
@@ -229,12 +220,52 @@ public class NPC_Movement : MonoBehaviour
             yield return new WaitForSeconds(Random_IntervalTime());
             if (_roamActive == false) break;
 
-            Assign_TargetPosition(roamArea);
+            Assign_TargetPosition(roamArea, false);
         }
 
         _moveCoroutine = null;
         yield break;
     }
+
+    public void SpawnRange_FreeRoam(SpriteRenderer roamArea, float startDelayTime)
+    {
+        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+
+        _roamActive = true;
+        _currentRoamArea = roamArea;
+        _moveCoroutine = StartCoroutine(SpawnRange_FreeRoam_Coroutine(roamArea, startDelayTime));
+    }
+    private IEnumerator SpawnRange_FreeRoam_Coroutine(SpriteRenderer roamArea, float startDelayTime)
+    {
+        yield return new WaitForSeconds(startDelayTime);
+
+        if (_roamActive == false)
+        {
+            _moveCoroutine = null;
+            yield break;
+        }
+
+        Assign_TargetPosition(roamArea, true);
+
+        // repeat until free roam deactivates
+        while (_roamActive == true)
+        {
+            // wait until NPC reaches target position
+            while (At_TargetPosition() == false)
+            {
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(Random_IntervalTime());
+            if (_roamActive == false) break;
+
+            Assign_TargetPosition(roamArea, true);
+        }
+
+        _moveCoroutine = null;
+        yield break;
+    }
+
 
     public void Stop_FreeRoam()
     {
@@ -245,6 +276,7 @@ public class NPC_Movement : MonoBehaviour
     }
 
 
+    // Remove
     public void Leave(float startDelayTime)
     {
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
