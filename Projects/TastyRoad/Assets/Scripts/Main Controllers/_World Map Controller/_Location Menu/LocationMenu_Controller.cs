@@ -146,11 +146,11 @@ public class LocationMenu_Controller : MonoBehaviour
         StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
 
-        int oilAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj(79025));
+        int oilAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj("Oil Drum"));
         int requireOil = Mathf.Abs(centerNum - _hoverTileNum);
 
         string requireString = requireOil + " <sprite=61> required\n";
-        string currentString = "you have " + oilAmount + " <sprite=61> in <sprite=57> menu";
+        string currentString = "you have " + oilAmount + " <sprite=61> in <sprite=70> menu";
 
         _infoBox.Update_InfoText(requireString + currentString);
         _infoBox.Update_RectLayout();

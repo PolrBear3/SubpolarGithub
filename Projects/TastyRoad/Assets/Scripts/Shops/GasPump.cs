@@ -13,6 +13,8 @@ public class GasPump : MonoBehaviour
     [SerializeField] private Clock_Timer _fillClock;
     [SerializeField] private AmountBar _fillBar;
 
+    [SerializeField] private GameObject _spawnReadyIcon;
+
     [Header("")]
     [SerializeField] private Station_ScrObj _oilDrum;
     [SerializeField] private GameObject _spawnPoint;
@@ -27,6 +29,8 @@ public class GasPump : MonoBehaviour
     // UnityEngine
     private void Start()
     {
+        _spawnReadyIcon.SetActive(false);
+
         Toggle_SpawnPoint();
 
         // Subscriptions
@@ -108,6 +112,8 @@ public class GasPump : MonoBehaviour
         _fillBar.Set_Amount(0);
         _fillBar.Load();
 
+        _spawnReadyIcon.SetActive(false);
+
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
@@ -139,6 +145,8 @@ public class GasPump : MonoBehaviour
 
         _fillClock.Toggle_RunAnimation(false);
         _fillBar.Toggle(false);
+
+        _spawnReadyIcon.SetActive(true);
 
         _coroutine = null;
         yield break;

@@ -69,7 +69,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638747463424744648
+  lastModified: 638785073718762534
   FileSizes:
   - Name: Desktop
     Value: 109152
@@ -113,7 +113,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638747458292363978
+  lastModified: 638785073714508061
   FileSizes:
   - Name: Desktop
     Value: 1682
@@ -145,33 +145,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-7245522603386347376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Interaction/Nugget_pay
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Interaction/Nugget_pay
-  Guid:
-    Data1: 1142844002
-    Data2: 1318623512
-    Data3: 349587073
-    Data4: -1502948816
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 369
 --- !u!114 &-6867150284731850622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +215,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638747233901261518
+  lastModified: 638785073719076969
   FileSizes:
   - Name: Desktop
     Value: 17472
@@ -301,6 +274,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 577
+--- !u!114 &-1923747360536009667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Interaction/Nugget_pay
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Interaction/Nugget_pay
+  Guid:
+    Data1: 1142844002
+    Data2: 1318623512
+    Data3: 349587073
+    Data4: -1502948816
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 369
 --- !u!114 &-1847966958500974043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,33 +355,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &-116478209982121703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Basic SFX/Interaction/Nugget_insertPay
-  m_EditorClassIdentifier: 
-  Path: event:/Basic SFX/Interaction/Nugget_insertPay
-  Guid:
-    Data1: -697551012
-    Data2: 1078128834
-    Data3: -1591251052
-    Data4: -1705396606
-  Banks:
-  - {fileID: -9098409597259461469}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 516
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,14 +385,14 @@ MonoBehaviour:
   - {fileID: -6624307689126360385}
   - {fileID: -9113675709811392843}
   - {fileID: 9149461416140641624}
-  - {fileID: -116478209982121703}
-  - {fileID: -7245522603386347376}
+  - {fileID: 5506497794854222378}
+  - {fileID: -1923747360536009667}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638747463424744648
+  cacheTime: 638785073719076969
   cacheVersion: 131618
 --- !u!114 &1291012834966449344
 MonoBehaviour:
@@ -436,7 +409,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638747458292353911
+  lastModified: 638785073714496672
   FileSizes:
   - Name: Desktop
     Value: 1260
@@ -468,6 +441,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &5506497794854222378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Interaction/Nugget_insertPay
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Interaction/Nugget_insertPay
+  Guid:
+    Data1: -697551012
+    Data2: 1078128834
+    Data3: -1591251052
+    Data4: -1705396606
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 516
 --- !u!114 &6924463659752812726
 MonoBehaviour:
   m_ObjectHideFlags: 0

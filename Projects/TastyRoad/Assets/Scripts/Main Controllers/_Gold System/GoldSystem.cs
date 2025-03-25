@@ -37,11 +37,13 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField][Range(0, 10)] private float _durationTime;
+    [SerializeField][Range(0, 10)] private float _shineSpeed;
 
 
     private GoldSystem_Data _data;
 
     private Coroutine _coroutine;
+    private Coroutine _iconCoroutine;
 
 
     // UnityEngine
@@ -156,6 +158,28 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
         });
     }
 
+    private void Shine_Icon()
+    {
+        if (_iconCoroutine != null) return;
+
+        _iconCoroutine = StartCoroutine(Shine_Icon_Coroutine());
+    }
+    private IEnumerator Shine_Icon_Coroutine()
+    {
+        float locationValue = 0.5f;
+
+        while (locationValue < 1)
+        {
+            locationValue += Time.deltaTime * _shineSpeed;
+            _iconImage.material.SetFloat("_ShineLocation", locationValue);
+
+            yield return null;
+        }
+
+        _iconCoroutine = null;
+        yield break;
+    }
+
 
     // Calculation
     public bool Update_CurrentAmount(int updateValue)
@@ -186,6 +210,7 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
         _data.Set_GoldAmount(calculateValue);
 
         Shake_Icon();
+        Shine_Icon();
 
         return true;
     }
