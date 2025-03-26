@@ -34,6 +34,13 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
     [Header("")]
+    [SerializeField] private GameObject _pageArrowDirections;
+    public GameObject pageArrowDirections => _pageArrowDirections;
+
+    [SerializeField] private Image[] _pageArrows;
+
+
+    [Header("")]
     [SerializeField] private Image[] _pageDots;
     [SerializeField] private Sprite[] _dotSprites;
 
@@ -101,6 +108,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _playerInput.actions["Select"].canceled += ctx => OnPressEnd();
 
         _defaultPanelSprite = _menuPanel.sprite;
+        _pageArrowDirections.SetActive(false);
 
         Start_AllMenus();
 
@@ -178,6 +186,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         {
             cursor.Navigate_toSlot(nextSlot);
         }
+
+        Update_PageArrows();
 
         OnCursor_Input?.Invoke();
         FlipUpdate_InfoBox(prevSlotNum);
@@ -370,6 +380,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         ItemSlot firstSlot = _slotsController.ItemSlot(Vector2.zero);
         _slotsController.cursor.Navigate_toSlot(firstSlot);
 
+        Update_PageArrows();
+
         // event
         On_MenuToggle?.Invoke(true);
 
@@ -457,5 +469,28 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _pageDots[currentPageNum].sprite = _dotSprites[2];
 
         Update_PageDots(pageAmount);
+    }
+
+    private void Update_PageArrows()
+    {
+        if (_pageArrowDirections.activeSelf == false) return;
+
+        ItemSlot cursorSlot = _slotsController.cursor.currentSlot;
+        List<ItemSlot> itemSlots = _slotsController.itemSlots;
+
+        foreach (Image arrow in _pageArrows)
+        {
+            arrow.gameObject.SetActive(false);
+        }
+
+        if (cursorSlot == itemSlots[0])
+        {
+            _pageArrows[0].gameObject.SetActive(true);
+            return;
+        }
+
+        if (cursorSlot != itemSlots[itemSlots.Count - 1]) return;
+
+        _pageArrows[1].gameObject.SetActive(true);
     }
 }

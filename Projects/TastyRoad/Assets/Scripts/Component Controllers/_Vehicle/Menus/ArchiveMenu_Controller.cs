@@ -38,10 +38,12 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
+        _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+
         _controller.Update_PanelSprite(_panelSprite);
 
-        _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
+        _controller.pageArrowDirections.SetActive(_currentDatas.Count > 1);
 
         Update_CurrentDatas();
 
