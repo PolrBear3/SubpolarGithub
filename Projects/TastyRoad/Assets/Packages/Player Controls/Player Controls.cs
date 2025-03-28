@@ -509,6 +509,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Screen"",
+            ""bindingGroup"": ""Screen"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Touchscreen>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -773,6 +784,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (m_PCSchemeIndex == -1) m_PCSchemeIndex = asset.FindControlSchemeIndex("PC");
             return asset.controlSchemes[m_PCSchemeIndex];
+        }
+    }
+    private int m_ScreenSchemeIndex = -1;
+    public InputControlScheme ScreenScheme
+    {
+        get
+        {
+            if (m_ScreenSchemeIndex == -1) m_ScreenSchemeIndex = asset.FindControlSchemeIndex("Screen");
+            return asset.controlSchemes[m_ScreenSchemeIndex];
         }
     }
     public interface IInGameActions
