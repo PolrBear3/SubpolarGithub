@@ -54,14 +54,14 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
         // subscription
         detection.ExitEvent += Transparency_Update;
-        OnAction1Input += Open_VehicleMenu;
+        OnAction1 += Open_VehicleMenu;
     }
 
     private void OnDestroy()
     {
         // subscription
         detection.ExitEvent += Transparency_Update;
-        OnAction1Input -= Open_VehicleMenu;
+        OnAction1 -= Open_VehicleMenu;
     }
 
     private void Update()

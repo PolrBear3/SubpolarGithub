@@ -121,7 +121,7 @@ public class FoodBox : MonoBehaviour, IInteractable
         _controller.Food_Icon().Set_CurrentData(null);
 
         // station control
-        Main_Controller main = _controller.mainController;
+        Main_Controller main = Main_Controller.instance;
 
         main.UnTrack_CurrentStation(_controller);
         main.UnClaim_Position(transform.position);

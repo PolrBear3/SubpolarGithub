@@ -140,7 +140,7 @@ public class CollectJar : MonoBehaviour
     // NPC
     private List<NPC_Controller> PayAvailable_NPCs()
     {
-        List<NPC_Controller> allNPCs = _controller.mainController.All_NPCs();
+        List<NPC_Controller> allNPCs = Main_Controller.instance.All_NPCs();
         List<NPC_Controller> availableNPCs = new();
 
         for (int i = 0; i < allNPCs.Count; i++)

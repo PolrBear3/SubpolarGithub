@@ -39,8 +39,8 @@ public class NPC_GiftSystem : MonoBehaviour
         _coolTimeBar.Toggle(true);
 
         // subscriptions
-        _controller.interactable.OnHoldIInteract += ToggleBar_Duration;
-        _controller.interactable.OnHoldIInteract += Gift;
+        _controller.interactable.OnHoldInteract += ToggleBar_Duration;
+        _controller.interactable.OnHoldInteract += Gift;
 
         GlobalTime_Controller.instance.OnTimeTik += Update_CoolTime;
     }
@@ -48,8 +48,8 @@ public class NPC_GiftSystem : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
-        _controller.interactable.OnHoldIInteract -= ToggleBar_Duration;
-        _controller.interactable.OnHoldIInteract -= Gift;
+        _controller.interactable.OnHoldInteract -= ToggleBar_Duration;
+        _controller.interactable.OnHoldInteract -= Gift;
 
         GlobalTime_Controller.instance.OnTimeTik -= Update_CoolTime;
     }

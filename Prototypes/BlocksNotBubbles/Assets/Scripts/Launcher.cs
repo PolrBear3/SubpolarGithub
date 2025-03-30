@@ -63,6 +63,8 @@ public class Launcher : MonoBehaviour
     private void OnInteract()
     {
         Launch_Block();
+
+        Debug.Log(_playerInput.currentControlScheme);
     }
 
 

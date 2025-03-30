@@ -60,7 +60,7 @@ public class CraftNPC : MonoBehaviour
         // subscriptions
         ActionBubble_Interactable interactable = _npcController.interactable;
 
-        interactable.OnHoldIInteract += Pay;
+        interactable.OnHoldInteract += Pay;
     }
 
     public void OnDestroy()
@@ -68,7 +68,7 @@ public class CraftNPC : MonoBehaviour
         // subscriptions
         ActionBubble_Interactable interactable = _npcController.interactable;
 
-        interactable.OnHoldIInteract -= Pay;
+        interactable.OnHoldInteract -= Pay;
     }
 
 

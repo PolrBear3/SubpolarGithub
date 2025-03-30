@@ -11,12 +11,6 @@ public interface IInteractable
     void UnInteract();
 }
 
-public interface ISignal
-{
-    void Signal();
-}
-
-
 [System.Serializable]
 public struct UnityEvent_Data
 {

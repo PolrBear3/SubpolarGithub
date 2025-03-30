@@ -45,8 +45,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         GlobalTime_Controller.instance.OnTimeTik += Set_FoodOrder;
 
         ActionBubble_Interactable interactable = _controller.interactable;
-        interactable.OnIInteract += Transfer_FoodOrder;
-        interactable.OnIInteract += Collect_Payment;
+        interactable.OnInteract += Transfer_FoodOrder;
+        interactable.OnInteract += Collect_Payment;
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
         giftSystem.OnDurationToggle += Toggle_FoodOrder;
@@ -61,8 +61,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         GlobalTime_Controller.instance.OnTimeTik -= Set_FoodOrder;
 
         ActionBubble_Interactable interactable = _controller.interactable;
-        interactable.OnIInteract -= Transfer_FoodOrder;
-        interactable.OnIInteract -= Collect_Payment;
+        interactable.OnInteract -= Transfer_FoodOrder;
+        interactable.OnInteract -= Collect_Payment;
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
         giftSystem.OnDurationToggle -= Toggle_FoodOrder;

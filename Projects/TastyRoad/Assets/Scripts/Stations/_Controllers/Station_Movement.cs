@@ -6,11 +6,12 @@ using UnityEngine.InputSystem;
 
 public class Station_Movement : MonoBehaviour
 {
+    private Rigidbody2D _rigidBody;
+
     private Station_Controller _stationController;
 
-    private Rigidbody2D _rigidBody;
-    private Vector2 _currentDirection;
 
+    [Header("")]
     [SerializeField] private GameObject _movementArrows;
     public GameObject movementArrows => _movementArrows;
 
@@ -42,26 +43,23 @@ public class Station_Movement : MonoBehaviour
     }
 
 
-    // InputSystem
-    private void OnMovement(InputValue value)
-    {
-        Vector2 input = value.Get<Vector2>();
-        _currentDirection = input;
-    }
-
-
     //
     private void Rigidbody_Update()
     {
-        _rigidBody.velocity = new Vector2(_currentDirection.x * 3f, _currentDirection.y * 3f);
+        Vector2 inputDirection = Input_Controller.instance.inputDirection;
+        float speed = 3f;
+
+        _rigidBody.velocity = new Vector2(inputDirection.x * speed, inputDirection.y * speed);
     }
 
     private void SnapPosition_Update()
     {
         if (_rigidBody.velocity != Vector2.zero) return;
 
-        Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
-        transform.position = Main_Controller.instance.SnapPosition(transform.position, vehicle.interactArea.bounds);
+        Main_Controller main = Main_Controller.instance;
+        Vehicle_Controller vehicle = main.currentVehicle;
+
+        transform.position = main.SnapPosition(transform.position, vehicle.interactArea.bounds);
     }
 
 
@@ -70,13 +68,15 @@ public class Station_Movement : MonoBehaviour
     /// </returns>
     public bool PositionSet_Available()
     {
-        Vector2 snapPosition = Main_Controller.instance.SnapPosition(transform.position);
-        if (_stationController.mainController.Position_Claimed(snapPosition)) return false;
+        Main_Controller main = Main_Controller.instance;
 
-        Location_Controller location = _stationController.mainController.currentLocation;
+        Vector2 snapPosition = main.SnapPosition(transform.position);
+        if (main.Position_Claimed(snapPosition)) return false;
+
+        Location_Controller location = main.currentLocation;
         if (location.Restricted_Position(snapPosition)) return false;
 
-        Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
+        Vehicle_Controller vehicle = main.currentVehicle;
         if (vehicle.Is_InteractArea(transform.position) == false) return false;
 
         return true;
@@ -87,7 +87,7 @@ public class Station_Movement : MonoBehaviour
     /// </summary>
     private void RestrictBlink_Update()
     {
-        Vehicle_Controller vehicle = _stationController.mainController.currentVehicle;
+        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
 
         bool isRestricted = PositionSet_Available() == false;
         bool isInteractArea = vehicle.Is_InteractArea(transform.position);
@@ -103,6 +103,8 @@ public class Station_Movement : MonoBehaviour
     {
         if (PositionSet_Available() == false) return;
 
+        Input_Controller.instance.OnAction1 -= Set_Position;
+
         Load_Position();
         _stationController.data.Update_Position(transform.position);
     }
@@ -113,9 +115,6 @@ public class Station_Movement : MonoBehaviour
     public void Load_Position()
     {
         Vector2 snapPosition = Main_Controller.instance.SnapPosition(transform.position);
-
-        _stationController.Action1_Event -= Set_Position;
-        _stationController.PlayerInput_Activation(false);
 
         _stationController.TransparentBlink_Toggle(false);
         _movementArrows.SetActive(false);
@@ -134,6 +133,6 @@ public class Station_Movement : MonoBehaviour
         Vector2 snapPosition = Main_Controller.instance.SnapPosition(transform.position);
 
         transform.localPosition = snapPosition;
-        _stationController.mainController.Claim_Position(snapPosition);
+        Main_Controller.instance.Claim_Position(snapPosition);
     }
 }

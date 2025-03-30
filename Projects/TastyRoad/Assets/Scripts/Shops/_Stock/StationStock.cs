@@ -49,19 +49,19 @@ public class StationStock : MonoBehaviour
         Toggle_Discount(_stockData.isDiscount);
 
         // subscriptions
-        _interactable.OnIInteract += Toggle_Price;
+        _interactable.OnInteract += Toggle_Price;
 
-        _interactable.OnAction1Input += Purchase;
-        _interactable.OnAction2Input += Toggle_Discount;
+        _interactable.OnAction1 += Purchase;
+        _interactable.OnAction2 += Toggle_Discount;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        _interactable.OnIInteract -= Toggle_Price;
+        _interactable.OnInteract -= Toggle_Price;
 
-        _interactable.OnAction1Input -= Purchase;
-        _interactable.OnAction2Input -= Toggle_Discount;
+        _interactable.OnAction1 -= Purchase;
+        _interactable.OnAction2 -= Toggle_Discount;
     }
 
 

@@ -17,25 +17,21 @@ public class Table : MonoBehaviour, IInteractable
 
     public void Start()
     {
+        _stationController.detection.ExitEvent += UnInteract;
+
         _stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
     }
 
     public void OnDestroy()
     {
-        _stationController.Action1_Event -= Basic_SwapFood;
-        _stationController.Action2_Event -= FoodMerge;
+        _stationController.detection.ExitEvent -= UnInteract;
+
+        Input_Controller input = Input_Controller.instance;
+
+        input.OnAction1 -= Basic_SwapFood;
+        input.OnAction2 -= Merge_Food;
 
         _stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
-    }
-
-
-    // OnTrigger
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (_stationController.movement.enabled) return;
-        if (!collision.TryGetComponent(out Player_Controller player)) return;
-
-        UnInteract();
     }
 
 
@@ -48,6 +44,14 @@ public class Table : MonoBehaviour, IInteractable
             return;
         }
 
+        Action_Bubble bubble = _stationController.ActionBubble();
+
+        if (bubble.bubbleOn)
+        {
+            UnInteract();
+            return;
+        }
+
         FoodData_Controller foodIcon = _stationController.Food_Icon();
         Sprite leftSprite = _stationController.stationScrObj.dialogIcon;
 
@@ -56,12 +60,12 @@ public class Table : MonoBehaviour, IInteractable
             leftSprite = foodIcon.currentData.foodScrObj.sprite;
         }
 
-        Action_Bubble bubble = _stationController.ActionBubble();
         bubble.Update_Bubble(leftSprite, MergedFood().sprite);
 
-        _stationController.PlayerInput_Activation(true);
-        _stationController.Action1_Event += Basic_SwapFood;
-        _stationController.Action2_Event += FoodMerge;
+        Input_Controller input = Input_Controller.instance;
+
+        input.OnAction1 += Basic_SwapFood;
+        input.OnAction2 += Merge_Food;
     }
 
     public void Hold_Interact()
@@ -71,14 +75,16 @@ public class Table : MonoBehaviour, IInteractable
 
     public void UnInteract()
     {
+        if (_stationController.movement.enabled) return;
+
         Action_Bubble bubble = _stationController.ActionBubble();
 
         if (bubble != null) bubble.Toggle(false);
 
-        _stationController.PlayerInput_Activation(false);
+        Input_Controller input = Input_Controller.instance;
 
-        _stationController.Action1_Event -= Basic_SwapFood;
-        _stationController.Action2_Event -= FoodMerge;
+        input.OnAction1 -= Basic_SwapFood;
+        input.OnAction2 -= Merge_Food;
     }
 
 
@@ -120,7 +126,7 @@ public class Table : MonoBehaviour, IInteractable
         return data.Food(ingredientDatas);
     }
 
-    private void FoodMerge()
+    private void Merge_Food()
     {
         Food_ScrObj mergedFood = MergedFood();
 
@@ -145,8 +151,10 @@ public class Table : MonoBehaviour, IInteractable
         stationFoodIcon.Show_Condition();
 
         // unlock if cooked food
-        Data_Controller data = Main_Controller.instance.dataController;
-        ArchiveMenu_Controller menu = _stationController.mainController.currentVehicle.menu.archiveMenu;
+        Main_Controller main = Main_Controller.instance;
+        Data_Controller data = main.dataController;
+
+        ArchiveMenu_Controller menu = main.currentVehicle.menu.archiveMenu;
 
         menu.Unlock_BookmarkToggle(menu.Archive_Food(mergedFood), true);
         menu.Unlock_FoodIngredient(mergedFood, 1);

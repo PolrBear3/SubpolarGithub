@@ -297,7 +297,6 @@ GameObject:
   - component: {fileID: 6689890479669617721}
   - component: {fileID: 620783135722199293}
   - component: {fileID: 6477832995663536682}
-  - component: {fileID: 3558792282057709228}
   - component: {fileID: 8298693645448894692}
   - component: {fileID: 7155682911388194378}
   - component: {fileID: -5017999228258243358}
@@ -488,36 +487,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3558792282057709228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4573784915183013672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 03bf4c7be0a504cacb2e0e4ed805ed58, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: In Game
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &8298693645448894692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,14 +553,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stationAnimator: {fileID: 6477832995663536682}
+  _animController: {fileID: 0}
   _interactable: {fileID: 0}
   _iInteractable: {fileID: 0}
   _detection: {fileID: 8298693645448894692}
   _movement: {fileID: -7032971272813982881}
   _maintenance: {fileID: 4184550447876101353}
-  _stationAnimator: {fileID: 6477832995663536682}
-  _itemDropper: {fileID: 4654003494250900824}
   _stationScrObj: {fileID: 11400000, guid: 2d159bd0995db474498c96e00ccc654a, type: 2}
+  _itemDropper: {fileID: 4654003494250900824}
 --- !u!114 &-7032971272813982881
 MonoBehaviour:
   m_ObjectHideFlags: 0

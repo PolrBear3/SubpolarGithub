@@ -58,11 +58,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         WorldMap_Controller.OnNewLocation += Restock_New;
         GlobalTime_Controller.instance.OnDayTime += Restock_ArchivedStation;
 
-        _interactable.OnIInteract += Cancel_Action;
-        _interactable.OnIInteract += Interact_FacePlayer;
+        _interactable.OnInteract += Cancel_Action;
+        _interactable.OnInteract += Interact_FacePlayer;
 
-        _interactable.OnAction1Input += Dispose_BookMarkedStation;
-        _interactable.OnAction2Input += Build_BookMarkedStations;
+        _interactable.OnAction1 += Dispose_BookMarkedStation;
+        _interactable.OnAction2 += Build_BookMarkedStations;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -80,11 +80,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         WorldMap_Controller.OnNewLocation -= Restock_New;
         GlobalTime_Controller.instance.OnDayTime -= Restock_ArchivedStation;
 
-        _interactable.OnIInteract -= Cancel_Action;
-        _interactable.OnIInteract -= Interact_FacePlayer;
+        _interactable.OnInteract -= Cancel_Action;
+        _interactable.OnInteract -= Interact_FacePlayer;
 
-        _interactable.OnAction1Input -= Dispose_BookMarkedStation;
-        _interactable.OnAction2Input -= Build_BookMarkedStations;
+        _interactable.OnAction1 -= Dispose_BookMarkedStation;
+        _interactable.OnAction2 -= Build_BookMarkedStations;
     }
 
 

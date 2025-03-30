@@ -6,13 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Station_Controller : MonoBehaviour
 {
-    private PlayerInput _playerInput;
-
     private SpriteRenderer _spriteRenderer;
     public SpriteRenderer spriteRenderer => _spriteRenderer;
-
-    private Main_Controller _mainController;
-    public Main_Controller mainController => _mainController;
 
 
     [Header("")]
@@ -57,19 +52,12 @@ public class Station_Controller : MonoBehaviour
     public bool isRoamArea => _isRoamArea;
 
 
-    public Action Action1_Event;
-    public Action Action2_Event;
-
-
     // UnityEngine
     private void Awake()
     {
-        _mainController = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        _playerInput = gameObject.GetComponent<PlayerInput>();
 
-        _mainController.Track_CurrentStation(this);
+        Main_Controller.instance.Track_CurrentStation(this);
     }
 
     private void Start()
@@ -80,18 +68,6 @@ public class Station_Controller : MonoBehaviour
     private void OnDestroy()
     {
         Destroy_Station();
-    }
-
-
-    // InputSystem
-    private void OnAction1()
-    {
-        Action1_Event?.Invoke();
-    }
-
-    private void OnAction2()
-    {
-        Action2_Event?.Invoke();
     }
 
 
@@ -161,16 +137,6 @@ public class Station_Controller : MonoBehaviour
 
 
     // Main Station Controls
-    public void PlayerInput_Activation(bool isEnabled)
-    {
-        _playerInput.enabled = isEnabled;
-
-        if (_interactable == null) return;
-
-        _interactable.LockInteract(isEnabled);
-        _interactable.LockUnInteract(isEnabled);
-    }
-
     public void RoamArea_Toggle(bool toggleOn)
     {
         _isRoamArea = toggleOn;
@@ -179,7 +145,7 @@ public class Station_Controller : MonoBehaviour
 
     public void Destroy_Station()
     {
-        _mainController.UnTrack_CurrentStation(this);
+        Main_Controller.instance.UnTrack_CurrentStation(this);
         Destroy(gameObject);
     }
 }

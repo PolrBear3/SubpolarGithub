@@ -21,13 +21,13 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField][Range(0, 10)] private float _maxMoveSpeed;
     public float maxMoveSpeed => _maxMoveSpeed;
 
-    private float _moveSpeed;
-    public float moveSpeed => _moveSpeed;
 
     private bool _onBoard;
     public bool onBoard => _onBoard;
 
-    private Vector2 _currentDirection;
+    private float _moveSpeed;
+    public float moveSpeed => _moveSpeed;
+
 
     private Vector2 _defaultPosition;
     private Vector2 _recentPosition;
@@ -49,10 +49,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // subscriptions
         WorldMap_Controller.OnNewLocation += Moveto_DefaultPosition;
 
-        _interactable.OnInteractInput += Exit;
-        _interactable.OnAction1Input += Ride;
-
-        _interactable.OnAction2Input += _controller.Open_LocationMenu;
+        _interactable.OnAction1 += Ride;
+        _interactable.OnAction2 += _controller.Open_LocationMenu;
     }
 
     private void OnDestroy()
@@ -60,10 +58,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // subscriptions
         WorldMap_Controller.OnNewLocation -= Moveto_DefaultPosition;
 
-        _interactable.OnInteractInput -= Exit;
-        _interactable.OnAction1Input -= Ride;
-
-        _interactable.OnAction2Input -= _controller.Open_LocationMenu;
+        _interactable.OnAction1 -= Ride;
+        _interactable.OnAction2 -= _controller.Open_LocationMenu;
     }
 
     private void Update()
@@ -75,14 +71,6 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     private void FixedUpdate()
     {
         Movement_Update();
-    }
-
-
-    // InputSystem
-    private void OnMovement(InputValue value)
-    {
-        Vector2 input = value.Get<Vector2>();
-        _currentDirection = input;
     }
 
 
@@ -133,8 +121,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (_onBoard == false) return;
 
-        Vector2 moveDirection = new(_currentDirection.x, _currentDirection.y);
-        _controller.transform.Translate(_moveSpeed * Time.deltaTime * moveDirection);
+        Vector2 currentDirection = Input_Controller.instance.inputDirection;
+        _controller.transform.Translate(_moveSpeed * Time.deltaTime * currentDirection);
     }
 
     public void Update_MovementSpeed(float updateValue)
@@ -185,7 +173,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (_onBoard) return;
 
-        _interactable.OnAction2Input -= _controller.Open_LocationMenu;
+        Input_Controller.instance.OnInteract += Exit;
+        _interactable.OnAction2 -= _controller.Open_LocationMenu;
 
         _interactable.LockUnInteract(true);
         _interactable.bubble.Toggle(false);
@@ -233,7 +222,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         _interactable.LockUnInteract(false);
         _interactable.UnInteract();
 
-        _interactable.OnAction2Input += _controller.Open_LocationMenu;
+        Input_Controller.instance.OnInteract -= Exit;
+        _interactable.OnAction2 += _controller.Open_LocationMenu;
 
         // set vehicle to snap point
         Main_Controller main = Main_Controller.instance;

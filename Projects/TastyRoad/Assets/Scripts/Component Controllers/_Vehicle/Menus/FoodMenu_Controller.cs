@@ -88,7 +88,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         OnDisable();
 
-        _controller.vehicleController.OnAction2Input -= Retrieve_PlayerFood;
+        _controller.vehicleController.OnAction2 -= Retrieve_PlayerFood;
     }
 
 
@@ -118,7 +118,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // IVehicleMenu
     public void Start_Menu()
     {
-        _controller.vehicleController.OnAction2Input += Retrieve_PlayerFood;
+        _controller.vehicleController.OnAction2 += Retrieve_PlayerFood;
     }
 
 

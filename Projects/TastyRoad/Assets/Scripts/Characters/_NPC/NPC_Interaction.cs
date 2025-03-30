@@ -13,16 +13,16 @@ public class NPC_Interaction : MonoBehaviour
     {
         ActionBubble_Interactable interactable = _controller.interactable;
 
-        interactable.OnIInteract += Interact_FacePlayer;
-        interactable.OnHoldIInteract += Interact_FacePlayer;
+        interactable.OnInteract += Interact_FacePlayer;
+        interactable.OnHoldInteract += Interact_FacePlayer;
     }
 
     private void OnDestroy()
     {
         ActionBubble_Interactable interactable = _controller.interactable;
 
-        interactable.OnIInteract -= Interact_FacePlayer;
-        interactable.OnHoldIInteract -= Interact_FacePlayer;
+        interactable.OnInteract -= Interact_FacePlayer;
+        interactable.OnHoldInteract -= Interact_FacePlayer;
     }
 
 

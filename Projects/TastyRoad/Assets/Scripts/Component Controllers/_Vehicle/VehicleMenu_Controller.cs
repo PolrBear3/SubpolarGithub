@@ -319,11 +319,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         OnExit_Input?.Invoke();
 
         VehicleMenu_Toggle(false);
-
-        if (_vehicleController.detection.player == null) return;
-
-        _vehicleController.detection.player.Player_Input().enabled = true;
-        _vehicleController.detection.player.detectionController.Toggle_BoxCollider(true);
+        Main_Controller.instance.Player().Toggle_Controllers(true);
     }
 
 

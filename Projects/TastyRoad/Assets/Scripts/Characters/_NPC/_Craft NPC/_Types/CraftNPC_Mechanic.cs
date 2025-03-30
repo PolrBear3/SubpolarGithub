@@ -44,10 +44,10 @@ public class CraftNPC_Mechanic : CraftNPC
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
-        interactable.OnIInteract += Toggle_ActionBubble;
-        interactable.OnIInteract += Toggle_PurchasePrice;
+        interactable.OnInteract += Toggle_ActionBubble;
+        interactable.OnInteract += Toggle_PurchasePrice;
 
-        interactable.OnAction1Input += Purchase;
+        interactable.OnAction1 += Purchase;
     }
 
     private new void OnDestroy()
@@ -62,10 +62,10 @@ public class CraftNPC_Mechanic : CraftNPC
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
-        interactable.OnIInteract -= Toggle_ActionBubble;
-        interactable.OnIInteract -= Toggle_PurchasePrice;
+        interactable.OnInteract -= Toggle_ActionBubble;
+        interactable.OnInteract -= Toggle_PurchasePrice;
 
-        interactable.OnAction1Input -= Purchase;
+        interactable.OnAction1 -= Purchase;
     }
 
 

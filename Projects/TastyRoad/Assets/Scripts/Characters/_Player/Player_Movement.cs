@@ -16,9 +16,6 @@ public class Player_Movement : MonoBehaviour
     private float _moveSpeed;
     public float moveSpeed => _moveSpeed;
 
-    private Vector2 _currentDirection;
-    public Vector2 currentDirection => _currentDirection;
-
 
     // UnityEngine
     private void Awake()
@@ -27,6 +24,16 @@ public class Player_Movement : MonoBehaviour
         if (gameObject.TryGetComponent(out Rigidbody2D rigidbody)) { _rigidBody = rigidbody; }
 
         _moveSpeed += _defaultMoveSpeed;
+    }
+
+    private void Start()
+    {
+        Input_Controller.instance.OnMovement += FaceDirection_Update;
+    }
+
+    private void OnDestroy()
+    {
+        Input_Controller.instance.OnMovement -= FaceDirection_Update;
     }
 
     private void Update()
@@ -40,16 +47,6 @@ public class Player_Movement : MonoBehaviour
     }
 
 
-    // Player Input
-    private void OnMovement(InputValue value)
-    {
-        Vector2 input = value.Get<Vector2>();
-        _currentDirection = input;
-
-        _playerController.animationController.Flip_Sprite(_currentDirection.x);
-    }
-
-
     // Movement
     public bool Is_Moving()
     {
@@ -57,9 +54,19 @@ public class Player_Movement : MonoBehaviour
         else return false;
     }
 
+
     private void Movement_Update()
     {
-        _rigidBody.velocity = new Vector2(_currentDirection.x * _moveSpeed, _currentDirection.y * _moveSpeed);
+        Vector2 inputDirection = Input_Controller.instance.inputDirection;
+
+        _rigidBody.velocity = new Vector2(inputDirection.x * _moveSpeed, inputDirection.y * _moveSpeed);
+    }
+
+    private void FaceDirection_Update(Vector2 direction)
+    {
+        if (enabled == false) return;
+
+        _playerController.animationController.Flip_Sprite(direction);
     }
 
 

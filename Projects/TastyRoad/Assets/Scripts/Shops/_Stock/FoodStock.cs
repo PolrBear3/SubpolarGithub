@@ -62,15 +62,15 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.OnIInteract += Toggle_Dialog;
-        _interactable.OnIInteract += Toggle_Price;
+        _interactable.OnInteract += Toggle_Dialog;
+        _interactable.OnInteract += Toggle_Price;
 
-        _interactable.OnIInteract += Toggle_AmountBar;
-        _interactable.OnUnIInteract += Toggle_AmountBar;
+        _interactable.OnInteract += Toggle_AmountBar;
+        _interactable.OnUnInteract += Toggle_AmountBar;
 
-        _interactable.OnAction1Input += Unlock;
-        _interactable.OnAction1Input += Purchase_Single;
-        _interactable.OnAction2Input += Purchase_All;
+        _interactable.OnAction1 += Unlock;
+        _interactable.OnAction1 += Purchase_Single;
+        _interactable.OnAction2 += Purchase_All;
     }
 
     private void OnDestroy()
@@ -79,15 +79,15 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
-        _interactable.OnIInteract -= Toggle_Dialog;
-        _interactable.OnIInteract -= Toggle_Price;
+        _interactable.OnInteract -= Toggle_Dialog;
+        _interactable.OnInteract -= Toggle_Price;
 
-        _interactable.OnIInteract -= Toggle_AmountBar;
-        _interactable.OnUnIInteract -= Toggle_AmountBar;
+        _interactable.OnInteract -= Toggle_AmountBar;
+        _interactable.OnUnInteract -= Toggle_AmountBar;
 
-        _interactable.OnAction1Input -= Unlock;
-        _interactable.OnAction1Input -= Purchase_Single;
-        _interactable.OnAction2Input -= Purchase_All;
+        _interactable.OnAction1 -= Unlock;
+        _interactable.OnAction1 -= Purchase_Single;
+        _interactable.OnAction2 -= Purchase_All;
     }
 
 

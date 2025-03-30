@@ -8,8 +8,6 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     private SpriteRenderer _sr;
     public SpriteRenderer sr => _sr;
 
-    private PlayerInput _playerInput;
-
 
     [Header("")]
     [SerializeField] private Player_Movement _movement;
@@ -49,7 +47,6 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
-        _playerInput = gameObject.GetComponent<PlayerInput>();
 
         Main_Controller.instance.Track_CurrentCharacter(gameObject);
     }
@@ -77,10 +74,10 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Get
-    public PlayerInput Player_Input()
+    // Player Input
+    public void SchemeChange_Update(PlayerInput playerInput)
     {
-        return _playerInput;
+        Debug.Log(playerInput.currentControlScheme);
     }
 
 
@@ -112,7 +109,9 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     /// </summary>
     public void Toggle_Controllers(bool toggle)
     {
-        _playerInput.enabled = toggle;
         _detectionController.Toggle_BoxCollider(toggle);
+
+        _movement.enabled = toggle;
+        _interaction.enabled = toggle;
     }
 }

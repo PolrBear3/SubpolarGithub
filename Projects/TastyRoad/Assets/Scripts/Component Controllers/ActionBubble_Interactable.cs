@@ -6,9 +6,6 @@ using UnityEngine.InputSystem;
 
 public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 {
-    [Header("")]
-    [SerializeField] private PlayerInput _input;
-
     [SerializeField] private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
 
@@ -24,16 +21,15 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public bool unInteractLocked => _unInteractLocked;
 
 
-    public delegate void Event();
+    public Action OnInteract;
+    public Action OnHoldInteract;
 
-    public Action OnHoldIInteract;
+    public Action OnUnInteract;
 
-    public event Event OnIInteract;
-    public event Event OnUnIInteract;
+    public Action OnAction1;
+    public Action OnAction2;
 
-    public event Event OnInteractInput;
-    public event Event OnAction1Input;
-    public event Event OnAction2Input;
+    private bool _actionsSubscribed;
 
 
     // MonoBehaviour
@@ -41,56 +37,26 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     {
         UnInteract();
 
+        // subscriptions
         _detection.ExitEvent += UnInteract;
     }
 
     private void OnDestroy()
     {
-        _detection.ExitEvent += UnInteract;
-    }
+        // subscriptions
+        _detection.ExitEvent -= UnInteract;
 
+        Input_Controller input = Input_Controller.instance;
 
-    // InputSystem
-    private void OnInteract()
-    {
-        OnInteractInput?.Invoke();
-    }
-
-    private void OnAction1()
-    {
-        if (_interactLocked) return;
-
-        OnAction1Input?.Invoke();
-        UnInteract();
-    }
-
-    private void OnAction2()
-    {
-        if (OnAction2Input == null) return;
-        if (_interactLocked) return;
-
-        OnAction2Input?.Invoke();
-        UnInteract();
-    }
-
-
-    public void Clear_ActionSubscriptions()
-    {
-        OnHoldIInteract = null;
-        OnIInteract = null;
-        OnUnIInteract = null;
-
-        OnInteractInput = null;
-        OnAction1Input = null;
-        OnAction2Input = null;
+        input.OnAction1 -= Invoke_Action1;
+        input.OnAction2 -= Invoke_Action2;
     }
 
 
     // IInteractable
     public void Interact()
     {
-        if (_interactLocked) return;
-        if (_bubble == null) return;
+        if (_unInteractLocked || _bubble == null) return;
 
         if (_bubble.bubbleOn)
         {
@@ -99,40 +65,75 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
             return;
         }
 
-        InputToggle(true);
         _bubble.Toggle(true);
+        OnInteract?.Invoke();
 
-        OnIInteract?.Invoke();
+        if (_actionsSubscribed) return;
+
+        Input_Controller input = Input_Controller.instance;
+
+        input.OnAction1 += Invoke_Action1;
+        input.OnAction2 += Invoke_Action2;
+
+        _actionsSubscribed = true;
     }
 
     public void Hold_Interact()
     {
         if (_interactLocked) return;
 
-        OnHoldIInteract?.Invoke();
+        OnHoldInteract?.Invoke();
     }
 
     public void UnInteract()
     {
-        if (_unInteractLocked) return;
-        if (_bubble == null) return;
+        if (_unInteractLocked || _bubble == null) return;
 
-        // bubble off
-        InputToggle(false);
         _bubble.Toggle(false);
+        OnUnInteract?.Invoke();
 
-        //
-        OnUnIInteract?.Invoke();
+        Input_Controller input = Input_Controller.instance;
+
+        input.OnAction1 -= Invoke_Action1;
+        input.OnAction2 -= Invoke_Action2;
+
+        _actionsSubscribed = false;
     }
 
 
-    //
-    public void InputToggle(bool toggleOn)
+    // Input_Controller
+    public void Clear_ActionSubscriptions()
     {
-        _input.enabled = toggleOn;
+        OnInteract = null;
+        OnHoldInteract = null;
+
+        OnUnInteract = null;
+
+        OnAction1 = null;
+        OnAction2 = null;
+
+        UnInteract();
     }
 
 
+    private void Invoke_Action1()
+    {
+        if (_interactLocked) return;
+
+        OnAction1?.Invoke();
+        UnInteract();
+    }
+
+    private void Invoke_Action2()
+    {
+        if (_interactLocked || OnAction2 == null) return;
+
+        OnAction2?.Invoke();
+        UnInteract();
+    }
+
+
+    // Toggle
     public void LockInteract(bool toggleLock)
     {
         _interactLocked = toggleLock;

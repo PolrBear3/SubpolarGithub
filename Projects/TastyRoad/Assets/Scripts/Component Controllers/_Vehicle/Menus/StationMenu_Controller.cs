@@ -466,8 +466,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation.Set_Data(new(cursor.data.stationData));
 
         Station_Movement movement = _interactStation.movement;
-
-        _interactStation.Action1_Event += movement.Set_Position;
+        Input_Controller.instance.OnAction1 += movement.Set_Position;
 
         _controller.OnOption1_Input += Place_StationPrefab;
         _controller.OnExit_Input += Cancel_Export;
@@ -478,7 +477,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void Place_StationPrefab()
     {
         if (_interactionMode == false) return;
-        if (_interactStation.movement.PositionSet_Available() == false) return;
+        if (_interactStation.movement.enabled) return;
 
         Complete_StationPlace();
     }
@@ -507,6 +506,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // return exported station back to current slot
         Drag_Cancel();
+
+        Input_Controller.instance.OnAction1 -= _interactStation.movement.Set_Position;
 
         // destroy current exported station
         _interactStation.Destroy_Station();

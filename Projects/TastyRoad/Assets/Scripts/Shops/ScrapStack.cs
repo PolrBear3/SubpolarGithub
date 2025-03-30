@@ -34,22 +34,22 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
 
         // subscriptions
         _interactable.detection.EnterEvent += Toggle_AmountBar;
-        _interactable.OnIInteract += Toggle_AmountBar;
-        _interactable.OnUnIInteract += Toggle_AmountBar;
+        _interactable.OnInteract += Toggle_AmountBar;
+        _interactable.OnUnInteract += Toggle_AmountBar;
 
-        _interactable.OnAction1Input += Stack;
-        _interactable.OnAction2Input += Retrieve;
+        _interactable.OnAction1 += Stack;
+        _interactable.OnAction2 += Retrieve;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
-        _interactable.OnIInteract -= Toggle_AmountBar;
-        _interactable.OnUnIInteract -= Toggle_AmountBar;
+        _interactable.OnInteract -= Toggle_AmountBar;
+        _interactable.OnUnInteract -= Toggle_AmountBar;
 
-        _interactable.OnAction1Input -= Stack;
-        _interactable.OnAction2Input -= Retrieve;
+        _interactable.OnAction1 -= Stack;
+        _interactable.OnAction2 -= Retrieve;
     }
 
 

@@ -52,7 +52,7 @@ public class Serve_Table : Stack_Table, IInteractable
 
     private List<NPC_Controller> FoodOrder_NPCs()
     {
-        List<NPC_Controller> allNPCs = stationController.mainController.All_NPCs();
+        List<NPC_Controller> allNPCs = Main_Controller.instance.All_NPCs();
         List<NPC_Controller> orderNPCs = new();
 
         for (int i = 0; i < allNPCs.Count; i++)

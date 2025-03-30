@@ -97,7 +97,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -108,7 +108,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -119,7 +119,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -130,7 +130,7 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -141,7 +141,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -149,5 +149,17 @@
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "PC",
+            "bindingGroup": "PC",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

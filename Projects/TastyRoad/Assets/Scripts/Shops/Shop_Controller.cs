@@ -119,11 +119,8 @@ public class Shop_Controller : MonoBehaviour, IInteractable, ISaveLoadable
     {
         if (_menuPanel == null) return;
 
-        // menu panel activation
         _menuPanel.SetActive(toggleOn);
 
-        // player movement input
-        if (_detection.player == null) return;
-        _detection.player.Player_Input().enabled = !toggleOn;
+        Main_Controller.instance.Player().Toggle_Controllers(!toggleOn);
     }
 }

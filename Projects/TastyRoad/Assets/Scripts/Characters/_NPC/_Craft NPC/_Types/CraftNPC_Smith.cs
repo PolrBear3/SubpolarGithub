@@ -37,10 +37,10 @@ public class CraftNPC_Smith : CraftNPC
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
-        interactable.OnIInteract += Toggle_PurchasePrice;
-        interactable.OnIInteract += Update_ActionBubble;
+        interactable.OnInteract += Toggle_PurchasePrice;
+        interactable.OnInteract += Update_ActionBubble;
 
-        interactable.OnAction1Input += Purchase;
+        interactable.OnAction1 += Purchase;
     }
 
     private new void OnDestroy()
@@ -50,10 +50,10 @@ public class CraftNPC_Smith : CraftNPC
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
-        interactable.OnIInteract -= Toggle_PurchasePrice;
-        interactable.OnIInteract -= Update_ActionBubble;
+        interactable.OnInteract -= Toggle_PurchasePrice;
+        interactable.OnInteract -= Update_ActionBubble;
 
-        interactable.OnAction1Input -= Purchase;
+        interactable.OnAction1 -= Purchase;
     }
 
 

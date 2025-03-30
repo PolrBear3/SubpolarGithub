@@ -38,11 +38,11 @@ public class OrderStand : MonoBehaviour
         // subscriptions
         ActionBubble_Interactable interactable = _stationController.interactable;
 
-        interactable.OnAction1Input += Toggle_Activation;
-        interactable.OnAction1Input += Toggle_Sprite;
+        interactable.OnAction1 += Toggle_Activation;
+        interactable.OnAction1 += Toggle_Sprite;
 
-        interactable.OnIInteract += Toggle_Indications;
-        interactable.OnUnIInteract += Toggle_Indications;
+        interactable.OnInteract += Toggle_Indications;
+        interactable.OnUnInteract += Toggle_Indications;
 
         Detection_Controller detection = _stationController.detection;
 
@@ -54,11 +54,11 @@ public class OrderStand : MonoBehaviour
         // subscriptions
         ActionBubble_Interactable interactable = _stationController.interactable;
 
-        interactable.OnAction1Input -= Toggle_Activation;
-        interactable.OnAction1Input -= Toggle_Sprite;
+        interactable.OnAction1 -= Toggle_Activation;
+        interactable.OnAction1 -= Toggle_Sprite;
 
-        interactable.OnIInteract -= Toggle_Indications;
-        interactable.OnUnIInteract -= Toggle_Indications;
+        interactable.OnInteract -= Toggle_Indications;
+        interactable.OnUnInteract -= Toggle_Indications;
 
         Detection_Controller detection = _stationController.detection;
 
@@ -119,9 +119,10 @@ public class OrderStand : MonoBehaviour
     /// </returns>
     private List<NPC_Controller> FoodOrder_NPCs()
     {
-        SpriteRenderer vehicleArea = _stationController.mainController.currentVehicle.interactArea;
+        Main_Controller main = Main_Controller.instance;
+        SpriteRenderer vehicleArea = main.currentVehicle.interactArea;
 
-        List<NPC_Controller> allNPCs = _stationController.mainController.All_NPCs();
+        List<NPC_Controller> allNPCs = main.All_NPCs();
         List<NPC_Controller> orderNPCs = new();
 
         for (int i = 0; i < allNPCs.Count; i++)
@@ -183,8 +184,10 @@ public class OrderStand : MonoBehaviour
 
     private void Reset_CurrentNPCs()
     {
-        SpriteRenderer vehicleArea = _stationController.mainController.currentVehicle.interactArea;
-        SpriteRenderer locationArea = _stationController.mainController.currentLocation.data.roamArea;
+        Main_Controller main = Main_Controller.instance;
+
+        SpriteRenderer vehicleArea = main.currentVehicle.interactArea;
+        SpriteRenderer locationArea = main.currentLocation.data.roamArea;
 
         for (int i = 0; i < _currentNPCs.Count; i++)
         {

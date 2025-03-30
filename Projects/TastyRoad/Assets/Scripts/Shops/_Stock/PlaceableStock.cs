@@ -43,8 +43,8 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.OnIInteract += Toggle_AmountBar;
-        _interactable.OnUnIInteract += Toggle_AmountBar;
+        _interactable.OnInteract += Toggle_AmountBar;
+        _interactable.OnUnInteract += Toggle_AmountBar;
     }
 
     private void OnDestroy()
@@ -53,11 +53,11 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
-        _interactable.OnIInteract -= Toggle_AmountBar;
-        _interactable.OnUnIInteract -= Toggle_AmountBar;
+        _interactable.OnInteract -= Toggle_AmountBar;
+        _interactable.OnUnInteract -= Toggle_AmountBar;
 
-        _interactable.OnAction1Input -= Complete;
-        _interactable.OnAction1Input -= Place;
+        _interactable.OnAction1 -= Complete;
+        _interactable.OnAction1 -= Place;
     }
 
 
@@ -130,7 +130,7 @@ public class PlaceableStock : MonoBehaviour
         {
             bubble.Set_Bubble(bubble.setSprites[0], null);
 
-            _interactable.OnAction1Input += Place;
+            _interactable.OnAction1 += Place;
             return;
         }
 
@@ -138,14 +138,14 @@ public class PlaceableStock : MonoBehaviour
         {
             bubble.Set_Bubble(bubble.setSprites[1], null);
 
-            _interactable.OnAction1Input += Complete;
+            _interactable.OnAction1 += Complete;
             return;
         }
 
         bubble.Set_Bubble(bubble.setSprites[0], bubble.setSprites[1]);
 
-        _interactable.OnAction1Input += Place;
-        _interactable.OnAction2Input += Complete;
+        _interactable.OnAction1 += Place;
+        _interactable.OnAction2 += Complete;
     }
 
 

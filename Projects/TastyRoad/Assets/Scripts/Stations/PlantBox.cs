@@ -92,7 +92,7 @@ public class PlantBox : Stack_Table, IInteractable
     {
         if (_growthInProgress) return false;
 
-        FoodData_Controller playerFoodIcon = stationController.mainController.Player().foodIcon;
+        FoodData_Controller playerFoodIcon = Main_Controller.instance.Player().foodIcon;
 
         // check if player has food
         if (playerFoodIcon.hasFood == false) return false;
@@ -157,7 +157,7 @@ public class PlantBox : Stack_Table, IInteractable
         FoodData_Controller stationFoodIcon = stationController.Food_Icon();
         if (stationFoodIcon.hasFood == false) return;
 
-        FoodData_Controller playerFoodIcon = stationController.mainController.Player().foodIcon;
+        FoodData_Controller playerFoodIcon = Main_Controller.instance.Player().foodIcon;
         if (playerFoodIcon.DataCount_Maxed()) return;
 
         playerFoodIcon.Set_CurrentData(stationFoodIcon.currentData);

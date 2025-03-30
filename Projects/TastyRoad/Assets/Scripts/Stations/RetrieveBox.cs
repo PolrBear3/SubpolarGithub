@@ -14,7 +14,7 @@ public class RetrieveBox : Stack_Table, IInteractable
         Sprite_Update();
 
         // subscriptions
-        StationMenu_Controller menu = stationController.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent += AmountBar_Toggle;
@@ -27,7 +27,7 @@ public class RetrieveBox : Stack_Table, IInteractable
         Remove_onRetrieve();
 
         // subscriptions
-        StationMenu_Controller menu = stationController.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent -= AmountBar_Toggle;
@@ -97,8 +97,10 @@ public class RetrieveBox : Stack_Table, IInteractable
 
         if (foodIcon.hasFood == false) return;
 
-        FoodMenu_Controller foodMenu = stationController.mainController.currentVehicle.menu.foodMenu;
-        StationMenu_Controller stationMenu = stationController.mainController.currentVehicle.menu.stationMenu;
+        Main_Controller main = Main_Controller.instance;
+
+        FoodMenu_Controller foodMenu = main.currentVehicle.menu.foodMenu;
+        StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
 
         // retrieve current food data
         foreach (FoodData data in foodIcon.AllDatas())
@@ -114,7 +116,7 @@ public class RetrieveBox : Stack_Table, IInteractable
     {
         if (stationController.Food_Icon().hasFood == false) return;
 
-        StationMenu_Controller menu = stationController.mainController.currentVehicle.menu.stationMenu;
+        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         List<ItemSlot> currentSlots = menu.controller.slotsController.itemSlots;
 
         for (int i = 0; i < currentSlots.Count; i++)

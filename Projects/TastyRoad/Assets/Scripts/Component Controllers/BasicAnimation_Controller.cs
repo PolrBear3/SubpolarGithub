@@ -76,6 +76,8 @@ public class BasicAnimation_Controller : MonoBehaviour
     {
         _spriteRenderer.flipX = facingLeft;
     }
+
+
     public void Flip_Sprite(float faceDirection)
     {
         if (faceDirection < 0)
@@ -87,6 +89,13 @@ public class BasicAnimation_Controller : MonoBehaviour
             Flip_Sprite(false);
         }
     }
+
+    public void Flip_Sprite(Vector2 faceDirection)
+    {
+        Flip_Sprite(faceDirection.x);
+    }
+
+
     /// <summary>
     /// Flips to the direction of target object
     /// </summary>

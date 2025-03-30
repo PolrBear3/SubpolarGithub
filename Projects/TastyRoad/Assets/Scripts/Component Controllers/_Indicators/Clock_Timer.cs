@@ -119,6 +119,8 @@ public class Clock_Timer : MonoBehaviour
 
     public void Run_Time()
     {
+        if (_timeRunning) return;
+
         _timeRunning = true;
 
         _timeCoroutine = StartCoroutine(Run_Time_Coroutine());

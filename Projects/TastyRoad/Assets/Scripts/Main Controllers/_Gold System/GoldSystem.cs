@@ -60,6 +60,7 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
     {
         _iconImage.sprite = _defaultIcon;
 
+        if (_data == null) Load_Data();
         Update_CurrentAmount(0);
 
         // subscriptions

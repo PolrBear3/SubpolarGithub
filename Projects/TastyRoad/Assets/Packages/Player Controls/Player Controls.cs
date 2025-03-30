@@ -121,61 +121,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Arrows"",
-                    ""id"": ""6bb9e90a-67b8-4bdd-9560-3f16f9a90fdb"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""6137bf0d-2881-4afa-bf61-dcad549b8100"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""a6a17d61-4eda-4716-af77-9d266b89a8ef"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""5ba1b7f2-f346-4361-af08-d1948fcf0236"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""394cc795-0435-44ea-a4d8-dff71b24df13"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""8c8495df-9973-4bd3-87d9-77a67c1db4cf"",
                     ""path"": ""<Keyboard>/space"",
@@ -509,17 +454,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isOR"": false
                 }
             ]
-        },
-        {
-            ""name"": ""Screen"",
-            ""bindingGroup"": ""Screen"",
-            ""devices"": [
-                {
-                    ""devicePath"": ""<Touchscreen>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
         }
     ]
 }");
@@ -784,15 +718,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         {
             if (m_PCSchemeIndex == -1) m_PCSchemeIndex = asset.FindControlSchemeIndex("PC");
             return asset.controlSchemes[m_PCSchemeIndex];
-        }
-    }
-    private int m_ScreenSchemeIndex = -1;
-    public InputControlScheme ScreenScheme
-    {
-        get
-        {
-            if (m_ScreenSchemeIndex == -1) m_ScreenSchemeIndex = asset.FindControlSchemeIndex("Screen");
-            return asset.controlSchemes[m_ScreenSchemeIndex];
         }
     }
     public interface IInGameActions

@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 8211479228969965514}
   - component: {fileID: 5291524768326010083}
   - component: {fileID: 8674345196182619832}
-  - component: {fileID: 2945511885247835956}
   - component: {fileID: 2590409151805977061}
   - component: {fileID: 8450629839311239787}
   - component: {fileID: 7464045914392838951}
@@ -277,36 +276,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2945511885247835956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5587925294155870417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 03bf4c7be0a504cacb2e0e4ed805ed58, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: In Game
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &2590409151805977061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,7 +332,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6680efb1d64c94cb481bd828ccf7fe4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _input: {fileID: 2945511885247835956}
   _detection: {fileID: 8111960285723048442}
   _bubble: {fileID: 903259749758274977}
   _interactLocked: 1
@@ -380,14 +348,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stationAnimator: {fileID: 8674345196182619832}
+  _animController: {fileID: 0}
   _interactable: {fileID: 7464045914392838951}
   _iInteractable: {fileID: 0}
   _detection: {fileID: 8111960285723048442}
   _movement: {fileID: -8110685917489673981}
   _maintenance: {fileID: 0}
-  _stationAnimator: {fileID: 8674345196182619832}
-  _itemDropper: {fileID: 0}
   _stationScrObj: {fileID: 11400000, guid: 3264c6e5229014a67bd03e468bead6c8, type: 2}
+  _itemDropper: {fileID: 0}
 --- !u!114 &-8110685917489673981
 MonoBehaviour:
   m_ObjectHideFlags: 0

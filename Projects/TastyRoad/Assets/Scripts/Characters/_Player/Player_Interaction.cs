@@ -1,19 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Player_Interaction : MonoBehaviour
 {
     private Player_Controller _controller;
+
 
     [Header("")]
     [SerializeField][Range(0, 100)] private float _holdTime;
 
     private float _defaultTimerXPos;
 
-    private float _pressStartTime;
-    private Coroutine _pressDelayCoroutine;
+    private Coroutine _timerCoroutine;
 
 
     // UnityEngine
@@ -24,64 +23,38 @@ public class Player_Interaction : MonoBehaviour
 
     private void Start()
     {
-        _controller.Player_Input().actions["Interact"].started += ctx => OnPressStart();
-        _controller.Player_Input().actions["Interact"].canceled += ctx => OnPressEnd();
-
         _defaultTimerXPos = _controller.timer.transform.localPosition.x;
+
+        // subscriptions
+        Input_Controller input = Input_Controller.instance;
+
+        input.OnInteractStart += Update_HoldTimer;
+        input.OnInteract += Update_HoldTimer;
+        input.OnHoldInteract += Update_HoldTimer;
+
+        input.OnInteractStart += PositionUpdate_HoldTimer;
+
+        input.OnInteract += Interact;
+        input.OnHoldInteract += HoldInteract;
     }
 
-
-    // Player Input
-    private void TimerPosition_Update()
+    private void OnDestroy()
     {
-        float yPos = _controller.timer.transform.localPosition.y;
+        // subscriptions
+        Input_Controller input = Input_Controller.instance;
 
-        if (_controller.foodIcon.hasFood)
-        {
-            _controller.timer.transform.localPosition = new Vector2(_defaultTimerXPos, yPos);
-            return;
-        }
+        input.OnInteractStart -= Update_HoldTimer;
+        input.OnInteract -= Update_HoldTimer;
+        input.OnHoldInteract -= Update_HoldTimer;
 
-        _controller.timer.transform.localPosition = new Vector2(0f, yPos);
-    }
+        input.OnInteractStart -= PositionUpdate_HoldTimer;
 
-    private void OnPressStart()
-    {
-        _pressDelayCoroutine = StartCoroutine(OnPressStart_Coroutine());
-    }
-    private IEnumerator OnPressStart_Coroutine()
-    {
-        TimerPosition_Update();
-
-        _pressStartTime = Time.time;  // Record the time when the button is pressed
-
-        _controller.timer.Set_Time((int)_holdTime);
-        _controller.timer.Run_Time();
-
-        yield return new WaitForSeconds(.2f);
-        _controller.timer.Toggle_Transparency(false);
-    }
-
-    private void OnPressEnd()
-    {
-        StopCoroutine(_pressDelayCoroutine);
-        _pressDelayCoroutine = null;
-
-        float pressDuration = Time.time - _pressStartTime;
-
-        _controller.timer.Stop_Time();
-        _controller.timer.Toggle_Transparency(true);
-
-        if (pressDuration >= _holdTime)
-        {
-            Hold_Interact();
-            return;
-        }
-
-        Interact();
+        input.OnInteract -= Interact;
+        input.OnHoldInteract -= HoldInteract;
     }
 
 
+    // Input Controller
     private void Refresh_DetectedInteractables(IInteractable excludeInteractable)
     {
         Detection_Controller detection = _controller.detectionController;
@@ -108,14 +81,19 @@ public class Player_Interaction : MonoBehaviour
 
     private void Interact()
     {
+        if (enabled == false) return;
+
         IInteractable interactable = Closest_Interactable();
+
         if (interactable == null) return;
 
         interactable.Interact();
     }
 
-    private void Hold_Interact()
+    private void HoldInteract()
     {
+        if (enabled == false) return;
+
         IInteractable interactable = Closest_Interactable();
 
         if (interactable == null)
@@ -125,6 +103,55 @@ public class Player_Interaction : MonoBehaviour
         }
 
         interactable.Hold_Interact();
+    }
+
+
+    // Hold Timer
+    private void PositionUpdate_HoldTimer()
+    {
+        float yPos = _controller.timer.transform.localPosition.y;
+
+        if (_controller.foodIcon.hasFood)
+        {
+            _controller.timer.transform.localPosition = new Vector2(_defaultTimerXPos, yPos);
+            return;
+        }
+
+        _controller.timer.transform.localPosition = new Vector2(0f, yPos);
+    }
+
+    private void Update_HoldTimer()
+    {
+        if (enabled == false) return;
+
+        if (_timerCoroutine != null)
+        {
+            StopCoroutine(_timerCoroutine);
+            _timerCoroutine = null;
+        }
+
+        if (Input_Controller.instance.isHolding == false)
+        {
+            _controller.timer.Stop_Time();
+            _controller.timer.Toggle_Transparency(true);
+
+            return;
+        }
+
+        _timerCoroutine = StartCoroutine(Update_HoldTimer_Coroutine());
+    }
+    private IEnumerator Update_HoldTimer_Coroutine()
+    {
+        _controller.timer.Set_Time((int)_holdTime);
+        _controller.timer.Run_Time();
+
+        // slight delay before showing timer
+        yield return new WaitForSeconds(0.2f);
+
+        _controller.timer.Toggle_Transparency(false);
+
+        _timerCoroutine = null;
+        yield break;
     }
 
 
