@@ -443,7 +443,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5419941011623935099}
   - component: {fileID: 4976745120457246418}
-  - component: {fileID: 2742599872401450708}
   - component: {fileID: 653949399699014468}
   - component: {fileID: 8095772719313856644}
   - component: {fileID: 2342190877690906068}
@@ -524,36 +523,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8722725, y: 1.187618}
   m_EdgeRadius: 0
---- !u!114 &2742599872401450708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745308525293917770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 03bf4c7be0a504cacb2e0e4ed805ed58, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: In Game
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &653949399699014468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1402,8 +1371,6 @@ GameObject:
   - component: {fileID: 5879974304882507602}
   - component: {fileID: 4244909148874104806}
   - component: {fileID: 9052003114442593425}
-  - component: {fileID: 221268782074558499}
-  - component: {fileID: 5481026350364505024}
   - component: {fileID: 277122501829671610}
   m_Layer: 5
   m_Name: Location Menu Canvas
@@ -1495,51 +1462,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &221268782074558499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1794061755134908635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 03bf4c7be0a504cacb2e0e4ed805ed58, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: UI Control
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &5481026350364505024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1794061755134908635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25f9cb7a732e04ea4af440a66bb880ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerInput: {fileID: 221268782074558499}
-  _holdKeyAction: Select
-  _holdTime: 1
 --- !u!114 &277122501829671610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1552,8 +1474,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47758f5c9f47b4c2d98bb785bfb18985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _input: {fileID: 221268782074558499}
-  _holdInput: {fileID: 5481026350364505024}
   _vehicle: {fileID: 7023176493674794937}
   _menuPanel: {fileID: 8972849356739649489}
   _tiles:
@@ -2837,7 +2757,6 @@ GameObject:
   - component: {fileID: 2051735443232333097}
   - component: {fileID: 872659568982886879}
   - component: {fileID: 8532775503531135405}
-  - component: {fileID: 1302976397803527024}
   - component: {fileID: 3595328392461979482}
   - component: {fileID: 8508866487849260274}
   m_Layer: 5
@@ -2931,36 +2850,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1302976397803527024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5501531826094346831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 03bf4c7be0a504cacb2e0e4ed805ed58, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: UI Control
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &3595328392461979482
 MonoBehaviour:
   m_ObjectHideFlags: 0

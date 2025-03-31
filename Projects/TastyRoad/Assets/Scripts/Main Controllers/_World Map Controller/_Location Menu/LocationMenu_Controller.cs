@@ -6,10 +6,6 @@ using UnityEngine.InputSystem;
 public class LocationMenu_Controller : MonoBehaviour
 {
     [Header("")]
-    [SerializeField] private PlayerInput _input;
-    [SerializeField] private HoldInput_Controller _holdInput;
-
-    [Header("")]
     [SerializeField] private Vehicle_Controller _vehicle;
 
 
@@ -33,31 +29,60 @@ public class LocationMenu_Controller : MonoBehaviour
     private void Start()
     {
         Toggle_Menu(false);
-
-        // subscriptions
-        _holdInput.OnComplete += Select_HoverTile;
-
-        _holdInput.OnStart += _holdClock.Run_ClockSprite;
-        _holdInput.OnEnd += _holdClock.Stop_ClockSpriteRun;
     }
 
     private void OnDestroy()
     {
-        // subscriptions
-        _holdInput.OnComplete -= Select_HoverTile;
+        Input_Controller input = Input_Controller.instance;
 
-        _holdInput.OnStart -= _holdClock.Run_ClockSprite;
-        _holdInput.OnEnd -= _holdClock.Stop_ClockSpriteRun;
+        input.OnCursorControl -= CursorControl;
+        input.OnHoldSelect -= Select_HoverTile;
+        input.OnExit -= Exit;
+
+        input.OnSelectStart -= _holdClock.Run_ClockSprite;
+        input.OnSelect -= _holdClock.Stop_ClockSpriteRun;
+        input.OnHoldSelect -= _holdClock.Stop_ClockSpriteRun;
     }
 
 
     // InputSystem
-    private void OnCursorControl(InputValue value)
+    private void Toggle_Input(bool toggle)
     {
-        // if (_onHold) return;
+        Input_Controller input = Input_Controller.instance;
 
-        Vector2 input = value.Get<Vector2>();
-        int xInput = (int)input.x;
+        if (toggle)
+        {
+            input.Update_ActionMap(1);
+
+            input.OnCursorControl += CursorControl;
+            input.OnHoldSelect += Select_HoverTile;
+            input.OnExit += Exit;
+
+            input.OnSelectStart += _holdClock.Run_ClockSprite;
+            input.OnSelect += _holdClock.Stop_ClockSpriteRun;
+            input.OnHoldSelect += _holdClock.Stop_ClockSpriteRun;
+
+            return;
+        }
+
+        input.Update_ActionMap(0);
+
+        input.OnCursorControl -= CursorControl;
+        input.OnHoldSelect -= Select_HoverTile;
+        input.OnExit -= Exit;
+
+        input.OnSelectStart -= _holdClock.Run_ClockSprite;
+        input.OnSelect -= _holdClock.Stop_ClockSpriteRun;
+        input.OnHoldSelect -= _holdClock.Stop_ClockSpriteRun;
+    }
+
+
+    private void CursorControl(Vector2 inputDirection)
+    {
+        if (inputDirection == Vector2.zero) return;
+        if (Input_Controller.instance.isHolding) return;
+
+        int xInput = (int)inputDirection.x;
 
         Update_HoverTileNum(xInput);
 
@@ -67,13 +92,13 @@ public class LocationMenu_Controller : MonoBehaviour
         Update_TilesAnimation();
     }
 
-    private void OnExit()
+    private void Exit()
     {
         Toggle_Menu(false);
     }
 
 
-    // Controls
+    // Input_Controller
     public void Toggle_Menu(bool toggle)
     {
         Main_Controller main = Main_Controller.instance;
@@ -83,7 +108,7 @@ public class LocationMenu_Controller : MonoBehaviour
 
         // menu toggle
         _menuPanel.gameObject.SetActive(toggle);
-        _input.enabled = toggle;
+        Toggle_Input(toggle);
 
         On_MenuToggle?.Invoke(toggle);
 
@@ -201,7 +226,8 @@ public class LocationMenu_Controller : MonoBehaviour
         int removeAmount = Mathf.Abs(_tiles.Length / 2 - _hoverTileNum);
         stationMenu.Remove_StationItem(data.Station_ScrObj(79025), removeAmount);
 
-        _input.enabled = false;
+        Toggle_Input(false);
+
         worldMap.Update_Location(_tiles[_hoverTileNum].data);
 
         main.Player().Toggle_Controllers(false);

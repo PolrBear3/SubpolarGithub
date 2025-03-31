@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.InputSystem;
-using TMPro;
 
 public class DialogSystem : MonoBehaviour
 {
@@ -33,25 +30,6 @@ public class DialogSystem : MonoBehaviour
 
         Refresh_CustomDialogs();
         HoverToggle_CurrentDialog(false);
-    }
-
-
-    // InputSystem
-    private void OnNumKey1()
-    {
-        InfoBox_Toggle(0);
-    }
-    private void OnNumKey2()
-    {
-        InfoBox_Toggle(1);
-    }
-    private void OnNumKey3()
-    {
-        InfoBox_Toggle(2);
-    }
-    private void OnNumKey4()
-    {
-        InfoBox_Toggle(3);
     }
 
 
