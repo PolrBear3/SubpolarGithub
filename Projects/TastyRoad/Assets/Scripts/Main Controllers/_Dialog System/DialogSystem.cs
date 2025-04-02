@@ -30,6 +30,15 @@ public class DialogSystem : MonoBehaviour
 
         Refresh_CustomDialogs();
         HoverToggle_CurrentDialog(false);
+
+        // subscriptions
+        Input_Controller.instance.OnNavigate += Navigate_InfoBox;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        Input_Controller.instance.OnNavigate -= Navigate_InfoBox;
     }
 
 
@@ -80,9 +89,17 @@ public class DialogSystem : MonoBehaviour
 
 
     // Information Box Control
-    private void Show_InfoBox()
+    private void Show_InfoBox(bool show)
     {
-        _infoBox.gameObject.SetActive(true);
+        _infoBox.gameObject.SetActive(show);
+
+        if (show == false)
+        {
+            HoverToggle_CurrentDialog(false);
+
+            Audio_Controller.instance.Play_OneShot(gameObject, 2);
+            return;
+        }
 
         _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
         _infoBox.Update_RectLayout();
@@ -92,29 +109,22 @@ public class DialogSystem : MonoBehaviour
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
-    private void InfoBox_Toggle(int dialogNum)
+    private void Navigate_InfoBox(Vector2 navigatedInput)
     {
-        if (_currentDialogs.Count <= dialogNum) return;
-
-        if (dialogNum != _currentDialogNum)
+        if (navigatedInput.y != 0)
         {
-            _currentDialogNum = dialogNum;
-            Show_InfoBox();
+            _currentDialogNum = 0;
 
+            Show_InfoBox(!_infoBox.gameObject.activeSelf);
             return;
         }
 
-        if (_infoBox.gameObject.activeSelf == true)
-        {
-            _infoBox.gameObject.SetActive(false);
-            HoverToggle_CurrentDialog(false);
+        if (!_infoBox.gameObject.activeSelf) return;
 
-            Audio_Controller.instance.Play_OneShot(gameObject, 2);
+        int updateNum = (_currentDialogNum + (int)navigatedInput.x + _currentDialogs.Count) % _currentDialogs.Count;
+        _currentDialogNum = updateNum;
 
-            return;
-        }
-
-        Show_InfoBox();
+        Show_InfoBox(true);
     }
 
 

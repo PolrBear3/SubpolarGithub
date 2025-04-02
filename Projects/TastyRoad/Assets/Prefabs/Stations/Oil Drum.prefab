@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60d067a75bd04e088c55ff577cb7ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementArrows: {fileID: 0}
+  _movementArrows: {fileID: 1882290375153072807}
 --- !u!114 &9222474858322901285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,11 +283,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Movement Arrows
       objectReference: {fileID: 0}
+    - target: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed2940b693db24401bff257aa6afe080, type: 3}
+--- !u!1 &1882290375153072807 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7440472951719476690, guid: ed2940b693db24401bff257aa6afe080, type: 3}
+  m_PrefabInstance: {fileID: 9033908204236867445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3614584175260064798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5726175803316198251, guid: ed2940b693db24401bff257aa6afe080, type: 3}

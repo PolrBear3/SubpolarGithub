@@ -62,6 +62,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Navigate"",
+                    ""type"": ""Value"",
+                    ""id"": ""96e2e7a4-3ccd-4a0e-a7a8-282f460efd2c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,61 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Action2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""3da9a6d8-2ae1-4bad-ac40-94005ae9e5af"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""8af167d0-29f2-4f1d-a3da-48a8b4e1d525"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""28ed6f66-9016-4098-9646-58565fcba244"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c868dfee-d84d-46d3-ac21-4e2717221461"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""06dd493e-19f4-4735-bc43-baec3db25a68"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -161,7 +225,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Cursor Control"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""8ceb49e6-5df3-4e54-bb2e-64a7b06a0cc5"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -199,42 +263,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Exit"",
                     ""type"": ""Button"",
                     ""id"": ""f1945b95-43e3-4537-a93c-522e3c17286b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""NumKey1"",
-                    ""type"": ""Button"",
-                    ""id"": ""d24a02e5-1064-4672-bee8-a27aed44f364"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""NumKey2"",
-                    ""type"": ""Button"",
-                    ""id"": ""bb5545b0-5356-43ed-957b-bca5990dadba"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""NumKey3"",
-                    ""type"": ""Button"",
-                    ""id"": ""b5a86fd7-ce99-4690-b06a-74b2a144ba6b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""NumKey4"",
-                    ""type"": ""Button"",
-                    ""id"": ""e843842c-d396-4f7f-8adb-918860a3720e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -340,50 +368,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Option1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5d942b88-808a-41d6-839b-788b4e4fd559"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NumKey1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""10fc85f7-cc18-4073-8b4f-0302f5339a18"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NumKey2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f928ac8e-8532-4268-b467-194f5e114b76"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NumKey3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""14150833-863c-4f27-b5b6-4a90fe120b6c"",
-                    ""path"": ""<Keyboard>/4"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""NumKey4"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -408,6 +392,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_InGame_Interact = m_InGame.FindAction("Interact", throwIfNotFound: true);
         m_InGame_Action1 = m_InGame.FindAction("Action1", throwIfNotFound: true);
         m_InGame_Action2 = m_InGame.FindAction("Action2", throwIfNotFound: true);
+        m_InGame_Navigate = m_InGame.FindAction("Navigate", throwIfNotFound: true);
         // UI Control
         m_UIControl = asset.FindActionMap("UI Control", throwIfNotFound: true);
         m_UIControl_CursorControl = m_UIControl.FindAction("Cursor Control", throwIfNotFound: true);
@@ -415,10 +400,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_UIControl_Option1 = m_UIControl.FindAction("Option1", throwIfNotFound: true);
         m_UIControl_Option2 = m_UIControl.FindAction("Option2", throwIfNotFound: true);
         m_UIControl_Exit = m_UIControl.FindAction("Exit", throwIfNotFound: true);
-        m_UIControl_NumKey1 = m_UIControl.FindAction("NumKey1", throwIfNotFound: true);
-        m_UIControl_NumKey2 = m_UIControl.FindAction("NumKey2", throwIfNotFound: true);
-        m_UIControl_NumKey3 = m_UIControl.FindAction("NumKey3", throwIfNotFound: true);
-        m_UIControl_NumKey4 = m_UIControl.FindAction("NumKey4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -484,6 +465,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Interact;
     private readonly InputAction m_InGame_Action1;
     private readonly InputAction m_InGame_Action2;
+    private readonly InputAction m_InGame_Navigate;
     public struct InGameActions
     {
         private @PlayerControls m_Wrapper;
@@ -492,6 +474,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_InGame_Interact;
         public InputAction @Action1 => m_Wrapper.m_InGame_Action1;
         public InputAction @Action2 => m_Wrapper.m_InGame_Action2;
+        public InputAction @Navigate => m_Wrapper.m_InGame_Navigate;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -513,6 +496,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Action2.started += instance.OnAction2;
             @Action2.performed += instance.OnAction2;
             @Action2.canceled += instance.OnAction2;
+            @Navigate.started += instance.OnNavigate;
+            @Navigate.performed += instance.OnNavigate;
+            @Navigate.canceled += instance.OnNavigate;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -529,6 +515,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Action2.started -= instance.OnAction2;
             @Action2.performed -= instance.OnAction2;
             @Action2.canceled -= instance.OnAction2;
+            @Navigate.started -= instance.OnNavigate;
+            @Navigate.performed -= instance.OnNavigate;
+            @Navigate.canceled -= instance.OnNavigate;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -555,10 +544,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIControl_Option1;
     private readonly InputAction m_UIControl_Option2;
     private readonly InputAction m_UIControl_Exit;
-    private readonly InputAction m_UIControl_NumKey1;
-    private readonly InputAction m_UIControl_NumKey2;
-    private readonly InputAction m_UIControl_NumKey3;
-    private readonly InputAction m_UIControl_NumKey4;
     public struct UIControlActions
     {
         private @PlayerControls m_Wrapper;
@@ -568,10 +553,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Option1 => m_Wrapper.m_UIControl_Option1;
         public InputAction @Option2 => m_Wrapper.m_UIControl_Option2;
         public InputAction @Exit => m_Wrapper.m_UIControl_Exit;
-        public InputAction @NumKey1 => m_Wrapper.m_UIControl_NumKey1;
-        public InputAction @NumKey2 => m_Wrapper.m_UIControl_NumKey2;
-        public InputAction @NumKey3 => m_Wrapper.m_UIControl_NumKey3;
-        public InputAction @NumKey4 => m_Wrapper.m_UIControl_NumKey4;
         public InputActionMap Get() { return m_Wrapper.m_UIControl; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -596,18 +577,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
-            @NumKey1.started += instance.OnNumKey1;
-            @NumKey1.performed += instance.OnNumKey1;
-            @NumKey1.canceled += instance.OnNumKey1;
-            @NumKey2.started += instance.OnNumKey2;
-            @NumKey2.performed += instance.OnNumKey2;
-            @NumKey2.canceled += instance.OnNumKey2;
-            @NumKey3.started += instance.OnNumKey3;
-            @NumKey3.performed += instance.OnNumKey3;
-            @NumKey3.canceled += instance.OnNumKey3;
-            @NumKey4.started += instance.OnNumKey4;
-            @NumKey4.performed += instance.OnNumKey4;
-            @NumKey4.canceled += instance.OnNumKey4;
         }
 
         private void UnregisterCallbacks(IUIControlActions instance)
@@ -627,18 +596,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
-            @NumKey1.started -= instance.OnNumKey1;
-            @NumKey1.performed -= instance.OnNumKey1;
-            @NumKey1.canceled -= instance.OnNumKey1;
-            @NumKey2.started -= instance.OnNumKey2;
-            @NumKey2.performed -= instance.OnNumKey2;
-            @NumKey2.canceled -= instance.OnNumKey2;
-            @NumKey3.started -= instance.OnNumKey3;
-            @NumKey3.performed -= instance.OnNumKey3;
-            @NumKey3.canceled -= instance.OnNumKey3;
-            @NumKey4.started -= instance.OnNumKey4;
-            @NumKey4.performed -= instance.OnNumKey4;
-            @NumKey4.canceled -= instance.OnNumKey4;
         }
 
         public void RemoveCallbacks(IUIControlActions instance)
@@ -671,6 +628,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnAction1(InputAction.CallbackContext context);
         void OnAction2(InputAction.CallbackContext context);
+        void OnNavigate(InputAction.CallbackContext context);
     }
     public interface IUIControlActions
     {
@@ -679,9 +637,5 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnOption1(InputAction.CallbackContext context);
         void OnOption2(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
-        void OnNumKey1(InputAction.CallbackContext context);
-        void OnNumKey2(InputAction.CallbackContext context);
-        void OnNumKey3(InputAction.CallbackContext context);
-        void OnNumKey4(InputAction.CallbackContext context);
     }
 }

@@ -208,7 +208,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     private void CursorControl(Vector2 inputDirection)
     {
         if (_onHold) return;
-        if (inputDirection == Vector2.zero) return;
 
         OnCursorControl_Input?.Invoke(inputDirection.x);
 

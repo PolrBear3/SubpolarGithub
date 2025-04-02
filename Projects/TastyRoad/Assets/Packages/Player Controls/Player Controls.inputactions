@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Navigate",
+                    "type": "Value",
+                    "id": "96e2e7a4-3ccd-4a0e-a7a8-282f460efd2c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -130,6 +139,61 @@
                     "action": "Action2",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Arrows",
+                    "id": "3da9a6d8-2ae1-4bad-ac40-94005ae9e5af",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "8af167d0-29f2-4f1d-a3da-48a8b4e1d525",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "28ed6f66-9016-4098-9646-58565fcba244",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "c868dfee-d84d-46d3-ac21-4e2717221461",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "06dd493e-19f4-4735-bc43-baec3db25a68",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },
@@ -139,7 +203,7 @@
             "actions": [
                 {
                     "name": "Cursor Control",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "8ceb49e6-5df3-4e54-bb2e-64a7b06a0cc5",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -177,42 +241,6 @@
                     "name": "Exit",
                     "type": "Button",
                     "id": "f1945b95-43e3-4537-a93c-522e3c17286b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "NumKey1",
-                    "type": "Button",
-                    "id": "d24a02e5-1064-4672-bee8-a27aed44f364",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "NumKey2",
-                    "type": "Button",
-                    "id": "bb5545b0-5356-43ed-957b-bca5990dadba",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "NumKey3",
-                    "type": "Button",
-                    "id": "b5a86fd7-ce99-4690-b06a-74b2a144ba6b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "NumKey4",
-                    "type": "Button",
-                    "id": "e843842c-d396-4f7f-8adb-918860a3720e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -316,50 +344,6 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Option1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5d942b88-808a-41d6-839b-788b4e4fd559",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NumKey1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "10fc85f7-cc18-4073-8b4f-0302f5339a18",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NumKey2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f928ac8e-8532-4268-b467-194f5e114b76",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NumKey3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "14150833-863c-4f27-b5b6-4a90fe120b6c",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "NumKey4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -44,7 +44,7 @@ public class Input_Controller : MonoBehaviour
 
 
     public Action<Vector2> OnMovement;
-    public Action<InputActionReference> OnAnyInput;
+    public Action<Vector2> OnNavigate;
 
     public Action OnInteractStart;
     public Action OnInteract;
@@ -52,6 +52,8 @@ public class Input_Controller : MonoBehaviour
 
     public Action OnAction1;
     public Action OnAction2;
+
+    public Action<InputActionReference> OnAnyInput;
 
 
     public Action<Vector2> OnCursorControl;
@@ -180,10 +182,21 @@ public class Input_Controller : MonoBehaviour
 
     public void Movement(InputAction.CallbackContext context)
     {
+        _inputDirection = Vector2.zero;
+
         Vector2 directionInput = context.ReadValue<Vector2>();
 
         OnMovement?.Invoke(directionInput);
         _inputDirection = directionInput;
+    }
+
+    public void Navigate(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        Vector2 directionInput = context.ReadValue<Vector2>();
+
+        OnNavigate?.Invoke(directionInput);
     }
 
     public void Interact(InputAction.CallbackContext context)
@@ -250,10 +263,14 @@ public class Input_Controller : MonoBehaviour
     // UI Control
     public void CursorControl(InputAction.CallbackContext context)
     {
+        _inputDirection = Vector2.zero;
+
+        if (!context.performed) return;
+
         Vector2 directionInput = context.ReadValue<Vector2>();
 
-        OnCursorControl?.Invoke(directionInput);
         _inputDirection = directionInput;
+        OnCursorControl?.Invoke(directionInput);
     }
 
     public void Select(InputAction.CallbackContext context)
