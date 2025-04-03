@@ -46,7 +46,7 @@ public class Station_Movement : MonoBehaviour
     //
     private void Rigidbody_Update()
     {
-        Vector2 inputDirection = Input_Controller.instance.inputDirection;
+        Vector2 inputDirection = Input_Controller.instance.movementDirection;
         float speed = 3f;
 
         _rigidBody.velocity = new Vector2(inputDirection.x * speed, inputDirection.y * speed);

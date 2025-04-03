@@ -57,7 +57,7 @@ public class Player_Interaction : MonoBehaviour
     // Input Controller
     private void Refresh_DetectedInteractables(IInteractable excludeInteractable)
     {
-        Detection_Controller detection = _controller.detectionController;
+        Detection_Controller detection = _controller.detection;
 
         for (int i = 0; i < detection.All_Interactables().Count; i++)
         {
@@ -68,7 +68,7 @@ public class Player_Interaction : MonoBehaviour
 
     private IInteractable Closest_Interactable()
     {
-        Detection_Controller detection = _controller.detectionController;
+        Detection_Controller detection = _controller.detection;
 
         if (detection.Closest_Interactable() == null) return null;
         if (!detection.Closest_Interactable().TryGetComponent(out IInteractable interactable)) return null;

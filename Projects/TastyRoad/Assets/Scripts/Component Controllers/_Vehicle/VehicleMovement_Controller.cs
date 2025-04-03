@@ -121,7 +121,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (_onBoard == false) return;
 
-        Vector2 currentDirection = Input_Controller.instance.inputDirection;
+        Vector2 currentDirection = Input_Controller.instance.movementDirection;
         _controller.transform.Translate(_moveSpeed * Time.deltaTime * currentDirection);
     }
 

@@ -71,6 +71,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""587b5fc3-a1f6-4e0e-ab2f-317d99993940"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -179,7 +188,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -190,7 +199,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -201,7 +210,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -212,10 +221,21 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""PC"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cbf7eb85-006b-495d-a438-ed6b49fc052b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -393,6 +413,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_InGame_Action1 = m_InGame.FindAction("Action1", throwIfNotFound: true);
         m_InGame_Action2 = m_InGame.FindAction("Action2", throwIfNotFound: true);
         m_InGame_Navigate = m_InGame.FindAction("Navigate", throwIfNotFound: true);
+        m_InGame_Cancel = m_InGame.FindAction("Cancel", throwIfNotFound: true);
         // UI Control
         m_UIControl = asset.FindActionMap("UI Control", throwIfNotFound: true);
         m_UIControl_CursorControl = m_UIControl.FindAction("Cursor Control", throwIfNotFound: true);
@@ -466,6 +487,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Action1;
     private readonly InputAction m_InGame_Action2;
     private readonly InputAction m_InGame_Navigate;
+    private readonly InputAction m_InGame_Cancel;
     public struct InGameActions
     {
         private @PlayerControls m_Wrapper;
@@ -475,6 +497,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Action1 => m_Wrapper.m_InGame_Action1;
         public InputAction @Action2 => m_Wrapper.m_InGame_Action2;
         public InputAction @Navigate => m_Wrapper.m_InGame_Navigate;
+        public InputAction @Cancel => m_Wrapper.m_InGame_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -499,6 +522,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Navigate.started += instance.OnNavigate;
             @Navigate.performed += instance.OnNavigate;
             @Navigate.canceled += instance.OnNavigate;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -518,6 +544,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Navigate.started -= instance.OnNavigate;
             @Navigate.performed -= instance.OnNavigate;
             @Navigate.canceled -= instance.OnNavigate;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -629,6 +658,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnAction1(InputAction.CallbackContext context);
         void OnAction2(InputAction.CallbackContext context);
         void OnNavigate(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
     public interface IUIControlActions
     {

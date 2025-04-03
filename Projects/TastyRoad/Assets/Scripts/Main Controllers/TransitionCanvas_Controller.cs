@@ -7,7 +7,6 @@ public class TransitionCanvas_Controller : MonoBehaviour
 {
     [Header("")]
     [SerializeField] private RectTransform _curtain;
-
     [SerializeField] private Image _loadIconImage;
 
     [Header("")]
@@ -17,8 +16,10 @@ public class TransitionCanvas_Controller : MonoBehaviour
     [SerializeField][Range(0F, 10F)] private float _loadTime;
     [SerializeField][Range(0F, 10F)] private float _transitionTime;
 
+    [Header("")]
+    [SerializeField][Range(0f, 1f)] private float _pauseTransparency;
 
-    public static TransitionCanvas_Controller instance;
+
     public static bool transitionPlaying;
 
 
@@ -45,19 +46,17 @@ public class TransitionCanvas_Controller : MonoBehaviour
         transitionPlaying = true;
 
         LeanTween.alpha(_curtain, 1f, 0f);
-
         LeanTween.moveX(_curtain, -1940f, 0);
         LeanTween.moveX(_curtain, 0f, _transitionTime).setEase(_leanTweenType);
 
         if (_loadIconImage != null)
         {
-            LeanTween.alpha(_loadIconImage.rectTransform, 1f, 0.1f).setDelay(_transitionTime);
+            LeanTween.alpha(_loadIconImage.rectTransform, 1f, 0.1f).setDelay(_transitionTime / 1.5f);
         }
 
         yield return new WaitForSeconds(_loadTime);
 
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
-
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0.1f);
 
         transitionPlaying = false;
@@ -85,11 +84,27 @@ public class TransitionCanvas_Controller : MonoBehaviour
 
         if (_loadIconImage != null)
         {
-            LeanTween.alpha(_loadIconImage.rectTransform, 1f, 0.1f).setDelay(_transitionTime);
+            LeanTween.alpha(_loadIconImage.rectTransform, 1f, 0.1f).setDelay(_transitionTime / 1.5f);
         }
 
         yield return new WaitForSeconds(_loadTime);
 
         transitionPlaying = false;
+    }
+
+
+    public void Toggle_PauseScreen(bool toggle)
+    {
+        if (toggle)
+        {
+            LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0f);
+
+            _curtain.anchoredPosition = Vector2.zero;
+            LeanTween.alpha(_curtain, _pauseTransparency, 0f);
+
+            return;
+        }
+
+        LeanTween.alpha(_curtain, 0f, 0f);
     }
 }

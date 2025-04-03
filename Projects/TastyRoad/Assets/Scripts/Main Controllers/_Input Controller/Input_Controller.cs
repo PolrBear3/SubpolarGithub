@@ -27,8 +27,8 @@ public class Input_Controller : MonoBehaviour
     private List<string> _actionMaps = new();
 
 
-    private Vector2 _inputDirection;
-    public Vector2 inputDirection => _inputDirection;
+    private Vector2 _movementDirection;
+    public Vector2 movementDirection => _movementDirection;
 
     private bool _isHolding;
     public bool isHolding => _isHolding;
@@ -52,6 +52,8 @@ public class Input_Controller : MonoBehaviour
 
     public Action OnAction1;
     public Action OnAction2;
+
+    public Action OnCancel;
 
     public Action<InputActionReference> OnAnyInput;
 
@@ -113,6 +115,18 @@ public class Input_Controller : MonoBehaviour
         string mapName = _actionMaps[indexNum];
 
         _playerInput.SwitchCurrentActionMap(mapName);
+    }
+
+    public int Current_ActionMapNum()
+    {
+        string currentMapName = _playerInput.currentActionMap.name;
+
+        for (int i = 0; i < _actionMaps.Count; i++)
+        {
+            if (currentMapName != _actionMaps[i]) continue;
+            return i;
+        }
+        return 0;
     }
 
 
@@ -182,12 +196,12 @@ public class Input_Controller : MonoBehaviour
 
     public void Movement(InputAction.CallbackContext context)
     {
-        _inputDirection = Vector2.zero;
+        _movementDirection = Vector2.zero;
 
         Vector2 directionInput = context.ReadValue<Vector2>();
 
         OnMovement?.Invoke(directionInput);
-        _inputDirection = directionInput;
+        _movementDirection = directionInput;
     }
 
     public void Navigate(InputAction.CallbackContext context)
@@ -259,17 +273,20 @@ public class Input_Controller : MonoBehaviour
         Inovke_AnyInput(context);
     }
 
+    public void Cancel(InputAction.CallbackContext context)
+    {
+        if (context.performed == false) return;
+        OnCancel?.Invoke();
+    }
+
 
     // UI Control
     public void CursorControl(InputAction.CallbackContext context)
     {
-        _inputDirection = Vector2.zero;
-
         if (!context.performed) return;
 
         Vector2 directionInput = context.ReadValue<Vector2>();
 
-        _inputDirection = directionInput;
         OnCursorControl?.Invoke(directionInput);
     }
 

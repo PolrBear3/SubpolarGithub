@@ -103,8 +103,7 @@ public class LocationMenu_Controller : MonoBehaviour
     {
         Main_Controller main = Main_Controller.instance;
 
-        // disable player controls
-        main.Player().Toggle_Controllers(!toggle);
+        main.Player().detection.Toggle_BoxCollider(!toggle);
 
         // menu toggle
         _menuPanel.gameObject.SetActive(toggle);
@@ -230,7 +229,7 @@ public class LocationMenu_Controller : MonoBehaviour
 
         worldMap.Update_Location(_tiles[_hoverTileNum].data);
 
-        main.Player().Toggle_Controllers(false);
+        main.Player().detection.Toggle_BoxCollider(false);
     }
 
 

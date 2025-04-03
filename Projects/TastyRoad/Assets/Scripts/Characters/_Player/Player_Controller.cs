@@ -21,8 +21,8 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
 
     [Header("")]
-    [SerializeField] private Detection_Controller _detectionController;
-    public Detection_Controller detectionController => _detectionController;
+    [SerializeField] private Detection_Controller _detection;
+    public Detection_Controller detection => _detection;
 
     [SerializeField] private BasicAnimation_Controller _animationController;
     public BasicAnimation_Controller animationController => _animationController;
@@ -109,7 +109,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     /// </summary>
     public void Toggle_Controllers(bool toggle)
     {
-        _detectionController.Toggle_BoxCollider(toggle);
+        _detection.Toggle_BoxCollider(toggle);
 
         _movement.enabled = toggle;
         _interaction.enabled = toggle;
