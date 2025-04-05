@@ -60,15 +60,28 @@ public class TransitionCanvas_Controller : MonoBehaviour
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0.1f);
 
         transitionPlaying = false;
+
+        yield break;
     }
 
 
     public void OpenScene_Transition()
     {
+        StartCoroutine(OpenScene_Transition_Coroutine());
+    }
+    private IEnumerator OpenScene_Transition_Coroutine()
+    {
+        transitionPlaying = true;
+
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
 
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0f);
+
+        yield return new WaitForSeconds(_transitionTime);
+        transitionPlaying = false;
+
+        yield break;
     }
 
     public void CloseScene_Transition()
@@ -88,8 +101,9 @@ public class TransitionCanvas_Controller : MonoBehaviour
         }
 
         yield return new WaitForSeconds(_loadTime);
-
         transitionPlaying = false;
+
+        yield break;
     }
 
 

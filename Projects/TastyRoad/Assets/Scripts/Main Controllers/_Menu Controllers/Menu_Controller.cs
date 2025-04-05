@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,9 @@ public class Menu_Controller : MonoBehaviour
     private int _currentIndex;
     public int currentIndex => _currentIndex;
 
+    public Action OnNavigate;
+    public Action OnAction;
+
 
     // MonoBehaviour
     public void Start()
@@ -25,6 +29,13 @@ public class Menu_Controller : MonoBehaviour
 
         input.OnCursorControl -= Navigate_Action;
         input.OnSelect -= Select_Action;
+    }
+
+
+    // Data Control
+    public void Set_CurrentIndex(int indexNum)
+    {
+        _currentIndex = Mathf.Clamp(indexNum, 0, _selectActions.Length - 1);
     }
 
 
@@ -57,6 +68,8 @@ public class Menu_Controller : MonoBehaviour
 
         float value = direction.x + direction.y;
         _currentIndex = (_currentIndex + (int)value + actionCount) % actionCount;
+
+        OnNavigate?.Invoke();
     }
 
     private void Select_Action()
@@ -64,5 +77,6 @@ public class Menu_Controller : MonoBehaviour
         if (_selectActions.Length <= 0) return;
 
         _selectActions[_currentIndex]?.Invoke();
+        OnAction?.Invoke();
     }
 }

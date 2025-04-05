@@ -30,6 +30,9 @@ public class Input_Controller : MonoBehaviour
     private Vector2 _movementDirection;
     public Vector2 movementDirection => _movementDirection;
 
+    private Vector2 _cursorDirection;
+    public Vector2 cursorDirection => _cursorDirection;
+
     private bool _isHolding;
     public bool isHolding => _isHolding;
 
@@ -283,11 +286,14 @@ public class Input_Controller : MonoBehaviour
     // UI Control
     public void CursorControl(InputAction.CallbackContext context)
     {
+        _cursorDirection = Vector2.zero;
+
         if (!context.performed) return;
 
         Vector2 directionInput = context.ReadValue<Vector2>();
 
         OnCursorControl?.Invoke(directionInput);
+        _cursorDirection = directionInput;
     }
 
     public void Select(InputAction.CallbackContext context)

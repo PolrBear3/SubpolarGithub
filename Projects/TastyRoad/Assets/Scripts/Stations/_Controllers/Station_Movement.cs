@@ -1,20 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Station_Movement : MonoBehaviour
 {
     private Rigidbody2D _rigidBody;
-
     private Station_Controller _stationController;
-
 
     [Header("")]
     [SerializeField] private GameObject _movementArrows;
     public GameObject movementArrows => _movementArrows;
-
 
     public Action OnLoadPosition;
 
@@ -39,14 +37,14 @@ public class Station_Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Rigidbody_Update();
+        CursorControl_MovementUpdate();
     }
 
 
     //
-    private void Rigidbody_Update()
+    private void CursorControl_MovementUpdate()
     {
-        Vector2 inputDirection = Input_Controller.instance.movementDirection;
+        Vector2 inputDirection = Input_Controller.instance.cursorDirection;
         float speed = 3f;
 
         _rigidBody.velocity = new Vector2(inputDirection.x * speed, inputDirection.y * speed);
