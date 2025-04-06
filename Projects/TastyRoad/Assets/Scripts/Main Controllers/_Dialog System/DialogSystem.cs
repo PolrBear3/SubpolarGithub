@@ -33,12 +33,14 @@ public class DialogSystem : MonoBehaviour
 
         // subscriptions
         Input_Controller.instance.OnNavigate += Navigate_InfoBox;
+        PauseMenu_Controller.instance.OnPause += Hide_InfoBox;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         Input_Controller.instance.OnNavigate -= Navigate_InfoBox;
+        PauseMenu_Controller.instance.OnPause -= Hide_InfoBox;
     }
 
 
@@ -108,6 +110,12 @@ public class DialogSystem : MonoBehaviour
 
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
+
+    private void Hide_InfoBox()
+    {
+        Show_InfoBox(false);
+    }
+
 
     private void Navigate_InfoBox(Vector2 navigatedInput)
     {

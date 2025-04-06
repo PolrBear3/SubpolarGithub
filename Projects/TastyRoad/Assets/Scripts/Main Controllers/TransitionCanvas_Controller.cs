@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class TransitionCanvas_Controller : MonoBehaviour
 {
@@ -15,9 +17,6 @@ public class TransitionCanvas_Controller : MonoBehaviour
     [Header("")]
     [SerializeField][Range(0F, 10F)] private float _loadTime;
     [SerializeField][Range(0F, 10F)] private float _transitionTime;
-
-    [Header("")]
-    [SerializeField][Range(0f, 1f)] private float _pauseTransparency;
 
 
     public static bool transitionPlaying;
@@ -81,6 +80,8 @@ public class TransitionCanvas_Controller : MonoBehaviour
         yield return new WaitForSeconds(_transitionTime);
         transitionPlaying = false;
 
+        VideoGuide_Controller.instance.Trigger_Guide("Movement Controls");
+
         yield break;
     }
 
@@ -109,16 +110,8 @@ public class TransitionCanvas_Controller : MonoBehaviour
 
     public void Toggle_PauseScreen(bool toggle)
     {
-        if (toggle)
-        {
-            LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0f);
+        if (Main_Controller.instance.globalVolume.profile.TryGet(out DepthOfField effect) == false) return;
 
-            _curtain.anchoredPosition = Vector2.zero;
-            LeanTween.alpha(_curtain, _pauseTransparency, 0f);
-
-            return;
-        }
-
-        LeanTween.alpha(_curtain, 0f, 0f);
+        effect.active = toggle;
     }
 }

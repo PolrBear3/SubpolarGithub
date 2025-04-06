@@ -18,6 +18,11 @@ public class Menu_Controller : MonoBehaviour
 
 
     // MonoBehaviour
+    public void Awake()
+    {
+
+    }
+
     public void Start()
     {
 

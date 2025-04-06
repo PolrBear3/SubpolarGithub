@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEditor;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
@@ -16,8 +15,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Camera_Controller _cameraController;
     public Camera_Controller cameraController => _cameraController;
 
+    [Header("")]
     [SerializeField] private Light2D _globalLight;
     public Light2D globalLight => _globalLight;
+
+    [SerializeField] private Volume _globalVolume;
+    public Volume globalVolume => _globalVolume;
 
 
     [Header("")]

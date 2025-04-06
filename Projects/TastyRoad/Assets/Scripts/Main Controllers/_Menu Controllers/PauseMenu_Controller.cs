@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PauseMenu_Controller : Menu_Controller
 {
+    public static PauseMenu_Controller instance;
+
+
     [Header("")]
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private RectTransform[] _selectBoxes;
@@ -12,8 +15,15 @@ public class PauseMenu_Controller : Menu_Controller
 
     private Vector2 _unSelectPosition;
 
+    public Action OnPause;
+
 
     // Menu_Controller
+    public new void Awake()
+    {
+        instance = this;
+    }
+
     public new void Start()
     {
         Set_CurrentIndex(_selectBoxes.Length);
@@ -59,6 +69,7 @@ public class PauseMenu_Controller : Menu_Controller
 
         if (_menuPanel.activeSelf == false) return;
 
+        OnPause?.Invoke();
         Navigate_SelectBox();
     }
 
