@@ -19,6 +19,8 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     [SerializeField] private FoodData[] _lootDatas;
     [SerializeField] private FoodData[] _passiveLootDatas;
 
+    [Header("")] 
+    [SerializeField][Range(0, 100)] private int _refillTikCount;
 
     private LootBox_Data _data;
 
@@ -30,21 +32,21 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         Load_Data();
     }
-
     private void Start()
     {
         Update_CurrentSprite();
 
         // subscriptions
         WorldMap_Controller.OnNewLocation += Reset_DroppedState;
-
+        GlobalTime_Controller.instance.OnTimeTik += Refill;
+        
         _iInteractable.OnInteract += Drop_LootBoxItem;
     }
-
     private void OnDestroy()
     {
         // subscriptions
         WorldMap_Controller.OnNewLocation -= Reset_DroppedState;
+        GlobalTime_Controller.instance.OnTimeTik -= Refill;
 
         _iInteractable.OnInteract -= Drop_LootBoxItem;
     }
@@ -55,7 +57,6 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     {
         ES3.Save("LootBox/LootBox_Data", _data);
     }
-
     public void Load_Data()
     {
         _data = ES3.Load("LootBox/LootBox_Data", new LootBox_Data(false));
@@ -82,7 +83,6 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         return _data.droppedMapHistory.Contains(currentLocationData);
     }
-
     private List<FoodData> Current_LootDatas()
     {
         List<FoodData> currentDatas = new();
@@ -100,10 +100,25 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         return currentDatas;
     }
 
-
     private void Reset_DroppedState()
     {
         _data.Toggle_DropStatus(false);
+        _data.Set_TikCount(0);
+    }
+    private void Refill()
+    {
+        if (_data.dropped == false) return;
+        
+        if (_data.tikCount < _refillTikCount)
+        {
+            _data.Update_TikCount(1);
+            return;
+        }
+        
+        _data.Set_TikCount(0);
+        
+        Reset_DroppedState();
+        Update_CurrentSprite();
     }
 
 
@@ -129,7 +144,6 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         return transform.position;
     }
-
     private void Drop_LootBoxItem()
     {
         if (_data.dropped) return;
