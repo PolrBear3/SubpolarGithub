@@ -603,6 +603,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
             foreach (Food_ScrObj ingredient in dataIngredients)
             {
+                if (ingredient.price <= 0) continue;
                 ingredients.Add(ingredient);
             }
         }
@@ -613,7 +614,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private Food_ScrObj UnlockedFood_Ingredient()
     {
         List<Food_ScrObj> ingredients = new(UnlockedFood_Ingredients());
-
+        
+        if (ingredients.Count <= 0) return null;
+        
         while (ingredients.Count > 0)
         {
             int randIndex = Random.Range(0, ingredients.Count);
@@ -634,6 +637,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // Restock
     private void Restock_Instant()
     {
+        if (UnlockedFood_Ingredients().Count <= 0) return;
+        
         for (int i = 0; i < _foodStocks.Length; i++)
         {
             if (_foodStocks[i].stockData.unlocked == false) continue;
@@ -657,6 +662,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     public void Restock()
     {
         if (_actionCoroutine != null) return;
+        if (UnlockedFood_Ingredients().Count <= 0) return;
 
         _actionCoroutine = StartCoroutine(Restock_Coroutine());
     }
@@ -692,6 +698,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private void Restock_EmptyStocks()
     {
         if (_actionCoroutine != null) return;
+        if (UnlockedFood_Ingredients().Count <= 0) return;
 
         _actionCoroutine = StartCoroutine(Restock_EmptyStock_Coroutine());
     }

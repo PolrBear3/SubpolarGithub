@@ -9,6 +9,14 @@ public class Fridge : Stack_Table, IInteractable
 
     private Coroutine _coroutine;
 
+    
+    // UnityEngine
+    public new void Start()
+    {
+        base.Start();
+        Freeze_Food();
+    }
+    
 
     // IInteractable
     public new void Interact()
@@ -27,6 +35,18 @@ public class Fridge : Stack_Table, IInteractable
 
 
     //
+    private bool AllFood_Frozen()
+    {
+        FoodData_Controller foodIcon = stationController.Food_Icon();
+        List<FoodData> datas = foodIcon.AllDatas();
+
+        for (int i = 0; i < datas.Count; i++)
+        {
+            if (datas[i].Current_ConditionLevel(FoodCondition_Type.frozen) < 3) return false;
+        }
+        return true;
+    }
+    
     private void Freeze_Food()
     {
         if (_coroutine != null)
@@ -38,6 +58,7 @@ public class Fridge : Stack_Table, IInteractable
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
         if (!foodIcon.hasFood) return;
+        if (AllFood_Frozen()) return;
 
         // restrict rotten system
         foodIcon.Toggle_TikCount(false);
@@ -48,7 +69,7 @@ public class Fridge : Stack_Table, IInteractable
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
-        while (foodIcon.hasFood)
+        while (foodIcon.hasFood && AllFood_Frozen() == false)
         {
             yield return new WaitForSeconds(_freezeDelayTime);
 

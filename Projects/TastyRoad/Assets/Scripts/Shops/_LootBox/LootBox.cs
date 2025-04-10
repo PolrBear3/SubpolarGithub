@@ -20,8 +20,13 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     [SerializeField] private FoodData[] _passiveLootDatas;
 
     [Header("")] 
-    [SerializeField][Range(0, 100)] private int _refillTikCount;
+    [SerializeField] private AmountBar _refillBar;
+    [SerializeField] private GameObject _dropReadyIcon;
 
+    [Header("")] 
+    [SerializeField][Range(0, 100)] private int _refillTikCount;
+    [SerializeField] [Range(0, 10)] private float _refillTime;
+    
     private LootBox_Data _data;
 
 
@@ -32,9 +37,12 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         Load_Data();
     }
+    
     private void Start()
     {
         Update_CurrentSprite();
+        
+        _dropReadyIcon.SetActive(!_data.dropped);
 
         // subscriptions
         WorldMap_Controller.OnNewLocation += Reset_DroppedState;
@@ -42,6 +50,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         
         _iInteractable.OnInteract += Drop_LootBoxItem;
     }
+    
     private void OnDestroy()
     {
         // subscriptions
@@ -57,6 +66,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     {
         ES3.Save("LootBox/LootBox_Data", _data);
     }
+    
     public void Load_Data()
     {
         _data = ES3.Load("LootBox/LootBox_Data", new LootBox_Data(false));
@@ -83,6 +93,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         return _data.droppedMapHistory.Contains(currentLocationData);
     }
+    
     private List<FoodData> Current_LootDatas()
     {
         List<FoodData> currentDatas = new();
@@ -100,11 +111,13 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         return currentDatas;
     }
 
+    
     private void Reset_DroppedState()
     {
         _data.Toggle_DropStatus(false);
         _data.Set_TikCount(0);
     }
+    
     private void Refill()
     {
         if (_data.dropped == false) return;
@@ -114,13 +127,44 @@ public class LootBox : MonoBehaviour, ISaveLoadable
             _data.Update_TikCount(1);
             return;
         }
+
+        StartCoroutine(Refill_Coroutine());
+    }
+    private IEnumerator Refill_Coroutine()
+    {
+        int refillAmount = 0;
+
+        for (int i = 0; i < _passiveLootDatas.Length; i++)
+        {
+            refillAmount += _passiveLootDatas[i].currentAmount;
+        }
+        
+        _refillBar.Set_MaxAmount(refillAmount);
+        _refillBar.Toggle_BarColor(true);
+        _refillBar.Toggle(true);
+
+        float eachWaitTime = _refillTime / refillAmount;
+
+        while (_refillBar.Is_MaxAmount() == false)
+        {
+            _refillBar.Update_Amount(1);
+            _refillBar.Load();
+
+            yield return new WaitForSeconds(eachWaitTime);
+        }
+        
+        _refillBar.Toggle(false);
         
         _data.Set_TikCount(0);
         
         Reset_DroppedState();
         Update_CurrentSprite();
+        
+        _dropReadyIcon.SetActive(true);
+        
+        yield break;
     }
-
+    
 
     // Drop
     private Vector2 Drop_Position()
@@ -178,5 +222,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         _data.Toggle_DropStatus(true);
         Update_CurrentSprite();
+        
+        _dropReadyIcon.SetActive(false);
     }
 }

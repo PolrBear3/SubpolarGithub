@@ -69,10 +69,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638785073718762534
+  lastModified: 638798902550440332
   FileSizes:
   - Name: Desktop
-    Value: 109152
+    Value: 295936
   Exists: 1
 --- !u!114 &-8842336582695762211
 MonoBehaviour:
@@ -113,11 +113,38 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638785073714508061
+  lastModified: 638798903233079735
   FileSizes:
   - Name: Desktop
-    Value: 1682
+    Value: 1828
   Exists: 1
+--- !u!114 &-8302899947674091205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Interaction/Shop_exit
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Interaction/Shop_exit
+  Guid:
+    Data1: -1444053090
+    Data2: 1118199162
+    Data3: 536929925
+    Data4: 909618886
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
 --- !u!114 &-7437292464083142477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,7 +242,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
   Name: Station SFX
   StudioPath: bank:/Station SFX
-  lastModified: 638785073719076969
+  lastModified: 638798902550658976
   FileSizes:
   - Name: Desktop
     Value: 17472
@@ -247,6 +274,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-3681649872826742010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Interaction/Shop_enter
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Interaction/Shop_enter
+  Guid:
+    Data1: -1842917828
+    Data2: 1306981253
+    Data3: 429688223
+    Data4: -663624559
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2500
+--- !u!114 &-3501060663682776478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/UI Control/UI_cursorControl
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/UI Control/UI_cursorControl
+  Guid:
+    Data1: -822786321
+    Data2: 1175435722
+    Data3: 111799437
+    Data4: -336948252
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 12
 --- !u!114 &-3199232476146871466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,12 +468,15 @@ MonoBehaviour:
   - {fileID: 9149461416140641624}
   - {fileID: 5506497794854222378}
   - {fileID: -1923747360536009667}
+  - {fileID: -3681649872826742010}
+  - {fileID: -8302899947674091205}
+  - {fileID: -3501060663682776478}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638785073719076969
+  cacheTime: 638798903233079735
   cacheVersion: 131618
 --- !u!114 &1291012834966449344
 MonoBehaviour:
@@ -409,10 +493,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638785073714496672
+  lastModified: 638798903233070706
   FileSizes:
   - Name: Desktop
-    Value: 1260
+    Value: 1472
   Exists: 1
 --- !u!114 &3758027296563283760
 MonoBehaviour:

@@ -28,12 +28,20 @@ public class Player_Movement : MonoBehaviour
 
     private void Start()
     {
-        Input_Controller.instance.OnMovement += FaceDirection_Update;
+        // subscriptions
+        Input_Controller input = Input_Controller.instance;
+        
+        input.OnMovement += FaceDirection_Update;
+        input.OnActionMapUpdate += Force_MovementRestriction;
     }
 
     private void OnDestroy()
     {
-        Input_Controller.instance.OnMovement -= FaceDirection_Update;
+        // subscriptions
+        Input_Controller input = Input_Controller.instance;
+        
+        input.OnMovement -= FaceDirection_Update;
+        input.OnActionMapUpdate -= Force_MovementRestriction;
     }
 
     private void Update()
@@ -61,7 +69,13 @@ public class Player_Movement : MonoBehaviour
 
         _rigidBody.velocity = new Vector2(inputDirection.x * _moveSpeed, inputDirection.y * _moveSpeed);
     }
-
+    
+    public void Force_MovementRestriction()
+    {
+        _rigidBody.velocity = Vector2.zero;
+        _playerController.animationController.Idle_Move(false);
+    }
+    
     private void FaceDirection_Update(Vector2 direction)
     {
         if (enabled == false) return;

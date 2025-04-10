@@ -16,14 +16,16 @@ MonoBehaviour:
   eatSprite: {fileID: 1994761882, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
   foodName: Meat Pie
   id: 14031
-  price: 5
+  price: 7
   ingredients:
   - _foodScrObj: {fileID: 11400000, guid: 9470ec1bfcc3543618a6f226a1e8d203, type: 2}
     _currentAmount: 0
     _tikCount: 0
     _conditionDatas:
     - type: 0
-      level: 1
+      level: 2
+    - type: 1
+      level: 2
   - _foodScrObj: {fileID: 11400000, guid: 0b89c542af6cd4772942773b8c555076, type: 2}
     _currentAmount: 0
     _tikCount: 0
@@ -31,5 +33,9 @@ MonoBehaviour:
     - type: 1
       level: 1
   restrictedCondtions: 
-  unlockAmount: 5
-  unlocks: []
+  unlockAmount: 6
+  unlocks:
+  - _foodScrObj: {fileID: 11400000, guid: b304d3831cc074e3cb7aaaa3a2013c01, type: 2}
+    _currentAmount: 0
+    _tikCount: 0
+    _conditionDatas: []

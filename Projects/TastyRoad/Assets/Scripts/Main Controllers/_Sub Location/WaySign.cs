@@ -90,5 +90,8 @@ public class WaySign : ActionBubble_Interactable
         main.cameraController.UpdatePosition(_subLocation.transform.position);
 
         player.Toggle_Controllers(true);
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 }

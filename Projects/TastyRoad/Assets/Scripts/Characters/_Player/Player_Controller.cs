@@ -113,5 +113,8 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
         _movement.enabled = toggle;
         _interaction.enabled = toggle;
+
+        if (toggle) return;
+        _movement.Force_MovementRestriction();
     }
 }

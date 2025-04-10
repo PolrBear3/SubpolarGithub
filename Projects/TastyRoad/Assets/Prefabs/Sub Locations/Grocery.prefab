@@ -789,6 +789,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1042672581417358112}
   - component: {fileID: 6228305641485053089}
+  - component: {fileID: 1648032746737820385}
   - component: {fileID: 6697486133214081430}
   m_Layer: 0
   m_Name: Grocery
@@ -873,6 +874,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1648032746737820385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8686814750325418844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -1444053090
+        Data2: 1118199162
+        Data3: 536929925
+        Data4: 909618886
+      Path: event:/Basic SFX/Interaction/Shop_exit
 --- !u!114 &6697486133214081430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1686,6 +1707,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1897204511, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+    - target: {fileID: 6749298938649198653, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
+      propertyPath: _soundDatas.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8425791093612531182, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
       propertyPath: m_Name
       value: Way Sign

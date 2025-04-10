@@ -32,7 +32,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private StationStock[] _stationStocks;
 
     [Header("")]
-    [SerializeField][Range(0, 5)] private int _duplicateAmount;
+    [SerializeField][Range(1, 100)] private int _duplicateAmount;
 
 
     private List<StationData> _archiveDatas = new();
@@ -294,6 +294,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private bool DuplicateAmount_Stocked(Station_ScrObj checkStation)
     {
         int checkCount = 0;
+        int duplicateAmount = 1;
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
@@ -302,9 +303,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             checkCount++;
         }
 
-        if (_duplicateAmount <= 0) _duplicateAmount = 1;
-
-        if (checkCount < _duplicateAmount) return false;
+        if (_archiveDatas.Count < _stationStocks.Length)
+        {
+            duplicateAmount = _duplicateAmount;
+        }
+        
+        if (checkCount < duplicateAmount) return false;
         return true;
     }
 
@@ -572,7 +576,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             string buildComplete = "Build Complete" + "\n\nBuild count    " + Archived_StationData(recentStation).amount + "/" + recentStation.buildToArchiveCount;
             dialog.Update_Dialog(new DialogData(recentStation.dialogIcon, buildComplete));
 
-            // restock locked bookmark station
+            // restock locked bookmark station, set price to 0
             _stationStocks[i].Toggle_Discount(false);
             _stationStocks[i].Restock(new(recentStation, 0));
 

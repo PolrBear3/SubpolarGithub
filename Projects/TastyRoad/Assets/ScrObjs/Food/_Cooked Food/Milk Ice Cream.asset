@@ -16,7 +16,7 @@ MonoBehaviour:
   eatSprite: {fileID: 515020049, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
   foodName: Milk Ice Cream
   id: 81386
-  price: 1
+  price: 2
   ingredients:
   - _foodScrObj: {fileID: 11400000, guid: db24c108b85754a16b780b4cd9905bfa, type: 2}
     _currentAmount: 0
@@ -31,5 +31,9 @@ MonoBehaviour:
     - type: 2
       level: 3
   restrictedCondtions: 0000000001000000
-  unlockAmount: 5
-  unlocks: []
+  unlockAmount: 6
+  unlocks:
+  - _foodScrObj: {fileID: 11400000, guid: 93f468edd125c4322bd0f18fa9ba6a7b, type: 2}
+    _currentAmount: 0
+    _tikCount: 0
+    _conditionDatas: []

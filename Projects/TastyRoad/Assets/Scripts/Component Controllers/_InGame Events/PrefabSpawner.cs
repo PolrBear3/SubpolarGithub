@@ -8,10 +8,10 @@ public class PrefabSpawner : MonoBehaviour
     [SerializeField] private GameObject _spawnPrefab;
 
     [Header("")]
-    [SerializeField] private bool _randomAmountSpawn;
-
-    [Header("")]
     [Range(0, 100)][SerializeField] private int _spawnAmount;
+    [Range(0, 100)][SerializeField] private int _minimumSpawnAmount;
+    
+    [Header("")]
     [SerializeField] private Vector2[] _spawnPositions;
 
 
@@ -56,13 +56,10 @@ public class PrefabSpawner : MonoBehaviour
 
     private int Spawn_Amount()
     {
-        if (_randomAmountSpawn)
-        {
-            int randAmount = Random.Range(1, _spawnAmount + 1);
-            return randAmount;
-        }
-
-        return _spawnAmount;
+        if (_minimumSpawnAmount >= _spawnAmount) return _spawnAmount;
+        
+        int randAmount = Random.Range(_minimumSpawnAmount, _spawnAmount);
+        return randAmount;
     }
 
 

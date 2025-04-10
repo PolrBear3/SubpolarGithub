@@ -46,14 +46,18 @@ public class Audio_Controller : MonoBehaviour
         RuntimeManager.PlayOneShot(soundReference, transform.position);
         return soundReference;
     }
-    public EventReference Play_OneShot(GameObject prefab, int dataIndexNum)
+    
+    public void Play_OneShot(GameObject prefab, int dataIndexNum)
     {
-        EventReference reference = prefab.GetComponent<SoundData_Controller>().soundDatas[dataIndexNum].reference;
-        Play_OneShot(reference);
+        SoundData_Controller dataController = prefab.GetComponent<SoundData_Controller>();
 
-        return reference;
+        if (dataController.soundDatas.Length <= 0) return;
+        
+        EventReference reference = dataController.soundDatas[dataIndexNum].reference;
+        Play_OneShot(reference);
     }
 
+    
     public void Set_EventInstance_Parameter(SoundData targetData, string parameterName, float setValue)
     {
         targetData.instance.setParameterByName(parameterName, setValue);

@@ -44,6 +44,7 @@ public class Input_Controller : MonoBehaviour
 
 
     public Action OnSchemeUpdate;
+    public Action OnActionMapUpdate;
 
 
     public Action<Vector2> OnMovement;
@@ -118,6 +119,8 @@ public class Input_Controller : MonoBehaviour
         string mapName = _actionMaps[indexNum];
 
         _playerInput.SwitchCurrentActionMap(mapName);
+        
+        OnActionMapUpdate?.Invoke();
     }
 
     public int Current_ActionMapNum()

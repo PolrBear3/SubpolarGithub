@@ -67,13 +67,19 @@ public class PauseMenu_Controller : Menu_Controller
         Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(_menuPanel.activeSelf);
         Toggle_InputControl(_menuPanel.activeSelf);
 
-        if (_menuPanel.activeSelf == false) return;
+        if (_menuPanel.activeSelf == false)
+        {
+            // sound
+            Audio_Controller.instance.Play_OneShot(gameObject, 0);
+            return;
+        }
 
         OnPause?.Invoke();
-        Navigate_SelectBox();
+        UpdatePosition_SelectBoxes();
     }
 
-    private void Navigate_SelectBox()
+
+    private void UpdatePosition_SelectBoxes()
     {
         for (int i = 0; i < _selectBoxes.Length; i++)
         {
@@ -85,5 +91,13 @@ public class PauseMenu_Controller : Menu_Controller
 
             _selectBoxes[i].localPosition = Vector2.zero;
         }
+    }
+    
+    private void Navigate_SelectBox()
+    {
+        UpdatePosition_SelectBoxes();
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 }

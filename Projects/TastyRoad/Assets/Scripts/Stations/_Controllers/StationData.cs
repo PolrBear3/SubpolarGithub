@@ -46,6 +46,7 @@ public class StationData
     {
         _stationScrObj = station;
         _durability = station.durability;
+        _amount = 1;
     }
 
     public StationData(Station_ScrObj station, Vector2 position)
@@ -53,6 +54,7 @@ public class StationData
         _stationScrObj = station;
         _position = position;
         _durability = station.durability;
+        _amount = 1;
     }
 
     public StationData(Station_ScrObj station, int amount)

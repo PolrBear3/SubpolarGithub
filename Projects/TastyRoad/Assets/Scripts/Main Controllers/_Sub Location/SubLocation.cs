@@ -43,6 +43,9 @@ public class SubLocation : MonoBehaviour
         // curtain scene transition
         main.transitionCanvas.CurrentScene_Transition();
 
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+        
         // wait until curtain closes
         while (TransitionCanvas_Controller.transitionPlaying) yield return null;
 

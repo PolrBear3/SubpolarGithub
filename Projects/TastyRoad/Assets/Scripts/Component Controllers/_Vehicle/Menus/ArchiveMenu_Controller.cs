@@ -27,6 +27,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private FoodCondition_Indicator[] _indicators;
 
     [Header("")]
+    [SerializeField] private GameObject _foodOrderIndicator;
+    [SerializeField] private Clock_Timer _foodOrderTimer;
+    
+    [Header("")]
     [SerializeField][Range(0, 500)] private int _maxUnlockAmount;
 
 
@@ -100,6 +104,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnDestroy()
     {
         OnDisable();
+        
+        // subscriptions
+        ActionBubble_Interactable interactable = _controller.vehicleController;
+
+        interactable.OnInteract -= Toggle_OrderIndicator;
+        interactable.OnUnInteract -= Toggle_OrderIndicator;
+        
+        Main_Controller.instance.OnFoodBookmark -= Toggle_OrderIndicator;
     }
 
 
@@ -128,7 +140,15 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // IVehicleMenu
     public void Start_Menu()
     {
+        Toggle_OrderIndicator();
+        
+        // subscriptions
+        ActionBubble_Interactable interactable = _controller.vehicleController;
 
+        interactable.OnInteract += Toggle_OrderIndicator;
+        interactable.OnUnInteract += Toggle_OrderIndicator;
+        
+        Main_Controller.instance.OnFoodBookmark += Toggle_OrderIndicator;
     }
 
 
@@ -405,6 +425,15 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         main.RemoveFood_fromBookmark(currentSlot.data.currentFood);
     }
 
+    private void Toggle_OrderIndicator()
+    {
+        bool bubbleOn = _controller.vehicleController.bubble.bubbleOn;
+        bool foodBookMarked = Main_Controller.instance.bookmarkedFoods.Count > 0;
+        
+        _foodOrderIndicator.SetActive(foodBookMarked && bubbleOn == false);
+        _foodOrderTimer.Toggle_RunAnimation(foodBookMarked&& bubbleOn == false);
+    }
+    
 
     // Archive Data
     public ItemSlot_Data Archived_FoodData(Food_ScrObj targetFood)

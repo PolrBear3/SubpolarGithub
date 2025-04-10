@@ -817,12 +817,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnAmount
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnPrefab
       value: 
       objectReference: {fileID: 2638662604626066613, guid: 4c9b8f1dde21340eb99531069eeb91b1, type: 3}
+    - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
+      propertyPath: _minimumSpawnAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -910,7 +914,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: db24c108b85754a16b780b4cd9905bfa, type: 2}
     - target: {fileID: 7538988048320665442, guid: 0b2ed6eda6a20411b93186cea871311e, type: 3}
       propertyPath: _lootDatas.Array.data[0]._currentAmount
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7909589239995186023, guid: 0b2ed6eda6a20411b93186cea871311e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -981,6 +985,10 @@ PrefabInstance:
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _randomAmountSpawn
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
+      propertyPath: _minimumSpawnAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1297,7 +1305,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnAmount
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnPrefab
@@ -1306,6 +1314,10 @@ PrefabInstance:
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _randomAmountSpawn
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
+      propertyPath: _minimumSpawnAmount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1388,6 +1400,10 @@ PrefabInstance:
       propertyPath: _spawnPrefab
       value: 
       objectReference: {fileID: 7513931959944482816, guid: 2ce2f765385af4e46befd1ecf6733ab5, type: 3}
+    - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
+      propertyPath: _minimumSpawnAmount
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

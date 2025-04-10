@@ -90,10 +90,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public Action OnExit_Input;
 
 
-    private bool _onHold;
-    private float _pressStartTime;
-
-
     // UnityEngine
     private void Start()
     {
@@ -207,11 +203,14 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void CursorControl(Vector2 inputDirection)
     {
-        if (_onHold) return;
+        if (Input_Controller.instance.isHolding) return;
 
         OnCursorControl_Input?.Invoke(inputDirection.x);
-
+        
         if (MenuInteraction_Active()) return;
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         if (inputDirection.x == 0)
         {
@@ -257,7 +256,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void Option1()
     {
-        if (_onHold) return;
+        if (Input_Controller.instance.isHolding) return;
 
         ItemSlot_Cursor cursor = _slotsController.cursor;
 
@@ -286,7 +285,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void Option2()
     {
-        if (_onHold) return;
+        if (Input_Controller.instance.isHolding) return;
 
         ItemSlot_Cursor cursor = _slotsController.cursor;
 
@@ -315,7 +314,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     private void Exit()
     {
-        if (_onHold) return;
+        if (Input_Controller.instance.isHolding) return;
 
         if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return;
 

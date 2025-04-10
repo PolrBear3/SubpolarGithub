@@ -389,6 +389,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Update_SlotIcon();
 
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
+        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
 
         cursor.Empty_Item();
     }
@@ -410,6 +411,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Update_SlotIcon();
 
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
+        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
     }
 
 
@@ -439,7 +441,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Station();
 
         // toggle
-        currentSlot.Toggle_BookMark(true);
+        currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
     }
 
 

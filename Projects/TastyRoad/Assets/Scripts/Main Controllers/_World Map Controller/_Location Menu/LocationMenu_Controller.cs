@@ -90,6 +90,9 @@ public class LocationMenu_Controller : MonoBehaviour
         Update_InfoBox();
 
         Update_TilesAnimation();
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
     private void Exit()
@@ -193,6 +196,8 @@ public class LocationMenu_Controller : MonoBehaviour
 
     private bool Select_Available()
     {
+        if (_menuPanel.gameObject.activeSelf == false) return false;
+        
         int centerNum = _tiles.Length / 2;
 
         if (_hoverTileNum == centerNum) return false;

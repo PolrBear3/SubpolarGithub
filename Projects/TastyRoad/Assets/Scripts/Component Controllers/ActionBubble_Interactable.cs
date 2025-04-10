@@ -56,7 +56,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     // IInteractable
     public void Interact()
     {
-        if (_unInteractLocked || _bubble == null) return;
+        if (_interactLocked || _bubble == null) return;
 
         if (_bubble.bubbleOn)
         {

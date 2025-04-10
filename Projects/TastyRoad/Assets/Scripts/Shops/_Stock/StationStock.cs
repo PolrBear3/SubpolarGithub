@@ -89,8 +89,10 @@ public class StationStock : MonoBehaviour
     {
         if (_sold) return 0;
 
-        int price = _currentStation.amount;
+        int price = _currentStation.stationScrObj.price;
 
+        if (_currentStation.amount <= 0) return 0;
+        
         if (_stockData.isDiscount && price > 0)
         {
             float discountValue = 1f - (_discountPercentage / 100f);
@@ -117,14 +119,9 @@ public class StationStock : MonoBehaviour
             return;
         }
 
-        Station_ScrObj currentStation = _currentStation.stationScrObj;
-
-        // pay calculation
-        if (GoldSystem.instance.Update_CurrentAmount(-Price()) == false) return;
-
         StationMenu_Controller stationMenu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
-
+        
         bool slotFull = slotsController.Empty_SlotData(stationMenu.currentDatas) == null;
 
         if (slotFull)
@@ -133,6 +130,11 @@ public class StationStock : MonoBehaviour
             _dialog.Update_Dialog(1);
             return;
         }
+        
+        Station_ScrObj currentStation = _currentStation.stationScrObj;
+
+        // pay calculation
+        if (GoldSystem.instance.Update_CurrentAmount(-Price()) == false) return;
 
         // add to vehicle
         stationMenu.Add_StationItem(currentStation, 1);

@@ -91,11 +91,11 @@ public class DialogSystem : MonoBehaviour
 
 
     // Information Box Control
-    private void Show_InfoBox(bool show)
+    private void Toggle_InfoBox(bool toggle)
     {
-        _infoBox.gameObject.SetActive(show);
+        _infoBox.gameObject.SetActive(toggle);
 
-        if (show == false)
+        if (toggle == false)
         {
             HoverToggle_CurrentDialog(false);
 
@@ -113,7 +113,7 @@ public class DialogSystem : MonoBehaviour
 
     private void Hide_InfoBox()
     {
-        Show_InfoBox(false);
+        Toggle_InfoBox(false);
     }
 
 
@@ -123,7 +123,7 @@ public class DialogSystem : MonoBehaviour
         {
             _currentDialogNum = 0;
 
-            Show_InfoBox(!_infoBox.gameObject.activeSelf);
+            Toggle_InfoBox(!_infoBox.gameObject.activeSelf);
             return;
         }
 
@@ -132,7 +132,7 @@ public class DialogSystem : MonoBehaviour
         int updateNum = (_currentDialogNum + (int)navigatedInput.x + _currentDialogs.Count) % _currentDialogs.Count;
         _currentDialogNum = updateNum;
 
-        Show_InfoBox(true);
+        Toggle_InfoBox(true);
     }
 
 
