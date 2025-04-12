@@ -80,7 +80,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
         yield return new WaitForSeconds(_transitionTime);
         transitionPlaying = false;
 
-        VideoGuide_Controller.instance.Trigger_Guide("Movement Controls");
+        VideoGuide_Controller.instance.Trigger_Guide("Basic Controls");
 
         yield break;
     }

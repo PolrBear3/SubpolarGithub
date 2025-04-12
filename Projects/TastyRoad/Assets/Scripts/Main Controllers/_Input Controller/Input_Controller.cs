@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Input_Controller : MonoBehaviour
 {
@@ -79,10 +80,9 @@ public class Input_Controller : MonoBehaviour
     {
         Set_Instance();
         Set_ActionMaps();
-        Set_CurrentScheme();
-
-        PlayerInput[] allInputs = FindObjectsOfType<PlayerInput>();
-
+        
+        Handle_SchemeUpdate(_playerInput);
+  
         // subscription
         _playerInput.onControlsChanged += Handle_SchemeUpdate;
     }
@@ -152,12 +152,24 @@ public class Input_Controller : MonoBehaviour
     // Scheme Control
     private void Handle_SchemeUpdate(PlayerInput playerInput)
     {
-        Set_CurrentScheme();
-
-        OnSchemeUpdate?.Invoke();
+        Update_CurrentScheme(_playerInput.currentControlScheme);
     }
-
-
+    
+    
+    public void Update_CurrentScheme(string schemeName)
+    {
+        _currentScheme = ControlScheme(schemeName);
+        OnSchemeUpdate?.Invoke();
+        
+        Debug.Log("_currentScheme: " + _currentScheme.name + "/ _playerInput.currentControlScheme: " + _playerInput.currentControlScheme);
+    }
+    
+    public void Update_EmojiAsset(TextMeshProUGUI text)
+    {
+        text.spriteAsset = _currentScheme.emojiAsset;
+    }
+    
+    
     private ControlScheme_ScrObj ControlScheme(string name)
     {
         for (int i = 0; i < _schemes.Length; i++)
@@ -167,7 +179,7 @@ public class Input_Controller : MonoBehaviour
         }
         return null;
     }
-
+    
     public GameObject CurrentScheme_ActionKey(InputActionReference reference)
     {
         ActionKey_Data[] datas = _currentScheme.actionKeyDatas;
@@ -178,15 +190,6 @@ public class Input_Controller : MonoBehaviour
             return datas[i].actionKey;
         }
         return null;
-    }
-
-
-    private void Set_CurrentScheme()
-    {
-        string schemeName = _playerInput.currentControlScheme;
-        Debug.Log(schemeName);
-
-        _currentScheme = ControlScheme("PC");
     }
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class InformationBox : MonoBehaviour
     [SerializeField] private Image _boxImage;
     public Image boxImage => _boxImage;
 
-    [SerializeField] private TMP_Text _infoText;
+    [SerializeField] private TextMeshProUGUI _infoText;
 
     [Header("")]
     [SerializeField] private float _heightIncreaseValue;
@@ -33,8 +34,20 @@ public class InformationBox : MonoBehaviour
     private void Start()
     {
         Set_DefalutHeight();
-
         gameObject.SetActive(false);
+        
+        Input_Controller input = Input_Controller.instance;
+        input.Update_EmojiAsset(_infoText);
+        
+        // subscriptions
+        input.OnSchemeUpdate += () => input.Update_EmojiAsset(_infoText);
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        Input_Controller input = Input_Controller.instance;
+        input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_infoText);
     }
 
 

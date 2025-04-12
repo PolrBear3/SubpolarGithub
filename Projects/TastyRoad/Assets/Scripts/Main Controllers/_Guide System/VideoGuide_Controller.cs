@@ -13,7 +13,10 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private VideoPlayer _videoPlayer;
     [SerializeField] private Image _playerPanel;
+    
+    [Header("")]
     [SerializeField] private TextMeshProUGUI _infoText;
+    [SerializeField] private TextMeshProUGUI _continueText;
 
     [Header("")]
     [SerializeField] private Guide_ScrObj[] _allGuides;
@@ -31,6 +34,18 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         instance = this;
     }
 
+    private void Start()
+    {
+        Input_Controller input = Input_Controller.instance;
+        
+        input.Update_EmojiAsset(_infoText);
+        input.Update_EmojiAsset(_continueText);
+
+        // subscriptions
+        input.OnSchemeUpdate += () => input.Update_EmojiAsset(_infoText);
+        input.OnSchemeUpdate += () => input.Update_EmojiAsset(_continueText);
+    }
+    
     private void OnDestroy()
     {
         // subscriptions
@@ -38,6 +53,9 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
         input.OnSelect -= Navigate_NextVideo;
         input.OnExit -= Navigate_NextVideo;
+        
+        input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_infoText);
+        input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_continueText);
     }
 
 
