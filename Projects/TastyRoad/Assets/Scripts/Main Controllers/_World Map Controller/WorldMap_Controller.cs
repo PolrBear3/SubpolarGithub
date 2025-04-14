@@ -127,7 +127,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         OnNewLocation?.Invoke();
 
         // save current activated events
-        SaveLoad_Controller.SaveAll_ISaveLoadable();
+        SaveLoad_Controller.instance.SaveAll_ISaveLoadable();
         Save_Data();
 
         // reload game scene

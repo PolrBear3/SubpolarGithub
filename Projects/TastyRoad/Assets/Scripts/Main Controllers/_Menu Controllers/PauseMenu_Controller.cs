@@ -68,6 +68,8 @@ public class PauseMenu_Controller : Menu_Controller
 
     public void Return_MainMenu()
     {
+        SaveLoad_Controller.instance.SaveAll_ISaveLoadable();
+        
         StartCoroutine(Return_MainMenu_Coroutine());
     }
     private IEnumerator Return_MainMenu_Coroutine()

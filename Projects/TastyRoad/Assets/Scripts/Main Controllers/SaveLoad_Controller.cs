@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using System.Linq;
 
@@ -11,10 +12,14 @@ public interface ISaveLoadable
  
 public class SaveLoad_Controller : MonoBehaviour
 {
-
+    public static SaveLoad_Controller instance;
+    
+    
     // UnityEngine
     private void Awake()
     {
+        instance = this;
+        
         LoadAll_ISaveLoadable();
     }
 
@@ -31,15 +36,14 @@ public class SaveLoad_Controller : MonoBehaviour
         return new(saveLoadableObjects);
     }
 
-    public static void SaveAll_ISaveLoadable()
+    public void SaveAll_ISaveLoadable()
     {
         for (int i = 0; i < All_ISaveLoadables().Count; i++)
         {
             All_ISaveLoadables()[i].Save_Data();
         }
     }
-
-
+    
     private void LoadAll_ISaveLoadable()
     {
         for (int i = 0; i < All_ISaveLoadables().Count; i++)
