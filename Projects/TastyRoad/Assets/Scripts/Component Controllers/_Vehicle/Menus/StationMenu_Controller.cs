@@ -354,6 +354,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.Update_SlotIcon();
 
         currentSlot.Empty_ItemBox();
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 1);
     }
 
     private void Drag_Cancel()
@@ -392,6 +394,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
 
         cursor.Empty_Item();
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 2);
     }
 
     private void Swap_Station()
@@ -412,6 +416,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
         currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 1);
     }
 
 

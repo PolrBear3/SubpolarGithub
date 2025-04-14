@@ -244,6 +244,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         if (MenuInteraction_Active()) return;
 
+        bool hasItem = _slotsController.cursor.data.hasItem;
+        
         _infoBox.gameObject.SetActive(_slotsController.cursor.data.hasItem);
         _infoBox.Update_RectLayout();
     }
@@ -281,6 +283,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Toggle_NavigatedMenu();
 
         cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 3);
     }
 
     private void Option2()
@@ -310,6 +314,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Toggle_NavigatedMenu();
 
         cursor.Update_CursorSprite(_menuCursorSprites[_currentMenuNum]);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 3);
     }
 
     private void Exit()

@@ -135,6 +135,15 @@ public class OrderStand : MonoBehaviour
 
             orderNPCs.Add(allNPCs[i]);
         }
+        
+        // condition food order npcs priority
+        orderNPCs.Sort((a, b) =>
+        {
+            int aHasCond = a.foodIcon.currentData.conditionDatas.Count > 0 ? 0 : 1;
+            int bHasCond = b.foodIcon.currentData.conditionDatas.Count > 0 ? 0 : 1;
+            
+            return aHasCond.CompareTo(bHasCond);
+        });
 
         return orderNPCs;
     }

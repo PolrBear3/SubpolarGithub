@@ -353,6 +353,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (currentSlot.data.hasItem == false) return;
 
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 1);
+        
         // drag single amount
         if (cursor.data.hasItem == false)
         {
@@ -402,6 +404,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         currentSlot.data.Update_Amount(-1);
         currentSlot.AmountText_Update();
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 1);
     }
 
     private void Drag_Cancel()
@@ -435,6 +439,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.AmountText_Update();
 
         cursor.Empty_Item();
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 2);
     }
 
     private void DropSingle_Food()
@@ -461,6 +467,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         currentSlot.data.Update_Amount(1);
         currentSlot.AmountText_Update();
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 2);
     }
 
 
@@ -471,6 +479,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot currentSlot = cursor.currentSlot;
 
         currentSlot.Toggle_BookMark(false);
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 1);
 
         // same food
         if (cursor.data.currentFood == currentSlot.data.currentFood)
@@ -747,7 +757,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         playerFood.Show_Condition();
         playerFood.Toggle_SubDataBar(true);
 
-        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 2);
+        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 1);
     }
 }
 

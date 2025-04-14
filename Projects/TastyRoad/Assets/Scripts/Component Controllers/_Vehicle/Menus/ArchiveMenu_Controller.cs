@@ -307,6 +307,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.Update_SlotIcon();
 
         Update_MaterialShineSlot(currentSlot);
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 1);
     }
 
     private void Drag_Cancel()
@@ -366,17 +368,30 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.Toggle_Lock(currentSlot.data.isLocked);
 
         Update_MaterialShineSlot(currentSlot);
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 2);
     }
 
     private void Swap_Food()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
+        ItemSlot currentSlot = cursor.currentSlot;
+        
         ItemSlot_Data slotData = new(cursor.currentSlot.data);
+        ItemSlot_Data cursorData = new(cursor.data);
 
-        Drop_Food();
+        currentSlot.Assign_Data(cursorData);
+        currentSlot.Update_SlotIcon();
+        
+        currentSlot.Toggle_BookMark(currentSlot.data.bookMarked);
+        currentSlot.Toggle_Lock(currentSlot.data.isLocked);
 
+        Update_MaterialShineSlot(currentSlot);
+        
         cursor.Assign_Data(slotData);
         cursor.Update_SlotIcon();
+        
+        Audio_Controller.instance.Play_OneShot(_controller.gameObject, 1);
     }
 
 

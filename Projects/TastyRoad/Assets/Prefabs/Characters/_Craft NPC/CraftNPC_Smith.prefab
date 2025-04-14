@@ -197,9 +197,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultData:
-    icon: {fileID: 0}
+    icon: {fileID: -1119333624, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: 
-  _datas: []
+  _datas:
+  - icon: {fileID: -56009312, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: "Repair nearby <sprite=57> \n<sprite=67> durability"
+  - icon: {fileID: 630336444, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: Transforms a nearby <sprite=57> into a random modified <sprite=57>
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0

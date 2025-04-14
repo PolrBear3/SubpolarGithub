@@ -85,7 +85,7 @@ public class CraftNPC_Smith : CraftNPC
 
         if (bubble.bubbleOn == false) return;
 
-        // dialog.Update_Dialog(_setTable.currentIndex); //
+        dialog.Update_Dialog(_setTable.currentIndex);
     }
 
     private void Toggle_PurchasePrice()
