@@ -108,10 +108,12 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Sprite worldIcon = main.dataController.World_Data(updateData.worldNum).worldIcon;
 
         // transition curtain animation
-        main.transitionCanvas.Set_LoadIcon(worldIcon);
-        main.transitionCanvas.CloseScene_Transition();
+        TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
+        
+        transition.Set_LoadIcon(worldIcon);
+        transition.CloseScene_Transition();
 
-        while (TransitionCanvas_Controller.transitionPlaying) yield return null;
+        while (transition.transitionPlaying) yield return null;
 
         // reset settings before moving on to new location
         main.Destroy_AllStations();
@@ -129,7 +131,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Save_Data();
 
         // reload game scene
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
 

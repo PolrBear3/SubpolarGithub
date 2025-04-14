@@ -7,14 +7,6 @@ public class PauseMenu_Controller : Menu_Controller
 {
     public static PauseMenu_Controller instance;
 
-
-    [Header("")]
-    [SerializeField] private GameObject _menuPanel;
-    [SerializeField] private RectTransform[] _selectBoxes;
-
-
-    private Vector2 _unSelectPosition;
-
     public Action OnPause;
 
 
@@ -26,19 +18,15 @@ public class PauseMenu_Controller : Menu_Controller
 
     public new void Start()
     {
-        Set_CurrentIndex(_selectBoxes.Length);
-
-        _unSelectPosition = new(_selectBoxes[0].anchoredPosition.x, _selectBoxes[0].anchoredPosition.y);
-
-        _menuPanel.SetActive(false);
+        base.Start();
+        
+        menuPanel.gameObject.SetActive(false);
 
         // subscriptions
         Input_Controller input = Input_Controller.instance;
 
         input.OnCancel += Toggle_Pause;
         input.OnExit += Toggle_Pause;
-
-        OnNavigate += Navigate_SelectBox;
     }
 
     public new void OnDestroy()
@@ -48,56 +36,27 @@ public class PauseMenu_Controller : Menu_Controller
 
         input.OnCancel -= Toggle_Pause;
         input.OnExit -= Toggle_Pause;
-
-        OnNavigate -= Navigate_SelectBox;
     }
 
 
     // Pause Options
     public void Toggle_Pause()
     {
-        if (TransitionCanvas_Controller.transitionPlaying) return;
+        TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
+        
+        if (transition.transitionPlaying) return;
 
         Input_Controller input = Input_Controller.instance;
 
-        if (_menuPanel.activeSelf == false && input.Current_ActionMapNum() == 1) return;
+        if (Menu_Toggled() == false && input.Current_ActionMapNum() == 1) return;
 
-        _menuPanel.SetActive(!_menuPanel.activeSelf);
+        Toggle_Menu(!Menu_Toggled());
+        transition.Toggle_PauseScreen(Menu_Toggled());
 
-        Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(_menuPanel.activeSelf);
-        Toggle_InputControl(_menuPanel.activeSelf);
-
-        if (_menuPanel.activeSelf == false)
-        {
-            // sound
-            Audio_Controller.instance.Play_OneShot(gameObject, 0);
-            return;
-        }
-
+        if (Menu_Toggled() == false) return;
         OnPause?.Invoke();
-        UpdatePosition_SelectBoxes();
-    }
-
-
-    private void UpdatePosition_SelectBoxes()
-    {
-        for (int i = 0; i < _selectBoxes.Length; i++)
-        {
-            if (i != currentIndex)
-            {
-                _selectBoxes[i].localPosition = _unSelectPosition;
-                continue;
-            }
-
-            _selectBoxes[i].localPosition = Vector2.zero;
-        }
-    }
-    
-    private void Navigate_SelectBox()
-    {
-        UpdatePosition_SelectBoxes();
         
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 }

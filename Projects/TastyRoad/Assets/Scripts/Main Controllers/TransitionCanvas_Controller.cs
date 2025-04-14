@@ -7,6 +7,9 @@ using UnityEngine.Rendering.Universal;
 
 public class TransitionCanvas_Controller : MonoBehaviour
 {
+    public static TransitionCanvas_Controller instance;
+    
+    
     [Header("")]
     [SerializeField] private RectTransform _curtain;
     [SerializeField] private Image _loadIconImage;
@@ -19,9 +22,15 @@ public class TransitionCanvas_Controller : MonoBehaviour
     [SerializeField][Range(0F, 10F)] private float _transitionTime;
 
 
-    public static bool transitionPlaying;
+    private bool _transitionPlaying;
+    public bool transitionPlaying => _transitionPlaying;
 
 
+    private void Awake()
+    {
+        instance = this;
+    }
+    
     private void Start()
     {
         OpenScene_Transition();
@@ -42,7 +51,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
     }
     private IEnumerator CurrentScene_Transition_Coroutine()
     {
-        transitionPlaying = true;
+        _transitionPlaying = true;
 
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, -1940f, 0);
@@ -58,7 +67,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0.1f);
 
-        transitionPlaying = false;
+        _transitionPlaying = false;
 
         yield break;
     }
@@ -70,7 +79,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
     }
     private IEnumerator OpenScene_Transition_Coroutine()
     {
-        transitionPlaying = true;
+        _transitionPlaying = true;
 
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
@@ -78,9 +87,12 @@ public class TransitionCanvas_Controller : MonoBehaviour
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0f);
 
         yield return new WaitForSeconds(_transitionTime);
-        transitionPlaying = false;
+        _transitionPlaying = false;
 
-        VideoGuide_Controller.instance.Trigger_Guide("Basic Controls");
+        VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
+        
+        if (videoGuide == null) yield break;
+        videoGuide.Trigger_Guide("Basic Controls");
 
         yield break;
     }
@@ -91,7 +103,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
     }
     private IEnumerator CloseScene_Transition_Coroutine()
     {
-        transitionPlaying = true;
+        _transitionPlaying = true;
 
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, 0f, _transitionTime).setEase(_leanTweenType); ;
@@ -102,7 +114,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
         }
 
         yield return new WaitForSeconds(_loadTime);
-        transitionPlaying = false;
+        _transitionPlaying = false;
 
         yield break;
     }

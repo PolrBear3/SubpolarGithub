@@ -12,6 +12,7 @@ public class Input_Controller : MonoBehaviour
 
     [Header("")]
     [SerializeField] private PlayerInput _playerInput;
+    public PlayerInput playerInput => _playerInput;
 
     [SerializeField] private ControlScheme_ScrObj[] _schemes;
 
