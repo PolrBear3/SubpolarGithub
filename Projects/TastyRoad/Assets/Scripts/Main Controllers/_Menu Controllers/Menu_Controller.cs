@@ -55,8 +55,6 @@ public class Menu_Controller : MonoBehaviour
         {
             button.Set_DefaultPosition();
         }
-        
-        Toggle_Menu(true);
     }
 
     public void OnDestroy()
@@ -75,7 +73,7 @@ public class Menu_Controller : MonoBehaviour
     }
 
 
-    // Menu Control
+    // Control
     public bool Menu_Toggled()
     {
         return _menuPanel.gameObject.activeSelf;
@@ -90,8 +88,6 @@ public class Menu_Controller : MonoBehaviour
         if (toggle)
         {
             input.Update_ActionMap(1);
-
-            Debug.Log(input.playerInput.currentActionMap);
 
             input.OnCursorControl += Navigate_Action;
             input.OnSelect += Select_Action;
@@ -145,22 +141,5 @@ public class Menu_Controller : MonoBehaviour
 
         _eventButtons[_currentIndex].actionEvent?.Invoke();
         OnAction?.Invoke();
-    }
-    
-    
-    // Main Menu
-    public void Start_InGame()
-    {
-        StartCoroutine(Start_InGame_Coroutine());
-    }
-    private IEnumerator Start_InGame_Coroutine()
-    {
-        TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
-        transition.CloseScene_Transition();
-
-        while (transition.transitionPlaying) yield return null;
-
-        SceneManager.LoadScene(1);
-        yield break;
     }
 }

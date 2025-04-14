@@ -869,9 +869,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 1.0719424
-    width: 0.91295546
-    height: 0.91254497
+    y: 0.4795501
+    width: 0.4611846
+    height: 0.46127298
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1704,6 +1704,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _menuPanel: {fileID: 0}
   _eventButtons:
+  - _button: {fileID: 318967068}
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - _button: {fileID: 1723095109}
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls: []
   - _button: {fileID: 584603336}
     _actionEvent:
       m_PersistentCalls:
@@ -1720,14 +1728,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - _button: {fileID: 1723095109}
-    _actionEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - _button: {fileID: 318967068}
-    _actionEvent:
-      m_PersistentCalls:
-        m_Calls: []
 --- !u!114 &1552865430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1750,10 +1750,10 @@ MonoBehaviour:
       Path: event:/Basic SFX/Dialog System/Dialog_open
   - _reference:
       Guid:
-        Data1: -822786321
-        Data2: 1175435722
-        Data3: 111799437
-        Data4: -336948252
+        Data1: -582139668
+        Data2: 1161418085
+        Data3: -168507222
+        Data4: 791067312
       Path: event:/Basic SFX/UI Control/UI_cursorControl
 --- !u!1 &1653868911
 GameObject:
