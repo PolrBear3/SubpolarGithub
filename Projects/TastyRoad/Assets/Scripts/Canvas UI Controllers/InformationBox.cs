@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Localization;
 
 public class InformationBox : MonoBehaviour
 {
     private RectTransform _rect;
 
+    
     [Header("")]
     [SerializeField] private Image _boxImage;
     public Image boxImage => _boxImage;
@@ -18,6 +20,7 @@ public class InformationBox : MonoBehaviour
     [Header("")]
     [SerializeField] private float _heightIncreaseValue;
 
+    
     private float _defaultHeight;
     private bool _defaultHeightSaved;
 

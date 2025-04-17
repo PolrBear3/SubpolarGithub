@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class DialogSystem : MonoBehaviour
 {
@@ -56,11 +58,8 @@ public class DialogSystem : MonoBehaviour
         _currentDialogs.Insert(0, dialogBox);
         ReOrder_CurrentDialogs();
 
-        HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
-
-        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
-        _infoBox.Update_RectLayout();
-
+        Toggle_InfoBox(_infoBox.gameObject.activeSelf);
+        
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         return dialogBox;
@@ -82,10 +81,8 @@ public class DialogSystem : MonoBehaviour
         }
 
         HoverToggle_CurrentDialog(_infoBox.gameObject.activeSelf);
-
         ReOrder_CurrentDialogs();
 
-        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
         _infoBox.Update_RectLayout();
     }
 
@@ -98,16 +95,15 @@ public class DialogSystem : MonoBehaviour
         if (toggle == false)
         {
             HoverToggle_CurrentDialog(false);
-
             Audio_Controller.instance.Play_OneShot(gameObject, 2);
+           
             return;
         }
 
-        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.info);
+        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.DialogInfo());
         _infoBox.Update_RectLayout();
 
         HoverToggle_CurrentDialog(true);
-
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 

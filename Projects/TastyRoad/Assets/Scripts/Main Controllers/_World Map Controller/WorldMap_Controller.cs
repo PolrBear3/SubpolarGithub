@@ -106,6 +106,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     {
         Main_Controller main = Main_Controller.instance;
         Sprite worldIcon = main.dataController.World_Data(updateData.worldNum).worldIcon;
+        
+        main.Player().Toggle_Controllers(false);
 
         // transition curtain animation
         TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
@@ -113,7 +115,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         transition.Set_LoadIcon(worldIcon);
         transition.CloseScene_Transition();
 
-        while (transition.transitionPlaying) yield return null;
+        while (transition.coroutine != null) yield return null;
 
         // reset settings before moving on to new location
         main.Destroy_AllStations();

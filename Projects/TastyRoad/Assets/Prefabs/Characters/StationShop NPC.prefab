@@ -191,21 +191,115 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: 0}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas:
   - icon: {fileID: 1586993584, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Dismantles a <sprite=68><sprite=57> into a <sprite=62>.
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
+      m_TableEntryReference:
+        m_KeyId: 15109589032960
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Currently dismantling the <sprite=57> into <sprite=62>.
+    info: Currently dismantling the <sprite=57> into <sprite=62>
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
+      m_TableEntryReference:
+        m_KeyId: 237150791524352
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -170552078, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Builds a blueprint <sprite=57> that is <sprite=68> on an empty purchase
       stock.
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
+      m_TableEntryReference:
+        m_KeyId: 237949126959104
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: 1533677180, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Currently building a blueprint <sprite=57> on an empty purchase stock.
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
+      m_TableEntryReference:
+        m_KeyId: 239671140409344
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -977863646, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: A full <sprite=62> amount is required to build a blueprint <sprite=57>
       !
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
+      m_TableEntryReference:
+        m_KeyId: 239875646283776
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: 1586993584, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: <sprite=62> amount is at full capacity!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
+      m_TableEntryReference:
+        m_KeyId: 241133631299584
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - icon: {fileID: 1586993584, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    info: '<sprite=57> Build Complete
+
+
+      Build Count    {currentCount}/{maxCount}'
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
+      m_TableEntryReference:
+        m_KeyId: 1433578496000
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables:
+      - name: currentCount
+        variable:
+          rid: 5938544035846684728
+      - name: maxCount
+        variable:
+          rid: 5938544035846684729
+  references:
+    version: 2
+    RefIds:
+    - rid: 5938544035846684728
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables, asm: Unity.Localization}
+      data:
+        m_Value: 99
+    - rid: 5938544035846684729
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables, asm: Unity.Localization}
+      data:
+        m_Value: 99
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0

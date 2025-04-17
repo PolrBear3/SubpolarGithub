@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,11 @@ public class DialogBox : MonoBehaviour
 
 
     // Updates
+    public void Set_IconImage(Sprite icon)
+    {
+        _iconImage.sprite = icon;
+    }
+    
     public void Update_IconImage()
     {
         _iconImage.sprite = _data.icon;

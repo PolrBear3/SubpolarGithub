@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GasPump : MonoBehaviour
+public class GasPump : MonoBehaviour, ISaveLoadable
 {
     [Header("")]
     [SerializeField] private IInteractable_Controller _interactable;
@@ -20,17 +20,24 @@ public class GasPump : MonoBehaviour
     [SerializeField] private GameObject _spawnPoint;
 
     [Header("")]
-    [SerializeField][Range(0, 1000)] private int _price;
+    [SerializeField][Range(0, 1000)] private int _defaultPrice;
     [SerializeField][Range(0, 100)] private int _fillTime;
 
+
+    private PurchaseData _data;
+    
     private Coroutine _coroutine;
 
 
     // UnityEngine
+    private void Awake()
+    {
+        Load_Data();
+    }
+    
     private void Start()
     {
-        _spawnReadyIcon.SetActive(false);
-
+        Load_PurchaseState();
         Toggle_SpawnPoint();
 
         // Subscriptions
@@ -61,14 +68,26 @@ public class GasPump : MonoBehaviour
         GlobalTime_Controller.instance.OnDayTime -= Fill_OilDrum;
     }
 
+    
+    // ISaveLoadable
+    public void Save_Data()
+    {
+        ES3.Save("GasPump/PurchaseData", _data);
+    }
 
-    // Indication Updates
+    public void Load_Data()
+    {
+        _data = ES3.Load("GasPump/PurchaseData", new PurchaseData(_defaultPrice));
+    }
+    
+
+    // Toggles
     private void Toggle_Price()
     {
         if (_coroutine != null) return;
         if (_fillBar.Is_MaxAmount()) return;
 
-        GoldSystem.instance.Indicate_TriggerData(new(_oilDrum.dialogIcon, -_price));
+        GoldSystem.instance.Indicate_TriggerData(new(_oilDrum.dialogIcon, -_data.price));
     }
 
     private void Toggle_SpawnPoint()
@@ -78,6 +97,14 @@ public class GasPump : MonoBehaviour
 
 
     // Functions
+    private void Load_PurchaseState()
+    {
+        _spawnReadyIcon.SetActive(_data.purchased);
+
+        if (_data.purchased == false) return;
+        _fillBar.Set_Amount(_fillBar.maxAmount);
+    }
+    
     private void Purchase()
     {
         if (_coroutine != null)
@@ -86,10 +113,11 @@ public class GasPump : MonoBehaviour
             return;
         }
 
-        if (_fillBar.Is_MaxAmount()) return;
+        if (_data.purchased) return;
 
-        if (GoldSystem.instance.Update_CurrentAmount(-_price) == false) return;
+        if (GoldSystem.instance.Update_CurrentAmount(-_data.price) == false) return;
 
+        _data.Toggle_PurchaseState(true);
         Fill_OilDrum();
 
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
@@ -108,6 +136,8 @@ public class GasPump : MonoBehaviour
         Station_Controller stationController = main.Spawn_Station(_oilDrum, _spawnPoint.transform.position);
         stationController.movement.Load_Position();
 
+        _data.Toggle_PurchaseState(false);
+        
         _fillBar.Toggle_BarColor(false);
         _fillBar.Set_Amount(0);
         _fillBar.Load();
@@ -129,6 +159,7 @@ public class GasPump : MonoBehaviour
     private IEnumerator Fill_OilDrum_Coroutine()
     {
         _fillBar.Toggle_BarColor(true);
+        _fillBar.Set_MaxAmount(_fillTime);
         _fillBar.Set_Amount(0);
         _fillBar.Toggle(true);
 

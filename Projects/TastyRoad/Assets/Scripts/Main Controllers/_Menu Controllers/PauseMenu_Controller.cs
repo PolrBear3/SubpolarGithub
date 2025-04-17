@@ -46,16 +46,10 @@ public class PauseMenu_Controller : Menu_Controller
     // Pause Options
     public void Toggle_Pause()
     {
-        TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
-        
-        if (transition.transitionPlaying) return;
-
-        Input_Controller input = Input_Controller.instance;
-
-        if (Menu_Toggled() == false && input.Current_ActionMapNum() == 1) return;
+        if (Menu_Toggled() == false && Input_Controller.instance.Current_ActionMapNum() == 1) return;
 
         Toggle_Menu(!Menu_Toggled());
-        transition.Toggle_PauseScreen(Menu_Toggled());
+        TransitionCanvas_Controller.instance.Toggle_PauseScreen(Menu_Toggled());
 
         if (Menu_Toggled() == false)
         {
@@ -74,7 +68,7 @@ public class PauseMenu_Controller : Menu_Controller
     }
     private IEnumerator Return_MainMenu_Coroutine()
     {
-        // lock player input //
+        Main_Controller.instance.Player().Toggle_Controllers(false);
         
         TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
         
@@ -83,7 +77,7 @@ public class PauseMenu_Controller : Menu_Controller
         
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
-        while (transition.transitionPlaying) yield return null;
+        while (transition.coroutine != null) yield return null;
 
         SceneManager.LoadScene(0);
         yield break;

@@ -30,7 +30,7 @@ public class MainMenu_Controller : Menu_Controller
         
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
-        while (transition.transitionPlaying) yield return null;
+        while (transition.coroutine != null) yield return null;
 
         SceneManager.LoadScene(1);
         yield break;

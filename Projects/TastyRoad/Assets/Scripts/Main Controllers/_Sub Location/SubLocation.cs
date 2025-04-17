@@ -47,7 +47,7 @@ public class SubLocation : MonoBehaviour
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
         
         // wait until curtain closes
-        while (TransitionCanvas_Controller.instance.transitionPlaying) yield return null;
+        while (TransitionCanvas_Controller.instance.coroutine != null) yield return null;
 
         // move player to current location return spawn point
         main.Player().transform.position = _returnPoint;

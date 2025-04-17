@@ -20,12 +20,13 @@ public class TransitionCanvas_Controller : MonoBehaviour
     [Header("")]
     [SerializeField][Range(0F, 10F)] private float _loadTime;
     [SerializeField][Range(0F, 10F)] private float _transitionTime;
+    
+    
+    private Coroutine _coroutine;
+    public Coroutine coroutine => _coroutine;
+    
 
-
-    private bool _transitionPlaying;
-    public bool transitionPlaying => _transitionPlaying;
-
-
+    // UnityEngine
     private void Awake()
     {
         instance = this;
@@ -47,12 +48,10 @@ public class TransitionCanvas_Controller : MonoBehaviour
     // Transition Types
     public void CurrentScene_Transition()
     {
-        StartCoroutine(CurrentScene_Transition_Coroutine());
+        _coroutine = StartCoroutine(CurrentScene_Transition_Coroutine());
     }
     private IEnumerator CurrentScene_Transition_Coroutine()
     {
-        _transitionPlaying = true;
-
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, -1940f, 0);
         LeanTween.moveX(_curtain, 0f, _transitionTime).setEase(_leanTweenType);
@@ -66,45 +65,44 @@ public class TransitionCanvas_Controller : MonoBehaviour
 
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0.1f);
-
-        _transitionPlaying = false;
-
+        
+        _coroutine = null;
         yield break;
     }
 
 
     public void OpenScene_Transition()
     {
-        StartCoroutine(OpenScene_Transition_Coroutine());
+        _coroutine = StartCoroutine(OpenScene_Transition_Coroutine());
     }
     private IEnumerator OpenScene_Transition_Coroutine()
     {
-        _transitionPlaying = true;
-
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
 
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0f);
 
         yield return new WaitForSeconds(_transitionTime);
-        _transitionPlaying = false;
 
         VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
-        
-        if (videoGuide == null) yield break;
+
+        if (videoGuide == null)
+        {
+            _coroutine = null;
+            yield break;
+        }
         videoGuide.Trigger_Guide("Basic Controls");
 
+        _coroutine = null;
         yield break;
     }
 
     public void CloseScene_Transition()
     {
-        StartCoroutine(CloseScene_Transition_Coroutine());
+        _coroutine =StartCoroutine(CloseScene_Transition_Coroutine());
     }
     private IEnumerator CloseScene_Transition_Coroutine()
     {
-        _transitionPlaying = true;
-
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, 0f, _transitionTime).setEase(_leanTweenType); ;
 
@@ -114,8 +112,8 @@ public class TransitionCanvas_Controller : MonoBehaviour
         }
 
         yield return new WaitForSeconds(_loadTime);
-        _transitionPlaying = false;
-
+        
+        _coroutine = null;
         yield break;
     }
 

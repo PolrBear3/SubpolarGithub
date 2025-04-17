@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
 public class StationShopNPC : MonoBehaviour, ISaveLoadable
 {
@@ -370,7 +372,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         move.Stop_FreeRoam();
         move.Free_Roam(_currentSubLocation.roamArea, 0f);
     }
-
+    
 
     // Dispose
     private bool Dispose_Restricted(Station_ScrObj checkStation)
@@ -573,9 +575,16 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             Archive_Station(recentStation);
 
             // dialog
-            string buildComplete = "Build Complete" + "\n\nBuild count    " + Archived_StationData(recentStation).amount + "/" + recentStation.buildToArchiveCount;
-            dialog.Update_Dialog(new DialogData(recentStation.dialogIcon, buildComplete));
-
+            DialogBox updateBox = dialog.Update_Dialog(6);
+            updateBox.Set_IconImage(recentStation.dialogIcon);
+            
+            Dictionary<string, string> buildCountStrings = new()
+            {
+                { "currentCount", ArchivedStation_BuildCount(recentStation).ToString() },
+                { "maxCount", recentStation.buildToArchiveCount.ToString() }
+            };
+            updateBox.data.Set_SmartInfo(buildCountStrings);
+            
             // restock locked bookmark station, set price to 0
             _stationStocks[i].Toggle_Discount(false);
             _stationStocks[i].Restock(new(recentStation, 0));

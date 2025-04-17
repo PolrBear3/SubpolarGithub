@@ -78,7 +78,7 @@ public class WaySign : ActionBubble_Interactable
         main.transitionCanvas.CurrentScene_Transition();
 
         // wait until curtain closes
-        while (TransitionCanvas_Controller.instance.transitionPlaying) yield return null;
+        while (TransitionCanvas_Controller.instance.coroutine != null) yield return null;
 
         // set return point for sub location exit
         _subLocation.Set_ReturnPoint(player.transform);
