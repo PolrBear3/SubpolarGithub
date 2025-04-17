@@ -409,9 +409,30 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: 0}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas:
   - icon: {fileID: -1889772576, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not enough  <sprite=87> export positions!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4272963676511979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1062,6 +1083,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1908141811356381471}
   - component: {fileID: 5425501975407929133}
+  - component: {fileID: 8260312763779565461}
   - component: {fileID: 6819107497965341309}
   m_Layer: 5
   m_Name: Archive
@@ -1105,7 +1127,55 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: 0}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &8260312763779565461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142200799194987385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4c4bd1e90a54c85830c50598b7e3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _templates:
+  - _infoName: lockStatus
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 51607327727616
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: ingredientToggle
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 51637178589184
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &6819107497965341309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1182,9 +1252,30 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: 0}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas:
   - icon: {fileID: 1450552337, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Current ability is fully leveled up!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &1103798826040559116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1474,10 +1565,10 @@ MonoBehaviour:
   _soundDatas:
   - _reference:
       Guid:
-        Data1: -582139668
-        Data2: 1161418085
-        Data3: -168507222
-        Data4: 791067312
+        Data1: -822786321
+        Data2: 1175435722
+        Data3: 111799437
+        Data4: -336948252
       Path: event:/Basic SFX/UI Control/UI_cursorControl
 --- !u!114 &277122501829671610
 MonoBehaviour:
@@ -2967,10 +3058,10 @@ MonoBehaviour:
   _soundDatas:
   - _reference:
       Guid:
-        Data1: -582139668
-        Data2: 1161418085
-        Data3: -168507222
-        Data4: 791067312
+        Data1: -822786321
+        Data2: 1175435722
+        Data3: 111799437
+        Data4: -336948252
       Path: event:/Basic SFX/UI Control/UI_cursorControl
   - _reference:
       Guid:

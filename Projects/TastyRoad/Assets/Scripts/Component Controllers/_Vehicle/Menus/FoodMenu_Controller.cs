@@ -54,6 +54,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnHoldSelect_Input += InfoBox_Update;
         _controller.OnOption1_Input += InfoBox_Update;
         _controller.OnOption2_Input += InfoBox_Update;
+        
+        Localization_Controller.instance.OnLanguageChanged += InfoBox_Update;
 
         Toggle_ExportIndicators(true);
     }
@@ -81,6 +83,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnOption1_Input -= InfoBox_Update;
         _controller.OnOption2_Input -= InfoBox_Update;
 
+        Localization_Controller.instance.OnLanguageChanged -= InfoBox_Update;
+        
         Toggle_ExportIndicators(false);
     }
 
@@ -259,25 +263,30 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (cursorData.hasItem == false) return;
 
         InformationBox info = _controller.infoBox;
+        InfoTemplate_Trigger infoTrigger = info.templateTrigger;
 
         // Action key 1 update
-        string action1 = "Swap";
+        string action1 = infoTrigger.TemplateString(6);
 
         if (slotData.hasItem && cursorData.currentFood == slotData.currentFood)
         {
-            action1 = "Drop 1 amount";
+            action1 = infoTrigger.TemplateString(5);
         }
         else if (slotData.hasItem == false)
         {
-            action1 = "Bookmark";
+            action1 = "<sprite=68>";
         }
+        
+        // current amount string
+        Information_Template amountTemplate = infoTrigger.templates[0];
+        
+        amountTemplate.Set_SmartInfo("currentAmount", cursorData.currentAmount.ToString());
+        string amountString = amountTemplate.InfoString();
 
-        // Set update
-        string amountInfo = info.CurrentAmount_Template(cursorData.currentAmount);
-        string controlInfo = info.UIControl_Template(action1, "Drag 1 amount", "Export");
-
-        info.Update_InfoText("<sprite=69> " + cursorData.currentFood.foodName + "\n" + amountInfo + "\n\n" + controlInfo);
-
+        // control string
+        string controlInfo = infoTrigger.KeyControl_Template(action1, infoTrigger.TemplateString(3), infoTrigger.TemplateString(7));
+        info.Update_InfoText("<sprite=69> " + cursorData.currentFood.foodName + "\n" + amountString + "\n\n" + controlInfo);
+        
         _controller.infoBox.gameObject.SetActive(true);
     }
 

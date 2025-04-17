@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: InGame_Menu Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: InGame_Menu
+  m_TableCollectionNameGuidString: a4a90c6a06e2643348486303d39330bc
+  m_Entries:
+  - m_Id: 1109316853760
+    m_Key: menu.drag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 999308648448
+    m_Key: menu.dropSingle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1154267209728
+    m_Key: menu.export
+    m_Metadata:
+      m_Items: []
+  - m_Id: 951569080320
+    m_Key: menu.swap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5357467328512
+    m_Key: menu.currentAmount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5240509161472
+    m_Key: menu.hold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24814755504128
+    m_Key: menu.dragSingle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24897152606208
+    m_Key: menu.drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30418106572800
+    m_Key: menu.import
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43495556374528
+    m_Key: menu.remove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51607327727616
+    m_Key: archiveMenu.lockStatus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 51637178589184
+    m_Key: archiveMenu.ingredient
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 2163505020054011909
+  references:
+    version: 2
+    RefIds:
+    - rid: 2163505020054011909
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1744861892130

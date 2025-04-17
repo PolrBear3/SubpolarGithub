@@ -35,14 +35,18 @@ public class DialogSystem : MonoBehaviour
 
         // subscriptions
         Input_Controller.instance.OnNavigate += Navigate_InfoBox;
-        PauseMenu_Controller.instance.OnPause += Hide_InfoBox;
+        
+        PauseMenu_Controller.instance.OnPause += () => Toggle_InfoBox(false);
+        Localization_Controller.instance.OnLanguageChanged += () => Toggle_InfoBox(_infoBox.gameObject.activeSelf);
     }
 
     private void OnDestroy()
     {
         // subscriptions
         Input_Controller.instance.OnNavigate -= Navigate_InfoBox;
-        PauseMenu_Controller.instance.OnPause -= Hide_InfoBox;
+        
+        PauseMenu_Controller.instance.OnPause -= () => Toggle_InfoBox(false);
+        Localization_Controller.instance.OnLanguageChanged -= () => Toggle_InfoBox(_infoBox.gameObject.activeSelf);
     }
 
 
@@ -106,12 +110,6 @@ public class DialogSystem : MonoBehaviour
         HoverToggle_CurrentDialog(true);
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
-
-    private void Hide_InfoBox()
-    {
-        Toggle_InfoBox(false);
-    }
-
 
     private void Navigate_InfoBox(Vector2 navigatedInput)
     {

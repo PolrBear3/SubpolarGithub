@@ -10,54 +10,52 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: InGame_en
+  m_Name: InGame_Dialog_ko
   m_EditorClassIdentifier: 
   m_LocaleId:
-    m_Code: en
+    m_Code: ko
   m_SharedData: {fileID: 11400000, guid: 402a6afc25e1a4cfc900c2be419405a8, type: 2}
   m_Metadata:
     m_Items:
-    - rid: 5938544035846684712
+    - rid: 5938544035846684713
   m_TableData:
   - m_Id: 1433578496000
-    m_Localized: '<sprite=57> Build Complete
-
-
-      Build Count    {currentCount}/{maxCount}'
+    m_Localized: "<sprite=57> \uC81C\uC791 \uC644\uB8CC\n\n\uC81C\uC791 \uADFC\uD669  
+      {currentCount}/{maxCount}"
     m_Metadata:
       m_Items:
-      - rid: 5938544035846684712
+      - rid: 5938544035846684713
   - m_Id: 15109589032960
-    m_Localized: Dismantles a <sprite=68><sprite=57> into a <sprite=62>.
+    m_Localized: "<sprite=68><sprite=57> \uC744 <sprite=62> \uB85C \uBD84\uD574\uD569\uB2C8\uB2E4"
     m_Metadata:
       m_Items: []
   - m_Id: 237150791524352
-    m_Localized: Currently dismantling the <sprite=57> into <sprite=62>.
+    m_Localized: "<sprite=57> \uC744 <sprite=62> \uB85C \uBD84\uD574 \uC911"
     m_Metadata:
       m_Items: []
   - m_Id: 237949126959104
-    m_Localized: Builds a blueprint <sprite=57> that is <sprite=68> on an empty purchase
-      stock.
+    m_Localized: "<sprite=68> <sprite=57> \uC124\uACC4\uB3C4\uB97C \uC81C\uC791\uD574
+      \uB4DC\uB9BD\uB2C8\uB2E4"
     m_Metadata:
       m_Items: []
   - m_Id: 239671140409344
-    m_Localized: Currently building a blueprint <sprite=57> on an empty purchase
-      stock.
+    m_Localized: "<sprite=57> \uC124\uACC4\uB3C4 \uC81C\uC791 \uC911"
     m_Metadata:
       m_Items: []
   - m_Id: 239875646283776
-    m_Localized: A full <sprite=62> amount is required to build a blueprint <sprite=57>
-      !
+    m_Localized: "<sprite=57> \uC124\uACC4\uB3C4 \uC81C\uC791\uC740 <sprite=62> \uC774
+      \uCC44\uC6CC\uC838 \uC788\uC5B4\uC57C \uD569\uB2C8\uB2E4!"
     m_Metadata:
       m_Items: []
   - m_Id: 241133631299584
-    m_Localized: <sprite=62> amount is at full capacity!
+    m_Localized: "<sprite=62> \uAC00\uB4DD \uCC44\uC6CC\uC838 \uC790\uB9AC\uAC00
+      \uC5C6\uC2B5\uB2C8\uB2E4!"
     m_Metadata:
       m_Items: []
   references:
     version: 2
     RefIds:
-    - rid: 5938544035846684712
+    - rid: 5938544035846684713
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_Entries: 00e0efc74d010000

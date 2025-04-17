@@ -33,6 +33,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Header("")]
     [SerializeField][Range(0, 500)] private int _maxUnlockAmount;
 
+    [Header("")]
+    
 
     // Editor
     [HideInInspector] public Food_ScrObj archiveFood;
@@ -70,6 +72,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input += Hide_IngredientBox;
         _controller.OnCursor_Input += Hide_IngredientBox;
         _controller.OnExit_Input += Hide_IngredientBox;
+
+        Localization_Controller.instance.OnLanguageChanged += InfoBox_Update;
     }
 
     private void OnDisable()
@@ -99,6 +103,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnSelect_Input -= Hide_IngredientBox;
         _controller.OnCursor_Input -= Hide_IngredientBox;
         _controller.OnExit_Input -= Hide_IngredientBox;
+        
+        Localization_Controller.instance.OnLanguageChanged -= InfoBox_Update;
     }
 
     private void OnDestroy()
@@ -192,46 +198,48 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (!cursorData.hasItem) return;
 
         InformationBox info = _controller.infoBox;
+        InfoTemplate_Trigger infoTrigger = info.templateTrigger;
+        InfoTemplate_Trigger archiveInfoTrigger = gameObject.GetComponent<InfoTemplate_Trigger>();
 
         // Bookmark Lock Status
+        string bookmarkStatus = infoTrigger.TemplateString(4);
         string lockStatus = null;
-        string bookmarkStatus = "Drop";
 
         if (slotData.hasItem)
         {
-            bookmarkStatus = "Swap";
+            bookmarkStatus = infoTrigger.TemplateString(6);
         }
 
         if (cursorData.isLocked)
         {
-            lockStatus = "Bookmark Unavailable\n\n";
+            lockStatus = archiveInfoTrigger.TemplateString(0) + "\n\n";
         }
         else if (!slotData.hasItem)
         {
             if (cursorData.bookMarked)
             {
-                bookmarkStatus = "UnBookmark";
+                bookmarkStatus = "<sprite=68> " + infoTrigger.TemplateString(8);
             }
             else
             {
-                bookmarkStatus = "Bookmark";
+                bookmarkStatus = "<sprite=68>";
             }
         }
 
         Food_ScrObj dragFood = cursorData.currentFood;
 
         // ingredient available status
-        string ingredientStatus = "Toggle ingredients";
+        string ingredientStatus = archiveInfoTrigger.TemplateString(1);
         if (FoodIngredient_Unlocked(dragFood) == false)
         {
             ingredientStatus = "Return";
         }
 
-        string drafInfo = "<sprite=69> " + dragFood.foodName + "\n";
+        string dragInfo = "<sprite=69> " + dragFood.foodName + "\n";
         string unlockCount = FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n\n";
-        string controlInfo = info.UIControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
+        string controlInfo = infoTrigger.KeyControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
 
-        info.Update_InfoText(drafInfo + unlockCount + lockStatus + controlInfo);
+        info.Update_InfoText(dragInfo + unlockCount + lockStatus + controlInfo);
     }
 
 
@@ -422,6 +430,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (currentSlot.data.isLocked == true)
         {
             currentSlot.Toggle_BookMark(false);
+            _controller.infoBox.gameObject.SetActive(false);
             return;
         }
 

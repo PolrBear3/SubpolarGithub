@@ -20,6 +20,10 @@ public class InformationBox : MonoBehaviour
     [Header("")]
     [SerializeField] private float _heightIncreaseValue;
 
+    [Header("")]
+    [SerializeField] private InfoTemplate_Trigger _templateTrigger;
+    public InfoTemplate_Trigger templateTrigger => _templateTrigger;
+    
     
     private float _defaultHeight;
     private bool _defaultHeightSaved;
@@ -95,23 +99,5 @@ public class InformationBox : MonoBehaviour
         float targetPosY = _defaultHeight + _heightIncreaseValue - updateValue;
 
         _rect.anchoredPosition = new Vector2(_rect.anchoredPosition.x, targetPosY);
-    }
-
-
-    // Text Templates
-    public string CurrentAmount_Template(int amount)
-    {
-        return "Current Drag Amount > " + amount;
-    }
-
-    public string UIControl_Template(string action1, string action2, string hold)
-    {
-        // set [key] to current binding map
-
-        string action1Key = "<sprite=0> " + action1 + "\n";
-        string action2Key = "<sprite=2> " + action2 + "\n";
-        string holdKey = "Hold <sprite=15> to " + hold;
-
-        return action1Key + action2Key + holdKey;
     }
 }

@@ -70,8 +70,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a90eabdd11d343ff8cbaaa6ab1e6d86, type: 2}
-  m_sharedMaterial: {fileID: -1042997780651814113, guid: 6a90eabdd11d343ff8cbaaa6ab1e6d86, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 718e40650df1f481484fb36338ba511f, type: 2}
+  m_sharedMaterial: {fileID: -4348457179764921032, guid: 718e40650df1f481484fb36338ba511f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 1362072274762903429}
   - component: {fileID: 5887057461066031545}
   - component: {fileID: 6186049879951738047}
+  - component: {fileID: 6317297249039806035}
   - component: {fileID: 3648476067348354123}
   m_Layer: 5
   m_Name: Information Box
@@ -296,6 +297,136 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &6317297249039806035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8907168051666249159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4c4bd1e90a54c85830c50598b7e3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _templates:
+  - _infoName: currentAmount
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 5357467328512
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables:
+      - name: currentAmount
+        variable:
+          rid: 2163505023635161091
+  - _infoName: hold
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 5240509161472
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables:
+      - name: hold
+        variable:
+          rid: 2163505023635161090
+  - _infoName: drag
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 1109316853760
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: dragSingle
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 24814755504128
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: drop
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 24897152606208
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: dropSingle
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 999308648448
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: swap
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 951569080320
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: export
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 1154267209728
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: remove
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 43495556374528
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: import
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 30418106572800
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2163505023635161090
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables, asm: Unity.Localization}
+      data:
+        m_Value: hold
+    - rid: 2163505023635161091
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables, asm: Unity.Localization}
+      data:
+        m_Value: currentAmount
 --- !u!114 &3648476067348354123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,3 +442,4 @@ MonoBehaviour:
   _boxImage: {fileID: 1362072274762903429}
   _infoText: {fileID: 7334876618318484948}
   _heightIncreaseValue: 20.5
+  _templateTrigger: {fileID: 6317297249039806035}

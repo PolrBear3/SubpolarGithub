@@ -49,6 +49,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnCursor_Input += InfoBox_Update;
         _controller.OnSelect_Input += InfoBox_Update;
         _controller.OnOption1_Input += InfoBox_Update;
+        
+        Localization_Controller.instance.OnLanguageChanged += InfoBox_Update;
     }
 
     private void OnDisable()
@@ -73,6 +75,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnCursor_Input -= InfoBox_Update;
         _controller.OnSelect_Input -= InfoBox_Update;
         _controller.OnOption1_Input -= InfoBox_Update;
+        
+        Localization_Controller.instance.OnLanguageChanged -= InfoBox_Update;
     }
 
     private void OnDestroy()
@@ -256,27 +260,28 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (!cursorData.hasItem) return;
 
         InformationBox info = _controller.infoBox;
+        InfoTemplate_Trigger infoTrigger = info.templateTrigger;
 
-        // Retrieve Status
-        string retrieveStatus = "Hold <sprite=15> on empty to retrieve\n\n";
-
+        // station durability info //
+        
+        
         // Action key 1
-        string action1 = "Swap";
+        string action1 = infoTrigger.TemplateString(6);
         if (slotData.hasItem == false)
         {
-            action1 = "Bookmark";
+            action1 = "<sprite=68>";
         }
 
-        // Hold Key
-        string hold = "Remove";
+        // Hold string
+        string hold = infoTrigger.TemplateString(8);
         if (cursorData.isLocked == false)
         {
-            hold = "Export";
+            hold = infoTrigger.TemplateString(7) + "/" + infoTrigger.TemplateString(9);
         }
 
         // Set update
-        string controlInfo = info.UIControl_Template(action1, action1, hold);
-        info.Update_InfoText(retrieveStatus + controlInfo);
+        string controlInfo = infoTrigger.KeyControl_Template(action1, action1, hold);
+        info.Update_InfoText(controlInfo);
     }
 
 
@@ -462,6 +467,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (cursor.data.isLocked == true)
         {
             cursor.Empty_Item();
+            _controller.infoBox.gameObject.SetActive(false);
             return;
         }
 
