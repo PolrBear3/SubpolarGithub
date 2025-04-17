@@ -21,6 +21,9 @@ public class Location_Controller : MonoBehaviour
 
     private TimePhase_Population _maxPopulationData;
 
+    private List<NPC_Controller> _foodOrderNPCs = new();
+    public List<NPC_Controller> foodOrderNPCs => _foodOrderNPCs;
+
 
     // UnityEngine
     private void Start()
@@ -30,6 +33,7 @@ public class Location_Controller : MonoBehaviour
 
         _maxPopulationData = _data.Max_PopulationData(GlobalTime_Controller.instance.currentTimePhase);
 
+        _data.SetCurrent_FoodOrderCount(_data.maxFoodOrderCount);
         Cycle_NPCSpawn();
 
         // subscriptions
@@ -272,5 +276,23 @@ public class Location_Controller : MonoBehaviour
             // set npc free roam location
             movement.Free_Roam(_data.roamArea, movement.Random_IntervalTime());
         }
+    }
+
+
+    public void Track_FoodOrderNPC(NPC_Controller trackNPC)
+    {
+        if (_foodOrderNPCs.Contains(trackNPC))
+        {
+            _foodOrderNPCs.Remove(trackNPC);
+            return;
+        }
+        _foodOrderNPCs.Add(trackNPC);
+    }
+    
+    public bool FoodOrderNPC_Maxed()
+    {
+        if (_foodOrderNPCs.Count >= _maxPopulationData.maxPopulation) return false;
+        
+        return _foodOrderNPCs.Count >= _data.currentFoodOrderCount;
     }
 }

@@ -14,9 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _abilityName: Multiple Pickup
   _description: Pickup multiple quantities of food
+  _localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:2f92ad920a45b4533a384ea0d98b03ae
+    m_TableEntryReference:
+      m_KeyId: 136410292224
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _progressIcons:
   - {fileID: -1747008442, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
   - {fileID: -1252338805, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
   - {fileID: 471003484, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
   - {fileID: 487760598, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
   _maxActivationCount: 5
+  references:
+    version: 2
+    RefIds: []

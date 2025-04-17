@@ -56,6 +56,8 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnHoldSelect_Input += ActivateAbility_onSelect;
         _controller.OnHoldSelect_Input += Show_AbilityDiscription;
+
+        Localization_Controller.instance.OnLanguageChanged += Show_AbilityDiscription;
     }
 
     private void OnDisable()
@@ -74,6 +76,8 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnHoldSelect_Input -= ActivateAbility_onSelect;
         _controller.OnHoldSelect_Input -= Show_AbilityDiscription;
+        
+        Localization_Controller.instance.OnLanguageChanged -= Show_AbilityDiscription;
     }
 
 
@@ -197,11 +201,20 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private string HoldSelect_InfoText()
     {
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
-
+        
         if (manager.Ability_ActivateMaxed(CurrentSlot_Ability())) return null;
-
-        if (manager.AbilityPoint_Maxed()) return "\n\nHold <sprite=15> to level up";
-        return "\n\n" + manager.currentAbilityPoint + "/" + manager.maxAbilityPoint + "  <sprite=79> points";
+        
+        if (manager.AbilityPoint_Maxed())
+        {
+            Information_Template infoBoxTrigger = _controller.infoBox.templateTrigger.templates[1];
+            InfoTemplate_Trigger trigger = gameObject.GetComponent<InfoTemplate_Trigger>();
+            
+            infoBoxTrigger.Set_SmartInfo("hold", trigger.TemplateString(0));
+            
+            return "\n\n" + infoBoxTrigger.InfoString();
+        }
+        
+        return "\n\n" + manager.currentAbilityPoint + "/" + manager.maxAbilityPoint + "  <sprite=79>";
     }
 
 
@@ -220,9 +233,11 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
-        string activationCount = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.maxActivationCount;
+        
+        InfoTemplate_Trigger trigger = gameObject.GetComponent<InfoTemplate_Trigger>();
+        string activationCount = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.maxActivationCount + trigger.TemplateString(1);
 
-        infoBox.Update_InfoText(activationCount + "\n\n" + currentAbility.description + HoldSelect_InfoText());
+        infoBox.Update_InfoText(activationCount + "\n\n" + currentAbility.Description() + HoldSelect_InfoText());
 
         infoBox.gameObject.SetActive(true);
         infoBox.Update_RectLayout();

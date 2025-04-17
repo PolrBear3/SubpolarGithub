@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Fridge : Stack_Table, IInteractable
 {
-    [Header("")]
+    [FormerlySerializedAs("_delfayTimeBar")]
+    [Header("")] 
+    [SerializeField] private AmountBar _delayTimeBar;
     [SerializeField][Range(0, 100)] private float _freezeDelayTime;
 
     private Coroutine _coroutine;
@@ -15,6 +18,23 @@ public class Fridge : Stack_Table, IInteractable
     {
         base.Start();
         Freeze_Food();
+        
+        // subscriptions
+        Detection_Controller detection = stationController.detection;
+        
+        detection.EnterEvent += () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
+        detection.ExitEvent += () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
+    }
+
+    public new void OnDestroy()
+    {
+        base.OnDestroy();
+        
+        // subscriptions
+        Detection_Controller detection = stationController.detection;
+        
+        detection.EnterEvent -= () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
+        detection.ExitEvent -= () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
     }
     
 
@@ -35,6 +55,12 @@ public class Fridge : Stack_Table, IInteractable
 
 
     //
+    private bool DelayBar_ToggleAvailable()
+    {
+        return _coroutine != null && stationController.detection.player == null;
+    }
+    
+    
     private bool AllFood_Frozen()
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
@@ -57,8 +83,12 @@ public class Fridge : Stack_Table, IInteractable
 
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
-        if (!foodIcon.hasFood) return;
-        if (AllFood_Frozen()) return;
+        if (!foodIcon.hasFood || AllFood_Frozen())
+        {
+            _delayTimeBar.Toggle(false);
+            return;
+        }
+        _delayTimeBar.Toggle_BarColor(true);
 
         // restrict rotten system
         foodIcon.Toggle_TikCount(false);
@@ -71,7 +101,18 @@ public class Fridge : Stack_Table, IInteractable
 
         while (foodIcon.hasFood && AllFood_Frozen() == false)
         {
-            yield return new WaitForSeconds(_freezeDelayTime);
+            _delayTimeBar.Set_Amount(0);
+            _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
+            
+            float delayTikTime = _freezeDelayTime / _delayTimeBar.maxAmount;
+                
+            while (_delayTimeBar.Is_MaxAmount() == false)
+            {
+                _delayTimeBar.Update_Amount(1);
+                _delayTimeBar.Load();
+                
+                yield return new WaitForSeconds(delayTikTime);
+            }
 
             List<FoodData> datas = foodIcon.AllDatas();
 
@@ -87,6 +128,8 @@ public class Fridge : Stack_Table, IInteractable
             stationController.data.Update_Durability(-1);
             stationController.maintenance.Update_DurabilityBreak();
         }
+        
+        _delayTimeBar.Toggle(false);
 
         _coroutine = null;
         yield break;

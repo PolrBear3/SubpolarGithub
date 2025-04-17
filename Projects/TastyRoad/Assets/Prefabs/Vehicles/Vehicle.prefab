@@ -1210,6 +1210,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3083754966897448218}
   - component: {fileID: 6857938085039874395}
+  - component: {fileID: 2678820615752157924}
   - component: {fileID: 1103798826040559116}
   m_Layer: 5
   m_Name: Ability
@@ -1269,6 +1270,42 @@ MonoBehaviour:
         m_TableCollectionName: 
       m_TableEntryReference:
         m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &2678820615752157924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203113308141388044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4c4bd1e90a54c85830c50598b7e3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _templates:
+  - _infoName: abilityActivate
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 82012940525568
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: activateCount
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 87182369873920
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
@@ -1565,10 +1602,10 @@ MonoBehaviour:
   _soundDatas:
   - _reference:
       Guid:
-        Data1: -822786321
-        Data2: 1175435722
-        Data3: 111799437
-        Data4: -336948252
+        Data1: -582139668
+        Data2: 1161418085
+        Data3: -168507222
+        Data4: 791067312
       Path: event:/Basic SFX/UI Control/UI_cursorControl
 --- !u!114 &277122501829671610
 MonoBehaviour:
@@ -3058,10 +3095,10 @@ MonoBehaviour:
   _soundDatas:
   - _reference:
       Guid:
-        Data1: -822786321
-        Data2: 1175435722
-        Data3: 111799437
-        Data4: -336948252
+        Data1: -582139668
+        Data2: 1161418085
+        Data3: -168507222
+        Data4: 791067312
       Path: event:/Basic SFX/UI Control/UI_cursorControl
   - _reference:
       Guid:

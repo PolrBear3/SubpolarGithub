@@ -180,6 +180,9 @@ public class NPC_FoodInteraction : MonoBehaviour
         List<Food_ScrObj> bookMarks = Main_Controller.instance.bookmarkedFoods;
         if (bookMarks.Count <= 0) return false;
 
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
+        if (currentLocation.FoodOrderNPC_Maxed()) return false;
+
         return true;
     }
 
@@ -220,6 +223,8 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         Run_OrderTime();
         Update_RoamArea();
+        
+        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller);
     }
 
 
@@ -260,6 +265,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         foodIcon.Show_Condition();
 
         Update_RoamArea();
+        
+        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller);
     }
 
 
@@ -283,6 +290,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         _transferData = new(transferData);
         _transferDatas.Add(new(transferData));
 
+        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller);
+        
         return true;
     }
     private IEnumerator Transfer_FoodOrder_Coroutine()
@@ -385,7 +394,9 @@ public class NPC_FoodInteraction : MonoBehaviour
         // sfx
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
 
-        if (foodIcon.hasFood == false || Main_Controller.instance.bookmarkedFoods.Count <= 0)
+        bool npcFull = Main_Controller.instance.currentLocation.FoodOrderNPC_Maxed();
+        
+        if (foodIcon.hasFood == false || Main_Controller.instance.bookmarkedFoods.Count <= 0 || npcFull)
         {
             foodIcon.Update_AllDatas(null);
             foodIcon.Show_Icon();

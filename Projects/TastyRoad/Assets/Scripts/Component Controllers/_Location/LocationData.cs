@@ -15,13 +15,15 @@ public class LocationData
 {
     public Location_ScrObj locationScrObj;
 
+    
     [Header("")]
     [ES3NonSerializable] public Vector2 spawnRangeX;
     [ES3NonSerializable] public Vector2 spawnRangeY;
 
     [Header("")]
     [ES3NonSerializable] public float spawnIntervalTime;
-
+ 
+    
     [Header("")]
     [SerializeField][ES3NonSerializable] private SpriteRenderer _screenArea;
     public SpriteRenderer screenArea => _screenArea;
@@ -29,13 +31,21 @@ public class LocationData
     [SerializeField][ES3NonSerializable] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
+    
     [Header("")]
     [ES3NonSerializable] public TimePhase_Population[] populationData;
 
     [SerializeField][ES3NonSerializable] private AnimatorOverrideController[] _npcSkinOverrides;
     public AnimatorOverrideController[] npcSkinOverrides => _npcSkinOverrides;
 
-
+    [Header("")] 
+    [SerializeField][ES3NonSerializable][Range(0, 100)] private int _maxFoodOrderCount;
+    public int maxFoodOrderCount => _maxFoodOrderCount;
+    
+    [ES3NonSerializable] private int _currentFoodOrderCount;
+    public int currentFoodOrderCount => _currentFoodOrderCount;
+    
+    
     [Header("")]
     [SerializeField][ES3NonSerializable] private FoodWeight_Data[] _ingredientUnlocks;
     public FoodWeight_Data[] ingredientUnlocks => _ingredientUnlocks;
@@ -166,5 +176,12 @@ public class LocationData
         }
 
         return populationData[0];
+    }
+    
+    
+    // NPC
+    public void SetCurrent_FoodOrderCount(int setValue)
+    {
+        _currentFoodOrderCount = setValue;
     }
 }

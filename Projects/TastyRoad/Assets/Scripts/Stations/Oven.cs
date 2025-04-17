@@ -18,8 +18,11 @@ public class Oven : Table, IInteractable
     [SerializeField][Range(0, 10)] private float _emissionValue;
     [SerializeField][Range(0, 10)] private float _lightValue;
 
+    [Header("")] 
+    [SerializeField] private AmountBar _heatDelayBar;
+    
     private Coroutine _heatCoroutine;
-
+    
 
     // UnityEngine
     private new void Start()
@@ -28,21 +31,6 @@ public class Oven : Table, IInteractable
 
         Heat_Food();
         Update_CurrentVisual();
-
-        FoodIcon_PositionToggle();
-
-        // subscriptions
-        stationController.detection.EnterEvent += FoodIcon_PositionToggle;
-        stationController.detection.ExitEvent += FoodIcon_PositionToggle;
-    }
-
-    private new void OnDestroy()
-    {
-        base.OnDestroy();
-
-        // subscriptions
-        stationController.detection.EnterEvent -= FoodIcon_PositionToggle;
-        stationController.detection.ExitEvent -= FoodIcon_PositionToggle;
     }
 
 
@@ -50,7 +38,6 @@ public class Oven : Table, IInteractable
     public new void Interact()
     {
         Basic_SwapFood();
-        FoodIcon_PositionToggle();
 
         Heat_Food();
         Update_CurrentVisual();
@@ -59,7 +46,6 @@ public class Oven : Table, IInteractable
     public new void Hold_Interact()
     {
         base.Hold_Interact();
-        FoodIcon_PositionToggle();
 
         Heat_Food();
         Update_CurrentVisual();
@@ -103,23 +89,8 @@ public class Oven : Table, IInteractable
             _heatEmission.color = Color.clear;
         }
     }
-
-    private void FoodIcon_PositionToggle()
-    {
-        float posY = stationController.Food_Icon().transform.localPosition.y;
-
-        if (stationController.detection.player != null)
-        {
-            stationController.Food_Icon().transform.localPosition = new Vector2(0f, posY);
-            stationController.Food_Icon().Show_Icon();
-            return;
-        }
-
-        stationController.Food_Icon().transform.localPosition = new Vector2(-0.5f, posY);
-        stationController.Food_Icon().Hide_Icon();
-    }
-
-
+    
+    
     // Food Heating System
     private bool HeatFood_Available()
     {
@@ -140,7 +111,12 @@ public class Oven : Table, IInteractable
             _heatCoroutine = null;
         }
 
-        if (!HeatFood_Available()) return;
+        if (!HeatFood_Available())
+        {
+            _heatDelayBar.Toggle(false);
+            return;
+        }
+        _heatDelayBar.Toggle_BarColor(true);
 
         // oven switch
         Audio_Controller.instance.Play_OneShot(gameObject, 3);
@@ -153,7 +129,18 @@ public class Oven : Table, IInteractable
 
         while (foodIcon.hasFood)
         {
-            yield return new WaitForSeconds(_heatIncreaseTime);
+            _heatDelayBar.Set_Amount(0);
+            _heatDelayBar.Toggle(true);
+            
+            float delayTikTime = _heatIncreaseTime / _heatDelayBar.maxAmount;
+                
+            while (_heatDelayBar.Is_MaxAmount() == false)
+            {
+                _heatDelayBar.Update_Amount(1);
+                _heatDelayBar.Load();
+                
+                yield return new WaitForSeconds(delayTikTime);
+            }
 
             foodIcon.currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.heated));
             foodIcon.Show_Condition();
@@ -162,5 +149,10 @@ public class Oven : Table, IInteractable
             stationController.data.Update_Durability(-1);
             stationController.maintenance.Update_DurabilityBreak();
         }
+
+        _heatDelayBar.Toggle(false);
+        
+        _heatCoroutine = null;
+        yield break;
     }
 }
