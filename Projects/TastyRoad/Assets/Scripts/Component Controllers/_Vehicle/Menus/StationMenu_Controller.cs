@@ -263,8 +263,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         InfoTemplate_Trigger infoTrigger = info.templateTrigger;
 
         // station durability info
+        string durabilityInfo = null;
         StationData stationData = cursorData.stationData;
-        string durabilityInfo = "<sprite=67> " + stationData.durability + "/" + stationData.stationScrObj.durability;
+        
+        if (cursorData.isLocked == false && stationData.stationScrObj.durability > 0)
+        {
+            string durabilityTemplate = gameObject.GetComponent<InfoTemplate_Trigger>().TemplateString(0);
+            string currentStatus = stationData.durability + "/" + stationData.stationScrObj.durability;
+            
+            durabilityInfo = durabilityTemplate + " " + currentStatus + "\n\n";
+        }
         
         // Action key 1
         string action1 = infoTrigger.TemplateString(6);
@@ -282,7 +290,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // Set update
         string controlInfo = infoTrigger.KeyControl_Template(action1, action1, hold);
-        info.Update_InfoText(durabilityInfo + "\n\n" + controlInfo);
+        info.Update_InfoText(durabilityInfo + controlInfo);
     }
 
 
