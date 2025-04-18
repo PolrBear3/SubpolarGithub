@@ -236,7 +236,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         string dragInfo = "<sprite=69> " + dragFood.foodName + "\n";
-        string unlockCount = FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n\n";
+        string unlockCount = "<sprite=91> " + FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n\n";
         string controlInfo = infoTrigger.KeyControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
 
         info.Update_InfoText(dragInfo + unlockCount + lockStatus + controlInfo);
