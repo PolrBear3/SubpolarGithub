@@ -257,13 +257,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data cursorData = cursor.data;
         ItemSlot_Data slotData = cursor.currentSlot.data;
 
-        if (!cursorData.hasItem) return;
+        if (cursorData.stationData == null || cursorData.hasItem == false) return;
 
         InformationBox info = _controller.infoBox;
         InfoTemplate_Trigger infoTrigger = info.templateTrigger;
 
-        // station durability info //
-        
+        // station durability info
+        StationData stationData = cursorData.stationData;
+        string durabilityInfo = "<sprite=67> " + stationData.durability + "/" + stationData.stationScrObj.durability;
         
         // Action key 1
         string action1 = infoTrigger.TemplateString(6);
@@ -281,7 +282,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // Set update
         string controlInfo = infoTrigger.KeyControl_Template(action1, action1, hold);
-        info.Update_InfoText(controlInfo);
+        info.Update_InfoText(durabilityInfo + "\n\n" + controlInfo);
     }
 
 
