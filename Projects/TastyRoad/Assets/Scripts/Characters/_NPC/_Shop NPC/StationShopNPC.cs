@@ -57,7 +57,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent += CarryObject_DirectionUpdate;
 
         // subscription
-        WorldMap_Controller.OnNewLocation += Restock_New;
+        Main_Controller.instance.worldMap.OnNewLocation += Restock_New;
         GlobalTime_Controller.instance.OnDayTime += Restock_ArchivedStation;
 
         _interactable.OnInteract += Cancel_Action;
@@ -79,7 +79,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent -= CarryObject_DirectionUpdate;
 
         // interaction subscription
-        WorldMap_Controller.OnNewLocation -= Restock_New;
+        Main_Controller.instance.worldMap.OnNewLocation -= Restock_New;
         GlobalTime_Controller.instance.OnDayTime -= Restock_ArchivedStation;
 
         _interactable.OnInteract -= Cancel_Action;

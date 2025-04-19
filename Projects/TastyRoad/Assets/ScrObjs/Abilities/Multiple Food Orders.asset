@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Multiple Food Orders
   m_EditorClassIdentifier: 
   _abilityName: Multiple Food Orders
-  _description: 
+  _description: Increases the number of NPCs placing <sprite=58> orders
   _localizedDescription:
     m_TableReference:
       m_TableCollectionName: 
@@ -23,8 +23,13 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  _progressIcons: []
-  _maxActivationCount: 0
+  _progressIcons:
+  - {fileID: -1889081520, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+  - {fileID: 2028779720, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+  - {fileID: -138679641, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+  - {fileID: -1865056443, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+  - {fileID: -874756246, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+  _maxActivationCount: 4
   references:
     version: 2
     RefIds: []

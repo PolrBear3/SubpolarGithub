@@ -180,8 +180,8 @@ public class LocationData
     
     
     // NPC
-    public void SetCurrent_FoodOrderCount(int setValue)
+    public void UpdateCurrent_FoodOrderCount(int updateValue)
     {
-        _currentFoodOrderCount = setValue;
+        _currentFoodOrderCount += updateValue;
     }
 }

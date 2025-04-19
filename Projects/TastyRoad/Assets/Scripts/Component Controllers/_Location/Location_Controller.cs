@@ -33,7 +33,7 @@ public class Location_Controller : MonoBehaviour
 
         _maxPopulationData = _data.Max_PopulationData(GlobalTime_Controller.instance.currentTimePhase);
 
-        _data.SetCurrent_FoodOrderCount(_data.maxFoodOrderCount);
+        _data.UpdateCurrent_FoodOrderCount(_data.maxFoodOrderCount);
         Cycle_NPCSpawn();
 
         // subscriptions

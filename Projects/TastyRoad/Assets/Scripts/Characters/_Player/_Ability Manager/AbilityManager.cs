@@ -89,7 +89,8 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
             if (Ability_Activated(_allAbilities[i].abilityScrObj) == false) continue;
 
             IAbility abilityInterface = _allAbilities[i].GetComponent<IAbility>();
-
+            if (abilityInterface == null) continue;
+            
             for (int j = 0; j < Activated_Ability(_allAbilities[i].abilityScrObj).activationCount; j++)
             {
                 abilityInterface.Activate();

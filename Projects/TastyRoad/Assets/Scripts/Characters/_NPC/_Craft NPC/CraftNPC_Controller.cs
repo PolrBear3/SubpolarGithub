@@ -29,13 +29,13 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
         Spawn(_data.npcIndex).transform.position = Default_SpawnPosition();
 
         // subscription
-        WorldMap_Controller.OnNewLocation += Spawn_New;
+        Main_Controller.instance.worldMap.OnNewLocation += Spawn_New;
     }
 
     private void OnDestroy()
     {
         // subscription
-        WorldMap_Controller.OnNewLocation -= Spawn_New;
+        Main_Controller.instance.worldMap.OnNewLocation -= Spawn_New;
     }
 
 

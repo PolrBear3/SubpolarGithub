@@ -34,7 +34,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Location_ScrObj _startingLocation;
 
 
-    public static Action OnNewLocation;
+    public Action OnNewLocation;
+    public Action OnLocationSet;
 
     private bool _newLocation;
 
@@ -96,6 +97,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Location_Controller location = main.Set_Location(_currentData);
 
         main.Track_CurrentLocaiton(location);
+        
+        OnLocationSet?.Invoke();
     }
 
     public void Update_Location(WorldMap_Data updateData)

@@ -7,12 +7,8 @@ using UnityEngine.InputSystem;
 public class SliceTable : Table, IInteractable
 {
     [Header("")]
-    [SerializeField] private ActionKey _actionKey;
-
-    [SerializeField] private InputActionReference[] _actionRefs;
-
-    private bool _sliceActive;
-
+    [SerializeField] private Rhythm_HitBox _rhythmHitBox;
+    
 
     // UnityEngine
     private new void Start()
@@ -27,6 +23,8 @@ public class SliceTable : Table, IInteractable
 
         detection.EnterEvent += Toggle_SliceAction;
         detection.ExitEvent += Toggle_SliceAction;
+        
+        _rhythmHitBox.OnHitSuccess += Slice;
     }
 
     private new void OnDestroy()
@@ -39,7 +37,7 @@ public class SliceTable : Table, IInteractable
         detection.EnterEvent -= Toggle_SliceAction;
         detection.ExitEvent -= Toggle_SliceAction;
 
-        Toggle_SliceSubscription(false);
+        _rhythmHitBox.OnHitSuccess -= Slice;
     }
 
 
@@ -60,6 +58,26 @@ public class SliceTable : Table, IInteractable
 
 
     // Actions
+    private void Toggle_SliceAction()
+    {
+        bool playerExit = stationController.detection.player == null;
+        
+        if (playerExit || Slice_Available() == false)
+        {
+            _rhythmHitBox.Toggle(false);
+
+            // sound stop
+            Audio_Controller.instance.EventInstance(gameObject, 3).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            return;
+        }
+
+        _rhythmHitBox.Toggle(true);
+
+        // sound play
+        Audio_Controller.instance.EventInstance(gameObject, 3).start();
+    }
+
+
     private bool Slice_Available()
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
@@ -73,65 +91,10 @@ public class SliceTable : Table, IInteractable
 
         return true;
     }
-
-    private void Set_SliceAction()
-    {
-        _actionKey.Reset_CurrentKey();
-
-        // get random action
-        int randIndex = Random.Range(0, _actionRefs.Length);
-        InputActionReference randRef = _actionRefs[randIndex];
-
-        // set selected random action key
-        _actionKey.Set_CurrentKey(randRef);
-    }
-
-
-    private void Toggle_SliceSubscription(bool toggle)
-    {
-        Input_Controller input = Input_Controller.instance;
-
-        if (toggle == false)
-        {
-            input.OnAnyInput -= Slice;
-            _sliceActive = false;
-
-            return;
-        }
-
-        if (_sliceActive) return;
-
-        input.OnAnyInput += Slice;
-        _sliceActive = true;
-    }
-
-    private void Toggle_SliceAction()
-    {
-        bool playerExit = stationController.detection.player == null;
-
-        if (playerExit || Slice_Available() == false)
-        {
-            _actionKey.Reset_CurrentKey();
-            Toggle_SliceSubscription(false);
-
-            // sound stop
-            Audio_Controller.instance.EventInstance(gameObject, 3).stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-            return;
-        }
-
-        Set_SliceAction();
-        Toggle_SliceSubscription(true);
-
-        // sound play
-        Audio_Controller.instance.EventInstance(gameObject, 3).start();
-    }
-
-
-    public void Slice(InputActionReference sliceActionRef)
+    
+    public void Slice()
     {
         if (Slice_Available() == false) return;
-        if (sliceActionRef != _actionKey.currentReference) return;
 
         stationController.Food_Icon().currentData.Update_Condition(new FoodCondition_Data(FoodCondition_Type.sliced));
         stationController.Food_Icon().Show_Condition();

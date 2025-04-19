@@ -78,7 +78,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
 
         // action subscription
-        WorldMap_Controller.OnNewLocation += Restock_Instant;
+        Main_Controller.instance.worldMap.OnNewLocation += Restock_Instant;
 
         GlobalTime_Controller.instance.OnDayTime += Restock;
         GlobalTime_Controller.instance.OnTimeTik += Restock_EmptyStocks;
@@ -102,7 +102,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         // action subscription
 
-        WorldMap_Controller.OnNewLocation -= Restock_Instant;
+        Main_Controller.instance.worldMap.OnNewLocation -= Restock_Instant;
 
         GlobalTime_Controller.instance.OnDayTime -= Restock;
         GlobalTime_Controller.instance.OnTimeTik -= Restock_EmptyStocks;
