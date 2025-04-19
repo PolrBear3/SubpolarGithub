@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -16,7 +17,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     
     [Header("")]
     [SerializeField] private TextMeshProUGUI _infoText;
-    [SerializeField] private TextMeshProUGUI _continueText;
+    [FormerlySerializedAs("_continueText")] [SerializeField] private TextMeshProUGUI _navigateText;
 
     [Header("")]
     [SerializeField] private Guide_ScrObj[] _allGuides;
@@ -39,11 +40,14 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         Input_Controller input = Input_Controller.instance;
         
         input.Update_EmojiAsset(_infoText);
-        input.Update_EmojiAsset(_continueText);
+        input.Update_EmojiAsset(_navigateText);
 
         // subscriptions
         input.OnSchemeUpdate += () => input.Update_EmojiAsset(_infoText);
-        input.OnSchemeUpdate += () => input.Update_EmojiAsset(_continueText);
+        input.OnSchemeUpdate += () => input.Update_EmojiAsset(_navigateText);
+
+        Localization_Controller.instance.OnLanguageChanged += () => Update_ClipData(_currentClipNum);
+        Localization_Controller.instance.OnLanguageChanged += Update_NavigateText;
     }
     
     private void OnDestroy()
@@ -55,7 +59,10 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         input.OnExit -= Navigate_NextVideo;
         
         input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_infoText);
-        input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_continueText);
+        input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_navigateText);
+        
+        Localization_Controller.instance.OnLanguageChanged -= () => Update_ClipData(_currentClipNum);
+        Localization_Controller.instance.OnLanguageChanged -= Update_NavigateText;
     }
 
 
@@ -143,7 +150,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         VideoClip_Data clipData = _currentGuide.clipDatas[_currentClipNum];
 
         Toggle_VideoClip(clipData.video);
-        _infoText.text = clipData.info;
+        _infoText.text = clipData.Info();
     }
 
 
@@ -158,9 +165,31 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         }
 
         _currentClipNum = nextClipNum;
-        VideoClip_Data clipData = _currentGuide.clipDatas[_currentClipNum];
+        
+        Update_ClipData(_currentClipNum);
+        Update_NavigateText();
+    }
+
+    private void Update_ClipData(int clipNum)
+    {
+        VideoClip_Data clipData = _currentGuide.clipDatas[clipNum];
 
         Toggle_VideoClip(clipData.video);
-        _infoText.text = clipData.info;
+        _infoText.text = clipData.Info();
+    }
+
+
+    private void Update_NavigateText()
+    {
+        InfoTemplate_Trigger infoTrigger = gameObject.GetComponent<InfoTemplate_Trigger>();
+        int nextClipNum = _currentClipNum + 1;
+        
+        if (nextClipNum > _currentGuide.clipDatas.Length - 1)
+        {
+            _navigateText.text = infoTrigger.TemplateString(1);
+            return;
+        }
+        
+        _navigateText.text = infoTrigger.TemplateString(0);
     }
 }

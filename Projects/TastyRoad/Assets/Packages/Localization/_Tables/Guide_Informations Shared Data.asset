@@ -10,27 +10,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: ScrObj Shared Data
+  m_Name: Guide_Informations Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: ScrObj
-  m_TableCollectionNameGuidString: 2f92ad920a45b4533a384ea0d98b03ae
+  m_TableCollectionName: Guide_Informations
+  m_TableCollectionNameGuidString: e8b897169079b4e00a02c55f00f462ba
   m_Entries:
-  - m_Id: 15345901568
-    m_Key: ability.movementSpeed
+  - m_Id: 84577083392
+    m_Key: Guide.movement
     m_Metadata:
       m_Items: []
-  - m_Id: 136410292224
-    m_Key: ability.multiplePickup
+  - m_Id: 209810612224
+    m_Key: Guide.interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235840462848
+    m_Key: Guide.holdInteract
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7266626428928
+    m_Key: Guide.next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7330312740864
+    m_Key: guide.close
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 5938544059494170631
+    rid: 2163505066924572679
   references:
     version: 2
     RefIds:
-    - rid: 5938544059494170631
+    - rid: 2163505066924572679
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1744883442586
+        m_CustomEpoch: 1745044096583

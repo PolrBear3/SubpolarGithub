@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.Localization;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public struct VideoClip_Data
@@ -12,6 +14,17 @@ public struct VideoClip_Data
     [TextArea]
     [SerializeField] private string _info;
     public string info => _info;
+    
+    [FormerlySerializedAs("_localizedDescription")] [SerializeField] private LocalizedString _localizedInfo;
+    public LocalizedString localizedInfo => _localizedInfo;
+
+    public string Info()
+    {
+        if (_localizedInfo == null) return _info;
+        if (string.IsNullOrEmpty(_localizedInfo.TableReference) && string.IsNullOrEmpty(_localizedInfo.TableEntryReference)) return _info;
+        
+        return _localizedInfo.GetLocalizedString();
+    }
 }
 
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Guide!")]
