@@ -75,10 +75,24 @@ MonoBehaviour:
     m_Localized: Not enough space in vehicle <sprite=70> storage!
     m_Metadata:
       m_Items: []
+  - m_Id: 1430662962733056
+    m_Localized: Quest <sprite=58> incorrect!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1430775894368256
+    m_Localized: Quest <sprite=58> {questCount} complete
+    m_Metadata:
+      m_Items:
+      - rid: 5938544035846684712
+  - m_Id: 1430821335457792
+    m_Localized: Quest complete. Discount tag <sprite=94> will be set to a random
+      <sprite=93>
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 5938544035846684712
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00e0efc74d010000
+        m_Entries: 00e0efc74d01000000e0ef7848150500

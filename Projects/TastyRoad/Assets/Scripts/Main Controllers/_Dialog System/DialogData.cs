@@ -28,6 +28,13 @@ public class DialogData
     
     
     // Information
+    public void Set_SmartInfo(string variableName, string setInfo)
+    {
+        if (_localizedInfo == null) return;
+        if (string.IsNullOrEmpty(localizedInfo.TableReference) && string.IsNullOrEmpty(localizedInfo.TableEntryReference)) return;
+        
+        (_localizedInfo[variableName] as StringVariable).Value = setInfo;
+    }
     public void Set_SmartInfo(Dictionary<string, string> strings)
     {
         if (_localizedInfo == null) return;

@@ -237,38 +237,45 @@ MonoBehaviour:
     info: Quest <sprite=58> incorrect!
     _localizedInfo:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 1430662962733056
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
   - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Quest <sprite=58> n/n recieved
+    info: Quest <sprite=58> {questCount} recieved
     _localizedInfo:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 1430775894368256
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
-      m_LocalVariables: []
+      m_LocalVariables:
+      - name: questCount
+        variable:
+          rid: 2163505092756242432
   - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Quest complete. Discount tag <sprite=tag> will be set to a random <sprite=foodStock>
     _localizedInfo:
       m_TableReference:
-        m_TableCollectionName: 
+        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
       m_TableEntryReference:
-        m_KeyId: 0
+        m_KeyId: 1430821335457792
         m_Key: 
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 2163505092756242432
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables, asm: Unity.Localization}
+      data:
+        m_Value: questCount
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0

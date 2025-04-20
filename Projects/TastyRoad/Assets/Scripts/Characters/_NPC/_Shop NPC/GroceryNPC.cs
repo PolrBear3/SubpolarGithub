@@ -183,19 +183,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
 
     // Basics
-    private void UnlockData_Check()
-    {
-        foreach (FoodData data in _unlockDatas)
-        {
-            Debug.Log(data.foodScrObj + " / " + data.currentAmount);
-        }
-    }
-
-
     private void Interact_FacePlayer()
     {
-        UnlockData_Check();
-
         // facing to player direction
         _npcController.basicAnim.Flip_Sprite(_detection.player.gameObject);
 
@@ -389,14 +378,20 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     private void Complete_Quest()
     {
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+        
+        if (_currentQuestCount >= _questCount)
+        {
+            dialog.Update_Dialog(2);
+            return;
+        }
+
         if (_questComplete) return;
 
         FoodData_Controller playerIcon = _detection.player.foodIcon;
         FoodData_Controller questIcon = _npcController.foodIcon;
-        
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
-        if (!questIcon.Is_SameFood(playerIcon.currentData.foodScrObj))
+        if (questIcon.Is_SameFood(playerIcon.currentData.foodScrObj) == false)
         {
             dialog.Update_Dialog(0);
             return;
@@ -423,7 +418,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         
         if (_currentQuestCount < _questCount)
         {
-            dialog.Update_Dialog(1);
+            DialogBox updateBox = dialog.Update_Dialog(1);
+            updateBox.data.Set_SmartInfo("questCount", _currentQuestCount + "/" + _questCount);
+            
             return;
         }
         
