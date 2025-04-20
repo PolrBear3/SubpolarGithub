@@ -391,22 +391,14 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         if (_questComplete) return;
 
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        Player_Controller player = _detection.player;
-        FoodData_Controller playerIcon = player.foodIcon;
-
-        if (playerIcon.hasFood == false)
-        {
-            dialog.Update_Dialog(2);
-            return;
-        }
-
+        FoodData_Controller playerIcon = _detection.player.foodIcon;
         FoodData_Controller questIcon = _npcController.foodIcon;
+        
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         if (!questIcon.Is_SameFood(playerIcon.currentData.foodScrObj))
         {
-            dialog.Update_Dialog(3);
+            dialog.Update_Dialog(0);
             return;
         }
 
@@ -428,8 +420,14 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         playerIcon.Show_Condition();
 
         Set_Discount();
-
-        dialog.Update_Dialog(4);
+        
+        if (_currentQuestCount < _questCount)
+        {
+            dialog.Update_Dialog(1);
+            return;
+        }
+        
+        dialog.Update_Dialog(2);
     }
 
 

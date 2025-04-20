@@ -134,6 +134,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
         if (toggle == false)
         {
+            _currentGuide = null;
+            
             input.OnSelect -= Navigate_NextVideo;
             input.OnExit -= Navigate_NextVideo;
             input.Update_ActionMap(0);
@@ -172,8 +174,10 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     private void Update_ClipData(int clipNum)
     {
+        if (_currentGuide == null) return;
+        
         VideoClip_Data clipData = _currentGuide.clipDatas[clipNum];
-
+        
         Toggle_VideoClip(clipData.video);
         _infoText.text = clipData.Info();
     }
@@ -181,6 +185,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     private void Update_NavigateText()
     {
+        if (_currentGuide == null) return;
+        
         InfoTemplate_Trigger infoTrigger = gameObject.GetComponent<InfoTemplate_Trigger>();
         int nextClipNum = _currentClipNum + 1;
         

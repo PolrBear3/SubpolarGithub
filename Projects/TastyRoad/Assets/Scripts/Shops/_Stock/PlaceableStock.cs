@@ -156,18 +156,13 @@ public class PlaceableStock : MonoBehaviour
 
         if (player == null) return false;
 
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         FoodData_Controller playerIcon = player.foodIcon;
 
-        if (playerIcon.hasFood == false)
-        {
-            dialog.Update_Dialog(0);
-            return false;
-        }
+        if (playerIcon.hasFood == false) return false;
 
         if (_foodIcon.DataCount_Maxed())
         {
-            dialog.Update_Dialog(4);
+            gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
             return false;
         }
 
@@ -196,7 +191,6 @@ public class PlaceableStock : MonoBehaviour
         playerIcon.Show_Condition();
 
         Update_Bubble();
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
     }
 
 
@@ -210,6 +204,6 @@ public class PlaceableStock : MonoBehaviour
         _interactable.LockInteract(true);
 
         Update_Bubble();
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(2);
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
     }
 }

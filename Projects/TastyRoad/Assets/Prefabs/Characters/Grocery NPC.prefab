@@ -223,25 +223,52 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: 0}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas:
-  - icon: {fileID: -372810078, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Ready to fully restock the amount.
-  - icon: {fileID: 2146137284, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Ready to restock with new <sprite=58>.
   - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: A discount tag will be set to a random stock once all quests are completed.
+    info: Quest <sprite=58> incorrect!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: 'Quest <sprite=58> incorrect!
-
-
-      A discount tag will be set to a random
-      stock once all quests are completed.'
+    info: Quest <sprite=58> n/n recieved
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -1028967398, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: 'Quest <sprite=58> recieved!
-
-
-      A discount tag will be set to a random
-      stock once all quests are completed.'
+    info: Quest complete. Discount tag <sprite=tag> will be set to a random <sprite=foodStock>
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0
