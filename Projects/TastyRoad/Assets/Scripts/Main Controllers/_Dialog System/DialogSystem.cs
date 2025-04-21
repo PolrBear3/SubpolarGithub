@@ -12,6 +12,7 @@ public class DialogSystem : MonoBehaviour
 
     [Header("")]
     [SerializeField] private InformationBox _infoBox;
+    public InformationBox infoBox => _infoBox;
 
     [Header("")]
     [SerializeField] private List<DialogData> _customDialogs = new();
@@ -104,10 +105,9 @@ public class DialogSystem : MonoBehaviour
             return;
         }
 
-        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.DialogInfo());
-        _infoBox.Update_RectLayout();
-
+        RefreshCurrent_DialogInfo();
         HoverToggle_CurrentDialog(true);
+        
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
@@ -129,6 +129,13 @@ public class DialogSystem : MonoBehaviour
         Toggle_InfoBox(true);
     }
 
+
+    public void RefreshCurrent_DialogInfo()
+    {
+        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.DialogInfo());
+        _infoBox.Update_RectLayout();
+    }
+    
 
     // Current Dialogs Control
     private void ReOrder_CurrentDialogs()

@@ -33,19 +33,10 @@ public class Audio_Controller : MonoBehaviour
     public List<StudioEventEmitter> emitters => _emitters;
 
 
-    [Header("")]
-    [SerializeField] private SoundData[] _loopSoundDatas;
-
-
     // UnityEngine
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
-        PlayAll_LoopSounds();
     }
     
 
@@ -74,7 +65,7 @@ public class Audio_Controller : MonoBehaviour
 
 
     // Event Instances
-    private SoundData EventInstance_Data(SoundData data)
+    public SoundData EventInstance_Data(SoundData data)
     {
         for (int i = 0; i < _instanceDatas.Count; i++)
         {
@@ -85,7 +76,7 @@ public class Audio_Controller : MonoBehaviour
         return null;
     }
 
-    private EventInstance EventInstance(SoundData data)
+    public EventInstance EventInstance(SoundData data)
     {
         return EventInstance_Data(data).instance;
     }
@@ -173,12 +164,5 @@ public class Audio_Controller : MonoBehaviour
 
         untrackEmitter.Stop();
         _emitters.Remove(untrackEmitter);
-    }
-    
-    
-    // Loop Sounds
-    private void PlayAll_LoopSounds()
-    {
-        
     }
 }

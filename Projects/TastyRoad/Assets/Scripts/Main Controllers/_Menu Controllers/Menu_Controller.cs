@@ -105,6 +105,8 @@ public class Menu_Controller : MonoBehaviour
 
     private void Navigate_Action(Vector2 direction)
     {
+        if (TransitionCanvas_Controller.instance.coroutine != null) return;
+        
         int actionCount = _eventButtons.Length;
         if (actionCount <= 0) return;
 
@@ -137,6 +139,7 @@ public class Menu_Controller : MonoBehaviour
     
     private void Select_Action()
     {
+        if (TransitionCanvas_Controller.instance.coroutine != null) return;
         if (_eventButtons.Length <= 0) return;
 
         _eventButtons[_currentIndex].actionEvent?.Invoke();

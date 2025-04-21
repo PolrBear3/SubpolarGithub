@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMOD.Studio;
 
 public class MainMenu_Controller : Menu_Controller
 {
@@ -12,10 +13,23 @@ public class MainMenu_Controller : Menu_Controller
         base.Start();
         
         Toggle_Menu(true);
+        StartCoroutine(Play_ThemeBGM());
     }
     
     
     // Menu Options
+    private IEnumerator Play_ThemeBGM()
+    {
+        while (TransitionCanvas_Controller.instance.coroutine != null) yield return null;
+        
+        EventInstance instance = Audio_Controller.instance.Create_EventInstance(gameObject, 2);
+
+        instance.setParameterByName("Value_intensity", 1f);
+        instance.start();
+        
+        yield break;
+    }
+    
     public void Start_InGame()
     {
         StartCoroutine(Start_InGame_Coroutine());
@@ -29,6 +43,7 @@ public class MainMenu_Controller : Menu_Controller
         transition.CloseScene_Transition();
         
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
+        gameObject.GetComponent<SoundData_Controller>().FadeOut(2);
 
         while (transition.coroutine != null) yield return null;
 

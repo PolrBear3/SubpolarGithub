@@ -88,7 +88,6 @@ public class InformationBox : MonoBehaviour
     {
         _infoText.text = infoText.ToString();
     }
-
     public void Update_RectLayout()
     {
         _infoText.ForceMeshUpdate();

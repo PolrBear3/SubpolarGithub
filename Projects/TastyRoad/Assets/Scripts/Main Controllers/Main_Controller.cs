@@ -60,10 +60,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
         Application.targetFrameRate = 60;
     }
 

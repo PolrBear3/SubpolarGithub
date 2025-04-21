@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
-using UnityEngine.Serialization;
 
 public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -17,7 +16,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     
     [Header("")]
     [SerializeField] private TextMeshProUGUI _infoText;
-    [FormerlySerializedAs("_continueText")] [SerializeField] private TextMeshProUGUI _navigateText;
+    [SerializeField] private TextMeshProUGUI _navigateText;
 
     [Header("")]
     [SerializeField] private Guide_ScrObj[] _allGuides;
@@ -131,7 +130,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
         Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(toggle);
         _playerPanel.gameObject.SetActive(toggle);
-
+        
         if (toggle == false)
         {
             _currentGuide = null;

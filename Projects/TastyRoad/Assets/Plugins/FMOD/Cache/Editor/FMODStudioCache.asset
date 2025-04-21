@@ -69,10 +69,30 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638801492566769486
+  lastModified: 638808413352945232
   FileSizes:
   - Name: Desktop
-    Value: 344256
+    Value: 361024
+  Exists: 1
+--- !u!114 &-9023841491469081233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/BGM.bank
+  m_EditorClassIdentifier: 
+  Path: TastyRoad_sounds/Build/Desktop/BGM.bank
+  Name: BGM
+  StudioPath: bank:/BGM
+  lastModified: 638808452019415390
+  FileSizes:
+  - Name: Desktop
+    Value: 859520
   Exists: 1
 --- !u!114 &-8842336582695762211
 MonoBehaviour:
@@ -113,11 +133,39 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638801492565925031
+  lastModified: 638808420100574508
   FileSizes:
   - Name: Desktop
-    Value: 1828
+    Value: 1890
   Exists: 1
+--- !u!114 &-8318135984999189204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BGM/TableforNone_Theme
+  m_EditorClassIdentifier: 
+  Path: event:/BGM/TableforNone_Theme
+  Guid:
+    Data1: 1294732842
+    Data2: 1230566317
+    Data3: -229970792
+    Data4: 591100238
+  Banks:
+  - {fileID: -9023841491469081233}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 9169830621636570225}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 72000
 --- !u!114 &-8302899947674091205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,33 +193,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 500
---- !u!114 &-7437292464083142477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/Oven_switch
-  m_EditorClassIdentifier: 
-  Path: event:/Station SFX/Oven_switch
-  Guid:
-    Data1: -405792680
-    Data2: 1241036917
-    Data3: 808444331
-    Data4: -2073641631
-  Banks:
-  - {fileID: -6252724095389087783}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &-6867150284731850622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,26 +248,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 50
---- !u!114 &-6252724095389087783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Station SFX.bank
-  m_EditorClassIdentifier: 
-  Path: TastyRoad_sounds/Build/Desktop/Station SFX.bank
-  Name: Station SFX
-  StudioPath: bank:/Station SFX
-  lastModified: 638801483282035295
-  FileSizes:
-  - Name: Desktop
-    Value: 17472
-  Exists: 1
 --- !u!114 &-3857188148246927821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,7 +329,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 500
---- !u!114 &-3199232476146871466
+--- !u!114 &-2127380851027006698
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -338,16 +339,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/SliceTable_slice
+  m_Name: event:/Basic SFX/Station/SliceTable_slice
   m_EditorClassIdentifier: 
-  Path: event:/Station SFX/SliceTable_slice
+  Path: event:/Basic SFX/Station/SliceTable_slice
   Guid:
     Data1: -80457016
     Data2: 1202517368
     Data3: -1518920025
     Data4: 746053890
   Banks:
-  - {fileID: -6252724095389087783}
+  - {fileID: -9098409597259461469}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -382,6 +383,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 369
+--- !u!114 &-1882331813165121497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Station/Station_break
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Station/Station_break
+  Guid:
+    Data1: 1255097458
+    Data2: 1122823251
+    Data3: -911600471
+    Data4: 1970102881
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1847966958500974043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,10 +480,8 @@ MonoBehaviour:
   - {fileID: -8782401601473127640}
   - {fileID: 1291012834966449344}
   - {fileID: -9098409597259461469}
-  - {fileID: -6252724095389087783}
+  - {fileID: -9023841491469081233}
   EditorEvents:
-  - {fileID: -3199232476146871466}
-  - {fileID: -7437292464083142477}
   - {fileID: -6867150284731850622}
   - {fileID: -3857188148246927821}
   - {fileID: -1847966958500974043}
@@ -465,18 +491,21 @@ MonoBehaviour:
   - {fileID: 6924463659752812726}
   - {fileID: -6624307689126360385}
   - {fileID: -9113675709811392843}
-  - {fileID: 9149461416140641624}
   - {fileID: 5506497794854222378}
   - {fileID: -1923747360536009667}
   - {fileID: -3681649872826742010}
   - {fileID: -8302899947674091205}
   - {fileID: -3501060663682776478}
+  - {fileID: 9019644799227909909}
+  - {fileID: -1882331813165121497}
+  - {fileID: -2127380851027006698}
+  - {fileID: -8318135984999189204}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638801492566769486
+  cacheTime: 638808452019415390
   cacheVersion: 131618
 --- !u!114 &1291012834966449344
 MonoBehaviour:
@@ -493,10 +522,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638801492565916092
+  lastModified: 638808420100563589
   FileSizes:
   - Name: Desktop
-    Value: 1472
+    Value: 1724
   Exists: 1
 --- !u!114 &3758027296563283760
 MonoBehaviour:
@@ -579,7 +608,7 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &9149461416140641624
+--- !u!114 &9019644799227909909
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -589,16 +618,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Station SFX/Station_break
+  m_Name: event:/Basic SFX/Station/Oven_switch
   m_EditorClassIdentifier: 
-  Path: event:/Station SFX/Station_break
+  Path: event:/Basic SFX/Station/Oven_switch
   Guid:
-    Data1: 1255097458
-    Data2: 1122823251
-    Data3: -911600471
-    Data4: 1970102881
+    Data1: -405792680
+    Data2: 1241036917
+    Data3: 808444331
+    Data4: -2073641631
   Banks:
-  - {fileID: -6252724095389087783}
+  - {fileID: -9098409597259461469}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -606,3 +635,27 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &9169830621636570225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TableforNone_Theme/Value_intensity
+  m_EditorClassIdentifier: 
+  Name: Value_intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1104856012
+    data2: 3748696620
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1

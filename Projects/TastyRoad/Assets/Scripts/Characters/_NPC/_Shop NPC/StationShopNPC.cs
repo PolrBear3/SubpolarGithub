@@ -583,6 +583,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
                 { "maxCount", recentStation.buildToArchiveCount.ToString() }
             };
             updateBox.data.Set_SmartInfo(buildCountStrings);
+            Main_Controller.instance.dialogSystem.RefreshCurrent_DialogInfo();
             
             // restock locked bookmark station, set price to 0
             _stationStocks[i].Toggle_Discount(false);

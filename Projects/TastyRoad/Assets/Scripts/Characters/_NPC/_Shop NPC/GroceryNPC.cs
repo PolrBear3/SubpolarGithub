@@ -420,6 +420,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         {
             DialogBox updateBox = dialog.Update_Dialog(1);
             updateBox.data.Set_SmartInfo("questCount", _currentQuestCount + "/" + _questCount);
+            Main_Controller.instance.dialogSystem.RefreshCurrent_DialogInfo();
             
             return;
         }

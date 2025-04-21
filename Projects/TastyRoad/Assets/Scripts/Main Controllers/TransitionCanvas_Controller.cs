@@ -83,15 +83,10 @@ public class TransitionCanvas_Controller : MonoBehaviour
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0f);
 
         yield return new WaitForSeconds(_transitionTime);
-
-        VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
-
-        if (videoGuide == null)
-        {
-            _coroutine = null;
-            yield break;
-        }
-        videoGuide.Trigger_Guide("Basic Controls");
+        
+        // guide
+        VideoGuide_Controller guide = VideoGuide_Controller.instance;
+        if (guide != null ) guide.Trigger_Guide("Basic Controls");
 
         _coroutine = null;
         yield break;
