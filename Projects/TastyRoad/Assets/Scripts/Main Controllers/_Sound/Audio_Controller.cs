@@ -33,12 +33,21 @@ public class Audio_Controller : MonoBehaviour
     public List<StudioEventEmitter> emitters => _emitters;
 
 
+    [Header("")]
+    [SerializeField] private SoundData[] _loopSoundDatas;
+
+
     // UnityEngine
     private void Awake()
     {
         instance = this;
     }
 
+    private void Start()
+    {
+        PlayAll_LoopSounds();
+    }
+    
 
     // References
     private EventReference Play_OneShot(EventReference soundReference)
@@ -164,5 +173,12 @@ public class Audio_Controller : MonoBehaviour
 
         untrackEmitter.Stop();
         _emitters.Remove(untrackEmitter);
+    }
+    
+    
+    // Loop Sounds
+    private void PlayAll_LoopSounds()
+    {
+        
     }
 }
