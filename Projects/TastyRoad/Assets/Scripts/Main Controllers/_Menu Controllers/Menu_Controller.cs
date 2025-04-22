@@ -32,9 +32,13 @@ public class Menu_Controller : MonoBehaviour
     [SerializeField] private Image _menuPanel;
     public Image menuPanel => _menuPanel;
     
+    [Header("")] 
     [SerializeField] private Menu_EventButton[] _eventButtons;
     public Menu_EventButton[] eventButtons => _eventButtons;
 
+    [Header("")] 
+    [SerializeField] private UnityEvent OnExitMenu;
+    
     
     private int _currentIndex;
     public int currentIndex => _currentIndex;
@@ -85,21 +89,22 @@ public class Menu_Controller : MonoBehaviour
 
         if (_menuPanel != null) _menuPanel.gameObject.SetActive(toggle);
 
+        input.OnCursorControl -= Navigate_Action;
+        input.OnSelect -= Select_Action;
+        input.OnExit -= () => OnExitMenu?.Invoke();
+        
         if (toggle)
         {
             input.Update_ActionMap(1);
 
             input.OnCursorControl += Navigate_Action;
             input.OnSelect += Select_Action;
+            input.OnExit += () => OnExitMenu?.Invoke();
 
             NavigateUpdate_EventButtons();
             return;
         }
-
         input.Update_ActionMap(0);
-
-        input.OnCursorControl -= Navigate_Action;
-        input.OnSelect -= Select_Action;
     }
 
 

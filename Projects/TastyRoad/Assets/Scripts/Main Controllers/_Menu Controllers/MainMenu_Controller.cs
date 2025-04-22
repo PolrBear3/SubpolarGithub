@@ -30,6 +30,7 @@ public class MainMenu_Controller : Menu_Controller
         yield break;
     }
     
+    
     public void Start_InGame()
     {
         StartCoroutine(Start_InGame_Coroutine());
@@ -49,5 +50,13 @@ public class MainMenu_Controller : Menu_Controller
 
         SceneManager.LoadScene(1);
         yield break;
+    }
+
+    public void Quit_Game()
+    {
+        if (Input_Controller.instance.currentScheme.name != "PC") return;
+        
+        Application.Quit();
+        Debug.Log("Application Quit Successful from: " + Input_Controller.instance.playerInput.currentControlScheme);
     }
 }
