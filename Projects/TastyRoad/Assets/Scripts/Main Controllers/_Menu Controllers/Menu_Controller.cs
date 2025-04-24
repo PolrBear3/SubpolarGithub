@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -37,7 +36,7 @@ public class Menu_Controller : MonoBehaviour
     public Menu_EventButton[] eventButtons => _eventButtons;
 
     [Header("")] 
-    [SerializeField] private UnityEvent OnExitMenu;
+    public UnityEvent OnExitMenu;
     
     
     private int _currentIndex;
@@ -108,15 +107,15 @@ public class Menu_Controller : MonoBehaviour
     }
 
 
-    private void Navigate_Action(Vector2 direction)
+    public void Navigate_Action(Vector2 direction)
     {
+        if (direction.y == 0) return;
         if (TransitionCanvas_Controller.instance.coroutine != null) return;
         
         int actionCount = _eventButtons.Length;
         if (actionCount <= 0) return;
 
-        float value = direction.x + direction.y;
-        _currentIndex = (_currentIndex + (int)value + actionCount) % actionCount;
+        _currentIndex = (_currentIndex + (int)direction.y + actionCount) % actionCount;
 
         NavigateUpdate_EventButtons();
         OnNavigate?.Invoke();
@@ -142,7 +141,7 @@ public class Menu_Controller : MonoBehaviour
     }
     
     
-    private void Select_Action()
+    public void Select_Action()
     {
         if (TransitionCanvas_Controller.instance.coroutine != null) return;
         if (_eventButtons.Length <= 0) return;
