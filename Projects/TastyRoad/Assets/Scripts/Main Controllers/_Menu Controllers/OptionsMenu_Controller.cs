@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 using FMODUnity;
 using FMOD.Studio;
 
@@ -22,8 +23,15 @@ public class OptionsMenu_Controller : Menu_Controller
 {
     [Header("")]
     [SerializeField] private TextMeshProUGUI[] _adjustmentTexts;
+    [SerializeField] private GameObject[] _adjustmentArrows;
 
+    [Header("")] 
+    [SerializeField] private TextMeshProUGUI _backButtonText;
+    [SerializeField] private LocalizedString[] _backButtonStrings;
+
+    [Header("")]
     [SerializeField] private ResolutionData[] _fallBackResolutions;
+    [SerializeField] private LocalizedString[] screenTypeStrings;
 
 
     private bool _adjusting;
@@ -34,7 +42,7 @@ public class OptionsMenu_Controller : Menu_Controller
     private Action<Vector2> OnOptionNavigate;
     private int _indexNum;
 
-    private OptionsData _preData;
+    private OptionsData _previewData;
     private OptionsData _data;
     
     private List<Vector2Int> _resolutions = new();
@@ -57,6 +65,8 @@ public class OptionsMenu_Controller : Menu_Controller
         {
             _optionTexts.Add(tmp.text);
         }
+        
+        Refresh_Adjustments();
     }
     
     
@@ -72,34 +82,32 @@ public class OptionsMenu_Controller : Menu_Controller
     
     public void Save_OptionsData()
     {
-        /*
-        if (_preData == null || _preData != _data)
+        if (_adjusting == false) return;
+        
+        if (_previewData == null)
         {
-            // return to previous volume //
-            _preData = null;
+            Apply_OptionsData(_data);
+            _previewData = null;
             
             return;
         }
-        */
+        _data = new(_previewData);
         
-        // _data = new(_preData); //
         ES3.Save("OptionsMenu_Controller/OptionsData", _data);
+        Apply_OptionsData(_data);
 
-        Screen.SetResolution(_data.resolution.x, _data.resolution.y, _data.isFullScreen);
-        Localization_Controller.instance.Update_Language(_data.language);
-
-        _preData = null;
+        _previewData = null;
     }
     
     
-    private void Refresh_AdjustmentTexts()
+    private void Refresh_Adjustments()
     {
         for (int i = 0; i < _adjustmentTexts.Length; i++)
         {
             _adjustmentTexts[i].text = _optionTexts[i];
+            _adjustmentArrows[i].SetActive(false);
         }
     }
-    
     
     public void Toggle_Adjustments(bool toggle)
     {
@@ -120,18 +128,37 @@ public class OptionsMenu_Controller : Menu_Controller
         input.OnCursorControl -= Exit_Adjustments;
         OnOptionNavigate = null;
 
-        Refresh_AdjustmentTexts();
-        Save_OptionsData();
+        Refresh_Adjustments();
+
+        if (_previewData != null)
+        {
+            Apply_OptionsData(_data);
+            _previewData = null;
+        }
+        
+        Update_BackButtonText();
     }
-    public void Toggle_Adjustments()
+    public void Toggle_Adjustments(GameObject adjustmentArrow)
     {
         Toggle_Adjustments(!_adjusting);
+        adjustmentArrow.SetActive(_adjusting);
     }
     
     public void Exit_Adjustments(Vector2 adjustDirection)
     {
         if (adjustDirection.x != 0) return;
         Toggle_Adjustments(false);
+    }
+
+
+    private void Update_BackButtonText()
+    {
+        if (_previewData == null)
+        {
+            _backButtonText.text = _backButtonStrings[0].GetLocalizedString();
+            return;
+        }
+        _backButtonText.text = _backButtonStrings[1].GetLocalizedString();
     }
     
     
@@ -150,11 +177,14 @@ public class OptionsMenu_Controller : Menu_Controller
     public void Update_Volume(Vector2 adjustDirection)
     {
         if (adjustDirection.x == 0) return;
+
+        _previewData = new(_data.volume);
+        _previewData.Update_Volume(0.1f * adjustDirection.x);
         
-        _data.Update_Volume(0.1f * adjustDirection.x);
-        
-        int textValue = Mathf.RoundToInt(_data.volume * 10f);
+        int textValue = Mathf.RoundToInt(_previewData.volume * 10f);
         _adjustmentTexts[_selectedTextIndex].text = textValue.ToString();
+        
+        Update_BackButtonText();
     }
     
     
@@ -194,30 +224,49 @@ public class OptionsMenu_Controller : Menu_Controller
         if (adjustDirection.x == 0) return;
 
         _indexNum = Mathf.Clamp(_indexNum + (int)adjustDirection.x, 0, _resolutions.Count - 1);
-        _data.Set_Resolution(_resolutions[_indexNum]);
+
+        _previewData = new(_data);
+        _previewData.Set_Resolution(_resolutions[_indexNum]);
         
         string resString =_resolutions[_indexNum].x + " x " + _resolutions[_indexNum].y;
         _adjustmentTexts[_selectedTextIndex].text = resString;
+        
+        Update_BackButtonText();
     }
 
 
-    public void Toggle_ScreenMode(TextMeshProUGUI text)
+    public void Set_ScreenMode(TextMeshProUGUI text)
     {
-        _data.Toggle_FullScreen(!_data.isFullScreen);
-        Update_ScreenModeText(text);
-
         if (_adjusting) return;
-        Toggle_Adjustments(true);
-    }
-
-    private void Update_ScreenModeText(TextMeshProUGUI text)
-    {
+        
+        _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
+        OnOptionNavigate += Update_ScreenMode;
+        
         if (_data.isFullScreen)
         {
-            text.text = "Full Screen";
+            text.text = screenTypeStrings[0].GetLocalizedString();
             return;
         }
-        text.text = "window";
+        text.text = screenTypeStrings[1].GetLocalizedString();
+    }
+
+    private void Update_ScreenMode(Vector2 adjustDirection)
+    {
+        if (adjustDirection.x == 0) return;
+        
+        if (_previewData == null) _previewData = new(_data);
+        _previewData.Toggle_FullScreen(!_previewData.isFullScreen);
+        
+        Update_BackButtonText();
+        
+        TextMeshProUGUI adjustmentText = _adjustmentTexts[_selectedTextIndex];
+        
+        if (_previewData.isFullScreen)
+        {
+            adjustmentText.text = screenTypeStrings[0].GetLocalizedString();
+            return;
+        }
+        adjustmentText.text = screenTypeStrings[1].GetLocalizedString();
     }
     
     
@@ -246,6 +295,9 @@ public class OptionsMenu_Controller : Menu_Controller
         _indexNum = (_indexNum + (int)adjustDirection.x + languageCount) % languageCount;
         _adjustmentTexts[_selectedTextIndex].text = localizeController.languageNames[_indexNum];
 
-        _data.Set_Language(localizeController.languageNames[_indexNum].ToString());
+        _previewData = new(_data);
+        _previewData.Set_Language(localizeController.languageNames[_indexNum].ToString());
+        
+        Update_BackButtonText();
     }
 }

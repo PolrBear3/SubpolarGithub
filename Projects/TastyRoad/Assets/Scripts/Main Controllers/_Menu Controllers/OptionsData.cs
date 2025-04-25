@@ -73,7 +73,6 @@ public class OptionsData
     public void Toggle_FullScreen(bool isFullScreen)
     {
         _isFullScreen = isFullScreen;
-        Screen.fullScreen = _isFullScreen;
     }
 
     public void Set_Language(string language)
