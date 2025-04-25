@@ -34,20 +34,19 @@ public class OptionsMenu_Controller : Menu_Controller
     private Action<Vector2> OnOptionNavigate;
     private int _indexNum;
 
+    private OptionsData _preData;
     private OptionsData _data;
     
-    
-    private List<Resolution> _resolutions = new();
+    private List<Vector2Int> _resolutions = new();
+    private Coroutine _resCoroutine;
 
 
     // UnityEngine
-    private new void Awake()
-    {
-        Set_OptionsData();
-    }
-    
     private new void Start()
     {
+        _data = ES3.Load("OptionsMenu_Controller/OptionsData", new OptionsData(1f));
+        Apply_OptionsData(_data);
+        
         Set_CurrentIndex(eventButtons.Length);
         base.Start();
 
@@ -62,17 +61,34 @@ public class OptionsMenu_Controller : Menu_Controller
     
     
     // Options Control
-    private void Set_OptionsData()
+    private void Apply_OptionsData(OptionsData data)
     {
-        _data = ES3.Load("OptionsMenu_Controller/OptionsData", new OptionsData(1f));
+        if (data == null) return;
+        
+        RuntimeManager.GetBus("bus:/").setVolume(data.volume);
+        Screen.SetResolution(data.resolution.x, data.resolution.y, data.isFullScreen);
+        Localization_Controller.instance.Update_Language(data.language);
     }
-
+    
     public void Save_OptionsData()
     {
+        /*
+        if (_preData == null || _preData != _data)
+        {
+            // return to previous volume //
+            _preData = null;
+            
+            return;
+        }
+        */
+        
+        // _data = new(_preData); //
         ES3.Save("OptionsMenu_Controller/OptionsData", _data);
 
-        if (_data.resolution == _data.ResolutionVector2(Screen.currentResolution)) return;
-        _data.Apply_Resolution();
+        Screen.SetResolution(_data.resolution.x, _data.resolution.y, _data.isFullScreen);
+        Localization_Controller.instance.Update_Language(_data.language);
+
+        _preData = null;
     }
     
     
@@ -87,6 +103,8 @@ public class OptionsMenu_Controller : Menu_Controller
     
     public void Toggle_Adjustments(bool toggle)
     {
+        if (_resCoroutine != null) return;
+        
         _adjusting = toggle;
         
         Input_Controller input = Input_Controller.instance;
@@ -137,8 +155,6 @@ public class OptionsMenu_Controller : Menu_Controller
         
         int textValue = Mathf.RoundToInt(_data.volume * 10f);
         _adjustmentTexts[_selectedTextIndex].text = textValue.ToString();
-        
-        RuntimeManager.GetBus("bus:/").getVolume(out float currentVolume);
     }
     
     
@@ -154,27 +170,20 @@ public class OptionsMenu_Controller : Menu_Controller
             float aspect = (float)Screen.resolutions[i].width / Screen.resolutions[i].height;
             if (Mathf.Abs(aspect - 16f / 9f) >= 0.01f) continue;
         
-            _resolutions.Add(Screen.resolutions[i]);
+            _resolutions.Add(new Vector2Int(Screen.resolutions[i].width, Screen.resolutions[i].height));
         }
 
         if (_resolutions.Count <= 0)
         {
             foreach (ResolutionData data in _fallBackResolutions)
             {
-                Resolution res = new Resolution
-                {
-                    width = data.width,
-                    height = data.height,
-                };
-                
-                _resolutions.Add(res);
+                _resolutions.Add(new(data.width, data.height));
             }
         }
 
-        Resolution currentRes = Screen.currentResolution;
-        _indexNum = _resolutions.Contains(currentRes) ? _resolutions.IndexOf(Screen.currentResolution) : 0;
+        _indexNum = _resolutions.Contains(_data.resolution) ? _resolutions.IndexOf(_data.resolution) : 0;
         
-        text.text = currentRes.width + " x " + currentRes.height;
+        text.text = _data.resolution.x + " x " + _data.resolution.y;
 
         _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
         OnOptionNavigate += Update_Resolution;
@@ -183,14 +192,60 @@ public class OptionsMenu_Controller : Menu_Controller
     public void Update_Resolution(Vector2 adjustDirection)
     {
         if (adjustDirection.x == 0) return;
-        _indexNum = (_indexNum + (int)adjustDirection.x + _resolutions.Count) % _resolutions.Count;
 
+        _indexNum = Mathf.Clamp(_indexNum + (int)adjustDirection.x, 0, _resolutions.Count - 1);
         _data.Set_Resolution(_resolutions[_indexNum]);
         
-        string resString =_resolutions[_indexNum].width + " x " + _resolutions[_indexNum].height;
+        string resString =_resolutions[_indexNum].x + " x " + _resolutions[_indexNum].y;
         _adjustmentTexts[_selectedTextIndex].text = resString;
+    }
+
+
+    public void Toggle_ScreenMode(TextMeshProUGUI text)
+    {
+        _data.Toggle_FullScreen(!_data.isFullScreen);
+        Update_ScreenModeText(text);
+
+        if (_adjusting) return;
+        Toggle_Adjustments(true);
+    }
+
+    private void Update_ScreenModeText(TextMeshProUGUI text)
+    {
+        if (_data.isFullScreen)
+        {
+            text.text = "Full Screen";
+            return;
+        }
+        text.text = "window";
     }
     
     
     // Language
+    public void Set_Language(TextMeshProUGUI text)
+    {
+        if (_adjusting) return;
+
+        Localization_Controller localizeController = Localization_Controller.instance;
+        string currentLanguage = localizeController.Current_LanguageName();
+        
+        _indexNum = localizeController.languageNames.IndexOf(currentLanguage);
+        text.text = currentLanguage;
+        
+        _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
+        OnOptionNavigate += Update_Language;
+    }
+
+    public void Update_Language(Vector2 adjustDirection)
+    {
+        if (adjustDirection.x == 0) return;
+
+        Localization_Controller localizeController = Localization_Controller.instance;
+        int languageCount = localizeController.languageNames.Count;
+
+        _indexNum = (_indexNum + (int)adjustDirection.x + languageCount) % languageCount;
+        _adjustmentTexts[_selectedTextIndex].text = localizeController.languageNames[_indexNum];
+
+        _data.Set_Language(localizeController.languageNames[_indexNum].ToString());
+    }
 }

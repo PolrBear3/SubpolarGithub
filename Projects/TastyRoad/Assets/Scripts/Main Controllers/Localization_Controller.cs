@@ -9,6 +9,10 @@ public class Localization_Controller : MonoBehaviour
 {
     public static Localization_Controller instance;
     
+    
+    private List<string> _languageNames = new();
+    public List<string> languageNames => _languageNames;
+    
     public Action OnLanguageChanged;
     
     
@@ -16,6 +20,8 @@ public class Localization_Controller : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        
+        Set_CurrentLanguages();
         
         LocalizationSettings.SelectedLocaleChanged += OnLanguageUpdate;
     }
@@ -29,7 +35,37 @@ public class Localization_Controller : MonoBehaviour
     // Control
     private void OnLanguageUpdate(Locale newLocale)
     {
-        Debug.unityLogger.Log("Language changed to: " + newLocale);
+        Debug.Log("Language changed to: " + newLocale);
         OnLanguageChanged?.Invoke();
+    }
+    
+    private void Set_CurrentLanguages()
+    {
+        List<Locale> locals = LocalizationSettings.AvailableLocales.Locales;
+        
+        foreach (Locale locale in locals)
+        {
+            _languageNames.Add(locale.Identifier.CultureInfo.EnglishName);
+        }
+    }
+    
+    
+    public string Current_LanguageName()
+    {
+        return LocalizationSettings.SelectedLocale.Identifier.CultureInfo.EnglishName;
+    }
+
+    public void Update_Language(string languageName)
+    {
+        List<Locale> locales = LocalizationSettings.AvailableLocales.Locales;
+
+        foreach (Locale locale in locales)
+        {
+            if (locale.Identifier.CultureInfo.EnglishName.Equals(languageName, StringComparison.OrdinalIgnoreCase))
+            {
+                LocalizationSettings.SelectedLocale = locale;
+                return;
+            }
+        }
     }
 }

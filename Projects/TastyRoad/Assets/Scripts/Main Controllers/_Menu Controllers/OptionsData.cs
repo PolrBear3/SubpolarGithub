@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using FMODUnity;
 using FMOD.Studio;
 
@@ -16,17 +17,27 @@ public class OptionsData
     [ES3Serializable] private bool _isFullScreen;
     public bool isFullScreen => _isFullScreen;
     
-    
-    // language //
+    [ES3Serializable] private string _language;
+    public string language => _language;
 
 
     // New
+    public OptionsData(OptionsData data)
+    {
+        _volume = data.volume;
+        _resolution = data.resolution;
+        _isFullScreen = data.isFullScreen;
+        _language = data.language;
+    }
+    
     public OptionsData(float volume)
     {
         _volume = volume;
 
-        _resolution = ResolutionVector2(Screen.currentResolution);
+        _resolution = Resolution_Vector2(Screen.currentResolution);
         _isFullScreen = false;
+        
+        _language = LocalizationSettings.SelectedLocale.Identifier.CultureInfo.NativeName;
     }
 
 
@@ -48,18 +59,25 @@ public class OptionsData
     }
 
 
-    public Vector2Int ResolutionVector2(Resolution resolution)
+    public Vector2Int Resolution_Vector2(Resolution resolution)
     {
         return new Vector2Int(resolution.width, resolution.height);
     }
 
-    public void Set_Resolution(Resolution resolution)
+    public void Set_Resolution(Vector2Int resolution)
     {
-        _resolution = new Vector2Int(resolution.width, resolution.height);
+        _resolution = new Vector2Int(resolution.x, resolution.y);
     }
-    
-    public void Apply_Resolution()
+
+
+    public void Toggle_FullScreen(bool isFullScreen)
     {
-        Screen.SetResolution(_resolution.x, _resolution.y, _isFullScreen);
+        _isFullScreen = isFullScreen;
+        Screen.fullScreen = _isFullScreen;
+    }
+
+    public void Set_Language(string language)
+    {
+        _language = language;
     }
 }
