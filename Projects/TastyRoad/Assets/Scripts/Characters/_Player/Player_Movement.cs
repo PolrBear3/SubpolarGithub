@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMOD.Studio;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Player_Movement : MonoBehaviour
 
     private float _moveSpeed;
     public float moveSpeed => _moveSpeed;
+    
+    private EventInstance _movementSoundInstance;
 
 
     // UnityEngine

@@ -62,6 +62,8 @@ public class TransitionCanvas_Controller : MonoBehaviour
         }
 
         yield return new WaitForSeconds(_loadTime);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0.1f);
@@ -77,6 +79,8 @@ public class TransitionCanvas_Controller : MonoBehaviour
     }
     private IEnumerator OpenScene_Transition_Coroutine()
     {
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+        
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, -1940f, _transitionTime).setEase(_leanTweenType);
 
@@ -98,6 +102,8 @@ public class TransitionCanvas_Controller : MonoBehaviour
     }
     private IEnumerator CloseScene_Transition_Coroutine()
     {
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
+        
         LeanTween.alpha(_curtain, 1f, 0f);
         LeanTween.moveX(_curtain, 0f, _transitionTime).setEase(_leanTweenType); ;
 

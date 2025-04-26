@@ -30,7 +30,6 @@ public class PauseMenu_Controller : Menu_Controller
         Input_Controller input = Input_Controller.instance;
 
         input.OnCancel += Toggle_Pause;
-        input.OnExit += Toggle_Pause;
     }
 
     private new void OnDestroy()
@@ -39,20 +38,25 @@ public class PauseMenu_Controller : Menu_Controller
         Input_Controller input = Input_Controller.instance;
 
         input.OnCancel -= Toggle_Pause;
-        input.OnExit -= Toggle_Pause;
     }
 
 
     // Pause Options
     public void Toggle_Pause()
     {
-        if (Menu_Toggled() == false && Input_Controller.instance.Current_ActionMapNum() == 1) return;
+        TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
+        if (transition.coroutine != null) return;
+        
+        Input_Controller input = Input_Controller.instance;
+        if (Menu_Toggled() == false && input.Current_ActionMapNum() == 1) return;
 
         Toggle_Menu(!Menu_Toggled());
-        TransitionCanvas_Controller.instance.Toggle_PauseScreen(Menu_Toggled());
+        transition.Toggle_PauseScreen(Menu_Toggled());
 
         if (Menu_Toggled() == false)
         {
+            OnExitMenu?.Invoke();
+
             Audio_Controller.instance.Play_OneShot(gameObject, 0);
             return;
         }

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.Localization;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.Localization.Components;
 
 [System.Serializable]
 public struct ResolutionData
@@ -23,6 +24,7 @@ public class OptionsMenu_Controller : Menu_Controller
 {
     [Header("")]
     [SerializeField] private TextMeshProUGUI[] _adjustmentTexts;
+    [SerializeField] private LocalizeStringEvent[] _adjustmentTextEvents;
     [SerializeField] private GameObject[] _adjustmentArrows;
 
     [Header("")] 
@@ -35,8 +37,6 @@ public class OptionsMenu_Controller : Menu_Controller
 
 
     private bool _adjusting;
-    
-    private List<string> _optionTexts = new();
     private int _selectedTextIndex;
     
     private Action<Vector2> OnOptionNavigate;
@@ -59,13 +59,6 @@ public class OptionsMenu_Controller : Menu_Controller
         base.Start();
 
         Toggle_Menu(false);
-
-        // save current option texts
-        foreach (TextMeshProUGUI tmp in _adjustmentTexts)
-        {
-            _optionTexts.Add(tmp.text);
-        }
-        
         Refresh_Adjustments();
     }
     
@@ -102,9 +95,9 @@ public class OptionsMenu_Controller : Menu_Controller
     
     private void Refresh_Adjustments()
     {
-        for (int i = 0; i < _adjustmentTexts.Length; i++)
+        for (int i = 0; i < _adjustmentTextEvents.Length; i++)
         {
-            _adjustmentTexts[i].text = _optionTexts[i];
+            _adjustmentTextEvents[i].RefreshString();
             _adjustmentArrows[i].SetActive(false);
         }
     }
