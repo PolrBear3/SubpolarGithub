@@ -1,14 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
+using UnityEngine.Serialization;
 
 public class Localization_Controller : MonoBehaviour
 {
     public static Localization_Controller instance;
     
+    [Header("")]
+    [SerializeField] private string[] _tableReferences;
     
     private List<string> _languageNames = new();
     public List<string> languageNames => _languageNames;
@@ -19,10 +23,19 @@ public class Localization_Controller : MonoBehaviour
     // UnityEngine
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
-        
+    }
+
+    private async void Start()
+    {
+        await PreloadAllLocalization();
         Set_CurrentLanguages();
-        
         LocalizationSettings.SelectedLocaleChanged += OnLanguageUpdate;
     }
 
@@ -30,14 +43,35 @@ public class Localization_Controller : MonoBehaviour
     {
         LocalizationSettings.SelectedLocaleChanged -= OnLanguageUpdate;
     }
-
+    
     
     // Control
-    private void OnLanguageUpdate(Locale newLocale)
+    private async Task PreloadAllLocalization()
+    {
+        string[] TableNames = _tableReferences; 
+
+        await LocalizationSettings.InitializationOperation.Task;
+
+        foreach (var tableName in TableNames)
+        {
+            var handle = LocalizationSettings.StringDatabase.GetTableAsync(tableName);
+            await handle.Task;
+
+            if (handle.Status != UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            {
+                Debug.LogWarning($"Failed to preload String Table: {tableName}");
+            }
+        }
+    }
+    
+    private async void OnLanguageUpdate(Locale newLocale)
     {
         Debug.Log("Language changed to: " + newLocale);
+        
+        await PreloadAllLocalization();
         OnLanguageChanged?.Invoke();
     }
+    
     
     private void Set_CurrentLanguages()
     {
