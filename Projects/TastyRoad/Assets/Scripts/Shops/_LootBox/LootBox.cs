@@ -224,5 +224,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         Update_CurrentSprite();
         
         _dropReadyIcon.SetActive(false);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 }

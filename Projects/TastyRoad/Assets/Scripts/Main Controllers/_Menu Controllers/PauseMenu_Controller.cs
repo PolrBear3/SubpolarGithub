@@ -29,7 +29,7 @@ public class PauseMenu_Controller : Menu_Controller
         // subscriptions
         Input_Controller input = Input_Controller.instance;
 
-        input.OnCancel += Toggle_Pause;
+        input.OnCancel += () => Toggle_Pause(true);
     }
 
     private new void OnDestroy()
@@ -37,12 +37,12 @@ public class PauseMenu_Controller : Menu_Controller
         // subscriptions
         Input_Controller input = Input_Controller.instance;
 
-        input.OnCancel -= Toggle_Pause;
+        input.OnCancel -= () => Toggle_Pause(true);
     }
 
 
     // Pause Options
-    public void Toggle_Pause()
+    public void Toggle_Pause(bool toggle)
     {
         TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
         if (transition.coroutine != null) return;
@@ -50,20 +50,21 @@ public class PauseMenu_Controller : Menu_Controller
         Input_Controller input = Input_Controller.instance;
         if (Menu_Toggled() == false && input.Current_ActionMapNum() == 1) return;
 
-        Toggle_Menu(!Menu_Toggled());
-        transition.Toggle_PauseScreen(Menu_Toggled());
+        Toggle_Menu(toggle);
+        transition.Toggle_PauseScreen(toggle);
 
-        if (Menu_Toggled() == false)
+        if (toggle == false)
         {
             OnExitMenu?.Invoke();
 
             Audio_Controller.instance.Play_OneShot(gameObject, 0);
             return;
         }
-        
+
         OnPause?.Invoke();
     }
-
+    
+    
     public void Return_MainMenu()
     {
         SaveLoad_Controller.instance.SaveAll_ISaveLoadable();

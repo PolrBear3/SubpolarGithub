@@ -51,7 +51,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         // load saved location
-        if (ES3.KeyExists("WorldMap_Controller/_currentData"))
+        if (ES3.KeyExists("WorldMap_Controller/WorldMap_Data"))
         {
             Set_Location(_currentData);
 
@@ -74,7 +74,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     {
         ES3.Save("WorldMap_Controller/_newLocation", _newLocation);
 
-        ES3.Save("WorldMap_Controller/_currentData", _currentData);
+        ES3.Save("WorldMap_Controller/WorldMap_Data", _currentData);
         ES3.Save("WorldMap_Controller/_visitedDatas", _visitedDatas);
     }
 
@@ -82,7 +82,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     {
         _newLocation = ES3.Load("WorldMap_Controller/_newLocation", _newLocation);
 
-        _currentData = ES3.Load("WorldMap_Controller/_currentData", _currentData);
+        _currentData = ES3.Load("WorldMap_Controller/WorldMap_Data", _currentData);
         _visitedDatas = ES3.Load("WorldMap_Controller/_visitedDatas", _visitedDatas);
     }
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3486195159248401679}
   - component: {fileID: 5722743193769059770}
   - component: {fileID: 5739883101272452172}
+  - component: {fileID: 2157455187694031896}
   - component: {fileID: 4490041224598976535}
   m_Layer: 0
   m_Name: Food Drop
@@ -164,6 +165,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &2157455187694031896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2638662604626066613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 1456072744
+        Data2: 1090747003
+        Data3: 1181122708
+        Data4: 1048100260
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_swap2
+  - _reference:
+      Guid:
+        Data1: -1316452498
+        Data2: 1303772983
+        Data3: 243705496
+        Data4: 1450492281
+      Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
+  _fadeDuration: 0
 --- !u!114 &4490041224598976535
 MonoBehaviour:
   m_ObjectHideFlags: 0

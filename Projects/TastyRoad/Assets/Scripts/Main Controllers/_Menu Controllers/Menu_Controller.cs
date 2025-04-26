@@ -37,7 +37,9 @@ public class Menu_Controller : MonoBehaviour
 
     [Header("")] 
     public UnityEvent OnExitMenu;
-    
+    private Action OnExit;
+
+    private bool _toggled;
     
     private int _currentIndex;
     public int currentIndex => _currentIndex;
@@ -88,22 +90,29 @@ public class Menu_Controller : MonoBehaviour
 
         if (_menuPanel != null) _menuPanel.gameObject.SetActive(toggle);
 
-        input.OnCursorControl -= Navigate_Action;
-        input.OnSelect -= Select_Action;
-        input.OnExit -= () => OnExitMenu?.Invoke();
-        
-        if (toggle)
+        if (toggle && _toggled == false)
         {
+            _toggled = true;
             input.Update_ActionMap(1);
 
             input.OnCursorControl += Navigate_Action;
             input.OnSelect += Select_Action;
-            input.OnExit += () => OnExitMenu?.Invoke();
+            
+            OnExit = () => OnExitMenu?.Invoke();
+            input.OnExit += OnExit;
 
             NavigateUpdate_EventButtons();
             return;
         }
+
+        if (toggle || _toggled == false) return;
+
+        _toggled = false;
         input.Update_ActionMap(0);
+            
+        input.OnCursorControl -= Navigate_Action;
+        input.OnSelect -= Select_Action;
+        input.OnExit -= OnExit;
     }
 
 

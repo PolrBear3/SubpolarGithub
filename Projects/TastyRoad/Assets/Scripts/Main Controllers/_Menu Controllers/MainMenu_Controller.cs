@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 using FMOD.Studio;
 
 public class MainMenu_Controller : Menu_Controller
 {
+    [Header("")] 
+    [SerializeField] private TextMeshProUGUI _dataInfoText;
+    
+    
     // UnityEngine
     private new void Start()
     {
@@ -31,6 +36,7 @@ public class MainMenu_Controller : Menu_Controller
     }
     
     
+    // Start Game Panel
     public void Start_InGame()
     {
         StartCoroutine(Start_InGame_Coroutine());
@@ -58,5 +64,32 @@ public class MainMenu_Controller : Menu_Controller
         
         Application.Quit();
         Debug.Log("Application Quit Successful from: " + Input_Controller.instance.playerInput.currentControlScheme);
+    }
+
+
+    public void Reset_Data()
+    {
+        if (ES3.FileExists("SaveFile.es3") == false) return;
+        
+        ES3.DeleteFile("SaveFile.es3");
+    }
+    
+    public void Update_DataInfoText(bool newData)
+    {
+        if (newData || ES3.FileExists("SaveFile.es3") == false)
+        {
+            _dataInfoText.text = string.Empty;
+            return;
+        }
+        
+        // get current location data //
+        WorldMap_Data mapData = ES3.Load("WorldMap_Controller/WorldMap_Data", new WorldMap_Data(0, 0));
+        string mapDataString = "<sprite=95> " + (mapData.worldNum + 1) + "-" + (mapData.locationNum + 1);
+
+        // get current gold amount //
+        GoldSystem_Data goldData = ES3.Load("GoldSystem/GoldSystem_Data", new GoldSystem_Data(0));
+        string goldDataString = "<sprite=56> " + goldData.goldAmount;
+        
+        _dataInfoText.text = mapDataString + "   " + goldDataString;
     }
 }

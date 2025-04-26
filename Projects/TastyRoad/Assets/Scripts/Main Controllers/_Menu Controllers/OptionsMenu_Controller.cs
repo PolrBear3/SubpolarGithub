@@ -34,7 +34,7 @@ public class OptionsMenu_Controller : Menu_Controller
     [Header("")]
     [SerializeField] private ResolutionData[] _fallBackResolutions;
     [SerializeField] private LocalizedString[] screenTypeStrings;
-
+    
 
     private bool _adjusting;
     private int _selectedTextIndex;
@@ -52,13 +52,20 @@ public class OptionsMenu_Controller : Menu_Controller
     // UnityEngine
     private new void Start()
     {
-        _data = ES3.Load("OptionsMenu_Controller/OptionsData", new OptionsData(1f));
+        if (ES3.FileExists("OptionsFile.es3") == false)
+        {
+            _data = new(1f);
+        }
+        else
+        {
+            _data = ES3.Load<OptionsData>("OptionsMenu_Controller/OptionsData", "OptionsFile.es3");
+        }
+        
         Apply_OptionsData(_data);
         
         Set_CurrentIndex(eventButtons.Length);
         base.Start();
 
-        Toggle_Menu(false);
         Refresh_Adjustments();
     }
     
@@ -86,7 +93,7 @@ public class OptionsMenu_Controller : Menu_Controller
         }
         _data = new(_previewData);
         
-        ES3.Save("OptionsMenu_Controller/OptionsData", _data);
+        ES3.Save("OptionsMenu_Controller/OptionsData", _data, "OptionsFile.es3");
         Apply_OptionsData(_data);
 
         _previewData = null;

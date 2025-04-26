@@ -83,12 +83,12 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("GoldSystem/_data", _data);
+        ES3.Save("GoldSystem/GoldSystem_Data", _data);
     }
 
     public void Load_Data()
     {
-        _data = ES3.Load("GoldSystem/_data", new GoldSystem_Data(0));
+        _data = ES3.Load("GoldSystem/GoldSystem_Data", new GoldSystem_Data(0));
     }
 
 

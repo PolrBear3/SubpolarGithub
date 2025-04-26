@@ -151,7 +151,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soundDatas: []
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -2000394434
+        Data2: 1125934655
+        Data3: 829910180
+        Data4: -31450466
+      Path: event:/Basic SFX/Vechicle/StationItem_export
+  _fadeDuration: 0
 --- !u!114 &4500829749673367382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +175,19 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: 0}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &5647837897336662785
 MonoBehaviour:
   m_ObjectHideFlags: 0
