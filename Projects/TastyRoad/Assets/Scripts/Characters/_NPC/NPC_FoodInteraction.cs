@@ -216,7 +216,11 @@ public class NPC_FoodInteraction : MonoBehaviour
             setData.Update_Condition(new FoodCondition_Data(randCondition, randLevel));
         }
 
-        if (foodIcon.hasFood == false) return;
+        if (foodIcon.hasFood == false)
+        {
+            Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, false);
+            return;
+        }
 
         foodIcon.Show_Icon(0.5f);
         foodIcon.Show_Condition();
@@ -224,7 +228,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         Run_OrderTime();
         Update_RoamArea();
         
-        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller);
+        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, true);
     }
 
 
@@ -266,7 +270,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         Update_RoamArea();
         
-        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller);
+        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, false);
     }
 
 
@@ -290,8 +294,6 @@ public class NPC_FoodInteraction : MonoBehaviour
         _transferData = new(transferData);
         _transferDatas.Add(new(transferData));
 
-        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller);
-        
         return true;
     }
     private IEnumerator Transfer_FoodOrder_Coroutine()
@@ -403,6 +405,8 @@ public class NPC_FoodInteraction : MonoBehaviour
             foodIcon.Show_Condition();
 
             Update_RoamArea();
+            
+            Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, false);
             return;
         }
 

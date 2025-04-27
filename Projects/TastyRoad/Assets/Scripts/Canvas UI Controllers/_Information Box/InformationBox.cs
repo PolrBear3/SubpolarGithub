@@ -36,13 +36,13 @@ public class InformationBox : MonoBehaviour
     private void Awake()
     {
         _rect = gameObject.GetComponent<RectTransform>();
+        
+        Set_DefalutHeight();
+        gameObject.SetActive(false);
     }
 
     private void Start()
     {
-        Set_DefalutHeight();
-        gameObject.SetActive(false);
-        
         Input_Controller input = Input_Controller.instance;
         input.Update_EmojiAsset(_infoText);
         

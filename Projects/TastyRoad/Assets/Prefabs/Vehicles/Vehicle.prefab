@@ -1497,6 +1497,7 @@ GameObject:
   - component: {fileID: 4244909148874104806}
   - component: {fileID: 9052003114442593425}
   - component: {fileID: 6545859062571502706}
+  - component: {fileID: 4361590143282441983}
   - component: {fileID: 277122501829671610}
   m_Layer: 5
   m_Name: Location Menu Canvas
@@ -1537,7 +1538,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 1
+  m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -1609,6 +1610,46 @@ MonoBehaviour:
         Data4: 791067312
       Path: event:/Basic SFX/UI Control/UI_cursorControl
   _fadeDuration: 0
+--- !u!114 &4361590143282441983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794061755134908635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4c4bd1e90a54c85830c50598b7e3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _templates:
+  - _infoName: oil require
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 3641914917117952
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables:
+      - name: currentAmount
+        variable:
+          rid: 2163505247770902530
+      - name: requireAmount
+        variable:
+          rid: 2163505247770902531
+  references:
+    version: 2
+    RefIds:
+    - rid: 2163505247770902530
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables, asm: Unity.Localization}
+      data:
+        m_Value: currentAmount
+    - rid: 2163505247770902531
+      type: {class: StringVariable, ns: UnityEngine.Localization.SmartFormat.PersistentVariables, asm: Unity.Localization}
+      data:
+        m_Value: requireAmount
 --- !u!114 &277122501829671610
 MonoBehaviour:
   m_ObjectHideFlags: 0

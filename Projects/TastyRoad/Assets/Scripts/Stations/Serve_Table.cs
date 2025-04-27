@@ -38,13 +38,19 @@ public class Serve_Table : Stack_Table, IInteractable
 
 
     // NPC
-    private List<NPC_Controller> ClosestFiltered_NPCs(List<NPC_Controller> targetNPCs)
+    private List<NPC_Controller> ConditionLevelMatch_NPCs(List<NPC_Controller> targetNPCs)
     {
+        FoodData_Controller tableFoodIcon = stationController.Food_Icon();
+        if (tableFoodIcon.hasFood == false) return targetNPCs;
+
+        List<FoodCondition_Data> tableConditions = tableFoodIcon.currentData.conditionDatas;
+
         targetNPCs.Sort((npc1, npc2) =>
         {
-            float distance1 = Vector2.Distance(transform.position, npc1.transform.position);
-            float distance2 = Vector2.Distance(transform.position, npc2.transform.position);
-            return distance1.CompareTo(distance2);
+            int match1 = npc1.foodIcon.currentData.ConditionLevel_MatchCount(tableConditions);
+            int match2 = npc2.foodIcon.currentData.ConditionLevel_MatchCount(tableConditions);
+
+            return match2.CompareTo(match1);
         });
 
         return targetNPCs;
@@ -52,20 +58,23 @@ public class Serve_Table : Stack_Table, IInteractable
 
     private List<NPC_Controller> FoodOrder_NPCs()
     {
-        List<NPC_Controller> allNPCs = Main_Controller.instance.All_NPCs();
+        Location_Controller location = Main_Controller.instance.currentLocation;
+        
+        List<NPC_Controller> foodOrderNPCs = location.foodOrderNPCs;
         List<NPC_Controller> orderNPCs = new();
 
-        for (int i = 0; i < allNPCs.Count; i++)
+        for (int i = 0; i < foodOrderNPCs.Count; i++)
         {
-            if (allNPCs[i].gameObject.TryGetComponent(out NPC_FoodInteraction foodInteract) == false) continue;
+            NPC_Controller npc = foodOrderNPCs[i];
 
-            if (foodInteract.timeCoroutine == null) continue;
-            if (stationController.Food_Icon().Has_SameFood(allNPCs[i].foodIcon.currentData.foodScrObj) == false) continue;
+            if (npc.foodInteraction == null) continue;
+            if (npc.foodInteraction.timeCoroutine == null) continue;
+            if (stationController.Food_Icon().Has_SameFood(npc.foodIcon.currentData.foodScrObj) == false) continue;
 
-            orderNPCs.Add(allNPCs[i]);
+            orderNPCs.Add(npc);
         }
 
-        return ClosestFiltered_NPCs(orderNPCs);
+        return ConditionLevelMatch_NPCs(orderNPCs);
     }
 
 
@@ -89,6 +98,8 @@ public class Serve_Table : Stack_Table, IInteractable
 
         while (true)
         {
+            yield return new WaitForSeconds(_searchTime);
+            
             if (FoodOrder_NPCs().Count <= 0)
             {
                 if (foodIcon.hasFood == false) break;
@@ -123,7 +134,6 @@ public class Serve_Table : Stack_Table, IInteractable
 
             foodIcon.Show_Icon();
             foodIcon.Show_Condition();
-
             AmountBar_Toggle();
         }
 

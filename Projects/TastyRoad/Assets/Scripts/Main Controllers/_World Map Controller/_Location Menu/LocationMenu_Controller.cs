@@ -29,10 +29,14 @@ public class LocationMenu_Controller : MonoBehaviour
     private void Start()
     {
         Toggle_Menu(false);
+        
+        // subscriptions
+        Localization_Controller.instance.OnLanguageChanged += Update_InfoBox;
     }
 
     private void OnDestroy()
     {
+        // subscriptions
         Input_Controller input = Input_Controller.instance;
 
         input.OnCursorControl -= CursorControl;
@@ -42,6 +46,8 @@ public class LocationMenu_Controller : MonoBehaviour
         input.OnSelectStart -= _holdClock.Run_ClockSprite;
         input.OnSelect -= _holdClock.Stop_ClockSpriteRun;
         input.OnHoldSelect -= _holdClock.Stop_ClockSpriteRun;
+        
+        Localization_Controller.instance.OnLanguageChanged += Update_InfoBox;
     }
 
 
@@ -125,11 +131,12 @@ public class LocationMenu_Controller : MonoBehaviour
         _hoverTileNum = _tiles.Length / 2;
 
         Update_Cursor();
-        Update_InfoBox();
 
         Update_Tiles();
         Update_LockedTiles();
         Update_TilesAnimation();
+        
+        Update_InfoBox();
     }
 
 
@@ -163,9 +170,11 @@ public class LocationMenu_Controller : MonoBehaviour
     {
         int centerNum = _tiles.Length / 2;
 
-        _infoBox.gameObject.SetActive(_hoverTileNum != centerNum);
-
-        if (_hoverTileNum == centerNum) return;
+        if (_hoverTileNum == centerNum)
+        {
+            _infoBox.gameObject.SetActive(false);
+            return;
+        }
 
         Main_Controller main = Main_Controller.instance;
         Data_Controller data = main.dataController;
@@ -173,13 +182,18 @@ public class LocationMenu_Controller : MonoBehaviour
         StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
 
-        int oilAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj("Oil Drum"));
-        int requireOil = Mathf.Abs(centerNum - _hoverTileNum);
-
-        string requireString = requireOil + " <sprite=61> required\n";
-        string currentString = "you have " + oilAmount + " <sprite=61> in <sprite=70> menu";
-
-        _infoBox.Update_InfoText(requireString + currentString);
+        int currentAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj("Oil Drum"));
+        int requireAmount = Mathf.Abs(centerNum - _hoverTileNum);
+        
+        InfoTemplate_Trigger trigger = gameObject.GetComponent<InfoTemplate_Trigger>();
+        Information_Template template = trigger.templates[0];
+        
+        template.Set_SmartInfo("currentAmount", currentAmount.ToString());
+        template.Set_SmartInfo("requireAmount", requireAmount.ToString());
+        
+        _infoBox.Update_InfoText(trigger.TemplateString(0));
+        
+        _infoBox.gameObject.SetActive(true);
         _infoBox.Update_RectLayout();
 
         if (_hoverTileNum <= centerNum)

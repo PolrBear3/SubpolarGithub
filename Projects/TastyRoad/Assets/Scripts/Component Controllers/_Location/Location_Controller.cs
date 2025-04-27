@@ -279,14 +279,23 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-    public void Track_FoodOrderNPC(NPC_Controller trackNPC)
+    public void Track_FoodOrderNPC(NPC_Controller trackNPC, bool trackToggle)
     {
-        if (_foodOrderNPCs.Contains(trackNPC))
+        if (trackNPC == null)
         {
-            _foodOrderNPCs.Remove(trackNPC);
+            Debug.Log("trackNPC is null");
             return;
         }
-        _foodOrderNPCs.Add(trackNPC);
+        
+        if (trackToggle && _foodOrderNPCs.Contains(trackNPC) == false)
+        {
+            _foodOrderNPCs.Add(trackNPC);
+            return;
+        }
+
+        if (trackToggle || _foodOrderNPCs.Contains(trackNPC) == false) return;
+        
+        _foodOrderNPCs.Remove(trackNPC);
     }
     
     public bool FoodOrderNPC_Maxed()

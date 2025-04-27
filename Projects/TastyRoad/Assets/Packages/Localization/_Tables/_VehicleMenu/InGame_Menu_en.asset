@@ -83,10 +83,22 @@ MonoBehaviour:
     m_Localized: durability <sprite=67>
     m_Metadata:
       m_Items: []
+  - m_Id: 3641914917117952
+    m_Localized: 'current amount <sprite=61> > {currentAmount}
+
+
+      {requireAmount}
+      <sprite=61> required to move to location
+
+
+      Hold <sprite=15> to move'
+    m_Metadata:
+      m_Items:
+      - rid: 2163505020054011911
   references:
     version: 2
     RefIds:
     - rid: 2163505020054011911
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00e0af26c404000000e0ef61df040000
+        m_Entries: 00e0af26c404000000e0ef61df04000000e0ef644df00c00

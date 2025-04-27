@@ -192,6 +192,24 @@ public class FoodData
         return matchCount;
     }
 
+    public int ConditionLevel_MatchCount(List<FoodCondition_Data> conditionsToCompare)
+    {
+        int matchCount = 0;
+
+        foreach (var condition in conditionsToCompare)
+        {
+            foreach (var currentCondition in _conditionDatas)
+            {
+                if (condition.type != currentCondition.type) continue;
+                
+                matchCount += Mathf.Min(condition.level, currentCondition.level);
+                break;
+            }
+        }
+        
+        return matchCount;
+    }
+    
 
     public bool Has_Condition(FoodCondition_Type targetCondition)
     {

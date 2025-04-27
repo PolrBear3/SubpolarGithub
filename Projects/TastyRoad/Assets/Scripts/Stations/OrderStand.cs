@@ -23,8 +23,8 @@ public class OrderStand : MonoBehaviour
     [Header("")]
     [SerializeField][Range(0, 100)] private int _searchTime;
     [SerializeField][Range(0, 100)] private int _maxCount;
-
-
+    
+    
     private List<NPC_Controller> _currentNPCs = new();
 
     private Coroutine _coroutine;
@@ -119,29 +119,30 @@ public class OrderStand : MonoBehaviour
     /// </returns>
     private List<NPC_Controller> FoodOrder_NPCs()
     {
-        Main_Controller main = Main_Controller.instance;
-        SpriteRenderer vehicleArea = main.currentVehicle.interactArea;
-
-        List<NPC_Controller> allNPCs = main.All_NPCs();
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
+        SpriteRenderer vehicleArea = Main_Controller.instance.currentVehicle.interactArea;
+        
+        List<NPC_Controller> foodOrderNPCs = currentLocation.foodOrderNPCs;
         List<NPC_Controller> orderNPCs = new();
 
-        for (int i = 0; i < allNPCs.Count; i++)
+        for (int i = 0; i < foodOrderNPCs.Count; i++)
         {
-            if (allNPCs[i].movement.roamActive == false) continue;
-            if (allNPCs[i].movement.currentRoamArea != vehicleArea) continue;
+            NPC_Controller npc = foodOrderNPCs[i];
 
-            if (allNPCs[i].gameObject.TryGetComponent(out NPC_FoodInteraction foodInteract) == false) continue;
-            if (foodInteract.timeCoroutine == null) continue;
+            if (npc.movement.roamActive == false) continue;
+            if (npc.movement.currentRoamArea != vehicleArea) continue;
+            if (npc.foodInteraction == null) continue;
+            if (npc.foodInteraction.timeCoroutine == null) continue;
 
-            orderNPCs.Add(allNPCs[i]);
+            orderNPCs.Add(npc);
         }
-        
-        // condition food order npcs priority
+
+        // Prioritize NPCs with conditions
         orderNPCs.Sort((a, b) =>
         {
             int aHasCond = a.foodIcon.currentData.conditionDatas.Count > 0 ? 0 : 1;
             int bHasCond = b.foodIcon.currentData.conditionDatas.Count > 0 ? 0 : 1;
-            
+
             return aHasCond.CompareTo(bHasCond);
         });
 
