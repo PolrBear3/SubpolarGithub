@@ -14,6 +14,7 @@ public class Input_Controller : MonoBehaviour
     [SerializeField] private PlayerInput _playerInput;
     public PlayerInput playerInput => _playerInput;
 
+    [Header("")]
     [SerializeField] private ControlScheme_ScrObj[] _schemes;
 
     [Header("")]
@@ -287,6 +288,8 @@ public class Input_Controller : MonoBehaviour
     {
         if (context.performed == false) return;
         OnCancel?.Invoke();
+        
+        Update_CurrentScheme("GamePad");
     }
 
 

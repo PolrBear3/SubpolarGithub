@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 2509055865607579981}
   - component: {fileID: 1331804926663461836}
   - component: {fileID: 7725837779298166318}
-  - component: {fileID: 8199780205900472995}
   - component: {fileID: 8903583041108868457}
   - component: {fileID: -2268305881826384539}
   - component: {fileID: -7268301005637499790}
@@ -321,22 +320,21 @@ MonoBehaviour:
         Data3: 349587073
         Data4: -1502948816
       Path: event:/Basic SFX/Interaction/Nugget_pay
---- !u!114 &8199780205900472995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5817206134798704318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultData:
-    icon: {fileID: -739041566, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: 
-  _datas: []
+  - _reference:
+      Guid:
+        Data1: 485366094
+        Data2: 1279118694
+        Data3: -307378519
+        Data4: 1458564469
+      Path: event:/Basic SFX/Interaction/NPC_gift
+  - _reference:
+      Guid:
+        Data1: -1660709437
+        Data2: 1200014235
+        Data3: -1415380316
+        Data4: -1692421121
+      Path: event:/Basic SFX/Interaction/CoinLauncher_throw
+  _fadeDuration: 0
 --- !u!114 &8903583041108868457
 MonoBehaviour:
   m_ObjectHideFlags: 0

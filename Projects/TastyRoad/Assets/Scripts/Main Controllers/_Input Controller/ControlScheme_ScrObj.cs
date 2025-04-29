@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Scheme!")]
 public class ControlScheme_ScrObj : ScriptableObject

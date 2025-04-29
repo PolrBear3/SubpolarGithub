@@ -65,17 +65,17 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
 
     // Food Pickup
-    private void Transfer()
+    private bool Transfer()
     {
         if (_foodIcon.hasFood == false)
         {
             Destroy(gameObject);
-            return;
+            return false;
         }
 
         FoodData_Controller playerIcon = _detection.player.foodIcon;
 
-        if (playerIcon.DataCount_Maxed()) return;
+        if (playerIcon.DataCount_Maxed()) return false;
 
         playerIcon.Set_CurrentData(_foodIcon.currentData);
         playerIcon.Show_Icon();
@@ -85,15 +85,16 @@ public class FoodDrop : MonoBehaviour, IInteractable
         _foodIcon.Set_CurrentData(null);
         _foodIcon.Toggle_SubDataBar(true);
 
-        if (_foodIcon.hasFood) return;
+        if (_foodIcon.hasFood) return true;
+        
         Destroy(gameObject);
+        return true;
     }
     
     
     private void Pickup()
     {
-        Transfer();
-        
+        if (Transfer() == false) return;
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 

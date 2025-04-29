@@ -110,8 +110,10 @@ public class Audio_Controller : MonoBehaviour
     public EventInstance Create_EventInstance(GameObject prefab, int dataIndexNum)
     {
         SoundData eventInstance = prefab.GetComponent<SoundData_Controller>().soundDatas[dataIndexNum];
+        
+        if (instanceDatas.Contains(eventInstance)) return EventInstance(eventInstance);
+        
         Create_EventInstance(eventInstance);
-
         return eventInstance.instance;
     }
 
@@ -143,7 +145,7 @@ public class Audio_Controller : MonoBehaviour
             Remove_EventInstance(data);
         }
     }
-
+    
 
     // Event Emitters
     public StudioEventEmitter EventEmitter(GameObject currentPrefab)

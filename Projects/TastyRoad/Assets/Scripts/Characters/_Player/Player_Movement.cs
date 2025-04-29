@@ -32,24 +32,20 @@ public class Player_Movement : MonoBehaviour
     private void Start()
     {
         // subscriptions
-        Input_Controller input = Input_Controller.instance;
-        
-        input.OnMovement += FaceDirection_Update;
-        input.OnActionMapUpdate += Force_MovementRestriction;
+        Input_Controller.instance.OnActionMapUpdate += Force_MovementRestriction;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        Input_Controller input = Input_Controller.instance;
-        
-        input.OnMovement -= FaceDirection_Update;
-        input.OnActionMapUpdate -= Force_MovementRestriction;
+        Input_Controller.instance.OnActionMapUpdate -= Force_MovementRestriction;
     }
 
     private void Update()
     {
         _playerController.animationController.Idle_Move(Is_Moving());
+        
+        FaceDirection_Update(_rigidBody.velocity);
     }
 
     private void FixedUpdate()

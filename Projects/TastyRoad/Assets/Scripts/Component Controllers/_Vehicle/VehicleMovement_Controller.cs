@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMOD.Studio;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -190,6 +191,15 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         player.Toggle_Hide(true);
 
         _onBoard = true;
+        
+        // sound
+        Audio_Controller audio = Audio_Controller.instance;
+        
+        gameObject.GetComponent<SoundData_Controller>().Stop_FadeOut();
+        
+        EventInstance soundInstance = audio.Create_EventInstance(gameObject, 0);
+        soundInstance.setParameterByName("Value_intensity", 1f);
+        soundInstance.start();
     }
 
 
@@ -249,5 +259,9 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         _recentPosition = _controller.transform.position;
         _onBoard = false;
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+        gameObject.GetComponent<SoundData_Controller>().FadeOut(0);
     }
 }

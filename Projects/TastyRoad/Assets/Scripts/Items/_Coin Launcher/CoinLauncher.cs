@@ -62,11 +62,7 @@ public class CoinLauncher : MonoBehaviour
         bullet.SetData(this, sprite, direction);
         bullet.movementEvent += bullet.Parabola_Movement;
 
-        SoundData_Controller sound = gameObject.GetComponent<SoundData_Controller>();
-        float pitchValue = Random.Range(0, 1f);
-
-        Audio_Controller.instance.Set_EventInstance_Parameter(sound.soundDatas[0], "Value_intensity", pitchValue);
-        Audio_Controller.instance.EventInstance(gameObject, 0).start();
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         return bullet;
     }

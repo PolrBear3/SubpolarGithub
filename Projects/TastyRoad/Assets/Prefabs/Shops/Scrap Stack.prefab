@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6773271685758279233}
   - component: {fileID: 6267698384129414439}
   - component: {fileID: 1884194309886730735}
+  - component: {fileID: 3785165725002015301}
   - component: {fileID: 1137932207672738685}
   - component: {fileID: 2780657938899932068}
   - component: {fileID: 9104879486881281373}
@@ -150,6 +151,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &3785165725002015301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4194232272499663455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -2000394434
+        Data2: 1125934655
+        Data3: 829910180
+        Data4: -31450466
+      Path: event:/Basic SFX/Vechicle/StationItem_export
+  - _reference:
+      Guid:
+        Data1: 1424211625
+        Data2: 1254941790
+        Data3: -810629981
+        Data4: 1247566103
+      Path: event:/Basic SFX/Vechicle/StationItem_retrieve
+  _fadeDuration: 0
 --- !u!114 &1137932207672738685
 MonoBehaviour:
   m_ObjectHideFlags: 0

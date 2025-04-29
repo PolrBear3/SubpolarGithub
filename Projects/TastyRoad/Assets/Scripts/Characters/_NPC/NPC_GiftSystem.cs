@@ -140,11 +140,18 @@ public class NPC_GiftSystem : MonoBehaviour
         _coolTimeBar.Set_Amount(0);
         Update_CoolTimBar();
 
-        float generosity = _controller.characterData.generosityLevel;
+        // sound
+        Audio_Controller audio = Audio_Controller.instance;
+        audio.Play_OneShot(gameObject, 3);
 
         // check drop rate
+        float generosity = _controller.characterData.generosityLevel;
+        
         if (main.Percentage_Activated(200f, _itemDropRate + generosity) == false) return;
 
+        // sound
+        audio.Play_OneShot(gameObject, 4);
+        
         ItemDropper dropper = _controller.itemDropper;
         float calculatedGenerosity = generosity / (_generosityImpact * 0.1f);
 

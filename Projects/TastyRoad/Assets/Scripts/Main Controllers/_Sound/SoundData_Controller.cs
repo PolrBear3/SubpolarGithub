@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using FMOD.Studio;
 
@@ -12,6 +13,9 @@ public class SoundData_Controller : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _fadeDuration;
     public float fadeDuration => _fadeDuration;
     
+    
+    private Coroutine _fadeCoroutine;
+    
 
     // MonoBehaviour
     private void OnDestroy()
@@ -21,6 +25,14 @@ public class SoundData_Controller : MonoBehaviour
     
     
     // Parameter Automation Control
+    public void Stop_FadeOut()
+    {
+        if (_fadeCoroutine == null) return;
+        
+        StopCoroutine(_fadeCoroutine);
+        _fadeCoroutine = null;
+    }
+    
     public void FadeOut(int dataIndex)
     {
         Audio_Controller audio = Audio_Controller.instance;
@@ -28,7 +40,7 @@ public class SoundData_Controller : MonoBehaviour
         SoundData data = audio.EventInstance_Data(_soundDatas[dataIndex]);
         if (data == null) return;
  
-        StartCoroutine(FadeOut_Coroutine(audio.EventInstance(data)));
+        _fadeCoroutine = StartCoroutine(FadeOut_Coroutine(audio.EventInstance(data)));
     }
     private IEnumerator FadeOut_Coroutine(EventInstance instance)
     {
@@ -45,7 +57,10 @@ public class SoundData_Controller : MonoBehaviour
             instance.setParameterByName("Value_intensity", value);
             yield return null;
         }
-        
+
+        instance.stop(STOP_MODE.IMMEDIATE);
+
+        _fadeCoroutine = null;
         yield break;
     }
 }

@@ -69,10 +69,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638810898409882096
+  lastModified: 638815229751423412
   FileSizes:
   - Name: Desktop
-    Value: 361024
+    Value: 1150464
   Exists: 1
 --- !u!114 &-8842336582695762211
 MonoBehaviour:
@@ -113,10 +113,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638810898409565705
+  lastModified: 638815229749336580
   FileSizes:
   - Name: Desktop
-    Value: 1948
+    Value: 2054
   Exists: 1
 --- !u!114 &-8302899947674091205
 MonoBehaviour:
@@ -172,6 +172,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-6791609353418280587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Vechicle/Vehicle_ride
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Vechicle/Vehicle_ride
+  Guid:
+    Data1: 1429215296
+    Data2: 1327786245
+    Data3: -888731993
+    Data4: -583458770
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 6525281962947047798}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 3198
 --- !u!114 &-6624307689126360385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,10 +350,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Basic SFX/UI Control/UI_cursorControl
   Guid:
-    Data1: -582139668
-    Data2: 1161418085
-    Data3: -168507222
-    Data4: 791067312
+    Data1: 364359670
+    Data2: 1114304277
+    Data3: 1952577465
+    Data4: -1944029214
   Banks:
   - {fileID: -9098409597259461469}
   IsStream: 0
@@ -334,7 +362,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 500
+  Length: 58
 --- !u!114 &-1923747360536009667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,12 +480,14 @@ MonoBehaviour:
   - {fileID: -4747529475503376433}
   - {fileID: 7738220188389852575}
   - {fileID: -3502694908880337663}
+  - {fileID: -6791609353418280587}
+  - {fileID: 8184599485102923787}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638810898409882096
+  cacheTime: 638815229751423412
   cacheVersion: 131618
 --- !u!114 &1129915511423555815
 MonoBehaviour:
@@ -498,7 +528,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638810898409556859
+  lastModified: 638815229749318901
   FileSizes:
   - Name: Desktop
     Value: 1870
@@ -545,7 +575,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 638810898409507345
+  lastModified: 638813929063490866
   FileSizes:
   - Name: Desktop
     Value: 859520
@@ -605,6 +635,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 516
+--- !u!114 &6525281962947047798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Vehicle_ride/Value_intensity
+  m_EditorClassIdentifier: 
+  Name: Value_intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1104856012
+    data2: 3748696620
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &6924463659752812726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,3 +713,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &8184599485102923787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Interaction/NPC_gift
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Interaction/NPC_gift
+  Guid:
+    Data1: 485366094
+    Data2: 1279118694
+    Data3: -307378519
+    Data4: 1458564469
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 468

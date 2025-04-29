@@ -119,6 +119,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
 
         Toggle_AmountBar();
         Update_CurrentSprite();
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
     private void Retrieve()
@@ -152,5 +154,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
 
         Toggle_AmountBar();
         Update_CurrentSprite();
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 }
