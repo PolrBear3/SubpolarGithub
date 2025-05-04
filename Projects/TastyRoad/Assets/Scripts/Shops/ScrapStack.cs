@@ -17,6 +17,10 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField] private Sprite[] _scrapSprites;
+    
+    
+    [Space(60)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // UnityEngine
@@ -33,6 +37,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Update_CurrentSprite();
 
         // subscriptions
+        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.OnInteract += Toggle_AmountBar;
         _interactable.OnUnInteract += Toggle_AmountBar;

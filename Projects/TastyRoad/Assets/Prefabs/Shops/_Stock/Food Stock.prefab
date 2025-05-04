@@ -166,15 +166,63 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: -1337495358, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas:
   - icon: {fileID: -1337495358, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Purchase to unlock
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: 2146137284, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: No <sprite=58> currently stocked!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -372810078, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not enough <sprite=58> amount currently stocked!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -630237576, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not enough space in food storage!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &3521912711758190000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +279,7 @@ MonoBehaviour:
   - {fileID: -2090806982, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   _unlockPrice: 20
   _discountPercentage: 50
+  _guideScrObj: {fileID: 11400000, guid: c38f2ac4151e84a15b99a244bc9e1ea4, type: 2}
 --- !u!1 &6231251741471268091
 GameObject:
   m_ObjectHideFlags: 0

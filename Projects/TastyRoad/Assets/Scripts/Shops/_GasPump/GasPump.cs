@@ -49,7 +49,7 @@ public class GasPump : MonoBehaviour, ISaveLoadable
         _interactable.OnHoldInteract += Purchase;
         _interactable.OnInteract += Spawn_OilDrum;
 
-        GlobalTime_Controller.instance.OnDayTime += Fill_OilDrum;
+        globaltime.instance.OnDayTime += Fill_OilDrum;
     }
 
     private void OnDestroy()
@@ -65,7 +65,7 @@ public class GasPump : MonoBehaviour, ISaveLoadable
         _interactable.OnHoldInteract -= Purchase;
         _interactable.OnInteract -= Spawn_OilDrum;
 
-        GlobalTime_Controller.instance.OnDayTime -= Fill_OilDrum;
+        globaltime.instance.OnDayTime -= Fill_OilDrum;
     }
 
     

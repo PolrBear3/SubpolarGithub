@@ -7,9 +7,9 @@ using UnityEngine.Rendering.Universal;
 [System.Serializable]
 public enum TimePhase { Day, Night }
 
-public class GlobalTime_Controller : MonoBehaviour, ISaveLoadable
+public class globaltime : MonoBehaviour, ISaveLoadable
 {
-    public static GlobalTime_Controller instance;
+    public static globaltime instance;
 
 
     [Header("")]

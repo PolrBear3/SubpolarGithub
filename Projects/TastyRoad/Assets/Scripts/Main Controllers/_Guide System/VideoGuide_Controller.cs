@@ -22,7 +22,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Guide_ScrObj[] _allGuides;
 
 
-    private List<GuideData> _triggeredDatas = new();
+    private List<int> _triggeredGuideNums = new();
 
     private Guide_ScrObj _currentGuide;
     private int _currentClipNum;
@@ -68,48 +68,33 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("VideoGuide_Controller/_triggeredDatas", _triggeredDatas);
+        ES3.Save("VideoGuide_Controller/_triggeredGuideNums", _triggeredGuideNums);
     }
 
     public void Load_Data()
     {
-        _triggeredDatas = ES3.Load("VideoGuide_Controller/_triggeredDatas", _triggeredDatas);
+        _triggeredGuideNums = ES3.Load("VideoGuide_Controller/_triggeredGuideNums", _triggeredGuideNums);
     }
 
 
     // Trigger
-    private Guide_ScrObj Guide(string guideName)
+    private bool Guide_Triggered(Guide_ScrObj guideScrObj)
     {
-        for (int i = 0; i < _allGuides.Length; i++)
+        for (int i = 0; i < _triggeredGuideNums.Count; i++)
         {
-            if (guideName != _allGuides[i].guideName) continue;
-
-            return _allGuides[i];
-        }
-        return null;
-    }
-
-    private bool Guide_Triggered(string guideName)
-    {
-        for (int i = 0; i < _triggeredDatas.Count; i++)
-        {
-            if (guideName != _triggeredDatas[i].guideScrObj.guideName) continue;
-
+            if (guideScrObj.guideID != _triggeredGuideNums[i]) continue;
             return true;
         }
         return false;
     }
-
-
-    public void Trigger_Guide(string guideName)
+    
+    public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
-        if (Guide_Triggered(guideName)) return;
+        if (guideScrObj == null) return;
+        if (Guide_Triggered(guideScrObj)) return;
 
-        Guide_ScrObj guide = Guide(guideName);
-        if (guide == null) return;
-
-        _triggeredDatas.Add(new(guide));
-        _currentGuide = guide;
+        _triggeredGuideNums.Add(guideScrObj.guideID);
+        _currentGuide = guideScrObj;
 
         Toggle_VideoPanel(true);
     }

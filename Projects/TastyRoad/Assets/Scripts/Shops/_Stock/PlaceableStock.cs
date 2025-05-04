@@ -26,6 +26,10 @@ public class PlaceableStock : MonoBehaviour
 
     private bool _isComplete;
     public bool isComplete => _isComplete;
+    
+    
+    [Space(60)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // UnityEngine
@@ -43,6 +47,8 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
+        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         _interactable.OnInteract += Toggle_AmountBar;
         _interactable.OnUnInteract += Toggle_AmountBar;
     }

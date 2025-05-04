@@ -46,7 +46,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
 
         // subscriptions
         Main_Controller.instance.worldMap.OnNewLocation += Reset_DroppedState;
-        GlobalTime_Controller.instance.OnTimeTik += Refill;
+        globaltime.instance.OnTimeTik += Refill;
         
         _iInteractable.OnInteract += Drop_LootBoxItem;
     }
@@ -55,7 +55,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     {
         // subscriptions
         Main_Controller.instance.worldMap.OnNewLocation -= Reset_DroppedState;
-        GlobalTime_Controller.instance.OnTimeTik -= Refill;
+        globaltime.instance.OnTimeTik -= Refill;
 
         _iInteractable.OnInteract -= Drop_LootBoxItem;
     }

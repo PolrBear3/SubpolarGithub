@@ -27,11 +27,18 @@ public class StationStock : MonoBehaviour
     private StationData _currentStation;
     public StationData currentStation => _currentStation;
 
+    private PurchaseData _purchaseData;
+    public PurchaseData purchaseData => _purchaseData;
+    
     private StockData _stockData;
     public StockData stockData => _stockData;
 
     private bool _sold;
     public bool sold => _sold;
+
+    
+    [Space(60)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // MonoBehaviour
@@ -145,6 +152,8 @@ public class StationStock : MonoBehaviour
         // 
         Update_toSold();
         Toggle_Discount(false);
+        
+        VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
     }
 
     public void Update_toSold()

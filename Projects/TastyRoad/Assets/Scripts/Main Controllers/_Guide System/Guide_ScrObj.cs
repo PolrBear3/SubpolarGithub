@@ -34,6 +34,9 @@ public class Guide_ScrObj : ScriptableObject
     [SerializeField] private string _guideName;
     public string guideName => _guideName;
 
+    [SerializeField] private int _guideID;
+    public int guideID => _guideID;
+
     [Header("")]
     [SerializeField] private VideoClip_Data[] _clipDatas;
     public VideoClip_Data[] clipDatas => _clipDatas;

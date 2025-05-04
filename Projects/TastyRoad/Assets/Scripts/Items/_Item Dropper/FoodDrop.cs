@@ -31,7 +31,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
         AmountBar_Toggle();
 
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik += Activate_DestroyTimeTik;
+        globaltime.instance.OnTimeTik += Activate_DestroyTimeTik;
 
         _detection.EnterEvent += AmountBar_Toggle;
         _detection.ExitEvent += AmountBar_Toggle;
@@ -40,7 +40,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
     private void OnDestroy()
     {
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik -= Activate_DestroyTimeTik;
+        globaltime.instance.OnTimeTik -= Activate_DestroyTimeTik;
 
         _detection.EnterEvent -= AmountBar_Toggle;
         _detection.ExitEvent -= AmountBar_Toggle;

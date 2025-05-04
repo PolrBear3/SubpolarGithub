@@ -44,7 +44,7 @@ public class MailBox : MonoBehaviour
         Toggle_AmountBar();
 
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik += Drop_CollectCard;
+        globaltime.instance.OnTimeTik += Drop_CollectCard;
 
         _detection.EnterEvent += Toggle_AmountBar;
         _detection.ExitEvent += Toggle_AmountBar;
@@ -58,7 +58,7 @@ public class MailBox : MonoBehaviour
         Save_Data();
 
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik -= Drop_CollectCard;
+        globaltime.instance.OnTimeTik -= Drop_CollectCard;
 
         _detection.EnterEvent -= Toggle_AmountBar;
         _detection.ExitEvent -= Toggle_AmountBar;

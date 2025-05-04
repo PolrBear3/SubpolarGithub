@@ -33,7 +33,7 @@ public class CraftNPC_Smith : CraftNPC
         Subscribe_OnSave(Save_Data);
 
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik += MoveTo_SetPosition;
+        globaltime.instance.OnTimeTik += MoveTo_SetPosition;
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
@@ -46,7 +46,7 @@ public class CraftNPC_Smith : CraftNPC
     private new void OnDestroy()
     {
         // subscriptions
-        GlobalTime_Controller.instance.OnTimeTik -= MoveTo_SetPosition;
+        globaltime.instance.OnTimeTik -= MoveTo_SetPosition;
 
         ActionBubble_Interactable interactable = npcController.interactable;
 

@@ -36,6 +36,10 @@ public class FoodStock : MonoBehaviour
 
     private StockData _stockData;
     public StockData stockData => _stockData;
+    
+    
+    [Space(60)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // UnityEngine
@@ -62,6 +66,8 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
+        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         _interactable.OnInteract += Toggle_Dialog;
         _interactable.OnInteract += Toggle_Price;
 

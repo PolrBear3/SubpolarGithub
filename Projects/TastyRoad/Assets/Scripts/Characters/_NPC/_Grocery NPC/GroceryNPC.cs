@@ -38,20 +38,17 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private Food_ScrObj[] _startingBundles;
 
-    private HashSet<FoodData> _unlockDatas = new();
-
-
     [Header("")]
     [SerializeField][Range(0, 100)] private int _questCoolTime;
     [SerializeField][Range(0, 100)] private int _questCount;
 
-    private int _currentQuestCool;
-    private int _currentQuestCount;
 
-    private bool _questComplete;
-
-
+    private GroceryNPC_Data _data;
     private Coroutine _actionCoroutine;
+    
+    
+    [Space(60)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // UnityEngine
@@ -65,6 +62,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         Load_CurrentFoodStocks();
         Load_PlaceableStocks();
 
+        _npcController.foodIcon.Show_Icon(0.5f);
+        
         _questBar.Toggle_BarColor(true);
         Toggle_QuestBar();
 
@@ -80,15 +79,18 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // action subscription
         Main_Controller.instance.worldMap.OnNewLocation += Restock_Instant;
 
-        GlobalTime_Controller.instance.OnDayTime += Restock;
-        GlobalTime_Controller.instance.OnTimeTik += Restock_EmptyStocks;
+        globaltime globaltime = globaltime.instance;
+        
+        globaltime.OnDayTime += Restock;
+        globaltime.OnTimeTik += Restock_EmptyStocks;
 
-        GlobalTime_Controller.instance.OnTimeTik += Collect_FoodBundles;
-        GlobalTime_Controller.instance.OnTimeTik += Set_QuestFood;
-        GlobalTime_Controller.instance.OnTimeTik += Set_Discount;
+        globaltime.OnTimeTik += Collect_FoodBundles;
+        globaltime.OnTimeTik += Set_Discount;
 
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
 
+        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
 
@@ -101,15 +103,15 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // action subscription
-
         Main_Controller.instance.worldMap.OnNewLocation -= Restock_Instant;
+        
+        globaltime globaltime = globaltime.instance;
+        
+        globaltime.OnDayTime -= Restock;
+        globaltime.OnTimeTik -= Restock_EmptyStocks;
 
-        GlobalTime_Controller.instance.OnDayTime -= Restock;
-        GlobalTime_Controller.instance.OnTimeTik -= Restock_EmptyStocks;
-
-        GlobalTime_Controller.instance.OnTimeTik -= Collect_FoodBundles;
-        GlobalTime_Controller.instance.OnTimeTik -= Set_QuestFood;
-        GlobalTime_Controller.instance.OnTimeTik -= Set_Discount;
+        globaltime.OnTimeTik -= Collect_FoodBundles;
+        globaltime.OnTimeTik -= Set_Discount;
 
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
 
@@ -126,16 +128,10 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("GroceryNPC/_unlockDatas", _unlockDatas);
-
-        ES3.Save("GroceryNPC/_currentQuestCool", _currentQuestCool);
-        ES3.Save("GroceryNPC/_currentQuestCount", _currentQuestCount);
-
-        ES3.Save("GroceryNPC/_questComplete", _questComplete);
-
         FoodData_Controller questIcon = _npcController.foodIcon;
         FoodData questFoodData = new(questIcon.currentData);
 
+        ES3.Save("GroceryNPC/GroceryNPC_Data", _data);
         ES3.Save("GroceryNPC/questData", questFoodData);
 
         Save_CurrentFoodStocks();
@@ -144,40 +140,28 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
-        _unlockDatas = ES3.Load("GroceryNPC/_unlockDatas", _unlockDatas);
-
         // load starting bundle
-        for (int i = 0; i < _startingBundles.Length; i++)
+        HashSet<FoodData> startingBundleDatas = new();
+
+        foreach (Food_ScrObj food in _startingBundles)
         {
-            if (UnlockData(_startingBundles[i]) != null) continue;
-            Unlock(_startingBundles[i]);
+            startingBundleDatas.Add(new(food));
         }
+        _data = ES3.Load("GroceryNPC/GroceryNPC_Data", new GroceryNPC_Data(startingBundleDatas));
 
-        foreach (FoodData unlockData in _unlockDatas)
+        foreach (FoodData data in _data.unlockDatas)
         {
-            Unlock_New(unlockData.foodScrObj);
+            _data.UnlockNew_FoodData(data.foodScrObj);
         }
-
-        _currentQuestCool = ES3.Load("GroceryNPC/_currentQuestCool", _currentQuestCool);
-        _currentQuestCount = ES3.Load("GroceryNPC/_currentQuestCount", _currentQuestCount);
-
-        _questComplete = ES3.Load("GroceryNPC/_questComplete", _questComplete);
 
         FoodData questFoodData = null;
         questFoodData = new(ES3.Load("GroceryNPC/questData", questFoodData));
 
-        if (_questComplete)
+        if (questFoodData.foodScrObj == null)
         {
-            FoodData_Controller questIcon = _npcController.foodIcon;
-
-            questIcon.Set_CurrentData(new(questFoodData.foodScrObj));
-            questIcon.Show_Icon();
-
+            Set_QuestFood();
             return;
         }
-
-        if (questFoodData == null) return;
-
         Set_QuestFood(questFoodData.foodScrObj);
     }
 
@@ -309,16 +293,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // Quest
     public void Toggle_QuestBar()
     {
-        if (!_npcController.foodIcon.hasFood || _detection.player == null || _actionTimer.animationRunning)
+        if (_data.questComplete || _detection.player == null || _actionTimer.animationRunning)
         {
             _questBarObject.SetActive(false);
             return;
         }
 
-        _questBar.Load_Custom(_questCount, _currentQuestCount);
-        _questBar.Toggle(true);
-
         _questBarObject.SetActive(true);
+        
+        _questBar.Load_Custom(_questCount, _data.questCompleteCount);
+        _questBar.Toggle(true);
     }
 
 
@@ -334,8 +318,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        _questComplete = false;
-
         questIcon.Set_CurrentData(new(food));
         questIcon.Show_Icon(0.5f);
     }
@@ -345,20 +327,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     /// </summary>
     private void Set_QuestFood()
     {
-        FoodData_Controller questIcon = _npcController.foodIcon;
-
-        if (questIcon.hasFood && !_questComplete) return;
-        if (_currentQuestCount >= _questCount) return;
-
-        if (_currentQuestCool < _questCoolTime)
-        {
-            _currentQuestCool++;
-            return;
-        }
-
         if (_actionCoroutine != null) return;
+        if (_data.questComplete) return;
 
-        List<FoodData> unlockedDatas = new(_unlockDatas);
+        FoodData_Controller questIcon = _npcController.foodIcon;
+        List<FoodData> unlockedDatas = new(_data.unlockDatas);
 
         for (int i = 0; i < unlockedDatas.Count; i++)
         {
@@ -380,32 +353,24 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         
-        if (_currentQuestCount >= _questCount)
+        if (_data.questComplete)
         {
             dialog.Update_Dialog(2);
             return;
         }
 
-        if (_questComplete) return;
-
         FoodData_Controller playerIcon = _detection.player.foodIcon;
         FoodData_Controller questIcon = _npcController.foodIcon;
 
-        if (questIcon.Is_SameFood(playerIcon.currentData.foodScrObj) == false)
+        if (playerIcon.hasFood == false || questIcon.Is_SameFood(playerIcon.currentData.foodScrObj) == false)
         {
             dialog.Update_Dialog(0);
             return;
         }
 
-        _questComplete = true;
-        _currentQuestCool = 0;
-
-        questIcon.Show_Icon();
-
-        // quest count update
-        _currentQuestCount++;
-        _currentQuestCount = Mathf.Clamp(_currentQuestCount, 0, _questCount);
-
+        _data.Update_QuestCompleteCount(1);
+        _data.Toggle_QuestCompleteState(_data.questCompleteCount >= _questCount);
+        
         Toggle_QuestBar();
 
         // remove player food
@@ -414,18 +379,17 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
-        Set_Discount();
-        
-        if (_currentQuestCount < _questCount)
+        if (_data.questComplete)
         {
-            DialogBox updateBox = dialog.Update_Dialog(1);
-            updateBox.data.Set_SmartInfo("questCount", _currentQuestCount + "/" + _questCount);
-            Main_Controller.instance.dialogSystem.RefreshCurrent_DialogInfo();
-            
+            dialog.Update_Dialog(2);
             return;
         }
         
-        dialog.Update_Dialog(2);
+        Set_QuestFood();
+        
+        DialogBox updateBox = dialog.Update_Dialog(1);
+        updateBox.data.Set_SmartInfo("questCount", _data.questCompleteCount + "/" + _questCount);
+        Main_Controller.instance.dialogSystem.RefreshCurrent_DialogInfo();
     }
 
 
@@ -450,11 +414,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private void Set_Discount()
     {
         if (_actionCoroutine != null) return;
-        if (_currentQuestCount < _questCount) return;
+        if (_data.questComplete == false) return;
         if (DiscountAvailable_Stocks().Count <= 0) return;
-
-        _currentQuestCount = 0;
-        Toggle_QuestBar();
 
         _actionCoroutine = StartCoroutine(Set_Discount_Coroutine());
     }
@@ -470,86 +431,21 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         randStock.Toggle_Discount(true);
         randStock.Set_Amount(randStock.foodIcon.maxAmount);
+        
+        // reset data
+        _data.Toggle_QuestCompleteState(false);
+        _data.Update_QuestCompleteCount(-_questCount);
+        
+        Set_QuestFood();
 
         Cancel_Action();
         yield break;
     }
 
 
-    // Data Control
-    private void Unlock(Food_ScrObj food)
+    private FoodData UnlockProgress_FoodData()
     {
-        if (Main_Controller.instance.dataController.Is_RawFood(food)) return;
-
-        FoodData unlockData = UnlockData(food);
-
-        if (unlockData == null)
-        {
-            _unlockDatas.Add(new(food));
-            return;
-        }
-
-        int currentAmount = unlockData.currentAmount;
-        int setAmount = Mathf.Clamp(currentAmount + 1, 0, food.unlockAmount);
-
-        unlockData.Set_Amount(setAmount);
-    }
-
-    private void Unlock_New(Food_ScrObj food)
-    {
-        if (!Data_Unlocked(food)) return;
-
-        foreach (Food_ScrObj unlockFood in food.Unlocks())
-        {
-            if (UnlockData(unlockFood) != null) continue;
-            Unlock(unlockFood);
-        }
-    }
-
-
-    private FoodData UnlockData(Food_ScrObj food)
-    {
-        foreach (FoodData data in _unlockDatas)
-        {
-            if (food != data.foodScrObj) continue;
-            return data;
-        }
-        return null;
-    }
-
-    /// <returns>
-    /// Unlock count (currentAmount) highest to lowest values to datas
-    /// </returns>
-    private List<FoodData> UnlockDatas()
-    {
-        List<FoodData> unlockDatas = new(_unlockDatas);
-
-        for (int i = 0; i < unlockDatas.Count - 1; i++)
-        {
-            int maxIndex = i;
-
-            // compare and arrange most to least unlock count datas
-            for (int j = i + 1; j < unlockDatas.Count; j++)
-            {
-                if (unlockDatas[j].currentAmount <= unlockDatas[maxIndex].currentAmount) continue;
-
-                maxIndex = j;
-            }
-
-            if (maxIndex == i) continue;
-
-            FoodData temp = unlockDatas[i];
-
-            unlockDatas[i] = unlockDatas[maxIndex];
-            unlockDatas[maxIndex] = temp;
-        }
-
-        return unlockDatas;
-    }
-
-    private FoodData UnlockingData()
-    {
-        List<FoodData> unlockedDatas = UnlockDatas();
+        List<FoodData> unlockedDatas = _data.Unlocked_FoodDatas();
         if (unlockedDatas.Count <= 0) return null;
 
         for (int i = 0; i < unlockedDatas.Count; i++)
@@ -574,32 +470,16 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         return null;
     }
 
-
-    private int Unlock_Count(Food_ScrObj food)
-    {
-        FoodData data = UnlockData(food);
-
-        if (data == null) return 0;
-        return data.currentAmount;
-    }
-
-    private bool Data_Unlocked(Food_ScrObj food)
-    {
-        return Unlock_Count(food) >= food.unlockAmount;
-    }
-
-
     private HashSet<Food_ScrObj> UnlockedFood_Ingredients()
     {
         HashSet<Food_ScrObj> ingredients = new();
 
-        foreach (FoodData data in _unlockDatas)
+        foreach (FoodData data in _data.unlockDatas)
         {
             List<Food_ScrObj> dataIngredients = data.foodScrObj.Ingredients();
 
             foreach (Food_ScrObj ingredient in dataIngredients)
             {
-                if (ingredient.price <= 0) continue;
                 ingredients.Add(ingredient);
             }
         }
@@ -797,10 +677,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             // loops through placed foods
             foreach (FoodData data in placedDatas)
             {
-                Food_ScrObj dataFood = data.foodScrObj;
-
-                Unlock(dataFood);
-                Unlock_New(dataFood);
+                _data.Unlock_FoodData(data.foodScrObj);
             }
 
             completedStocks[i].Reset_Data();
@@ -822,7 +699,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         if (placeStock.foodIcon.hasFood) return;
 
         FoodData_Controller previewIcon = placeStock.previewIcon;
-        FoodData progressData = UnlockingData();
+        FoodData progressData = UnlockProgress_FoodData();
 
         previewIcon.Update_AllDatas(null);
 

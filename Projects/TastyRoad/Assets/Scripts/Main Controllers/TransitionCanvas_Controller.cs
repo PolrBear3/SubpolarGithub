@@ -24,6 +24,10 @@ public class TransitionCanvas_Controller : MonoBehaviour
     
     private Coroutine _coroutine;
     public Coroutine coroutine => _coroutine;
+
+    
+    [Space(60)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
     
 
     // UnityEngine
@@ -90,7 +94,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
         
         // guide
         VideoGuide_Controller guide = VideoGuide_Controller.instance;
-        if (guide != null ) guide.Trigger_Guide("Basic Controls");
+        if (guide != null ) guide.Trigger_Guide(_guideScrObj);
 
         _coroutine = null;
         yield break;
@@ -98,7 +102,7 @@ public class TransitionCanvas_Controller : MonoBehaviour
 
     public void CloseScene_Transition()
     {
-        _coroutine =StartCoroutine(CloseScene_Transition_Coroutine());
+        _coroutine = StartCoroutine(CloseScene_Transition_Coroutine());
     }
     private IEnumerator CloseScene_Transition_Coroutine()
     {

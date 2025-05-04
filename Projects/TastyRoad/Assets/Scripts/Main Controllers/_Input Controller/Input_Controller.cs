@@ -288,8 +288,6 @@ public class Input_Controller : MonoBehaviour
     {
         if (context.performed == false) return;
         OnCancel?.Invoke();
-        
-        Update_CurrentScheme("GamePad");
     }
 
 

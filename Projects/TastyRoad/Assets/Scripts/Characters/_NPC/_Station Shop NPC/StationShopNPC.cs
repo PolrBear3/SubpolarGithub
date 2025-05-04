@@ -39,6 +39,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private List<StationData> _archiveDatas = new();
 
     private Coroutine _actionCoroutine;
+    
+    
+    [Space(60)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // UnityEngine
@@ -56,8 +60,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent += CarryObject_DirectionUpdate;
 
         // subscription
+        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         Main_Controller.instance.worldMap.OnNewLocation += Restock_New;
-        GlobalTime_Controller.instance.OnDayTime += Restock_ArchivedStation;
+        globaltime.instance.OnDayTime += Restock_ArchivedStation;
 
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
@@ -79,7 +85,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // interaction subscription
         Main_Controller.instance.worldMap.OnNewLocation -= Restock_New;
-        GlobalTime_Controller.instance.OnDayTime -= Restock_ArchivedStation;
+        globaltime.instance.OnDayTime -= Restock_ArchivedStation;
 
         _interactable.OnInteract -= Cancel_Action;
         _interactable.OnInteract -= Interact_FacePlayer;
@@ -571,6 +577,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             while (movement.At_TargetPosition() == false) yield return null;
 
             // add to archive
+            int restockPrice = ArchivedStation_BuildCount(recentStation) <= 0 ? 0 : recentStation.price;
             Archive_Station(recentStation);
 
             // dialog
@@ -587,7 +594,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             
             // restock locked bookmark station, set price to 0
             _stationStocks[i].Toggle_Discount(false);
-            _stationStocks[i].Restock(new(recentStation, 0));
+            _stationStocks[i].Restock(new(recentStation, restockPrice));
 
             CarryObject_SpriteToggle(false, null);
 

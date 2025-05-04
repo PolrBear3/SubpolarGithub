@@ -37,14 +37,14 @@ public class CollectCard : MonoBehaviour
 
     private void Start()
     {
-        GlobalTime_Controller.instance.OnTimeTik += Activate_DestroyTimeTik;
+        globaltime.instance.OnTimeTik += Activate_DestroyTimeTik;
 
         _interactable.OnInteract += Pickup;
     }
 
     private void OnDestroy()
     {
-        GlobalTime_Controller.instance.OnTimeTik -= Activate_DestroyTimeTik;
+        globaltime.instance.OnTimeTik -= Activate_DestroyTimeTik;
 
         _interactable.OnInteract -= Pickup;
     }
@@ -90,23 +90,21 @@ public class CollectCard : MonoBehaviour
 
     public void FoodIngredient_toArchive()
     {
-        ArchiveMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.archiveMenu;
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
         SetLocation_FoodIngredient(_collectData == null);
-
+        
+        ArchiveMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.archiveMenu;
         Food_ScrObj archiveFood = _collectData.currentFood;
 
         ItemSlot_Data existingData = menu.Archived_FoodData(archiveFood);
         ItemSlot_Data newData = menu.Archive_Food(archiveFood);
-
+        
         bool foodUnlocked = existingData != null && existingData.isLocked == false;
-
+        
         menu.Unlock_BookmarkToggle(newData, foodUnlocked);
         menu.Unlock_FoodIngredient(archiveFood, 0);
 
         // dialog
-        dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[0].info));
+        gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
 
         // pickup animation
         _launcher.Parabola_CoinLaunch(_launchSprite, _detection.player.transform.position);
@@ -137,7 +135,7 @@ public class CollectCard : MonoBehaviour
         // available slots check
         if (menu.controller.slotsController.Empty_SlotData(menu.currentDatas) == null)
         {
-            dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[3].info));
+            dialog.Update_Dialog(2);
             return;
         }
 
@@ -148,7 +146,7 @@ public class CollectCard : MonoBehaviour
         menu.Toggle_DataLock(menu.Add_StationItem(addStation, 1), true);
 
         // dialog
-        dialog.Update_Dialog(new DialogData(dialog.defaultData.icon, dialog.datas[1].info));
+        dialog.Update_Dialog(1);
 
         // pickup
         _launcher.Parabola_CoinLaunch(_launchSprite, _detection.player.transform.position);

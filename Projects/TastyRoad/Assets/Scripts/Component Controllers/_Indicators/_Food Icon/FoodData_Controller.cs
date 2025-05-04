@@ -92,7 +92,7 @@ public class FoodData_Controller : MonoBehaviour
 
     private void OnDestroy()
     {
-        GlobalTime_Controller.instance.OnTimeTik -= TimeTik_Update;
+        globaltime.instance.OnTimeTik -= TimeTik_Update;
     }
 
 
@@ -180,7 +180,7 @@ public class FoodData_Controller : MonoBehaviour
         if (hadFood) return;
 
         _hasFood = true;
-        GlobalTime_Controller.instance.OnTimeTik += TimeTik_Update;
+        globaltime.instance.OnTimeTik += TimeTik_Update;
     }
 
     private void Empty_CurrentData()
@@ -196,7 +196,7 @@ public class FoodData_Controller : MonoBehaviour
         }
 
         _hasFood = false;
-        GlobalTime_Controller.instance.OnTimeTik -= TimeTik_Update;
+        globaltime.instance.OnTimeTik -= TimeTik_Update;
     }
 
     public void Swap_Data(FoodData_Controller otherController)

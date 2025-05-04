@@ -165,19 +165,85 @@ MonoBehaviour:
   _defaultData:
     icon: {fileID: 0}
     info: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _datas:
   - icon: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not Enough <sprite=56> to purchase!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -1672774169, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Not Enough slots in vehicle <sprite=70> storage!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     info: Currently out of stock!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: 1923143937, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: Discount tag cannot be set on stock!
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: 1923143937, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: A discount tag has been set.
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - icon: {fileID: -170552078, guid: f311721b981194c6ba14962d17b64207, type: 3}
     info: A Discount tag has been removed.
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &518642445542634473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +282,7 @@ MonoBehaviour:
   - {fileID: -957326405, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   - {fileID: 1353327767, guid: ccd05772a9a7e4e8d95a24a09be3a693, type: 3}
   _discountPercentage: 50
+  _guideScrObj: {fileID: 11400000, guid: 89ad7ebc82f7745cb8da27ee0cc71af3, type: 2}
 --- !u!1 &6121253042431113937
 GameObject:
   m_ObjectHideFlags: 0
