@@ -146,8 +146,10 @@ public class Oven : Table, IInteractable
             foodIcon.Show_Condition();
 
             // durability
-            stationController.data.Update_Durability(-1);
-            stationController.maintenance.Update_DurabilityBreak();
+            Station_Maintenance maintenance = stationController.maintenance;
+            
+            maintenance.Update_Durability(-1);
+            maintenance.Update_DurabilityBreak();
         }
 
         _heatDelayBar.Toggle(false);

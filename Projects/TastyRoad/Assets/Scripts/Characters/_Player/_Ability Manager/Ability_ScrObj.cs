@@ -20,19 +20,7 @@ public class Ability_ScrObj : ScriptableObject
     [Header("")]
     [SerializeField] private Sprite[] _progressIcons;
     public Sprite[] progressIcons => _progressIcons;
-
-    [Header("")]
-    [SerializeField][Range(0, 100)] private int _maxActivationCount;
-    public int maxActivationCount => _maxActivationCount;
-
-
-    public Sprite ProgressIcon(int levelValue)
-    {
-        levelValue = Mathf.Clamp(levelValue, 0, maxActivationCount);
-        int spriteIndex = Mathf.FloorToInt((float)levelValue / maxActivationCount * (progressIcons.Length - 1));
-
-        return _progressIcons[spriteIndex];
-    }
+    
 
     public string Description()
     {
@@ -40,5 +28,19 @@ public class Ability_ScrObj : ScriptableObject
         if (string.IsNullOrEmpty(_localizedDescription.TableReference) && string.IsNullOrEmpty(_localizedDescription.TableEntryReference)) return _description;
 
         return _localizedDescription.GetLocalizedString();
+    }
+
+    public int Max_ActivationCount()
+    {
+        return _progressIcons.Length - 1;
+    }
+    
+    
+    public Sprite ProgressIcon(int levelValue)
+    {
+        levelValue = Mathf.Clamp(levelValue, 0, Max_ActivationCount());
+        int spriteIndex = Mathf.FloorToInt((float)levelValue / Max_ActivationCount() * (progressIcons.Length - 1));
+
+        return _progressIcons[spriteIndex];
     }
 }

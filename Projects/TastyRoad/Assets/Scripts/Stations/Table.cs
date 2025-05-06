@@ -167,8 +167,10 @@ public class Table : MonoBehaviour, IInteractable
         AbilityManager.IncreasePoint(1);
 
         // durability
-        _stationController.data.Update_Durability(-1);
-        _stationController.maintenance.Update_DurabilityBreak();
+        Station_Maintenance maintenance = stationController.maintenance;
+            
+        maintenance.Update_Durability(-1);
+        maintenance.Update_DurabilityBreak();
     }
 
 

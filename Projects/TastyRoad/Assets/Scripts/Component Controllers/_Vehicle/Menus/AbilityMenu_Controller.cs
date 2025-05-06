@@ -235,7 +235,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         
         InfoTemplate_Trigger trigger = gameObject.GetComponent<InfoTemplate_Trigger>();
-        string activationCount = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.maxActivationCount + trigger.TemplateString(1);
+        string activationCount = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.Max_ActivationCount() + trigger.TemplateString(1);
 
         infoBox.Update_InfoText(activationCount + "\n\n" + currentAbility.Description() + HoldSelect_InfoText());
 
@@ -313,7 +313,7 @@ public class AbilityMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Sprite abilitySprite = currentAbility.ProgressIcon(activationCount);
 
         string abilityInfo = currentAbility.abilityName + "\n\n";
-        string activationInfo = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.maxActivationCount + " ";
+        string activationInfo = manager.Ability_ActivateCount(currentAbility) + "/" + currentAbility.Max_ActivationCount() + " ";
 
         DialogData dialogData = new(abilitySprite, abilityInfo + activationInfo + "leveled up");
         dialog.Update_Dialog(dialogData);

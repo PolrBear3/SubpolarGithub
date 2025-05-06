@@ -41,7 +41,7 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 
 
     private GoldSystem_Data _data;
-
+    
     private Coroutine _coroutine;
     private Coroutine _iconCoroutine;
 
@@ -197,7 +197,7 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
             return true;
         }
 
-        int calculateValue = currentAmount + updateValue;
+        int calculateValue = currentAmount + updateValue + _data.bonusAddAmount;
 
         if (calculateValue < 0)
         {

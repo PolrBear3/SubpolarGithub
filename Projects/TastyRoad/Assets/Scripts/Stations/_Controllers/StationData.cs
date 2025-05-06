@@ -69,16 +69,10 @@ public class StationData
     {
         _position = updatePosition;
     }
-
-
+    
     public void Set_Durability(int setValue)
     {
         _durability = setValue;
-    }
-
-    public void Update_Durability(int updateValue)
-    {
-        _durability += updateValue;
     }
 
 

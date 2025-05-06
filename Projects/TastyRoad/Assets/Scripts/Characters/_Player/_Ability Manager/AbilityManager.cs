@@ -166,7 +166,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     {
         if (checkAbility == null) return false;
 
-        return Ability_ActivateCount(checkAbility) >= checkAbility.maxActivationCount;
+        return Ability_ActivateCount(checkAbility) >= checkAbility.Max_ActivationCount();
     }
 
 

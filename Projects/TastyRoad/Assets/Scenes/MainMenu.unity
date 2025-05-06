@@ -1872,14 +1872,14 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
       serializedVersion: 2
-      minMaxState: 1
-      scalar: 0.9999
+      minMaxState: 3
+      scalar: 0.42
       minScalar: 0.9999
       maxCurve:
         serializedVersion: 2
@@ -1932,7 +1932,7 @@ ParticleSystem:
     startFrame:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.4333333
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1991,7 +1991,9 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: -285025870, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
+    - sprite: {fileID: 1774848475, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
+    - sprite: {fileID: -446886986, guid: 41c577d564949463b8dea25c896cfed5, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -6595,6 +6597,7 @@ MonoBehaviour:
   _leanTweenType: 13
   _loadTime: 1.5
   _transitionTime: 1
+  _guideScrObj: {fileID: 0}
 --- !u!114 &460299553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8343,7 +8346,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9996008
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000

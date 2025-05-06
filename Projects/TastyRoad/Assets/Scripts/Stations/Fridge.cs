@@ -125,8 +125,10 @@ public class Fridge : Stack_Table, IInteractable
             foodIcon.Show_Condition();
 
             // durability
-            stationController.data.Update_Durability(-1);
-            stationController.maintenance.Update_DurabilityBreak();
+            Station_Maintenance maintenance = stationController.maintenance;
+            
+            maintenance.Update_Durability(-1);
+            maintenance.Update_DurabilityBreak();
         }
         
         _delayTimeBar.Toggle(false);

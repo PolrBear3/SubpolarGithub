@@ -23,6 +23,13 @@ public class Station_Maintenance : MonoBehaviour
 
 
     // Durability Functions
+    public void Update_Durability(int updateValue)
+    {
+        int calculatedDurability = _controller.data.durability + updateValue;
+        
+        _controller.data.Set_Durability(calculatedDurability);
+    }
+    
     public void Update_DurabilityBreak()
     {
         int currentDurability = _controller.data.durability;

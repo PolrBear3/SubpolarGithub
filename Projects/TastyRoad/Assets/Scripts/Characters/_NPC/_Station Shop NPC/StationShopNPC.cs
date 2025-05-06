@@ -375,6 +375,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         NPC_Movement move = _npcController.movement;
 
         move.Stop_FreeRoam();
+        move.Set_MoveSpeed(move.defaultMoveSpeed);
+        
         move.Free_Roam(_currentSubLocation.roamArea, 0f);
     }
     
@@ -523,7 +525,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // refresh movement
         NPC_Movement movement = _npcController.movement;
+        
         movement.Stop_FreeRoam();
+        movement.Set_MoveSpeed(movement.defaultMoveSpeed + 2);
 
         _npcController.interactable.LockInteract(true);
         _actionTimer.Toggle_RunAnimation(true);
