@@ -41,6 +41,9 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 
 
     private GoldSystem_Data _data;
+    public GoldSystem_Data data => _data;
+
+    public Action<int> OnAmountUpdate;
     
     private Coroutine _coroutine;
     private Coroutine _iconCoroutine;
@@ -88,7 +91,8 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 
     public void Load_Data()
     {
-        _data = ES3.Load("GoldSystem/GoldSystem_Data", new GoldSystem_Data(0));
+        GoldSystem_Data data = ES3.Load("GoldSystem/GoldSystem_Data", new GoldSystem_Data(0));
+        _data = new(data.goldAmount);
     }
 
 
@@ -114,6 +118,9 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
         _amountText.color = _defaultColor;
         _amountText.colorGradient = new VertexGradient(_defaultColor);
 
+        _amountText.text = _data.goldAmount.ToString();
+        _shadowText.text = _data.goldAmount.ToString("D7");
+        
         _amountText.gameObject.SetActive(_data.goldAmount > 0);
         _shadowText.gameObject.SetActive(true);
     }
@@ -197,7 +204,10 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
             return true;
         }
 
-        int calculateValue = currentAmount + updateValue + _data.bonusAddAmount;
+        int bonusValue = updateValue >= 0 ? (int)(updateValue * _data.bonusMultiplyAmount) : updateValue;
+        int dataBonusValue = updateValue > 0 ? _data.bonusAddAmount : 0;
+
+        int calculateValue = currentAmount + dataBonusValue + bonusValue;
 
         if (calculateValue < 0)
         {
@@ -207,8 +217,8 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
             return false;
         }
 
-        Update_AmountText(currentAmount, calculateValue);
         _data.Set_GoldAmount(calculateValue);
+        Update_AmountText(currentAmount, calculateValue);
 
         Shake_Icon();
         Shine_Icon();
@@ -240,13 +250,6 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 
             yield return null;
         }
-
-        int currentAmount = _data.goldAmount;
-
-        _amountText.text = currentAmount.ToString();
-        _shadowText.text = currentAmount.ToString("D7");
-
-        _amountText.gameObject.SetActive(currentAmount > 0);
 
         Cancel_Coroutine();
         yield break;

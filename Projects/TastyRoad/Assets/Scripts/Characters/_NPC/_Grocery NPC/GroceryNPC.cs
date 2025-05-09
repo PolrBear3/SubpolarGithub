@@ -45,10 +45,10 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     private GroceryNPC_Data _data;
     private Coroutine _actionCoroutine;
-    
-    
-    [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
+
+
+    [Space(60)] 
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     // UnityEngine
@@ -89,7 +89,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
 
-        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
@@ -115,6 +115,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
 
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
+        
         _interactable.OnInteract -= Cancel_Action;
         _interactable.OnInteract -= Interact_FacePlayer;
 

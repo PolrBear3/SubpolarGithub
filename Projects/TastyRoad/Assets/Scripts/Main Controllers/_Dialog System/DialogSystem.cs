@@ -14,6 +14,8 @@ public class DialogSystem : MonoBehaviour
     [SerializeField] private InformationBox _infoBox;
     public InformationBox infoBox => _infoBox;
 
+    [SerializeField] private GameObject _navigateBox;
+
     [Header("")]
     [SerializeField] private List<DialogData> _customDialogs = new();
 
@@ -96,6 +98,7 @@ public class DialogSystem : MonoBehaviour
     private void Toggle_InfoBox(bool toggle)
     {
         _infoBox.gameObject.SetActive(toggle);
+        _navigateBox.SetActive(!toggle);
 
         if (toggle == false)
         {
@@ -134,6 +137,16 @@ public class DialogSystem : MonoBehaviour
     {
         _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.DialogInfo());
         _infoBox.Update_RectLayout();
+    }
+    
+    
+    // Navigate Box Control
+    private void Update_NavigateBox()
+    {
+        InfoTemplate_Trigger template = gameObject.GetComponent<InfoTemplate_Trigger>();
+        
+        string navigateString = template.TemplateString(0) + "    " + template.TemplateString(1);
+        template.setText.text = navigateString;
     }
     
 

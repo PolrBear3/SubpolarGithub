@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +21,18 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField] private Guide_ScrObj[] _allGuides;
+    
+    
+    [Space(80)]
+    [SerializeField] private Input_Manager _inputManager;
 
 
     private List<int> _triggeredGuideNums = new();
 
     private Guide_ScrObj _currentGuide;
     private int _currentClipNum;
+
+    public Action OnGuideTrigger;
 
 
     // UnityEngine
@@ -42,6 +49,9 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         input.Update_EmojiAsset(_navigateText);
 
         // subscriptions
+        _inputManager.OnSelect += Navigate_NextVideo;
+        _inputManager.OnExit += Navigate_NextVideo;
+        
         input.OnSchemeUpdate += () => input.Update_EmojiAsset(_infoText);
         input.OnSchemeUpdate += () => input.Update_EmojiAsset(_navigateText);
 
@@ -52,10 +62,10 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
+        _inputManager.OnSelect -= Navigate_NextVideo;
+        _inputManager.OnExit -= Navigate_NextVideo;
+        
         Input_Controller input = Input_Controller.instance;
-
-        input.OnSelect -= Navigate_NextVideo;
-        input.OnExit -= Navigate_NextVideo;
         
         input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_infoText);
         input.OnSchemeUpdate -= () => input.Update_EmojiAsset(_navigateText);
@@ -75,10 +85,10 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     {
         _triggeredGuideNums = ES3.Load("VideoGuide_Controller/_triggeredGuideNums", _triggeredGuideNums);
     }
-
-
+    
+    
     // Trigger
-    private bool Guide_Triggered(Guide_ScrObj guideScrObj)
+    public bool Guide_Triggered(Guide_ScrObj guideScrObj)
     {
         for (int i = 0; i < _triggeredGuideNums.Count; i++)
         {
@@ -87,18 +97,28 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         }
         return false;
     }
-    
+
+
     public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
         if (guideScrObj == null) return;
         if (Guide_Triggered(guideScrObj)) return;
-
+        
         _triggeredGuideNums.Add(guideScrObj.guideID);
         _currentGuide = guideScrObj;
 
         Toggle_VideoPanel(true);
-    }
 
+        OnGuideTrigger?.Invoke();
+    }
+    
+    public void Trigger_Guide(VideoGuide_Trigger guideTrigger)
+    {
+        if (guideTrigger == null) return;
+        
+        Trigger_Guide(guideTrigger.triggerGuide);
+    }
+    
 
     // UI Control
     private void Toggle_VideoClip(VideoClip clip)
@@ -115,42 +135,37 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
         Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(toggle);
         _playerPanel.gameObject.SetActive(toggle);
-        
+
         if (toggle == false)
         {
             _currentGuide = null;
-            
-            input.OnSelect -= Navigate_NextVideo;
-            input.OnExit -= Navigate_NextVideo;
-            input.Update_ActionMap(0);
+            _inputManager.Toggle_Input(false);
 
             _videoPlayer.Stop();
             return;
         }
 
-        input.OnSelect += Navigate_NextVideo;
-        input.OnExit += Navigate_NextVideo;
-        input.Update_ActionMap(1);
-
         _currentClipNum = 0;
+        _inputManager.Toggle_Input(true);
+
         VideoClip_Data clipData = _currentGuide.clipDatas[_currentClipNum];
 
         Toggle_VideoClip(clipData.video);
         _infoText.text = clipData.Info();
+        
+        Update_NavigateText();
     }
 
 
     private void Navigate_NextVideo()
     {
-        int nextClipNum = _currentClipNum + 1;
+        _currentClipNum++;
 
-        if (nextClipNum > _currentGuide.clipDatas.Length - 1)
+        if (_currentClipNum > _currentGuide.clipDatas.Length - 1)
         {
             Toggle_VideoPanel(false);
             return;
         }
-
-        _currentClipNum = nextClipNum;
         
         Update_ClipData(_currentClipNum);
         Update_NavigateText();
@@ -172,9 +187,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         if (_currentGuide == null) return;
         
         InfoTemplate_Trigger infoTrigger = gameObject.GetComponent<InfoTemplate_Trigger>();
-        int nextClipNum = _currentClipNum + 1;
-        
-        if (nextClipNum > _currentGuide.clipDatas.Length - 1)
+
+        if (_currentClipNum >= _currentGuide.clipDatas.Length - 1)
         {
             _navigateText.text = infoTrigger.TemplateString(1);
             return;

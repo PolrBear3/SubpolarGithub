@@ -20,9 +20,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
 
     private int _currentPageNum;
-
-
+    
     private List<FoodData> _rottenDatas = new();
+    
+    
+    [Space(80)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // Editor
@@ -33,6 +36,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
+        VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);

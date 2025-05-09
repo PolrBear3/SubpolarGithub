@@ -33,7 +33,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Header("")]
     [SerializeField][Range(0, 500)] private int _maxUnlockAmount;
 
-    [Header("")]
+    
+    
+    [Space(80)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
     
 
     // Editor
@@ -44,6 +47,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
+        VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
         _controller.Update_PanelSprite(_panelSprite);

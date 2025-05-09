@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5930325279266236931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7459459983584745372}
+  - component: {fileID: 5726635785173060224}
+  m_Layer: 0
+  m_Name: Background Asset Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7459459983584745372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5930325279266236931}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5726635785173060224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5930325279266236931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e95517bc88094cd99e73b41adcbd6ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _assetPrefab: {fileID: 4299211158517078256, guid: 4ff96ae9711b04dad979e8302245590f, type: 3}
+  _assetSprites:
+  - {fileID: -2052981572, guid: 7c7ce61cf06f74aae946de8175755df6, type: 3}
+  - {fileID: 1109293854, guid: 7c7ce61cf06f74aae946de8175755df6, type: 3}
+  - {fileID: 1102572309, guid: 7c7ce61cf06f74aae946de8175755df6, type: 3}
+  - {fileID: -515587561, guid: 7c7ce61cf06f74aae946de8175755df6, type: 3}
+  - {fileID: 1926484468, guid: 7c7ce61cf06f74aae946de8175755df6, type: 3}
+  - {fileID: 1650017656, guid: 7c7ce61cf06f74aae946de8175755df6, type: 3}
+  _startingSpawnAmount: 5
+  _maxSpawnAmount: 15
+  _spawnRange: {x: -10, y: 10}
+  _spawnCoolTimeRange: 2
+  _movementSpeedRange: {x: 0.1, y: 0.5}

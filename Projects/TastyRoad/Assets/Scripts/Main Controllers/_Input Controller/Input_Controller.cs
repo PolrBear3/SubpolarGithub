@@ -3,27 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEditor;
 using TMPro;
 
 public class Input_Controller : MonoBehaviour
 {
     public static Input_Controller instance;
 
-
-    [Header("")]
+    
     [SerializeField] private PlayerInput _playerInput;
     public PlayerInput playerInput => _playerInput;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private ControlScheme_ScrObj[] _schemes;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private float _holdTime;
 
-
+    
     private float _currentHoldTime;
     public float currentHoldTime => _currentHoldTime;
 
+    private List<Input_Manager> _activeInputManagers = new();
+    public List<Input_Manager> activeInputManagers => _activeInputManagers;
+    
     private ControlScheme_ScrObj _currentScheme;
     public ControlScheme_ScrObj currentScheme => _currentScheme;
 
@@ -63,18 +66,6 @@ public class Input_Controller : MonoBehaviour
     public Action OnCancel;
 
     public Action<InputActionReference> OnAnyInput;
-
-
-    public Action<Vector2> OnCursorControl;
-
-    public Action OnSelectStart;
-    public Action OnSelect;
-    public Action OnHoldSelect;
-
-    public Action OnOption1;
-    public Action OnOption2;
-
-    public Action OnExit;
 
 
     // MonoBehaviour
@@ -292,6 +283,13 @@ public class Input_Controller : MonoBehaviour
 
 
     // UI Control
+    private Input_Manager RecentUI_InputManager()
+    {
+        if (_activeInputManagers.Count <= 0) return null;
+        return _activeInputManagers[_activeInputManagers.Count - 1];
+    }
+
+    
     public void CursorControl(InputAction.CallbackContext context)
     {
         _cursorDirection = Vector2.zero;
@@ -300,7 +298,7 @@ public class Input_Controller : MonoBehaviour
 
         Vector2 directionInput = context.ReadValue<Vector2>();
 
-        OnCursorControl?.Invoke(directionInput);
+        RecentUI_InputManager().OnCursorControl?.Invoke(directionInput);
         _cursorDirection = directionInput;
     }
 
@@ -311,7 +309,7 @@ public class Input_Controller : MonoBehaviour
             _isHolding = true;
             _currentHoldTime = Time.time;
 
-            OnSelectStart?.Invoke();
+            RecentUI_InputManager().OnSelectStart?.Invoke();
             return;
         }
 
@@ -321,28 +319,57 @@ public class Input_Controller : MonoBehaviour
 
         if (Time.time - _currentHoldTime >= _holdTime)
         {
-            OnHoldSelect?.Invoke();
+            RecentUI_InputManager().OnHoldSelect?.Invoke();
             return;
         }
 
-        OnSelect?.Invoke();
+        RecentUI_InputManager().OnSelect?.Invoke();
     }
 
     public void Option1(InputAction.CallbackContext context)
     {
         if (context.performed == false) return;
-        OnOption1?.Invoke();
+        RecentUI_InputManager().OnOption1?.Invoke();
     }
 
     public void Option2(InputAction.CallbackContext context)
     {
         if (context.performed == false) return;
-        OnOption2?.Invoke();
+        RecentUI_InputManager().OnOption2?.Invoke();
     }
 
     public void Exit(InputAction.CallbackContext context)
     {
         if (context.performed == false) return;
-        OnExit?.Invoke();
+        RecentUI_InputManager().OnExit?.Invoke();
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Input_Controller))]
+public class Input_Controller_Inspector : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        Input_Controller controller = (Input_Controller)target;
+
+        base.OnInspectorGUI();
+        serializedObject.Update();
+
+        GUILayout.Space(60);
+
+        if (GUILayout.Button("Toggle Scheme"))
+        {
+            if (controller.currentScheme.schemeName == "PC")
+            {
+                controller.Update_CurrentScheme("GamePad");
+                return;
+            }
+            controller.Update_CurrentScheme("PC");
+        }
+
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+#endif

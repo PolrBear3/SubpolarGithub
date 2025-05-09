@@ -39,7 +39,7 @@ public class FoodStock : MonoBehaviour
     
     
     [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     // UnityEngine
@@ -66,7 +66,7 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         
         _interactable.OnInteract += Toggle_Dialog;
         _interactable.OnInteract += Toggle_Price;
@@ -85,6 +85,8 @@ public class FoodStock : MonoBehaviour
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
+        
         _interactable.OnInteract -= Toggle_Dialog;
         _interactable.OnInteract -= Toggle_Price;
 
@@ -188,20 +190,14 @@ public class FoodStock : MonoBehaviour
 
     private void Toggle_Dialog()
     {
+        if (_stockData.unlocked == false) return;
+        
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        if (_stockData.unlocked == false)
-        {
-            // no food currenlty stocked!
-            dialog.Update_Dialog(0);
-
-            return;
-        }
 
         if (_foodIcon.currentData == null)
         {
             // no food currenlty stocked!
-            dialog.Update_Dialog(1);
+            dialog.Update_Dialog(0);
 
             interactable.UnInteract();
             return;
@@ -210,7 +206,7 @@ public class FoodStock : MonoBehaviour
         if (_foodIcon.currentData.currentAmount > 0) return;
 
         // not enough food amount currenlty stocked
-        dialog.Update_Dialog(2);
+        dialog.Update_Dialog(1);
 
         interactable.UnInteract();
     }
@@ -314,7 +310,7 @@ public class FoodStock : MonoBehaviour
             foodMenu.Remove_FoodItem(stockedFood, purchaseAmount - leftOverAmount);
 
             // Not enough space in food storage!
-            dialog.Update_Dialog(3);
+            dialog.Update_Dialog(2);
 
             _interactable.UnInteract();
             return false;
@@ -355,7 +351,11 @@ public class FoodStock : MonoBehaviour
 
     private void Purchase_All()
     {
-        if (Purchase(_foodIcon.currentData.currentAmount) == false) return;
+        if (Purchase(_foodIcon.currentData.currentAmount) == false)
+        {
+            gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
+            return;
+        }
 
         // coin launch animation
         Transform player = _interactable.detection.player.transform;

@@ -25,9 +25,9 @@ public class TransitionCanvas_Controller : MonoBehaviour
     private Coroutine _coroutine;
     public Coroutine coroutine => _coroutine;
 
-    
-    [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
+
+    [Space(60)] 
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
     
 
     // UnityEngine
@@ -92,9 +92,15 @@ public class TransitionCanvas_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(_transitionTime);
         
+        VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
+        if (videoGuide == null)
+        {
+            _coroutine = null;
+            yield break;
+        }
+        
         // guide
-        VideoGuide_Controller guide = VideoGuide_Controller.instance;
-        if (guide != null ) guide.Trigger_Guide(_guideScrObj);
+        VideoGuide_Controller.instance.Trigger_Guide(_guideTrigger);
 
         _coroutine = null;
         yield break;

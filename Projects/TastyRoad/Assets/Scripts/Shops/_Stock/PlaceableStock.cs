@@ -29,7 +29,7 @@ public class PlaceableStock : MonoBehaviour
     
     
     [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     // UnityEngine
@@ -47,7 +47,7 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         
         _interactable.OnInteract += Toggle_AmountBar;
         _interactable.OnUnInteract += Toggle_AmountBar;
@@ -58,6 +58,8 @@ public class PlaceableStock : MonoBehaviour
         // subscriptions
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
+        
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnInteract -= Toggle_AmountBar;
         _interactable.OnUnInteract -= Toggle_AmountBar;

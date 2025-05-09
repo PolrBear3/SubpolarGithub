@@ -81,7 +81,6 @@ Transform:
   - {fileID: 5057337575154072477}
   - {fileID: 8296711461185803545}
   - {fileID: 4070299431896671505}
-  - {fileID: 1036514712018119258}
   m_Father: {fileID: 6130762936683660599}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9176286486368829597
@@ -103,55 +102,8 @@ MonoBehaviour:
   - {fileID: 3575797394090838233}
   - {fileID: 1961197218414903567}
   - {fileID: 5110501974089967490}
-  - {fileID: 2521629978072671095}
   _maxAbilityPoint: 15
   editorAbility: {fileID: 11400000, guid: 6b8665cb2120548de98c6b7de1feeb2c, type: 2}
---- !u!1 &6480326161042394126
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1036514712018119258}
-  - component: {fileID: 2521629978072671095}
-  m_Layer: 0
-  m_Name: Durability Saver
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1036514712018119258
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6480326161042394126}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6766563164769141658}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2521629978072671095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6480326161042394126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6b77ac8a71614a349fa63fe6cf5c2d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _manager: {fileID: 9176286486368829597}
-  _abilityScrObj: {fileID: 11400000, guid: 5bed111a42f694cab9f8500915c5f4e9, type: 2}
 --- !u!1 &6723353288808524999
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,6 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _manager: {fileID: 9176286486368829597}
   _abilityScrObj: {fileID: 11400000, guid: 37a479d5e37b541ccb57f06531486458, type: 2}
+  _multiplyIncreaseAmount: 0.5
 --- !u!1 &8426581385630118480
 GameObject:
   m_ObjectHideFlags: 0

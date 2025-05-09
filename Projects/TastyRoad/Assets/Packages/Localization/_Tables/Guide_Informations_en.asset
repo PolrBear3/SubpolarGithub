@@ -55,14 +55,6 @@ MonoBehaviour:
     m_Localized: <sprite=15> / <sprite=9> close
     m_Metadata:
       m_Items: []
-  - m_Id: 36350421098496
-    m_Localized: '<sprite=58> can be placed and grouped into bundles <sprite=92>
-
-
-      Once
-      a bundle <sprite=92> is complete, it will be collected for sale.'
-    m_Metadata:
-      m_Items: []
   - m_Id: 4399875893485568
     m_Localized: '
 
@@ -83,8 +75,8 @@ MonoBehaviour:
     m_Localized: '
 
 
-      <sprite=57> can be built, restocked, or dismantled into
-      <sprite=62> through interaction'
+      <sprite=68><sprite=57> can be built, restock, or dismantle
+      into <sprite=62> through interaction'
     m_Metadata:
       m_Items: []
   - m_Id: 4415247942148096
@@ -99,11 +91,11 @@ MonoBehaviour:
   - m_Id: 4463040845045760
     m_Localized: '
 
-      <sprite=57> has been purchased and added to vehicle <sprite=70>
+      <sprite=57> can be purchased and added to vehicle <sprite=70>
       storage
 
 
-      <sprite=57> loss <sprite=67>durability and break when usedeak
+      <sprite=57> gradually loss <sprite=67>durability and break
       when used'
     m_Metadata:
       m_Items: []
@@ -146,6 +138,39 @@ MonoBehaviour:
 
       New <sprite=58> are restocked when the <sprite=93> stock
       is empty or at the <sprite=84> start of the day'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6544712671420416
+    m_Localized: '
+
+
+      hold <sprite=15> to retrieve <sprite=57> within  <sprite=87>
+      interact area'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6545046072451072
+    m_Localized: "     \n\nhold <sprite=15> can also export or swap <sprite=57> within
+      <sprite=87> area"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7227946858176512
+    m_Localized: '
+
+      hold <sprite=15>  to export <sprite=58> from the <sprite=69>
+      menu
+
+
+      retrieve <sprite=58> via vehicle interaction'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7280443295522816
+    m_Localized: '
+
+      <sprite=58> ingredients can be unlocked through cooking
+
+
+      <sprite=68>
+      toggled <sprite=58> are exchanged for <sprite=56>'
     m_Metadata:
       m_Items: []
   references:

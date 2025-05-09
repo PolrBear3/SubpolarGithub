@@ -38,7 +38,7 @@ public class StationStock : MonoBehaviour
 
     
     [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     // MonoBehaviour
@@ -57,6 +57,7 @@ public class StationStock : MonoBehaviour
 
         // subscriptions
         _interactable.OnInteract += Toggle_Price;
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnAction1 += Purchase;
         _interactable.OnAction2 += Toggle_Discount;
@@ -66,6 +67,7 @@ public class StationStock : MonoBehaviour
     {
         // subscriptions
         _interactable.OnInteract -= Toggle_Price;
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnAction1 -= Purchase;
         _interactable.OnAction2 -= Toggle_Discount;
@@ -152,8 +154,6 @@ public class StationStock : MonoBehaviour
         // 
         Update_toSold();
         Toggle_Discount(false);
-        
-        VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
     }
 
     public void Update_toSold()

@@ -39,10 +39,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     private List<StationData> _archiveDatas = new();
 
     private Coroutine _actionCoroutine;
-    
-    
-    [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
+
+
+    [Space(60)] 
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     // UnityEngine
@@ -60,7 +60,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent += CarryObject_DirectionUpdate;
 
         // subscription
-        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         
         Main_Controller.instance.worldMap.OnNewLocation += Restock_New;
         globaltime.instance.OnDayTime += Restock_ArchivedStation;
@@ -84,6 +84,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent -= CarryObject_DirectionUpdate;
 
         // interaction subscription
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
+        
         Main_Controller.instance.worldMap.OnNewLocation -= Restock_New;
         globaltime.instance.OnDayTime -= Restock_ArchivedStation;
 

@@ -13,6 +13,9 @@ public class PauseMenu_Controller : Menu_Controller
     [SerializeField] private Sprite _mainMenuIcon;
     
     public Action OnPause;
+    
+    private Action OnPauseToggle;
+    private Action OnPauseExit;
 
 
     // Menu_Controller
@@ -27,17 +30,18 @@ public class PauseMenu_Controller : Menu_Controller
         base.Start();
 
         // subscriptions
-        Input_Controller input = Input_Controller.instance;
+        OnPauseToggle = () => Toggle_Pause(true);
+        Input_Controller.instance.OnCancel += OnPauseToggle;
 
-        input.OnCancel += () => Toggle_Pause(true);
+        OnPauseExit = () => Toggle_Pause(false);
+        inputManager.OnExit += OnPauseExit;
     }
 
     private new void OnDestroy()
     {
         // subscriptions
-        Input_Controller input = Input_Controller.instance;
-
-        input.OnCancel -= () => Toggle_Pause(true);
+        Input_Controller.instance.OnCancel -= OnPauseToggle;
+        inputManager.OnExit -= OnPauseExit;
     }
 
 
@@ -46,9 +50,6 @@ public class PauseMenu_Controller : Menu_Controller
     {
         TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
         if (transition.coroutine != null) return;
-        
-        Input_Controller input = Input_Controller.instance;
-        if (Menu_Toggled() == false && input.Current_ActionMapNum() == 1) return;
 
         Toggle_Menu(toggle);
         transition.Toggle_PauseScreen(toggle);

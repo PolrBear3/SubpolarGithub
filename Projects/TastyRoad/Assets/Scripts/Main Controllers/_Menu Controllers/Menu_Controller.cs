@@ -46,6 +46,11 @@ public class Menu_Controller : MonoBehaviour
 
     public Action OnNavigate;
     public Action OnAction;
+    
+    
+    [Space(80)]
+    [SerializeField] private Input_Manager _inputManager;
+    public Input_Manager inputManager => _inputManager;
 
 
     // MonoBehaviour
@@ -56,6 +61,13 @@ public class Menu_Controller : MonoBehaviour
 
     public void Start()
     {
+        // subscriptions
+        _inputManager.OnCursorControl += Navigate_Action;
+        _inputManager.OnSelect += Select_Action;
+        
+        OnExit = () => OnExitMenu?.Invoke();
+        _inputManager.OnExit += OnExit;
+        
         foreach (Menu_EventButton button in _eventButtons)
         {
             button.Set_DefaultPosition();
@@ -64,10 +76,12 @@ public class Menu_Controller : MonoBehaviour
 
     public void OnDestroy()
     {
-        Input_Controller input = Input_Controller.instance;
-
-        input.OnCursorControl -= Navigate_Action;
-        input.OnSelect -= Select_Action;
+        // subscriptions
+        _inputManager.OnCursorControl -= Navigate_Action;
+        _inputManager.OnSelect -= Select_Action;
+        
+        _inputManager.OnExit -= OnExit;
+        OnExit = null;
     }
 
 
@@ -93,13 +107,7 @@ public class Menu_Controller : MonoBehaviour
         if (toggle && _toggled == false)
         {
             _toggled = true;
-            input.Update_ActionMap(1);
-
-            input.OnCursorControl += Navigate_Action;
-            input.OnSelect += Select_Action;
-            
-            OnExit = () => OnExitMenu?.Invoke();
-            input.OnExit += OnExit;
+            _inputManager.Toggle_Input(true);
 
             NavigateUpdate_EventButtons();
             return;
@@ -108,11 +116,7 @@ public class Menu_Controller : MonoBehaviour
         if (toggle || _toggled == false) return;
 
         _toggled = false;
-        input.Update_ActionMap(0);
-            
-        input.OnCursorControl -= Navigate_Action;
-        input.OnSelect -= Select_Action;
-        input.OnExit -= OnExit;
+        _inputManager.Toggle_Input(false);
     }
 
 

@@ -39,7 +39,7 @@ public class OptionsMenu_Controller : Menu_Controller
     private bool _adjusting;
     private int _selectedTextIndex;
     
-    private Action<Vector2> OnOptionNavigate;
+    private Action<Vector2> OnAdjustmentNavigate;
     private int _indexNum;
 
     private OptionsData _previewData;
@@ -52,6 +52,8 @@ public class OptionsMenu_Controller : Menu_Controller
     // UnityEngine
     private new void Start()
     {
+        base.Start();
+        
         if (ES3.FileExists("OptionsFile.es3") == false)
         {
             _data = new(1f);
@@ -62,11 +64,20 @@ public class OptionsMenu_Controller : Menu_Controller
         }
         
         Apply_OptionsData(_data);
-        
         Set_CurrentIndex(eventButtons.Length);
-        base.Start();
 
         Refresh_Adjustments();
+        
+        // subscriptions
+        inputManager.OnCursorControl += Navigate_Adjustments;
+    }
+
+    private new void OnDestroy()
+    {
+        base.OnDestroy();
+        
+        // subscriptions
+        inputManager.OnCursorControl -= Navigate_Adjustments;
     }
     
     
@@ -114,28 +125,18 @@ public class OptionsMenu_Controller : Menu_Controller
         if (_resCoroutine != null) return;
         
         _adjusting = toggle;
+
+        if (toggle) return;
+
+        OnAdjustmentNavigate = null;
         
-        Input_Controller input = Input_Controller.instance;
-
-        if (toggle)
-        {
-            input.OnCursorControl += OnOptionNavigate;
-            input.OnCursorControl += Exit_Adjustments;
-            return;
-        }
-
-        input.OnCursorControl -= OnOptionNavigate;
-        input.OnCursorControl -= Exit_Adjustments;
-        OnOptionNavigate = null;
-
-        Refresh_Adjustments();
-
         if (_previewData != null)
         {
             Apply_OptionsData(_data);
             _previewData = null;
         }
         
+        Refresh_Adjustments();
         Update_BackButtonText();
     }
     public void Toggle_Adjustments(GameObject adjustmentArrow)
@@ -144,13 +145,20 @@ public class OptionsMenu_Controller : Menu_Controller
         adjustmentArrow.SetActive(_adjusting);
     }
     
-    public void Exit_Adjustments(Vector2 adjustDirection)
+    private void Navigate_Adjustments(Vector2 direction)
     {
-        if (adjustDirection.x != 0) return;
-        Toggle_Adjustments(false);
+        if (_adjusting == false) return;
+
+        if (direction.y != 0)
+        {
+            Toggle_Adjustments(false);
+            return;
+        }
+        
+        OnAdjustmentNavigate?.Invoke(direction);
     }
-
-
+    
+    
     private void Update_BackButtonText()
     {
         if (_previewData == null)
@@ -171,7 +179,7 @@ public class OptionsMenu_Controller : Menu_Controller
         text.text = textValue.ToString();
         
         _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
-        OnOptionNavigate += Update_Volume;
+        OnAdjustmentNavigate += Update_Volume;
     }
     
     public void Update_Volume(Vector2 adjustDirection)
@@ -216,7 +224,7 @@ public class OptionsMenu_Controller : Menu_Controller
         text.text = _data.resolution.x + " x " + _data.resolution.y;
 
         _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
-        OnOptionNavigate += Update_Resolution;
+        OnAdjustmentNavigate += Update_Resolution;
     }
 
     public void Update_Resolution(Vector2 adjustDirection)
@@ -240,7 +248,7 @@ public class OptionsMenu_Controller : Menu_Controller
         if (_adjusting) return;
         
         _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
-        OnOptionNavigate += Update_ScreenMode;
+        OnAdjustmentNavigate += Update_ScreenMode;
         
         if (_data.isFullScreen)
         {
@@ -282,7 +290,7 @@ public class OptionsMenu_Controller : Menu_Controller
         text.text = currentLanguage;
         
         _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
-        OnOptionNavigate += Update_Language;
+        OnAdjustmentNavigate += Update_Language;
     }
 
     public void Update_Language(Vector2 adjustDirection)

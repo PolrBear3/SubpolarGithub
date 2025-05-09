@@ -1,12 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class InfoTemplate_Trigger : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)] 
+    [SerializeField] private TextMeshProUGUI _setText;
+    public TextMeshProUGUI setText => _setText;
+    
+    [Space(20)]
     [SerializeField] private Information_Template[] _templates;
     public Information_Template[] templates => _templates;
+    
+    
+    // UnityEngine
+    private void Start()
+    {
+        Input_Controller.instance.OnSchemeUpdate += Update_SetText;
+    }
+
+    private void OnDestroy()
+    {
+        Input_Controller.instance.OnSchemeUpdate -= Update_SetText;
+    }
+
+
+    // Set Text
+    private void Update_SetText()
+    {
+        if (_setText == null) return;
+        Input_Controller.instance.Update_EmojiAsset(_setText);
+    }
     
     
     // Template Data
@@ -15,6 +41,7 @@ public class InfoTemplate_Trigger : MonoBehaviour
         templateIndex = Mathf.Clamp(templateIndex, 0, _templates.Length - 1);
         return _templates[templateIndex].InfoString();
     }
+    
     
     // Package Templates
     public string KeyControl_Template(string action1, string action2, string holdAction)

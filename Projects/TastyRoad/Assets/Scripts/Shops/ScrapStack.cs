@@ -20,7 +20,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     
     
     [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     // UnityEngine
@@ -37,7 +37,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Update_CurrentSprite();
 
         // subscriptions
-        _interactable.OnInteract += () => VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.OnInteract += Toggle_AmountBar;
@@ -50,6 +50,8 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
+        
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.OnInteract -= Toggle_AmountBar;
         _interactable.OnUnInteract -= Toggle_AmountBar;

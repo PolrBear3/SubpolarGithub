@@ -18,6 +18,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private int _targetNum;
     private bool _interactionMode;
     private Station_Controller _interactStation;
+    
+    
+    [Space(80)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // Editor
@@ -28,6 +32,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // UnityEngine
     private void OnEnable()
     {
+        VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
+        
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
@@ -146,30 +152,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 if (repeatAmount > 0) continue;
                 return _currentDatas[i][j];
             }
-        }
-
-        return null;
-    }
-    public ItemSlot Add_StationItem_toSlot(Station_ScrObj station, int amount)
-    {
-        if (amount <= 0) return null;
-
-        List<ItemSlot> currentSlots = _controller.slotsController.itemSlots;
-        int repeatAmount = amount;
-
-        for (int i = 0; i < currentSlots.Count; i++)
-        {
-            if (currentSlots[i].data.hasItem == true) continue;
-
-            StationData addStation = new(station);
-            currentSlots[i].Assign_Data(new(addStation));
-
-            _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
-
-            repeatAmount--;
-
-            if (repeatAmount > 0) continue;
-            return currentSlots[i];
         }
 
         return null;

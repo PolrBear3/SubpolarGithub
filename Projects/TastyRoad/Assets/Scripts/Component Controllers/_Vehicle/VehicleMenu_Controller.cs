@@ -67,8 +67,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private ArchiveMenu_Controller _archiveMenu;
     public ArchiveMenu_Controller archiveMenu => _archiveMenu;
-
-
+    
+    
+    [Space(80)]
+    [SerializeField] private Input_Manager _inputManager;
+    
+    
     private int _currentMenuNum;
     public int currentMenuNum => _currentMenuNum;
 
@@ -97,26 +101,42 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _pageArrowDirections.SetActive(false);
 
         Start_AllMenus();
-
         VehicleMenu_Toggle(false);
-    }
-
-    private void OnDestroy()
-    {
-        Input_Controller input = Input_Controller.instance;
-
-        input.OnCursorControl -= CursorControl;
-        input.OnSelect -= Select;
-        input.OnHoldSelect -= HoldSelect;
-        input.OnOption1 -= Option1;
-        input.OnOption2 -= Option2;
-        input.OnExit -= Exit;
+        
+        // subscriptions
+        _inputManager.OnCursorControl += CursorControl;
+        _inputManager.OnSelect += Select;
+        _inputManager.OnHoldSelect += HoldSelect;
+        _inputManager.OnOption1 += Option1;
+        _inputManager.OnOption2 += Option2;
+        _inputManager.OnExit += Exit;
 
         UI_ClockTimer timer = _slotsController.cursor.holdTimer;
 
-        input.OnSelectStart -= timer.Run_ClockSprite;
-        input.OnSelect -= timer.Stop_ClockSpriteRun;
-        input.OnHoldSelect -= timer.Stop_ClockSpriteRun;
+        _inputManager.OnSelectStart += timer.Run_ClockSprite;
+        _inputManager.OnSelect += timer.Stop_ClockSpriteRun;
+        _inputManager.OnHoldSelect += timer.Stop_ClockSpriteRun;
+
+        Localization_Controller.instance.OnLanguageChanged += Update_NavigateText;
+    }
+
+    private void OnDestroy()
+    { 
+        // subscriptions
+        _inputManager.OnCursorControl -= CursorControl;
+        _inputManager.OnSelect -= Select;
+        _inputManager.OnHoldSelect -= HoldSelect;
+        _inputManager.OnOption1 -= Option1;
+        _inputManager.OnOption2 -= Option2;
+        _inputManager.OnExit -= Exit;
+
+        UI_ClockTimer timer = _slotsController.cursor.holdTimer;
+
+        _inputManager.OnSelectStart -= timer.Run_ClockSprite;
+        _inputManager.OnSelect -= timer.Stop_ClockSpriteRun;
+        _inputManager.OnHoldSelect -= timer.Stop_ClockSpriteRun;
+        
+        Localization_Controller.instance.OnLanguageChanged -= Update_NavigateText;
     }
 
 
@@ -162,45 +182,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Input_Controller
-    private void Toggle_Input(bool toggle)
-    {
-        Input_Controller input = Input_Controller.instance;
-
-        UI_ClockTimer timer = _slotsController.cursor.holdTimer;
-
-        if (toggle)
-        {
-            input.Update_ActionMap(1);
-
-            input.OnCursorControl += CursorControl;
-            input.OnSelect += Select;
-            input.OnHoldSelect += HoldSelect;
-            input.OnOption1 += Option1;
-            input.OnOption2 += Option2;
-            input.OnExit += Exit;
-
-            input.OnSelectStart += timer.Run_ClockSprite;
-            input.OnSelect += timer.Stop_ClockSpriteRun;
-            input.OnHoldSelect += timer.Stop_ClockSpriteRun;
-
-            return;
-        }
-
-        input.Update_ActionMap(0);
-
-        input.OnCursorControl -= CursorControl;
-        input.OnSelect -= Select;
-        input.OnHoldSelect -= HoldSelect;
-        input.OnOption1 -= Option1;
-        input.OnOption2 -= Option2;
-        input.OnExit -= Exit;
-
-        input.OnSelectStart -= timer.Run_ClockSprite;
-        input.OnSelect -= timer.Stop_ClockSpriteRun;
-        input.OnHoldSelect -= timer.Stop_ClockSpriteRun;
-    }
-
-
     private void CursorControl(Vector2 inputDirection)
     {
         if (Input_Controller.instance.isHolding) return;
@@ -344,12 +325,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     {
         Main_Controller.instance.Player().Toggle_Controllers(!toggleOn);
 
-        Input_Controller input = Input_Controller.instance;
-
         if (toggleOn == false)
         {
             _menuPanel.gameObject.SetActive(false);
-            Toggle_Input(false);
+            _inputManager.Toggle_Input(false);
 
             for (int i = 0; i < _menus.Count; i++)
             {
@@ -362,10 +341,9 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         }
 
         _menuPanel.gameObject.SetActive(true);
-        Toggle_Input(true);
+        _inputManager.Toggle_Input(true);
 
         Toggle_NavigatedMenu();
-
         _infoBox.Flip_toDefault();
     }
 
@@ -506,5 +484,14 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         if (cursorSlot != itemSlots[itemSlots.Count - 1]) return;
 
         _pageArrows[1].gameObject.SetActive(true);
+    }
+
+
+    private void Update_NavigateText()
+    {
+        InfoTemplate_Trigger template = gameObject.GetComponent<InfoTemplate_Trigger>();
+        
+        string navigateString = template.TemplateString(0) + "    " + template.TemplateString(1);
+        template.setText.text = navigateString;
     }
 }

@@ -18,10 +18,13 @@ public class LocationMenu_Controller : MonoBehaviour
     [SerializeField] private UI_ClockTimer _holdClock;
 
     [SerializeField] private InformationBox _infoBox;
+    
+    
+    [Space(80)]
+    [SerializeField] private Input_Manager _inputManager;
 
 
     public Action<bool> On_MenuToggle;
-
     private int _hoverTileNum;
 
 
@@ -31,58 +34,35 @@ public class LocationMenu_Controller : MonoBehaviour
         Toggle_Menu(false);
         
         // subscriptions
+        _inputManager.OnCursorControl += CursorControl;
+        _inputManager.OnHoldSelect += Select_HoverTile;
+        _inputManager.OnExit += Exit;
+
+        _inputManager.OnSelectStart += _holdClock.Run_ClockSprite;
+        _inputManager.OnSelect += _holdClock.Stop_ClockSpriteRun;
+        _inputManager.OnHoldSelect += _holdClock.Stop_ClockSpriteRun;
+        
         Localization_Controller.instance.OnLanguageChanged += Update_InfoBox;
+        Localization_Controller.instance.OnLanguageChanged += Update_NavigateText;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        Input_Controller input = Input_Controller.instance;
+        _inputManager.OnCursorControl -= CursorControl;
+        _inputManager.OnHoldSelect -= Select_HoverTile;
+        _inputManager.OnExit -= Exit;
 
-        input.OnCursorControl -= CursorControl;
-        input.OnHoldSelect -= Select_HoverTile;
-        input.OnExit -= Exit;
-
-        input.OnSelectStart -= _holdClock.Run_ClockSprite;
-        input.OnSelect -= _holdClock.Stop_ClockSpriteRun;
-        input.OnHoldSelect -= _holdClock.Stop_ClockSpriteRun;
+        _inputManager.OnSelectStart -= _holdClock.Run_ClockSprite;
+        _inputManager.OnSelect -= _holdClock.Stop_ClockSpriteRun;
+        _inputManager.OnHoldSelect -= _holdClock.Stop_ClockSpriteRun;
         
-        Localization_Controller.instance.OnLanguageChanged += Update_InfoBox;
+        Localization_Controller.instance.OnLanguageChanged -= Update_InfoBox;
+        Localization_Controller.instance.OnLanguageChanged -= Update_NavigateText;
     }
 
 
     // InputSystem
-    private void Toggle_Input(bool toggle)
-    {
-        Input_Controller input = Input_Controller.instance;
-
-        if (toggle)
-        {
-            input.Update_ActionMap(1);
-
-            input.OnCursorControl += CursorControl;
-            input.OnHoldSelect += Select_HoverTile;
-            input.OnExit += Exit;
-
-            input.OnSelectStart += _holdClock.Run_ClockSprite;
-            input.OnSelect += _holdClock.Stop_ClockSpriteRun;
-            input.OnHoldSelect += _holdClock.Stop_ClockSpriteRun;
-
-            return;
-        }
-
-        input.Update_ActionMap(0);
-
-        input.OnCursorControl -= CursorControl;
-        input.OnHoldSelect -= Select_HoverTile;
-        input.OnExit -= Exit;
-
-        input.OnSelectStart -= _holdClock.Run_ClockSprite;
-        input.OnSelect -= _holdClock.Stop_ClockSpriteRun;
-        input.OnHoldSelect -= _holdClock.Stop_ClockSpriteRun;
-    }
-
-
     private void CursorControl(Vector2 inputDirection)
     {
         if (inputDirection == Vector2.zero) return;
@@ -116,7 +96,7 @@ public class LocationMenu_Controller : MonoBehaviour
 
         // menu toggle
         _menuPanel.gameObject.SetActive(toggle);
-        Toggle_Input(toggle);
+        _inputManager.Toggle_Input(toggle);
 
         On_MenuToggle?.Invoke(toggle);
 
@@ -244,10 +224,9 @@ public class LocationMenu_Controller : MonoBehaviour
         int removeAmount = Mathf.Abs(_tiles.Length / 2 - _hoverTileNum);
         stationMenu.Remove_StationItem(data.Station_ScrObj(79025), removeAmount);
 
-        Toggle_Input(false);
-
         worldMap.Update_Location(_tiles[_hoverTileNum].data);
-
+        
+        _inputManager.Toggle_Input(false);
         main.Player().detection.Toggle_BoxCollider(false);
     }
 
@@ -362,5 +341,13 @@ public class LocationMenu_Controller : MonoBehaviour
 
             locationNum++;
         }
+    }
+    
+    
+    // Other
+    private void Update_NavigateText()
+    {
+        InfoTemplate_Trigger template = gameObject.GetComponent<InfoTemplate_Trigger>();
+        template.setText.text = template.TemplateString(1);
     }
 }
