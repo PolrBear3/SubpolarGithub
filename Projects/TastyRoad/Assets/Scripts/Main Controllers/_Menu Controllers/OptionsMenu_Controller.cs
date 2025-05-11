@@ -37,6 +37,8 @@ public class OptionsMenu_Controller : Menu_Controller
     
     [Header("")] 
     [SerializeField] private Menu_Controller _applyMenu;
+    [SerializeField] private TextMeshProUGUI _applyButtonText;
+    [SerializeField] [Range(0, 100)] private int _applyCountTime;
     
 
     private bool _adjusting;
@@ -47,6 +49,8 @@ public class OptionsMenu_Controller : Menu_Controller
 
     private OptionsData _previewData;
     private OptionsData _data;
+
+    private Coroutine _applyCoroutine;
     
     private List<Vector2Int> _resolutions = new();
     private Coroutine _resCoroutine;
@@ -95,6 +99,8 @@ public class OptionsMenu_Controller : Menu_Controller
     }
     public void Apply_OptionsData(bool apply)
     {
+        Stop_ApplyCountTime();
+        
         OptionsData previousData = new(_previewData);
         _previewData = null;
         
@@ -104,6 +110,30 @@ public class OptionsMenu_Controller : Menu_Controller
         
         Apply_OptionsData(_data);
         ES3.Save("OptionsMenu_Controller/OptionsData", _data, "OptionsFile.es3");
+    }
+
+    private IEnumerator Apply_OptionsData()
+    {
+        var handle = _applyButtonText.GetComponent<LocalizeStringEvent>().StringReference.GetLocalizedStringAsync();
+        yield return handle;
+
+        string localizedBaseText = handle.Result;
+        
+        for (int i = _applyCountTime; i >= 0; i--)
+        {
+            _applyButtonText.text = localizedBaseText + ": " + i.ToString();
+            yield return new WaitForSeconds(1);
+        }
+        
+        _applyMenu.OnExitMenu?.Invoke();
+        _applyCoroutine = null;
+    }
+    private void Stop_ApplyCountTime()
+    {
+        if (_applyCoroutine == null) return;
+        
+        StopCoroutine(_applyCoroutine);
+        _applyCoroutine = null;
     }
     
     public void Save_OptionsData()
@@ -123,12 +153,15 @@ public class OptionsMenu_Controller : Menu_Controller
         Apply_OptionsData(_data);
         ES3.Save("OptionsMenu_Controller/OptionsData", _data, "OptionsFile.es3");
 
-        if (_data.resolution == previousData.resolution) return;
-
-        _previewData = new(previousData);
+        if (_data.resolution == previousData.resolution && _data.isFullScreen == previousData.isFullScreen) return;
         
-        _applyMenu.Toggle_Menu(true);
+        _previewData = new(previousData);
         Toggle_Menu(false);
+        
+        _applyMenu.Set_CurrentIndex(0);
+        _applyMenu.Toggle_Menu(true);
+        
+        _applyCoroutine = StartCoroutine(Apply_OptionsData());
     }
     
     
@@ -146,13 +179,12 @@ public class OptionsMenu_Controller : Menu_Controller
         if (_resCoroutine != null) return;
         
         _adjusting = toggle;
+        Update_BackButtonText();
 
         if (toggle) return;
 
         OnAdjustmentNavigate = null;
-
         Refresh_Adjustments();
-        Update_BackButtonText();
         
         if (_previewData == null) return;
         Apply_OptionsData(_data);
@@ -179,7 +211,7 @@ public class OptionsMenu_Controller : Menu_Controller
     
     private void Update_BackButtonText()
     {
-        if (_previewData == null)
+        if (_adjusting == false)
         {
             _backButtonText.text = _backButtonStrings[0].GetLocalizedString();
             return;

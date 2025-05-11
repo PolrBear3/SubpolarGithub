@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: 147523074}
   - component: {fileID: 147523077}
   - component: {fileID: 147523076}
+  - component: {fileID: 147523078}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -486,6 +487,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147523073}
   m_CullTransparentMesh: 1
+--- !u!114 &147523078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147523073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:399ac8ec33ea244d889d8615a13d8492
+    m_TableEntryReference:
+      m_KeyId: 8988933424668672
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 147523076}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &156634463
 GameObject:
   m_ObjectHideFlags: 0
@@ -6149,6 +6190,8 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   _applyMenu: {fileID: 180632375}
+  _applyButtonText: {fileID: 670639360}
+  _applyCountTime: 15
   references:
     version: 2
     RefIds: []
@@ -6273,7 +6316,43 @@ MonoBehaviour:
           m_CallState: 2
   OnExitMenu:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 180632372}
+        m_TargetAssemblyTypeName: OptionsMenu_Controller, Assembly-CSharp
+        m_MethodName: Apply_OptionsData
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 180632375}
+        m_TargetAssemblyTypeName: Menu_Controller, Assembly-CSharp
+        m_MethodName: Toggle_Menu
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 180632372}
+        m_TargetAssemblyTypeName: Menu_Controller, Assembly-CSharp
+        m_MethodName: Toggle_Menu
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _inputManager: {fileID: 180632376}
 --- !u!114 &180632376
 MonoBehaviour:
@@ -7304,6 +7383,7 @@ GameObject:
   - component: {fileID: 670639358}
   - component: {fileID: 670639361}
   - component: {fileID: 670639360}
+  - component: {fileID: 670639362}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -7350,7 +7430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Apply
+  m_text: 'Apply: 99'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 718e40650df1f481484fb36338ba511f, type: 2}
   m_sharedMaterial: {fileID: -4348457179764921032, guid: 718e40650df1f481484fb36338ba511f, type: 2}
@@ -7427,6 +7507,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 670639357}
   m_CullTransparentMesh: 1
+--- !u!114 &670639362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670639357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:399ac8ec33ea244d889d8615a13d8492
+    m_TableEntryReference:
+      m_KeyId: 8988971374731264
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 670639360}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &678869283
 GameObject:
   m_ObjectHideFlags: 0
@@ -8817,9 +8937,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 0.25277779
+    width: 0.25
+    height: 0.25
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -9809,7 +9929,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1562296263, guid: f311721b981194c6ba14962d17b64207, type: 3}
+  m_Sprite: {fileID: -630237576, guid: f311721b981194c6ba14962d17b64207, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13294,7 +13414,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -230941915, guid: f311721b981194c6ba14962d17b64207, type: 3}
+  m_Sprite: {fileID: -58297595, guid: f311721b981194c6ba14962d17b64207, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -143,7 +143,7 @@ public class Menu_Controller : MonoBehaviour
         {
             RectTransform buttonTransform = _eventButtons[i].button.rectTransform;
             
-            if (i != currentIndex)
+            if (i != _currentIndex)
             {
                 buttonTransform.localPosition = _eventButtons[i].defaultPosition;
                 continue;
