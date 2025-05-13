@@ -445,6 +445,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     }
 
 
+    // Data
     private FoodData UnlockProgress_FoodData()
     {
         List<FoodData> unlockedDatas = _data.Unlocked_FoodDatas();
@@ -503,7 +504,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             ingredients.RemoveAt(randIndex);
 
             if (Food_Stocked(randFood)) continue;
-
             return randFood;
         }
 
@@ -609,29 +609,35 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     // Placeable Stocks Control
     private void Save_PlaceableStocks()
     {
-        Dictionary<List<FoodData>, bool> placeableStockData = new();
+        Dictionary<List<FoodData>, StockData> placeableStockDatas = new();
+        List<PurchaseData> purchaseDatas = new();
 
         foreach (PlaceableStock stock in _placeableStocks)
         {
-            placeableStockData.Add(stock.foodIcon.AllDatas(), stock.isComplete);
+            placeableStockDatas.Add(stock.foodIcon.AllDatas(), stock.data);
+            purchaseDatas.Add(stock.purchaseData);
         }
 
-        ES3.Save("GroceryNPC/placeableStockData", placeableStockData);
+        ES3.Save("GroceryNPC/placeableStockDatas", placeableStockDatas);
+        ES3.Save("GroceryNPC/PlaceableStock/PurchaseData", purchaseDatas);
     }
 
     private void Load_PlaceableStocks()
     {
-        Dictionary<List<FoodData>, bool> placeableStockData = new();
-        placeableStockData = new(ES3.Load("GroceryNPC/placeableStockData", placeableStockData));
+        Dictionary<List<FoodData>, StockData> placeableStockDatas = new();
+        placeableStockDatas = new(ES3.Load("GroceryNPC/placeableStockDatas", placeableStockDatas));
 
-        List<List<FoodData>> placedDatas = new(placeableStockData.Keys);
-        List<bool> completeDatas = new(placeableStockData.Values);
+        List<List<FoodData>> placedDatas = new(placeableStockDatas.Keys);
+        List<StockData> stockDatas = new(placeableStockDatas.Values);
+        
+        List<PurchaseData> purchaseDatas = ES3.Load("GroceryNPC/PlaceableStock/PurchaseData", new List<PurchaseData>());
 
-        for (int i = 0; i < placeableStockData.Count; i++)
+        for (int i = 0; i < placeableStockDatas.Count; i++)
         {
             if (i > _placeableStocks.Length - 1) break;
-
-            _placeableStocks[i].Load_Data(placedDatas[i], completeDatas[i]);
+            
+            _placeableStocks[i].Load_Data(placedDatas[i], stockDatas[i]);
+            _placeableStocks[i].Set_PurchaseData(purchaseDatas[i]);
         }
 
         foreach (PlaceableStock stock in _placeableStocks)
@@ -647,7 +653,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _placeableStocks.Length; i++)
         {
-            if (_placeableStocks[i].isComplete == false) continue;
+            if (_placeableStocks[i].data.isComplete == false) continue;
             stocks.Add(_placeableStocks[i]);
         }
 
@@ -675,13 +681,23 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             while (movement.At_TargetPosition() == false) yield return null;
 
             List<FoodData> placedDatas = completedStocks[i].foodIcon.AllDatas();
-
+            int paymentPrice = 0;
+            
             // loops through placed foods
             foreach (FoodData data in placedDatas)
             {
-                _data.Unlock_FoodData(data.foodScrObj);
+                Food_ScrObj placedFood = data.foodScrObj;
+                
+                if (placedFood.Ingredients().Count <= 0) continue;
+                _data.Unlock_FoodData(placedFood);
+
+                if (_data.FoodData_UnlockMaxed(placedFood)) continue;
+                paymentPrice += data.foodScrObj.price;
             }
 
+            completedStocks[i].Set_PurchaseData(new(paymentPrice));
+            completedStocks[i].Toggle_PurchaseState(true);
+            
             completedStocks[i].Reset_Data();
 
             // update all unlock previews for _placeableStocks
@@ -712,8 +728,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
 
         previewIcon.Set_CurrentData(progressData);
-        previewIcon.Show_Icon(0.5f);
-
         previewIcon.amountBar.Load_Custom(progressData.foodScrObj.unlockAmount, progressData.currentAmount);
     }
 

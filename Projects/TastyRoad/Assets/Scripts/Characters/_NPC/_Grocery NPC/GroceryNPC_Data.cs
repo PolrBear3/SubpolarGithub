@@ -118,4 +118,14 @@ public class GroceryNPC_Data
         }
         return null;
     }
+
+    public bool FoodData_UnlockMaxed(Food_ScrObj foodScrObj)
+    {
+        FoodData data = Unlocked_FoodData(foodScrObj);
+        
+        if (data == null) return false;
+        if (data.currentAmount < foodScrObj.unlockAmount) return false;
+        
+        return true;
+    }
 }

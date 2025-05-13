@@ -105,6 +105,9 @@ public class Station_Movement : MonoBehaviour
 
         Load_Position();
         _stationController.data.Update_Position(transform.position);
+
+        // usage guide trigger
+        VideoGuide_Controller.instance.Trigger_Guide(_stationController.stationScrObj.usageGuide);
     }
 
     /// <summary>

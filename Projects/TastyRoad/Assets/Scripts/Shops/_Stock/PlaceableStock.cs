@@ -10,12 +10,16 @@ public class PlaceableStock : MonoBehaviour
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
 
+    [SerializeField] private CoinLauncher _launcher;
+
     [Header("")]
     [SerializeField] private FoodData_Controller _foodIcon;
     public FoodData_Controller foodIcon => _foodIcon;
 
     [SerializeField] private FoodData_Controller _previewIcon;
     public FoodData_Controller previewIcon => _previewIcon;
+
+    [SerializeField] private GameObject _paymentIcon;
 
     [Header("")]
     [SerializeField] private Sprite[] _sprites;
@@ -24,8 +28,11 @@ public class PlaceableStock : MonoBehaviour
     [SerializeField][Range(1, 98)] private int _maxAmount;
 
 
-    private bool _isComplete;
-    public bool isComplete => _isComplete;
+    private StockData _data;
+    public StockData data => _data;
+    
+    private PurchaseData _purchaseData;
+    public PurchaseData purchaseData => _purchaseData;
     
     
     [Space(60)]
@@ -40,15 +47,18 @@ public class PlaceableStock : MonoBehaviour
 
     private void Start()
     {
-        Update_Bubble();
         Update_forComplete();
+        Update_PreviewIcon();
 
         // subscriptions
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
+        
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
-        
+        _interactable.detection.EnterEvent += Collect_Payment;
+        _interactable.detection.ExitEvent += Collect_Payment;
+
         _interactable.OnInteract += Toggle_AmountBar;
         _interactable.OnUnInteract += Toggle_AmountBar;
     }
@@ -56,10 +66,13 @@ public class PlaceableStock : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
+        
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
-        
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
+
+        _interactable.detection.EnterEvent -= Collect_Payment;
+        _interactable.detection.ExitEvent -= Collect_Payment;
 
         _interactable.OnInteract -= Toggle_AmountBar;
         _interactable.OnUnInteract -= Toggle_AmountBar;
@@ -70,20 +83,34 @@ public class PlaceableStock : MonoBehaviour
 
 
     // Data Control
-    public void Load_Data(List<FoodData> placedData, bool completeData)
+    private void Load_Data()
+    {
+        Toggle_PurchaseState(_purchaseData != null && _purchaseData.purchased);
+        
+        if (_data != null) return;
+        _data = new(null);
+
+        Update_Bubble();
+
+        if (_purchaseData != null) return;
+        Set_PurchaseData(new(0));
+    }
+    public void Load_Data(List<FoodData> placedData, StockData stockData)
     {
         if (placedData == null || placedData.Count <= 0) return;
 
         _foodIcon.Update_AllDatas(placedData);
-        _isComplete = completeData;
+        _data = new(stockData);
+        
+        Update_Bubble();
     }
-
+    
     public void Reset_Data()
     {
         _foodIcon.Update_AllDatas(null);
         _foodIcon.Show_Icon();
 
-        _isComplete = false;
+        _data.Toggle_Complete(false);
         Update_forComplete();
 
         _interactable.LockInteract(false);
@@ -91,17 +118,31 @@ public class PlaceableStock : MonoBehaviour
         Update_Bubble();
         Toggle_AmountBar();
     }
+    
+    public void Set_PurchaseData(PurchaseData purchaseData)
+    {
+        if (purchaseData == null)
+        {
+            _purchaseData = new(0);
+            return;
+        }
+        
+        _purchaseData = purchaseData;
+    }
 
 
     // Updates and Toggles
     public void Update_forComplete()
     {
-        _foodIcon.Toggle_Height(_isComplete);
-        _interactable.bubble.Toggle_Height(_isComplete);
+        Load_Data();
 
+        _foodIcon.Toggle_Height(_data.isComplete);
         _foodIcon.Hide_Condition();
+        
+        _interactable.bubble.Toggle_Height(_data.isComplete);
+        _interactable.LockInteract(_data.isComplete);
 
-        if (_isComplete == false)
+        if (_data.isComplete == false)
         {
             _sr.sprite = _sprites[0];
             _foodIcon.ShowIcon_LockToggle(false);
@@ -114,6 +155,26 @@ public class PlaceableStock : MonoBehaviour
         _sr.sprite = _sprites[1];
         _foodIcon.Hide_Icon();
     }
+    
+    
+    public void Toggle_PurchaseState(bool toggle)
+    {
+        bool hasPayment = _purchaseData != null && _purchaseData.price > 0;
+        _paymentIcon.SetActive(toggle && hasPayment);
+        
+        if (_purchaseData == null) return;
+        _purchaseData.Toggle_PurchaseState(toggle);
+    }
+
+    private void Update_PreviewIcon()
+    {
+        if (_paymentIcon.activeSelf || _previewIcon.hasFood == false)
+        {
+            _previewIcon.Hide_Icon();
+            return;
+        }
+        previewIcon.Show_Icon(0.5f);
+    }
 
 
     private void Toggle_AmountBar()
@@ -122,7 +183,7 @@ public class PlaceableStock : MonoBehaviour
         bool bubbleOn = _interactable.bubble.bubbleOn;
 
         bool foodPlaced = _foodIcon.hasFood;
-
+        
         _foodIcon.Toggle_SubDataBar(foodPlaced && playerDetected && !bubbleOn);
         _previewIcon.amountBar.Toggle(!foodPlaced && playerDetected && !bubbleOn);
     }
@@ -130,9 +191,10 @@ public class PlaceableStock : MonoBehaviour
     private void Update_Bubble()
     {
         Action_Bubble bubble = _interactable.bubble;
-
         bubble.Empty_Bubble();
-        _interactable.Clear_ActionSubscriptions();
+        
+        _interactable.OnAction1 = null;
+        _interactable.OnAction2 = null;
 
         if (_foodIcon.hasFood == false)
         {
@@ -160,19 +222,13 @@ public class PlaceableStock : MonoBehaviour
     // Functions
     private bool Place_Available()
     {
+        if (_data.isComplete || _foodIcon.DataCount_Maxed()) return false;
+        
         Player_Controller player = _interactable.detection.player;
-
         if (player == null) return false;
 
         FoodData_Controller playerIcon = player.foodIcon;
-
         if (playerIcon.hasFood == false) return false;
-
-        if (_foodIcon.DataCount_Maxed())
-        {
-            gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
-            return false;
-        }
 
         return true;
     }
@@ -206,12 +262,27 @@ public class PlaceableStock : MonoBehaviour
     {
         if (!foodIcon.hasFood) return;
 
-        _isComplete = true;
+        _data.Toggle_Complete(true);
         Update_forComplete();
-
-        _interactable.LockInteract(true);
-
+        
         Update_Bubble();
+        
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
+    }
+    
+    private void Collect_Payment()
+    {
+        if (_purchaseData.purchased == false) return;
+        
+        Toggle_PurchaseState(false);
+        Update_PreviewIcon();
+
+        if (_purchaseData.price <= 0) return;
+        
+        int paymentAmount = _purchaseData.price;
+        GoldSystem.instance.Update_CurrentAmount(paymentAmount);
+
+        Transform player = _interactable.detection.player.transform;
+        _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], player.position);
     }
 }

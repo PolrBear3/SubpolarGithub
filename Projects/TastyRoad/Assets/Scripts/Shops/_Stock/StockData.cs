@@ -10,6 +10,9 @@ public class StockData
 
     [SerializeField][ES3Serializable] private bool _isDiscount;
     public bool isDiscount => _isDiscount;
+    
+    [SerializeField][ES3Serializable] private bool _isComplete;
+    public bool isComplete => _isComplete;
 
 
     // Constructors
@@ -19,6 +22,7 @@ public class StockData
 
         _unlocked = data.unlocked;
         _isDiscount = data.isDiscount;
+        _isComplete = data.isComplete;
     }
 
     public StockData(bool unlockToggle)
@@ -36,5 +40,10 @@ public class StockData
     public void Toggle_Discount(bool toggle)
     {
         _isDiscount = toggle;
+    }
+
+    public void Toggle_Complete(bool toggle)
+    {
+        _isComplete = toggle;
     }
 }

@@ -7,6 +7,7 @@ public class Station_ScrObj : ScriptableObject
 {
     [Header("")]
     public GameObject prefab;
+    public Guide_ScrObj usageGuide;
 
     [Header("")]
     public Sprite sprite;

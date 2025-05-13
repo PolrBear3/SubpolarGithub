@@ -11,6 +11,9 @@ public class Menu_EventButton
 {
     [SerializeField] private Image _button;
     public Image button => _button;
+
+    [SerializeField] private Image _hoverIndication;
+    public Image hoverIndication => _hoverIndication;
     
     [SerializeField] private UnityEvent _actionEvent;
     public UnityEvent actionEvent => _actionEvent;
@@ -146,10 +149,12 @@ public class Menu_Controller : MonoBehaviour
             if (i != _currentIndex)
             {
                 buttonTransform.localPosition = _eventButtons[i].defaultPosition;
+                _eventButtons[i].hoverIndication.gameObject.SetActive(false);
                 continue;
             }
 
             buttonTransform.localPosition = Vector2.zero;
+            _eventButtons[i].hoverIndication.gameObject.SetActive(true);
         }
     }
     
