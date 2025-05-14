@@ -19,9 +19,6 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private TextMeshProUGUI _infoText;
     [SerializeField] private TextMeshProUGUI _navigateText;
 
-    [Header("")]
-    [SerializeField] private Guide_ScrObj[] _allGuides;
-    
     
     [Space(80)]
     [SerializeField] private Input_Manager _inputManager;

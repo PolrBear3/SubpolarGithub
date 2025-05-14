@@ -9,7 +9,7 @@ public class SoundData_Controller : MonoBehaviour
     [SerializeField] private SoundData[] _soundDatas;
     public SoundData[] soundDatas => _soundDatas;
     
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private float _fadeDuration;
     public float fadeDuration => _fadeDuration;
     
@@ -59,6 +59,34 @@ public class SoundData_Controller : MonoBehaviour
         }
 
         instance.stop(STOP_MODE.IMMEDIATE);
+
+        _fadeCoroutine = null;
+        yield break;
+    }
+
+    public void FadeIn(int dataIndex)
+    {
+        Audio_Controller audio = Audio_Controller.instance;
+
+        SoundData data = audio.EventInstance_Data(_soundDatas[dataIndex]);
+        if (data == null) return;
+
+        _fadeCoroutine = StartCoroutine(FadeIn_Coroutine(audio.EventInstance(data)));
+    }
+    private IEnumerator FadeIn_Coroutine(EventInstance instance)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < _fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float value = Mathf.Lerp(0f, 1f, elapsed / _fadeDuration);
+        
+            instance.setParameterByName("Value_intensity", value);
+            yield return null;
+        }
+
+        instance.setParameterByName("Value_intensity", 1f);
 
         _fadeCoroutine = null;
         yield break;

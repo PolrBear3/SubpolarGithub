@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FMOD.Studio;
 
 [System.Serializable]
 public struct WorldMap_Data
@@ -50,10 +51,13 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     // UnityEngine
     private void Start()
     {
+        Location_Controller location = null;
+        
         // load saved location
         if (ES3.KeyExists("WorldMap_Controller/WorldMap_Data"))
         {
-            Set_Location(_currentData);
+            location = Set_Location(_currentData);
+            Play_LocationBGM(location);
 
             if (_newLocation == false) return;
 
@@ -63,7 +67,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
         // new game location
         WorldMap_Data newLocation = new(_startingLocation.worldNum, _startingLocation.locationNum);
-        Set_Location(newLocation);
+        
+        location = Set_Location(newLocation);
+        Play_LocationBGM(location);
 
         Activate_NewLocationEvents();
     }
@@ -88,7 +94,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Location Control
-    private void Set_Location(WorldMap_Data setData)
+    private Location_Controller Set_Location(WorldMap_Data setData)
     {
         _currentData = new(setData);
 
@@ -97,8 +103,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Location_Controller location = main.Set_Location(_currentData);
 
         main.Track_CurrentLocaiton(location);
-        
         OnLocationSet?.Invoke();
+
+        return location;
     }
 
     public void Update_Location(WorldMap_Data updateData)
@@ -111,6 +118,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         Sprite worldIcon = main.dataController.World_Data(updateData.worldNum).worldIcon;
         
         main.Player().Toggle_Controllers(false);
+        
+        // bgm
+        Main_Controller.instance.currentLocation.GetComponent<SoundData_Controller>().FadeOut(0);
 
         // transition curtain animation
         TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
@@ -155,5 +165,15 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
         }
 
         currentLocation.OnNewLocationSet?.Invoke();
+    }
+
+
+    private void Play_LocationBGM(Location_Controller location)
+    {
+        EventInstance eventInstance = Audio_Controller.instance.Create_EventInstance(location.gameObject, 0);
+        eventInstance.setParameterByName("Value_intensity", 0f);
+        eventInstance.start();
+        
+        location.gameObject.GetComponent<SoundData_Controller>().FadeIn(0);
     }
 }

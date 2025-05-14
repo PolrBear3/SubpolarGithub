@@ -26,19 +26,7 @@ public class CoinLauncher : MonoBehaviour
     private float _updateAngle;
     public float updateAngle => _updateAngle;
 
-
-    // UnityEngine
-    private void Start()
-    {
-        Audio_Controller.instance.Create_EventInstance(gameObject, 0);
-    }
-
-    private void OnDestroy()
-    {
-        Audio_Controller.instance.Remove_EventInstance(gameObject, 0);
-    }
-
-
+    
     // Set
     private void Set_UpdateAngle(Vector2 launchPoint)
     {

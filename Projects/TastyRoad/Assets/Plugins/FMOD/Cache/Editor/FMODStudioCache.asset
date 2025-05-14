@@ -69,7 +69,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638819660716322660
+  lastModified: 638828120562510577
   FileSizes:
   - Name: Desktop
     Value: 1150464
@@ -113,10 +113,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638819660707853813
+  lastModified: 638828120562058785
   FileSizes:
   - Name: Desktop
-    Value: 2054
+    Value: 2102
   Exists: 1
 --- !u!114 &-8302899947674091205
 MonoBehaviour:
@@ -200,6 +200,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 50
+--- !u!114 &-5707829414435789284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/TableforNone_World1/Value_intensity
+  m_EditorClassIdentifier: 
+  Name: Value_intensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 1104856012
+    data2: 3748696620
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-4747529475503376433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,12 +478,13 @@ MonoBehaviour:
   - {fileID: -3502694908880337663}
   - {fileID: 7956754271902513960}
   - {fileID: 555226408079235369}
+  - {fileID: 703212430399671409}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638819660716322660
+  cacheTime: 638828155082512247
   cacheVersion: 131618
 --- !u!114 &276690538390073772
 MonoBehaviour:
@@ -512,6 +537,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 468
+--- !u!114 &703212430399671409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BGM/TableforNone_World1
+  m_EditorClassIdentifier: 
+  Path: event:/BGM/TableforNone_World1
+  Guid:
+    Data1: 868005018
+    Data2: 1111828510
+    Data3: 1650819517
+    Data4: 311970411
+  Banks:
+  - {fileID: 4627545620514845757}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -5707829414435789284}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 76800
 --- !u!114 &1129915511423555815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,7 +604,7 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638819660707848785
+  lastModified: 638828120562053677
   FileSizes:
   - Name: Desktop
     Value: 1870
@@ -598,10 +651,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 638819660707807231
+  lastModified: 638828155082512247
   FileSizes:
   - Name: Desktop
-    Value: 859520
+    Value: 1709376
   Exists: 1
 --- !u!114 &5209807877655061866
 MonoBehaviour:
