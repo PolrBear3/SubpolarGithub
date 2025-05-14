@@ -22,20 +22,25 @@ public struct ResolutionData
 
 public class OptionsMenu_Controller : Menu_Controller
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private TextMeshProUGUI[] _adjustmentTexts;
     [SerializeField] private LocalizeStringEvent[] _adjustmentTextEvents;
     [SerializeField] private GameObject[] _adjustmentArrows;
 
-    [Header("")] 
+    [Space(20)]
+    [SerializeField] private TextMeshProUGUI[] _volumeTexts;
+    // [SerializeField] private LocalizeStringEvent[] _volumeTextEvents;
+    [SerializeField] private GameObject[] _volumeArrows;
+    
+    [Space(20)]
     [SerializeField] private TextMeshProUGUI _backButtonText;
     [SerializeField] private LocalizedString[] _backButtonStrings;
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private ResolutionData[] _fallBackResolutions;
     [SerializeField] private LocalizedString[] screenTypeStrings;
     
-    [Header("")] 
+    [Space(20)]
     [SerializeField] private Menu_Controller _applyMenu;
     [SerializeField] private TextMeshProUGUI _applyButtonText;
     [SerializeField] [Range(0, 100)] private int _applyCountTime;
@@ -223,14 +228,15 @@ public class OptionsMenu_Controller : Menu_Controller
     // Volume
     public void Set_Volumes(TextMeshProUGUI text)
     {
-        if (_adjusting) return;
-        
-        _previewData = new(_data);
-        
+        if (_adjusting)
+        {
+            return;
+        }
+
         int textValue = Mathf.RoundToInt(_data.volume * 10f);
         text.text = textValue.ToString();
         
-        _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
+        _selectedTextIndex  = Array.IndexOf(_volumeTexts, text);
         OnAdjustmentNavigate += Update_Volume;
     }
     

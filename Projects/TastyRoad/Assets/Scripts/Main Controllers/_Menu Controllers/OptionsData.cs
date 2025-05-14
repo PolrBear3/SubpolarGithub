@@ -11,6 +11,9 @@ public class OptionsData
     [ES3Serializable] private float _volume;
     public float volume => _volume;
     
+    [ES3Serializable] private float _sfxVolume;
+    public float sfxVolume => _sfxVolume;
+    
     [ES3Serializable] private Vector2Int _resolution;
     public Vector2Int resolution => _resolution;
     
