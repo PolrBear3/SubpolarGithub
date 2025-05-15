@@ -27,10 +27,12 @@ public class OptionsMenu_Controller : Menu_Controller
     [SerializeField] private LocalizeStringEvent[] _adjustmentTextEvents;
     [SerializeField] private GameObject[] _adjustmentArrows;
 
-    [Space(20)]
+    [Space(20)] 
+    [SerializeField] private Menu_Controller _volumeMenu;
     [SerializeField] private TextMeshProUGUI[] _volumeTexts;
-    // [SerializeField] private LocalizeStringEvent[] _volumeTextEvents;
     [SerializeField] private GameObject[] _volumeArrows;
+
+    private List<string> _volumeStrings = new();
     
     [Space(20)]
     [SerializeField] private TextMeshProUGUI _backButtonText;
@@ -80,8 +82,19 @@ public class OptionsMenu_Controller : Menu_Controller
 
         Refresh_Adjustments();
         
+        // save volume texts
+        foreach (TextMeshProUGUI text in _volumeTexts)
+        {
+            _volumeStrings.Add(text.text);
+        }
+        
         // subscriptions
         inputManager.OnCursorControl += Navigate_Adjustments;
+        
+        Input_Manager volumeMenuInput = _volumeMenu.inputManager;
+        
+        volumeMenuInput.OnCursorControl += UpdateBGM_Volume;
+        volumeMenuInput.OnCursorControl += UpdateSFX_Volume;
     }
 
     private new void OnDestroy()
@@ -90,6 +103,11 @@ public class OptionsMenu_Controller : Menu_Controller
         
         // subscriptions
         inputManager.OnCursorControl -= Navigate_Adjustments;
+
+        Input_Manager volumeMenuInput = _volumeMenu.inputManager;
+        
+        volumeMenuInput.OnCursorControl -= UpdateBGM_Volume;
+        volumeMenuInput.OnCursorControl -= UpdateSFX_Volume;
     }
     
     
@@ -98,7 +116,9 @@ public class OptionsMenu_Controller : Menu_Controller
     {
         if (data == null) return;
 
-        RuntimeManager.GetBus("bus:/").setVolume(data.volume);
+        RuntimeManager.GetBus("bus:/BGM").setVolume(data.bgmVolume);
+        RuntimeManager.GetBus("bus:/SFX").setVolume(data.sfxVolume);
+        
         Screen.SetResolution(data.resolution.x, data.resolution.y, data.isFullScreen);
         Localization_Controller.instance.Update_Language(data.language);
     }
@@ -108,13 +128,17 @@ public class OptionsMenu_Controller : Menu_Controller
         
         OptionsData previousData = new(_previewData);
         _previewData = null;
-        
-        if (apply) return;
+
+        if (apply)
+        {
+            Save_CurrentData();
+            return;
+        }
         
         _data = new(previousData);
         
         Apply_OptionsData(_data);
-        ES3.Save("OptionsMenu_Controller/OptionsData", _data, "OptionsFile.es3");
+        Save_CurrentData();
     }
 
     private IEnumerator Apply_OptionsData()
@@ -139,6 +163,13 @@ public class OptionsMenu_Controller : Menu_Controller
         
         StopCoroutine(_applyCoroutine);
         _applyCoroutine = null;
+    }
+
+
+    private void Save_CurrentData()
+    {
+        if (_data == null) return;
+        ES3.Save("OptionsMenu_Controller/OptionsData", _data, "OptionsFile.es3");
     }
     
     public void Save_OptionsData()
@@ -226,30 +257,73 @@ public class OptionsMenu_Controller : Menu_Controller
     
     
     // Volume
+    public void Refresh_VolumeAdjustments()
+    {
+        _adjusting = false;
+        
+        for (int i = 0; i < _volumeTexts.Length; i++)
+        {
+            _volumeTexts[i].text = _volumeStrings[i];
+            _volumeArrows[i].SetActive(false);
+        }
+    }
+    
     public void Set_Volumes(TextMeshProUGUI text)
     {
-        if (_adjusting)
+        _adjusting = !_adjusting;
+
+        if (_adjusting == false)
         {
+            Refresh_VolumeAdjustments();
             return;
         }
 
-        int textValue = Mathf.RoundToInt(_data.volume * 10f);
+        float currentVolume = text.text == "BGM" ? _data.bgmVolume : _data.sfxVolume;
+            
+        int textValue = Mathf.RoundToInt(currentVolume * 10f);
         text.text = textValue.ToString();
         
         _selectedTextIndex  = Array.IndexOf(_volumeTexts, text);
-        OnAdjustmentNavigate += Update_Volume;
+        _volumeArrows[_selectedTextIndex].SetActive(true);
     }
     
-    public void Update_Volume(Vector2 adjustDirection)
+    
+    private void UpdateBGM_Volume(Vector2 adjustDirection)
     {
-        if (adjustDirection.x == 0) return;
+        if (_adjusting == false) return;
+        
+        if (adjustDirection.x == 0)
+        {
+            Refresh_VolumeAdjustments();
+            return;
+        }
+        
+        if (_volumeStrings[_selectedTextIndex] != "BGM") return;
 
-        _previewData.Update_Volume(0.1f * adjustDirection.x);
+        _data.UpdateBGM_Volume(0.1f * adjustDirection.x);
+        Save_CurrentData();
         
-        int textValue = Mathf.RoundToInt(_previewData.volume * 10f);
-        _adjustmentTexts[_selectedTextIndex].text = textValue.ToString();
+        int textValue = Mathf.RoundToInt(_data.bgmVolume * 10f);
+        _volumeTexts[_selectedTextIndex].text = textValue.ToString();
+    }
+
+    private void UpdateSFX_Volume(Vector2 adjustDirection)
+    {
+        if (_adjusting == false) return;
+
+        if (adjustDirection.x == 0)
+        {
+            Refresh_VolumeAdjustments();
+            return;
+        }
         
-        Update_BackButtonText();
+        if(_volumeStrings[_selectedTextIndex] != "SFX") return;
+        
+        _data.UpdateSFX_Volume(0.1f * adjustDirection.x);
+        Save_CurrentData();
+        
+        int textValue = Mathf.RoundToInt(_data.sfxVolume * 10f);
+        _volumeTexts[_selectedTextIndex].text = textValue.ToString();
     }
     
     
@@ -259,23 +333,23 @@ public class OptionsMenu_Controller : Menu_Controller
         if (_adjusting) return;
         
         _previewData = new(_data);
-        
         _resolutions.Clear();
 
-        for (int i = 0; i < Screen.resolutions.Length; i++)
-        {
-            float aspect = (float)Screen.resolutions[i].width / Screen.resolutions[i].height;
-            if (Mathf.Abs(aspect - 16f / 9f) >= 0.01f) continue;
+        ResolutionData[] fallback = _fallBackResolutions;
         
-            _resolutions.Add(new Vector2Int(Screen.resolutions[i].width, Screen.resolutions[i].height));
+        foreach (ResolutionData data in fallback)
+        {
+            Vector2Int resolution = new(data.width, data.height);
+            if (!_resolutions.Contains(resolution))
+            {
+                _resolutions.Add(resolution);
+            }
         }
 
-        if (_resolutions.Count <= 0)
+        Vector2Int currentRes = new Vector2Int(Display.main.systemWidth, Display.main.systemHeight);
+        if (!_resolutions.Contains(currentRes))
         {
-            foreach (ResolutionData data in _fallBackResolutions)
-            {
-                _resolutions.Add(new(data.width, data.height));
-            }
+            _resolutions.Add(currentRes);
         }
 
         _indexNum = _resolutions.Contains(_data.resolution) ? _resolutions.IndexOf(_data.resolution) : 0;

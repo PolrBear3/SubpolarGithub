@@ -8,8 +8,8 @@ using FMOD.Studio;
 [System.Serializable]
 public class OptionsData
 {
-    [ES3Serializable] private float _volume;
-    public float volume => _volume;
+    [ES3Serializable] private float _bgmVolume;
+    public float bgmVolume => _bgmVolume;
     
     [ES3Serializable] private float _sfxVolume;
     public float sfxVolume => _sfxVolume;
@@ -27,15 +27,19 @@ public class OptionsData
     // New
     public OptionsData(OptionsData data)
     {
-        _volume = data.volume;
+        _bgmVolume = data.bgmVolume;
+        _sfxVolume = data.sfxVolume;
+        
         _resolution = data.resolution;
         _isFullScreen = data.isFullScreen;
+        
         _language = data.language;
     }
     
-    public OptionsData(float volume)
+    public OptionsData(float setVolume)
     {
-        _volume = volume;
+        _bgmVolume = setVolume;
+        _sfxVolume = setVolume;
 
         _resolution = Resolution_Vector2(Screen.currentResolution);
         _isFullScreen = false;
@@ -45,20 +49,32 @@ public class OptionsData
 
 
     // Data
-    public void Update_Volume(float updateValue)
+    private void Update_BusVolume(Bus bus, float updateValue)
     {
-        Bus bus = RuntimeManager.GetBus("bus:/");
         bus.getVolume(out float currentVolume);
-
+       
         float setValue = currentVolume + updateValue;
-        
         setValue = Mathf.Round(setValue * 10f) / 10f;
         setValue = Mathf.Clamp(setValue, 0f, 1f);
         
         bus.setVolume(setValue);
+    }
+    
+    public void UpdateBGM_Volume(float updateValue)
+    {
+        Bus bus = RuntimeManager.GetBus("bus:/BGM");
+        Update_BusVolume(bus, updateValue);
         
         bus.getVolume(out float updatedVolume);
-        _volume = updatedVolume;
+        _bgmVolume = updatedVolume;
+    }
+    public void UpdateSFX_Volume(float updateValue)
+    {
+        Bus bus = RuntimeManager.GetBus("bus:/SFX");
+        Update_BusVolume(bus, updateValue);
+        
+        bus.getVolume(out float updatedVolume);
+        _sfxVolume = updatedVolume;
     }
 
 

@@ -135,7 +135,7 @@ public class DialogSystem : MonoBehaviour
 
     public void RefreshCurrent_DialogInfo()
     {
-        _infoBox.Update_InfoText(_currentDialogs[_currentDialogNum].data.DialogInfo());
+        _infoBox.infoText.text = _currentDialogs[_currentDialogNum].data.DialogInfo();
         _infoBox.Update_RectLayout();
     }
     

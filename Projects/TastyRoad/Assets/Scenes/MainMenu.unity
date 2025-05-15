@@ -6069,7 +6069,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -630237576, guid: f311721b981194c6ba14962d17b64207, type: 3}
+  m_Sprite: {fileID: -1375409312, guid: f311721b981194c6ba14962d17b64207, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6641,6 +6641,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
+        - m_Target: {fileID: 180632372}
+          m_TargetAssemblyTypeName: OptionsMenu_Controller, Assembly-CSharp
+          m_MethodName: Refresh_VolumeAdjustments
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
   OnExitMenu:
     m_PersistentCalls:
       m_Calls:
@@ -6696,6 +6708,7 @@ MonoBehaviour:
   - {fileID: 1571402322}
   - {fileID: 1155852932}
   - {fileID: 1949738644}
+  _volumeMenu: {fileID: 1695289351}
   _volumeTexts:
   - {fileID: 1326221059}
   - {fileID: 1060362500}
@@ -9790,7 +9803,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -58297595, guid: f311721b981194c6ba14962d17b64207, type: 3}
+  m_Sprite: {fileID: 1927426576, guid: f311721b981194c6ba14962d17b64207, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10490,9 +10503,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.39861113
-    width: 0.38359377
-    height: 0.38359377
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -13911,6 +13924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1695289350}
+  - component: {fileID: 1695289353}
   - component: {fileID: 1695289352}
   - component: {fileID: 1695289351}
   m_Layer: 5
@@ -13958,12 +13972,36 @@ MonoBehaviour:
     _hoverIndication: {fileID: 729068525}
     _actionEvent:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 180632372}
+          m_TargetAssemblyTypeName: OptionsMenu_Controller, Assembly-CSharp
+          m_MethodName: Set_Volumes
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 1326221059}
+            m_ObjectArgumentAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - _button: {fileID: 92802561}
     _hoverIndication: {fileID: 815668173}
     _actionEvent:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 180632372}
+          m_TargetAssemblyTypeName: OptionsMenu_Controller, Assembly-CSharp
+          m_MethodName: Set_Volumes
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 1060362500}
+            m_ObjectArgumentAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   OnExitMenu:
     m_PersistentCalls:
       m_Calls:
@@ -13991,6 +14029,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 180632372}
+        m_TargetAssemblyTypeName: OptionsMenu_Controller, Assembly-CSharp
+        m_MethodName: Refresh_VolumeAdjustments
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _inputManager: {fileID: 1695289352}
 --- !u!114 &1695289352
 MonoBehaviour:
@@ -14004,6 +14054,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69803ba4909ec417a8770dbc7d4d8a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1695289353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695289349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa7955f973a44076904669302c9763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -307278929
+        Data2: 1108996358
+        Data3: 409864377
+        Data4: 781684799
+      Path: event:/Basic SFX/Dialog System/Dialog_open
+  - _reference:
+      Guid:
+        Data1: 364359670
+        Data2: 1114304277
+        Data3: 1952577465
+        Data4: -1944029214
+      Path: event:/Basic SFX/UI Control/UI_cursorControl
+  _fadeDuration: 0
 --- !u!1 &1706585429
 GameObject:
   m_ObjectHideFlags: 0

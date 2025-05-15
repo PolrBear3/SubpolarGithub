@@ -15,7 +15,7 @@ public struct VideoClip_Data
     [SerializeField] private string _info;
     public string info => _info;
     
-    [FormerlySerializedAs("_localizedDescription")] [SerializeField] private LocalizedString _localizedInfo;
+    [SerializeField] private LocalizedString _localizedInfo;
     public LocalizedString localizedInfo => _localizedInfo;
 
     public string Info()

@@ -16,6 +16,7 @@ public class InformationBox : MonoBehaviour
     public Image boxImage => _boxImage;
 
     [SerializeField] private TextMeshProUGUI _infoText;
+    public TextMeshProUGUI infoText => _infoText;
 
     [Header("")]
     [SerializeField] private float _heightIncreaseValue;
