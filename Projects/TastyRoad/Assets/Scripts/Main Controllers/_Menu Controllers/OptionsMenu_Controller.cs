@@ -48,7 +48,7 @@ public class OptionsMenu_Controller : Menu_Controller
     
 
     private bool _adjusting;
-    private int _selectedTextIndex;
+    private int _adjustingButtonIndex;
     
     private Action<Vector2> OnAdjustmentNavigate;
     private int _adjustIndexNum;
@@ -111,27 +111,24 @@ public class OptionsMenu_Controller : Menu_Controller
     }
     
     
-    // Menu_Controller
-    public new void Navigate_ButtonIndex(int index)
-    {
-        if (_adjusting) return;
-        base.Navigate_ButtonIndex(index);
-    }
-    
+    // Menu_Controller base
     public void Select_Action(int index)
     {
-        if (_adjusting == false || currentIndex == index)
+        if (_adjusting == false || index == _adjustingButtonIndex)
         {
             base.Select_Action();
             return;
         }
         
-        /*
         Toggle_Adjustments(false);
-            
-        base.Navigate_ButtonIndex(index);
         base.Select_Action();
-        */
+    }
+
+    public void Select_AdjustingAction()
+    {
+        if (_adjusting == false) return;
+        
+        Select_Action(_adjustingButtonIndex);
     }
     
     
@@ -300,8 +297,8 @@ public class OptionsMenu_Controller : Menu_Controller
         int textValue = Mathf.RoundToInt(currentVolume * 10f);
         text.text = textValue.ToString();
         
-        _selectedTextIndex  = Array.IndexOf(_volumeTexts, text);
-        _volumeArrows[_selectedTextIndex].SetActive(true);
+        _adjustingButtonIndex  = Array.IndexOf(_volumeTexts, text);
+        _volumeArrows[_adjustingButtonIndex].SetActive(true);
     }
     
     
@@ -315,13 +312,13 @@ public class OptionsMenu_Controller : Menu_Controller
             return;
         }
         
-        if (_volumeStrings[_selectedTextIndex] != "BGM") return;
+        if (_volumeStrings[_adjustingButtonIndex] != "BGM") return;
 
         _data.UpdateBGM_Volume(0.1f * adjustDirection.x);
         Save_CurrentData();
         
         int textValue = Mathf.RoundToInt(_data.bgmVolume * 10f);
-        _volumeTexts[_selectedTextIndex].text = textValue.ToString();
+        _volumeTexts[_adjustingButtonIndex].text = textValue.ToString();
     }
     public void UpdateBGM_Volume(int directionX)
     {
@@ -338,13 +335,13 @@ public class OptionsMenu_Controller : Menu_Controller
             return;
         }
         
-        if(_volumeStrings[_selectedTextIndex] != "SFX") return;
+        if(_volumeStrings[_adjustingButtonIndex] != "SFX") return;
         
         _data.UpdateSFX_Volume(0.1f * adjustDirection.x);
         Save_CurrentData();
         
         int textValue = Mathf.RoundToInt(_data.sfxVolume * 10f);
-        _volumeTexts[_selectedTextIndex].text = textValue.ToString();
+        _volumeTexts[_adjustingButtonIndex].text = textValue.ToString();
     }
     public void UpdateSFX_Volume(int directionX)
     {
@@ -381,7 +378,7 @@ public class OptionsMenu_Controller : Menu_Controller
         
         text.text = _data.resolution.x + " x " + _data.resolution.y;
 
-        _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
+        _adjustingButtonIndex  = Array.IndexOf(_adjustmentTexts, text);
         OnAdjustmentNavigate += Update_Resolution;
     }
 
@@ -394,7 +391,7 @@ public class OptionsMenu_Controller : Menu_Controller
         _previewData.Set_Resolution(_resolutions[_adjustIndexNum]);
         
         string resString =_resolutions[_adjustIndexNum].x + " x " + _resolutions[_adjustIndexNum].y;
-        _adjustmentTexts[_selectedTextIndex].text = resString;
+        _adjustmentTexts[_adjustingButtonIndex].text = resString;
         
         _saveButton.SetActive(_adjusting);
     }
@@ -406,7 +403,7 @@ public class OptionsMenu_Controller : Menu_Controller
 
         _previewData = new(_data);
         
-        _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
+        _adjustingButtonIndex  = Array.IndexOf(_adjustmentTexts, text);
         OnAdjustmentNavigate += Update_ScreenMode;
 
         if (_data.isFullScreen)
@@ -425,7 +422,7 @@ public class OptionsMenu_Controller : Menu_Controller
         
         _saveButton.SetActive(_adjusting);
         
-        TextMeshProUGUI adjustmentText = _adjustmentTexts[_selectedTextIndex];
+        TextMeshProUGUI adjustmentText = _adjustmentTexts[_adjustingButtonIndex];
 
         if (_previewData.isFullScreen)
         {
@@ -449,7 +446,7 @@ public class OptionsMenu_Controller : Menu_Controller
         _adjustIndexNum = localizeController.languageNames.IndexOf(currentLanguage);
         text.text = currentLanguage;
         
-        _selectedTextIndex  = Array.IndexOf(_adjustmentTexts, text);
+        _adjustingButtonIndex  = Array.IndexOf(_adjustmentTexts, text);
         OnAdjustmentNavigate += Update_Language;
     }
 
@@ -461,7 +458,7 @@ public class OptionsMenu_Controller : Menu_Controller
         int languageCount = localizeController.languageNames.Count;
 
         _adjustIndexNum = (_adjustIndexNum + (int)adjustDirection.x + languageCount) % languageCount;
-        _adjustmentTexts[_selectedTextIndex].text = localizeController.languageNames[_adjustIndexNum];
+        _adjustmentTexts[_adjustingButtonIndex].text = localizeController.languageNames[_adjustIndexNum];
 
         _previewData.Set_Language(localizeController.languageNames[_adjustIndexNum].ToString());
         

@@ -113,6 +113,19 @@ public class DialogSystem : MonoBehaviour
         
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
+    public void Toggle_InfoBox(int index)
+    {
+        if (_infoBox.gameObject.activeSelf && _currentDialogNum == index)
+        {
+            Toggle_InfoBox(false);
+            return;
+        }
+
+        int dialogIndex = Mathf.Clamp(index, 0, _currentDialogs.Count - 1);
+        _currentDialogNum = dialogIndex;
+        
+        Toggle_InfoBox(true);
+    }
 
     private void Navigate_InfoBox(Vector2 navigatedInput)
     {

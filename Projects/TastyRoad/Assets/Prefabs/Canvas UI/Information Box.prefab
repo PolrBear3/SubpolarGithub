@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Info text <sprite=56> <sprite=62> and imoji <sprite=0> <sprite=1>
+  m_text: 'Info text <sprite=56> <sprite=62> <sprite=15> <sprite=0>
 
 '
   m_isRightToLeft: 0
@@ -309,6 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a4c4bd1e90a54c85830c50598b7e3fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _setText: {fileID: 0}
   _templates:
   - _infoName: currentAmount
     _localizedInfo:
