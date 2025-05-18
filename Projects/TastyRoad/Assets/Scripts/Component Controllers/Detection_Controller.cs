@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +14,8 @@ public class Detection_Controller : MonoBehaviour
     public Player_Controller player => _player;
 
 
-    public delegate void OnTriggerEvent();
-    public event OnTriggerEvent EnterEvent;
-    public event OnTriggerEvent ExitEvent;
+    public Action EnterEvent;
+    public Action ExitEvent;
 
 
     // UnityEngine

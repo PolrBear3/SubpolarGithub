@@ -65,7 +65,7 @@ public class Menu_Controller : MonoBehaviour
     public void Start()
     {
         // subscriptions
-        _inputManager.OnCursorControl += Navigate_Action;
+        _inputManager.OnCursorControl += Navigate_ButtonIndex;
         _inputManager.OnSelect += Select_Action;
         
         OnExit = () => OnExitMenu?.Invoke();
@@ -80,13 +80,13 @@ public class Menu_Controller : MonoBehaviour
     public void OnDestroy()
     {
         // subscriptions
-        _inputManager.OnCursorControl -= Navigate_Action;
+        _inputManager.OnCursorControl -= Navigate_ButtonIndex;
         _inputManager.OnSelect -= Select_Action;
         
         _inputManager.OnExit -= OnExit;
         OnExit = null;
     }
-
+    
 
     // Data Control
     public void Set_CurrentIndex(int indexNum)
@@ -123,7 +123,14 @@ public class Menu_Controller : MonoBehaviour
     }
 
 
-    public void Navigate_Action(Vector2 direction)
+    public void Navigate_ButtonIndex(int index)
+    {
+        if (TransitionCanvas_Controller.instance.coroutine != null) return;
+        
+        _currentIndex = Mathf.Clamp(index, 0, _eventButtons.Length - 1);
+        NavigateUpdate_EventButtons();
+    }
+    public void Navigate_ButtonIndex(Vector2 direction)
     {
         if (direction.y == 0) return;
         if (TransitionCanvas_Controller.instance.coroutine != null) return;
@@ -132,12 +139,7 @@ public class Menu_Controller : MonoBehaviour
         if (actionCount <= 0) return;
 
         _currentIndex = (_currentIndex + (int)direction.y + actionCount) % actionCount;
-
         NavigateUpdate_EventButtons();
-        OnNavigate?.Invoke();
-        
-        // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
     public void NavigateUpdate_EventButtons()
@@ -156,6 +158,11 @@ public class Menu_Controller : MonoBehaviour
             buttonTransform.localPosition = Vector2.zero;
             _eventButtons[i].hoverIndication.gameObject.SetActive(true);
         }
+        
+        OnNavigate?.Invoke();
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
     
     
@@ -166,5 +173,10 @@ public class Menu_Controller : MonoBehaviour
 
         _eventButtons[_currentIndex].actionEvent?.Invoke();
         OnAction?.Invoke();
+    }
+
+    public void Exit()
+    {
+        OnExit?.Invoke();
     }
 }

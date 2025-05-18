@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,11 +30,12 @@ public class FoodData_Controller : MonoBehaviour
     private bool _conditionShowLocked;
 
 
-    public delegate void Event();
-    public event Event TimeTikEvent;
+    public Action OnDataUpdate;
+    
+    public Action TimeTikEvent;
 
-    public event Event OnFoodShow;
-    public event Event OnFoodHide;
+    public Action OnFoodShow;
+    public Action OnFoodHide;
 
 
     [Header("")]
@@ -163,6 +165,8 @@ public class FoodData_Controller : MonoBehaviour
         if (setData == null)
         {
             Empty_CurrentData();
+            
+            OnDataUpdate?.Invoke();
             return;
         }
 
@@ -177,10 +181,16 @@ public class FoodData_Controller : MonoBehaviour
         // set data
         _currentData = new FoodData(setData);
 
-        if (hadFood) return;
+        if (hadFood)
+        {
+            OnDataUpdate?.Invoke();
+            return;
+        }
 
         _hasFood = true;
         globaltime.instance.OnTimeTik += TimeTik_Update;
+        
+        OnDataUpdate?.Invoke();
     }
 
     private void Empty_CurrentData()
@@ -308,23 +318,13 @@ public class FoodData_Controller : MonoBehaviour
         return AllDatas().Count >= _maxDataCount;
     }
 
-    public int Empty_DataCount()
-    {
-        int currentDataCount = AllDatas().Count;
-        int emptyDataCount = _maxDataCount - currentDataCount;
-
-        Mathf.Clamp(emptyDataCount, 0, _maxDataCount);
-
-        return emptyDataCount;
-    }
-
 
     public void SetMax_SubDataCount(int setValue)
     {
         _maxDataCount = setValue;
     }
 
-    public void Add_SubData(FoodData subData)
+    private void Add_SubData(FoodData subData)
     {
         if (subData == null) return;
 

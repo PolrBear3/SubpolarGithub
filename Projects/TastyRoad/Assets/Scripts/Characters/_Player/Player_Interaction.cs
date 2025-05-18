@@ -19,11 +19,13 @@ public class Player_Interaction : MonoBehaviour
     private void Awake()
     {
         if (gameObject.TryGetComponent(out Player_Controller controller)) { _controller = controller; }
+        
+        _defaultTimerXPos = _controller.timer.transform.localPosition.x;
     }
 
     private void Start()
     {
-        _defaultTimerXPos = _controller.timer.transform.localPosition.x;
+        IndicationTrigger_CurrentFood();
 
         // subscriptions
         Input_Controller input = Input_Controller.instance;
@@ -36,6 +38,9 @@ public class Player_Interaction : MonoBehaviour
 
         input.OnInteract += Interact;
         input.OnHoldInteract += HoldInteract;
+
+        Localization_Controller.instance.OnLanguageChanged += IndicationTrigger_CurrentFood;
+        _controller.foodIcon.OnDataUpdate += IndicationTrigger_CurrentFood;
     }
 
     private void OnDestroy()
@@ -51,6 +56,9 @@ public class Player_Interaction : MonoBehaviour
 
         input.OnInteract -= Interact;
         input.OnHoldInteract -= HoldInteract;
+        
+        Localization_Controller.instance.OnLanguageChanged -= IndicationTrigger_CurrentFood;
+        _controller.foodIcon.OnDataUpdate -= IndicationTrigger_CurrentFood;
     }
 
 
@@ -86,7 +94,6 @@ public class Player_Interaction : MonoBehaviour
         IInteractable interactable = Closest_Interactable();
 
         if (interactable == null) return;
-
         interactable.Interact();
     }
 
@@ -101,7 +108,6 @@ public class Player_Interaction : MonoBehaviour
             Drop_CurrentFood();
             return;
         }
-
         interactable.Hold_Interact();
     }
 
@@ -170,5 +176,24 @@ public class Player_Interaction : MonoBehaviour
         foodIcon.Show_Condition();
 
         foodIcon.Toggle_SubDataBar(true);
+    }
+    
+    private void IndicationTrigger_CurrentFood()
+    {
+        FoodData_Controller foodIcon = _controller.foodIcon;
+        InteractIndicator_Controller indicator = InteractIndicator_Controller.instance;
+        
+        if (foodIcon.hasFood == false)
+        {
+            indicator.Trigger(null, null);
+            return;
+        }
+        
+        Food_ScrObj currentFood = foodIcon.currentData.foodScrObj;
+        
+        Sprite foodSprite = currentFood.sprite;
+        string foodName = currentFood.LocalizedName();
+        
+        indicator.Trigger(foodSprite, foodName);
     }
 }

@@ -345,6 +345,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         Toggle_NavigatedMenu();
         _infoBox.Flip_toDefault();
+
+        Update_NavigateText();
     }
 
 

@@ -290,7 +290,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // control string
         string controlInfo = infoTrigger.KeyControl_Template(action1, infoTrigger.TemplateString(3), infoTrigger.TemplateString(7));
-        info.Update_InfoText("<sprite=69> " + cursorData.currentFood.foodName + "\n" + amountString + "\n\n" + controlInfo);
+        info.Update_InfoText("<sprite=69> " + cursorData.currentFood.LocalizedName() + "\n" + amountString + "\n\n" + controlInfo);
         
         _controller.infoBox.gameObject.SetActive(true);
     }

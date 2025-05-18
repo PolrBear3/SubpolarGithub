@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization;
 
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Food!")]
 public class Food_ScrObj : ScriptableObject
@@ -13,6 +14,9 @@ public class Food_ScrObj : ScriptableObject
 
     [Header("")]
     public string foodName;
+    [SerializeField] private LocalizedString _localizedString;
+    
+    [Space(20)]
     public int id;
 
     [Header("")]
@@ -27,6 +31,16 @@ public class Food_ScrObj : ScriptableObject
     public FoodData[] unlocks;
 
 
+    // Gets
+    public string LocalizedName()
+    {
+        if (_localizedString == null) return foodName;
+        if (string.IsNullOrEmpty(_localizedString.TableReference) && string.IsNullOrEmpty(_localizedString.TableEntryReference)) return foodName;
+        
+        return _localizedString.GetLocalizedString();
+    }
+    
+    
     public List<FoodCondition_Type> Available_SetConditions()
     {
         List<FoodCondition_Type> conditions = new();

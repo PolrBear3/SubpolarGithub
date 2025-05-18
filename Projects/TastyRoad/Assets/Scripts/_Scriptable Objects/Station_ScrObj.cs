@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Station!")]
 public class Station_ScrObj : ScriptableObject
@@ -19,6 +20,9 @@ public class Station_ScrObj : ScriptableObject
 
     [Header("")]
     public string stationName;
+    [SerializeField] private LocalizedString _localizedString;
+    
+    [Space(20)]
     public int id;
 
     [Header("")]
@@ -27,4 +31,13 @@ public class Station_ScrObj : ScriptableObject
 
     [Header("")]
     [Range(0, 100)] public int durability;
+    
+    
+    public string LocalizedName()
+    {
+        if (_localizedString == null) return stationName;
+        if (string.IsNullOrEmpty(_localizedString.TableReference) && string.IsNullOrEmpty(_localizedString.TableEntryReference)) return stationName;
+        
+        return _localizedString.GetLocalizedString();
+    }
 }

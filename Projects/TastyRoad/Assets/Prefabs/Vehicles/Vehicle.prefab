@@ -3248,9 +3248,9 @@ GameObject:
   - component: {fileID: 8532775503531135405}
   - component: {fileID: 4618068739923187908}
   - component: {fileID: 5472905039314482110}
+  - component: {fileID: 6077059533122475756}
   - component: {fileID: 3595328392461979482}
   - component: {fileID: 8508866487849260274}
-  - component: {fileID: 6077059533122475756}
   m_Layer: 5
   m_Name: Vehicle Menu Canvas
   m_TagString: Untagged
@@ -3396,6 +3396,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69803ba4909ec417a8770dbc7d4d8a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6077059533122475756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501531826094346831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a4c4bd1e90a54c85830c50598b7e3fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _setText: {fileID: 1638545409445297467}
+  _templates:
+  - _infoName: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 8083415910834176
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - _infoName: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 8084570397204480
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &3595328392461979482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3463,43 +3500,6 @@ MonoBehaviour:
   _stationMenu: {fileID: 5409495821357756064}
   _archiveMenu: {fileID: 6819107497965341309}
   _inputManager: {fileID: 5472905039314482110}
---- !u!114 &6077059533122475756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5501531826094346831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a4c4bd1e90a54c85830c50598b7e3fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _setText: {fileID: 1638545409445297467}
-  _templates:
-  - _infoName: 
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
-      m_TableEntryReference:
-        m_KeyId: 8083415910834176
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - _infoName: 
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
-      m_TableEntryReference:
-        m_KeyId: 8084570397204480
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!1 &5532109210466068165
 GameObject:
   m_ObjectHideFlags: 0
