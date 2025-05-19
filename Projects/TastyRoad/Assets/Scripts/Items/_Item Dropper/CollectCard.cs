@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CollectCard : MonoBehaviour
 {
@@ -21,12 +22,12 @@ public class CollectCard : MonoBehaviour
     [Header("")]
     [SerializeField][Range(0, 100)] private int _destroyTikCount;
     [SerializeField][Range(0, 1)] private float _transparencyStep;
+    
     private int _currentTikCount;
 
-
+    
+    private List<Action> OnPickups = new();
     private ItemSlot_Data _collectData;
-
-    private List<Action> Pickup_Actions = new();
 
 
     // UnityEngine
@@ -38,38 +39,34 @@ public class CollectCard : MonoBehaviour
     private void Start()
     {
         globaltime.instance.OnTimeTik += Activate_DestroyTimeTik;
-
         _interactable.OnInteract += Pickup;
     }
 
     private void OnDestroy()
     {
         globaltime.instance.OnTimeTik -= Activate_DestroyTimeTik;
-
         _interactable.OnInteract -= Pickup;
     }
 
 
     // Pickup Interaction
-    public void Add_RandomPickup(Action pickupAction)
+    public void Assign_Pickup(Action pickupAction)
     {
-        Pickup_Actions.Add(pickupAction);
+        if (pickupAction == null) return;
+        
+        OnPickups.Add(pickupAction);
     }
-
-    private void Add_AllPickups()
-    {
-        // add all pickup Functions
-        Pickup_Actions.Add(FoodIngredient_toArchive);
-        Pickup_Actions.Add(StationBluePrint_toArchive);
-    }
-
 
     public void Pickup()
     {
-        if (Pickup_Actions == null || Pickup_Actions.Count <= 0) Add_AllPickups();
+        if (OnPickups == null || OnPickups.Count <= 0)
+        {
+            Assign_Pickup(FoodIngredient_toArchive);
+            Assign_Pickup(StationBluePrint_toArchive);
+        }
 
-        int randIndex = UnityEngine.Random.Range(0, Pickup_Actions.Count);
-        Pickup_Actions[randIndex]?.Invoke();
+        int randIndex = UnityEngine.Random.Range(0, OnPickups.Count);
+        OnPickups[randIndex]?.Invoke();
     }
 
 

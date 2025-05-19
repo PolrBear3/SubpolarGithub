@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class ItemDropper : MonoBehaviour
 {
-    private Main_Controller _main;
-
-
     [Header("")]
     [SerializeField] private GameObject _foodDrop;
     [SerializeField] private GameObject _collectCard;
@@ -26,13 +23,6 @@ public class ItemDropper : MonoBehaviour
     private Coroutine _coroutine;
 
 
-    // UnityEngine
-    private void Awake()
-    {
-        _main = GameObject.FindGameObjectWithTag("MainController").GetComponent<Main_Controller>();
-    }
-
-
     // All Drops Control
     public void Set_DropPosition(Vector2 setPos)
     {
@@ -48,12 +38,13 @@ public class ItemDropper : MonoBehaviour
 
     private GameObject SnapPosition_Spawn(GameObject spawnItem, Vector2 spawnPosition)
     {
-        Vector2 spawnSnapPos = Main_Controller.instance.SnapPosition(spawnPosition);
+        Main_Controller main = Main_Controller.instance;
+        Vector2 spawnSnapPos = main.SnapPosition(spawnPosition);
 
-        if (_main.Position_Claimed(spawnSnapPos)) return null;
+        if (main.Position_Claimed(spawnSnapPos)) return null;
 
         GameObject itemGameObject = Instantiate(spawnItem, spawnSnapPos, Quaternion.identity);
-        itemGameObject.transform.SetParent(_main.otherFile);
+        itemGameObject.transform.SetParent(main.otherFile);
 
         return itemGameObject;
     }
@@ -252,7 +243,7 @@ public class ItemDropper : MonoBehaviour
         CollectCard droppedCard = DropReturn_CollectCard();
 
         droppedCard.Set_FoodIngredient(Weighted_RandomFood());
-        droppedCard.Add_RandomPickup(droppedCard.FoodIngredient_toArchive);
+        droppedCard.Assign_Pickup(droppedCard.FoodIngredient_toArchive);
     }
 
     public void Drop_StationBluePrint()
@@ -260,7 +251,7 @@ public class ItemDropper : MonoBehaviour
         CollectCard droppedCard = DropReturn_CollectCard();
 
         droppedCard.Set_Blueprint(Weighted_RandomStation());
-        droppedCard.Add_RandomPickup(droppedCard.StationBluePrint_toArchive);
+        droppedCard.Assign_Pickup(droppedCard.StationBluePrint_toArchive);
     }
 }
 
