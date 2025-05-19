@@ -154,7 +154,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    private void Navigate_NextVideo()
+    public void Navigate_NextVideo()
     {
         _currentClipNum++;
 
