@@ -12,10 +12,11 @@ public class PauseMenu_Controller : Menu_Controller
     [Header("")] 
     [SerializeField] private Sprite _mainMenuIcon;
     
-    public Action OnPause;
     
     private Action OnPauseToggle;
     private Action OnPauseExit;
+    
+    public Action OnPause;
 
 
     // Menu_Controller

@@ -35,7 +35,10 @@ public class InteractIndicator_Controller : MonoBehaviour
 
     private void Start()
     {
-        Input_Controller.instance.OnActionMapUpdate += () => _infoBox.gameObject.SetActive(false);
+        Input_Controller input = Input_Controller.instance;
+        
+        input.OnActionMapUpdate += () => _infoBox.gameObject.SetActive(false);
+        input.OnActionMapUpdate += () => _iconBox.SetActive(input.Current_ActionMapNum() == 0);
     }
     
     

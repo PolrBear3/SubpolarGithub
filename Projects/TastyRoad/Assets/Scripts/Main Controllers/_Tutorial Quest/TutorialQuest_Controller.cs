@@ -16,9 +16,6 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)] 
     [SerializeField] private TutorialQuest[] _quests;
 
-    [Space(20)] 
-    [SerializeField][Range(0, 5)] private int _updateQuestCount;
-    
     
     private List<TutorialQuest> _currentQuests = new();
     
@@ -33,44 +30,48 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     {
         Update_QuestText();
 
-        // Input_Controller.instance.OnActionMapUpdate += () => _questBox.gameObject.SetActive();
+        Input_Controller input = Input_Controller.instance;
+        input.OnActionMapUpdate += () => _questBox.gameObject.SetActive(input.Current_ActionMapNum() == 0);
     }
 
     
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("TutorialQuest_Controller/_currentQuests", _currentQuests);
+        ES3.Save("TutorialQuest_Controller", _quests.Length - _currentQuests.Count);
     }
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("TutorialQuest_Controller/_currentQuests") == false)
+        int completedQuestCount = ES3.Load("TutorialQuest_Controller", 0);
+        
+        for (int i = 0; i < _quests.Length; i++)
         {
-            for (int i = 0; i < _quests.Length; i++)
+            if (completedQuestCount > 0)
             {
-                _currentQuests.Add(_quests[i]);
+                completedQuestCount--;
+                continue;
             }
-            return;
+            
+            _currentQuests.Add(_quests[i]);
         }
-
-        List<TutorialQuest> loadQuests = new();
-        _currentQuests = ES3.Load("TutorialQuest_Controller/_currentQuests", loadQuests);
     }
     
     
     // Quest Box Control
     private void Update_QuestText()
     {
-        _questText.text = "";
-        int questTextCount = 0;
+        _questBox.SetActive(_currentQuests.Count > 0);
         
+        if (_currentQuests.Count <= 0) return;
+        _questText.text = "";
+        
+        int currentQuestNum = _currentQuests[0].questGroupNum;
+
         foreach (TutorialQuest quest in _currentQuests)
         {
+            if (currentQuestNum != quest.questGroupNum) return;
             _questText.text += $"{quest.Description()}\n";
-            questTextCount++;
-            
-            if (questTextCount >= _updateQuestCount) return;
         }
     }
     
