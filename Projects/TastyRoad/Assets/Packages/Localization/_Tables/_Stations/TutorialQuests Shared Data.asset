@@ -10,11 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: Stations Shared Data
+  m_Name: TutorialQuests Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: Stations
+  m_TableCollectionName: TutorialQuests
   m_TableCollectionNameGuidString: cfd65e0a2b9a741e7b876fa2d62dd5a1
-  m_Entries: []
+  m_Entries:
+  - m_Id: 1690499780960256
+    m_Key: tutorialQuest.foodPickup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1692151892140032
+    m_Key: tutorialQuest.scrapPickup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1692217340059648
+    m_Key: tutorialQuest.buildStation
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

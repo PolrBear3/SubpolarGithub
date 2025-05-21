@@ -65,6 +65,16 @@ public class FoodDrop : MonoBehaviour, IInteractable
 
 
     // Food Pickup
+    private bool Transfer_Available()
+    {
+        if (_foodIcon.hasFood == false) return false;
+        
+        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        if (playerIcon.DataCount_Maxed()) return false;
+
+        return true;
+    }
+    
     private bool Transfer()
     {
         if (_foodIcon.hasFood == false)
@@ -94,7 +104,14 @@ public class FoodDrop : MonoBehaviour, IInteractable
     
     private void Pickup()
     {
+        if (Transfer_Available())
+        {
+            Audio_Controller.instance.Play_OneShot(gameObject, 0);
+            TutorialQuest_Controller.instance.Complete_Quest("foodPickup");
+        }
+        
         if (Transfer() == false) return;
+
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
@@ -109,7 +126,13 @@ public class FoodDrop : MonoBehaviour, IInteractable
         FoodData_Controller playerIcon = _detection.player.foodIcon;
         int pickupAmount = _foodIcon.AllDatas().Count;
 
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+        if (pickupAmount <= 0) return;
+
+        if (Transfer_Available())
+        {
+            Audio_Controller.instance.Play_OneShot(gameObject, 0);
+            TutorialQuest_Controller.instance.Complete_Quest("foodPickup");
+        }
         
         for (int i = 0; i < pickupAmount; i++)
         {
