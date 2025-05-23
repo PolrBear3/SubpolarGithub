@@ -15,6 +15,9 @@ public class TutorialQuest
     
     [SerializeField] private string _description;
     public string description => _description;
+
+    [SerializeField] [Range(0, 100)] private int _goldAmount;
+    public int goldAmount => _goldAmount;
     
     [Space(20)]
     [SerializeField] private LocalizedString _localizedDescription;

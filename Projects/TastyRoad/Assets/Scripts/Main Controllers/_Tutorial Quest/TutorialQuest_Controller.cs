@@ -29,12 +29,20 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Update_QuestText();
+        _questBox.SetActive(_currentQuests.Count > 0);
 
         Input_Controller input = Input_Controller.instance;
         input.OnActionMapUpdate += () => _questBox.gameObject.SetActive(input.Current_ActionMapNum() == 0);
+
+        Localization_Controller.instance.OnLanguageChanged += Update_QuestText;
     }
 
-    
+    private void OnDestroy()
+    {
+        Localization_Controller.instance.OnLanguageChanged -= Update_QuestText;
+    }
+
+
     // ISaveLoadable
     public void Save_Data()
     {
@@ -61,18 +69,22 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     // Quest Box Control
     private void Update_QuestText()
     {
-        _questBox.SetActive(_currentQuests.Count > 0);
-        
         if (_currentQuests.Count <= 0) return;
+        
         _questText.text = "";
         
         int currentQuestNum = _currentQuests[0].questGroupNum;
+        List<string> questLines = new();
 
-        foreach (TutorialQuest quest in _currentQuests)
+        for (int i = 0; i < _currentQuests.Count; i++)
         {
-            if (currentQuestNum != quest.questGroupNum) return;
-            _questText.text += $"{quest.Description()}\n";
+            if (currentQuestNum != _currentQuests[i].questGroupNum) break;
+            
+            string goldAmountString = _currentQuests[i].goldAmount + " <sprite=56> - ";
+            questLines.Add(goldAmountString + _currentQuests[i].Description());
         }
+        
+        _questText.text = string.Join("\n\n", questLines);
     }
     
     
@@ -88,22 +100,15 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         return null;
     }
     
-    private bool Quest_Completed(string questName)
-    {
-        return CurrentQuest(questName) == null;
-    }
-    
-    
     public void Complete_Quest(string questName)
     {
-        if (Quest_Completed(questName)) return;
-
-        for (int i = 0; i < _currentQuests.Count; i++)
-        {   
-            if (_currentQuests[i].questName != questName) continue;
-            _currentQuests.RemoveAt(i);
-        }
+        TutorialQuest completeQuest = CurrentQuest(questName);
+        if (completeQuest == null) return;
+        
+        GoldSystem.instance.Update_CurrentAmount(completeQuest.goldAmount);
+        _currentQuests.Remove(CurrentQuest(questName));
         
         Update_QuestText();
+        _questBox.SetActive(_currentQuests.Count > 0);
     }
 }

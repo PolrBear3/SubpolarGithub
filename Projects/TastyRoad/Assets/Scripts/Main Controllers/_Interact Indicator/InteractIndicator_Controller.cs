@@ -38,7 +38,7 @@ public class InteractIndicator_Controller : MonoBehaviour
         Input_Controller input = Input_Controller.instance;
         
         input.OnActionMapUpdate += () => _infoBox.gameObject.SetActive(false);
-        input.OnActionMapUpdate += () => _iconBox.SetActive(input.Current_ActionMapNum() == 0);
+        input.OnActionMapUpdate += () => _iconBox.SetActive(input.Current_ActionMapNum() == 0 && _iconImage.sprite != null);
     }
     
     
@@ -49,6 +49,8 @@ public class InteractIndicator_Controller : MonoBehaviour
         
         if (icon == null)
         {
+            _iconImage.sprite = null;
+            
             _infoBox.gameObject.SetActive(false);
             return;
         }

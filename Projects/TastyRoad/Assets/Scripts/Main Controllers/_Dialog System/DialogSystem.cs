@@ -45,8 +45,6 @@ public class DialogSystem : MonoBehaviour
         PauseMenu_Controller pause = PauseMenu_Controller.instance;
         pause.OnPause += () => Toggle_InfoBox(false);
         pause.OnPause += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0);
-
-        Localization_Controller.instance.OnLanguageChanged += () => Toggle_InfoBox(_infoBox.gameObject.activeSelf);
     }
 
     private void OnDestroy()

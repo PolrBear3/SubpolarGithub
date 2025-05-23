@@ -63,9 +63,9 @@ public class OptionsMenu_Controller : Menu_Controller
 
 
     // UnityEngine
-    private new void Start()
+    private new void Awake()
     {
-        base.Start();
+        base.Awake();
         
         if (ES3.FileExists("OptionsFile.es3") == false)
         {
@@ -78,6 +78,11 @@ public class OptionsMenu_Controller : Menu_Controller
         
         Apply_OptionsData(_data);
         Set_CurrentIndex(eventButtons.Length);
+    }
+    
+    private new void Start()
+    {
+        base.Start();
 
         Refresh_Adjustments();
         _saveButton.SetActive(_adjusting);
