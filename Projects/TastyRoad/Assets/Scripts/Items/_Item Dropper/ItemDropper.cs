@@ -5,17 +5,20 @@ using UnityEngine;
 
 public class ItemDropper : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _foodDrop;
     [SerializeField] private GameObject _collectCard;
+    [SerializeField] private GameObject _goldDrop;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private FoodWeight_Data[] _foodWeights;
     public FoodWeight_Data[] foodWeights => _foodWeights;
 
     [SerializeField] private StationWeight_Data[] _stationWeights;
     public StationWeight_Data[] stationWeights => _stationWeights;
+
+    [SerializeField] private Vector2 _goldAmountRange;
 
 
     private Vector2 _dropPosition;
@@ -252,6 +255,19 @@ public class ItemDropper : MonoBehaviour
 
         droppedCard.Set_Blueprint(Weighted_RandomStation());
         droppedCard.Assign_Pickup(droppedCard.StationBluePrint_toArchive);
+    }
+    
+    
+    // Gold Drop
+    public GoldDrop Drop_Gold()
+    {
+        int dropAmount = Random.Range((int)_goldAmountRange.x, (int)_goldAmountRange.y + 1);
+        
+        GameObject spawnGold = SnapPosition_Spawn(_goldDrop, DropPosition());
+        GoldDrop goldDrop = spawnGold.GetComponent<GoldDrop>();
+        
+        goldDrop.Set_Data(dropAmount);
+        return goldDrop;
     }
 }
 

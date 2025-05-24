@@ -4,26 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CollectCard : MonoBehaviour
+public class CollectCard : ItemDrop
 {
-    private SpriteRenderer _sr;
-    public SpriteRenderer sr => _sr;
-
-
-    [Header("")]
-    [SerializeField] private Detection_Controller _detection;
-    [SerializeField] private IInteractable_Controller _interactable;
+    [Space(20)]
     [SerializeField] private CoinLauncher _launcher;
-
-    [Header("")]
-    [SerializeField] private Sprite _launchSprite;
-    public Sprite launchSprite => _launchSprite;
-
-    [Header("")]
-    [SerializeField][Range(0, 100)] private int _destroyTikCount;
-    [SerializeField][Range(0, 1)] private float _transparencyStep;
-    
-    private int _currentTikCount;
 
     
     private List<Action> OnPickups = new();
@@ -31,21 +15,18 @@ public class CollectCard : MonoBehaviour
 
 
     // UnityEngine
-    private void Awake()
+    private new void Start()
     {
-        _sr = gameObject.GetComponent<SpriteRenderer>();
+        base.Start();
+        
+        interactable.OnInteract += Pickup;
     }
 
-    private void Start()
+    private new void OnDestroy()
     {
-        globaltime.instance.OnTimeTik += Activate_DestroyTimeTik;
-        _interactable.OnInteract += Pickup;
-    }
-
-    private void OnDestroy()
-    {
-        globaltime.instance.OnTimeTik -= Activate_DestroyTimeTik;
-        _interactable.OnInteract -= Pickup;
+        base.OnDestroy();
+        
+        interactable.OnInteract -= Pickup;
     }
 
 
@@ -104,7 +85,7 @@ public class CollectCard : MonoBehaviour
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
 
         // pickup animation
-        _launcher.Parabola_CoinLaunch(_launchSprite, _detection.player.transform.position);
+        _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], detection.player.transform.position);
         Destroy(gameObject, 0.1f);
     }
 
@@ -146,18 +127,7 @@ public class CollectCard : MonoBehaviour
         dialog.Update_Dialog(1);
 
         // pickup
-        _launcher.Parabola_CoinLaunch(_launchSprite, _detection.player.transform.position);
-        Destroy(gameObject, 0.1f);
-    }
-
-
-    // Time Tik Destroy
-    private void Activate_DestroyTimeTik()
-    {
-        _currentTikCount++;
-        Main_Controller.instance.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
-
-        if (_currentTikCount < _destroyTikCount) return;
+        _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], detection.player.transform.position);
         Destroy(gameObject, 0.1f);
     }
 }

@@ -3,73 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodDrop : MonoBehaviour, IInteractable
+public class FoodDrop : ItemDrop
 {
-    private SpriteRenderer _sr;
-
-    [Header("")]
-    [SerializeField] private Detection_Controller _detection;
-
+    [Space(20)]
     [SerializeField] private FoodData_Controller _foodIcon;
     public FoodData_Controller foodIcon => _foodIcon;
 
-    [Header("")]
-    [SerializeField][Range(0, 100)] private int _destroyTikCount;
-    [SerializeField][Range(0, 1)] private float _transparencyStep;
-    private int _currentTikCount;
-
 
     // UnityEngine
-    private void Awake()
+    private new void Start()
     {
-        _sr = gameObject.GetComponent<SpriteRenderer>();
-    }
-
-    private void Start()
-    {
+        base.Start();
+        
         _foodIcon.SetMax_SubDataCount(_foodIcon.AllDatas().Count);
         AmountBar_Toggle();
 
         // subscriptions
-        globaltime.instance.OnTimeTik += Activate_DestroyTimeTik;
+        interactable.OnInteract += Pickup;
+        interactable.OnHoldInteract += Pickup_All;
 
-        _detection.EnterEvent += AmountBar_Toggle;
-        _detection.ExitEvent += AmountBar_Toggle;
+        detection.EnterEvent += AmountBar_Toggle;
+        detection.ExitEvent += AmountBar_Toggle;
     }
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
+        base.OnDestroy();
+        
         // subscriptions
-        globaltime.instance.OnTimeTik -= Activate_DestroyTimeTik;
-
-        _detection.EnterEvent -= AmountBar_Toggle;
-        _detection.ExitEvent -= AmountBar_Toggle;
+        interactable.OnInteract -= Pickup;
+        interactable.OnHoldInteract -= Pickup_All;
+        
+        detection.EnterEvent -= AmountBar_Toggle;
+        detection.ExitEvent -= AmountBar_Toggle;
     }
 
 
-    // IInteractable
-    public void Interact()
+    // Indication
+    private void AmountBar_Toggle()
     {
-        Pickup();
+        _foodIcon.Toggle_SubDataBar(detection.player != null);
     }
-
-    public void Hold_Interact()
-    {
-        Pickup_All();
-    }
-
-    public void UnInteract()
-    {
-
-    }
-
-
+    
+    
     // Food Pickup
     private bool Transfer_Available()
     {
         if (_foodIcon.hasFood == false) return false;
         
-        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        FoodData_Controller playerIcon = detection.player.foodIcon;
         if (playerIcon.DataCount_Maxed()) return false;
 
         return true;
@@ -83,7 +65,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
             return false;
         }
 
-        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        FoodData_Controller playerIcon = detection.player.foodIcon;
 
         if (playerIcon.DataCount_Maxed()) return false;
 
@@ -123,7 +105,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
             return;
         }
 
-        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        FoodData_Controller playerIcon = detection.player.foodIcon;
         int pickupAmount = _foodIcon.AllDatas().Count;
 
         if (pickupAmount <= 0) return;
@@ -139,21 +121,5 @@ public class FoodDrop : MonoBehaviour, IInteractable
             if (playerIcon.DataCount_Maxed()) return;
             Transfer();
         }
-    }
-
-
-    // Others
-    private void AmountBar_Toggle()
-    {
-        _foodIcon.Toggle_SubDataBar(_detection.player != null);
-    }
-
-    private void Activate_DestroyTimeTik()
-    {
-        _currentTikCount++;
-        Main_Controller.instance.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
-
-        if (_currentTikCount < _destroyTikCount) return;
-        Destroy(gameObject, 0.1f);
     }
 }
