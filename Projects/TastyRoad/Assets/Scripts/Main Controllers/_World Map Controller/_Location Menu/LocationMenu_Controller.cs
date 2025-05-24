@@ -225,8 +225,8 @@ public class LocationMenu_Controller : MonoBehaviour
         stationMenu.Remove_StationItem(data.Station_ScrObj(79025), removeAmount);
 
         worldMap.Update_Location(_tiles[_hoverTileNum].data);
-        
-        _inputManager.Toggle_Input(false);
+
+        OnDestroy();
         main.Player().detection.Toggle_BoxCollider(false);
     }
 
