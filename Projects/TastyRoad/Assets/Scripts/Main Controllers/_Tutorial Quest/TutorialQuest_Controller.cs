@@ -46,22 +46,40 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("TutorialQuest_Controller", _quests.Length - _currentQuests.Count);
+        Dictionary<string, int> currentQuestData = new();
+
+        for (int i = 0; i < _currentQuests.Count; i++)
+        {
+            currentQuestData.Add(_currentQuests[i].questName, _currentQuests[i].currentCompleteCount);
+        }
+        
+        ES3.Save("TutorialQuest_Controller", currentQuestData);
     }
 
     public void Load_Data()
     {
-        int completedQuestCount = ES3.Load("TutorialQuest_Controller", 0);
+        if (ES3.KeyExists("TutorialQuest_Controller") == false)
+        {
+            foreach (TutorialQuest quest in _quests)
+            {
+                _currentQuests.Add(quest);
+            }
+            return;
+        }
+        
+        Dictionary<string, int> currentQuestData = new();
+        currentQuestData = ES3.Load("TutorialQuest_Controller", currentQuestData);
         
         for (int i = 0; i < _quests.Length; i++)
         {
-            if (completedQuestCount > 0)
-            {
-                completedQuestCount--;
-                continue;
-            }
+            TutorialQuest quest = _quests[i];
             
-            _currentQuests.Add(_quests[i]);
+            if (currentQuestData.ContainsKey(quest.questName) == false) continue;
+            if (currentQuestData.TryGetValue(quest.questName, out int completeCount) == false) continue;
+            if (completeCount >= quest.completeCount) continue;
+
+            quest.Load_Current(completeCount);
+            _currentQuests.Add(quest);
         }
     }
     
@@ -79,9 +97,9 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         for (int i = 0; i < _currentQuests.Count; i++)
         {
             if (currentQuestNum != _currentQuests[i].questGroupNum) break;
-            
-            string goldAmountString = _currentQuests[i].goldAmount + " <sprite=56> - ";
-            questLines.Add(goldAmountString + _currentQuests[i].Description());
+
+            string completeCountString = "[ " + _currentQuests[i].currentCompleteCount + "/" + _currentQuests[i].completeCount + " ]  ";
+            questLines.Add(completeCountString + _currentQuests[i].Description());
         }
         
         _questText.text = string.Join("\n\n", questLines);
@@ -100,13 +118,19 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         return null;
     }
     
-    public void Complete_Quest(string questName)
+    public void Complete_Quest(string questName, int completeUpdateValue)
     {
         TutorialQuest completeQuest = CurrentQuest(questName);
         if (completeQuest == null) return;
         
+        if (completeQuest.Update_CompleteCount(completeUpdateValue) < completeQuest.completeCount)
+        {
+            Update_QuestText();
+            return;
+        }
+        
         GoldSystem.instance.Update_CurrentAmount(completeQuest.goldAmount);
-        _currentQuests.Remove(CurrentQuest(questName));
+        _currentQuests.Remove(completeQuest);
         
         Update_QuestText();
         _questBox.SetActive(_currentQuests.Count > 0);

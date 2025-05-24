@@ -107,7 +107,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
         if (Transfer_Available())
         {
             Audio_Controller.instance.Play_OneShot(gameObject, 0);
-            TutorialQuest_Controller.instance.Complete_Quest("foodPickup");
+            TutorialQuest_Controller.instance.Complete_Quest("foodPickup", 1);
         }
         
         if (Transfer() == false) return;
@@ -131,7 +131,7 @@ public class FoodDrop : MonoBehaviour, IInteractable
         if (Transfer_Available())
         {
             Audio_Controller.instance.Play_OneShot(gameObject, 0);
-            TutorialQuest_Controller.instance.Complete_Quest("foodPickup");
+            TutorialQuest_Controller.instance.Complete_Quest("foodPickup", 1);
         }
         
         for (int i = 0; i < pickupAmount; i++)
