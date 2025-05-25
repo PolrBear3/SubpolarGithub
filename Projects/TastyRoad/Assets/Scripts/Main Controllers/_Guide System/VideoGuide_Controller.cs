@@ -18,20 +18,23 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)]
     [SerializeField] private TextMeshProUGUI _infoText;
     [SerializeField] private TextMeshProUGUI _navigateText;
-
+    
     [Space(20)] 
-    [SerializeField] private bool _guideSystemToggle;
-    public bool guideSystemToggle => _guideSystemToggle;
-
+    [SerializeField] private UI_ClockTimer _holdTimer;
     
     [Space(80)]
     [SerializeField] private Input_Manager _inputManager;
+
+
+    private bool _guideActive;
+    public bool guideActive => _guideActive;
     
-    private List<int> _triggeredGuideNums = new();
+    private List<int> _triggeredGuideIDs = new();
 
     private Guide_ScrObj _currentGuide;
     private int _currentClipNum;
 
+    public Action OnGuide_ActivationTrigger;
     public Action OnGuideTrigger;
 
 
@@ -49,6 +52,12 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         input.Update_EmojiAsset(_navigateText);
 
         // subscriptions
+        _inputManager.OnSelectStart += _holdTimer.Run_ClockSprite;
+        _inputManager.OnSelect += _holdTimer.Stop_ClockSpriteRun;
+        _inputManager.OnHoldSelect += _holdTimer.Stop_ClockSpriteRun;
+
+        _inputManager.OnHoldSelect += () => Toggle_GuideActivation(false);
+        
         _inputManager.OnSelect += Navigate_NextVideo;
         _inputManager.OnExit += Navigate_NextVideo;
         
@@ -62,6 +71,12 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
+        _inputManager.OnSelectStart -= _holdTimer.Run_ClockSprite;
+        _inputManager.OnSelect -= _holdTimer.Stop_ClockSpriteRun;
+        _inputManager.OnHoldSelect -= _holdTimer.Stop_ClockSpriteRun;
+        
+        _inputManager.OnHoldSelect -= () => Toggle_GuideActivation(false);
+        
         _inputManager.OnSelect -= Navigate_NextVideo;
         _inputManager.OnExit -= Navigate_NextVideo;
         
@@ -78,34 +93,52 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("VideoGuide_Controller/_triggeredGuideNums", _triggeredGuideNums);
+        ES3.Save("VideoGuide_Controller/Guide_ActiveState", _guideActive);
+        ES3.Save("VideoGuide_Controller/Triggered_GuideIDs", _triggeredGuideIDs);
     }
 
     public void Load_Data()
     {
-        _triggeredGuideNums = ES3.Load("VideoGuide_Controller/_triggeredGuideNums", _triggeredGuideNums);
+        _triggeredGuideIDs = ES3.Load("VideoGuide_Controller/Triggered_GuideIDs", _triggeredGuideIDs);
+
+        if (ES3.KeyExists("VideoGuide_Controller/Guide_ActiveState"))
+        {
+            _guideActive = ES3.Load("VideoGuide_Controller/Guide_ActiveState", _guideActive);
+            return;
+        }
+        _guideActive = true;
+    }
+    
+    
+    // Data
+    private void Toggle_GuideActivation(bool toggle)
+    {
+        _guideActive = toggle;
+        OnGuide_ActivationTrigger?.Invoke();
+
+        if (toggle) return;
+        Toggle_VideoPanel(false);
     }
     
     
     // Trigger
     public bool Guide_Triggered(Guide_ScrObj guideScrObj)
     {
-        for (int i = 0; i < _triggeredGuideNums.Count; i++)
+        for (int i = 0; i < _triggeredGuideIDs.Count; i++)
         {
-            if (guideScrObj.guideID != _triggeredGuideNums[i]) continue;
+            if (guideScrObj.guideID != _triggeredGuideIDs[i]) continue;
             return true;
         }
         return false;
     }
 
-
     public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
-        if (_guideSystemToggle == false) return;
+        if (_guideActive == false) return;
         if (guideScrObj == null) return;
         if (Guide_Triggered(guideScrObj)) return;
         
-        _triggeredGuideNums.Add(guideScrObj.guideID);
+        _triggeredGuideIDs.Add(guideScrObj.guideID);
         _currentGuide = guideScrObj;
 
         Toggle_VideoPanel(true);

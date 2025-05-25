@@ -16,13 +16,17 @@ public class VideoGuide_Trigger : MonoBehaviour
         Update_Indicator();
 
         VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
+        
         videoGuide.OnGuideTrigger += Update_Indicator;
+        videoGuide.OnGuide_ActivationTrigger += Update_Indicator;
     }
 
     private void OnDestroy()
     {
         VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
+        
         videoGuide.OnGuideTrigger -= Update_Indicator;
+        videoGuide.OnGuide_ActivationTrigger -= Update_Indicator;
     }
     
 
@@ -31,7 +35,7 @@ public class VideoGuide_Trigger : MonoBehaviour
     {
         VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
 
-        if (videoGuide.guideSystemToggle && videoGuide.Guide_Triggered(_triggerGuide) == false) return;
+        if (videoGuide.guideActive && videoGuide.Guide_Triggered(_triggerGuide) == false) return;
         _spriteRenderer.color = Color.clear;
     }
 
