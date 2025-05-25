@@ -11,19 +11,22 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     public static VideoGuide_Controller instance;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private VideoPlayer _videoPlayer;
     [SerializeField] private Image _playerPanel;
     
-    [Header("")]
+    [Space(20)]
     [SerializeField] private TextMeshProUGUI _infoText;
     [SerializeField] private TextMeshProUGUI _navigateText;
+
+    [Space(20)] 
+    [SerializeField] private bool _guideSystemToggle;
+    public bool guideSystemToggle => _guideSystemToggle;
 
     
     [Space(80)]
     [SerializeField] private Input_Manager _inputManager;
-
-
+    
     private List<int> _triggeredGuideNums = new();
 
     private Guide_ScrObj _currentGuide;
@@ -98,6 +101,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
+        if (_guideSystemToggle == false) return;
         if (guideScrObj == null) return;
         if (Guide_Triggered(guideScrObj)) return;
         
@@ -108,7 +112,6 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
         OnGuideTrigger?.Invoke();
     }
-    
     public void Trigger_Guide(VideoGuide_Trigger guideTrigger)
     {
         if (guideTrigger == null) return;
@@ -118,6 +121,32 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     
 
     // UI Control
+    private void Update_ClipData(int clipNum)
+    {
+        if (_currentGuide == null) return;
+        
+        VideoClip_Data clipData = _currentGuide.clipDatas[clipNum];
+        
+        Toggle_VideoClip(clipData.video);
+        _infoText.text = clipData.Info();
+    }
+    
+    private void Update_NavigateText()
+    {
+        if (_currentGuide == null) return;
+        
+        InfoTemplate_Trigger infoTrigger = gameObject.GetComponent<InfoTemplate_Trigger>();
+
+        if (_currentClipNum >= _currentGuide.clipDatas.Length - 1)
+        {
+            _navigateText.text = infoTrigger.TemplateString(1);
+            return;
+        }
+        
+        _navigateText.text = infoTrigger.TemplateString(0);
+    }
+    
+    
     private void Toggle_VideoClip(VideoClip clip)
     {
         if (clip == null) return;
@@ -166,31 +195,5 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         
         Update_ClipData(_currentClipNum);
         Update_NavigateText();
-    }
-
-    private void Update_ClipData(int clipNum)
-    {
-        if (_currentGuide == null) return;
-        
-        VideoClip_Data clipData = _currentGuide.clipDatas[clipNum];
-        
-        Toggle_VideoClip(clipData.video);
-        _infoText.text = clipData.Info();
-    }
-
-
-    private void Update_NavigateText()
-    {
-        if (_currentGuide == null) return;
-        
-        InfoTemplate_Trigger infoTrigger = gameObject.GetComponent<InfoTemplate_Trigger>();
-
-        if (_currentClipNum >= _currentGuide.clipDatas.Length - 1)
-        {
-            _navigateText.text = infoTrigger.TemplateString(1);
-            return;
-        }
-        
-        _navigateText.text = infoTrigger.TemplateString(0);
     }
 }

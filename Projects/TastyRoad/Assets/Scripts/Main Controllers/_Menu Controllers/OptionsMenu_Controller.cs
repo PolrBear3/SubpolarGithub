@@ -76,7 +76,6 @@ public class OptionsMenu_Controller : Menu_Controller
             _data = ES3.Load<OptionsData>("OptionsMenu_Controller/OptionsData", "OptionsFile.es3");
         }
         
-        Apply_OptionsData(_data);
         Set_CurrentIndex(eventButtons.Length);
     }
     
@@ -84,6 +83,8 @@ public class OptionsMenu_Controller : Menu_Controller
     {
         base.Start();
 
+        Apply_OptionsData(_data);
+        
         Refresh_Adjustments();
         _saveButton.SetActive(_adjusting);
         

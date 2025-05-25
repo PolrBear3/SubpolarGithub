@@ -603,6 +603,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             _stationStocks[i].Restock(new(recentStation, restockPrice));
 
             CarryObject_SpriteToggle(false, null);
+            
+            TutorialQuest_Controller.instance.Complete_Quest("BuildStation", 1);
 
             Cancel_Action();
             yield break;
