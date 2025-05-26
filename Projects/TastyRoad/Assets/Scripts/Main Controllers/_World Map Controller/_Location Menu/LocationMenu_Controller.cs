@@ -228,6 +228,8 @@ public class LocationMenu_Controller : MonoBehaviour
 
         OnDestroy();
         main.Player().detection.Toggle_BoxCollider(false);
+        
+        TutorialQuest_Controller.instance.Complete_Quest("LocationUpdate", 1);
     }
 
 

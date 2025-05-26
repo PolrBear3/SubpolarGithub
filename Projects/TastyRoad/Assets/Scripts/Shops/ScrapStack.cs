@@ -117,10 +117,14 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
             return;
         }
 
+        int stackAmount = 0;
+        
         for (int i = 0; i < vehicleAmount; i++)
         {
             menu.Remove_StationItem(_scrap);
             _amountBar.Update_Amount(1);
+
+            stackAmount++;
 
             if (_amountBar.Is_MaxAmount()) break;
         }
@@ -128,6 +132,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Toggle_AmountBar();
         Update_CurrentSprite();
         
+        TutorialQuest_Controller.instance.Complete_Quest("ScrapStack", stackAmount);
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
@@ -151,11 +156,14 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         }
 
         int retrieveAmount = _amountBar.currentAmount;
+        int retrievedAmount = 0;
 
         for (int i = 0; i < retrieveAmount; i++)
         {
             _amountBar.Update_Amount(-1);
             menu.Add_StationItem(_scrap, 1);
+            
+            retrievedAmount++;
 
             if (slotsController.Empty_SlotData(menu.currentDatas) == null) break;
         }
@@ -163,6 +171,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Toggle_AmountBar();
         Update_CurrentSprite();
         
+        TutorialQuest_Controller.instance.Complete_Quest("ScrapStack", -retrievedAmount);
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 }

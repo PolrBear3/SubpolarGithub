@@ -40,11 +40,11 @@ public class DialogSystem : MonoBehaviour
         Input_Controller input = Input_Controller.instance;
         
         input.OnNavigate += Navigate_InfoBox;
-        input.OnActionMapUpdate += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0);
+        input.OnActionMapUpdate += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0 && _infoBox.gameObject.activeSelf == false);
 
         PauseMenu_Controller pause = PauseMenu_Controller.instance;
         pause.OnPause += () => Toggle_InfoBox(false);
-        pause.OnPause += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0);
+        pause.OnPause += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0 && _infoBox.gameObject.activeSelf == false);
     }
 
     private void OnDestroy()

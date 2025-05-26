@@ -32,7 +32,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         _questBox.SetActive(_currentQuests.Count > 0);
 
         Input_Controller input = Input_Controller.instance;
-        input.OnActionMapUpdate += () => _questBox.gameObject.SetActive(input.Current_ActionMapNum() == 0);
+        input.OnActionMapUpdate += () => _questBox.gameObject.SetActive(input.Current_ActionMapNum() == 0 && _currentQuests.Count > 0);
 
         Localization_Controller.instance.OnLanguageChanged += Update_QuestText;
     }
@@ -133,6 +133,8 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         _currentQuests.Remove(completeQuest);
         
         Update_QuestText();
-        _questBox.SetActive(_currentQuests.Count > 0);
+        
+        bool isIngame = Input_Controller.instance.Current_ActionMapNum() == 0;
+        _questBox.SetActive(isIngame && _currentQuests.Count > 0);
     }
 }
