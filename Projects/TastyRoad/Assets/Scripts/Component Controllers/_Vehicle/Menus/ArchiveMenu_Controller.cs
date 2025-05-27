@@ -240,7 +240,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             ingredientStatus = "Return";
         }
 
-        string dragInfo = "<sprite=69> " + dragFood.foodName + "\n";
+        string dragInfo = "<sprite=69> " + dragFood.LocalizedName() + "\n";
         string unlockCount = "<sprite=91> " + FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n\n";
         string controlInfo = infoTrigger.KeyControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
 

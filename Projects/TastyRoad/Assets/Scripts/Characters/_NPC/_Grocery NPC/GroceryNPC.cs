@@ -81,11 +81,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         globaltime globaltime = globaltime.instance;
         
-        globaltime.OnDayTime += Restock;
-        globaltime.OnTimeTik += Restock_EmptyStocks;
-
         globaltime.OnTimeTik += Collect_FoodBundles;
         globaltime.OnTimeTik += Set_Discount;
+        
+        globaltime.OnDayTime += Restock;
+        globaltime.OnTimeTik += Restock_EmptyStocks;
 
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
 
@@ -107,11 +107,11 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         
         globaltime globaltime = globaltime.instance;
         
-        globaltime.OnDayTime -= Restock;
-        globaltime.OnTimeTik -= Restock_EmptyStocks;
-
         globaltime.OnTimeTik -= Collect_FoodBundles;
         globaltime.OnTimeTik -= Set_Discount;
+        
+        globaltime.OnDayTime -= Restock;
+        globaltime.OnTimeTik -= Restock_EmptyStocks;
 
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
 
@@ -728,6 +728,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
 
         previewIcon.Set_CurrentData(progressData);
+        previewIcon.Show_Icon(0.5f);
         previewIcon.amountBar.Load_Custom(progressData.foodScrObj.unlockAmount, progressData.currentAmount);
     }
 
