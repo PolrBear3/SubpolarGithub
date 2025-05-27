@@ -17,7 +17,7 @@ public class Localization_Controller : MonoBehaviour
     private List<string> _languageNames = new();
     public List<string> languageNames => _languageNames;
     
-    public Action OnLocalizationReady;
+    public Action OnLocalizationLoad;
     public Action OnLanguageChanged;
     
     
@@ -32,10 +32,11 @@ public class Localization_Controller : MonoBehaviour
 
         instance = this;
         
-        await PreloadAllLocalization();
-        Set_CurrentLanguages();
-        OnLocalizationReady?.Invoke();
+        await Load_LocalizationTables();
+        OnLocalizationLoad?.Invoke();
         
+        Set_CurrentLanguages();
+
         LocalizationSettings.SelectedLocaleChanged += OnLanguageUpdate;
     }
 
@@ -46,7 +47,7 @@ public class Localization_Controller : MonoBehaviour
     
     
     // Control
-    private async Task PreloadAllLocalization()
+    private async Task Load_LocalizationTables()
     {
         string[] TableNames = _tableReferences; 
 
@@ -68,7 +69,7 @@ public class Localization_Controller : MonoBehaviour
     {
         Debug.Log("Language changed to: " + newLocale);
         
-        await PreloadAllLocalization();
+        await Load_LocalizationTables();
         OnLanguageChanged?.Invoke();
     }
     

@@ -34,13 +34,13 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         Input_Controller input = Input_Controller.instance;
         input.OnActionMapUpdate += () => _questBox.gameObject.SetActive(input.Current_ActionMapNum() == 0 && _currentQuests.Count > 0);
 
-        Localization_Controller.instance.OnLocalizationReady += Update_QuestText;
+        Localization_Controller.instance.OnLocalizationLoad += Update_QuestText;
         Localization_Controller.instance.OnLanguageChanged += Update_QuestText;
     }
 
     private void OnDestroy()
     {
-        Localization_Controller.instance.OnLocalizationReady -= Update_QuestText;
+        Localization_Controller.instance.OnLocalizationLoad -= Update_QuestText;
         Localization_Controller.instance.OnLanguageChanged -= Update_QuestText;
     }
 
