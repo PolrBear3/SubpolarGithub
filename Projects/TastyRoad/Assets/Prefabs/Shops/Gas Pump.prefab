@@ -345,6 +345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnInteract_Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6527241481509415940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,7 +368,7 @@ MonoBehaviour:
   _spawnReadyIcon: {fileID: 1943859326315345860}
   _oilDrum: {fileID: 11400000, guid: d05e05d026cda44a9a011f51eba3b83a, type: 2}
   _spawnPoint: {fileID: 6962216820120451715}
-  _defaultPrice: 10
+  _defaultPrice: 20
   _fillTime: 6
 --- !u!1 &6962216820120451715
 GameObject:
