@@ -17,11 +17,12 @@ public class Localization_Controller : MonoBehaviour
     private List<string> _languageNames = new();
     public List<string> languageNames => _languageNames;
     
+    public Action OnLocalizationReady;
     public Action OnLanguageChanged;
     
     
     // UnityEngine
-    private void Awake()
+    private async void Awake()
     {
         if (instance != null && instance != this)
         {
@@ -30,12 +31,11 @@ public class Localization_Controller : MonoBehaviour
         }
 
         instance = this;
-    }
-
-    private async void Start()
-    {
+        
         await PreloadAllLocalization();
         Set_CurrentLanguages();
+        OnLocalizationReady?.Invoke();
+        
         LocalizationSettings.SelectedLocaleChanged += OnLanguageUpdate;
     }
 
