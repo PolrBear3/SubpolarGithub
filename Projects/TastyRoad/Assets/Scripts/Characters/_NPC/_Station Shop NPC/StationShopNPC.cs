@@ -307,7 +307,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold == true) continue;
+            if (_stationStocks[i].sold) continue;
             if (_stationStocks[i].currentStation.stationScrObj != checkStation) continue;
             checkCount++;
         }

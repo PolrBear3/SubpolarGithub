@@ -72,12 +72,14 @@ public class CraftNPC_Mechanic : CraftNPC
     // Private Save and Load
     private void Save_Data()
     {
-        ES3.Save("CraftNPC_Mechanic/data", data);
+        // ES3.Save("CraftNPC_Mechanic/CraftNPC_Data", data);
+        ES3.Save("CraftNPC_Mechanic/PurchaseData", purchaseData);
     }
 
     private void Load_Data()
     {
-        Set_Data(ES3.Load("CraftNPC_Mechanic/data", new CraftNPC_Data(false)));
+        // Set_Data(ES3.Load("CraftNPC_Mechanic/CraftNPC_Data"));
+        Set_PurchaseData(ES3.Load("CraftNPC_Mechanic/PurchaseData", new PurchaseData(defaultPrice)));
     }
 
 
@@ -108,7 +110,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         GoldSystem system = GoldSystem.instance;
 
-        if (_toolBox == null || data.payed == false)
+        if (_toolBox == null || purchaseData.purchased == false)
         {
             system.Indicate_TriggerData(new(npcIconSprite, -Purchase_Price()));
             return;
@@ -145,7 +147,7 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         if (coroutine != null) return false;
         if (_droppedToolBox != null) return false;
-        if (data.payed == false) return false;
+        if (purchaseData.purchased == false) return false;
 
         Main_Controller main = Main_Controller.instance;
 
@@ -326,7 +328,7 @@ public class CraftNPC_Mechanic : CraftNPC
         ToolBox_Collect();
 
         // data update
-        Set_Data(new(defaultPrice));
+        Set_PurchaseData(new(defaultPrice));
 
         Toggle_Coroutine(false);
         yield break;

@@ -26,9 +26,6 @@ public class StationStock : MonoBehaviour
 
     private StationData _currentStation;
     public StationData currentStation => _currentStation;
-
-    private PurchaseData _purchaseData;
-    public PurchaseData purchaseData => _purchaseData;
     
     private StockData _stockData;
     public StockData stockData => _stockData;
@@ -180,7 +177,6 @@ public class StationStock : MonoBehaviour
             _dialog.Update_Dialog(3);
             return;
         }
-
         _stockData.Toggle_Discount(!_stockData.isDiscount);
 
         if (_stockData.isDiscount)
@@ -190,7 +186,6 @@ public class StationStock : MonoBehaviour
             _dialog.Update_Dialog(4);
             return;
         }
-
         _dialog.Update_Dialog(5);
 
         if (_sold)
@@ -198,7 +193,6 @@ public class StationStock : MonoBehaviour
             _statusSign.sprite = _signSprites[2];
             return;
         }
-
         _statusSign.sprite = _signSprites[0];
     }
     public void Toggle_Discount(bool toggleOn)
@@ -224,9 +218,8 @@ public class StationStock : MonoBehaviour
         }
 
         // set data
-        _currentStation = new(restockData);
-
         _sold = false;
+        _currentStation = new(restockData);
 
         // set sprite
         _sr.sprite = _currentStation.stationScrObj.sprite;

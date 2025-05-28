@@ -60,12 +60,14 @@ public class CraftNPC_Smith : CraftNPC
     // private Save and Load
     private void Save_Data()
     {
-        ES3.Save("CraftNPC_Smith/data", data);
+        // ES3.Save("CraftNPC_Smith/CraftNPC_Data", data);
+        ES3.Save("CraftNPC_Smith/PurchaseData", purchaseData);
     }
 
     private void Load_Data()
     {
-        Set_Data(ES3.Load("CraftNPC_Smith/data", new CraftNPC_Data(false)));
+        // Set_Data(ES3.Load("CraftNPC_Smith/CraftNPC_Data"));
+        Set_PurchaseData(ES3.Load("CraftNPC_Smith/PurchaseData", new PurchaseData(defaultPrice)));
     }
 
 
@@ -92,7 +94,7 @@ public class CraftNPC_Smith : CraftNPC
     {
         GoldSystem system = GoldSystem.instance;
 
-        if (_setTable == null || data.payed == false)
+        if (_setTable == null || purchaseData.purchased == false)
         {
             system.Indicate_TriggerData(new(npcIconSprite, -defaultPrice));
             return;
@@ -107,7 +109,7 @@ public class CraftNPC_Smith : CraftNPC
     {
         if (coroutine != null) return false;
 
-        if (data.payed == false) return false;
+        if (purchaseData.purchased == false) return false;
         if (_setTable != null) return false;
 
         if (Table_SetPosition() == Vector2.zero) return false;
@@ -232,7 +234,7 @@ public class CraftNPC_Smith : CraftNPC
 
         if (surroundingStations.Count <= 0)
         {
-            Set_Data(new(true));
+            purchaseData.Toggle_PurchaseState(true);
             Toggle_PayIcon();
 
             return;
@@ -255,13 +257,13 @@ public class CraftNPC_Smith : CraftNPC
 
         if (increased == false)
         {
-            Set_Data(new(true));
+            purchaseData.Toggle_PurchaseState(true);
             Toggle_PayIcon();
 
             return;
         }
 
-        Set_Data(new(defaultPrice));
+        Set_PurchaseData(new(defaultPrice));
         Toggle_PayIcon();
     }
 
@@ -277,7 +279,7 @@ public class CraftNPC_Smith : CraftNPC
 
         if (modifyStations.Count <= 0)
         {
-            Set_Data(new(true));
+            purchaseData.Toggle_PurchaseState(true);
             Toggle_PayIcon();
 
             return;
@@ -302,7 +304,7 @@ public class CraftNPC_Smith : CraftNPC
 
         newStation.movement.Load_Position();
 
-        Set_Data(new(defaultPrice));
+        Set_PurchaseData(new(defaultPrice));
         Toggle_PayIcon();
     }
 }

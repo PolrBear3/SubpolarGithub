@@ -17,6 +17,11 @@ public class PurchaseData
         _price = price;
         _purchased = false;
     }
+
+    public PurchaseData(bool purchased)
+    {
+        _purchased = purchased;
+    }
     
     
     // Data Control

@@ -36,6 +36,9 @@ public class CraftNPC : MonoBehaviour
     private CraftNPC_Data _data;
     public CraftNPC_Data data => _data;
 
+    private PurchaseData _purchaseData;
+    public PurchaseData purchaseData => _purchaseData;
+
 
     private Action _OnSave;
 
@@ -122,18 +125,23 @@ public class CraftNPC : MonoBehaviour
     {
         if (data == null)
         {
-            _data = new(false);
+            _data = new(data);
             return;
         }
 
         _data = new(data);
     }
 
+    public void Set_PurchaseData(PurchaseData data)
+    {
+        _purchaseData = data;
+    }
+
 
     // Main Interactions
     public void Toggle_PayIcon()
     {
-        if (_data.payed == false)
+        if (_purchaseData.purchased == false)
         {
             _statusIcon.gameObject.SetActive(false);
             return;
@@ -145,10 +153,10 @@ public class CraftNPC : MonoBehaviour
 
     private void Pay()
     {
-        if (_data == null || _data.payed) return;
-        if (GoldSystem.instance.Update_CurrentAmount(_data.price) == false) return;
+        if (_purchaseData.purchased) return;
+        if (GoldSystem.instance.Update_CurrentAmount(-_purchaseData.price) == false) return;
 
-        _data = new(true);
+        _purchaseData.Toggle_PurchaseState(true);
         Toggle_PayIcon();
 
         // sfx
