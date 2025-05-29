@@ -202,7 +202,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         Toggle_QuestBar();
 
         NPC_Movement movement = _npcController.movement;
+        
         movement.Stop_FreeRoam();
+        movement.Set_MoveSpeed(movement.defaultMoveSpeed + 3);
     }
 
     private void Cancel_Action()
@@ -222,6 +224,10 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         // return to free roam
         NPC_Movement move = _npcController.movement;
+        
+        move.Stop_FreeRoam();
+        move.Set_MoveSpeed(move.defaultMoveSpeed);
+        
         move.Free_Roam(_currentSubLocation.roamArea, move.Random_IntervalTime());
     }
 
@@ -549,7 +555,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         Start_Action();
 
         List<FoodStock> stocks = FoodStocks_byDistance();
+        
         NPC_Movement movement = _npcController.movement;
+        movement.Set_MoveSpeed(movement.defaultMoveSpeed + 2);
 
         for (int i = 0; i < stocks.Count; i++)
         {
@@ -586,7 +594,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         List<FoodStock> stocks = FoodStocks_byDistance();
         NPC_Movement movement = _npcController.movement;
-
+        
         for (int i = 0; i < stocks.Count; i++)
         {
             if (stocks[i].stockData.unlocked == false) continue;

@@ -216,8 +216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPrefab: {fileID: 0}
-  _randomAmountSpawn: 0
   _spawnAmount: 0
+  _minimumSpawnAmount: 0
   _spawnPositions: []
 --- !u!114 &1572437709805356931
 MonoBehaviour:
@@ -235,3 +235,4 @@ MonoBehaviour:
   _allCraftNPC:
   - {fileID: 5817206134798704318, guid: 01b515dbec6ce46c1b05084661530e1c, type: 3}
   - {fileID: 5817206134798704318, guid: 27a379686958e492e8328a69b7bcddb9, type: 3}
+  _guideTrigger: {fileID: 11400000, guid: af1a9d481405645efb41dc6503feeed8, type: 2}

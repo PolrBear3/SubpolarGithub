@@ -474,11 +474,61 @@ MonoBehaviour:
   _controller: {fileID: 9094981842974887859}
   _giftCoolTimeBar: {fileID: 1374478154645333820}
   _coolTimeBar: {fileID: 3728074003904613383}
-  _generosityImpact: 20
-  _itemDropRate: 60
-  _collectCardDropRate: 20
   _dropCoolTime: 3
   _dropAmountRange: 3
+  _itemDropRate: 100
+  _giftActionDatas:
+  - _actionSprite: {fileID: 0}
+    _activateValue: 0
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3320073790108978212}
+          m_TargetAssemblyTypeName: ItemDropper, Assembly-CSharp
+          m_MethodName: Drop_Gold
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _actionSprite: {fileID: 0}
+    _activateValue: 10
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3320073790108978212}
+          m_TargetAssemblyTypeName: ItemDropper, Assembly-CSharp
+          m_MethodName: Drop_CollectCard
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _actionSprite: {fileID: 0}
+    _activateValue: 0
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2236639740272532679}
+          m_TargetAssemblyTypeName: NPC_GiftSystem, Assembly-CSharp
+          m_MethodName: Drop_Food
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &9200125171288622632
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,6 +628,14 @@ PrefabInstance:
     - target: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
       propertyPath: _foodAmountRange
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: _goldAmountRange.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: _goldAmountRange.y
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
       propertyPath: _nuggetAmountRange

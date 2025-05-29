@@ -194,12 +194,11 @@ public class CraftNPC_Mechanic : CraftNPC
     }
     private IEnumerator Set_ToolBox_Coroutine()
     {
-        Toggle_Coroutine(true);
+        Toggle_Action(true);
 
         NPC_Movement movement = npcController.movement;
+        
         Vector2 setPos = ToolBox_SetPosition();
-
-        movement.Stop_FreeRoam();
         movement.Assign_TargetPosition(setPos);
 
         while (movement.At_TargetPosition(setPos) == false) yield return null;
@@ -208,13 +207,13 @@ public class CraftNPC_Mechanic : CraftNPC
         {
             Set_ToolBox();
 
-            Toggle_Coroutine(false);
+            Toggle_Action(false);
             yield break;
         }
 
         Drop_ToolBox();
 
-        Toggle_Coroutine(false);
+        Toggle_Action(false);
         yield break;
     }
 
@@ -254,18 +253,16 @@ public class CraftNPC_Mechanic : CraftNPC
     }
     private IEnumerator Collect_ToolBox_Coroutine()
     {
-        Toggle_Coroutine(true);
+        Toggle_Action(true);
 
         NPC_Movement movement = npcController.movement;
-
-        movement.Stop_FreeRoam();
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
 
         while (movement.At_TargetPosition(_droppedToolBox.transform.position) == false) yield return null;
 
         ToolBox_Collect();
 
-        Toggle_Coroutine(false);
+        Toggle_Action(false);
         yield break;
     }
 
@@ -287,10 +284,9 @@ public class CraftNPC_Mechanic : CraftNPC
     }
     private IEnumerator Purchase_Coroutine()
     {
-        Toggle_Coroutine(true);
+        Toggle_Action(true);
 
         NPC_Movement movement = npcController.movement;
-        movement.Stop_FreeRoam();
 
         // move to tool box
         movement.Assign_TargetPosition(_droppedToolBox.transform.position);
@@ -308,7 +304,7 @@ public class CraftNPC_Mechanic : CraftNPC
             // cancel purchase if player boards on vehicle
             if (vehicleMovement.onBoard)
             {
-                Toggle_Coroutine(false);
+                Toggle_Action(false);
                 yield break;
             }
 
@@ -330,7 +326,7 @@ public class CraftNPC_Mechanic : CraftNPC
         // data update
         Set_PurchaseData(new(defaultPrice));
 
-        Toggle_Coroutine(false);
+        Toggle_Action(false);
         yield break;
     }
 

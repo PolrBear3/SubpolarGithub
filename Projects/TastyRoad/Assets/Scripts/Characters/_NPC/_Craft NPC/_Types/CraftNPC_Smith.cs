@@ -133,19 +133,18 @@ public class CraftNPC_Smith : CraftNPC
     }
     private IEnumerator MoveTo_SetPosition_Coroutine()
     {
-        Toggle_Coroutine(true);
+        Toggle_Action(true);
 
         NPC_Movement movement = npcController.movement;
+        
         Vector2 movePosition = Table_SetPosition();
-
-        movement.Stop_FreeRoam();
         movement.Assign_TargetPosition(movePosition);
 
         while (movement.At_TargetPosition(movePosition) == false) yield return null;
 
         Set_Table();
 
-        Toggle_Coroutine(false);
+        Toggle_Action(false);
         yield break;
     }
 
@@ -182,12 +181,10 @@ public class CraftNPC_Smith : CraftNPC
     }
     private IEnumerator Purchase_Coroutine()
     {
-        Toggle_Coroutine(true);
-
-        NPC_Movement movement = npcController.movement;
-
+        Toggle_Action(true);
+        
         // move to action selector
-        movement.Stop_FreeRoam();
+        NPC_Movement movement = npcController.movement;
         movement.Assign_TargetPosition(_setTable.transform.position);
 
         while (movement.At_TargetPosition() == false) yield return null;
@@ -204,7 +201,7 @@ public class CraftNPC_Smith : CraftNPC
 
         Update_ActionBubble();
 
-        Toggle_Coroutine(false);
+        Toggle_Action(false);
         yield break;
     }
 

@@ -119,7 +119,7 @@ public class LocationData
     }
 
     /// <returns>
-    /// higher cost data from _ingredientUnlocks Food_ScrObj compare to compareFood
+    /// higher cost random data from _ingredientUnlocks compare to compareFood
     /// </returns>
     public Food_ScrObj WeightRandom_Food(Food_ScrObj compareFood)
     {

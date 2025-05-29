@@ -361,6 +361,19 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
 
     // Action Control
+    private void Start_Action()
+    {
+        if (_actionCoroutine != null) return;
+        
+        _npcController.interactable.LockInteract(true);
+        _actionTimer.Toggle_RunAnimation(true);
+        
+        NPC_Movement movement = _npcController.movement;
+        
+        movement.Stop_FreeRoam();
+        movement.Set_MoveSpeed(movement.defaultMoveSpeed + 3);
+    }
+    
     private void Cancel_Action()
     {
         if (_actionCoroutine == null) return;
@@ -434,16 +447,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Dispose_BookMarkedStation_Coroutine()
     {
+        Start_Action();
+        
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // dialog
         dialog.Update_Dialog(1);
-
-        NPC_Movement movement = _npcController.movement;
-        movement.Stop_FreeRoam();
-
-        _npcController.interactable.LockInteract(true);
-        _actionTimer.Toggle_RunAnimation(true);
 
         // remove dispose station
         ItemSlot_Data disposeData = Dispose_SlotData();
@@ -460,6 +469,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         CarryObject_SpriteToggle(true, _carrySprites[1]);
 
         // move to scrap stack
+        NPC_Movement movement = _npcController.movement;
+        
         movement.Assign_TargetPosition(_scrapStack.transform.position);
         while (movement.At_TargetPosition() == false) yield return null;
 
@@ -511,6 +522,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Build_BookMarkedStations_Coroutine()
     {
+        Start_Action();
+        
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
         // get all locked bookmark stations
@@ -527,12 +540,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         // refresh movement
         NPC_Movement movement = _npcController.movement;
-        
-        movement.Stop_FreeRoam();
-        movement.Set_MoveSpeed(movement.defaultMoveSpeed + 2);
-
-        _npcController.interactable.LockInteract(true);
-        _actionTimer.Toggle_RunAnimation(true);
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
@@ -663,16 +670,13 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
     private IEnumerator Restock_ArchivedStation_Coroutine()
     {
+        Start_Action();
+        
         for (int i = 0; i < _stationStocks.Length; i++)
         {
             if (_stationStocks[i].sold == false) continue;
 
-            // start action
-            _npcController.interactable.LockInteract(true);
-            _actionTimer.Toggle_RunAnimation(true);
-
             NPC_Movement movement = _npcController.movement;
-            movement.Stop_FreeRoam();
 
             // go to scrap
             movement.Assign_TargetPosition(_scrapStack.transform.position);

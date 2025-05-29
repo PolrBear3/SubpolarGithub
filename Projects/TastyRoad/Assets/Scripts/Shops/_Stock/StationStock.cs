@@ -121,7 +121,7 @@ public class StationStock : MonoBehaviour
     {
         if (_sold)
         {
-            _dialog.Update_Dialog(2);
+            _dialog.Update_Dialog(1);
             return;
         }
 
@@ -133,7 +133,7 @@ public class StationStock : MonoBehaviour
         if (slotFull)
         {
             // Not Enough space in vehicle storage!
-            _dialog.Update_Dialog(1);
+            _dialog.Update_Dialog(0);
             return;
         }
         
@@ -174,7 +174,7 @@ public class StationStock : MonoBehaviour
     {
         if (_sold == false)
         {
-            _dialog.Update_Dialog(3);
+            _dialog.Update_Dialog(2);
             return;
         }
         _stockData.Toggle_Discount(!_stockData.isDiscount);
@@ -183,10 +183,10 @@ public class StationStock : MonoBehaviour
         {
             _statusSign.sprite = _signSprites[1];
 
-            _dialog.Update_Dialog(4);
+            _dialog.Update_Dialog(3);
             return;
         }
-        _dialog.Update_Dialog(5);
+        _dialog.Update_Dialog(4);
 
         if (_sold)
         {

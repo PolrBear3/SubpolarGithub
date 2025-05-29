@@ -259,7 +259,7 @@ public class ItemDropper : MonoBehaviour
     
     
     // Gold Drop
-    public GoldDrop Drop_Gold()
+    public GoldDrop Dropped_Gold()
     {
         int dropAmount = Random.Range((int)_goldAmountRange.x, (int)_goldAmountRange.y + 1);
         
@@ -268,6 +268,11 @@ public class ItemDropper : MonoBehaviour
         
         goldDrop.Set_Data(dropAmount);
         return goldDrop;
+    }
+
+    public void Drop_Gold()
+    {
+        Dropped_Gold();
     }
 }
 

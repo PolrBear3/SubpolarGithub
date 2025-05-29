@@ -31,6 +31,10 @@ public class CraftNPC : MonoBehaviour
 
     [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
     public float upgradeTimeValue => _upgradeTimeValue;
+    
+    
+    [Space(60)]
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     private CraftNPC_Data _data;
@@ -63,6 +67,7 @@ public class CraftNPC : MonoBehaviour
         // subscriptions
         ActionBubble_Interactable interactable = _npcController.interactable;
 
+        interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         interactable.OnHoldInteract += Pay;
     }
 
@@ -71,6 +76,7 @@ public class CraftNPC : MonoBehaviour
         // subscriptions
         ActionBubble_Interactable interactable = _npcController.interactable;
 
+        interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
         interactable.OnHoldInteract -= Pay;
     }
 
@@ -90,20 +96,27 @@ public class CraftNPC : MonoBehaviour
         return _coroutine;
     }
 
-    public void Toggle_Coroutine(bool toggle)
+    public void Toggle_Action(bool toggle)
     {
+        NPC_Movement movement = _npcController.movement;
+        movement.Stop_FreeRoam();
+        
         _npcController.timer.Toggle_RunAnimation(toggle);
         npcController.interactable.LockInteract(toggle);
 
         if (toggle)
         {
+            movement.Set_MoveSpeed(movement.defaultMoveSpeed + 3);
+            
             _statusIcon.gameObject.SetActive(false);
             return;
         }
-
+        
         Toggle_PayIcon();
 
-        _npcController.movement.Free_Roam(0);
+        movement.Set_MoveSpeed(movement.defaultMoveSpeed);
+        movement.Free_Roam(0);
+        
         Set_Coroutine(null);
     }
 

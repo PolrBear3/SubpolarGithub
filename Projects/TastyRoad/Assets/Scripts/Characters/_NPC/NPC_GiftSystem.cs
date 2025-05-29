@@ -5,28 +5,24 @@ using UnityEngine;
 
 public class NPC_GiftSystem : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private NPC_Controller _controller;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _giftCoolTimeBar;
     [SerializeField] private AmountBar _coolTimeBar;
 
-    [Header("")]
-    [SerializeField]
-    [Range(0, 100)] private float _generosityImpact;
-
-    [Header("")]
-    [SerializeField][Range(0, 100)] private float _itemDropRate;
-    [SerializeField][Range(0, 100)] private float _collectCardDropRate;
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField][Range(0, 100)] private int _dropCoolTime;
     [SerializeField][Range(0, 100)] private int _dropAmountRange;
 
+    [Space(20)] 
+    [SerializeField][Range(0, 100)] private float _itemDropRate;
+    [SerializeField] private ActionSelector_Data[] _giftActionDatas;
+
 
     public Action<bool> OnDurationToggle;
-
     private Coroutine _coroutine;
 
 
@@ -55,7 +51,7 @@ public class NPC_GiftSystem : MonoBehaviour
     }
 
 
-    //
+    // Indications
     private void ToggleBar_Duration()
     {
         if (_coroutine != null) return;
@@ -94,6 +90,75 @@ public class NPC_GiftSystem : MonoBehaviour
     }
 
 
+    // Gift Action Datas
+    private ActionSelector_Data WeightRandom_GiftAction()
+    {
+        float totalWeight = 0f;
+
+        // Calculate total weight
+        foreach (var data in _giftActionDatas)
+        {
+            totalWeight += data.activateValue;
+        }
+
+        // If no weight, return null or random fallback
+        if (totalWeight <= 0f) return null;
+
+        float randomValue = UnityEngine.Random.Range(0f, totalWeight);
+        float cumulative = 0f;
+
+        foreach (var data in _giftActionDatas)
+        {
+            cumulative += data.activateValue;
+            if (randomValue <= cumulative)
+            {
+                return data;
+            }
+        }
+
+        return null;
+    }
+    
+    
+    private FoodData FoodDrop()
+    {
+        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
+        if (playerFoodIcon.hasFood == false) return null;
+        
+        LocationData currentLocation = Main_Controller.instance.currentLocation.data;
+        Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
+        
+        Food_ScrObj randWeightedFood = currentLocation.WeightRandom_Food(playerFood);
+        List<Food_ScrObj> foodIngredients = randWeightedFood.Ingredients();
+
+        Food_ScrObj dropFood = foodIngredients[UnityEngine.Random.Range(0, foodIngredients.Count)];
+        int dropAmount = UnityEngine.Random.Range(1, _dropAmountRange + 1);
+        
+        Debug.Log(dropFood + " " + dropAmount);
+        return new(dropFood, dropAmount);
+    }
+    
+    public void Drop_Food()
+    {
+        ItemDropper dropper = _controller.itemDropper;
+        Debug.Log("Drop_Food");
+        
+        dropper.Drop_Food(FoodDrop());
+    }
+    
+    
+    // Actions
+    private void Empty_PlayerFood()
+    {
+        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
+        
+        playerFoodIcon.Set_CurrentData(null);
+        playerFoodIcon.Show_Icon();
+        playerFoodIcon.Toggle_SubDataBar(true);
+        playerFoodIcon.Show_Condition();
+    }
+    
+    
     private bool Gift_Available()
     {
         // check if cool time complete
@@ -125,17 +190,6 @@ public class NPC_GiftSystem : MonoBehaviour
     {
         if (Gift_Available() == false) return;
 
-        Main_Controller main = Main_Controller.instance;
-
-        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
-        Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
-
-        // remove player current food
-        playerFoodIcon.Set_CurrentData(null);
-        playerFoodIcon.Show_Icon();
-        playerFoodIcon.Toggle_SubDataBar(true);
-        playerFoodIcon.Show_Condition();
-
         // start cool time
         _coolTimeBar.Set_Amount(0);
         Update_CoolTimBar();
@@ -145,32 +199,17 @@ public class NPC_GiftSystem : MonoBehaviour
         audio.Play_OneShot(gameObject, 3);
 
         // check drop rate
-        float generosity = _controller.characterData.generosityLevel;
-        
-        if (main.Percentage_Activated(200f, _itemDropRate + generosity) == false) return;
-
-        // sound
-        audio.Play_OneShot(gameObject, 4);
-        
-        ItemDropper dropper = _controller.itemDropper;
-        float calculatedGenerosity = generosity / (_generosityImpact * 0.1f);
-
-        // collect card drop
-        if (main.Percentage_Activated(200f, _collectCardDropRate + calculatedGenerosity))
+        if (Main_Controller.instance.Percentage_Activated(100f, _itemDropRate) == false)
         {
-            dropper.Drop_CollectCard();
+            Empty_PlayerFood();
             return;
         }
-
-        // food drop
-        LocationData currentLocation = main.currentLocation.data;
-
-        Food_ScrObj randWeightedFood = currentLocation.WeightRandom_Food(playerFood);
-        List<Food_ScrObj> foodIngredients = randWeightedFood.Ingredients();
-
-        Food_ScrObj dropFood = foodIngredients[UnityEngine.Random.Range(0, foodIngredients.Count)];
-        int dropAmount = UnityEngine.Random.Range(1, _dropAmountRange + 1);
-
-        dropper.Drop_Food(new(dropFood), dropAmount);
+        
+        // drop random gift
+        WeightRandom_GiftAction().actionEvent?.Invoke();
+        Empty_PlayerFood();
+        
+        // sound
+        audio.Play_OneShot(gameObject, 4);
     }
 }
