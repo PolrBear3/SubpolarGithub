@@ -191,11 +191,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         if (SetOrder_Active() == false) return;
 
         FoodData_Controller foodIcon = _controller.foodIcon;
-        Character_Data characterData = _controller.characterData;
 
-        float hungerPercentage = Mathf.Clamp01((100 - characterData.hungerLevel) / 100f);
-
-        int maxOrders = Mathf.CeilToInt(hungerPercentage * foodIcon.maxDataCount);
+        int maxOrders = foodIcon.maxDataCount;
         maxOrders = Mathf.Clamp(maxOrders, 0, foodIcon.maxDataCount);
 
         for (int i = 0; i < maxOrders; i++)
@@ -320,9 +317,6 @@ public class NPC_FoodInteraction : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // updates
-        Character_Data data = _controller.characterData;
-        data.Update_Hunger((100 - data.hungerLevel) / foodIcon.AllDatas().Count);
-
         AbilityManager.IncreasePoint(1);
 
         // fail

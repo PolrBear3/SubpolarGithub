@@ -5,10 +5,7 @@ using UnityEngine.InputSystem;
 
 public class NPC_Controller : MonoBehaviour
 {
-    [Header("")]
-    [SerializeField] private Character_Data _characterData;
-    public Character_Data characterData => _characterData;
-
+    [Space(20)]
     [SerializeField] private BasicAnimation_Controller _basicAnim;
     public BasicAnimation_Controller basicAnim => _basicAnim;
 
@@ -19,7 +16,7 @@ public class NPC_Controller : MonoBehaviour
     public ActionBubble_Interactable interactable => _interactable;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private CoinLauncher _itemLauncher;
     public CoinLauncher itemLauncher => _itemLauncher;
 
@@ -30,7 +27,7 @@ public class NPC_Controller : MonoBehaviour
     public Clock_Timer timer => _timer;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private NPC_Movement _movement;
     public NPC_Movement movement => _movement;
 

@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 2509055865607579981}
   - component: {fileID: 1331804926663461836}
   - component: {fileID: 7725837779298166318}
-  - component: {fileID: 8903583041108868457}
   - component: {fileID: -2268305881826384539}
   - component: {fileID: -7268301005637499790}
   - component: {fileID: 2630561444930076325}
@@ -335,18 +334,6 @@ MonoBehaviour:
         Data4: -1692421121
       Path: event:/Basic SFX/Interaction/CoinLauncher_throw
   _fadeDuration: 0
---- !u!114 &8903583041108868457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5817206134798704318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c79e365afd3467fbd19e1e79f83379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-2268305881826384539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,7 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844ad3abbeead4c2eb1bfabbe9a4282c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterData: {fileID: 8903583041108868457}
   _basicAnim: {fileID: -7268301005637499790}
   _foodIcon: {fileID: 1483303474056452521}
   _interactable: {fileID: 2630561444930076325}
@@ -479,7 +465,24 @@ MonoBehaviour:
   _itemDropRate: 100
   _giftActionDatas:
   - _actionSprite: {fileID: 0}
-    _activateValue: 0
+    _activateValue: 70
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2236639740272532679}
+          m_TargetAssemblyTypeName: NPC_GiftSystem, Assembly-CSharp
+          m_MethodName: Drop_Food
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _actionSprite: {fileID: 0}
+    _activateValue: 70
     _actionEvent:
       m_PersistentCalls:
         m_Calls:
@@ -503,23 +506,6 @@ MonoBehaviour:
         - m_Target: {fileID: 3320073790108978212}
           m_TargetAssemblyTypeName: ItemDropper, Assembly-CSharp
           m_MethodName: Drop_CollectCard
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - _actionSprite: {fileID: 0}
-    _activateValue: 0
-    _actionEvent:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2236639740272532679}
-          m_TargetAssemblyTypeName: NPC_GiftSystem, Assembly-CSharp
-          m_MethodName: Drop_Food
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
