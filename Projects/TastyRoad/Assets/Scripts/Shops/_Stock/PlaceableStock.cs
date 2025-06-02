@@ -56,11 +56,10 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
-        _interactable.detection.EnterEvent += Collect_Payment;
-        _interactable.detection.ExitEvent += Collect_Payment;
-
         _interactable.OnInteract += Toggle_AmountBar;
         _interactable.OnUnInteract += Toggle_AmountBar;
+
+        _interactable.OnInteract += Collect_Payment;
     }
 
     private void OnDestroy()
@@ -71,11 +70,10 @@ public class PlaceableStock : MonoBehaviour
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
-        _interactable.detection.EnterEvent -= Collect_Payment;
-        _interactable.detection.ExitEvent -= Collect_Payment;
-
         _interactable.OnInteract -= Toggle_AmountBar;
         _interactable.OnUnInteract -= Toggle_AmountBar;
+        
+        _interactable.OnInteract -= Collect_Payment;
 
         _interactable.OnAction1 -= Complete;
         _interactable.OnAction1 -= Place;
@@ -90,7 +88,7 @@ public class PlaceableStock : MonoBehaviour
         if (_data != null) return;
         _data = new(null);
 
-        Update_Bubble();
+        Update_BubbleActions();
 
         if (_purchaseData != null) return;
         Set_PurchaseData(new(0));
@@ -102,7 +100,7 @@ public class PlaceableStock : MonoBehaviour
         _foodIcon.Update_AllDatas(placedData);
         _data = new(stockData);
         
-        Update_Bubble();
+        Update_BubbleActions();
     }
     
     public void Reset_Data()
@@ -115,7 +113,7 @@ public class PlaceableStock : MonoBehaviour
 
         _interactable.LockInteract(false);
 
-        Update_Bubble();
+        Update_BubbleActions();
         Toggle_AmountBar();
     }
     
@@ -188,7 +186,7 @@ public class PlaceableStock : MonoBehaviour
         _previewIcon.amountBar.Toggle(!foodPlaced && playerDetected && !bubbleOn);
     }
 
-    private void Update_Bubble()
+    private void Update_BubbleActions()
     {
         Action_Bubble bubble = _interactable.bubble;
         bubble.Empty_Bubble();
@@ -254,7 +252,7 @@ public class PlaceableStock : MonoBehaviour
         playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
 
-        Update_Bubble();
+        Update_BubbleActions();
     }
 
 
@@ -265,7 +263,7 @@ public class PlaceableStock : MonoBehaviour
         _data.Toggle_Complete(true);
         Update_forComplete();
         
-        Update_Bubble();
+        Update_BubbleActions();
         
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
     }

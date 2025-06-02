@@ -29,11 +29,9 @@ public class FoodData_Controller : MonoBehaviour
     private bool _iconShowLocked;
     private bool _conditionShowLocked;
 
-
-    public Action OnDataUpdate;
     
     public Action TimeTikEvent;
-
+    
     public Action OnFoodShow;
     public Action OnFoodHide;
 
@@ -96,8 +94,8 @@ public class FoodData_Controller : MonoBehaviour
     {
         globaltime.instance.OnTimeTik -= TimeTik_Update;
     }
-
-
+    
+    
     // Data Control
     public List<FoodData> AllDatas()
     {
@@ -121,10 +119,12 @@ public class FoodData_Controller : MonoBehaviour
         }
 
         _currentData = null;
-        Set_CurrentData(updateDatas[updateDatas.Count - 1]);
 
+        FoodData currentData = new(updateDatas[updateDatas.Count - 1]);
         updateDatas.RemoveAt(updateDatas.Count - 1);
+
         _subDatas = updateDatas;
+        Set_CurrentData(currentData);
     }
 
 
@@ -165,8 +165,6 @@ public class FoodData_Controller : MonoBehaviour
         if (setData == null)
         {
             Empty_CurrentData();
-            
-            OnDataUpdate?.Invoke();
             return;
         }
 
@@ -181,16 +179,10 @@ public class FoodData_Controller : MonoBehaviour
         // set data
         _currentData = new FoodData(setData);
 
-        if (hadFood)
-        {
-            OnDataUpdate?.Invoke();
-            return;
-        }
-
+        if (hadFood) return;
         _hasFood = true;
-        globaltime.instance.OnTimeTik += TimeTik_Update;
         
-        OnDataUpdate?.Invoke();
+        globaltime.instance.OnTimeTik += TimeTik_Update;
     }
 
     private void Empty_CurrentData()

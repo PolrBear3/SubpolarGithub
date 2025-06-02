@@ -38,9 +38,8 @@ public class Player_Interaction : MonoBehaviour
 
         input.OnInteract += Interact;
         input.OnHoldInteract += HoldInteract;
-
+        
         Localization_Controller.instance.OnLanguageChanged += IndicationTrigger_CurrentFood;
-        _controller.foodIcon.OnDataUpdate += IndicationTrigger_CurrentFood;
     }
 
     private void OnDestroy()
@@ -58,7 +57,6 @@ public class Player_Interaction : MonoBehaviour
         input.OnHoldInteract -= HoldInteract;
         
         Localization_Controller.instance.OnLanguageChanged -= IndicationTrigger_CurrentFood;
-        _controller.foodIcon.OnDataUpdate -= IndicationTrigger_CurrentFood;
     }
 
 
@@ -95,6 +93,8 @@ public class Player_Interaction : MonoBehaviour
 
         if (interactable == null) return;
         interactable.Interact();
+
+        IndicationTrigger_CurrentFood();
     }
 
     private void HoldInteract()
@@ -109,6 +109,8 @@ public class Player_Interaction : MonoBehaviour
             return;
         }
         interactable.Hold_Interact();
+        
+        IndicationTrigger_CurrentFood();
     }
 
 
@@ -174,8 +176,9 @@ public class Player_Interaction : MonoBehaviour
         foodIcon.Set_CurrentData(null);
         foodIcon.Show_Icon();
         foodIcon.Show_Condition();
-
         foodIcon.Toggle_SubDataBar(true);
+        
+        IndicationTrigger_CurrentFood();
     }
     
     private void IndicationTrigger_CurrentFood()
