@@ -271,8 +271,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
 
         // Set update
+        string currentStationInfo = "<sprite=70> " + cursorData.currentStation.LocalizedName() + "\n";
         string controlInfo = infoTrigger.KeyControl_Template(action1, action1, hold);
-        info.Update_InfoText(durabilityInfo + controlInfo);
+        
+        info.Update_InfoText(currentStationInfo + durabilityInfo + controlInfo);
     }
 
 

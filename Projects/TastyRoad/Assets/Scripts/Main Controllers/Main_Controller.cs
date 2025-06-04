@@ -556,6 +556,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
         return false;
     }
+
+    public bool Food_BookmarkedFood()
+    {
+        return _bookmarkedFoods.Count > 0;
+    }
 }
 
 

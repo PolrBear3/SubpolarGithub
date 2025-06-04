@@ -88,9 +88,11 @@ public class CollectJar : MonoBehaviour
 
     private void Toggle_AmountBar()
     {
+        FoodData_Controller foodIcon = _controller.Food_Icon();
         bool toggle = Current_Amount() > 0 && _controller.detection.player != null;
 
-        _controller.Food_Icon().Toggle_AmountBar(Current_Amount() > 0 && toggle);
+        foodIcon.Hide_Icon();
+        foodIcon.Toggle_AmountBar(Current_Amount() > 0 && toggle);
     }
 
 
