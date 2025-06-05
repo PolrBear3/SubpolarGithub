@@ -245,7 +245,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         InfoTemplate_Trigger infoTrigger = info.templateTrigger;
 
         // station durability info
-        string durabilityInfo = null;
+        string durabilityInfo = "\n";
         StationData stationData = cursorData.stationData;
         
         if (cursorData.isLocked == false && stationData.stationScrObj.durability > 0)
