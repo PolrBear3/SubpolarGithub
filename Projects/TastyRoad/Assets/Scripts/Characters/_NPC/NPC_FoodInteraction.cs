@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class NPC_FoodInteraction : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private NPC_Controller _controller;
+    [SerializeField] private Ability_ScrObj _serveFoodAbility;
 
-
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _collectIndicator;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 300)] private int _transferTime;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private float _conditionRequestRate;
     [SerializeField][Range(0, 100)] private int _conditionBonusPay;
 
@@ -317,7 +317,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // updates
-        AbilityManager.IncreasePoint(1);
+        AbilityManager.IncreasePoint(_serveFoodAbility, 1);
 
         // fail
         if (Set_Payment() <= 0) Fail_OrderTime();

@@ -11,30 +11,29 @@ public interface IAbility
 
 public class AbilityManager : MonoBehaviour, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Player_Controller _player;
     public Player_Controller player => _player;
 
-    [Header("")]
-    [SerializeField] private AmountBar _abilityBar;
-
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Ability_Behaviour[] _allAbilities;
     public Ability_Behaviour[] allAbilities => _allAbilities;
-
-
-    private List<Ability> _activatedAbilities = new();
-    public List<Ability> activatedAbilities => _activatedAbilities;
-
-
-    private int _currentAbilityPoint;
-    public int currentAbilityPoint => _currentAbilityPoint;
-
+    
     [SerializeField][Range(0, 100)] private int _maxAbilityPoint;
     public int maxAbilityPoint => _maxAbilityPoint;
 
-    public static Action<int> IncreasePoint;
+
+    private List<Ability> _abilityDatas = new();
+    public List<Ability> abilityDatas => _abilityDatas;
+    
+    private int _currentAbilityPoint;
+    public int currentAbilityPoint => _currentAbilityPoint;
+
+    
+    public static Action<Ability_ScrObj, int> IncreasePoint;
     public static Action OnPointIncrease;
+
+    public static Action OnMaxPoint;
 
 
     // Editor
@@ -44,150 +43,138 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     // MonoBehaviour
     private void Start()
     {
-        Load_ActivatedAbilities();
+        Load_AbilityDatas();
 
         // subscriptions
         IncreasePoint += Increase_AbilityPoint;
-
-        FoodData_Controller playerIcon = _player.foodIcon;
-
-        playerIcon.OnFoodShow += Toggle_AbilityBar;
-        playerIcon.OnFoodHide += Toggle_AbilityBar;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         IncreasePoint -= Increase_AbilityPoint;
-
-        FoodData_Controller playerIcon = _player.foodIcon;
-
-        playerIcon.OnFoodShow -= Toggle_AbilityBar;
-        playerIcon.OnFoodHide -= Toggle_AbilityBar;
     }
 
 
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("AbilityManager/_activatedAbilities", _activatedAbilities);
         ES3.Save("AbilityManager/_currentAbilityPoint", _currentAbilityPoint);
+        ES3.Save("AbilityManager/_abilityDatas", _abilityDatas);
     }
 
     public void Load_Data()
     {
-        _activatedAbilities = ES3.Load("AbilityManager/_activatedAbilities", _activatedAbilities);
         _currentAbilityPoint = ES3.Load("AbilityManager/_currentAbilityPoint", _currentAbilityPoint);
+        _abilityDatas = ES3.Load("AbilityManager/_abilityDatas", _abilityDatas);
     }
 
 
     // Data
-    private void Load_ActivatedAbilities()
+    private void Load_AbilityDatas()
     {
         for (int i = 0; i < _allAbilities.Length; i++)
         {
-            if (Ability_Activated(_allAbilities[i].abilityScrObj) == false) continue;
+            Ability abilityData = AbilityData(_allAbilities[i].abilityScrObj);
+            if (abilityData == null)
+            {
+                _abilityDatas.Add(new Ability(_allAbilities[i].abilityScrObj));
+                continue;
+            }
 
             IAbility abilityInterface = _allAbilities[i].GetComponent<IAbility>();
             if (abilityInterface == null) continue;
             
-            for (int j = 0; j < Activated_Ability(_allAbilities[i].abilityScrObj).activationCount; j++)
+            for (int j = 0; j < abilityData.activationCount; j++)
             {
                 abilityInterface.Activate();
             }
         }
     }
+    
 
-
-    // Indications
-    private void Toggle_AbilityBar()
-    {
-        if (_player.hidden || _currentAbilityPoint <= _maxAbilityPoint / 2 || _player.foodIcon.hasFood)
-        {
-            _abilityBar.Toggle(false);
-            return;
-        }
-
-        _abilityBar.Load_Custom(_maxAbilityPoint, _currentAbilityPoint);
-        _abilityBar.Toggle_Duration();
-    }
-
-
-    // Ability Point Data
+    // Main Ability
     public bool AbilityPoint_Maxed()
     {
         return _currentAbilityPoint >= _maxAbilityPoint;
     }
 
-    /// <summary>
-    /// AbilityManager.OnPointIncrease(increase value);
-    /// </summary>
-    private void Increase_AbilityPoint(int increaseValue)
+    public void Set_AbilityPoint(int setValue)
     {
-        if (AbilityPoint_Maxed()) return;
+        _currentAbilityPoint = Mathf.Clamp(setValue, 0, _maxAbilityPoint);
+    }
+    
+    /// <summary>
+    /// AbilityManager.OnPointIncrease(Ability_ScrObj abilityScrObj, increase value);
+    /// </summary>
+    private void Increase_AbilityPoint(Ability_ScrObj abilityScrObj, int increaseValue)
+    {
+        Ability abilityData = AbilityData(abilityScrObj);
+        abilityData.Set_AbilityPoint(abilityData.abilityPoint + increaseValue);
+
+        if (AbilityPoint_Maxed())
+        {
+            if (ActivateAvailable_AbilityDatas().Count <= 0) return;
+            
+            OnMaxPoint?.Invoke();
+            return;
+        }
 
         _currentAbilityPoint += increaseValue;
         OnPointIncrease?.Invoke();
     }
 
 
-    // Ability
-    private Ability Activated_Ability(Ability_ScrObj targetAbility)
+    // Ability Data
+    public List<Ability_ScrObj> ActivateAvailable_AbilityScrObjs()
     {
-        for (int i = 0; i < _activatedAbilities.Count; i++)
+        List<Ability_ScrObj> abilityScrObjs = new();
+
+        for (int i = 0; i < _abilityDatas.Count; i++)
         {
-            if (targetAbility != _activatedAbilities[i].abilityScrObj) continue;
-            return _activatedAbilities[i];
+            if (_abilityDatas[i].ActivationCount_Maxed()) continue;
+            abilityScrObjs.Add(_abilityDatas[i].abilityScrObj);
+        }
+
+        return abilityScrObjs;
+    }
+    
+    public List<Ability> ActivateAvailable_AbilityDatas()
+    {
+        List<Ability> abilityDatas = new();
+
+        for (int i = 0; i < _abilityDatas.Count; i++)
+        {
+            if (_abilityDatas[i].ActivationCount_Maxed()) continue;
+            if (_abilityDatas[i].AbilityPoint_Maxed() == false) continue;
+            
+            abilityDatas.Add(_abilityDatas[i]);
+        }
+        
+        abilityDatas.Sort((a, b) => b.abilityPoint.CompareTo(a.abilityPoint));
+        
+        return abilityDatas;
+    }
+    
+    
+    public Ability AbilityData(Ability_ScrObj targetAbility)
+    {
+        for (int i = 0; i < _abilityDatas.Count; i++)
+        {
+            if (targetAbility != _abilityDatas[i].abilityScrObj) continue;
+            return _abilityDatas[i];
         }
         return null;
     }
-
-    private bool Ability_Activated(Ability_ScrObj checkAbility)
-    {
-        for (int i = 0; i < _activatedAbilities.Count; i++)
-        {
-            if (checkAbility != _activatedAbilities[i].abilityScrObj) continue;
-            return true;
-        }
-        return false;
-    }
-
-
-    public int Ability_ActivateCount(Ability_ScrObj checkAbility)
-    {
-        Ability targetAbility = Activated_Ability(checkAbility);
-
-        if (targetAbility == null) return 0;
-
-        return targetAbility.activationCount;
-    }
-
-    public bool Ability_ActivateMaxed(Ability_ScrObj checkAbility)
-    {
-        if (checkAbility == null) return false;
-
-        return Ability_ActivateCount(checkAbility) >= checkAbility.Max_ActivationCount();
-    }
-
-
+    
     public void Activate_Ability(Ability_ScrObj ability)
     {
-        for (int i = 0; i < _allAbilities.Length; i++)
-        {
-            if (ability != _allAbilities[i].abilityScrObj) continue;
-
-            _allAbilities[i].GetComponent<IAbility>().Activate();
-            _currentAbilityPoint = 0;
-
-            if (Ability_Activated(ability))
-            {
-                Activated_Ability(ability).Update_ActivationCount(1);
-                return;
-            }
-
-            _activatedAbilities.Add(new(ability));
-            return;
-        }
+        Set_AbilityPoint(0);
+        
+        Ability activatedAbility = AbilityData(ability);
+                
+        activatedAbility.Update_ActivationCount(1);
+        activatedAbility.Set_AbilityPoint(0);
     }
 }
 
@@ -225,7 +212,7 @@ public class AbilityManager_Editor : Editor
 
         if (GUILayout.Button("Increase Ability Point"))
         {
-            AbilityManager.IncreasePoint?.Invoke(1);
+            AbilityManager.IncreasePoint?.Invoke(activateAbility, 1);
         }
 
         GUILayout.Space(20);

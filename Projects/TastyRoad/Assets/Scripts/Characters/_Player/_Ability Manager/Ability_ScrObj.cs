@@ -6,20 +6,24 @@ using UnityEngine.Localization;
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Ability!")]
 public class Ability_ScrObj : ScriptableObject
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private string _abilityName;
     public string abilityName => _abilityName;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][TextArea(2, 2)] private string _description;
     public string description => _description;
     
     [SerializeField] private LocalizedString _localizedDescription;
     public LocalizedString localizedDescription => _localizedDescription;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Sprite[] _progressIcons;
     public Sprite[] progressIcons => _progressIcons;
+
+    [Space(20)] 
+    [SerializeField] [Range(0, 100)] private int _maxAbilityPoint;
+    public int maxAbilityPoint => _maxAbilityPoint;
     
 
     public string Description()

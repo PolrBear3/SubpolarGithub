@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gold Magnet
   m_EditorClassIdentifier: 
   _abilityName: Gold Magnet
-  _description: Grants extra <sprite=56> whenever <sprite=56> is earned
+  _description: Grants extra gold <sprite=56> whenever gold <sprite=56> is earned
   _localizedDescription:
     m_TableReference:
       m_TableCollectionName: GUID:2f92ad920a45b4533a384ea0d98b03ae
@@ -29,6 +29,7 @@ MonoBehaviour:
   - {fileID: 883430520, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
   - {fileID: -1462407127, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
   - {fileID: 1315798854, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+  _maxAbilityPoint: 10
   references:
     version: 2
     RefIds: []

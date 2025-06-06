@@ -5,8 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Table : MonoBehaviour, IInteractable
 {
+    [Space(20)]
     private Station_Controller _stationController;
     public Station_Controller stationController => _stationController;
+    
+    [Space(20)]
+    [SerializeField] private Ability_ScrObj _mergeAbility;
 
 
     // UnityEngine
@@ -18,20 +22,18 @@ public class Table : MonoBehaviour, IInteractable
     public void Start()
     {
         _stationController.detection.ExitEvent += UnInteract;
-
         _stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
     }
 
     public void OnDestroy()
     {
         _stationController.detection.ExitEvent -= UnInteract;
+        _stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
 
         Input_Controller input = Input_Controller.instance;
 
         input.OnAction1 -= Basic_SwapFood;
         input.OnAction2 -= Merge_Food;
-
-        _stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
     }
 
 
@@ -163,8 +165,7 @@ public class Table : MonoBehaviour, IInteractable
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
 
         UnInteract();
-
-        AbilityManager.IncreasePoint(1);
+        AbilityManager.IncreasePoint(_mergeAbility, 1);
 
         // durability
         Station_Maintenance maintenance = stationController.maintenance;
