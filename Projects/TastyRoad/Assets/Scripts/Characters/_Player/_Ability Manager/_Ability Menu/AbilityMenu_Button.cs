@@ -58,7 +58,7 @@ public class AbilityMenu_Button : MonoBehaviour
         
         _abilityScrObj = abilityScrObj;
         
-        _iconImage.sprite = abilityScrObj.ProgressIcon(activationCount);
+        _iconImage.sprite = abilityScrObj.ProgressIcon(activationCount + 1);
         _infoText.text = abilityScrObj.Description();
     }
 
