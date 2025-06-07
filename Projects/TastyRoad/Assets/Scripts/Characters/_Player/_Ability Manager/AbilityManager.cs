@@ -169,8 +169,6 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     
     public void Activate_Ability(Ability_ScrObj ability)
     {
-        Set_AbilityPoint(0);
-        
         Ability activatedAbility = AbilityData(ability);
                 
         activatedAbility.Update_ActivationCount(1);

@@ -11,19 +11,19 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public static Main_Controller instance;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Camera_Controller _cameraController;
     public Camera_Controller cameraController => _cameraController;
 
-    [Header("")]
-    [SerializeField] private Light2D _globalLight;
-    public Light2D globalLight => _globalLight;
+    [Space(20)] 
+    [SerializeField] private GlobalLight_Controller _globalLightController;
+    public GlobalLight_Controller globalLightController => _globalLightController;
 
     [SerializeField] private Volume _globalVolume;
     public Volume globalVolume => _globalVolume;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Data_Controller _dataController;
     public Data_Controller dataController => _dataController;
 
@@ -43,7 +43,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public SubLocations_Controller subLocation => _subLocation;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Transform _locationFile;
     public Transform locationFile => _locationFile;
 

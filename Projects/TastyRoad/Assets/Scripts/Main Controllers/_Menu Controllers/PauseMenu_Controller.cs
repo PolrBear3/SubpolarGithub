@@ -13,10 +13,11 @@ public class PauseMenu_Controller : Menu_Controller
     [SerializeField] private Sprite _mainMenuIcon;
     
     
-    private Action OnPauseToggle;
-    private Action OnPauseExit;
+    private Action OnPauseTrue;
+    private Action OnPauseFalse;
     
     public Action OnPause;
+    public Action OnPauseExit;
 
 
     // Menu_Controller
@@ -31,24 +32,26 @@ public class PauseMenu_Controller : Menu_Controller
         base.Start();
 
         // subscriptions
-        OnPauseToggle = () => Toggle_Pause(true);
-        Input_Controller.instance.OnCancel += OnPauseToggle;
-
-        OnPauseExit = () => Toggle_Pause(false);
-        inputManager.OnExit += OnPauseExit;
+        OnPauseTrue = () => Toggle_Pause(true);
+        OnPauseFalse = () => Toggle_Pause(false);
+        
+        Input_Controller.instance.OnCancel += OnPauseTrue;
+        inputManager.OnExit += OnPauseFalse;
     }
 
     private new void OnDestroy()
     {
         // subscriptions
-        Input_Controller.instance.OnCancel -= OnPauseToggle;
-        inputManager.OnExit -= OnPauseExit;
+        Input_Controller.instance.OnCancel -= OnPauseTrue;
+        inputManager.OnExit -= OnPauseFalse;
     }
 
 
     // Pause Options
     public void Toggle_Pause(bool toggle)
     {
+        if (Input_Controller.instance.isHolding) return;
+        
         TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
         if (transition.coroutine != null) return;
 
@@ -58,6 +61,7 @@ public class PauseMenu_Controller : Menu_Controller
         if (toggle == false)
         {
             OnExitMenu?.Invoke();
+            OnPauseExit?.Invoke();
 
             Audio_Controller.instance.Play_OneShot(gameObject, 0);
             return;

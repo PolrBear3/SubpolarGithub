@@ -18,7 +18,7 @@ public class globaltime : MonoBehaviour, ISaveLoadable
 
     [Header("")]
     [SerializeField] private Color _nightColor;
-    [SerializeField][Range(0, 1)] private float _transitionSpeed;
+    [SerializeField][Range(0, 10)] private float _transitionDuration;
 
 
     private int _currentTime;
@@ -47,9 +47,12 @@ public class globaltime : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         CycleTime();
-
-        bool isDayTime = currentTimePhase == TimePhase.Day;
-        Main_Controller.instance.globalLight.color = isDayTime ? Color.white : _nightColor;
+        
+        GlobalLight_Controller lightController = Main_Controller.instance.globalLightController;
+        Color updateColor = _currentTimePhase == TimePhase.Day ? Color.white : _nightColor;
+        
+        lightController.Set_DefaultColor(updateColor);
+        lightController.Update_CurrentColor(updateColor, 0);
     }
 
 
@@ -94,7 +97,11 @@ public class globaltime : MonoBehaviour, ISaveLoadable
 
         if (_currentTimePhase == recentPhase) return;
 
-        Update_LightAtmosphere();
+        GlobalLight_Controller lightController = Main_Controller.instance.globalLightController;
+        Color updateColor = _currentTimePhase == TimePhase.Day ? Color.white : _nightColor;
+        
+        lightController.Set_DefaultColor(updateColor);
+        lightController.Update_CurrentColor(updateColor, _transitionDuration);
 
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -108,41 +115,5 @@ public class globaltime : MonoBehaviour, ISaveLoadable
 
         OnDayTime?.Invoke();
         dialog.Update_Dialog(0);
-    }
-
-
-    // Global Light
-    private void Update_LightAtmosphere()
-    {
-        if (_lightCoroutine != null)
-        {
-            StopCoroutine(_lightCoroutine);
-            _lightCoroutine = null;
-        }
-
-        bool isDayTime = currentTimePhase == TimePhase.Day;
-        Color targetColor = isDayTime ? Color.white : _nightColor;
-
-        _lightCoroutine = StartCoroutine(Update_LightAtmosphere_Coroutine(targetColor));
-    }
-    private IEnumerator Update_LightAtmosphere_Coroutine(Color targetColor)
-    {
-        Main_Controller main = Main_Controller.instance;
-
-        Color startColor = main.globalLight.color;
-        float t = 0f;
-
-        while (t < 1f)
-        {
-            t += Time.deltaTime * _transitionSpeed;
-            main.globalLight.color = Color.Lerp(startColor, targetColor, t);
-
-            yield return null;
-        }
-
-        main.globalLight.color = targetColor;
-
-        _lightCoroutine = null;
-        yield break;
     }
 }

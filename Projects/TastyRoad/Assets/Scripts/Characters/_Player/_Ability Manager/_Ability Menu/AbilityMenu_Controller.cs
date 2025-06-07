@@ -16,6 +16,11 @@ public class AbilityMenu_Controller : MonoBehaviour
     [Space(20)] 
     [SerializeField] private Sprite _emptyIconSprite;
     
+    [Space(20)] 
+    [SerializeField] private Color _blurColor;
+    [SerializeField][Range(0, 10)] private float _transitionDuration;
+    
+    
     private int _buttonIndexNum;
 
 
@@ -26,20 +31,34 @@ public class AbilityMenu_Controller : MonoBehaviour
         
         // subscriptions
         AbilityManager.OnMaxPoint += Toggle_Menu;
-        // PauseExit += Toggle_Menu; //
+
+        PauseMenu_Controller pauseMenu = PauseMenu_Controller.instance;
         
+        _inputManager.OnExit += () => Toggle_Menu(false);
+        _inputManager.OnExit += () => pauseMenu.Toggle_Pause(true);
+        
+        pauseMenu.OnPauseExit += Toggle_Menu;
+
         _inputManager.OnCursorControl += Navigate_Button;
         _inputManager.OnHoldSelect += Select_Ability;
+        
+        _inputManager.OnSelectStart += Hold_CurrentButton;
+        _inputManager.OnSelect += Release_CurrentButton;
+        _inputManager.OnHoldSelect += Release_CurrentButton;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         AbilityManager.OnMaxPoint -= Toggle_Menu;
-        // PauseExit -= Toggle_Menu; //
+        PauseMenu_Controller.instance.OnPauseExit -= Toggle_Menu;
 
         _inputManager.OnCursorControl -= Navigate_Button;
         _inputManager.OnHoldSelect -= Select_Ability;
+        
+        _inputManager.OnSelectStart -= Hold_CurrentButton;
+        _inputManager.OnSelect -= Release_CurrentButton;
+        _inputManager.OnHoldSelect -= Release_CurrentButton;
     }
     
     
@@ -62,8 +81,10 @@ public class AbilityMenu_Controller : MonoBehaviour
         }
     }
     
+    
     private void Navigate_Button(Vector2 navigateDirection)
     {
+        if (Input_Controller.instance.isHolding) return;
         if (navigateDirection.y == 0) return;
         
         _buttonIndexNum += (int)navigateDirection.y * -1;
@@ -73,32 +94,63 @@ public class AbilityMenu_Controller : MonoBehaviour
         {
             if (i == _buttonIndexNum)
             {
-                _buttons[i].selectIndicator.SetActive(true);
+                _buttons[i].Toggle_Select(true);
                 continue;
             }
-            _buttons[i].selectIndicator.SetActive(false);
+            _buttons[i].Toggle_Select(false);
         }
+    }
+
+    private void Hold_CurrentButton()
+    {
+        AbilityMenu_Button currentButton = _buttons[_buttonIndexNum];
+        UI_ClockTimer holdTimer = currentButton.holdTimer;
+        
+        holdTimer.Run_ClockSprite();
+    }
+
+    private void Release_CurrentButton()
+    {
+        AbilityMenu_Button currentButton = _buttons[_buttonIndexNum];
+        UI_ClockTimer holdTimer = currentButton.holdTimer;
+        
+        holdTimer.Stop_ClockSpriteRun();
     }
     
     
     // Menu
     private void Toggle_Menu(bool toggle)
     {
+        if (Input_Controller.instance.isHolding) return;
+        
+        TransitionCanvas_Controller.instance.Toggle_PauseScreen(toggle);
+        
         _abilityMenuPanel.SetActive(toggle);
         _inputManager.Toggle_Input(toggle);
+        
+        GlobalLight_Controller lightController = Main_Controller.instance.globalLightController;
 
-        if (toggle == false) return;
+        if (toggle == false)
+        {
+            lightController.Toggle_CurrentColorLock(toggle);
+            lightController.Update_CurrentColor(lightController.defaultColor, _transitionDuration);
+            
+            return;
+        }
+        
+        lightController.Update_CurrentColor(_blurColor, _transitionDuration);
+        lightController.Toggle_CurrentColorLock(toggle);
 
         foreach (AbilityMenu_Button button in _buttons)
         {
-            button.selectIndicator.SetActive(false);
+            button.Toggle_Select(false);
         }
 
         _buttonIndexNum = 0;
-        _buttons[0].selectIndicator.SetActive(true);
+        _buttons[0].Toggle_Select(true);
     }
     
-    private void Toggle_Menu()
+    public void Toggle_Menu()
     {
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
 
@@ -118,15 +170,11 @@ public class AbilityMenu_Controller : MonoBehaviour
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         Ability_ScrObj currentAbility = _buttons[_buttonIndexNum].abilityScrObj;
 
-        // random ability activation
-        if (currentAbility == null)
-        {
-            List<Ability_ScrObj> abilities = manager.ActivateAvailable_AbilityScrObjs();
-            currentAbility = abilities[Random.Range(0, abilities.Count)];
-        }
-
-        manager.Activate_Ability(currentAbility);
+        manager.Set_AbilityPoint(0);
         Toggle_Menu(false);
+        
+        if (currentAbility == null) return;
+        manager.Activate_Ability(currentAbility);
 
         // dialog
         Ability abilityData = manager.AbilityData(currentAbility);
