@@ -10,8 +10,8 @@ public class Player_Interaction : MonoBehaviour
     [Header("")]
     [SerializeField][Range(0, 100)] private float _holdTime;
 
+    
     private float _defaultTimerXPos;
-
     private Coroutine _timerCoroutine;
 
 

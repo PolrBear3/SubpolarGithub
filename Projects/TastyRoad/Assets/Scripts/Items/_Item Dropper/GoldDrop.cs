@@ -10,6 +10,10 @@ public class GoldDrop : ItemDrop
     [Space(20)] 
     [SerializeField] private Vector2 _defaultDropAmount;
     
+    [Space(60)] 
+    [SerializeField] private Ability_ScrObj _goldMagnetAbility;
+    
+    
     private GoldSystem_Data _data;
     
     
@@ -44,6 +48,7 @@ public class GoldDrop : ItemDrop
         }
         
         GoldSystem.instance.Update_CurrentAmount(_data.goldAmount);
+        AbilityManager.IncreasePoint(_goldMagnetAbility, 1);
         
         // effects
         Audio_Controller.instance.Play_OneShot(gameObject, 0);

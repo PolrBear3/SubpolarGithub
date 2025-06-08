@@ -6,8 +6,8 @@ public class MovementSpeed_Ability : Ability_Behaviour, IAbility
 {
     [Header("")]
     [SerializeField][Range(0, 1)] private float _increaseStep;
-
-
+    
+    
     // IAbility
     public void Activate()
     {

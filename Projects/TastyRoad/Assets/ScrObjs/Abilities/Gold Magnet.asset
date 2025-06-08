@@ -23,13 +23,15 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  _progressIcons:
-  - {fileID: -1563379713, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
-  - {fileID: -1161235692, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
-  - {fileID: 883430520, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
-  - {fileID: -1462407127, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
-  - {fileID: 1315798854, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
-  _maxAbilityPoint: 10
+  _activationDatas:
+  - _activationIconSprite: {fileID: -1563379713, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+    _maxAbilityPoint: 21
+  - _activationIconSprite: {fileID: -1161235692, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+    _maxAbilityPoint: 21
+  - _activationIconSprite: {fileID: 883430520, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+    _maxAbilityPoint: 21
+  - _activationIconSprite: {fileID: 1315798854, guid: 6ff531a89de6b439c980acede5f16a2c, type: 3}
+    _maxAbilityPoint: 21
   references:
     version: 2
     RefIds: []

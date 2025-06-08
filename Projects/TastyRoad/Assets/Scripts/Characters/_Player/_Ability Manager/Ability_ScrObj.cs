@@ -18,14 +18,10 @@ public class Ability_ScrObj : ScriptableObject
     public LocalizedString localizedDescription => _localizedDescription;
 
     [Space(20)]
-    [SerializeField] private Sprite[] _progressIcons;
-    public Sprite[] progressIcons => _progressIcons;
-
-    [Space(20)] 
-    [SerializeField] [Range(0, 100)] private int _maxAbilityPoint;
-    public int maxAbilityPoint => _maxAbilityPoint;
+    [SerializeField] private Abiliy_ActivationData[] _activationDatas;
     
 
+    // Gets
     public string Description()
     {
         if (_localizedDescription == null) return _description;
@@ -36,15 +32,14 @@ public class Ability_ScrObj : ScriptableObject
 
     public int Max_ActivationCount()
     {
-        return _progressIcons.Length - 1;
+        return _activationDatas.Length - 1;
     }
-    
-    
-    public Sprite ProgressIcon(int levelValue)
-    {
-        levelValue = Mathf.Clamp(levelValue, 0, Max_ActivationCount());
-        int spriteIndex = Mathf.FloorToInt((float)levelValue / Max_ActivationCount() * (progressIcons.Length - 1));
 
-        return _progressIcons[spriteIndex];
+    public Abiliy_ActivationData Abiliy_ActivationData(int progressLevel)
+    {
+        progressLevel = Mathf.Clamp(progressLevel, 0, Max_ActivationCount());
+        int indexNum = Mathf.FloorToInt((float)progressLevel / Max_ActivationCount() * (_activationDatas.Length - 1));
+
+        return _activationDatas[indexNum];
     }
 }

@@ -6,13 +6,13 @@ public class PlaceableStock : MonoBehaviour
 {
     private SpriteRenderer _sr;
 
-    [Header("")]
+    [Space(20)] 
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
 
     [SerializeField] private CoinLauncher _launcher;
 
-    [Header("")]
+    [Space(20)] 
     [SerializeField] private FoodData_Controller _foodIcon;
     public FoodData_Controller foodIcon => _foodIcon;
 
@@ -21,11 +21,15 @@ public class PlaceableStock : MonoBehaviour
 
     [SerializeField] private GameObject _paymentIcon;
 
-    [Header("")]
+    [Space(20)] 
     [SerializeField] private Sprite[] _sprites;
 
-    [Header("")]
+    [Space(20)] 
     [SerializeField][Range(1, 98)] private int _maxAmount;
+    
+    [Space(60)]
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
+    [SerializeField] private Ability_ScrObj _goldMagnetAbility;
 
 
     private StockData _data;
@@ -33,10 +37,6 @@ public class PlaceableStock : MonoBehaviour
     
     private PurchaseData _purchaseData;
     public PurchaseData purchaseData => _purchaseData;
-    
-    
-    [Space(60)]
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     // UnityEngine
@@ -278,7 +278,9 @@ public class PlaceableStock : MonoBehaviour
         if (_purchaseData.price <= 0) return;
         
         int paymentAmount = _purchaseData.price;
+        
         GoldSystem.instance.Update_CurrentAmount(paymentAmount);
+        AbilityManager.IncreasePoint(_goldMagnetAbility, 1);
 
         Transform player = _interactable.detection.player.transform;
         _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], player.position);

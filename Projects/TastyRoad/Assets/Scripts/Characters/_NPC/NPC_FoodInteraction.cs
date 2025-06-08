@@ -7,18 +7,20 @@ public class NPC_FoodInteraction : MonoBehaviour
 {
     [Space(20)]
     [SerializeField] private NPC_Controller _controller;
-    [SerializeField] private Ability_ScrObj _serveFoodAbility;
 
     [Space(20)]
     [SerializeField] private GameObject _collectIndicator;
-
-
+    
     [Space(20)]
     [SerializeField][Range(0, 300)] private int _transferTime;
 
     [Space(20)]
     [SerializeField][Range(0, 100)] private float _conditionRequestRate;
     [SerializeField][Range(0, 100)] private int _conditionBonusPay;
+    
+    [Space(60)]
+    [SerializeField] private Ability_ScrObj _foodOrderAbility;
+    [SerializeField] private Ability_ScrObj _goldMagnetAbility;
 
 
     private int _foodOrderCount;
@@ -226,6 +228,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         Update_RoamArea();
         
         Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, true);
+        AbilityManager.IncreasePoint(_foodOrderAbility, 1);
     }
 
 
@@ -317,7 +320,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         // updates
-        AbilityManager.IncreasePoint(_serveFoodAbility, 1);
+        AbilityManager.IncreasePoint(_foodOrderAbility, 1);
 
         // fail
         if (Set_Payment() <= 0) Fail_OrderTime();
@@ -413,10 +416,11 @@ public class NPC_FoodInteraction : MonoBehaviour
         Update_RoamArea();
     }
 
-    public void Collect_Payment()
+    private void Collect_Payment()
     {
         if (_payAvailable == false) return;
-
+        
         Collect_Payment(Set_Payment());
+        AbilityManager.IncreasePoint(_goldMagnetAbility, 1);
     }
 }

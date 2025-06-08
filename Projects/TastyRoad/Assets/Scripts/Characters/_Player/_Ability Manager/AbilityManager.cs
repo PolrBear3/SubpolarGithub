@@ -35,8 +35,6 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
 
     
     public static Action<Ability_ScrObj, int> IncreasePoint;
-    public static Action OnPointIncrease;
-
     public static Action OnMaxPoint;
 
 
@@ -130,19 +128,19 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     /// </summary>
     private void Increase_AbilityPoint(Ability_ScrObj abilityScrObj, int increaseValue)
     {
+        _data.Set_AbilityPoint(_data.abilityPoint + increaseValue);
+        
         Ability abilityData = _data.AbilityData(abilityScrObj);
-        abilityData.Set_AbilityPoint(abilityData.abilityPoint + increaseValue);
-
-        if (AbilityPoint_Maxed())
+        
+        if (abilityData.ActivationCount_Maxed() == false)
         {
-            if (ActivateAvailable_AbilityDatas().Count <= 0) return;
-            
-            OnMaxPoint?.Invoke();
-            return;
+            abilityData.Set_AbilityPoint(abilityData.abilityPoint + increaseValue);
         }
 
-        _data.Set_AbilityPoint(_data.abilityPoint + increaseValue);
-        OnPointIncrease?.Invoke();
+        if (AbilityPoint_Maxed() == false) return;
+        if (ActivateAvailable_AbilityDatas().Count <= 0) return;
+        
+        OnMaxPoint?.Invoke();
     }
 
 

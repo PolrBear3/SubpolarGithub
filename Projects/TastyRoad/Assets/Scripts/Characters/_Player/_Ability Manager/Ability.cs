@@ -37,7 +37,7 @@ public class Ability
 
     public bool AbilityPoint_Maxed()
     {
-        return _abilityPoint >= _abilityScrObj.maxAbilityPoint;
+        return _abilityPoint >= _abilityScrObj.Abiliy_ActivationData(_activationCount + 1).maxAbilityPoint;
     }
     
     public void Set_AbilityPoint(int setValue)

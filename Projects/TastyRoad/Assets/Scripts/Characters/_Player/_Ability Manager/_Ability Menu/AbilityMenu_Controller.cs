@@ -78,7 +78,7 @@ public class AbilityMenu_Controller : MonoBehaviour
             if (availableAbilities.Count <= 0)
             {
                 int randIndex = Random.Range(0, allAbilities.Count);
-                Sprite emptyIcon = allAbilities[randIndex].ProgressIcon(0);
+                Sprite emptyIcon = allAbilities[randIndex].Abiliy_ActivationData(0).activationIconSprite;
 
                 _buttons[i].Empty_AbilityIndication(emptyIcon, _infoTemplate.TemplateString(0));
                 allAbilities.RemoveAt(randIndex);
@@ -192,7 +192,7 @@ public class AbilityMenu_Controller : MonoBehaviour
         Ability abilityData = manager.data.AbilityData(currentAbility);
         
         int activationCount = abilityData.activationCount;
-        Sprite abilitySprite = currentAbility.ProgressIcon(activationCount);
+        Sprite abilitySprite = currentAbility.Abiliy_ActivationData(activationCount).activationIconSprite;
 
         string abilityInfo = currentAbility.abilityName + "\n\n";
         string activationInfo = activationCount + "/" + currentAbility.Max_ActivationCount() + " ";
