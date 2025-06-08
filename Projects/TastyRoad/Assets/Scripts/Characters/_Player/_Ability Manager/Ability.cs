@@ -6,13 +6,13 @@ using UnityEngine;
 [System.Serializable]
 public class Ability
 {
-    [ES3Serializable] private Ability_ScrObj _abilityScrObj;
+    [ES3Serializable][SerializeField] private Ability_ScrObj _abilityScrObj;
     public Ability_ScrObj abilityScrObj => _abilityScrObj;
 
-    [ES3Serializable] private int _activationCount;
+    [ES3Serializable][SerializeField] private int _activationCount;
     public int activationCount => _activationCount;
     
-    [ES3Serializable] private int _abilityPoint;
+    [ES3Serializable][SerializeField] private int _abilityPoint;
     public int abilityPoint => _abilityPoint;
 
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Serialization;
 
 public class AbilityMenu_Controller : MonoBehaviour
 {
@@ -9,12 +10,10 @@ public class AbilityMenu_Controller : MonoBehaviour
     [SerializeField] private Input_Manager _inputManager;
     [SerializeField] private InfoTemplate_Trigger _infoTemplate;
 
+    [FormerlySerializedAs("_abilityMenuPanel")]
     [Space(20)] 
-    [SerializeField] private GameObject _abilityMenuPanel;
+    [SerializeField] private GameObject _toggleMenu;
     [SerializeField] private AbilityMenu_Button[] _buttons;
-    
-    [Space(20)] 
-    [SerializeField] private Sprite _emptyIconSprite;
     
     [Space(20)] 
     [SerializeField] private Color _blurColor;
@@ -45,6 +44,8 @@ public class AbilityMenu_Controller : MonoBehaviour
         _inputManager.OnSelectStart += Hold_CurrentButton;
         _inputManager.OnSelect += Release_CurrentButton;
         _inputManager.OnHoldSelect += Release_CurrentButton;
+
+        Localization_Controller.instance.OnLanguageChanged += Update_AbilityButtons;
     }
 
     private void OnDestroy()
@@ -59,6 +60,8 @@ public class AbilityMenu_Controller : MonoBehaviour
         _inputManager.OnSelectStart -= Hold_CurrentButton;
         _inputManager.OnSelect -= Release_CurrentButton;
         _inputManager.OnHoldSelect -= Release_CurrentButton;
+        
+        Localization_Controller.instance.OnLanguageChanged -= Update_AbilityButtons;
     }
     
     
@@ -66,29 +69,35 @@ public class AbilityMenu_Controller : MonoBehaviour
     private void Update_AbilityButtons()
     {
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
+        
+        List<Ability_ScrObj> allAbilities = manager.All_AbilityScrObjs();
         List<Ability> availableAbilities = manager.ActivateAvailable_AbilityDatas();
 
         for (int i = 0; i < _buttons.Length; i++)
         {
             if (availableAbilities.Count <= 0)
             {
-                _buttons[i].Empty_AbilityIndication(_emptyIconSprite, _infoTemplate.TemplateString(0));
+                int randIndex = Random.Range(0, allAbilities.Count);
+                Sprite emptyIcon = allAbilities[randIndex].ProgressIcon(0);
+
+                _buttons[i].Empty_AbilityIndication(emptyIcon, _infoTemplate.TemplateString(0));
+                allAbilities.RemoveAt(randIndex);
+
                 continue;
             }
 
+            allAbilities.Remove(availableAbilities[0].abilityScrObj);
+            
             _buttons[i].Set_AbilityIndication(availableAbilities[0]);
             availableAbilities.RemoveAt(0);
         }
     }
-    
-    
-    private void Navigate_Button(Vector2 navigateDirection)
-    {
-        if (navigateDirection.y == 0) return;
-        
-        _buttonIndexNum += (int)navigateDirection.y * -1;
-        _buttonIndexNum = (_buttonIndexNum + _buttons.Length) % _buttons.Length;
 
+
+    private void Navigate_Button(int buttonIndex)
+    {
+        _buttonIndexNum = (buttonIndex + _buttons.Length) % _buttons.Length;
+        
         for (int i = 0; i < _buttons.Length; i++)
         {
             if (i == _buttonIndexNum)
@@ -99,7 +108,13 @@ public class AbilityMenu_Controller : MonoBehaviour
             _buttons[i].Toggle_Select(false);
         }
     }
+    private void Navigate_Button(Vector2 navigateDirection)
+    {
+        if (navigateDirection.y == 0) return;
+        Navigate_Button(_buttonIndexNum + (int)navigateDirection.y * -1);
+    }
 
+    
     private void Hold_CurrentButton()
     {
         AbilityMenu_Button currentButton = _buttons[_buttonIndexNum];
@@ -122,7 +137,7 @@ public class AbilityMenu_Controller : MonoBehaviour
     {
         TransitionCanvas_Controller.instance.Toggle_PauseScreen(toggle);
         
-        _abilityMenuPanel.SetActive(toggle);
+        _toggleMenu.SetActive(toggle);
         _inputManager.Toggle_Input(toggle);
         
         GlobalLight_Controller lightController = Main_Controller.instance.globalLightController;
@@ -184,5 +199,20 @@ public class AbilityMenu_Controller : MonoBehaviour
 
         DialogData dialogData = new(abilitySprite, abilityInfo + activationInfo + "leveled up");
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(dialogData);
+    }
+    
+    /// <summary>
+    /// Menu Button OnPointer Click
+    /// </summary>
+    public void Select_Ability(int buttonIndex)
+    {
+        Debug.Log("Select_Ability");
+        
+        if (buttonIndex != _buttonIndexNum)
+        {
+            Navigate_Button(buttonIndex);
+            return;
+        }
+        Select_Ability();
     }
 }

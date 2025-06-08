@@ -147,6 +147,18 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
 
 
     // Ability Data
+    public List<Ability_ScrObj> All_AbilityScrObjs()
+    {
+        List<Ability_ScrObj> allAbilities = new();
+
+        foreach (Ability_Behaviour ability in _allAbilities)
+        {
+            allAbilities.Add(ability.abilityScrObj);
+        }
+
+        return allAbilities;
+    }
+    
     public List<Ability_ScrObj> ActivateAvailable_AbilityScrObjs()
     {
         List<Ability> abilityDatas = _data.abilityDatas;

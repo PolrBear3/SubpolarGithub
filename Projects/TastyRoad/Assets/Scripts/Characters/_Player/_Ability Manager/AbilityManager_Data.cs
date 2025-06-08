@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class AbilityManager_Data
 {
     [ES3Serializable] private List<Ability> _abilityDatas = new();
