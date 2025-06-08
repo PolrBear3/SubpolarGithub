@@ -40,8 +40,6 @@ public class FoodData_RottenSystem : MonoBehaviour
 
             allDatas[i].Update_Condition(new FoodCondition_Data(FoodCondition_Type.rotten, 1));
         }
-
-        _foodIcon.Update_AllDatas(allDatas);
         _foodIcon.Show_Condition();
     }
 }

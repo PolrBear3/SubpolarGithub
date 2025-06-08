@@ -29,7 +29,8 @@ public class FoodData_Controller : MonoBehaviour
     private bool _iconShowLocked;
     private bool _conditionShowLocked;
 
-    
+
+    public Action OnCurrentDataSet;
     public Action TimeTikEvent;
     
     public Action OnFoodShow;
@@ -180,7 +181,9 @@ public class FoodData_Controller : MonoBehaviour
         _currentData = new FoodData(setData);
 
         if (hadFood) return;
+        
         _hasFood = true;
+        OnCurrentDataSet?.Invoke();
         
         globaltime.instance.OnTimeTik += TimeTik_Update;
     }
@@ -198,6 +201,8 @@ public class FoodData_Controller : MonoBehaviour
         }
 
         _hasFood = false;
+        OnCurrentDataSet?.Invoke();
+        
         globaltime.instance.OnTimeTik -= TimeTik_Update;
     }
 

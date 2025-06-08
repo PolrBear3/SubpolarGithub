@@ -27,7 +27,7 @@ public class MultipleOrder_Ability : Ability_Behaviour, IAbility
 
     private void Load_Activation()
     {
-        int activationCount = manager.AbilityData(abilityScrObj).activationCount;
+        int activationCount = manager.data.AbilityData(abilityScrObj).activationCount;
         
         Location_Controller currentLocation = Main_Controller.instance.currentLocation;
         currentLocation.data.UpdateCurrent_FoodOrderCount(activationCount);

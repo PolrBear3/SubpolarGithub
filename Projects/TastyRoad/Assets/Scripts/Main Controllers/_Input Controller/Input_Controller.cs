@@ -294,6 +294,7 @@ public class Input_Controller : MonoBehaviour
     {
         _cursorDirection = Vector2.zero;
 
+        if (_isHolding) return;
         if (!context.performed) return;
 
         Vector2 directionInput = context.ReadValue<Vector2>();
@@ -328,19 +329,25 @@ public class Input_Controller : MonoBehaviour
 
     public void Option1(InputAction.CallbackContext context)
     {
+        if (_isHolding) return;
         if (context.performed == false) return;
+        
         RecentUI_InputManager().OnOption1?.Invoke();
     }
 
     public void Option2(InputAction.CallbackContext context)
     {
+        if (_isHolding) return;
         if (context.performed == false) return;
+        
         RecentUI_InputManager().OnOption2?.Invoke();
     }
 
     public void Exit(InputAction.CallbackContext context)
     {
+        if (_isHolding) return;
         if (context.performed == false) return;
+        
         RecentUI_InputManager().OnExit?.Invoke();
     }
 }

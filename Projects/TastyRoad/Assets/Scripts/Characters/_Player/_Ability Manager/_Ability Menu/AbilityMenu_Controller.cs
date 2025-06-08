@@ -84,7 +84,6 @@ public class AbilityMenu_Controller : MonoBehaviour
     
     private void Navigate_Button(Vector2 navigateDirection)
     {
-        if (Input_Controller.instance.isHolding) return;
         if (navigateDirection.y == 0) return;
         
         _buttonIndexNum += (int)navigateDirection.y * -1;
@@ -121,8 +120,6 @@ public class AbilityMenu_Controller : MonoBehaviour
     // Menu
     private void Toggle_Menu(bool toggle)
     {
-        if (Input_Controller.instance.isHolding) return;
-        
         TransitionCanvas_Controller.instance.Toggle_PauseScreen(toggle);
         
         _abilityMenuPanel.SetActive(toggle);
@@ -177,7 +174,7 @@ public class AbilityMenu_Controller : MonoBehaviour
         manager.Activate_Ability(currentAbility);
 
         // dialog
-        Ability abilityData = manager.AbilityData(currentAbility);
+        Ability abilityData = manager.data.AbilityData(currentAbility);
         
         int activationCount = abilityData.activationCount;
         Sprite abilitySprite = currentAbility.ProgressIcon(activationCount);

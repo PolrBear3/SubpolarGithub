@@ -15,19 +15,23 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     [SerializeField] private Player_Controller _player;
     public Player_Controller player => _player;
 
+    [SerializeField] private AmountBar _abilityBar;
+    
+    [Space(20)] 
+    [SerializeField] private Sprite[] _abilityPointIcons;
+    
     [Space(20)]
     [SerializeField] private Ability_Behaviour[] _allAbilities;
     public Ability_Behaviour[] allAbilities => _allAbilities;
     
     [SerializeField][Range(0, 100)] private int _maxAbilityPoint;
     public int maxAbilityPoint => _maxAbilityPoint;
-
-
-    private List<Ability> _abilityDatas = new();
-    public List<Ability> abilityDatas => _abilityDatas;
     
-    private int _currentAbilityPoint;
-    public int currentAbilityPoint => _currentAbilityPoint;
+
+    private AbilityManager_Data _data;
+    public AbilityManager_Data data => _data;
+    
+    private Coroutine _coroutine;
 
     
     public static Action<Ability_ScrObj, int> IncreasePoint;
@@ -44,29 +48,30 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Load_AbilityDatas();
+        Toggle_AbilityBar();
 
         // subscriptions
         IncreasePoint += Increase_AbilityPoint;
+        _player.foodIcon.OnCurrentDataSet += Toggle_AbilityBar;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         IncreasePoint -= Increase_AbilityPoint;
+        _player.foodIcon.OnCurrentDataSet -= Toggle_AbilityBar;
     }
 
 
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("AbilityManager/_currentAbilityPoint", _currentAbilityPoint);
-        ES3.Save("AbilityManager/_abilityDatas", _abilityDatas);
+        ES3.Save("AbilityManager/AbilityManager_Data", _data);
     }
 
     public void Load_Data()
     {
-        _currentAbilityPoint = ES3.Load("AbilityManager/_currentAbilityPoint", _currentAbilityPoint);
-        _abilityDatas = ES3.Load("AbilityManager/_abilityDatas", _abilityDatas);
+        _data = ES3.Load("AbilityManager/AbilityManager_Data", new AbilityManager_Data(0));
     }
 
 
@@ -75,10 +80,10 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     {
         for (int i = 0; i < _allAbilities.Length; i++)
         {
-            Ability abilityData = AbilityData(_allAbilities[i].abilityScrObj);
+            Ability abilityData = _data.AbilityData(_allAbilities[i].abilityScrObj);
             if (abilityData == null)
             {
-                _abilityDatas.Add(new Ability(_allAbilities[i].abilityScrObj));
+                _data.abilityDatas.Add(new Ability(_allAbilities[i].abilityScrObj));
                 continue;
             }
 
@@ -92,16 +97,32 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         }
     }
     
+    
+    // Indications
+    private void Toggle_AbilityBar()
+    {
+        FoodData_Controller foodIcon = _player.foodIcon;
+
+        if (_data.abilityPoint <= 0|| foodIcon.hasFood)
+        {
+            _abilityBar.Toggle(false);
+            return;
+        }
+        
+        _abilityBar.Load_Custom(_maxAbilityPoint, _data.abilityPoint);
+        _abilityBar.Toggle_Duration();
+    }
+    
 
     // Main Ability
     public bool AbilityPoint_Maxed()
     {
-        return _currentAbilityPoint >= _maxAbilityPoint;
+        return _data.abilityPoint >= _maxAbilityPoint;
     }
 
     public void Set_AbilityPoint(int setValue)
     {
-        _currentAbilityPoint = Mathf.Clamp(setValue, 0, _maxAbilityPoint);
+        _data.Set_AbilityPoint(Mathf.Clamp(setValue, 0, _maxAbilityPoint));
     }
     
     /// <summary>
@@ -109,7 +130,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     /// </summary>
     private void Increase_AbilityPoint(Ability_ScrObj abilityScrObj, int increaseValue)
     {
-        Ability abilityData = AbilityData(abilityScrObj);
+        Ability abilityData = _data.AbilityData(abilityScrObj);
         abilityData.Set_AbilityPoint(abilityData.abilityPoint + increaseValue);
 
         if (AbilityPoint_Maxed())
@@ -120,7 +141,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        _currentAbilityPoint += increaseValue;
+        _data.Set_AbilityPoint(_data.abilityPoint + increaseValue);
         OnPointIncrease?.Invoke();
     }
 
@@ -128,12 +149,13 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     // Ability Data
     public List<Ability_ScrObj> ActivateAvailable_AbilityScrObjs()
     {
+        List<Ability> abilityDatas = _data.abilityDatas;
         List<Ability_ScrObj> abilityScrObjs = new();
 
-        for (int i = 0; i < _abilityDatas.Count; i++)
+        for (int i = 0; i < abilityDatas.Count; i++)
         {
-            if (_abilityDatas[i].ActivationCount_Maxed()) continue;
-            abilityScrObjs.Add(_abilityDatas[i].abilityScrObj);
+            if (abilityDatas[i].ActivationCount_Maxed()) continue;
+            abilityScrObjs.Add(abilityDatas[i].abilityScrObj);
         }
 
         return abilityScrObjs;
@@ -141,38 +163,47 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     
     public List<Ability> ActivateAvailable_AbilityDatas()
     {
-        List<Ability> abilityDatas = new();
+        List<Ability> currentDatas = _data.abilityDatas;
+        List<Ability> availableDatas = new();
 
-        for (int i = 0; i < _abilityDatas.Count; i++)
+        for (int i = 0; i < currentDatas.Count; i++)
         {
-            if (_abilityDatas[i].ActivationCount_Maxed()) continue;
-            if (_abilityDatas[i].AbilityPoint_Maxed() == false) continue;
+            if (currentDatas[i].ActivationCount_Maxed()) continue;
+            if (currentDatas[i].AbilityPoint_Maxed() == false) continue;
             
-            abilityDatas.Add(_abilityDatas[i]);
+            availableDatas.Add(currentDatas[i]);
         }
         
-        abilityDatas.Sort((a, b) => b.abilityPoint.CompareTo(a.abilityPoint));
+        availableDatas.Sort((a, b) => b.abilityPoint.CompareTo(a.abilityPoint));
         
-        return abilityDatas;
+        return availableDatas;
     }
     
     
-    public Ability AbilityData(Ability_ScrObj targetAbility)
+    private  Ability_Behaviour Ability_Behaviour(Ability_ScrObj abilityScrObj)
     {
-        for (int i = 0; i < _abilityDatas.Count; i++)
+        for (int i = 0; i < _allAbilities.Length; i++)
         {
-            if (targetAbility != _abilityDatas[i].abilityScrObj) continue;
-            return _abilityDatas[i];
+            if (_allAbilities[i].abilityScrObj != abilityScrObj) continue;
+            return _allAbilities[i];
         }
+
         return null;
     }
     
     public void Activate_Ability(Ability_ScrObj ability)
     {
-        Ability activatedAbility = AbilityData(ability);
+        Ability activatedAbility = _data.AbilityData(ability);
+        if (activatedAbility == null) return;
+        
+        Ability_Behaviour behaviour = Ability_Behaviour(ability);
+        if (behaviour == null) return;
                 
         activatedAbility.Update_ActivationCount(1);
         activatedAbility.Set_AbilityPoint(0);
+        
+        IAbility abilityInterface = behaviour.gameObject.GetComponent<IAbility>();
+        abilityInterface.Activate();
     }
 }
 
