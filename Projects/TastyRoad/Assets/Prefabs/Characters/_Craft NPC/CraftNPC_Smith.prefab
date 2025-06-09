@@ -43,6 +43,7 @@ Transform:
   m_Children:
   - {fileID: 4929666838913020091}
   - {fileID: 1384600927109801111}
+  - {fileID: 1925943974518139783}
   - {fileID: 5050102514011139868}
   - {fileID: 8284693085953360644}
   m_Father: {fileID: 0}
@@ -291,7 +292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844ad3abbeead4c2eb1bfabbe9a4282c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterData: {fileID: 0}
   _basicAnim: {fileID: -7268301005637499790}
   _foodIcon: {fileID: 0}
   _interactable: {fileID: 7060423572408988408}
@@ -354,6 +354,7 @@ MonoBehaviour:
   _smithTableSprite: {fileID: -709554179, guid: 8c99d34896b414ee9859f23993f0f708, type: 3}
   _actionDatas:
   - _actionSprite: {fileID: -56009312, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    _activateValue: 0
     _actionEvent:
       m_PersistentCalls:
         m_Calls:
@@ -370,12 +371,13 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - _actionSprite: {fileID: 630336444, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    _activateValue: 0
     _actionEvent:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 8048547352410133038}
           m_TargetAssemblyTypeName: CraftNPC_Smith, Assembly-CSharp
-          m_MethodName: Modify_Station
+          m_MethodName: Drop_BluePrint
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -385,6 +387,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  _itemDropper: {fileID: 7963137789120470021}
   _modifyStations:
   - {fileID: 11400000, guid: c32ff8ce5146c45c79af7acf780abf86, type: 2}
   - {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
@@ -623,6 +626,79 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2463160998973575963, guid: aeaf5e12dfa75432689032cfed8e76b4, type: 3}
   m_PrefabInstance: {fileID: 3538123783122777996}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4930896255674764168
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9178826915786458251}
+    m_Modifications:
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560570367118670746, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+      propertyPath: m_Name
+      value: Item Dropper
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+--- !u!4 &1925943974518139783 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6833161111462305807, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+  m_PrefabInstance: {fileID: 4930896255674764168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7963137789120470021 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3093040163237894029, guid: e0c04e0b45f294858a1d0ef2f8a96560, type: 3}
+  m_PrefabInstance: {fileID: 4930896255674764168}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2379166bc1046648d1fa9d02a32776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6939152818194086817
 PrefabInstance:
   m_ObjectHideFlags: 0

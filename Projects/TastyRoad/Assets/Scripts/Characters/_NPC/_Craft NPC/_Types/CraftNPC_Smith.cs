@@ -6,19 +6,20 @@ using UnityEngine;
 
 public class CraftNPC_Smith : CraftNPC
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _smithTable;
     [SerializeField] private Sprite _smithTableSprite;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private ActionSelector_Data[] _actionDatas;
 
-    private ActionSelector _setTable;
-
-
-    [Header("")]
+    [Space(20)]
+    [SerializeField] private ItemDropper _itemDropper;
     [SerializeField] private Station_ScrObj[] _modifyStations;
-
+    
+    
+    private ActionSelector _setTable;
+    
 
     // MonoBehaviour
     private new void Awake()
@@ -264,17 +265,17 @@ public class CraftNPC_Smith : CraftNPC
         Toggle_PayIcon();
     }
 
-    public void Modify_Station()
+    public void Drop_BluePrint()
     {
-        List<Station_Controller> modifyStations = Surrounding_Stations();
+        List<Station_Controller> surroundingStations = Surrounding_Stations();
 
-        for (int i = modifyStations.Count - 1; i >= 0; i--)
+        for (int i = surroundingStations.Count - 1; i >= 0; i--)
         {
-            if (modifyStations[i].maintenance != null) continue;
-            modifyStations.RemoveAt(i);
+            if (surroundingStations[i].maintenance != null) continue;
+            surroundingStations.RemoveAt(i);
         }
 
-        if (modifyStations.Count <= 0)
+        if (surroundingStations.Count <= 0)
         {
             purchaseData.Toggle_PurchaseState(true);
             Toggle_PayIcon();
@@ -282,24 +283,24 @@ public class CraftNPC_Smith : CraftNPC
             return;
         }
 
-        // destroy
-        int randIndex = UnityEngine.Random.Range(0, modifyStations.Count);
+        // destroy random modify station
+        int randIndex = UnityEngine.Random.Range(0, surroundingStations.Count);
 
-        Station_Controller modifyStation = modifyStations[randIndex];
+        Station_Controller modifyStation = surroundingStations[randIndex];
         StationData stationData = new(modifyStation.data);
 
         modifyStation.Destroy_Station();
+        Main_Controller.instance.UnClaim_Position(stationData.position);
 
-        // modify
+        // drop
         int newRandIndex = UnityEngine.Random.Range(0, _modifyStations.Length);
-
         Station_ScrObj newStationScrObj = _modifyStations[newRandIndex];
-        Station_Controller newStation = Main_Controller.instance.Spawn_Station(newStationScrObj, stationData.position);
 
-        newStation.Set_Data(new(newStationScrObj, stationData.position));
-        newStation.data.Set_Durability(stationData.durability);
-
-        newStation.movement.Load_Position();
+        GameObject spawnCollectCard = _itemDropper.SnapPosition_Spawn(_itemDropper.collectCard, stationData.position);
+        CollectCard collectCard = spawnCollectCard.GetComponent<CollectCard>();
+        
+        collectCard.Set_Blueprint(newStationScrObj);
+        collectCard.Assign_Pickup(collectCard.StationBluePrint_toArchive);
 
         Set_PurchaseData(new(defaultPrice));
         Toggle_PayIcon();

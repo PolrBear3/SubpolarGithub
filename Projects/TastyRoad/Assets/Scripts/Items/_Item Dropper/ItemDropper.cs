@@ -7,7 +7,10 @@ public class ItemDropper : MonoBehaviour
 {
     [Space(20)]
     [SerializeField] private GameObject _foodDrop;
+    
     [SerializeField] private GameObject _collectCard;
+    public GameObject collectCard => _collectCard;
+    
     [SerializeField] private GameObject _goldDrop;
 
 
@@ -39,7 +42,7 @@ public class ItemDropper : MonoBehaviour
     }
 
 
-    private GameObject SnapPosition_Spawn(GameObject spawnItem, Vector2 spawnPosition)
+    public GameObject SnapPosition_Spawn(GameObject spawnItem, Vector2 spawnPosition)
     {
         Main_Controller main = Main_Controller.instance;
         Vector2 spawnSnapPos = main.SnapPosition(spawnPosition);
