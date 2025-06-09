@@ -43,6 +43,8 @@ public class CoinLauncher : MonoBehaviour
         Set_UpdateAngle(launchDirection);
 
         GameObject launchedBullet = Instantiate(_coin, transform.parent.position, Quaternion.identity);
+        launchedBullet.transform.SetParent(Main_Controller.instance.otherFile);
+        
         CoinLauncher_Coin bullet = launchedBullet.GetComponent<CoinLauncher_Coin>();
 
         Vector2 direction = launchDirection - (Vector2)transform.position;
