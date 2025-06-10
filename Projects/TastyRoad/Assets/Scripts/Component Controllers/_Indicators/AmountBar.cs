@@ -16,6 +16,9 @@ public class AmountBar : MonoBehaviour
     [SerializeField] private Sprite[] _greenBarSprites;
 
 
+    private int _spriteIndex;
+    public int spriteIndex => _spriteIndex;
+    
     private int _currentAmount;
     public int currentAmount => _currentAmount;
 
@@ -83,6 +86,7 @@ public class AmountBar : MonoBehaviour
         int spriteIndex = Mathf.FloorToInt((float)loadAmount / _maxAmount * (_amountBarSprites.Length - 1));
         spriteIndex = Mathf.Clamp(spriteIndex, 0, _amountBarSprites.Length - 1);
 
+        _spriteIndex = spriteIndex;
         _sr.sprite = _amountBarSprites[spriteIndex];
     }
 
@@ -91,6 +95,7 @@ public class AmountBar : MonoBehaviour
         int spriteIndex = Mathf.FloorToInt((float)currentAmount / maxAmount * (_amountBarSprites.Length - 1));
         spriteIndex = Mathf.Clamp(spriteIndex, 0, _amountBarSprites.Length - 1);
 
+        _spriteIndex = spriteIndex;
         _sr.sprite = _amountBarSprites[spriteIndex];
     }
 
@@ -132,12 +137,18 @@ public class AmountBar : MonoBehaviour
     }
 
 
-    public void Toggle_Duration()
+    public void Toggle_Duration(bool toggle)
     {
         if (_amountBarCoroutine != null)
         {
             StopCoroutine(_amountBarCoroutine);
             _amountBarCoroutine = null;
+        }
+
+        if (toggle == false)
+        {
+            Toggle(false);
+            return;
         }
 
         _amountBarCoroutine = StartCoroutine(Toggle_Duration_Coroutine());

@@ -5,50 +5,43 @@ using UnityEngine;
 
 public class GroceryNPC : MonoBehaviour, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private NPC_Controller _npcController;
-
-    [Header("")]
+    
     [SerializeField] private Detection_Controller _detection;
     [SerializeField] private IInteractable_Controller _interactable;
 
-    [Header("")]
+    [Space(20)]
+    [SerializeField] private SpriteRenderer _foodBox;
     [SerializeField] private Clock_Timer _actionTimer;
 
-
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _questBarObject;
     [SerializeField] private AmountBar _questBar;
 
-    [Header("")]
-    [SerializeField] private SpriteRenderer _foodBox;
-
-    [Header("")]
+    [Space(20)]
     [SerializeField] private SubLocation _currentSubLocation;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private FoodStock[] _foodStocks;
     [SerializeField] private PlaceableStock[] _placeableStocks;
-
-
-    [Header("")]
-    [SerializeField][Range(0, 1)] private float _actionSpeed;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private Food_ScrObj[] _startingBundles;
 
-    [Header("")]
+    [Space(20)]
+    [SerializeField][Range(0, 1)] private float _actionSpeed;
+
+    [Space(10)]
     [SerializeField][Range(0, 100)] private int _questCoolTime;
     [SerializeField][Range(0, 100)] private int _questCount;
 
-
-    private GroceryNPC_Data _data;
-    private Coroutine _actionCoroutine;
-
-
     [Space(60)] 
     [SerializeField] private VideoGuide_Trigger _guideTrigger;
+
+    
+    private GroceryNPC_Data _data;
+    private Coroutine _actionCoroutine;
 
 
     // UnityEngine
@@ -60,6 +53,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Load_CurrentFoodStocks();
+        UpdateFoodStock_UnlockPrices();
+        
         Load_PlaceableStocks();
 
         _npcController.foodIcon.Show_Icon(0.5f);
@@ -260,6 +255,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
             _foodStocks[i].Set_StockData(stockDatas[i]);
             _foodStocks[i].Set_FoodData(foodDatas[i]);
+            
+            // food stock subscriptions
+            _foodStocks[i].OnUnlock += UpdateFoodStock_UnlockPrices;
         }
     }
 
@@ -295,6 +293,27 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             return true;
         }
         return false;
+    }
+
+
+    private void UpdateFoodStock_UnlockPrices()
+    {
+        int unlockCount = 0;
+
+        for (int i = 0; i < _foodStocks.Length; i++)
+        {
+            if (_foodStocks[i].stockData.unlocked)
+            {
+                unlockCount++;
+                continue;
+            }
+        }
+
+        foreach (FoodStock foodStock in _foodStocks)
+        {
+            int calculatedPrice = foodStock.defaultUnlockPrice + foodStock.bonusUnlockPrice * unlockCount;
+            foodStock.Set_UnlockPrice(calculatedPrice);
+        }
     }
 
 

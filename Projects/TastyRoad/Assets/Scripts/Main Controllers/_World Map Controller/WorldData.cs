@@ -14,7 +14,16 @@ public class WorldData
     [SerializeField] private AnimatorOverrideController _tileAnimOverrider;
     public AnimatorOverrideController tileAnimOverrider => _tileAnimOverrider;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Location_ScrObj[] _locations;
     public Location_ScrObj[] locations => _locations;
+
+
+    public Location_ScrObj Location_ScrObj(int locationNum)
+    {
+        int indexNum = locationNum - 1;
+        if (indexNum < 0 || indexNum > _locations.Length - 1) return null;
+        
+        return _locations[indexNum];
+    }
 }

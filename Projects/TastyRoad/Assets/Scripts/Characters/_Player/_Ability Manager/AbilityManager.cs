@@ -100,15 +100,10 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     private void Toggle_AbilityBar()
     {
         FoodData_Controller foodIcon = _player.foodIcon;
+        bool toggle = _abilityBar.spriteIndex > 0 && _data.abilityPoint > 0 && foodIcon.hasFood == false;
 
-        if (_data.abilityPoint <= 0|| foodIcon.hasFood)
-        {
-            _abilityBar.Toggle(false);
-            return;
-        }
-        
         _abilityBar.Load_Custom(_maxAbilityPoint, _data.abilityPoint);
-        _abilityBar.Toggle_Duration();
+        _abilityBar.Toggle_Duration(toggle);
     }
     
 

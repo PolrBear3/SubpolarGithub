@@ -5,22 +5,23 @@ using UnityEngine.InputSystem;
 
 public class LocationMenu_Controller : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Vehicle_Controller _vehicle;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private Image _menuPanel;
     [SerializeField] private LocationTile[] _tiles;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Image _cursor;
     [SerializeField] private UI_ClockTimer _holdClock;
 
     [SerializeField] private InformationBox _infoBox;
+
+    [Space(20)] 
+    [SerializeField] private GameObject _resourceIndicationToggle;
     
-    
-    [Space(80)]
+    [Space(60)]
     [SerializeField] private Input_Manager _inputManager;
 
 
@@ -74,9 +75,10 @@ public class LocationMenu_Controller : MonoBehaviour
 
         Update_Cursor();
         Update_InfoBox();
-
         Update_TilesAnimation();
-        
+
+        Toggle_ResourceIndications();
+
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
@@ -114,9 +116,11 @@ public class LocationMenu_Controller : MonoBehaviour
 
         Update_Tiles();
         Update_LockedTiles();
-        Update_TilesAnimation();
         
         Update_InfoBox();
+        Update_TilesAnimation();
+
+        Toggle_ResourceIndications();
     }
 
 
@@ -148,9 +152,9 @@ public class LocationMenu_Controller : MonoBehaviour
 
     private void Update_InfoBox()
     {
-        int centerNum = _tiles.Length / 2;
+        int centerTileNum = _tiles.Length / 2;
 
-        if (_hoverTileNum == centerNum)
+        if (_hoverTileNum == centerTileNum)
         {
             _infoBox.gameObject.SetActive(false);
             return;
@@ -163,7 +167,7 @@ public class LocationMenu_Controller : MonoBehaviour
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
 
         int currentAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj("Oil Drum"));
-        int requireAmount = Mathf.Abs(centerNum - _hoverTileNum);
+        int requireAmount = Mathf.Abs(centerTileNum - _hoverTileNum);
         
         InfoTemplate_Trigger trigger = gameObject.GetComponent<InfoTemplate_Trigger>();
         Information_Template template = trigger.templates[0];
@@ -176,7 +180,7 @@ public class LocationMenu_Controller : MonoBehaviour
         _infoBox.gameObject.SetActive(true);
         _infoBox.Update_RectLayout();
 
-        if (_hoverTileNum <= centerNum)
+        if (_hoverTileNum <= centerTileNum)
         {
             _infoBox.Flip_toDefault();
             return;
@@ -242,15 +246,16 @@ public class LocationMenu_Controller : MonoBehaviour
         WorldMap_Controller worldMap = main.worldMap;
         WorldMap_Data currentData = worldMap.currentData;
 
-        int worldNum = currentData.worldNum;
-        int locationNum = currentData.locationNum;
-
-        int totalLocationCount = data.LocationCount_inWorld(worldNum);
+        int currentWorldNum = currentData.worldNum;
+        int worldIndexNum = currentWorldNum - 1;
+        
+        int locationIndexNum = currentData.locationNum - 1;
+        int totalLocationCount = data.LocationCount_inWorld(currentWorldNum);
 
         for (int i = 0; i < _tiles.Length; i++)
         {
             // location number relative to the middle tile
-            int relativeLocationNum = locationNum - _tiles.Length / 2 + i;
+            int relativeLocationNum = locationIndexNum - _tiles.Length / 2 + i;
 
             if (relativeLocationNum < 0 || relativeLocationNum >= totalLocationCount)
             {
@@ -259,8 +264,8 @@ public class LocationMenu_Controller : MonoBehaviour
             }
 
             _tiles[i].Toggle_Lock(false);
-            _tiles[i].Set_WorldMapData(new(worldNum, relativeLocationNum));
-            _tiles[i].Set_AnimatorOverrider(data.World_Data(worldNum).tileAnimOverrider);
+            _tiles[i].Set_WorldMapData(new(currentWorldNum, relativeLocationNum + 1));
+            _tiles[i].Set_AnimatorOverrider(data.World_Data(currentWorldNum).tileAnimOverrider);
         }
     }
 
@@ -343,6 +348,14 @@ public class LocationMenu_Controller : MonoBehaviour
 
             locationNum++;
         }
+    }
+    
+    
+    // Resource Indication
+    private void Toggle_ResourceIndications()
+    {
+        int centerTileNum = _tiles.Length / 2;
+        _resourceIndicationToggle.SetActive(_hoverTileNum == centerTileNum);
     }
     
     

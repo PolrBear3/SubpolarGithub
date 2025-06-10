@@ -97,7 +97,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
     private Location_Controller Set_Location(WorldMap_Data setData)
     {
         _currentData = new(setData);
-
+        
         // set location
         Main_Controller main = Main_Controller.instance;
         Location_Controller location = main.Set_Location(_currentData);

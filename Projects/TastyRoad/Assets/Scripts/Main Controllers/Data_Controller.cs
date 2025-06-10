@@ -48,18 +48,20 @@ public class Data_Controller : MonoBehaviour
     // Get World and Location
     public WorldData World_Data(int targetWorldNum)
     {
-        if (targetWorldNum < 0 || targetWorldNum > worldData.Length - 1) return null;
+        int indexNum = targetWorldNum - 1;
+        if (indexNum < 0 || indexNum > worldData.Length - 1) return null;
 
-        return _worldData[targetWorldNum];
+        return _worldData[indexNum];
     }
 
     public int LocationCount_inWorld(int targetWorldNum)
     {
-        if (targetWorldNum < 0 || targetWorldNum > _worldData.Length - 1) return 0;
+        int indexNum = targetWorldNum - 1;
+        if (indexNum < 0 || indexNum > _worldData.Length - 1) return 0;
 
         for (int i = 0; i < _worldData.Length; i++)
         {
-            if (targetWorldNum != i) continue;
+            if (indexNum != i) continue;
             return _worldData[i].locations.Length;
         }
 

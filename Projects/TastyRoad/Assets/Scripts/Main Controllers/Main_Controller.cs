@@ -240,7 +240,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public Location_Controller Set_Location(WorldMap_Data data)
     {
         WorldData worldData = _dataController.World_Data(data.worldNum);
-        Location_ScrObj location = worldData.locations[data.locationNum];
+        Location_ScrObj location = worldData.Location_ScrObj(data.locationNum);
 
         GameObject setLocation = Instantiate(location.locationPrefab, Vector2.zero, Quaternion.identity);
         setLocation.transform.parent = _locationFile;

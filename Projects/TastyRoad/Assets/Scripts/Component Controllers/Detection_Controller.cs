@@ -24,6 +24,12 @@ public class Detection_Controller : MonoBehaviour
         if (gameObject.TryGetComponent(out BoxCollider2D boxCollider)) { _boxCollider = boxCollider; }
     }
 
+    private void OnDestroy()
+    {
+        EnterEvent = null;
+        ExitEvent = null;
+    }
+
 
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D collision)

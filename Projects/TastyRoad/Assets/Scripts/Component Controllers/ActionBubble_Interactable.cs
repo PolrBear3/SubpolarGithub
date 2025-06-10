@@ -44,7 +44,11 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     private void OnDestroy()
     {
         // subscriptions
-        _detection.ExitEvent -= UnInteract;
+        OnInteract = null;
+        OnHoldInteract = null;
+        OnUnInteract = null;
+        OnAction1 = null;
+        OnAction2 = null;
 
         Input_Controller input = Input_Controller.instance;
 
