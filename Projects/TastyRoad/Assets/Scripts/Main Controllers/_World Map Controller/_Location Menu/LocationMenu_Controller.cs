@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -20,6 +21,11 @@ public class LocationMenu_Controller : MonoBehaviour
 
     [Space(20)] 
     [SerializeField] private GameObject _resourceIndicationToggle;
+    [SerializeField] private GameObject _indicationIcon;
+    
+    [Space(10)] 
+    [SerializeField] private Transform _stationIconBox;
+    [SerializeField] private Transform _foodIconBox;
     
     [Space(60)]
     [SerializeField] private Input_Manager _inputManager;
@@ -33,6 +39,9 @@ public class LocationMenu_Controller : MonoBehaviour
     private void Start()
     {
         Toggle_Menu(false);
+
+        Update_FoodIndications();
+        Update_StationIndications();
         
         // subscriptions
         _inputManager.OnCursorControl += CursorControl;
@@ -356,6 +365,35 @@ public class LocationMenu_Controller : MonoBehaviour
     {
         int centerTileNum = _tiles.Length / 2;
         _resourceIndicationToggle.SetActive(_hoverTileNum == centerTileNum);
+    }
+
+
+    private void Update_FoodIndications()
+    {
+        LocationData currentData = Main_Controller.instance.currentLocation.data;
+        List<Food_ScrObj> ingredientDrops = currentData.Sorted_IngredientUnlocks();
+
+        foreach (Food_ScrObj food in ingredientDrops)
+        {
+            GameObject spawnedIcon = Instantiate(_indicationIcon, _foodIconBox);
+            DialogBox foodIcon = spawnedIcon.GetComponent<DialogBox>();
+
+            foodIcon.Set_IconImage(food.sprite);
+        }
+    }
+
+    private void Update_StationIndications()
+    {
+        LocationData currentData = Main_Controller.instance.currentLocation.data;
+        List<Station_ScrObj> stationDrops = currentData.Sorted_StationDrops();
+
+        foreach (Station_ScrObj station in stationDrops)
+        {
+            GameObject spawnedIcon = Instantiate(_indicationIcon, _stationIconBox);
+            DialogBox stationIcon = spawnedIcon.GetComponent<DialogBox>();
+
+            stationIcon.Set_IconImage(station.dialogIcon);
+        }
     }
     
     

@@ -78,7 +78,22 @@ public class LocationData
     }
 
 
-    // Food and Station Datas
+    // Food Data
+    public List<Food_ScrObj> Sorted_IngredientUnlocks()
+    {
+        List<FoodWeight_Data> unlocks = new(_ingredientUnlocks);
+        unlocks.Sort((a, b) => b.weight.CompareTo(a.weight));
+        
+        List<Food_ScrObj> sortedUnlocks = new();
+        
+        foreach (FoodWeight_Data foodData in unlocks)
+        {
+            sortedUnlocks.Add(foodData.foodScrObj);
+        }
+        
+        return sortedUnlocks;
+    }
+    
     public Food_ScrObj WeightRandom_Food(List<FoodWeight_Data> data)
     {
         if (data.Count <= 0) return null;
@@ -137,7 +152,23 @@ public class LocationData
         return WeightRandom_Food(data);
     }
 
-
+    
+    // Station Data
+    public List<Station_ScrObj> Sorted_StationDrops()
+    {
+        List<StationWeight_Data> stationDrops = new(_stationDrops);
+        stationDrops.Sort((a, b) => b.weight.CompareTo(a.weight));
+        
+        List<Station_ScrObj> sortedDrops = new();
+        
+        foreach (StationWeight_Data stationData in stationDrops)
+        {
+            sortedDrops.Add(stationData.stationScrObj);
+        }
+        
+        return sortedDrops;
+    }
+    
     public Station_ScrObj WeightRandom_Station()
     {
         // get total wieght
@@ -155,6 +186,8 @@ public class LocationData
         // get random according to weight
         for (int i = 0; i < _stationDrops.Length; i++)
         {
+            if (_stationDrops[i].weight <= 0) continue;
+            
             cumulativeWeight += _stationDrops[i].weight;
 
             if (randValue >= cumulativeWeight) continue;

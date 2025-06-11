@@ -302,7 +302,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _foodStocks.Length; i++)
         {
-            if (_foodStocks[i].stockData.unlocked)
+            StockData stockData = _foodStocks[i].stockData;
+           
+            if (stockData != null && stockData.unlocked)
             {
                 unlockCount++;
                 continue;

@@ -68,7 +68,7 @@ public class Player_Movement : MonoBehaviour
     public bool Is_Moving()
     {
         if (_rigidBody.velocity != Vector2.zero) return true;
-        else return false;
+        return false;
     }
 
 
@@ -94,6 +94,8 @@ public class Player_Movement : MonoBehaviour
             
             StopCoroutine(_movementCoroutine);
             _movementCoroutine = null;
+
+            return;
         }
         
         if (_movementCoroutine != null) return;
@@ -113,6 +115,11 @@ public class Player_Movement : MonoBehaviour
     {
         _rigidBody.velocity = Vector2.zero;
         _playerController.animationController.Idle_Move(false);
+        
+        if (_movementCoroutine == null) return;
+        
+        StopCoroutine(_movementCoroutine);
+        _movementCoroutine = null;
     }
 
     public void Set_MoveSpeed(float setValue)
