@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.Localization;
 
 [System.Serializable]
+public class TutorialQuest_Group
+{
+    [SerializeField] private TutorialQuest[] _quests;
+    public TutorialQuest[] quests => _quests;
+}
+
+[System.Serializable]
 public class TutorialQuest
 {
-    [SerializeField] private int _questGroupNum;
-    public int questGroupNum => _questGroupNum;
-    
     [Space(20)]
     [SerializeField] private string _questName;
     public string questName => _questName;
@@ -16,10 +20,10 @@ public class TutorialQuest
     [SerializeField] private string _description;
     public string description => _description;
 
-    [SerializeField] private int _completeCount;
+    [SerializeField][Range(0, 100)] private int _completeCount;
     public int completeCount => _completeCount;
     
-    [SerializeField] [Range(0, 100)] private int _goldAmount;
+    [SerializeField] [Range(0, 9999999)] private int _goldAmount;
     public int goldAmount => _goldAmount;
     
     [Space(20)]
@@ -27,6 +31,9 @@ public class TutorialQuest
     public LocalizedString localizedDescription => _localizedDescription;
 
 
+    private int _groupNum;
+    public int groupNum => _groupNum;
+    
     [ES3Serializable] private int _currentCompleteCount;
     public int currentCompleteCount => _currentCompleteCount;
     
@@ -41,7 +48,12 @@ public class TutorialQuest
     }
 
 
-    public void Load_Current(int loadValue)
+    public void Set_GroupNum(int groupNum)
+    {
+        _groupNum = groupNum;
+    }
+    
+    public void Load_CompleteCount(int loadValue)
     {
         _currentCompleteCount = Mathf.Clamp(loadValue, 0, completeCount);
     }

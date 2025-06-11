@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -12,9 +13,9 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)]
     [SerializeField] private GameObject _questBox;
     [SerializeField] private TextMeshProUGUI _questText;
-
+    
     [Space(20)] 
-    [SerializeField] private TutorialQuest[] _quests;
+    [SerializeField] private TutorialQuest_Group[] _questGroups;
 
     
     private List<TutorialQuest> _currentQuests = new();
@@ -62,9 +63,13 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     {
         if (ES3.KeyExists("TutorialQuest_Controller") == false)
         {
-            foreach (TutorialQuest quest in _quests)
+            for (int i = 0; i < _questGroups.Length; i++)
             {
-                _currentQuests.Add(quest);
+                for (int j = 0; j < _questGroups[i].quests.Length; j++)
+                {
+                    _currentQuests.Add(_questGroups[i].quests[j]);
+                    _questGroups[i].quests[j].Set_GroupNum(i);
+                }
             }
             return;
         }
@@ -72,16 +77,21 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         Dictionary<string, int> currentQuestData = new();
         currentQuestData = ES3.Load("TutorialQuest_Controller", currentQuestData);
         
-        for (int i = 0; i < _quests.Length; i++)
+        for (int i = 0; i < _questGroups.Length; i++)
         {
-            TutorialQuest quest = _quests[i];
+            for (int j = 0; j < _questGroups[i].quests.Length; j++)
+            {
+                TutorialQuest quest = _questGroups[i].quests[j];
             
-            if (currentQuestData.ContainsKey(quest.questName) == false) continue;
-            if (currentQuestData.TryGetValue(quest.questName, out int completeCount) == false) continue;
-            if (completeCount >= quest.completeCount) continue;
+                if (currentQuestData.ContainsKey(quest.questName) == false) continue;
+                if (currentQuestData.TryGetValue(quest.questName, out int completeCount) == false) continue;
+                if (completeCount >= quest.completeCount) continue;
 
-            quest.Load_Current(completeCount);
-            _currentQuests.Add(quest);
+                quest.Load_CompleteCount(completeCount);
+                
+                _currentQuests.Add(quest);
+                _questGroups[i].quests[j].Set_GroupNum(i);
+            }
         }
     }
     
@@ -93,12 +103,12 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         
         _questText.text = "";
         
-        int currentQuestNum = _currentQuests[0].questGroupNum;
+        int currentGroupNum = _currentQuests[0].groupNum;
         List<string> questLines = new();
 
         for (int i = 0; i < _currentQuests.Count; i++)
         {
-            if (currentQuestNum != _currentQuests[i].questGroupNum) break;
+            if (currentGroupNum != _currentQuests[i].groupNum) break;
 
             string completeCountString = "[ " + _currentQuests[i].currentCompleteCount + "/" + _currentQuests[i].completeCount + " ]  ";
             questLines.Add(completeCountString + _currentQuests[i].Description());
