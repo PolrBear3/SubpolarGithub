@@ -18,7 +18,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private TutorialQuest_Group[] _questGroups;
 
     
-    private List<TutorialQuest> _currentQuests = new();
+    [SerializeField] private List<TutorialQuest> _currentQuests = new();
     
     
     // UnityEngine
@@ -119,7 +119,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     
     
     // Data Control
-    private TutorialQuest CurrentQuest(string questName)
+    public TutorialQuest CurrentQuest(string questName)
     {
         for (int i = 0; i < _currentQuests.Count; i++)
         {
@@ -129,24 +129,27 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
 
         return null;
     }
-    
-    public void Complete_Quest(string questName, int completeUpdateValue)
+
+    public void Complete_Quest(TutorialQuest questData, int completeUpdateValue)
     {
-        TutorialQuest completeQuest = CurrentQuest(questName);
-        if (completeQuest == null) return;
+        if (questData == null) return;
         
-        if (completeQuest.Update_CompleteCount(completeUpdateValue) < completeQuest.completeCount)
+        if (questData.Update_CompleteCount(completeUpdateValue) < questData.completeCount)
         {
             Update_QuestText();
             return;
         }
         
-        GoldSystem.instance.Update_CurrentAmount(completeQuest.goldAmount);
-        _currentQuests.Remove(completeQuest);
+        GoldSystem.instance.Update_CurrentAmount(questData.goldAmount);
+        _currentQuests.Remove(questData);
         
         Update_QuestText();
         
         bool isIngame = Input_Controller.instance.Current_ActionMapNum() == 0;
         _questBox.SetActive(isIngame && _currentQuests.Count > 0);
+    }
+    public void Complete_Quest(string questName, int completeUpdateValue)
+    {
+        Complete_Quest(CurrentQuest(questName), completeUpdateValue);
     }
 }

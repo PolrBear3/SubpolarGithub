@@ -8,10 +8,10 @@ public class GroceryNPC_Data
     [ES3Serializable] private int _questCompleteCount;
     public int questCompleteCount => _questCompleteCount;
     
-    [ES3Serializable]private bool _questComplete;
+    [ES3Serializable] private bool _questComplete;
     public bool questComplete => _questComplete;
     
-    [ES3Serializable]private List<FoodData> _unlockDatas;
+    [ES3Serializable] private List<FoodData> _unlockDatas;
     public List<FoodData> unlockDatas => _unlockDatas;
 
 
@@ -108,6 +108,20 @@ public class GroceryNPC_Data
 
         return unlockedDatas;
     }
+
+    public List<FoodData> MaxUnlocked_FoodDatas()
+    {
+        List<FoodData> maxDatas = new();
+        
+        for (int i = 0; i < _unlockDatas.Count; i++)
+        {
+            if (_unlockDatas[i].currentAmount < _unlockDatas[i].foodScrObj.unlockAmount) continue;
+            maxDatas.Add(_unlockDatas[i]);
+        }
+        
+        return maxDatas;
+    }
+    
 
     private FoodData Unlocked_FoodData(Food_ScrObj foodScrObj)
     {

@@ -62,6 +62,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _questBar.Toggle_BarColor(true);
         Toggle_QuestBar();
 
+        Update_BundleQuest();
+
         // untrack
         Main_Controller.instance.UnTrack_CurrentCharacter(gameObject);
 
@@ -734,10 +736,23 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             {
                 Toggle_UnlockingFood(stock);
             }
+
+            Update_BundleQuest();
         }
 
         Cancel_Action();
         yield break;
+    }
+
+    private void Update_BundleQuest()
+    {
+        TutorialQuest_Controller questController = TutorialQuest_Controller.instance;
+        TutorialQuest bundleQuest = questController.CurrentQuest("CompleteAllBundles");
+        
+        int currentMaxCount = _data.MaxUnlocked_FoodDatas().Count;
+        int completeCount = bundleQuest.currentCompleteCount;
+
+        questController.Complete_Quest(bundleQuest, currentMaxCount - completeCount);
     }
 
 
