@@ -622,7 +622,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (food == null) return;
 
-        if (!FoodIngredient_Unlocked(food))
+        if (FoodIngredient_Unlocked(food) == false)
         {
             _ingredientUnlocks.Add(new(food));
             _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);

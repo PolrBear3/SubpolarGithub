@@ -611,7 +611,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
             CarryObject_SpriteToggle(false, null);
             
-            TutorialQuest_Controller.instance.Complete_Quest("BuildStation", 1);
+            // quest
+            TutorialQuest_Controller quest = TutorialQuest_Controller.instance;
+            quest.Complete_Quest("BuildStation", 1);
+            quest.Complete_Quest("Build" + recentStation.stationName, 1);
 
             Cancel_Action();
             yield break;

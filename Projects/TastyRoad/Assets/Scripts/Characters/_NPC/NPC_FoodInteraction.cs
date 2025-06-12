@@ -293,6 +293,9 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         _transferData = new(transferData);
         _transferDatas.Add(new(transferData));
+        
+        // quest
+        TutorialQuest_Controller.instance.Complete_Quest("Serve" + transferData.foodScrObj.name, 1);
 
         return true;
     }

@@ -160,6 +160,9 @@ public class Table : MonoBehaviour, IInteractable
 
         menu.Unlock_BookmarkToggle(menu.Archive_Food(mergedFood), true);
         menu.Unlock_FoodIngredient(mergedFood, 1);
+        
+        // quest
+        TutorialQuest_Controller.instance.Complete_Quest("Make" + mergedFood.name, 1);
 
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
