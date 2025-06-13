@@ -40,8 +40,6 @@ public class Player_Movement : MonoBehaviour
     private void Start()
     {
         // subscriptions
-        OnMovement += () => AbilityManager.IncreasePoint(_movementSpeedAbility, 1);
-        
         Input_Controller.instance.OnActionMapUpdate += Force_MovementRestriction;
     }
 

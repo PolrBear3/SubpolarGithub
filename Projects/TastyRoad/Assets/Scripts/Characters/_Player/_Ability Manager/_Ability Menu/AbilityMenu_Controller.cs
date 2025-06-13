@@ -9,11 +9,13 @@ public class AbilityMenu_Controller : MonoBehaviour
     [Space(20)]
     [SerializeField] private Input_Manager _inputManager;
     [SerializeField] private InfoTemplate_Trigger _infoTemplate;
-
-    [FormerlySerializedAs("_abilityMenuPanel")]
+    
     [Space(20)] 
     [SerializeField] private GameObject _toggleMenu;
     [SerializeField] private AbilityMenu_Button[] _buttons;
+    
+    [Space(10)]
+    [SerializeField] private Sprite _emptyIcon;
     
     [Space(20)] 
     [SerializeField] private Color _blurColor;
@@ -21,11 +23,13 @@ public class AbilityMenu_Controller : MonoBehaviour
     
     
     private int _buttonIndexNum;
+    private bool _buttonsUpdated;
 
 
     // MonoBehaviour
     private void Start()
     {
+        Load_Data();
         Toggle_Menu();
         
         // subscriptions
@@ -45,7 +49,7 @@ public class AbilityMenu_Controller : MonoBehaviour
         _inputManager.OnSelect += Release_CurrentButton;
         _inputManager.OnHoldSelect += Release_CurrentButton;
 
-        Localization_Controller.instance.OnLanguageChanged += Update_AbilityButtons;
+        Localization_Controller.instance.OnLanguageChanged += UpdateCurrent_AbilityButtons;
     }
 
     private void OnDestroy()
@@ -61,35 +65,124 @@ public class AbilityMenu_Controller : MonoBehaviour
         _inputManager.OnSelect -= Release_CurrentButton;
         _inputManager.OnHoldSelect -= Release_CurrentButton;
         
-        Localization_Controller.instance.OnLanguageChanged -= Update_AbilityButtons;
+        Localization_Controller.instance.OnLanguageChanged -= UpdateCurrent_AbilityButtons;
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save_Data();
+    }
+    
+    
+    // ISaveLoadable
+    private void Save_Data()
+    {
+        if (_buttonsUpdated == false) return;
+
+        List<Ability> buttonAbilities = new();
+        
+        foreach (AbilityMenu_Button button in _buttons)
+        {
+            buttonAbilities.Add(new(button.abilityScrObj));
+        }
+        
+        ES3.Save("AbilityMenu_Controller/List<Ability>", buttonAbilities);
+    }
+
+    private void Load_Data()
+    {
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
+        
+        if (manager.AbilityPoint_Maxed() == false) return;
+        _buttonsUpdated = true;
+        
+        List<Ability> buttonAbilities = ES3.Load("AbilityMenu_Controller/List<Ability>", new List<Ability>());
+
+        for (int i = 0; i < buttonAbilities.Count; i++)
+        {
+            if (buttonAbilities[i].abilityScrObj == null)
+            {
+                _buttons[i].Empty_AbilityIndication(_emptyIcon, _infoTemplate.TemplateString(0));
+                continue;
+            }
+            _buttons[i].Set_AbilityIndication(buttonAbilities[i]);
+        }
     }
     
     
     // Buttons
     private void Update_AbilityButtons()
     {
-        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
+        _buttonsUpdated = true;
         
-        List<Ability_ScrObj> allAbilities = manager.All_AbilityScrObjs();
-        List<Ability> availableAbilities = manager.ActivateAvailable_AbilityDatas();
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
+        AbilityManager_Data managerData = manager.data;
+        
+        List<Ability_ScrObj> availableAbilities = manager.ActivateAvailable_AbilityScrObjs();
+        List<float> abilityWeights = new();
 
-        for (int i = 0; i < _buttons.Length; i++)
+        float totalWeight = 0;
+
+        foreach (Ability_ScrObj ability in availableAbilities)
         {
+            int activationCount = managerData.AbilityData(ability).activationCount;
+            
+            float ratio = activationCount / (float)ability.Max_ActivationCount();
+            float weight = Mathf.Clamp01(1f - ratio);
+
+            abilityWeights.Add(weight);
+            totalWeight += weight;
+        }
+
+        foreach (AbilityMenu_Button button in _buttons)
+        {
+            // not enough abilities to upgrade
             if (availableAbilities.Count <= 0)
             {
-                int randIndex = Random.Range(0, allAbilities.Count);
-                Sprite emptyIcon = allAbilities[randIndex].Abiliy_ActivationData(0).activationIconSprite;
-
-                _buttons[i].Empty_AbilityIndication(emptyIcon, _infoTemplate.TemplateString(0));
-                allAbilities.RemoveAt(randIndex);
-
+                button.Empty_AbilityIndication(_emptyIcon, _infoTemplate.TemplateString(0));
                 continue;
             }
-
-            allAbilities.Remove(availableAbilities[0].abilityScrObj);
             
-            _buttons[i].Set_AbilityIndication(availableAbilities[0]);
-            availableAbilities.RemoveAt(0);
+            float randValue = UnityEngine.Random.Range(0f, totalWeight);
+            float cumulativeWeight = 0f;
+
+            for (int i = 0; i < abilityWeights.Count; i++)
+            {
+                cumulativeWeight += abilityWeights[i];
+                
+                if (randValue > cumulativeWeight) continue;
+
+                Ability setAbility = managerData.AbilityData(availableAbilities[i]);
+                button.Set_AbilityIndication(setAbility);
+
+                totalWeight -= abilityWeights[i];
+                
+                abilityWeights.RemoveAt(i);
+                availableAbilities.RemoveAt(i);
+
+                break;
+            }
+        }
+    }
+
+    private void UpdateCurrent_AbilityButtons()
+    {
+        AbilityManager manager = Main_Controller.instance.Player().abilityManager;
+        
+        if (manager.AbilityPoint_Maxed() == false) return;
+        _buttonsUpdated = true;
+        
+        for (int i = 0; i < _buttons.Length; i++)
+        {
+            Ability_ScrObj setAbility = _buttons[i].abilityScrObj;
+
+            if (setAbility == null)
+            {
+                _buttons[i].Empty_AbilityIndication(_emptyIcon, _infoTemplate.TemplateString(0));
+                continue;
+            }
+            
+            _buttons[i].Set_AbilityIndication(manager.data.AbilityData(setAbility));
         }
     }
 
@@ -147,6 +240,7 @@ public class AbilityMenu_Controller : MonoBehaviour
             lightController.Toggle_CurrentColorLock(toggle);
             lightController.Update_CurrentColor(lightController.defaultColor, _transitionDuration);
             
+            Save_Data();
             return;
         }
         
@@ -166,19 +260,27 @@ public class AbilityMenu_Controller : MonoBehaviour
     {
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
 
-        if (manager.AbilityPoint_Maxed() == false || manager.ActivateAvailable_AbilityDatas().Count <= 0)
+        if (manager.AbilityPoint_Maxed() == false || manager.ActivateAvailable_AbilityScrObjs().Count <= 0)
         {
             Toggle_Menu(false);
             return;
         }
         
         Toggle_Menu(true);
+
+        if (_buttonsUpdated)
+        {
+            UpdateCurrent_AbilityButtons();
+            return;
+        }
         Update_AbilityButtons();
     }
     
     
     private void Select_Ability()
     {
+        _buttonsUpdated = false;
+        
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
         Ability_ScrObj currentAbility = _buttons[_buttonIndexNum].abilityScrObj;
 
@@ -192,7 +294,7 @@ public class AbilityMenu_Controller : MonoBehaviour
         Ability abilityData = manager.data.AbilityData(currentAbility);
         
         int activationCount = abilityData.activationCount;
-        Sprite abilitySprite = currentAbility.Abiliy_ActivationData(activationCount).activationIconSprite;
+        Sprite abilitySprite = currentAbility.activationIconSprite[activationCount];
 
         string abilityInfo = currentAbility.abilityName + "\n\n";
         string activationInfo = activationCount + "/" + currentAbility.Max_ActivationCount() + " ";
@@ -206,8 +308,6 @@ public class AbilityMenu_Controller : MonoBehaviour
     /// </summary>
     public void Select_Ability(int buttonIndex)
     {
-        Debug.Log("Select_Ability");
-        
         if (buttonIndex != _buttonIndexNum)
         {
             Navigate_Button(buttonIndex);

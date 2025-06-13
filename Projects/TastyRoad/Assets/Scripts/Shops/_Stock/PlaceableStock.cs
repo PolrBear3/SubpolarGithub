@@ -292,7 +292,6 @@ public class PlaceableStock : MonoBehaviour
         int paymentAmount = _purchaseData.price;
         
         GoldSystem.instance.Update_CurrentAmount(paymentAmount);
-        AbilityManager.IncreasePoint(_goldMagnetAbility, 1);
 
         Transform player = _interactable.detection.player.transform;
         _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], player.position);

@@ -34,7 +34,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     private Coroutine _coroutine;
 
     
-    public static Action<Ability_ScrObj, int> IncreasePoint;
+    public static Action<int> IncreasePoint;
     public static Action OnMaxPoint;
 
 
@@ -117,23 +117,14 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
     {
         _data.Set_AbilityPoint(Mathf.Clamp(setValue, 0, _maxAbilityPoint));
     }
-    
-    /// <summary>
-    /// AbilityManager.OnPointIncrease(Ability_ScrObj abilityScrObj, increase value);
-    /// </summary>
-    private void Increase_AbilityPoint(Ability_ScrObj abilityScrObj, int increaseValue)
-    {
-        _data.Set_AbilityPoint(_data.abilityPoint + increaseValue);
-        
-        Ability abilityData = _data.AbilityData(abilityScrObj);
-        
-        if (abilityData.ActivationCount_Maxed() == false)
-        {
-            abilityData.Set_AbilityPoint(abilityData.abilityPoint + increaseValue);
-        }
 
+    private void Increase_AbilityPoint(int increaseValue)
+    {
+        int setValue = _data.abilityPoint + increaseValue;
+        _data.Set_AbilityPoint(Mathf.Clamp(setValue, 0, _maxAbilityPoint));
+        
         if (AbilityPoint_Maxed() == false) return;
-        if (ActivateAvailable_AbilityDatas().Count <= 0) return;
+        if (ActivateAvailable_AbilityScrObjs().Count <= 0) return;
         
         OnMaxPoint?.Invoke();
     }
@@ -166,26 +157,8 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         return abilityScrObjs;
     }
     
-    public List<Ability> ActivateAvailable_AbilityDatas()
-    {
-        List<Ability> currentDatas = _data.abilityDatas;
-        List<Ability> availableDatas = new();
-
-        for (int i = 0; i < currentDatas.Count; i++)
-        {
-            if (currentDatas[i].ActivationCount_Maxed()) continue;
-            if (currentDatas[i].AbilityPoint_Maxed() == false) continue;
-            
-            availableDatas.Add(currentDatas[i]);
-        }
-        
-        availableDatas.Sort((a, b) => b.abilityPoint.CompareTo(a.abilityPoint));
-        
-        return availableDatas;
-    }
     
-    
-    private  Ability_Behaviour Ability_Behaviour(Ability_ScrObj abilityScrObj)
+    private Ability_Behaviour Ability_Behaviour(Ability_ScrObj abilityScrObj)
     {
         for (int i = 0; i < _allAbilities.Length; i++)
         {
@@ -205,8 +178,7 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         if (behaviour == null) return;
                 
         activatedAbility.Update_ActivationCount(1);
-        activatedAbility.Set_AbilityPoint(0);
-        
+  
         IAbility abilityInterface = behaviour.gameObject.GetComponent<IAbility>();
         abilityInterface.Activate();
     }
@@ -246,7 +218,7 @@ public class AbilityManager_Editor : Editor
 
         if (GUILayout.Button("Increase Ability Point"))
         {
-            AbilityManager.IncreasePoint?.Invoke(activateAbility, 1);
+            AbilityManager.IncreasePoint?.Invoke(1);
         }
 
         GUILayout.Space(20);

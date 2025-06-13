@@ -228,7 +228,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         Update_RoamArea();
         
         Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, true);
-        AbilityManager.IncreasePoint(_foodOrderAbility, 1);
+        AbilityManager.IncreasePoint(1);
     }
 
 
@@ -321,9 +321,6 @@ public class NPC_FoodInteraction : MonoBehaviour
         _controller.timer.Toggle_Transparency(true);
 
         yield return new WaitForSeconds(1f);
-
-        // updates
-        AbilityManager.IncreasePoint(_foodOrderAbility, 1);
 
         // fail
         if (Set_Payment() <= 0) Fail_OrderTime();
@@ -422,8 +419,6 @@ public class NPC_FoodInteraction : MonoBehaviour
     private void Collect_Payment()
     {
         if (_payAvailable == false) return;
-        
         Collect_Payment(Set_Payment());
-        AbilityManager.IncreasePoint(_goldMagnetAbility, 1);
     }
 }

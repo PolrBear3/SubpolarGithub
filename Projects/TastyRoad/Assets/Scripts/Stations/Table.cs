@@ -168,7 +168,7 @@ public class Table : MonoBehaviour, IInteractable
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
 
         UnInteract();
-        AbilityManager.IncreasePoint(_mergeAbility, 1);
+        AbilityManager.IncreasePoint(1);
 
         // durability
         Station_Maintenance maintenance = stationController.maintenance;

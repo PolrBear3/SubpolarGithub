@@ -48,8 +48,7 @@ public class GoldDrop : ItemDrop
         }
         
         GoldSystem.instance.Update_CurrentAmount(_data.goldAmount);
-        AbilityManager.IncreasePoint(_goldMagnetAbility, 1);
-        
+
         // effects
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
         _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], detection.player.transform.position);

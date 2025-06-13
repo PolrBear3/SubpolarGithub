@@ -11,9 +11,6 @@ public class Ability
 
     [ES3Serializable][SerializeField] private int _activationCount;
     public int activationCount => _activationCount;
-    
-    [ES3Serializable][SerializeField] private int _abilityPoint;
-    public int abilityPoint => _abilityPoint;
 
 
     // New
@@ -32,16 +29,5 @@ public class Ability
     public void Update_ActivationCount(int updateValue)
     {
         _activationCount += updateValue;
-    }
-
-
-    public bool AbilityPoint_Maxed()
-    {
-        return _abilityPoint >= _abilityScrObj.Abiliy_ActivationData(_activationCount + 1).maxAbilityPoint;
-    }
-    
-    public void Set_AbilityPoint(int setValue)
-    {
-        _abilityPoint = setValue;
     }
 }

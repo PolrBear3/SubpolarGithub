@@ -58,12 +58,14 @@ public class AbilityMenu_Button : MonoBehaviour
         
         _abilityScrObj = abilityScrObj;
         
-        _iconImage.sprite = abilityScrObj.Abiliy_ActivationData(activationCount + 1).activationIconSprite;
+        _iconImage.sprite = abilityScrObj.activationIconSprite[activationCount + 1];
         _infoText.text = abilityScrObj.Description();
     }
 
     public void Empty_AbilityIndication(Sprite emptyIconSprite, string emptyDescription)
     {
+        _abilityScrObj = null;
+        
         _iconImage.sprite = emptyIconSprite;
         _infoText.text = emptyDescription;
     }

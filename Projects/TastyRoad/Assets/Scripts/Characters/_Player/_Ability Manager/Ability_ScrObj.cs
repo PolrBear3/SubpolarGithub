@@ -18,7 +18,8 @@ public class Ability_ScrObj : ScriptableObject
     public LocalizedString localizedDescription => _localizedDescription;
 
     [Space(20)]
-    [SerializeField] private Abiliy_ActivationData[] _activationDatas;
+    [SerializeField] private Sprite[] _activationIconSprite;
+    public Sprite[] activationIconSprite => _activationIconSprite;
     
 
     // Gets
@@ -32,14 +33,6 @@ public class Ability_ScrObj : ScriptableObject
 
     public int Max_ActivationCount()
     {
-        return _activationDatas.Length - 1;
-    }
-
-    public Abiliy_ActivationData Abiliy_ActivationData(int progressLevel)
-    {
-        progressLevel = Mathf.Clamp(progressLevel, 0, Max_ActivationCount());
-        int indexNum = Mathf.FloorToInt((float)progressLevel / Max_ActivationCount() * (_activationDatas.Length - 1));
-
-        return _activationDatas[indexNum];
+        return _activationIconSprite.Length - 1;
     }
 }
