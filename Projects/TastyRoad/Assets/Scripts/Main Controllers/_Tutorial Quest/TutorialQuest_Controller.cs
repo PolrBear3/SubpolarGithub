@@ -132,7 +132,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
 
     public void Complete_Quest(TutorialQuest questData, int completeUpdateValue)
     {
-        if (questData == null) return;
+        if (questData == null || completeUpdateValue == 0) return;
         
         if (questData.Update_CompleteCount(completeUpdateValue) < questData.completeCount)
         {
