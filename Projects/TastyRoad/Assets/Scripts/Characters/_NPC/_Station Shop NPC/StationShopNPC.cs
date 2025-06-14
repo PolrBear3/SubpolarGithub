@@ -49,6 +49,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
+        ResumeBuild_BookMarkedStation();
+        
         // untrack
         Main_Controller.instance.UnTrack_CurrentCharacter(gameObject);
 
@@ -67,7 +69,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.OnInteract += Interact_FacePlayer;
 
         _interactable.OnAction1 += Dispose_BookMarkedStation;
-        _interactable.OnAction2 += Build_BookMarkedStations;
+        _interactable.OnAction2 += Build_BookMarkedStation;
 
         // start free roam
         _npcController.movement.Free_Roam(_currentSubLocation.roamArea, 0f);
@@ -93,21 +95,21 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.OnInteract -= Interact_FacePlayer;
 
         _interactable.OnAction1 -= Dispose_BookMarkedStation;
-        _interactable.OnAction2 -= Build_BookMarkedStations;
+        _interactable.OnAction2 -= Build_BookMarkedStation;
     }
 
 
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("StationShopNPC/_archiveDatas", _data);
+        ES3.Save("StationShopNPC/StationShopNPC_Data", _data);
         
         Save_StationStocks();
     }
 
     public void Load_Data()
     {
-        _data = ES3.Load("StationShopNPC/_archiveDatas", _data);
+        _data = ES3.Load("StationShopNPC/StationShopNPC_Data", new StationShopNPC_Data(new()));
         
         Load_StationStocks();
     }
@@ -384,6 +386,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     
     private void Cancel_Action()
     {
+        _data.Reset_ActionState();
+        
         if (_actionCoroutine == null) return;
 
         StopCoroutine(_actionCoroutine);
@@ -493,7 +497,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
 
     // Build
-    private void Build_BookMarkedStations()
+    private void Build_BookMarkedStation()
     {
         if (_actionCoroutine != null) return;
 
@@ -526,9 +530,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         dialog.Update_Dialog(3);
 
-        _actionCoroutine = StartCoroutine(Build_BookMarkedStations_Coroutine());
+        _actionCoroutine = StartCoroutine(Build_BookMarkedStation_Coroutine());
     }
-    private IEnumerator Build_BookMarkedStations_Coroutine()
+    private IEnumerator Build_BookMarkedStation_Coroutine()
     {
         Start_Action();
         
@@ -545,6 +549,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         ItemSlot_Data bookmarkedData = bookmarkedDatas[bookmarkedDatas.Count - 1];
         Station_ScrObj recentStation = bookmarkedData.currentStation;
+        
+        _data.Build_Station(recentStation);
 
         // refresh movement
         NPC_Movement movement = _npcController.movement;
@@ -576,6 +582,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             }
 
             // collect scrap
+            _data.Collect_Scrap();
+            
             _scrapStack.amountBar.Set_Amount(0);
             _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
             _scrapStack.amountBar.Load();
@@ -613,7 +621,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             updateBox.data.Set_SmartInfo(buildCountStrings);
             Main_Controller.instance.dialogSystem.RefreshCurrent_DialogInfo();
             
-            // restock locked bookmark station, set price to 0
+            // restock station blueprint bookmark station
             _stationStocks[i].Toggle_Discount(false);
             _stationStocks[i].Restock(new(recentStation, restockPrice));
 
@@ -621,6 +629,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             
             // quest
             TutorialQuest_Controller quest = TutorialQuest_Controller.instance;
+            
             quest.Complete_Quest("BuildStation", 1);
             quest.Complete_Quest("Build" + recentStation.stationName, 1);
 
@@ -630,6 +639,37 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         Cancel_Action();
         yield break;
+    }
+
+    private void ResumeBuild_BookMarkedStation()
+    {
+        if (_data.scrapCollected == false) return;
+
+        Station_ScrObj buildStation = _data.buildStation;
+
+        for (int i = 0; i < _stationStocks.Length; i++)
+        {
+            if (_stationStocks[i].sold == false) continue;
+            
+            // set price
+            int restockPrice = ArchivedStation_BuildCount(buildStation) <= 0 ? 0 : buildStation.price;
+            
+            // restock blueprint bookmark station
+            _stationStocks[i].Toggle_Discount(false);
+            _stationStocks[i].Restock(new(buildStation, restockPrice));
+            
+            Archive_Station(buildStation);
+            
+            // quest
+            TutorialQuest_Controller quest = TutorialQuest_Controller.instance;
+            
+            quest.Complete_Quest("BuildStation", 1);
+            quest.Complete_Quest("Build" + buildStation.stationName, 1);
+
+            break;
+        }
+        
+        _data.Reset_ActionState();
     }
 
 
@@ -656,12 +696,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Restock_New()
     {
+        ResumeBuild_BookMarkedStation();
         Clear_StationStocks();
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold == false) continue;
-            
             Station_ScrObj restockStation = MaxBuildCount_RandomStation();
 
             if (restockStation == null) return;

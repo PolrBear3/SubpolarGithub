@@ -183,7 +183,7 @@ public class PlaceableStock : MonoBehaviour
         bool foodPlaced = _foodIcon.hasFood;
         
         _foodIcon.Toggle_SubDataBar(foodPlaced && playerDetected && !bubbleOn);
-        _previewIcon.amountBar.Toggle(!foodPlaced && playerDetected && !bubbleOn);
+        _previewIcon.amountBar.Toggle(_previewIcon.hasFood && !foodPlaced && playerDetected && !bubbleOn);
     }
 
     private void Update_BubbleActions()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +43,8 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     private bool _hidden;
     public bool hidden => _hidden;
 
+    public Action OnHideToggle;
+
 
     // UnityEngine
     private void Awake()
@@ -85,6 +88,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public void Toggle_Hide(bool toggleOn)
     {
         _hidden = toggleOn;
+        OnHideToggle?.Invoke();
 
         if (toggleOn)
         {
