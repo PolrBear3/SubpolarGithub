@@ -7,7 +7,8 @@ using FMOD.Studio;
 
 public class MainMenu_Controller : Menu_Controller
 {
-    [Header("")] 
+    [Space(20)]
+    [SerializeField] private Information_Template _newGameTemplate;
     [SerializeField] private TextMeshProUGUI _dataInfoText;
     
     
@@ -78,7 +79,7 @@ public class MainMenu_Controller : Menu_Controller
     {
         if (newData || ES3.FileExists("SaveFile.es3") == false)
         {
-            _dataInfoText.text = string.Empty;
+            _dataInfoText.text = _newGameTemplate.InfoString();
             return;
         }
         

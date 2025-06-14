@@ -5,10 +5,16 @@ using System;
 
 public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private VehicleMenu_Controller _controller;
     public VehicleMenu_Controller controller => _controller;
 
+    [SerializeField] private Information_Template _bluePrintTemplate;
+    
+    [Space(80)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
+    
+    
     private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
     public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
 
@@ -20,8 +26,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private Station_Controller _interactStation;
     
     
-    [Space(80)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
 
 
     // Editor
@@ -243,8 +247,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         InformationBox info = _controller.infoBox;
         InfoTemplate_Trigger infoTrigger = info.templateTrigger;
-
-        // station durability info
+        
         string durabilityInfo = "\n";
         StationData stationData = cursorData.stationData;
         
@@ -256,23 +259,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             durabilityInfo = durabilityTemplate + " " + currentStatus + "\n\n";
         }
         
-        // Action key 1
-        string action1 = infoTrigger.TemplateString(6);
-        if (slotData.hasItem == false)
-        {
-            action1 = "<sprite=68>";
-        }
+        string action1Info = slotData.hasItem == false ? "<sprite=68>" : infoTrigger.TemplateString(6);
 
-        // Hold string
-        string hold = infoTrigger.TemplateString(8);
-        if (cursorData.isLocked == false)
-        {
-            hold = infoTrigger.TemplateString(7) + "/" + infoTrigger.TemplateString(9);
-        }
+        string holdInfo = cursorData.isLocked == false
+            ? infoTrigger.TemplateString(7) + "/" + infoTrigger.TemplateString(9)
+            : infoTrigger.TemplateString(8);
 
-        // Set update
-        string currentStationInfo = "<sprite=70> " + cursorData.currentStation.LocalizedName() + "\n";
-        string controlInfo = infoTrigger.KeyControl_Template(action1, action1, hold);
+        string bluePrintInfo = cursorData.isLocked ? "    " + _bluePrintTemplate.InfoString() : string.Empty;
+        string currentStationInfo = "<sprite=70> " + cursorData.currentStation.LocalizedName() + bluePrintInfo +  "\n";
+        
+        string controlInfo = infoTrigger.KeyControl_Template(action1Info, action1Info, holdInfo);
         
         info.Update_InfoText(currentStationInfo + durabilityInfo + controlInfo);
     }

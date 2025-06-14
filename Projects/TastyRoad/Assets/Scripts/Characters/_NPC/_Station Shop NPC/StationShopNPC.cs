@@ -5,21 +5,20 @@ using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
 public class StationShopNPC : MonoBehaviour, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private NPC_Controller _npcController;
     [SerializeField] private ActionBubble_Interactable _interactable;
 
-    [Header("")]
     [SerializeField] private Clock_Timer _actionTimer;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private SpriteRenderer _carryObject;
     [SerializeField] private Sprite[] _carrySprites;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private SubLocation _currentSubLocation;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private ScrapStack _scrapStack;
 
     [SerializeField][Range(0, 10)] private float _disposeWaitTime;
@@ -27,23 +26,20 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private Station_ScrObj[] _restrictedDisposables;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Transform[] _boxStackPoints;
-
     [SerializeField] private StationStock[] _stationStocks;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(1, 100)] private int _duplicateAmount;
-
-
-    private List<StationData> _archiveDatas = new();
-
-    private Coroutine _actionCoroutine;
-
-
+    
     [Space(60)] 
     [SerializeField] private VideoGuide_Trigger _guideTrigger;
+    
 
+    private StationShopNPC_Data _data;
+    private Coroutine _actionCoroutine;
+    
 
     // UnityEngine
     private void Awake()
@@ -60,10 +56,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent += CarryObject_DirectionUpdate;
 
         // subscription
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
+        WorldMap_Controller worldMap = Main_Controller.instance.worldMap;
+        worldMap.OnNewLocation += Restock_New;
         
-        Main_Controller.instance.worldMap.OnNewLocation += Restock_New;
         globaltime.instance.OnDayTime += Restock_ArchivedStation;
+        
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
@@ -84,10 +82,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _npcController.movement.TargetPosition_UpdateEvent -= CarryObject_DirectionUpdate;
 
         // interaction subscription
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
+        WorldMap_Controller worldMap = Main_Controller.instance.worldMap;
+        worldMap.OnNewLocation -= Restock_New;
         
-        Main_Controller.instance.worldMap.OnNewLocation -= Restock_New;
         globaltime.instance.OnDayTime -= Restock_ArchivedStation;
+        
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnInteract -= Cancel_Action;
         _interactable.OnInteract -= Interact_FacePlayer;
@@ -100,15 +100,15 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("StationShopNPC/_archiveDatas", _archiveDatas);
-
+        ES3.Save("StationShopNPC/_archiveDatas", _data);
+        
         Save_StationStocks();
     }
 
     public void Load_Data()
     {
-        _archiveDatas = ES3.Load("StationShopNPC/_archiveDatas", _archiveDatas);
-
+        _data = ES3.Load("StationShopNPC/_archiveDatas", _data);
+        
         Load_StationStocks();
     }
 
@@ -209,27 +209,31 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     // Archived Station Data
     private void Archive_Station(Station_ScrObj station)
     {
-        for (int i = 0; i < _archiveDatas.Count; i++)
+        List<StationData> archiveDatas = _data.archiveDatas;
+        
+        for (int i = 0; i < archiveDatas.Count; i++)
         {
             // check if archived
-            if (station != _archiveDatas[i].stationScrObj) continue;
+            if (station != archiveDatas[i].stationScrObj) continue;
 
-            _archiveDatas[i].Update_Amount(1);
-            _archiveDatas[i].Set_Amount(Mathf.Clamp(_archiveDatas[i].amount, 1, station.buildToArchiveCount));
+            archiveDatas[i].Update_Amount(1);
+            archiveDatas[i].Set_Amount(Mathf.Clamp(archiveDatas[i].amount, 1, station.buildToArchiveCount));
 
             return;
         }
 
         // archive new
-        _archiveDatas.Add(new(station, 1));
+        archiveDatas.Add(new(station, 1));
     }
 
     private StationData Archived_StationData(Station_ScrObj station)
     {
-        for (int i = 0; i < _archiveDatas.Count; i++)
+        List<StationData> archiveDatas = _data.archiveDatas;
+        
+        for (int i = 0; i < archiveDatas.Count; i++)
         {
-            if (station != _archiveDatas[i].stationScrObj) continue;
-            return _archiveDatas[i];
+            if (station != archiveDatas[i].stationScrObj) continue;
+            return archiveDatas[i];
         }
         return null;
     }
@@ -256,13 +260,14 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private List<Station_ScrObj> BuildArchiveCount_MaxStations()
     {
+        List<StationData> archiveDatas = _data.archiveDatas;
         List<Station_ScrObj> archivedStations = new();
 
-        for (int i = 0; i < _archiveDatas.Count; i++)
+        for (int i = 0; i < archiveDatas.Count; i++)
         {
-            Station_ScrObj station = _archiveDatas[i].stationScrObj;
+            Station_ScrObj station = archiveDatas[i].stationScrObj;
 
-            if (_archiveDatas[i].amount < station.buildToArchiveCount) continue;
+            if (archiveDatas[i].amount < station.buildToArchiveCount) continue;
             archivedStations.Add(station);
         }
 
@@ -271,9 +276,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private Station_ScrObj MaxBuildCount_RandomStation()
     {
+        List<StationData> archiveDatas = _data.archiveDatas;
         int totalWeight = 0;
 
-        foreach (StationData data in _archiveDatas)
+        foreach (StationData data in archiveDatas)
         {
             if (data.amount < data.stationScrObj.buildToArchiveCount) continue;
             totalWeight += data.amount;
@@ -282,10 +288,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         int randValue = Random.Range(0, totalWeight);
         int cumulativeWeight = 0;
 
-        for (int i = 0; i < _archiveDatas.Count; i++)
+        for (int i = 0; i < archiveDatas.Count; i++)
         {
-            Station_ScrObj archiveStation = _archiveDatas[i].stationScrObj;
-            int buildCount = _archiveDatas[i].amount;
+            Station_ScrObj archiveStation = archiveDatas[i].stationScrObj;
+            int buildCount = archiveDatas[i].amount;
 
             if (buildCount < archiveStation.buildToArchiveCount) continue;
 
@@ -311,8 +317,10 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             if (_stationStocks[i].currentStation.stationScrObj != checkStation) continue;
             checkCount++;
         }
+        
+        List<StationData> archiveDatas = _data.archiveDatas;
 
-        if (_archiveDatas.Count < _stationStocks.Length)
+        if (archiveDatas.Count < _stationStocks.Length)
         {
             duplicateAmount = _duplicateAmount;
         }
@@ -572,7 +580,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
             _scrapStack.amountBar.Load();
             _scrapStack.Update_CurrentSprite();
-
+ 
             // remove bookmarked station
             bookmarkedDatas[bookmarkedDatas.Count - 1].Empty_Item();
             bookmarkedDatas.RemoveAt(bookmarkedDatas.Count - 1);
@@ -652,6 +660,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
+            if (_stationStocks[i].sold == false) continue;
+            
             Station_ScrObj restockStation = MaxBuildCount_RandomStation();
 
             if (restockStation == null) return;
@@ -665,8 +675,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Restock_ArchivedStation()
     {
-        Debug.Log("Restock_ArchivedStation");
-
         if (Restock_Available() == false) return;
 
         _actionCoroutine = StartCoroutine(Restock_ArchivedStation_Coroutine());

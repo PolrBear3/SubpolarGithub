@@ -1799,7 +1799,6 @@ MonoBehaviour:
   _indicationIcon: {fileID: 3984147253259914619, guid: ce6a8f5de0b934530b50e14a106d295e, type: 3}
   _stationIconBox: {fileID: 115918204064642616}
   _foodIconBox: {fileID: 4437389858740189572}
-  _transparencySetValue: 0.8
   _inputManager: {fileID: 5292639075871934771}
 --- !u!1 &1807638677905626082
 GameObject:
@@ -4563,9 +4562,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 8508866487849260274}
+  _bluePrintTemplate:
+    _infoName: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:a4a90c6a06e2643348486303d39330bc
+      m_TableEntryReference:
+        m_KeyId: 21039417245294592
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   _guideScrObj: {fileID: 11400000, guid: f5848bafb82664d54b24a58a6297bbb9, type: 2}
   editStation: {fileID: 0}
   lockStation: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &7928505299897945647
 GameObject:
   m_ObjectHideFlags: 0

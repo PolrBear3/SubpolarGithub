@@ -58,7 +58,7 @@ public class PrefabSpawner : MonoBehaviour
     {
         if (_minimumSpawnAmount >= _spawnAmount) return _spawnAmount;
         
-        int randAmount = Random.Range(_minimumSpawnAmount, _spawnAmount);
+        int randAmount = Random.Range(_minimumSpawnAmount, _spawnAmount + 1);
         return randAmount;
     }
 

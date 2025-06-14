@@ -15,8 +15,13 @@ public class Menu_EventButton
     [SerializeField] private Image _hoverIndication;
     public Image hoverIndication => _hoverIndication;
     
+    [Space(20)]
     [SerializeField] private UnityEvent _actionEvent;
     public UnityEvent actionEvent => _actionEvent;
+    
+    [Space(10)]
+    [SerializeField] private UnityEvent[] _navigateEvents;
+
     
     private Vector2 _defaultPosition;
     public Vector2 defaultPosition => _defaultPosition;
@@ -25,6 +30,14 @@ public class Menu_EventButton
     public void Set_DefaultPosition()
     {
         _defaultPosition = button.rectTransform.anchoredPosition;
+    }
+
+    public void Invoke_NavigateEvents()
+    {
+        foreach (UnityEvent navigateEvent in _navigateEvents)
+        {
+            navigateEvent.Invoke();
+        }
     }
 }
 
@@ -160,6 +173,7 @@ public class Menu_Controller : MonoBehaviour
         }
         
         OnNavigate?.Invoke();
+        eventButtons[_currentIndex].Invoke_NavigateEvents();
         
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
