@@ -96,7 +96,6 @@ GameObject:
   - component: {fileID: 6332533828600272284}
   - component: {fileID: 926716980612153296}
   - component: {fileID: 4259365472146210487}
-  - component: {fileID: 4500829749673367382}
   - component: {fileID: 5647837897336662785}
   - component: {fileID: 1003931619718646575}
   - component: {fileID: 7238873677323794373}
@@ -253,56 +252,6 @@ MonoBehaviour:
         Data4: -1705396606
       Path: event:/Basic SFX/Interaction/Nugget_insertPay
   _fadeDuration: 0
---- !u!114 &4500829749673367382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3118358391304406027}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultData:
-    icon: {fileID: 1517989186, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: 
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: 
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  _datas:
-  - icon: {fileID: 1517989186, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: <sprite=61> purchase in progress!
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: 
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - icon: {fileID: 1517989186, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Clear <sprite=61> purchase area!
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: 
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &5647837897336662785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,13 +311,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactable: {fileID: 7238873677323794373}
   _detection: {fileID: 1003931619718646575}
-  _dialog: {fileID: 4500829749673367382}
   _fillClock: {fileID: 5803172591398464263}
   _fillBar: {fileID: 5320666038609842779}
   _spawnReadyIcon: {fileID: 1943859326315345860}
   _oilDrum: {fileID: 11400000, guid: d05e05d026cda44a9a011f51eba3b83a, type: 2}
   _spawnPoint: {fileID: 6962216820120451715}
-  _defaultPrice: 20
+  _defaultPrice: 30
   _fillTime: 6
 --- !u!1 &6962216820120451715
 GameObject:

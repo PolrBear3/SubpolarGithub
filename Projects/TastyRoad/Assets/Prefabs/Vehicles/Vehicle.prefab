@@ -1602,6 +1602,7 @@ GameObject:
   - component: {fileID: 4244909148874104806}
   - component: {fileID: 9052003114442593425}
   - component: {fileID: 6545859062571502706}
+  - component: {fileID: 1372788041376379653}
   - component: {fileID: 5292639075871934771}
   - component: {fileID: 4361590143282441983}
   - component: {fileID: 277122501829671610}
@@ -1716,6 +1717,21 @@ MonoBehaviour:
         Data4: -1944029214
       Path: event:/Basic SFX/UI Control/UI_cursorControl
   _fadeDuration: 0
+--- !u!114 &1372788041376379653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794061755134908635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fff8a1a50fc84cdaa9789869a7b038a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tweenType: 30
+  _initialScale: {x: 0, y: 0}
+  _durationTime: 0.25
 --- !u!114 &5292639075871934771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1798,6 +1814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vehicle: {fileID: 7023176493674794937}
+  _uiEffect: {fileID: 1372788041376379653}
   _menuPanel: {fileID: 8972849356739649489}
   _tiles:
   - {fileID: 8702729134802325803}

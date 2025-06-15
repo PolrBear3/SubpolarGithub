@@ -285,14 +285,24 @@ public class FoodStock : MonoBehaviour
 
     private bool Purchase(int purchaseAmount)
     {
-        if (_stockData.unlocked == false || _foodIcon.hasFood == false) return false;
-
+        if (_stockData.unlocked == false) return false;
+        
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+
+        if (_foodIcon.hasFood == false)
+        {
+            dialog.Update_Dialog(0);
+            return false;
+        }
 
         Food_ScrObj stockedFood = _foodIcon.currentData.foodScrObj;
         int stockedAmount = _foodIcon.currentData.currentAmount;
 
-        if (stockedAmount <= 0) return false;
+        if (stockedAmount <= 0 || stockedAmount < purchaseAmount)
+        {
+            dialog.Update_Dialog(1);
+            return false;
+        }
 
         Main_Controller main = Main_Controller.instance;
 
@@ -347,11 +357,7 @@ public class FoodStock : MonoBehaviour
 
     private void Purchase_All()
     {
-        if (Purchase(_foodIcon.currentData.currentAmount) == false)
-        {
-            gameObject.GetComponent<DialogTrigger>().Update_Dialog(1);
-            return;
-        }
+        if (Purchase(_foodIcon.currentData.currentAmount) == false) return;
 
         // coin launch animation
         Transform player = _interactable.detection.player.transform;

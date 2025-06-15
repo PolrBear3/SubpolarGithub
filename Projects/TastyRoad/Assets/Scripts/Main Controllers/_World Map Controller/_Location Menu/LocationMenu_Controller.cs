@@ -10,6 +10,7 @@ public class LocationMenu_Controller : MonoBehaviour
     [SerializeField] private Vehicle_Controller _vehicle;
     
     [Space(20)]
+    [SerializeField] private UI_EffectController _uiEffect;
     [SerializeField] private Image _menuPanel;
     [SerializeField] private LocationTile[] _tiles;
 
@@ -130,6 +131,8 @@ public class LocationMenu_Controller : MonoBehaviour
         Update_TilesAnimation();
 
         Toggle_ResourceIndications();
+        
+        _uiEffect.Update_Scale(_menuPanel.rectTransform);
     }
 
 

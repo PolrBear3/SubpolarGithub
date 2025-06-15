@@ -11,7 +11,11 @@ public class InteractIndicator_Controller : MonoBehaviour
 
 
     [Space(20)] 
-    [SerializeField] private GameObject _iconBox;
+    [SerializeField] private UI_EffectController _uiEffect;
+    [SerializeField] private RectTransform _interactIndicator;
+    
+    [Space(20)] 
+    [SerializeField] private RectTransform _iconBox;
     [SerializeField] private Image _iconImage;
 
     [Space(20)] 
@@ -38,7 +42,7 @@ public class InteractIndicator_Controller : MonoBehaviour
         Input_Controller input = Input_Controller.instance;
         
         input.OnActionMapUpdate += () => _infoBox.gameObject.SetActive(false);
-        input.OnActionMapUpdate += () => _iconBox.SetActive(input.Current_ActionMapNum() == 0 && _iconImage.sprite != null);
+        input.OnActionMapUpdate += () => _iconBox.gameObject.SetActive(input.Current_ActionMapNum() == 0 && _iconImage.sprite != null);
     }
     
     
@@ -46,7 +50,7 @@ public class InteractIndicator_Controller : MonoBehaviour
     public void Trigger(Sprite icon, string info)
     {
         _iconBox.gameObject.SetActive(icon != null);
-        
+
         if (icon == null)
         {
             _iconImage.sprite = null;
@@ -65,6 +69,8 @@ public class InteractIndicator_Controller : MonoBehaviour
         }
         
         Toggle_InfoBox();
+        
+        _uiEffect.Update_Scale(_interactIndicator);
     }
 
     private void Toggle_InfoBox()

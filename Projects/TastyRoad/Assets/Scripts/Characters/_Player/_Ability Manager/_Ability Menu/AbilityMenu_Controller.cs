@@ -292,14 +292,12 @@ public class AbilityMenu_Controller : MonoBehaviour
 
         // dialog
         Ability abilityData = manager.data.AbilityData(currentAbility);
-        
         int activationCount = abilityData.activationCount;
+        
         Sprite abilitySprite = currentAbility.activationIconSprite[activationCount];
+        string activationInfo = activationCount + "/" + currentAbility.Max_ActivationCount() + " " + _infoTemplate.TemplateString(1);
 
-        string abilityInfo = currentAbility.abilityName + "\n\n";
-        string activationInfo = activationCount + "/" + currentAbility.Max_ActivationCount() + " ";
-
-        DialogData dialogData = new(abilitySprite, abilityInfo + activationInfo + "leveled up");
+        DialogData dialogData = new(abilitySprite, activationInfo);
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(dialogData);
     }
     

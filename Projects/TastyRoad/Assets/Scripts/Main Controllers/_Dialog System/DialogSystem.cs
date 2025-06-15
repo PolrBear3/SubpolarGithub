@@ -37,7 +37,7 @@ public class DialogSystem : MonoBehaviour
     {
         _infoBox.Set_DefalutHeight();
 
-        Refresh_CustomDialogs();
+        Refresh_CurrentDialogs();
         HoverToggle_CurrentDialog(false);
 
         // subscriptions
@@ -49,12 +49,15 @@ public class DialogSystem : MonoBehaviour
         PauseMenu_Controller pause = PauseMenu_Controller.instance;
         pause.OnPause += () => Toggle_InfoBox(false);
         pause.OnPause += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0 && _infoBox.gameObject.activeSelf == false);
+
+        Localization_Controller.instance.OnLanguageChanged += Refresh_CurrentDialogs;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         Input_Controller.instance.OnNavigate -= Navigate_InfoBox;
+        Localization_Controller.instance.OnLanguageChanged -= Refresh_CurrentDialogs;
     }
 
 
@@ -80,8 +83,15 @@ public class DialogSystem : MonoBehaviour
 
 
     // Dialogs Control
-    public void Refresh_CustomDialogs()
+    public void Refresh_CurrentDialogs()
     {
+        foreach (DialogBox dialogBox in _currentDialogs)
+        {
+            Destroy(dialogBox.gameObject);
+        }
+        
+        _currentDialogs.Clear();
+        
         for (int i = 0; i < _snapPoints.Length; i++)
         {
             GameObject addDialog = Instantiate(_dialogBox, _snapPoints[0].transform);
@@ -117,6 +127,7 @@ public class DialogSystem : MonoBehaviour
         RefreshCurrent_DialogInfo();
         HoverToggle_CurrentDialog(true);
         
+        _uiEffectController.Update_Scale(_infoBox.rect);
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
     public void Toggle_InfoBox(int index)

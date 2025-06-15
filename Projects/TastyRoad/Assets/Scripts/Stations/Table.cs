@@ -158,7 +158,7 @@ public class Table : MonoBehaviour, IInteractable
 
         ArchiveMenu_Controller menu = main.currentVehicle.menu.archiveMenu;
 
-        menu.Unlock_BookmarkToggle(menu.Archive_Food(mergedFood), true);
+        menu.Unlock_BookmarkToggle(menu.Archive_Food(mergedFood), data.CookedFood(mergedFood) != null);
         menu.Unlock_FoodIngredient(mergedFood, 1);
         
         // quest

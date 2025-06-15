@@ -515,9 +515,10 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
                 RemoveDuplicate_ArchivedFood(dataFood);
 
+                /*
                 if (!FoodIngredient_Unlocked(dataFood)) continue;
-
                 Unlock_FoodIngredient(dataFood, 0);
+                */
             }
         }
 
@@ -635,12 +636,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (FoodIngredient_Unlocked(food) == false)
         {
-            _ingredientUnlocks.Add(new(food));
+            _ingredientUnlocks.Add(new(food, unlockAmount));
             _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
 
             Update_CurrentDatas();
             return;
         }
+
+        if (unlockAmount <= 0) return;
 
         int unlockCount = FoodIngredient_UnlockCount(food);
         int setAmount = Mathf.Clamp(unlockCount + unlockAmount, 1, _maxUnlockAmount);

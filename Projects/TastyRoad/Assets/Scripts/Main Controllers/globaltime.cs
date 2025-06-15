@@ -82,11 +82,11 @@ public class globaltime : MonoBehaviour, ISaveLoadable
             yield return new WaitForSeconds(_tikDelayTime);
 
             _currentTime = (_currentTime + 1) % 24;
+            
+            Toggle_TimePhase();
             OnTimeTik?.Invoke();
 
             Debug.Log(_currentTime);
-
-            Toggle_TimePhase();
         }
     }
 

@@ -12,6 +12,8 @@ public class UI_EffectController : MonoBehaviour
 
     public void Update_Scale(RectTransform scaleUI)
     {
+        if (scaleUI.gameObject.activeSelf == false) return;
+        
         LeanTween.cancel(scaleUI.gameObject);
         
         scaleUI.localScale = _initialScale;

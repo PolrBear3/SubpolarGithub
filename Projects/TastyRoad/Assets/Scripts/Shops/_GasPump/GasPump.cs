@@ -7,7 +7,6 @@ public class GasPump : MonoBehaviour, ISaveLoadable
     [Header("")]
     [SerializeField] private IInteractable_Controller _interactable;
     [SerializeField] private Detection_Controller _detection;
-    [SerializeField] private DialogTrigger _dialog;
 
     [Header("")]
     [SerializeField] private Clock_Timer _fillClock;
@@ -107,14 +106,8 @@ public class GasPump : MonoBehaviour, ISaveLoadable
     
     private void Purchase()
     {
-        if (_coroutine != null)
-        {
-            _dialog.Update_Dialog(0);
-            return;
-        }
-
+        if (_coroutine != null) return;
         if (_data.purchased) return;
-
         if (GoldSystem.instance.Update_CurrentAmount(-_data.price) == false) return;
 
         _data.Toggle_PurchaseState(true);
@@ -153,8 +146,6 @@ public class GasPump : MonoBehaviour, ISaveLoadable
         if (_fillBar.Is_MaxAmount()) return;
 
         _coroutine = StartCoroutine(Fill_OilDrum_Coroutine());
-
-        gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
     }
     private IEnumerator Fill_OilDrum_Coroutine()
     {

@@ -9,6 +9,7 @@ using UnityEngine.Localization;
 public class InformationBox : MonoBehaviour
 {
     private RectTransform _rect;
+    public RectTransform rect => _rect;
 
     
     [Header("")]
