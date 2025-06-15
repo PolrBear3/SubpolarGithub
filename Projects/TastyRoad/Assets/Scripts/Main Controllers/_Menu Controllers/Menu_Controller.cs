@@ -43,23 +43,25 @@ public class Menu_EventButton
 
 public class Menu_Controller : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
+    [SerializeField] private UI_EffectController _uiEffectController;
+
     [SerializeField] private Image _menuPanel;
     public Image menuPanel => _menuPanel;
     
-    [Header("")] 
+    [Space(20)]
     [SerializeField] private Menu_EventButton[] _eventButtons;
     public Menu_EventButton[] eventButtons => _eventButtons;
 
-    [Header("")] 
+    [Space(20)]
     public UnityEvent OnExitMenu;
-    private Action OnExit;
 
     private bool _toggled;
-    
+
     private int _currentIndex;
     public int currentIndex => _currentIndex;
 
+    private Action OnExit;
     public Action OnNavigate;
     public Action OnAction;
     
@@ -126,6 +128,10 @@ public class Menu_Controller : MonoBehaviour
             _inputManager.Toggle_Input(true);
 
             NavigateUpdate_EventButtons();
+
+            if (_uiEffectController == null) return;
+            _uiEffectController.Update_Scale(_menuPanel.rectTransform);
+            
             return;
         }
 

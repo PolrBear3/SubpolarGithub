@@ -40,7 +40,6 @@ public class Player_Interaction : MonoBehaviour
         input.OnHoldInteract += HoldInteract;
 
         _controller.foodIcon.OnCurrentDataSet += IndicationTrigger_CurrentFood;
-        Localization_Controller.instance.OnLanguageChanged += IndicationTrigger_CurrentFood;
     }
 
     private void OnDestroy()
@@ -58,7 +57,6 @@ public class Player_Interaction : MonoBehaviour
         input.OnHoldInteract -= HoldInteract;
         
         _controller.foodIcon.OnCurrentDataSet -= IndicationTrigger_CurrentFood;
-        Localization_Controller.instance.OnLanguageChanged -= IndicationTrigger_CurrentFood;
     }
 
 
@@ -179,7 +177,7 @@ public class Player_Interaction : MonoBehaviour
         IndicationTrigger_CurrentFood();
     }
     
-    private void IndicationTrigger_CurrentFood()
+    public void IndicationTrigger_CurrentFood()
     {
         FoodData_Controller foodIcon = _controller.foodIcon;
         InteractIndicator_Controller indicator = InteractIndicator_Controller.instance;

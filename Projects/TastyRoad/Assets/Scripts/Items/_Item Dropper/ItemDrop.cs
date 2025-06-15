@@ -42,6 +42,8 @@ public class ItemDrop : MonoBehaviour
     //
     private void Activate_DestroyTimeTik()
     {
+        if (Input_Controller.instance.Current_ActionMapNum() != 0) return;
+
         _currentTikCount++;
         Main_Controller.instance.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
 

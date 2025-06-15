@@ -9,7 +9,8 @@ public class PauseMenu_Controller : Menu_Controller
     public static PauseMenu_Controller instance;
 
     
-    [Header("")] 
+    [Space(20)] 
+    [SerializeField] private UI_EffectController _effectController;
     [SerializeField] private Sprite _mainMenuIcon;
     
     

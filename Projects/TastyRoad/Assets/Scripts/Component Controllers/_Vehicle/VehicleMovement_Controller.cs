@@ -6,21 +6,23 @@ using UnityEngine.InputSystem;
 
 public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Vehicle_Controller _controller;
     [SerializeField] private ActionBubble_Interactable _interactable;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private Animator _wheelsAnim;
     [SerializeField] private Sprite _wheelsSprite;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField][Range(0, 10)] private float _defaultMoveSpeed;
 
     [SerializeField][Range(0, 10)] private float _maxMoveSpeed;
     public float maxMoveSpeed => _maxMoveSpeed;
+
+    [Space(20)] 
+    [SerializeField] private Sprite _interactIcon;
+    [SerializeField] private Information_Template _interactTemplate;
 
 
     private bool _onBoard;
@@ -28,8 +30,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
     private float _moveSpeed;
     public float moveSpeed => _moveSpeed;
-
-
+    
     private Vector2 _defaultPosition;
     private Vector2 _recentPosition;
 
@@ -174,6 +175,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (_onBoard) return;
 
+        _onBoard = true;
+        
         Input_Controller.instance.OnInteract += Exit;
         _interactable.OnAction2 -= _controller.Open_LocationMenu;
 
@@ -184,13 +187,14 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         _controller.positionClaimer.UnClaim_CurrentPositions();
 
         Toggle_WheelsAnimation(true);
+        
+        InteractIndicator_Controller.instance.Trigger(_interactIcon, _interactTemplate.InfoString());
 
+        // player update
         Player_Controller player = Main_Controller.instance.Player();
 
         player.Toggle_Controllers(false);
         player.Toggle_Hide(true);
-
-        _onBoard = true;
         
         // sound
         Audio_Controller audio = Audio_Controller.instance;
@@ -229,6 +233,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     {
         if (Exit_Available() == false) return;
 
+        _onBoard = false;
+        
         _interactable.LockUnInteract(false);
         _interactable.UnInteract();
 
@@ -249,17 +255,17 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         Toggle_WheelsAnimation(false);
 
-        // update player
+        // player update
         Player_Controller player = main.Player();
 
         player.Toggle_Hide(false);
         player.Toggle_Controllers(true);
 
         player.transform.position = _controller.driverSeatPoint.position;
-
         _recentPosition = _controller.transform.position;
-        _onBoard = false;
         
+        player.interaction.IndicationTrigger_CurrentFood();
+
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
         gameObject.GetComponent<SoundData_Controller>().FadeOut(0);

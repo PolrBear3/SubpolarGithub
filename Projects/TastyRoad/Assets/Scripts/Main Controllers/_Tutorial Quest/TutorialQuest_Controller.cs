@@ -11,14 +11,17 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     
     
     [Space(20)]
-    [SerializeField] private GameObject _questBox;
+    [SerializeField] private UI_EffectController _effectController;
+    
+    [Space(20)]
+    [SerializeField] private RectTransform _questBox;
     [SerializeField] private TextMeshProUGUI _questText;
     
     [Space(20)] 
     [SerializeField] private TutorialQuest_Group[] _questGroups;
 
     
-    [SerializeField] private List<TutorialQuest> _currentQuests = new();
+    private List<TutorialQuest> _currentQuests = new();
     
     
     // UnityEngine
@@ -30,7 +33,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Update_QuestText();
-        _questBox.SetActive(_currentQuests.Count > 0);
+        _questBox.gameObject.SetActive(_currentQuests.Count > 0);
 
         Input_Controller input = Input_Controller.instance;
         input.OnActionMapUpdate += () => _questBox.gameObject.SetActive(input.Current_ActionMapNum() == 0 && _currentQuests.Count > 0);
@@ -146,7 +149,9 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         Update_QuestText();
         
         bool isIngame = Input_Controller.instance.Current_ActionMapNum() == 0;
-        _questBox.SetActive(isIngame && _currentQuests.Count > 0);
+        _questBox.gameObject.SetActive(isIngame && _currentQuests.Count > 0);
+        
+        _effectController.Update_Scale(_questBox);
     }
     public void Complete_Quest(string questName, int completeUpdateValue)
     {

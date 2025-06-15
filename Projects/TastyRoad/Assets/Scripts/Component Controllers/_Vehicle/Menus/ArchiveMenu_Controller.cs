@@ -5,10 +5,29 @@ using UnityEditor;
 
 public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private VehicleMenu_Controller _controller;
     public VehicleMenu_Controller controller => _controller;
 
+    [Space(20)]
+    [SerializeField] private Sprite _panelSprite;
+
+    [Space(20)]
+    [SerializeField] private RectTransform _ingredientBox;
+    [SerializeField] private RectTransform _ingredientBoxPoint;
+    [SerializeField] private FoodCondition_Indicator[] _indicators;
+
+    [Space(20)]
+    [SerializeField] private GameObject _foodOrderIndicator;
+    [SerializeField] private Clock_Timer _foodOrderTimer;
+    
+    [Space(20)]
+    [SerializeField][Range(0, 500)] private int _maxUnlockAmount;
+    
+    [Space(80)]
+    [SerializeField] private Guide_ScrObj _guideScrObj;
+    
+    
     private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
     public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
 
@@ -16,27 +35,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public int currentPageNum => _currentPageNum;
 
     private List<FoodData> _ingredientUnlocks = new();
-
-
-    [Header("")]
-    [SerializeField] private Sprite _panelSprite;
-
-    [Header("")]
-    [SerializeField] private RectTransform _ingredientBox;
-    [SerializeField] private RectTransform _ingredientBoxPoint;
-    [SerializeField] private FoodCondition_Indicator[] _indicators;
-
-    [Header("")]
-    [SerializeField] private GameObject _foodOrderIndicator;
-    [SerializeField] private Clock_Timer _foodOrderTimer;
-    
-    [Header("")]
-    [SerializeField][Range(0, 500)] private int _maxUnlockAmount;
-
-    
-    
-    [Space(80)]
-    [SerializeField] private Guide_ScrObj _guideScrObj;
     
 
     // Editor
@@ -589,6 +587,19 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Ingredient Data
+    private int MaxUnlock_IngredientCount()
+    {
+        int maxCount = 0;
+
+        for (int i = 0; i < _ingredientUnlocks.Count; i++)
+        {
+            if (_ingredientUnlocks[i].currentAmount < _maxUnlockAmount) continue;
+            maxCount++;
+        }
+        
+        return maxCount;
+    }
+    
     private FoodData IngredientUnlocked_FoodData(Food_ScrObj food)
     {
         for (int i = 0; i < _ingredientUnlocks.Count; i++)
@@ -635,6 +646,13 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         int setAmount = Mathf.Clamp(unlockCount + unlockAmount, 1, _maxUnlockAmount);
 
         IngredientUnlocked_FoodData(food).Set_Amount(setAmount);
+        
+        // tutorial quest
+        TutorialQuest_Controller tutorialQuest = TutorialQuest_Controller.instance;
+        TutorialQuest targetQuest = tutorialQuest.CurrentQuest("CookCountMax");
+        
+        int questCount = targetQuest.currentCompleteCount;
+        tutorialQuest.Complete_Quest(targetQuest, MaxUnlock_IngredientCount() - questCount);
     }
 
 

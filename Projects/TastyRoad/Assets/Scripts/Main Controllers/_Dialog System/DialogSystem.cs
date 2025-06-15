@@ -6,20 +6,24 @@ using UnityEngine.Localization;
 
 public class DialogSystem : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
+    [SerializeField] RectTransform _dialogPanel;
+    [SerializeField] private UI_EffectController _uiEffectController;
+    
+    [Space(20)]
     [SerializeField] private GameObject _dialogBox;
     [SerializeField] private RectTransform[] _snapPoints;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private InformationBox _infoBox;
     public InformationBox infoBox => _infoBox;
 
     [SerializeField] private GameObject _navigateBox;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private List<DialogData> _customDialogs = new();
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private LeanTweenType _tweenType;
     [Range(0, 1)][SerializeField] private float _transitionTime;
 
@@ -68,6 +72,7 @@ public class DialogSystem : MonoBehaviour
 
         Toggle_InfoBox(_infoBox.gameObject.activeSelf);
         
+        _uiEffectController.Update_Scale(_dialogPanel);
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         return dialogBox;

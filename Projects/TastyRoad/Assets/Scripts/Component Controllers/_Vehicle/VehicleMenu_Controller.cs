@@ -16,49 +16,45 @@ public interface IVehicleMenu
 
 public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Vehicle_Controller _vehicleController;
     public Vehicle_Controller vehicleController => _vehicleController;
 
     [SerializeField] private ItemSlots_Controller _slotsController;
     public ItemSlots_Controller slotsController => _slotsController;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private Image _menuPanel;
     public Image menuPanel => _menuPanel;
+    
+    [SerializeField] private UI_EffectController _uiEffectController;
 
     private Sprite _defaultPanelSprite;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private GameObject _pageArrowDirections;
     public GameObject pageArrowDirections => _pageArrowDirections;
 
     [SerializeField] private Image[] _pageArrows;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private Image[] _pageDots;
     [SerializeField] private Sprite[] _dotSprites;
 
-
-    [Header("")]
+    [Space(20)]
     [SerializeField] private InformationBox _infoBox;
     public InformationBox infoBox => _infoBox;
 
     [SerializeField] private ItemSlot _flipUpdateSlot;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private List<GameObject> _menus = new();
     public List<GameObject> menus => _menus;
 
     [SerializeField] private Sprite[] _menuCursorSprites;
     public Sprite[] menuCursorSprites => _menuCursorSprites;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private FoodMenu_Controller _foodMenu;
     public FoodMenu_Controller foodMenu => _foodMenu;
 
@@ -68,14 +64,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private ArchiveMenu_Controller _archiveMenu;
     public ArchiveMenu_Controller archiveMenu => _archiveMenu;
     
-    
     [Space(80)]
     [SerializeField] private Input_Manager _inputManager;
     
     
     private int _currentMenuNum;
     public int currentMenuNum => _currentMenuNum;
-
 
     public Action<bool> On_MenuToggle;
 
@@ -347,6 +341,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _infoBox.Flip_toDefault();
 
         Update_NavigateText();
+        
+        _uiEffectController.Update_Scale(_menuPanel.rectTransform);
     }
 
 

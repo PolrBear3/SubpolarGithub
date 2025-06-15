@@ -881,6 +881,21 @@ MonoBehaviour:
   _wheelsSprite: {fileID: -1198686160, guid: 58fdbbbcace114789bf1c99178141f91, type: 3}
   _defaultMoveSpeed: 1.5
   _maxMoveSpeed: 3.5
+  _interactIcon: {fileID: 736871765, guid: f311721b981194c6ba14962d17b64207, type: 3}
+  _interactTemplate:
+    _infoName: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:40f4f92780776447da64b56711bc8b2f
+      m_TableEntryReference:
+        m_KeyId: 14116970496
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &877062715807701256
 GameObject:
   m_ObjectHideFlags: 0
@@ -3306,6 +3321,7 @@ GameObject:
   - component: {fileID: 872659568982886879}
   - component: {fileID: 8532775503531135405}
   - component: {fileID: 4618068739923187908}
+  - component: {fileID: 2600089110321428503}
   - component: {fileID: 5472905039314482110}
   - component: {fileID: 6077059533122475756}
   - component: {fileID: 3595328392461979482}
@@ -3443,6 +3459,21 @@ MonoBehaviour:
         Data4: -2063877861
       Path: event:/Basic SFX/Dialog System/Dialog_update
   _fadeDuration: 0
+--- !u!114 &2600089110321428503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501531826094346831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fff8a1a50fc84cdaa9789869a7b038a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tweenType: 30
+  _initialScale: {x: 0, y: 0}
+  _durationTime: 0.25
 --- !u!114 &5472905039314482110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3530,6 +3561,7 @@ MonoBehaviour:
   _vehicleController: {fileID: 7023176493674794937}
   _slotsController: {fileID: 3595328392461979482}
   _menuPanel: {fileID: 8036621298818182149}
+  _uiEffectController: {fileID: 2600089110321428503}
   _pageArrowDirections: {fileID: 7506716955491281966}
   _pageArrows:
   - {fileID: 3945419191628555527}
