@@ -539,29 +539,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    private void Station_TargetDirection_Control(float xInputDirection)
+    private void Station_TargetDirection_Control(float inputDirection)
     {
         List<Station_Controller> retrieveStations = new(Retrieve_Stations());
 
-        int convertedDireciton = (int)xInputDirection;
-        int nextStationNum = _targetNum + convertedDireciton;
-
-        // less than min 
-        if (nextStationNum < 0)
-        {
-            nextStationNum = retrieveStations.Count - 1;
-        }
-
-        // more than max
-        if (nextStationNum > retrieveStations.Count - 1)
-        {
-            nextStationNum = 0;
-        }
+        int directedNum = _targetNum + (int)inputDirection;
+        _targetNum = (directedNum + retrieveStations.Count) % retrieveStations.Count;
 
         _interactStation.TransparentBlink_Toggle(false);
         _interactStation.movement.movementArrows.SetActive(false);
 
-        _targetNum = nextStationNum;
         _interactStation = retrieveStations[_targetNum];
 
         _interactStation.TransparentBlink_Toggle(true);
@@ -589,6 +576,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnOption1_Input += Retrieve_StationPrefab;
         _controller.OnExit_Input += Cancel_Retrieve;
 
+        _targetNum = 0;
         _interactStation = retrieveStations[0];
 
         _interactStation.TransparentBlink_Toggle(true);

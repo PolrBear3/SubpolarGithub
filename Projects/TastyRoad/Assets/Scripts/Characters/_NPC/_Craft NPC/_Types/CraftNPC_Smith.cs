@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CraftNPC_Smith : CraftNPC
 {
-    [Space(20)]
+    [Space(60)]
     [SerializeField] private GameObject _smithTable;
     [SerializeField] private Sprite _smithTableSprite;
 
@@ -46,6 +46,10 @@ public class CraftNPC_Smith : CraftNPC
 
     private new void OnDestroy()
     {
+        base.OnDestroy();
+        
+        Collect_Table();
+        
         // subscriptions
         globaltime.instance.OnTimeTik -= MoveTo_SetPosition;
 
@@ -172,6 +176,16 @@ public class CraftNPC_Smith : CraftNPC
         Update_ActionBubble();
     }
 
+    private void Collect_Table()
+    {
+        if (_setTable == null) return;
+        
+        GameObject setTable = _setTable.gameObject;
+        
+        _setTable = null;
+        Destroy(setTable);
+    }
+
 
     private void Purchase()
     {
@@ -194,12 +208,7 @@ public class CraftNPC_Smith : CraftNPC
         // activate action
         _setTable.Invoke_Action();
 
-        // collect action selector
-        GameObject currentToolBox = _setTable.gameObject;
-
-        _setTable = null;
-        Destroy(currentToolBox);
-
+        Collect_Table();
         Update_ActionBubble();
 
         Toggle_Action(false);

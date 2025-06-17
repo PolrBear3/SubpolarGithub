@@ -6,21 +6,19 @@ using UnityEngine;
 
 public class CraftNPC_Mechanic : CraftNPC
 {
-    [Header("")]
+    [Space(60)]
     [SerializeField] private Sprite _toolBoxSprite;
     [SerializeField] private GameObject _toolBox;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private ActionSelector_Data[] _actionDatas;
-
-    private ActionSelector _droppedToolBox;
-
-
-    [Header("< Upgrade Values >")]
+    
+    [Space(20)]
     [SerializeField] private Vector2[] _interactRanges;
     [SerializeField][Range(0, 1)] private float _speedUpgradeValue;
 
+    
+    private ActionSelector _droppedToolBox;
     private int _recentMenuNum;
 
 
@@ -53,6 +51,8 @@ public class CraftNPC_Mechanic : CraftNPC
     private new void OnDestroy()
     {
         base.OnDestroy();
+        
+        ToolBox_Collect();
 
         // subscriptions
         Main_Controller.instance.currentVehicle.menu.On_MenuToggle += Update_RecentMenuNum;
@@ -98,11 +98,10 @@ public class CraftNPC_Mechanic : CraftNPC
 
             return;
         }
-
+        
         bubble.Set_Bubble(_droppedToolBox.indicatorIcon.sprite, null);
-
+        
         if (bubble.bubbleOn == false) return;
-
         dialog.Update_Dialog(_droppedToolBox.currentIndex);
     }
 
@@ -140,6 +139,8 @@ public class CraftNPC_Mechanic : CraftNPC
         {
             _droppedToolBox.Add_ActionData(data);
         }
+        
+        npcController.interactable.bubble.Set_Bubble(_droppedToolBox.indicatorIcon.sprite, null);
     }
 
 

@@ -10,10 +10,10 @@ public class Detection_Controller : MonoBehaviour
     [SerializeField] private List<GameObject> _detectedprefabs;
     public List<GameObject> detectedprefabs => _detectedprefabs;
 
+
     private Player_Controller _player;
     public Player_Controller player => _player;
-
-
+    
     public Action EnterEvent;
     public Action ExitEvent;
 

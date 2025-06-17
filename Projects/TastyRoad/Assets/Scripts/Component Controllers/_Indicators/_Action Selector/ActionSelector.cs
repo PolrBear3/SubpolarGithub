@@ -11,7 +11,7 @@ public class ActionSelector : MonoBehaviour
     public SpriteRenderer sr => _sr;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
 
@@ -19,9 +19,8 @@ public class ActionSelector : MonoBehaviour
 
     [SerializeField] private IInteractable_Controller _interactable;
     public IInteractable_Controller interactable => _interactable;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private GameObject _indicatorObject;
 
     [SerializeField] private SpriteRenderer _indicatorIcon;
@@ -46,6 +45,7 @@ public class ActionSelector : MonoBehaviour
     private void Start()
     {
         Toggle_CurrentAction();
+        Update_IndicatorSprite();
 
         // subscriptions
         _detection.ExitEvent += Toggle_CurrentAction;
@@ -66,12 +66,11 @@ public class ActionSelector : MonoBehaviour
         if (_detection.player == null || _currentDatas.Count <= 0)
         {
             _isSelecting = false;
-
             _indicatorObject.SetActive(false);
+            
             return;
         }
 
-        Update_IndicatorSprite();
         _indicatorObject.SetActive(true);
     }
 

@@ -4,8 +4,18 @@ using UnityEngine;
 
 public class NPC_Movement : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private NPC_Controller _controller;
+
+    [Space(20)]
+    [SerializeField][Range(0, 100)] private float _defaultMoveSpeed;
+    public float defaultMoveSpeed => _defaultMoveSpeed;
+
+    [SerializeField][Range(0, 100)] private int _intervalTime;
+    public int intervalTime => _intervalTime;
+
+    
+    private float _moveSpeed;
 
     private Vector2 _targetPosition;
     public Vector2 targetPosition => _targetPosition;
@@ -20,23 +30,7 @@ public class NPC_Movement : MonoBehaviour
 
     private SpriteRenderer _currentRoamArea;
     public SpriteRenderer currentRoamArea => _currentRoamArea;
-
-
-    [Header("")]
-    [SerializeField][Range(0, 100)] private float _defaultMoveSpeed;
-    public float defaultMoveSpeed => _defaultMoveSpeed;
-
-    private float _moveSpeed;
-
-
-    [Header("")]
-    [SerializeField][Range(0, 100)] private int _intervalTime;
-    public int intervalTime => _intervalTime;
-
-    [SerializeField][Range(0, 100)] private int _searchAttempts;
-    public int searchAttempts => _searchAttempts;
-
-
+    
     public delegate void Event();
     public Event TargetPosition_UpdateEvent;
 
@@ -124,67 +118,31 @@ public class NPC_Movement : MonoBehaviour
 
         TargetPosition_UpdateEvent?.Invoke();
     }
-
+    
     /// <summary>
-    /// Attempts to find path cleared position
+    /// Assigns to random point inside searchArea
     /// </summary>
-    private void Assign_TargetPosition(SpriteRenderer searchArea, bool withinSpawnRange)
+    private void Assign_TargetPosition(SpriteRenderer searchArea)
     {
         Main_Controller main = Main_Controller.instance;
         LocationData currentLocation = main.currentLocation.data;
 
-        int attemptCount = _searchAttempts;
-        Vector2 targetPosition;
-
-        do
-        {
-            targetPosition = main.Random_AreaPoint(searchArea);
-
-            if (withinSpawnRange && currentLocation.Within_SpawnRange(targetPosition) == false)
-            {
-                attemptCount--;
-                continue;
-            }
-
-            if (main.Is_StationArea(targetPosition))
-            {
-                attemptCount--;
-                continue;
-            }
-
-            Assign_TargetPosition(targetPosition);
-            return;
-        }
-        while (attemptCount > 0);
-
-        Leave(Random_IntervalTime());
+        Assign_TargetPosition(main.Random_AreaPoint(searchArea));
     }
 
 
-    // Free Roam
-    /// <summary>
-    /// updates the current roam area variable
-    /// </summary>
+    // Free Roam  
+    public void Stop_FreeRoam()
+    {
+        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+
+        _roamActive = false;
+        _targetPosition = transform.position;
+    }
+
     public void Update_RoamArea(SpriteRenderer assignArea)
     {
         _currentRoamArea = assignArea;
-    }
-
-
-    /// <summary>
-    /// Updates and moves to a random target position inside roam area on every interval time
-    /// </summary>
-    public void Free_Roam(SpriteRenderer roamArea)
-    {
-        Free_Roam(roamArea, Random_IntervalTime());
-    }
-    /// <summary>
-    /// Default roam area of current location
-    /// </summary>
-    public void Free_Roam(float startDelayTime)
-    {
-        SpriteRenderer roamArea = Main_Controller.instance.currentLocation.data.roamArea;
-        Free_Roam(roamArea, startDelayTime);
     }
 
 
@@ -206,37 +164,47 @@ public class NPC_Movement : MonoBehaviour
             yield break;
         }
 
-        Assign_TargetPosition(roamArea, false);
-
-        // repeat until free roam deactivates
         while (_roamActive == true)
         {
-            // wait until NPC reaches target position
+            Assign_TargetPosition(roamArea);
+
             while (At_TargetPosition() == false)
             {
                 yield return null;
             }
 
-            yield return new WaitForSeconds(Random_IntervalTime());
+            Assign_TargetPosition(transform.position);
+            
             if (_roamActive == false) break;
-
-            Assign_TargetPosition(roamArea, false);
+            yield return new WaitForSeconds(Random_IntervalTime());
         }
 
         _moveCoroutine = null;
         yield break;
     }
 
-    public void SpawnRange_FreeRoam(SpriteRenderer roamArea, float startDelayTime)
+    public void Free_Roam(SpriteRenderer roamArea)
+    {
+        Free_Roam(roamArea, Random_IntervalTime());
+    }
+
+    public void CurrentLocation_FreeRoam()
+    {
+        Free_Roam(Main_Controller.instance.currentLocation.data.roamArea);
+    }
+    
+    public void CurrentLocation_FreeRoam(SpriteRenderer roamArea, float startDelayTime)
     {
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
-
+        
         _roamActive = true;
         _currentRoamArea = roamArea;
-        _moveCoroutine = StartCoroutine(SpawnRange_FreeRoam_Coroutine(roamArea, startDelayTime));
+        _moveCoroutine = StartCoroutine(CurrentLocation_FreeRoam_Coroutine(roamArea, startDelayTime));
     }
-    private IEnumerator SpawnRange_FreeRoam_Coroutine(SpriteRenderer roamArea, float startDelayTime)
+    private IEnumerator CurrentLocation_FreeRoam_Coroutine(SpriteRenderer roamArea, float startDelayTime)
     {
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
+
         yield return new WaitForSeconds(startDelayTime);
 
         if (_roamActive == false)
@@ -244,35 +212,24 @@ public class NPC_Movement : MonoBehaviour
             _moveCoroutine = null;
             yield break;
         }
-
-        Assign_TargetPosition(roamArea, true);
-
-        // repeat until free roam deactivates
+        
         while (_roamActive == true)
         {
-            // wait until NPC reaches target position
-            while (At_TargetPosition() == false)
+            Assign_TargetPosition(roamArea);
+
+            while (At_TargetPosition() == false && currentLocation.Restricted_Position(transform.position) == false)
             {
                 yield return null;
             }
 
-            yield return new WaitForSeconds(Random_IntervalTime());
+            Assign_TargetPosition(transform.position);
+            
             if (_roamActive == false) break;
-
-            Assign_TargetPosition(roamArea, true);
+            yield return new WaitForSeconds(Random_IntervalTime());
         }
 
         _moveCoroutine = null;
         yield break;
-    }
-
-
-    public void Stop_FreeRoam()
-    {
-        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
-
-        _roamActive = false;
-        _targetPosition = transform.position;
     }
 
 

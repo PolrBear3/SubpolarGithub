@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class NPC_Controller : MonoBehaviour
 {
-    [Space(20)]
+    [Space(20)] 
     [SerializeField] private BasicAnimation_Controller _basicAnim;
     public BasicAnimation_Controller basicAnim => _basicAnim;
 

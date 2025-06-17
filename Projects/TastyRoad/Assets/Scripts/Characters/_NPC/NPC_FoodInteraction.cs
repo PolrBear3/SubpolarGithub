@@ -122,7 +122,7 @@ public class NPC_FoodInteraction : MonoBehaviour
             return;
         }
 
-        movement.SpawnRange_FreeRoam(main.currentVehicle.interactArea, 1f);
+        movement.CurrentLocation_FreeRoam(main.currentVehicle.interactArea, 1f);
     }
 
 

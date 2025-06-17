@@ -34,12 +34,14 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 
         // subscription
         Main_Controller.instance.worldMap.OnNewLocation += Spawn_New;
+        globaltime.instance.OnDayTime += Cycle_New;
     }
 
     private void OnDestroy()
     {
         // subscription
         Main_Controller.instance.worldMap.OnNewLocation -= Spawn_New;
+        globaltime.instance.OnDayTime -= Cycle_New;
     }
 
 
@@ -118,9 +120,33 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     private void Spawn_New()
     {
         // save current npc data
-        _data.currentNPC.Invoke_OnSave();
+        if (_data.currentNPC != null) _data.currentNPC.Invoke_OnSave();
 
         // set new npc & default position
         Spawn(NewNPC_IndexNum()).transform.position = Default_SpawnPosition();
+    }
+
+    private void Cycle_New()
+    {
+        if (_data.currentNPC.purchaseData.purchased) return;
+        
+        StartCoroutine(Cycle_New_Coroutine());
+    }
+    private IEnumerator Cycle_New_Coroutine()
+    {
+        CraftNPC currentNPC = _data.currentNPC;
+        NPC_Controller controller = currentNPC.npcController;
+        NPC_Movement movement = controller.movement;
+        
+        currentNPC.Invoke_OnSave();
+        controller.interactable.LockInteract(true);
+        
+        movement.Set_MoveSpeed(movement.defaultMoveSpeed + 3);
+        movement.Leave(0);
+        
+        while (movement.At_TargetPosition() == false) yield return null;
+        
+        Spawn_New();
+        yield break;
     }
 }

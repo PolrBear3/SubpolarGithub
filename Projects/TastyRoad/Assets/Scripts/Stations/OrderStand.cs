@@ -170,7 +170,7 @@ public class OrderStand : MonoBehaviour
                 if (_currentNPCs.Contains(FoodOrder_NPCs()[i])) continue;
 
                 _currentNPCs.Add(FoodOrder_NPCs()[i]);
-                FoodOrder_NPCs()[i].movement.Free_Roam(_orderingArea, 0f);
+                FoodOrder_NPCs()[i].movement.CurrentLocation_FreeRoam(_orderingArea, 0f);
 
                 break;
             }

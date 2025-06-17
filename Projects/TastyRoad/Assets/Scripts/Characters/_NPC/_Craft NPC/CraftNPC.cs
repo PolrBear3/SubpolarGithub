@@ -9,29 +9,26 @@ public class CraftNPC : MonoBehaviour
     public CraftNPC_Controller controller => _controller;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private NPC_Controller _npcController;
     public NPC_Controller npcController => _npcController;
 
     [SerializeField] private DialogTrigger _dialog;
     public DialogTrigger dialog => _dialog;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private Sprite _npcIconSprite;
     public Sprite npcIconSprite => _npcIconSprite;
 
     [SerializeField] private SpriteRenderer _statusIcon;
     private Sprite _defaultSprite;
 
-
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 1000)] private int _defalutPrice;
     public int defaultPrice => _defalutPrice;
 
     [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
     public float upgradeTimeValue => _upgradeTimeValue;
-    
     
     [Space(60)]
     [SerializeField] private VideoGuide_Trigger _guideTrigger;
@@ -42,11 +39,9 @@ public class CraftNPC : MonoBehaviour
 
     private PurchaseData _purchaseData;
     public PurchaseData purchaseData => _purchaseData;
-
-
+    
     private Action _OnSave;
-
-
+    
     private Coroutine _coroutine;
     public Coroutine coroutine;
 
@@ -62,7 +57,7 @@ public class CraftNPC : MonoBehaviour
         Toggle_PayIcon();
 
         // starting movement
-        _npcController.movement.Free_Roam(0);
+        _npcController.movement.Free_Roam(Main_Controller.instance.currentLocation.data.roamArea, 0f);
 
         // subscriptions
         ActionBubble_Interactable interactable = _npcController.interactable;
@@ -115,7 +110,7 @@ public class CraftNPC : MonoBehaviour
         Toggle_PayIcon();
 
         movement.Set_MoveSpeed(movement.defaultMoveSpeed);
-        movement.Free_Roam(0);
+        _npcController.movement.Free_Roam(Main_Controller.instance.currentLocation.data.roamArea, 0f);
         
         Set_Coroutine(null);
     }
