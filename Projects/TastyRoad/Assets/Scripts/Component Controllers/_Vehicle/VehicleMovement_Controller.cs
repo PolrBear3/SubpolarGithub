@@ -23,6 +23,9 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)] 
     [SerializeField] private Sprite _interactIcon;
     [SerializeField] private Information_Template _interactTemplate;
+    
+    [Space(60)] 
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     private bool _onBoard;
@@ -53,6 +56,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         _interactable.OnAction1 += Ride;
         _interactable.OnAction2 += _controller.Open_LocationMenu;
+
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void OnDestroy()
@@ -62,6 +67,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         _interactable.OnAction1 -= Ride;
         _interactable.OnAction2 -= _controller.Open_LocationMenu;
+        
+        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void Update()

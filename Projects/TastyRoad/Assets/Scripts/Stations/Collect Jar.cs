@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class CollectJar : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Station_Controller _controller;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Sprite[] _jarSprites;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private int _searchTime;
 
 
@@ -39,6 +39,8 @@ public class CollectJar : MonoBehaviour
 
         iInteractable.OnInteract += Toggle_GoldAmount;
         iInteractable.OnHoldInteract += Empty;
+
+        _controller.maintenance.OnDurabilityBreak += Empty;
     }
 
     private void OnDestroy()
@@ -58,6 +60,8 @@ public class CollectJar : MonoBehaviour
 
         iInteractable.OnInteract -= Toggle_GoldAmount;
         iInteractable.OnHoldInteract -= Empty;
+        
+        _controller.maintenance.OnDurabilityBreak -= Empty;
     }
 
 

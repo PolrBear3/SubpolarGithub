@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private VehicleMovement_Controller _movement;
     public VehicleMovement_Controller movement => _movement;
 
@@ -14,21 +14,18 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
     [SerializeField] private LocationMenu_Controller _locationMenu;
     public LocationMenu_Controller locationMenu => _locationMenu;
-
-
+    
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private GameObject _spritesFile;
     public GameObject spritesFile => _spritesFile;
 
     [SerializeField] private SpriteRenderer _interactArea;
     public SpriteRenderer interactArea => _interactArea;
 
-
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Transform _transparencyPoint;
 
     [SerializeField] private Transform _stationSpawnPoint;
@@ -37,6 +34,10 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     [SerializeField] private Transform _driverSeatPoint;
     public Transform driverSeatPoint => _driverSeatPoint;
 
+    [Space(60)] 
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
+    
+    
     private bool _transparencyLocked;
 
 
@@ -55,6 +56,8 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
         // subscription
         detection.ExitEvent += Transparency_Update;
         OnAction1 += Open_VehicleMenu;
+
+        OnInteract += _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void OnDestroy()
@@ -62,6 +65,8 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
         // subscription
         detection.ExitEvent += Transparency_Update;
         OnAction1 -= Open_VehicleMenu;
+        
+        OnInteract -= _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void Update()

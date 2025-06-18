@@ -209,6 +209,9 @@ public class Table : MonoBehaviour, IInteractable
 
     public void Drop_CurrentFood()
     {
+        FoodData_Controller foodIcon = _stationController.Food_Icon();
+
+        if (foodIcon.AllDatas().Count <= 0) return; 
         _stationController.itemDropper.Drop_Food(_stationController.Food_Icon().AllDatas());
     }
 }

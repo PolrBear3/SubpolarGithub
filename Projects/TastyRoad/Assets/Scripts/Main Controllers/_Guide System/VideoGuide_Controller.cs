@@ -124,6 +124,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     // Trigger
     public bool Guide_Triggered(Guide_ScrObj guideScrObj)
     {
+        if (guideScrObj == null) return false;
+        
         for (int i = 0; i < _triggeredGuideIDs.Count; i++)
         {
             if (guideScrObj.guideID != _triggeredGuideIDs[i]) continue;

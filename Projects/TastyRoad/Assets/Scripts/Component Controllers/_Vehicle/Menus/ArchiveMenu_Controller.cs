@@ -66,17 +66,17 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnHoldSelect_Input += CurrentFood_BookmarkToggle;
         _controller.OnOption1_Input += CurrentFood_BookmarkToggle;
 
-        _controller.OnCursor_Input += InfoBox_Update;
-        _controller.OnSelect_Input += InfoBox_Update;
-        _controller.OnOption1_Input += InfoBox_Update;
-        _controller.OnOption2_Input += InfoBox_Update;
+        _controller.OnCursor_Input += Update_InfoBox;
+        _controller.OnSelect_Input += Update_InfoBox;
+        _controller.OnOption1_Input += Update_InfoBox;
+        _controller.OnOption2_Input += Update_InfoBox;
 
         _controller.OnOption2_Input += IngredientBox_Toggle;
         _controller.OnSelect_Input += Hide_IngredientBox;
         _controller.OnCursor_Input += Hide_IngredientBox;
         _controller.OnExit_Input += Hide_IngredientBox;
 
-        Localization_Controller.instance.OnLanguageChanged += InfoBox_Update;
+        Localization_Controller.instance.OnLanguageChanged += Update_InfoBox;
     }
 
     private void OnDisable()
@@ -97,17 +97,17 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnHoldSelect_Input -= CurrentFood_BookmarkToggle;
         _controller.OnOption1_Input -= CurrentFood_BookmarkToggle;
 
-        _controller.OnCursor_Input -= InfoBox_Update;
-        _controller.OnSelect_Input -= InfoBox_Update;
-        _controller.OnOption1_Input -= InfoBox_Update;
-        _controller.OnOption2_Input -= InfoBox_Update;
+        _controller.OnCursor_Input -= Update_InfoBox;
+        _controller.OnSelect_Input -= Update_InfoBox;
+        _controller.OnOption1_Input -= Update_InfoBox;
+        _controller.OnOption2_Input -= Update_InfoBox;
 
         _controller.OnOption2_Input -= IngredientBox_Toggle;
         _controller.OnSelect_Input -= Hide_IngredientBox;
         _controller.OnCursor_Input -= Hide_IngredientBox;
         _controller.OnExit_Input -= Hide_IngredientBox;
         
-        Localization_Controller.instance.OnLanguageChanged -= InfoBox_Update;
+        Localization_Controller.instance.OnLanguageChanged -= Update_InfoBox;
     }
 
     private void OnDestroy()
@@ -191,8 +191,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         Drop_Food();
     }
-
-    private void InfoBox_Update()
+    
+    private void Update_InfoBox()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot_Data cursorData = cursor.data;
@@ -235,7 +235,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         string ingredientStatus = archiveInfoTrigger.TemplateString(1);
         if (FoodIngredient_Unlocked(dragFood) == false)
         {
-            ingredientStatus = "Return";
+            ingredientStatus = infoTrigger.TemplateString(4);
         }
 
         string dragInfo = "<sprite=69> " + dragFood.LocalizedName() + "\n";

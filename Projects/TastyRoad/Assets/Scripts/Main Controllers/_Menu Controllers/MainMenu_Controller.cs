@@ -11,6 +11,9 @@ public class MainMenu_Controller : Menu_Controller
     [SerializeField] private Information_Template _newGameTemplate;
     [SerializeField] private TextMeshProUGUI _dataInfoText;
     
+    [Space(20)]
+    [SerializeField] private Menu_EventButton[] _linkButtons;
+    
     
     // UnityEngine
     private new void Start()
@@ -20,6 +23,11 @@ public class MainMenu_Controller : Menu_Controller
         
         Toggle_Menu(true);
         StartCoroutine(Play_ThemeBGM());
+
+        foreach (Menu_EventButton button in _linkButtons)
+        {
+            button.Set_DefaultPosition();
+        }
     }
     
     
@@ -92,5 +100,38 @@ public class MainMenu_Controller : Menu_Controller
         string goldDataString = "<sprite=56> " + goldData.goldAmount;
         
         _dataInfoText.text = mapDataString + "   " + goldDataString;
+    }
+    
+    
+    // Link buttons
+    public void Hover_LinkButton(int buttonIndex)
+    {
+        if (buttonIndex < 0)
+        {
+            foreach (Menu_EventButton button in _linkButtons)
+            {
+                RectTransform buttonTransform = button.button.rectTransform;
+                buttonTransform.localPosition = button.defaultPosition;
+            }
+            return;
+        }
+        
+        for (int i = 0; i < _linkButtons.Length; i++)
+        {
+            RectTransform buttonTransform = _linkButtons[i].button.rectTransform;
+            
+            if (i != buttonIndex)
+            {
+                buttonTransform.localPosition = _linkButtons[i].defaultPosition;
+                continue;
+            }
+            
+            buttonTransform.localPosition = Vector2.zero;
+        }
+    }
+
+    public void Open_Link(string link)
+    {
+        Application.OpenURL(link);
     }
 }

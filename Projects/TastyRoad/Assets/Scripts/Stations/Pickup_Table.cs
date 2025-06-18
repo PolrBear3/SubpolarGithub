@@ -10,7 +10,8 @@ public class Pickup_Table : Stack_Table, IInteractable
     [Space(20)]
     [SerializeField][Range(0, 100)] private int _searchTime;
 
-    
+
+    private NPC_Controller _targetNPC;
     private Coroutine _coroutine;
 
 
@@ -18,7 +19,7 @@ public class Pickup_Table : Stack_Table, IInteractable
     private new void Start()
     {
         base.Start();
-
+        
         Update_Sprite();
         Take_FoodOrder(stationController.movement.enabled == false);
 
@@ -27,6 +28,8 @@ public class Pickup_Table : Stack_Table, IInteractable
         
         main.OnFoodBookmark += Take_FoodOrder;
         main.OnFoodBookmark += Update_Sprite;
+        
+        stationController.maintenance.OnDurabilityBreak += Update_TargetNPC;
     }
 
     private new void OnDestroy()
@@ -38,6 +41,8 @@ public class Pickup_Table : Stack_Table, IInteractable
         
         main.OnFoodBookmark -= Take_FoodOrder;
         main.OnFoodBookmark -= Update_Sprite;
+
+        stationController.maintenance.OnDurabilityBreak -= Update_TargetNPC;
     }
 
 
@@ -134,28 +139,25 @@ public class Pickup_Table : Stack_Table, IInteractable
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
-        while (true)
+        while (foodIcon.hasFood && Main_Controller.instance.Food_BookmarkedFood())
         {
             yield return new WaitForSeconds(_searchTime);
-
-            if (!foodIcon.hasFood) break;
-            if (Main_Controller.instance.Food_BookmarkedFood() == false) break;
 
             List<NPC_Controller> foodOrderNPCs = FoodOrder_NPCs();
             if (foodOrderNPCs.Count <= 0) continue;
 
             for (int i = 0; i < foodOrderNPCs.Count; i++)
             {
-                NPC_Controller targetNPC = foodOrderNPCs[i];
-                NPC_Movement movement = targetNPC.movement;
+                _targetNPC = foodOrderNPCs[i];
+                NPC_Movement movement = _targetNPC.movement;
 
                 movement.Stop_FreeRoam();
                 movement.Assign_TargetPosition(transform.position);
 
                 while (!movement.At_TargetPosition(transform.position)) yield return null;
 
-                Food_ScrObj orderFood = targetNPC.foodIcon.currentData.foodScrObj;
-                NPC_FoodInteraction interaction = targetNPC.foodInteraction;
+                Food_ScrObj orderFood = _targetNPC.foodIcon.currentData.foodScrObj;
+                NPC_FoodInteraction interaction = _targetNPC.foodInteraction;
 
                 FoodData transferData = foodIcon.Empty_TargetData(orderFood);
                 Update_Sprite();
@@ -163,18 +165,34 @@ public class Pickup_Table : Stack_Table, IInteractable
                 if (interaction.Transfer_FoodOrder(transferData))
                 {
                     Audio_Controller.instance.Play_OneShot(gameObject, 1);
+                    
+                    _targetNPC = null;
                     break;
                 }
 
-                interaction.Update_RoamArea();
+                Update_TargetNPC();
             }
 
             foodIcon.Show_Icon();
             foodIcon.Show_Condition();
             AmountBar_Toggle();
+            
+            Station_Maintenance maintenance = stationController.maintenance;
+            
+            maintenance.Update_Durability(-1);
+            maintenance.Update_DurabilityBreak();
         }
 
         _coroutine = null;
         yield break;
+    }
+
+
+    private void Update_TargetNPC()
+    {
+        if (_targetNPC == null) return;
+        
+        _targetNPC.foodInteraction.Update_RoamArea();
+        _targetNPC = null;
     }
 }

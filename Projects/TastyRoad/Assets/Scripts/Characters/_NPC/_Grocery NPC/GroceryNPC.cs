@@ -148,9 +148,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
         _data = ES3.Load("GroceryNPC/GroceryNPC_Data", new GroceryNPC_Data(startingBundleDatas));
 
-        foreach (FoodData data in _data.unlockDatas)
+        for (int i = 0; i < _data.unlockDatas.Count; i++)
         {
-            _data.UnlockNew_FoodData(data.foodScrObj);
+            _data.UnlockNew_FoodData(_data.unlockDatas[i].foodScrObj);
         }
 
         FoodData questFoodData = null;
