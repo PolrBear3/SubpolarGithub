@@ -170,10 +170,9 @@ public class NPC_FoodInteraction : MonoBehaviour
 
     private bool SetOrder_Active()
     {
+        if (_controller.movement.isLeaving) return false;
         if (_foodOrderCount > 0) return false;
-
         if (_timeCoroutine != null) return false;
-
         if (_payAvailable) return false;
 
         // check if additional food orders are left

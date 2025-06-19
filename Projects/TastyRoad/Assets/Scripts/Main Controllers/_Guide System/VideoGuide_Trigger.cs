@@ -39,14 +39,12 @@ public class VideoGuide_Trigger : MonoBehaviour
         _spriteRenderer.color = Color.clear;
     }
 
-    public void Trigger_CurrentGuide()
+    public void Trigger_CurrentGuide() 
     {
-        if (_triggerGuide == null)
-        {
-            _spriteRenderer.color = Color.clear;
-            return;
-        }
-        
+        if (_triggerGuide == null) return;
         VideoGuide_Controller.instance.Trigger_Guide(this);
+        
+        if (_triggerGuide.clipDatas.Length > 0) return;
+        _spriteRenderer.color = Color.clear;
     }
 }

@@ -25,8 +25,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private bool _interactionMode;
     private Station_Controller _interactStation;
     
-    
-
 
     // Editor
     [HideInInspector] public Station_ScrObj editStation;
@@ -490,9 +488,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Vehicle_Controller vehicle = _controller.vehicleController;
 
         _controller.slotsController.cursor.Empty_Item();
-
         _controller.OnOption1_Input -= _interactStation.movement.Set_Position;
 
+        VideoGuide_Controller.instance.Trigger_Guide(_interactStation.stationScrObj.usageGuide);
+        
         _interactionMode = false;
         _interactStation = null;
 

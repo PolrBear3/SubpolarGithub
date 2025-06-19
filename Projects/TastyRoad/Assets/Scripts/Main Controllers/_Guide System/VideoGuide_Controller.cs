@@ -124,8 +124,6 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     // Trigger
     public bool Guide_Triggered(Guide_ScrObj guideScrObj)
     {
-        if (guideScrObj == null) return false;
-        
         for (int i = 0; i < _triggeredGuideIDs.Count; i++)
         {
             if (guideScrObj.guideID != _triggeredGuideIDs[i]) continue;
@@ -141,10 +139,11 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         if (Guide_Triggered(guideScrObj)) return;
         
         _triggeredGuideIDs.Add(guideScrObj.guideID);
+        
+        if (guideScrObj.clipDatas.Length <= 0) return;
         _currentGuide = guideScrObj;
-
+        
         Toggle_VideoPanel(true);
-
         OnGuideTrigger?.Invoke();
     }
     public void Trigger_Guide(VideoGuide_Trigger guideTrigger)

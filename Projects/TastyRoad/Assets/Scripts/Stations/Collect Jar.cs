@@ -39,8 +39,6 @@ public class CollectJar : MonoBehaviour
 
         iInteractable.OnInteract += Toggle_GoldAmount;
         iInteractable.OnHoldInteract += Empty;
-
-        _controller.maintenance.OnDurabilityBreak += Empty;
     }
 
     private void OnDestroy()
@@ -60,8 +58,6 @@ public class CollectJar : MonoBehaviour
 
         iInteractable.OnInteract -= Toggle_GoldAmount;
         iInteractable.OnHoldInteract -= Empty;
-        
-        _controller.maintenance.OnDurabilityBreak -= Empty;
     }
 
 

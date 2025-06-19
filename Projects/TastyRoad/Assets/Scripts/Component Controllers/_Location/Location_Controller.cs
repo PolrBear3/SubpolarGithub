@@ -223,21 +223,21 @@ public class Location_Controller : MonoBehaviour
         {
             if (npcs[i].foodInteraction == null) continue;
 
-            NPC_Movement move = npcs[i].movement;
+            NPC_Movement movement = npcs[i].movement;
 
-            if (move.currentRoamArea != _data.roamArea) continue;
+            if (movement.currentRoamArea != _data.roamArea) continue;
             if (npcOverFlowCount <= 0) break;
 
             npcOverFlowCount--;
 
-            if (move.isLeaving)
+            if (movement.isLeaving)
             {
                 npcOverFlowCount--;
                 continue;
             }
 
             npcOverFlowCount--;
-            move.Leave(0f);
+            movement.Leave(0f);
         }
     }
 

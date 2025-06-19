@@ -168,13 +168,8 @@ public class NPC_Movement : MonoBehaviour
         {
             Assign_TargetPosition(roamArea);
 
-            while (At_TargetPosition() == false)
-            {
-                yield return null;
-            }
+            while (At_TargetPosition() == false) yield return null;
 
-            Assign_TargetPosition(transform.position);
-            
             if (_roamActive == false) break;
             yield return new WaitForSeconds(Random_IntervalTime());
         }
@@ -217,13 +212,13 @@ public class NPC_Movement : MonoBehaviour
         {
             Assign_TargetPosition(roamArea);
 
-            while (At_TargetPosition() == false && currentLocation.Restricted_Position(transform.position) == false)
+            while (currentLocation.Restricted_Position(_targetPosition))
             {
-                yield return null;
+                Assign_TargetPosition(roamArea);
             }
 
-            Assign_TargetPosition(transform.position);
-            
+            while (At_TargetPosition() == false) yield return null;
+
             if (_roamActive == false) break;
             yield return new WaitForSeconds(Random_IntervalTime());
         }
