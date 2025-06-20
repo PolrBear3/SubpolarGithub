@@ -263,7 +263,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             ? infoTrigger.TemplateString(7) + "/" + infoTrigger.TemplateString(9)
             : infoTrigger.TemplateString(8);
 
-        string bluePrintInfo = cursorData.isLocked ? "    " + _bluePrintTemplate.InfoString() : string.Empty;
+        string bluePrintInfo = cursorData.isLocked ? " ( " + _bluePrintTemplate.InfoString() + ")" : string.Empty;
         string currentStationInfo = "<sprite=70> " + cursorData.currentStation.LocalizedName() + bluePrintInfo +  "\n";
         
         string controlInfo = infoTrigger.KeyControl_Template(action1Info, action1Info, holdInfo);

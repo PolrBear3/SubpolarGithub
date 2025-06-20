@@ -93,7 +93,7 @@ public class MainMenu_Controller : Menu_Controller
         
         // get current location data //
         WorldMap_Data mapData = ES3.Load("WorldMap_Controller/WorldMap_Data", new WorldMap_Data(0, 0));
-        string mapDataString = "<sprite=95> " + (mapData.worldNum + 1) + "-" + (mapData.locationNum + 1);
+        string mapDataString = "<sprite=95> " + (mapData.worldNum) + "-" + (mapData.locationNum);
 
         // get current gold amount //
         GoldSystem_Data goldData = ES3.Load("GoldSystem/GoldSystem_Data", new GoldSystem_Data(0));
