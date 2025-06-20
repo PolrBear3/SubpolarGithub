@@ -38,6 +38,7 @@ public class OptionsMenu_Controller : Menu_Controller
     private List<string> _volumeStrings = new();
     
     [Space(20)]
+    [SerializeField] private Vector2Int _defaultResolution;
     [SerializeField] private ResolutionData[] _fallBackResolutions;
     [SerializeField] private LocalizedString[] screenTypeStrings;
     
@@ -69,7 +70,7 @@ public class OptionsMenu_Controller : Menu_Controller
         
         if (ES3.FileExists("OptionsFile.es3") == false)
         {
-            _data = new(1f);
+            _data = new(1f, _defaultResolution);
         }
         else
         {

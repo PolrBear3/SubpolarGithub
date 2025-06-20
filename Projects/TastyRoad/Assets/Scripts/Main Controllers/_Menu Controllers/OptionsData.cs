@@ -36,12 +36,12 @@ public class OptionsData
         _language = data.language;
     }
     
-    public OptionsData(float setVolume)
+    public OptionsData(float setVolume, Vector2Int setResolution)
     {
         _bgmVolume = setVolume;
         _sfxVolume = setVolume;
 
-        _resolution = Resolution_Vector2(Screen.currentResolution);
+        _resolution = setResolution;
         _isFullScreen = false;
         
         _language = LocalizationSettings.SelectedLocale.Identifier.CultureInfo.NativeName;
