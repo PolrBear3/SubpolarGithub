@@ -114,9 +114,7 @@ public class LocationData
         for (int i = 0; i < data.Count; i++)
         {
             cumulativeWeight += data[i].weight;
-
-            if (randValue >= cumulativeWeight) continue;
-            return data[i].foodScrObj;
+            if (randValue < cumulativeWeight) return data[i].foodScrObj;
         }
 
         return null;
@@ -189,9 +187,7 @@ public class LocationData
             if (_stationDrops[i].weight <= 0) continue;
             
             cumulativeWeight += _stationDrops[i].weight;
-
-            if (randValue >= cumulativeWeight) continue;
-            return _stationDrops[i].stationScrObj;
+            if (randValue < cumulativeWeight) return _stationDrops[i].stationScrObj;
         }
 
         return null;
