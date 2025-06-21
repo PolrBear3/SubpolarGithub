@@ -412,5 +412,6 @@ public class CraftNPC_Mechanic : CraftNPC
         if (recentMenu.activeSelf == false) return;
 
         menuController.Update_PageDots(slotDatas.Count);
+        menuController.Update_PageArrows();
     }
 }

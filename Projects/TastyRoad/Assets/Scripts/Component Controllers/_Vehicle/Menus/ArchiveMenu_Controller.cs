@@ -52,7 +52,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.Update_PanelSprite(_panelSprite);
 
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
-        _controller.pageArrowDirections.SetActive(_currentDatas.Count > 1);
+        _controller.Update_PageArrows();
 
         Update_CurrentDatas();
 

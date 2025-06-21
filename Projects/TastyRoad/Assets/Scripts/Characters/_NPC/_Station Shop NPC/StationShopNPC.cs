@@ -21,16 +21,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [Space(20)]
     [SerializeField] private ScrapStack _scrapStack;
 
-    [SerializeField][Range(0, 10)] private float _disposeWaitTime;
-    [SerializeField][Range(0, 10)] private int _disposeScrapAmount;
-
-    [SerializeField] private Station_ScrObj[] _restrictedDisposables;
-
     [Space(20)]
     [SerializeField] private Transform[] _boxStackPoints;
     [SerializeField] private StationStock[] _stationStocks;
 
-    [Space(20)]
+    [Space(20)] 
+    [SerializeField][Range(1, 6)] private int _restockScrapAmount;
     [SerializeField][Range(1, 100)] private int _duplicateAmount;
     
     [Space(60)] 
@@ -60,15 +56,12 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         // subscription
         WorldMap_Controller worldMap = Main_Controller.instance.worldMap;
         worldMap.OnNewLocation += Restock_New;
-        
-        globaltime.instance.OnDayTime += Restock_ArchivedStation;
-        
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
 
+        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
 
-        _interactable.OnAction1 += Dispose_BookMarkedStation;
+        _interactable.OnAction1 += Restock_ArchivedStation;
         _interactable.OnAction2 += Build_BookMarkedStation;
 
         // start free roam
@@ -94,7 +87,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         _interactable.OnInteract -= Cancel_Action;
         _interactable.OnInteract -= Interact_FacePlayer;
 
-        _interactable.OnAction1 -= Dispose_BookMarkedStation;
+        _interactable.OnAction1 -= Restock_ArchivedStation;
         _interactable.OnAction2 -= Build_BookMarkedStation;
     }
 
@@ -406,94 +399,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         
         move.Free_Roam(_currentSubLocation.roamArea, 0f);
     }
-    
-
-    // Dispose
-    private bool Dispose_Restricted(Station_ScrObj checkStation)
-    {
-        for (int i = 0; i < _restrictedDisposables.Length; i++)
-        {
-            if (_restrictedDisposables[i] != checkStation) continue;
-            return true;
-        }
-
-        return false;
-    }
-
-    private ItemSlot_Data Dispose_SlotData()
-    {
-        StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
-        ItemSlots_Controller slots = menu.controller.slotsController;
-
-        List<ItemSlot_Data> bookmarkedDatas = slots.BookMarked_Datas(menu.currentDatas, false);
-        ItemSlot_Data disposeSlot = null;
-
-        for (int i = bookmarkedDatas.Count - 1; i >= 0; i--)
-        {
-            if (Dispose_Restricted(bookmarkedDatas[i].currentStation)) continue;
-            disposeSlot = bookmarkedDatas[i];
-        }
-
-        return disposeSlot;
-    }
-
-    private void Dispose_BookMarkedStation()
-    {
-        if (_actionCoroutine != null) return;
-
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        if (_scrapStack.amountBar.Is_MaxAmount())
-        {
-            dialog.Update_Dialog(5);
-            return;
-        }
-
-        if (Dispose_SlotData() == null)
-        {
-            dialog.Update_Dialog(0);
-            return;
-        }
-
-        _actionCoroutine = StartCoroutine(Dispose_BookMarkedStation_Coroutine());
-    }
-    private IEnumerator Dispose_BookMarkedStation_Coroutine()
-    {
-        Start_Action();
-        
-        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
-
-        // dialog
-        dialog.Update_Dialog(1);
-
-        // remove dispose station
-        ItemSlot_Data disposeData = Dispose_SlotData();
-        Station_ScrObj disposeStation = disposeData.currentStation;
-
-        Dispose_SlotData().Empty_Item();
-
-        // player give disopose station animation
-        CoinLauncher playerLauncher = _interactable.detection.player.coinLauncher;
-        playerLauncher.Parabola_CoinLaunch(disposeStation.miniSprite, transform.position);
-
-        yield return new WaitForSeconds(_disposeWaitTime);
-
-        CarryObject_SpriteToggle(true, _carrySprites[1]);
-
-        // move to scrap stack
-        NPC_Movement movement = _npcController.movement;
-        
-        movement.Assign_TargetPosition(_scrapStack.transform.position);
-        while (movement.At_TargetPosition() == false) yield return null;
-
-        // increase scrap stack amount
-        _scrapStack.amountBar.Update_Amount(_disposeScrapAmount);
-        _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
-        _scrapStack.amountBar.Load();
-        _scrapStack.Update_CurrentSprite();
-
-        Cancel_Action();
-    }
 
 
     // Build
@@ -505,13 +410,13 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         if (StationStocks_Full())
         {
-            dialog.Update_Dialog(2);
+            dialog.Update_Dialog(0);
             return;
         }
 
         if (_scrapStack.amountBar.Is_MaxAmount() == false)
         {
-            dialog.Update_Dialog(4);
+            dialog.Update_Dialog(2);
             return;
         }
 
@@ -524,11 +429,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         // check if there are bookmarked stations
         if (bookmarkedData.Count <= 0)
         {
-            dialog.Update_Dialog(2);
+            dialog.Update_Dialog(0);
             return;
         }
 
-        dialog.Update_Dialog(3);
+        dialog.Update_Dialog(1);
 
         _actionCoroutine = StartCoroutine(Build_BookMarkedStation_Coroutine());
     }
@@ -575,7 +480,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             // check if scrap max amount
             if (_scrapStack.amountBar.Is_MaxAmount() == false)
             {
-                dialog.Update_Dialog(4);
+                dialog.Update_Dialog(2);
 
                 Cancel_Action();
                 yield break;
@@ -610,7 +515,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             Archive_Station(recentStation);
 
             // dialog
-            DialogBox updateBox = dialog.Update_Dialog(6);
+            DialogBox updateBox = dialog.Update_Dialog(3);
             updateBox.Set_IconImage(recentStation.dialogIcon);
             
             Dictionary<string, string> buildCountStrings = new()
@@ -676,9 +581,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     // Restock
     private bool Restock_Available()
     {
-        if (_actionCoroutine != null) return false;
-        if (_scrapStack.amountBar.currentAmount <= 0) return false;
-
         if (StationStocks_Full()) return false;
         if (NonDuplicate_Stations(BuildArchiveCount_MaxStations()).Count <= 0) return false;
 
@@ -714,8 +616,28 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
     private void Restock_ArchivedStation()
     {
-        if (Restock_Available() == false) return;
+        if (_actionCoroutine != null) return;
+        if (StationStocks_Full()) return;
 
+        DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+        
+        if (_scrapStack.amountBar.currentAmount < _restockScrapAmount)
+        {
+            DialogBox updateBox = dialog.Update_Dialog(4);
+            
+            updateBox.data.Set_SmartInfo("scrapCount", _restockScrapAmount.ToString());
+            Main_Controller.instance.dialogSystem.RefreshCurrent_DialogInfo();
+            return;
+        }
+
+        if (NonDuplicate_Stations(BuildArchiveCount_MaxStations()).Count <= 0)
+        {
+            dialog.Update_Dialog(6);
+            return;
+        }
+
+        dialog.Update_Dialog(5);
+        
         _actionCoroutine = StartCoroutine(Restock_ArchivedStation_Coroutine());
     }
     private IEnumerator Restock_ArchivedStation_Coroutine()
@@ -733,14 +655,19 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             while (movement.At_TargetPosition() == false) yield return null;
 
             // check if scrap available
-            if (_scrapStack.amountBar.currentAmount <= 0)
+            if (_scrapStack.amountBar.currentAmount < _restockScrapAmount)
             {
+                DialogBox updateBox = gameObject.GetComponent<DialogTrigger>().Update_Dialog(4);
+                
+                updateBox.data.Set_SmartInfo("scrapCount", _restockScrapAmount.ToString());
+                Main_Controller.instance.dialogSystem.RefreshCurrent_DialogInfo();
+                
                 Cancel_Action();
                 yield break;
             }
 
             // collect scrap
-            _scrapStack.amountBar.Update_Amount(-1);
+            _scrapStack.amountBar.Update_Amount(-_restockScrapAmount);
             _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
             _scrapStack.amountBar.Load();
             _scrapStack.Update_CurrentSprite();

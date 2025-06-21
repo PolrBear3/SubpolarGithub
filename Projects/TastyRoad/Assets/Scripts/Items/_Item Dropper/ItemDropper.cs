@@ -273,6 +273,13 @@ public class ItemDropper : MonoBehaviour
         return goldDrop;
     }
 
+    public void Drop_Gold(int dropAmount)
+    {
+        GameObject spawnGold = SnapPosition_Spawn(_goldDrop, DropPosition());
+        GoldDrop goldDrop = spawnGold.GetComponent<GoldDrop>();
+        
+        goldDrop.Set_Data(dropAmount);
+    }
     public void Drop_Gold()
     {
         Dropped_Gold();

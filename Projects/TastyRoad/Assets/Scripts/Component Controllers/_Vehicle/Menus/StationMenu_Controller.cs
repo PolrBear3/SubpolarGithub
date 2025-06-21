@@ -39,7 +39,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
-        _controller.pageArrowDirections.SetActive(_currentDatas.Count > 1);
+        _controller.Update_PageArrows();
 
         _controller.vehicleController.interactArea.gameObject.SetActive(true);
 

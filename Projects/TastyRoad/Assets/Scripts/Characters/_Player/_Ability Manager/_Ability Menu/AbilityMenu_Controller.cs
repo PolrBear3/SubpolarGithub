@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Localization;
 using UnityEngine.Serialization;
 
@@ -12,7 +13,13 @@ public class AbilityMenu_Controller : MonoBehaviour
     
     [Space(20)] 
     [SerializeField] private GameObject _toggleMenu;
+    public GameObject toggleMenu => _toggleMenu; 
+    
     [SerializeField] private AbilityMenu_Button[] _buttons;
+    
+    [Space(20)] 
+    [SerializeField] private UI_EffectController _uiEffectController;
+    [SerializeField] private Image _menuPanel;
     
     [Space(10)]
     [SerializeField] private Sprite _emptyIcon;
@@ -39,8 +46,9 @@ public class AbilityMenu_Controller : MonoBehaviour
         
         _inputManager.OnExit += () => Toggle_Menu(false);
         _inputManager.OnExit += () => pauseMenu.Toggle_Pause(true);
-        
+
         pauseMenu.OnPauseExit += Toggle_Menu;
+        VideoGuide_Controller.instance.OnGuideToggle += Toggle_Menu;
 
         _inputManager.OnCursorControl += Navigate_Button;
         _inputManager.OnHoldSelect += Select_Ability;
@@ -56,7 +64,9 @@ public class AbilityMenu_Controller : MonoBehaviour
     {
         // subscriptions
         AbilityManager.OnMaxPoint -= Toggle_Menu;
+        
         PauseMenu_Controller.instance.OnPauseExit -= Toggle_Menu;
+        VideoGuide_Controller.instance.OnGuideToggle -= Toggle_Menu;
 
         _inputManager.OnCursorControl -= Navigate_Button;
         _inputManager.OnHoldSelect -= Select_Ability;
@@ -258,6 +268,8 @@ public class AbilityMenu_Controller : MonoBehaviour
     
     public void Toggle_Menu()
     {
+        if (VideoGuide_Controller.instance.guideToggled) return;
+        
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
 
         if (manager.AbilityPoint_Maxed() == false || manager.ActivateAvailable_AbilityScrObjs().Count <= 0)
@@ -265,8 +277,12 @@ public class AbilityMenu_Controller : MonoBehaviour
             Toggle_Menu(false);
             return;
         }
+
+        if (_toggleMenu.activeSelf) return;
+        if (PauseMenu_Controller.instance.isPaused) return;
         
         Toggle_Menu(true);
+        _uiEffectController.Update_Scale(_menuPanel.rectTransform);
 
         if (_buttonsUpdated)
         {

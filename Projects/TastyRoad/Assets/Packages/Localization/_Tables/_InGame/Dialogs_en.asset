@@ -37,18 +37,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 237949126959104
-    m_Localized: Builds a blueprint station <sprite=57> that is bookmarked <sprite=68>on
-      an empty purchase stock
+    m_Localized: Builds a station <sprite=57> blueprint <sprite=59> that is bookmarked
+      <sprite=68>on an empty purchase stock
     m_Metadata:
       m_Items: []
   - m_Id: 239671140409344
-    m_Localized: Currently building a blueprint station <sprite=57> on an empty purchase
-      stock
+    m_Localized: Currently building a station <sprite=57> blueprint <sprite=59> on
+      an empty purchase stock
     m_Metadata:
       m_Items: []
   - m_Id: 239875646283776
-    m_Localized: A full scrap <sprite=62> amount is required to build a blueprint
-      station <sprite=57> !
+    m_Localized: A full scrap <sprite=62> amount is required to build a station <sprite=57>
+      blueprint <sprite=59> !
     m_Metadata:
       m_Items: []
   - m_Id: 241133631299584
@@ -162,10 +162,24 @@ MonoBehaviour:
     m_Localized: ability <sprite=79> unlocked
     m_Metadata:
       m_Items: []
+  - m_Id: 23957934399545344
+    m_Localized: Random station <sprite=57> is currently being restocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23957735111385088
+    m_Localized: '{scrapCount} scraps <sprite=62> are needed to build a random station
+      <sprite=57>!'
+    m_Metadata:
+      m_Items:
+      - rid: 5938544035846684712
+  - m_Id: 23959399386046464
+    m_Localized: There are no stations <sprite=57> available to restock!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 5938544035846684712
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00e0efc74d01000000e0ef7848150500
+        m_Entries: 00e0efc74d01000000e0ef784815050000e0efe26e1d5500

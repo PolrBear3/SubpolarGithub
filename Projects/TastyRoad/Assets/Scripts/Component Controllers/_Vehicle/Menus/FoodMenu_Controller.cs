@@ -41,7 +41,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
 
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
-        _controller.pageArrowDirections.SetActive(_currentDatas.Count > 1);
+        _controller.Update_PageArrows();
 
         // subscriptions
         _controller.OnCursor_OuterInput += Clamp_CursorPosition;
@@ -612,8 +612,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // if there are enough space to spawn food box
         if (Available_ExportPositions().Count <= 0)
         {
-            gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
-
             Drag_Cancel();
             return;
         }

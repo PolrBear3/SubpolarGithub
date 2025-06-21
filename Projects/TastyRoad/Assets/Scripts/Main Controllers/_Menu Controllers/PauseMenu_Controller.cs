@@ -12,7 +12,10 @@ public class PauseMenu_Controller : Menu_Controller
     [Space(20)] 
     [SerializeField] private UI_EffectController _effectController;
     [SerializeField] private Sprite _mainMenuIcon;
-    
+
+
+    private bool _isPaused;
+    public bool isPaused => _isPaused;
     
     private Action OnPauseTrue;
     private Action OnPauseFalse;
@@ -56,6 +59,8 @@ public class PauseMenu_Controller : Menu_Controller
         TransitionCanvas_Controller transition = TransitionCanvas_Controller.instance;
         if (transition.coroutine != null) return;
 
+        _isPaused = toggle;
+        
         Toggle_Menu(toggle);
         transition.Toggle_PauseScreen(toggle);
 

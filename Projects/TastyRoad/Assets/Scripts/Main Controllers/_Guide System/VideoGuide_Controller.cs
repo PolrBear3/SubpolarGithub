@@ -13,6 +13,9 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     [Space(20)]
     [SerializeField] private VideoPlayer _videoPlayer;
+    
+    [Space(20)]
+    [SerializeField] private UI_EffectController _uiEffectController;
     [SerializeField] private Image _playerPanel;
     
     [Space(20)]
@@ -28,6 +31,9 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     private bool _guideActive;
     public bool guideActive => _guideActive;
+
+    private bool _guideToggled;
+    public bool guideToggled => _guideToggled;
     
     private List<int> _triggeredGuideIDs = new();
 
@@ -36,6 +42,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     public Action OnGuide_ActivationTrigger;
     public Action OnGuideTrigger;
+    public Action OnGuideToggle;
 
 
     // UnityEngine
@@ -193,8 +200,11 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     {
         Input_Controller input = Input_Controller.instance;
 
+        _guideToggled = toggle;
         Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(toggle);
         _playerPanel.gameObject.SetActive(toggle);
+        
+        OnGuideToggle?.Invoke();
 
         if (toggle == false)
         {
@@ -206,7 +216,9 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         }
 
         _currentClipNum = 0;
+        
         _inputManager.Toggle_Input(true);
+        _uiEffectController.Update_Scale(_playerPanel.rectTransform);
 
         VideoClip_Data clipData = _currentGuide.clipDatas[_currentClipNum];
 

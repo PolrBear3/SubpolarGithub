@@ -177,19 +177,16 @@ public class NPC_GiftSystem : MonoBehaviour
         // check if player has gift food
         if (playerFoodIcon.hasFood == false) return false;
 
-        Data_Controller data = main.dataController;
-        Food_ScrObj playerFood = playerFoodIcon.currentData.foodScrObj;
-
-        // check if player food is cooked food
-        if (data.Is_RawFood(playerFood)) return false;
-
         return true;
     }
-
+    
     private void Gift()
     {
         if (Gift_Available() == false) return;
 
+        Food_ScrObj playerFood = _controller.interactable.detection.player.foodIcon.currentData.foodScrObj;
+        Empty_PlayerFood();
+        
         // start cool time
         _coolTimeBar.Set_Amount(0);
         Update_CoolTimBar();
@@ -199,17 +196,19 @@ public class NPC_GiftSystem : MonoBehaviour
         audio.Play_OneShot(gameObject, 3);
 
         // check drop rate
-        if (Main_Controller.instance.Percentage_Activated(100f, _itemDropRate) == false)
-        {
-            Empty_PlayerFood();
-            return;
-        }
-        
-        // drop random gift
-        WeightRandom_GiftAction().actionEvent?.Invoke();
-        Empty_PlayerFood();
+        if (Main_Controller.instance.Percentage_Activated(100f, _itemDropRate) == false) return;
         
         // sound
         audio.Play_OneShot(gameObject, 4);
+        
+        // drop gift
+        ItemDropper dropper = _controller.itemDropper;
+        
+        if (Main_Controller.instance.dataController.Is_RawFood(playerFood))
+        {
+            dropper.Drop_Gold(UnityEngine.Random.Range(1, playerFood.price + 1));
+            return;
+        }
+        dropper.Drop_CollectCard();
     }
 }

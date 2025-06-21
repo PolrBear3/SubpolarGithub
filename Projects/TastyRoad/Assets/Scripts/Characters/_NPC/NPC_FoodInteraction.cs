@@ -227,7 +227,6 @@ public class NPC_FoodInteraction : MonoBehaviour
         Update_RoamArea();
         
         Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, true);
-        AbilityManager.IncreasePoint(1);
     }
 
 
@@ -293,7 +292,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         _transferData = new(transferData);
         _transferDatas.Add(new(transferData));
         
-        // quest
+        AbilityManager.IncreasePoint(1);
         TutorialQuest_Controller.instance.Complete_Quest("Serve" + transferData.foodScrObj.name, 1);
 
         return true;

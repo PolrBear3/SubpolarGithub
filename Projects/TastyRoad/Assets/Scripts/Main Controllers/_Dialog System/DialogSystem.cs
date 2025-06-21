@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
+using TMPro;
 
 public class DialogSystem : MonoBehaviour
 {
@@ -18,7 +19,9 @@ public class DialogSystem : MonoBehaviour
     [SerializeField] private InformationBox _infoBox;
     public InformationBox infoBox => _infoBox;
 
+    [Space(20)]
     [SerializeField] private GameObject _navigateBox;
+    [SerializeField] private TextMeshProUGUI _navigateText;
 
     [Space(20)]
     [SerializeField] private List<DialogData> _customDialogs = new();
@@ -38,6 +41,8 @@ public class DialogSystem : MonoBehaviour
         _infoBox.Set_DefalutHeight();
 
         Refresh_CurrentDialogs();
+        Update_NavigateBox();
+        
         HoverToggle_CurrentDialog(false);
 
         // subscriptions
@@ -50,14 +55,21 @@ public class DialogSystem : MonoBehaviour
         pause.OnPause += () => Toggle_InfoBox(false);
         pause.OnPause += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0 && _infoBox.gameObject.activeSelf == false);
 
-        Localization_Controller.instance.OnLanguageChanged += Refresh_CurrentDialogs;
+        Localization_Controller localizationController = Localization_Controller.instance;
+        
+        localizationController.OnLanguageChanged += Refresh_CurrentDialogs;
+        localizationController.OnLanguageChanged += Update_NavigateBox;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         Input_Controller.instance.OnNavigate -= Navigate_InfoBox;
-        Localization_Controller.instance.OnLanguageChanged -= Refresh_CurrentDialogs;
+        
+        Localization_Controller localizationController = Localization_Controller.instance;
+        
+        localizationController.OnLanguageChanged -= Refresh_CurrentDialogs;
+        localizationController.OnLanguageChanged -= Update_NavigateBox;
     }
 
 
@@ -174,9 +186,11 @@ public class DialogSystem : MonoBehaviour
     private void Update_NavigateBox()
     {
         InfoTemplate_Trigger template = gameObject.GetComponent<InfoTemplate_Trigger>();
-        
-        string navigateString = template.TemplateString(0) + "    " + template.TemplateString(1);
-        template.setText.text = navigateString;
+
+        string toggleString = template.TemplateString(0);
+        string navigateString = "    " + template.TemplateString(1);
+
+        _navigateText.text = toggleString + navigateString;
     }
     
 

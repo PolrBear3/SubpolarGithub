@@ -23,9 +23,6 @@ public class PlaceableStock : MonoBehaviour
 
     [Space(20)] 
     [SerializeField] private Sprite[] _sprites;
-
-    [Space(20)] 
-    [SerializeField][Range(1, 98)] private int _maxAmount;
     
     [Space(60)]
     [SerializeField] private VideoGuide_Trigger _guideTrigger;

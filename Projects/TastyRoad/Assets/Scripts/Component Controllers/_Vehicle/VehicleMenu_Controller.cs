@@ -33,8 +33,6 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     
     [Space(20)]
     [SerializeField] private GameObject _pageArrowDirections;
-    public GameObject pageArrowDirections => _pageArrowDirections;
-
     [SerializeField] private Image[] _pageArrows;
     
     [Space(20)]
@@ -315,6 +313,12 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Main Control
+    private IVehicleMenu Current_IVehicleMenu()
+    {
+        if (_menus[_currentMenuNum].TryGetComponent(out IVehicleMenu currentMenu) == false) return null;
+        return currentMenu;
+    }
+    
     public void VehicleMenu_Toggle(bool toggleOn)
     {
         Main_Controller.instance.Player().Toggle_Controllers(!toggleOn);
@@ -461,10 +465,10 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         Update_PageDots(pageAmount);
     }
 
-    private void Update_PageArrows()
+    public void Update_PageArrows()
     {
-        if (_pageArrowDirections.activeSelf == false) return;
-
+        _pageArrowDirections.SetActive(Current_IVehicleMenu().ItemSlot_Datas().Count > 1);
+        
         ItemSlot cursorSlot = _slotsController.cursor.currentSlot;
         List<ItemSlot> itemSlots = _slotsController.itemSlots;
 

@@ -32,7 +32,7 @@ private Rigidbody2D _rb;
 private void FixedUpdate()
 {
     // basic velocity movement
-    _rb.veloctiy = new Vector2(_direction.x * _speed * Time.deltaTime, _direction.y * _speed * Time.deltaTime);
+    _rb.velocity = new Vector2(_direction.x * _speed, _direction.y * _speed);
 
     // gradual AddForce movement
     _rb.AddForce(_direction * _speed * Time.deltaTime);

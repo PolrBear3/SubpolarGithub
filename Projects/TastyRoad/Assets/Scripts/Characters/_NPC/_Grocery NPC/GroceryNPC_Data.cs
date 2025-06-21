@@ -74,7 +74,7 @@ public class GroceryNPC_Data
         foreach (Food_ScrObj unlockFood in checkFoodScrObj.Unlocks())
         {
             if (Unlocked_FoodData(unlockFood) != null) continue;
-            _unlockDatas.Add(new(unlockFood));
+            _unlockDatas.Add(new(unlockFood, 0));
         }
     }
     

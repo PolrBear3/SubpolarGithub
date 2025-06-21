@@ -144,7 +144,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         foreach (Food_ScrObj food in _startingBundles)
         {
-            startingBundleDatas.Add(new(food));
+            startingBundleDatas.Add(new(food, 0));
         }
         _data = ES3.Load("GroceryNPC/GroceryNPC_Data", new GroceryNPC_Data(startingBundleDatas));
 
