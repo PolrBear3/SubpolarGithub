@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,11 @@ public class PauseMenu_Controller : Menu_Controller
     [Space(20)] 
     [SerializeField] private UI_EffectController _effectController;
     [SerializeField] private Sprite _mainMenuIcon;
+
+    [Space(20)] 
+    [SerializeField] private UI_ClockTimer _guideToggleTimer;
+    [SerializeField] private InfoTemplate_Trigger _guideToggleTrigger;
+    [SerializeField] private TextMeshProUGUI _guideToggleText;
 
 
     private bool _isPaused;
@@ -41,6 +47,17 @@ public class PauseMenu_Controller : Menu_Controller
         
         Input_Controller.instance.OnCancel += OnPauseTrue;
         inputManager.OnExit += OnPauseFalse;
+        
+        inputManager.OnSelectStart += _guideToggleTimer.Run_ClockSprite;
+        inputManager.OnSelect += _guideToggleTimer.Stop_ClockSpriteRun;
+        inputManager.OnHoldSelect += _guideToggleTimer.Stop_ClockSpriteRun;
+
+        VideoGuide_Controller videoGuideController = VideoGuide_Controller.instance;
+        
+        inputManager.OnHoldSelect += VideoGuide_Controller.instance.Toggle_GuideActivation;
+        videoGuideController.OnGuide_ActivationTrigger += Update_GuideToggleText;
+        
+        Localization_Controller.instance.OnLanguageChanged += Update_GuideToggleText;
     }
 
     private new void OnDestroy()
@@ -48,6 +65,17 @@ public class PauseMenu_Controller : Menu_Controller
         // subscriptions
         Input_Controller.instance.OnCancel -= OnPauseTrue;
         inputManager.OnExit -= OnPauseFalse;
+        
+        inputManager.OnSelectStart -= _guideToggleTimer.Run_ClockSprite;
+        inputManager.OnSelect -= _guideToggleTimer.Stop_ClockSpriteRun;
+        inputManager.OnHoldSelect -= _guideToggleTimer.Stop_ClockSpriteRun;
+        
+        VideoGuide_Controller videoGuideController = VideoGuide_Controller.instance;
+        
+        inputManager.OnHoldSelect -= videoGuideController.Toggle_GuideActivation;
+        videoGuideController.OnGuide_ActivationTrigger -= Update_GuideToggleText;
+        
+        Localization_Controller.instance.OnLanguageChanged -= Update_GuideToggleText;
     }
 
 
@@ -73,9 +101,10 @@ public class PauseMenu_Controller : Menu_Controller
             return;
         }
 
+        Update_GuideToggleText();
+        
         OnPause?.Invoke();
     }
-    
     
     public void Return_MainMenu()
     {
@@ -98,5 +127,14 @@ public class PauseMenu_Controller : Menu_Controller
 
         SceneManager.LoadScene(0);
         yield break;
+    }
+    
+    
+    // Video Guide System
+    private void Update_GuideToggleText()
+    {
+        bool guideActive = VideoGuide_Controller.instance.guideActive;
+        
+        _guideToggleText.text = guideActive ? _guideToggleTrigger.TemplateString(1) : _guideToggleTrigger.TemplateString(0);
     }
 }

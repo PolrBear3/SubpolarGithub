@@ -35,7 +35,11 @@ public class VideoGuide_Trigger : MonoBehaviour
     {
         VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
 
-        if (videoGuide.guideActive && videoGuide.Guide_Triggered(_triggerGuide) == false) return;
+        if (videoGuide.guideActive && videoGuide.Guide_Triggered(_triggerGuide) == false)
+        {
+            _spriteRenderer.color = Color.white;
+            return;
+        }
         _spriteRenderer.color = Color.clear;
     }
 

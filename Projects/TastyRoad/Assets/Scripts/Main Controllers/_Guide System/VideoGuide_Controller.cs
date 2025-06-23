@@ -107,13 +107,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     public void Load_Data()
     {
         _triggeredGuideIDs = ES3.Load("VideoGuide_Controller/Triggered_GuideIDs", _triggeredGuideIDs);
-
-        if (ES3.KeyExists("VideoGuide_Controller/Guide_ActiveState"))
-        {
-            _guideActive = ES3.Load("VideoGuide_Controller/Guide_ActiveState", _guideActive);
-            return;
-        }
-        _guideActive = true;
+        _guideActive = ES3.Load("VideoGuide_Controller/Guide_ActiveState", true);
     }
     
     
@@ -123,8 +117,13 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         _guideActive = toggle;
         OnGuide_ActivationTrigger?.Invoke();
 
-        if (toggle) return;
+        if (toggle && _playerPanel.gameObject.activeSelf == false) return;
         Toggle_VideoPanel(false);
+    }
+    public void Toggle_GuideActivation()
+    {
+        _guideActive = !_guideActive;
+        OnGuide_ActivationTrigger?.Invoke();
     }
     
     
