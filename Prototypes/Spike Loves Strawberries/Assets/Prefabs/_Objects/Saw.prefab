@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6182334917578493673}
   - component: {fileID: 2511410580685540954}
   - component: {fileID: 5698420348271305168}
+  - component: {fileID: 8422672491293071918}
   m_Layer: 0
   m_Name: Saw
   m_TagString: Untagged
@@ -151,7 +152,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!114 &5698420348271305168
 MonoBehaviour:
@@ -165,3 +166,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2ea10086d604296ac02a88f60f647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8422672491293071918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2180375742987268905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343765b366c1d429fb04bc0aebf0651f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detection: {fileID: 5698420348271305168}
+  _damageCountTime: 2

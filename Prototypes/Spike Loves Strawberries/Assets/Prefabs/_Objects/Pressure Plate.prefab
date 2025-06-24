@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2462410315778940925}
   - component: {fileID: 3719519753519411935}
   - component: {fileID: 618211005683255418}
+  - component: {fileID: 6357786867657860531}
   m_Layer: 0
   m_Name: Pressure Plate
   m_TagString: Untagged
@@ -151,7 +152,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &618211005683255418
 MonoBehaviour:
@@ -165,3 +166,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2ea10086d604296ac02a88f60f647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6357786867657860531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3278480739708672071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55441b390b8eb49309dd676bf488fc95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sr: {fileID: 1669973580436003613}
+  _plateSprites:
+  - {fileID: -983273559, guid: be250c3f1c86b470bb9e0e1f99592a03, type: 3}
+  - {fileID: 950781609, guid: be250c3f1c86b470bb9e0e1f99592a03, type: 3}
+  - {fileID: -1374866263, guid: be250c3f1c86b470bb9e0e1f99592a03, type: 3}
+  - {fileID: 775193468, guid: be250c3f1c86b470bb9e0e1f99592a03, type: 3}
+  - {fileID: 5685647, guid: be250c3f1c86b470bb9e0e1f99592a03, type: 3}
+  _detection: {fileID: 618211005683255418}
+  _updateTime: 2

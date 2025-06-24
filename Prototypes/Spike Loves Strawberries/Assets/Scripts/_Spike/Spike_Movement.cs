@@ -12,8 +12,12 @@ public class Spike_Movement : MonoBehaviour
     [SerializeField] private Spike _controller;
 
     [Space(20)] 
-    [SerializeField] [Range(0, 10)] private float _defaultSpeed;
-    [SerializeField] [Range(0, 1000)] private float _rotationSpeed;
+    [SerializeField][Range(0, 10)] private float _defaultSpeed;
+    [SerializeField][Range(0, 1000)] private float _rotationSpeed;
+    
+    [Space(10)]
+    [SerializeField][Range(0, 10)] private float _knockBackDistance;
+    [SerializeField][Range(0, 10)] private float _stunDuration;
 
 
     private bool _movementToggle;
@@ -26,8 +30,17 @@ public class Spike_Movement : MonoBehaviour
     private void Start()
     {
         Toggle_Movement(true);
+        
+        // subscription
+        _controller.OnDamage += Damage_KnockBack;
     }
-    
+
+    private void OnDestroy()
+    {
+        // subscription
+        _controller.OnDamage -= Damage_KnockBack;
+    }
+
     private void FixedUpdate()
     {
         Movement_Update();
@@ -40,6 +53,12 @@ public class Spike_Movement : MonoBehaviour
 
 
     // Movement
+    public void Toggle_Movement(bool toggle)
+    {
+        _movementToggle = toggle;
+    }
+    
+    
     private void Movement_Update()
     {
         if (_movementToggle == false)
@@ -77,10 +96,31 @@ public class Spike_Movement : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, newAngle);
         }
     }
-
-
-    public void Toggle_Movement(bool toggle)
+    
+    
+    private void Damage_KnockBack()
     {
-        _movementToggle = toggle;
+        StartCoroutine(KnockBackByPosition());
+    }
+    private IEnumerator KnockBackByPosition()
+    {
+        Toggle_Movement(false);
+
+        Vector2 initialPos = transform.position;
+        Vector2 knockBackPos = initialPos - (Vector2)transform.up * _knockBackDistance;
+
+        float elapsed = 0f;
+
+        while (elapsed < _stunDuration)
+        {
+            float t = elapsed / _stunDuration;
+            transform.position = Vector2.Lerp(initialPos, knockBackPos, t);
+            
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = knockBackPos;
+        Toggle_Movement(true);
     }
 }

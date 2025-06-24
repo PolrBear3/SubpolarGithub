@@ -7,6 +7,9 @@ public class Detection_Controller : MonoBehaviour
 {
     private Spike _detectedPlayer;
     public Spike detectedPlayer => _detectedPlayer;
+
+    private bool _playerDetected;
+    public bool playerDetected => _playerDetected;
     
     public Action OnPlayerDetect;
     public Action OnPlayerExit;
@@ -18,6 +21,8 @@ public class Detection_Controller : MonoBehaviour
         if (other.TryGetComponent(out Spike player) == false) return;
         
         _detectedPlayer = player;
+        
+        _playerDetected = true;
         OnPlayerDetect?.Invoke();
     }
     
@@ -25,7 +30,9 @@ public class Detection_Controller : MonoBehaviour
     {
         if (other.TryGetComponent(out Spike player) == false) return;
         
-        _detectedPlayer = null;
+        _playerDetected = false;
         OnPlayerExit?.Invoke();
+        
+        _detectedPlayer = null;
     }
 }
