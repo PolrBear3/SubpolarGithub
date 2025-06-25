@@ -32,6 +32,9 @@ public class Spike : MonoBehaviour
     private Spike_Data _data;
     public Spike_Data data => _data;
 
+    private Interact_Controller _releaseInteractable;
+
+    
     private Coroutine _damageCoroutine;
     public Coroutine damageCoroutine => _damageCoroutine;
     
@@ -49,12 +52,18 @@ public class Spike : MonoBehaviour
     
     private void Start()
     {
-        Main_InputSystem.instance.OnInteractInput += Interact_CurrentInteractable;
+        Main_InputSystem inputSystem = Main_InputSystem.instance;
+        
+        inputSystem.OnInteractInput += Interact_CurrentInteractable;
+        inputSystem.OnInteractRelease += Invoke_InteractRelease;
     }
     
     private void OnDestroy()
     {
-        Main_InputSystem.instance.OnInteractInput -= Interact_CurrentInteractable;
+        Main_InputSystem inputSystem = Main_InputSystem.instance;
+        
+        inputSystem.OnInteractInput -= Interact_CurrentInteractable;
+        inputSystem.OnInteractRelease -= Invoke_InteractRelease;
     }
     
     
@@ -62,29 +71,61 @@ public class Spike : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out IInteractable interactable) == false) return;
-        _data.detectedInteractables.Add(interactable);
+        _data.detectedInteractables.Add(other.gameObject);
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out IInteractable interactable) == false) return;
-        _data.detectedInteractables.Remove(interactable);
+        _data.detectedInteractables.Remove(other.gameObject);
+    }
+    
+
+    // Interact
+    private List<GameObject> HeadClosest_InteractObjects()
+    {
+        List<GameObject> detectedInteractables = _data.detectedInteractables;
+
+        detectedInteractables.Sort((a, b) =>
+        {
+            float distA = Vector2.SqrMagnitude(a.transform.position - _headTransform.position);
+            float distB = Vector2.SqrMagnitude(b.transform.position - _headTransform.position);
+            return distA.CompareTo(distB);
+        });
+        return detectedInteractables;
+    }
+    
+    private void Interact_CurrentInteractable()
+    {
+        List<GameObject> interactObjects = HeadClosest_InteractObjects();
+
+        for (int i = 0; i < interactObjects.Count; i++)
+        {
+            if (_data.hasItem && interactObjects[i] == _data.currentInteractable) continue;
+            if (interactObjects[i].TryGetComponent(out IInteractable interactable) == false) continue;
+            
+            interactable.Interact();
+            return;
+        }
+
+        if (_data.hasItem == false) return;
+        if (_data.currentInteractable.TryGetComponent(out IInteractable currentObject) == false) return;
+        
+        currentObject.Interact();
     }
     
     
-    // Interactable
-    private void Interact_CurrentInteractable()
+    // Interact Release
+    public void Set_ReleaseInteractable(Interact_Controller interactObject)
     {
-        if (_data.detectedInteractables.Count > 0)
-        {
-            _data.detectedInteractables[^1].Interact();
-            return;
-        }
+        _releaseInteractable = interactObject;
+    }
+
+    private void Invoke_InteractRelease()
+    {
+        if (_releaseInteractable == null) return;
         
-        if (_data.currentInteractable == null) return;
-        if (_data.currentInteractable.TryGetComponent(out IInteractable interactable) == false) return;
-        
-        interactable.Interact();
+        _releaseInteractable.OnInteractRelease?.Invoke();
     }
     
     

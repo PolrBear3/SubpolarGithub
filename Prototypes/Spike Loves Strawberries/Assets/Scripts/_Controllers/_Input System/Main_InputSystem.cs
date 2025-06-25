@@ -17,7 +17,9 @@ public class Main_InputSystem : MonoBehaviour
     public Vector2 movementDirection => _movementDirection;
     
     public Action<Vector2> OnMovementInput;
+    
     public Action OnInteractInput;
+    public Action OnInteractRelease;
 
 
     private void Awake()
@@ -38,8 +40,13 @@ public class Main_InputSystem : MonoBehaviour
     
     public void Interact(InputAction.CallbackContext context)
     {
-        if (context.canceled == false) return;
-        
-        OnInteractInput?.Invoke();
+        if (context.started)
+        {
+            OnInteractInput?.Invoke();
+        }
+        else if (context.canceled)
+        {
+            OnInteractRelease?.Invoke();
+        }
     }
 }

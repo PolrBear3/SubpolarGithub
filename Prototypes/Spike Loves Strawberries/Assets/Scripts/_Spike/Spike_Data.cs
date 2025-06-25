@@ -14,8 +14,8 @@ public class Spike_Data
     private int _damageCount;
     public int damageCount => _damageCount;
     
-    private List<IInteractable> _detectedInteractables = new();
-    public List<IInteractable> detectedInteractables => _detectedInteractables;
+    private List<GameObject> _detectedInteractables = new();
+    public List<GameObject> detectedInteractables => _detectedInteractables;
     
     private GameObject _currentInteractable;
     public GameObject currentInteractable => _currentInteractable;
@@ -27,7 +27,7 @@ public class Spike_Data
         _hasTail = true;
         _damageCount = maxDamageCount;
     }
-    
+
     
     // Data Control
     public void Toggle_HasTail(bool toggle)
@@ -45,4 +45,7 @@ public class Spike_Data
         _hasItem = interactable != null;
         _currentInteractable = interactable;
     }
+    
+    
+    
 }
