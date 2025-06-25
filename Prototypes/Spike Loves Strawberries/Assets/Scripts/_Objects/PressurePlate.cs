@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PressurePlate : MonoBehaviour
 {
@@ -15,25 +16,34 @@ public class PressurePlate : MonoBehaviour
     [Space(20)] 
     [SerializeField][Range(0, 10)] private float _updateTime;
 
+    [Space(20)] 
+    [SerializeField] private UnityEvent OnPress;
+    [SerializeField] private UnityEvent OnRelease;
+
 
     private Coroutine _coroutine;
     private int _spriteIndex;
-
-    public Action OnPress;
-    public Action OnRelease;
     
     
     // MonoBehaviour
     private void Start()
     {
+        // subscriptions
         _detection.OnPlayerDetect += Update_PlatePressure;
         _detection.OnPlayerExit += Update_PlatePressure;
+        
+        _detection.OnObjectDetect += Update_PlatePressure;
+        _detection.OnObjectExit += Update_PlatePressure;
     }
 
     private void OnDestroy()
     {
+        // subscriptions
         _detection.OnPlayerDetect -= Update_PlatePressure;
         _detection.OnPlayerExit -= Update_PlatePressure;
+        
+        _detection.OnObjectDetect -= Update_PlatePressure;
+        _detection.OnObjectExit -= Update_PlatePressure;
     }
     
     
@@ -46,7 +56,8 @@ public class PressurePlate : MonoBehaviour
             _coroutine = null;
         }
 
-        _coroutine = StartCoroutine(Update_PlatePressure_Coroutine(_detection.playerDetected));
+        bool isPressed = _detection.playerDetected || PickupObject_Placed();
+        _coroutine = StartCoroutine(Update_PlatePressure_Coroutine(isPressed));
     }
     private IEnumerator Update_PlatePressure_Coroutine(bool isPressed)
     {
@@ -66,6 +77,8 @@ public class PressurePlate : MonoBehaviour
             _coroutine = null;
             yield break;
         }
+        
+        OnRelease?.Invoke();
 
         while (_spriteIndex > 0)
         {
@@ -74,9 +87,21 @@ public class PressurePlate : MonoBehaviour
             
             yield return new WaitForSeconds(tikTime);
         }
-        OnRelease?.Invoke();
         
         _coroutine = null;
         yield break;
+    }
+
+    private bool PickupObject_Placed()
+    {
+        List<GameObject> detectedObjects = _detection.detectedObjects;
+        if (detectedObjects.Count <= 0) return false;
+
+        for (int i = 0; i < detectedObjects.Count; i++)
+        {
+            if (detectedObjects[i].TryGetComponent(out Pickup_Object pickup) == false) continue;
+            return true;
+        }
+        return false;
     }
 }

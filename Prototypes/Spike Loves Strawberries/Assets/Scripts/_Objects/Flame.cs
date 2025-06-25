@@ -18,14 +18,17 @@ public class Flame : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
+        Spike player = Level_Controller.instance.player;
 
+        _detection.OnPlayerDetect += player.Update_Damage;
+        _detection.OnPlayerExit += player.Cancel_Damage;
     }
 
     private void OnDestroy()
     {
+        Spike player = Level_Controller.instance.player;
 
+        _detection.OnPlayerDetect -= player.Update_Damage;
+        _detection.OnPlayerExit -= player.Cancel_Damage;
     }
-    
-    
-    // Damage
 }

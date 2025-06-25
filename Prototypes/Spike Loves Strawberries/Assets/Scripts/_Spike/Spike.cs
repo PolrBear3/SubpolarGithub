@@ -32,8 +32,6 @@ public class Spike : MonoBehaviour
     private Spike_Data _data;
     public Spike_Data data => _data;
 
-    private List<IInteractable> _detectedInteractables = new();
-    
     private Coroutine _damageCoroutine;
     public Coroutine damageCoroutine => _damageCoroutine;
     
@@ -51,34 +49,42 @@ public class Spike : MonoBehaviour
     
     private void Start()
     {
-        Main_InputSystem.instance.OnInteractInput += Interact_RecentInteractable;
+        Main_InputSystem.instance.OnInteractInput += Interact_CurrentInteractable;
     }
     
     private void OnDestroy()
     {
-        Main_InputSystem.instance.OnInteractInput -= Interact_RecentInteractable;
+        Main_InputSystem.instance.OnInteractInput -= Interact_CurrentInteractable;
     }
     
     
     // BoxCollider2D
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out IInteractable interactable) == false) return;
-        _detectedInteractables.Add(interactable);
+        _data.detectedInteractables.Add(interactable);
     }
     
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.TryGetComponent(out IInteractable interactable) == false) return;
-        _detectedInteractables.Remove(interactable);
+        _data.detectedInteractables.Remove(interactable);
     }
     
     
-    // IInteractable
-    private void Interact_RecentInteractable()
+    // Interactable
+    private void Interact_CurrentInteractable()
     {
-        if (_detectedInteractables.Count == 0) return;
-        _detectedInteractables[_detectedInteractables.Count - 1].Interact();
+        if (_data.detectedInteractables.Count > 0)
+        {
+            _data.detectedInteractables[^1].Interact();
+            return;
+        }
+        
+        if (_data.currentInteractable == null) return;
+        if (_data.currentInteractable.TryGetComponent(out IInteractable interactable) == false) return;
+        
+        interactable.Interact();
     }
     
     

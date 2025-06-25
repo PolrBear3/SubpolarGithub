@@ -8,8 +8,17 @@ public class Spike_Data
     private bool _hasTail;
     public bool hasTail => _hasTail;
 
+    private bool _hasItem;
+    public bool hasItem => _hasItem;
+    
     private int _damageCount;
     public int damageCount => _damageCount;
+    
+    private List<IInteractable> _detectedInteractables = new();
+    public List<IInteractable> detectedInteractables => _detectedInteractables;
+    
+    private GameObject _currentInteractable;
+    public GameObject currentInteractable => _currentInteractable;
     
     
     // New
@@ -29,5 +38,11 @@ public class Spike_Data
     public void Set_DamageCount(int setValue)
     {
         _damageCount = setValue;
+    }
+
+    public void Set_CurrentInteractable(GameObject interactable)
+    {
+        _hasItem = interactable != null;
+        _currentInteractable = interactable;
     }
 }
