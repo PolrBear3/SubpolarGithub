@@ -11,11 +11,11 @@ public class Wall : MonoBehaviour
     [Space(10)]
     [SerializeField][Range(0, 10)] private float _movementSpeed;
     [SerializeField] private LeanTweenType _tweenType;
-    
-    
+
+
     private Vector2 _defaultPosition;
     private Vector2 _movementPosition;
-    
+
     private Coroutine _coroutine;
     
     
@@ -36,7 +36,7 @@ public class Wall : MonoBehaviour
     public void Toggle_Movement(bool toggle)
     {
         Cancel_Movement();
-        
+
         Vector2 targetPosition = toggle ? _movementPosition : _defaultPosition;
         
         float distance = Vector3.Distance(transform.position, targetPosition);

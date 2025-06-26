@@ -26,7 +26,7 @@ public class Saw : MonoBehaviour
     private void Update_PlayerDamage()
     {
         if (_detection.playerDetected == false) return;
-        Spike detectedPlayer = _detection.detectedPlayer;
+        Spike detectedPlayer = Level_Controller.instance.player;
 
         detectedPlayer.Update_Damage();
         

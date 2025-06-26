@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5752561640015805431}
   - component: {fileID: 1133853495477293877}
   - component: {fileID: 2537272564100013727}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,6 +175,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d454b10f400044feb2a348b37001e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
   _movementTransform: {fileID: 5230856601004974518}
   _movementSpeed: 2
   _tweenType: 1

@@ -17,7 +17,9 @@ public class Spike : MonoBehaviour
     public float healCoolTime => _healCoolTime;
     
     [SerializeField][Range(0, 10)] private int _maxDamageCount;
+    
     [SerializeField][Range(0, 10)] private float _reviveCoolTime;
+    public float reviveCoolTime => _reviveCoolTime;
 
     [Space(20)] 
     [SerializeField] private GameObject _tailPrefab;
@@ -27,7 +29,10 @@ public class Spike : MonoBehaviour
     public Transform headTransform => _headTransform;
     
     [SerializeField] private Transform _tailTransform;
-    
+
+
+    private bool _isDead;
+    public bool isDead => _isDead;
     
     private Spike_Data _data;
     public Spike_Data data => _data;
@@ -56,6 +61,13 @@ public class Spike : MonoBehaviour
         
         inputSystem.OnInteractInput += Interact_CurrentInteractable;
         inputSystem.OnInteractRelease += Invoke_InteractRelease;
+
+        OnDeath += Invoke_InteractRelease;
+    }
+
+    private void FixedUpdate()
+    {
+        FallDeath_Update();
     }
     
     private void OnDestroy()
@@ -64,6 +76,8 @@ public class Spike : MonoBehaviour
         
         inputSystem.OnInteractInput -= Interact_CurrentInteractable;
         inputSystem.OnInteractRelease -= Invoke_InteractRelease;
+        
+        OnDeath -= Invoke_InteractRelease;
     }
     
     
@@ -97,6 +111,8 @@ public class Spike : MonoBehaviour
     
     private void Interact_CurrentInteractable()
     {
+        if (_isDead) return;
+        
         List<GameObject> interactObjects = HeadClosest_InteractObjects();
 
         for (int i = 0; i < interactObjects.Count; i++)
@@ -136,7 +152,11 @@ public class Spike : MonoBehaviour
         _anim.Update_AnimationOverride();
 
         if (toggle) return;
-        Instantiate(_tailPrefab, _tailTransform.position, Quaternion.identity);
+        
+        GameObject tail = Instantiate(_tailPrefab, _tailTransform.position, Quaternion.identity);
+        GameObject platform = Level_Controller.instance.currentLevel.Target_Platform(tail.transform);
+        
+        tail.transform.SetParent(platform.transform);
     }
 
     
@@ -170,6 +190,7 @@ public class Spike : MonoBehaviour
             
             yield return new WaitForSeconds(_healCoolTime);
         }
+
         Update_Death();
     }
 
@@ -190,22 +211,44 @@ public class Spike : MonoBehaviour
     public void Update_Death()
     {
         StartCoroutine(Update_Death_Coroutine());
+        
+        if (_data.hasItem == false) return;
+        
+        Destroy(_data.currentInteractable);
+        _data.Set_CurrentInteractable(null);
     }
     private IEnumerator Update_Death_Coroutine()
     {
+        _isDead = true;
         OnDeath?.Invoke();
         
         _movement.Toggle_Movement(false);
-        _anim.sr.color = Color.clear;
-
+        
         yield return new WaitForSeconds(_reviveCoolTime);
-
+        
+        _isDead = false;
         _data.Set_DamageCount(_maxDamageCount);
         
-        _anim.sr.color = Color.white;
+        transform.position = Level_Controller.instance.currentLevel.spawnPoint.position;
+        
         _movement.Toggle_Movement(true);
+    }
 
-        // set revive position //
-        transform.position = Vector2.zero;
+
+    private void FallDeath_Update()
+    {
+        if (_isDead) return;
+        if (Level_Controller.instance.currentLevel.Position_OnPlatform(transform)) return;
+        
+        StartCoroutine(FallDeath_Coroutine());
+        Update_Death();
+    }
+    private IEnumerator FallDeath_Coroutine()
+    {
+        _anim.sr.color = Color.clear;
+        
+        yield return new WaitForSeconds(_reviveCoolTime);
+       
+        _anim.sr.color = Color.white;
     }
 }

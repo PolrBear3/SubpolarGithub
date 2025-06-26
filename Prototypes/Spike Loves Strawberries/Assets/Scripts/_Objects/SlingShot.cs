@@ -15,6 +15,10 @@ public class SlingShot : MonoBehaviour
     [Space(20)] 
     [SerializeField][Range(0, 10)] private float _distanceMultiplier;
 
+    [Space(20)] 
+    [SerializeField] private LeanTweenType _tweenType;
+    [SerializeField] [Range(0, 10)] private float _slingSpeed;
+
 
     private bool _aiming;
     private Pickup_Object _placedObject;
@@ -47,7 +51,7 @@ public class SlingShot : MonoBehaviour
     // Indication
     private void Update_Indication()
     {
-        bool toggle = _detection.playerDetected && _aiming == false;
+        bool toggle = Level_Controller.instance.player.data.hasItem && _aiming == false;
         _interaction.Toggle_Indication(toggle);
     }
     
@@ -57,7 +61,7 @@ public class SlingShot : MonoBehaviour
     {
         if (_detection.playerDetected == false) return; 
         
-        Spike player = _detection.detectedPlayer;
+        Spike player = Level_Controller.instance.player;
         Spike_Data playerData = player.data;
         
         if (playerData.hasItem == false) return;
@@ -67,11 +71,11 @@ public class SlingShot : MonoBehaviour
         
         _aiming = true;
         _placedObject = pickupObject;
-
-        // lean tween pull back sling effect //
+        
         _sling.transform.SetParent(player.headTransform);
-        _sling.transform.localPosition = Vector2.zero;
-        _sling.transform.rotation = player.headTransform.rotation * Quaternion.Euler(0f, 0f, 180f);
+
+        LeanTween.moveLocal(_sling, Vector2.zero, _slingSpeed).setEase(_tweenType);
+        LeanTween.rotateLocal(_sling, new Vector3(0f, 0f, 180f), 0.2f).setEase(_tweenType);
     }
 
     private void Release()
@@ -99,7 +103,8 @@ public class SlingShot : MonoBehaviour
         
         // lean tween bounce back effect //
         _sling.transform.SetParent(transform);
-        _sling.transform.localPosition = Vector2.zero;
-        _sling.transform.rotation = Quaternion.identity;
+        
+        LeanTween.moveLocal(_sling, Vector2.zero, _slingSpeed).setEase(_tweenType);
+        LeanTween.rotateLocal(_sling, Vector3.zero, _slingSpeed).setEase(_tweenType);
     }
 }

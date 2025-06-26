@@ -33,12 +33,14 @@ public class Spike_Movement : MonoBehaviour
         
         // subscription
         _controller.OnDamage += Damage_KnockBack;
+        _controller.OnDeath += Damage_KnockBack;
     }
 
     private void OnDestroy()
     {
         // subscription
         _controller.OnDamage -= Damage_KnockBack;
+        _controller.OnDeath -= Damage_KnockBack;
     }
 
     private void FixedUpdate()
@@ -56,8 +58,10 @@ public class Spike_Movement : MonoBehaviour
     public void Toggle_Movement(bool toggle)
     {
         _movementToggle = toggle;
+
+        if (toggle) return;
+        _isMoving = false;
     }
-    
     
     private void Movement_Update()
     {
@@ -121,6 +125,8 @@ public class Spike_Movement : MonoBehaviour
         }
 
         transform.position = knockBackPos;
+
+        if (_controller.isDead) yield break;
         Toggle_Movement(true);
     }
 }

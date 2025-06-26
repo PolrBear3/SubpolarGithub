@@ -12,14 +12,16 @@ public class PressurePlate : MonoBehaviour
     
     [Space(20)] 
     [SerializeField] private Detection_Controller _detection;
+    public Detection_Controller detection => _detection;
 
-    [Space(20)] 
     [SerializeField][Range(0, 10)] private float _updateTime;
 
     [Space(20)] 
     [SerializeField] private UnityEvent OnPress;
     [SerializeField] private UnityEvent OnRelease;
 
+    public Action onPressAction;
+    public Action onReleaseAction;
 
     private Coroutine _coroutine;
     private int _spriteIndex;
@@ -34,6 +36,8 @@ public class PressurePlate : MonoBehaviour
         
         _detection.OnObjectDetect += Update_PlatePressure;
         _detection.OnObjectExit += Update_PlatePressure;
+
+        Level_Controller.instance.OnLevelUpdate += OnDestroy;
     }
 
     private void OnDestroy()
@@ -44,6 +48,8 @@ public class PressurePlate : MonoBehaviour
         
         _detection.OnObjectDetect -= Update_PlatePressure;
         _detection.OnObjectExit -= Update_PlatePressure;
+        
+        Level_Controller.instance.OnLevelUpdate -= OnDestroy;
     }
     
     
@@ -73,12 +79,14 @@ public class PressurePlate : MonoBehaviour
                 yield return new WaitForSeconds(tikTime);
             }
             OnPress?.Invoke();
+            onPressAction?.Invoke();
             
             _coroutine = null;
             yield break;
         }
         
         OnRelease?.Invoke();
+        onReleaseAction?.Invoke();
 
         while (_spriteIndex > 0)
         {

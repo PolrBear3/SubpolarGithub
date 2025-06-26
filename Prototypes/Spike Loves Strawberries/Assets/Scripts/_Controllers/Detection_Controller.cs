@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Detection_Controller : MonoBehaviour
 {
-    private Spike _detectedPlayer;
-    public Spike detectedPlayer => _detectedPlayer;
-    
     private bool _playerDetected;
     public bool playerDetected => _playerDetected;
     
@@ -28,9 +25,7 @@ public class Detection_Controller : MonoBehaviour
         Track_DetectedObjects(other.gameObject, true);
         
         if (other.TryGetComponent(out Spike player) == false) return;
-        
-        _detectedPlayer = player;
-        
+
         _playerDetected = true;
         OnPlayerDetect?.Invoke();
     }
@@ -43,8 +38,6 @@ public class Detection_Controller : MonoBehaviour
         
         _playerDetected = false;
         OnPlayerExit?.Invoke();
-        
-        _detectedPlayer = null;
     }
     
     
