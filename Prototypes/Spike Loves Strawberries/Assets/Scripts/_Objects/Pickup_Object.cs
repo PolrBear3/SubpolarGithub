@@ -91,6 +91,8 @@ public class Pickup_Object : MonoBehaviour
     public void Set_OnCurrentPlatform()
     {
         Level currentLevel = Level_Controller.instance.currentLevel;
+
+        if (currentLevel == null) return;
         if (currentLevel.Position_OnPlatform(transform) == false) return;
         
         GameObject platform = currentLevel.Target_Platform(transform);
@@ -107,6 +109,7 @@ public class Pickup_Object : MonoBehaviour
         StopCoroutine(_movementCoroutine);
         _movementCoroutine = null;
 
+        Set_OnCurrentPlatform();
         Update_DestroyState();
     }
     

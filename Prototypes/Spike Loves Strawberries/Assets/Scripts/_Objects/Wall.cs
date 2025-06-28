@@ -15,8 +15,6 @@ public class Wall : MonoBehaviour
 
     private Vector2 _defaultPosition;
     private Vector2 _movementPosition;
-
-    private Coroutine _coroutine;
     
     
     // MonoBehaviour

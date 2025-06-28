@@ -32,20 +32,34 @@ public class Level : MonoBehaviour
     
     [SerializeField] private bool _berryNeeded;
     public bool berryNeeded => _berryNeeded;
+
+    [Space(20)] 
+    [SerializeField] private InfoBox_Data _infoData;
+    public InfoBox_Data infoData => _infoData;
+
+    
+    private float _levelTime;
+    public float levelTime => _levelTime;
+    
+    private Coroutine _timeCroutine;
     
     
     // MonoBehaviour
-    private void Start()
+    public void Start()
     {
         _tailIcon.SetActive(_tailNeeded);
         _berryIcon.SetActive(_berryNeeded);
+
+        Start_Timer();
         
         // subscriptions
         _exitPlate.onPressAction += Level_Controller.instance.Complete_CurrentLevel;
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
+        Stop_Timer();
+        
         // subscriptions
         _exitPlate.onPressAction -= Level_Controller.instance.Complete_CurrentLevel;
     }
@@ -82,5 +96,28 @@ public class Level : MonoBehaviour
         }
 
         return Level_Controller.instance.gameObject;
+    }
+    
+    
+    // Timer
+    public void Stop_Timer()
+    {
+        if (_timeCroutine == null) return;
+        
+        StopCoroutine(_timeCroutine);
+        _timeCroutine = null;
+    }
+    
+    private void Start_Timer()
+    {
+        _timeCroutine = StartCoroutine(Timer_Coroutine());
+    }
+    private IEnumerator Timer_Coroutine()
+    {
+        while (true)
+        {
+            _levelTime += Time.deltaTime;
+            yield return null;
+        }
     }
 }

@@ -6,12 +6,15 @@ using UnityEngine;
 public class Level_Controller : MonoBehaviour
 {
     public static Level_Controller instance;
-
+    
+    [Space(20)] 
+    [SerializeField] private Level _mainLevel;
     
     [Space(20)] 
     [SerializeField] private Level_ScrObj[] _levels;
+    [SerializeField] private LevelStatus_Indicator[] _statusIndicators;
     
-    [Space(10)]
+    [Space(20)]
     [SerializeField][Range(0, 10)] private float _outPlatformDistance;
     public float outPlatformDistance => _outPlatformDistance;
     
@@ -19,47 +22,148 @@ public class Level_Controller : MonoBehaviour
     [SerializeField] private Spike _player;
     public Spike player => _player;
 
+    [Space(20)] 
+    [SerializeField] private InfoBox_Data _infoData;
+
 
     private LevelController_Data _data;
     
     private Level _currentLevel;
     public Level currentLevel => _currentLevel;
-    
-    private int _currentLevelIndex;
 
-    public Action OnLevelUpdate;
-    
+    private bool _levelRemoving;
+    public bool levelRemoving => _levelRemoving;
+
     
     // MonoBehaviour
     private void Awake()
     {
         instance = this;
 
-        if (_levels.Length <= 0)
-        {
-            Debug.Log("Level List Empty!");
-            return;
-        }
-        _data = new(_levels[0]);
+        List<LevelStatus_Data> completedDatas = new(ES3.Load("LevelController_Datas", new List<LevelStatus_Data>()));
+        _data = new(completedDatas);
+        
+        if (_data.completedDatas.Count > 0) return;
+        _data.completedDatas.Add(new(_levels[0], 0f));
     }
 
     private void Start()
     {
-        Set_CurrentLevel();
+        Set_MainLevel();
+        
+        // subscrptions
+        Main_InputSystem inputSystem = Main_InputSystem.instance;
+        
+        inputSystem.OnCancelInput += Exit_CurrentLevel;
+        inputSystem.OnHoldCancelInput += Restart_CurrentLevel;
+    }
+
+    private void OnDestroy()
+    {
+        // subscrptions
+        Main_InputSystem inputSystem = Main_InputSystem.instance;
+        
+        inputSystem.OnCancelInput -= Exit_CurrentLevel;
+        inputSystem.OnHoldCancelInput -= Restart_CurrentLevel;
+    }
+
+    private void OnApplicationQuit()
+    {
+        ES3.Save("LevelController_Datas", _data.completedDatas);
+    }
+
+
+    // Level Status Indication
+    private void Update_LevelStatuses()
+    {
+        for (int i = 0; i < _statusIndicators.Length; i++)
+        {
+            LevelStatus_Data previousData = i > 0 && i < _levels.Length ? _data.Completed_LevelData(_levels[i - 1]) : null;
+            
+            if (previousData != null && previousData.completed)
+            {
+                _data.completedDatas.Add(new(_levels[i], 0f));
+            }
+            
+            bool completed = i < _levels.Length && _data.Completed_LevelData(_levels[i]) != null;
+            _statusIndicators[i].Toggle_Lock(!completed);
+
+            if (completed == false) continue;
+            _statusIndicators[i].Set_Time(_data.Completed_LevelData(_levels[i]).completedTime);
+        }
     }
     
     
     // Level Control
+    private void Set_MainLevel()
+    {
+        _data.Set_CurrentLevel(_mainLevel.levelScrObj);
+        _currentLevel = _mainLevel;
+        
+        Reset_Player();
+        Update_LevelStatuses();
+
+        Camera_Controller camera = Camera_Controller.instance;
+        camera.Set_CameraPosition(_currentLevel.transform.position);
+        
+        InfoBox_Controller.instance.Update_InfoText(_infoData.InfoString());
+    }
+
+    private void Exit_CurrentLevel()
+    {
+        if (_currentLevel.levelScrObj == _mainLevel.levelScrObj) return;
+
+        StartCoroutine(LevelRemove_Coroutine(_currentLevel.gameObject));
+        Set_MainLevel();
+    }
+    
+    
     private void Set_CurrentLevel()
     {
         if (_data.currentLevel == null) return;
 
         Vector2 levelSetPos = Camera_Controller.instance.targetPosition;
-        GameObject levelPrefab = Instantiate(_data.currentLevel._levelPrefab, levelSetPos, Quaternion.identity);
         
+        GameObject levelPrefab = Instantiate(_data.currentLevel._levelPrefab, levelSetPos, Quaternion.identity);
         _currentLevel = levelPrefab.GetComponent<Level>();
 
+        Reset_Player();
+
+        if (_currentLevel.infoData == null)
+        {
+            InfoBox_Controller.instance.infoBoxPanel.gameObject.SetActive(false);
+            return;
+        }
+        InfoBox_Controller.instance.Update_InfoText(_currentLevel.infoData.InfoString(), _currentLevel.infoData.setPosition);
+    }
+    public void Set_CurrentLevel(Level_ScrObj setLevel)
+    {
+        if (setLevel == null) return;
+        if (_data.Completed_LevelData(setLevel) == null) return;
+        if (_data.currentLevel == setLevel) return;
+
+        _data.Set_CurrentLevel(setLevel);
+        
+        Camera_Controller.instance.Update_CameraPosition(currentLevel.exitDirection);
+        Set_CurrentLevel();
+    }
+
+    private void Restart_CurrentLevel()
+    {
+        if (_currentLevel.levelScrObj == _mainLevel.levelScrObj) return;
+
+        _data.Set_CurrentLevel(_currentLevel.levelScrObj);
+        Camera_Controller.instance.Update_CameraPosition(currentLevel.exitDirection);
+
+        StartCoroutine(LevelRemove_Coroutine(_currentLevel.gameObject));
+        Set_CurrentLevel();
+    }
+
+    private void Reset_Player()
+    {
         _player.transform.position = _currentLevel.spawnPoint.position;
+        _player.transform.rotation = Quaternion.identity;
+        
         _player.Toggle_TailDetachment(true);
 
         if (_player.data.hasItem == false) return;
@@ -67,8 +171,8 @@ public class Level_Controller : MonoBehaviour
         Destroy(_player.data.currentInteractable.gameObject);
         _player.data.Set_CurrentInteractable(null);
     }
-
-
+    
+    
     private bool Tail_Check()
     {
         if (_currentLevel.tailNeeded == false) return true;
@@ -114,33 +218,63 @@ public class Level_Controller : MonoBehaviour
 
         return false;
     }
+
+
+    private int CurrentLevel_IndexNum()
+    {
+        int indexNum = 0;
+
+        for (int i = 0; i < _levels.Length; i++)
+        {
+            if (_currentLevel.levelScrObj != _levels[i])
+            {
+                indexNum++;
+                continue;
+            }
+            return indexNum;
+        }
+        return indexNum;
+    }
     
     public void Complete_CurrentLevel()
     {
         if (_currentLevel.exitPlate.detection.playerDetected == false) return;
         if (Tail_Check() == false || Barry_Check() == false) return;
         
-        _data.completedLevels.Add(_currentLevel.levelScrObj);
-        Level_ScrObj updateLevel = _currentLevel.levelScrObj;
-        
+        _data.Complete_CurrentLevel(_currentLevel.levelTime);
+        Level_ScrObj updateLevel = _mainLevel.levelScrObj;
+ 
         for (int i = 0; i < _levels.Length; i++)
         {
-            if (_data.completedLevels.Contains(_levels[i])) continue;
-            updateLevel = _levels[i];
+            if (i >= _levels.Length - 1 || CurrentLevel_IndexNum() >= _levels.Length - 1)
+            {
+                StartCoroutine(LevelRemove_Coroutine(_currentLevel.gameObject));
+                Set_MainLevel();
+                return;
+            }
+            
+            if (_data.Completed_LevelData(_levels[i + 1]) != null) continue;
+            
+            updateLevel = _levels[i + 1];
             break;
         }
-        
-        OnLevelUpdate?.Invoke();
-        _data.Set_CurrentLevel(updateLevel);
 
+        _data.Set_CurrentLevel(updateLevel);
         Camera_Controller.instance.Update_CameraPosition(currentLevel.exitDirection);
 
-        StartCoroutine(LevelComplete_Coroutine(_currentLevel.gameObject));
+        StartCoroutine(LevelRemove_Coroutine(_currentLevel.gameObject));
         Set_CurrentLevel();
     }
-    private IEnumerator LevelComplete_Coroutine(GameObject previousLevel)
+    private IEnumerator LevelRemove_Coroutine(GameObject previousLevel)
     {
+        if (previousLevel == null) yield break;
+        
+        _levelRemoving = true;
+        
         yield return new WaitForSeconds(Camera_Controller.instance.tweenSpeed);
         Destroy(previousLevel);
+
+        yield return null;
+        _levelRemoving = false;
     }
 }

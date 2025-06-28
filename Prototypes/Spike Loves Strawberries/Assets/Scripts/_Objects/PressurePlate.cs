@@ -15,6 +15,7 @@ public class PressurePlate : MonoBehaviour
     public Detection_Controller detection => _detection;
 
     [SerializeField][Range(0, 10)] private float _updateTime;
+    [SerializeField] private bool _onlyPlayerPress;
 
     [Space(20)] 
     [SerializeField] private UnityEvent OnPress;
@@ -36,8 +37,6 @@ public class PressurePlate : MonoBehaviour
         
         _detection.OnObjectDetect += Update_PlatePressure;
         _detection.OnObjectExit += Update_PlatePressure;
-
-        Level_Controller.instance.OnLevelUpdate += OnDestroy;
     }
 
     private void OnDestroy()
@@ -48,12 +47,25 @@ public class PressurePlate : MonoBehaviour
         
         _detection.OnObjectDetect -= Update_PlatePressure;
         _detection.OnObjectExit -= Update_PlatePressure;
-        
-        Level_Controller.instance.OnLevelUpdate -= OnDestroy;
     }
     
     
     // Interaction
+    private bool PickupObject_Placed()
+    {
+        if (_onlyPlayerPress) return false;
+        
+        List<GameObject> detectedObjects = _detection.detectedObjects;
+        if (detectedObjects.Count <= 0) return false;
+
+        for (int i = 0; i < detectedObjects.Count; i++)
+        {
+            if (detectedObjects[i].TryGetComponent(out Pickup_Object pickup) == false) continue;
+            return true;
+        }
+        return false;
+    }
+    
     private void Update_PlatePressure()
     {
         if (_coroutine != null)
@@ -61,6 +73,8 @@ public class PressurePlate : MonoBehaviour
             StopCoroutine(_coroutine);
             _coroutine = null;
         }
+
+        if (Level_Controller.instance.levelRemoving) return;
 
         bool isPressed = _detection.playerDetected || PickupObject_Placed();
         _coroutine = StartCoroutine(Update_PlatePressure_Coroutine(isPressed));
@@ -98,18 +112,5 @@ public class PressurePlate : MonoBehaviour
         
         _coroutine = null;
         yield break;
-    }
-
-    private bool PickupObject_Placed()
-    {
-        List<GameObject> detectedObjects = _detection.detectedObjects;
-        if (detectedObjects.Count <= 0) return false;
-
-        for (int i = 0; i < detectedObjects.Count; i++)
-        {
-            if (detectedObjects[i].TryGetComponent(out Pickup_Object pickup) == false) continue;
-            return true;
-        }
-        return false;
     }
 }

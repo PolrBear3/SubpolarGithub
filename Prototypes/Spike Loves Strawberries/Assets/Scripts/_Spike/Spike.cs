@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
+    [SerializeField] private BoxCollider2D _boxCollider;
+    public BoxCollider2D boxCollider => _boxCollider;
+    
     [Space(20)]
     [SerializeField] private Spike_Movement _movement;
     public Spike_Movement movement => _movement;
@@ -179,6 +182,8 @@ public class Spike : MonoBehaviour
         }
 
         if (_damageCoroutine != null) return;
+        if (_isDead) return;
+        
         _damageCoroutine = StartCoroutine(Damage_Coroutine());
     }
     private IEnumerator Damage_Coroutine()

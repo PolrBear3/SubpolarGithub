@@ -8,7 +8,7 @@ public class Camera_Controller : MonoBehaviour
     public static Camera_Controller instance;
     
     
-    [SerializeField] private Camera _camera;
+    [SerializeField] private Camera _mainCamera;
 
     [Space(20)] 
     [SerializeField] private Vector2 _updateDistanceValue;
@@ -32,6 +32,12 @@ public class Camera_Controller : MonoBehaviour
 
 
     // Control
+    public void Set_CameraPosition(Vector2 setPosition)
+    {
+        LeanTween.move(_mainCamera.gameObject, setPosition, _tweenSpeed).setEase(_tweenType);
+    }
+    
+    
     private Vector2 Update_Direction(Vector2 direction)
     {
         float xDirection = 0f;
@@ -49,11 +55,11 @@ public class Camera_Controller : MonoBehaviour
     public void Update_CameraPosition(Vector2 direction)
     {
         Vector2 updateDirection = Update_Direction(direction);
-        Vector2 cameraPosition = _camera.transform.position;
+        Vector2 cameraPosition = _mainCamera.transform.position;
         
         Vector2 updatePosition = new(cameraPosition.x + updateDirection.x, cameraPosition.y + updateDirection.y);
         _targetPosition = updatePosition;
         
-        LeanTween.move(_camera.gameObject, updatePosition, _tweenSpeed).setEase(_tweenType);
+        LeanTween.move(_mainCamera.gameObject, updatePosition, _tweenSpeed).setEase(_tweenType);
     }
 }

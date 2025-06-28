@@ -11,6 +11,9 @@ public class Main_InputSystem : MonoBehaviour
     
     [Space(20)]
     [SerializeField] private PlayerInput _playerInput;
+
+    [Space(20)] 
+    [SerializeField][Range(0, 10)] private float _holdTime;
     
     
     private Vector2 _movementDirection;
@@ -20,6 +23,11 @@ public class Main_InputSystem : MonoBehaviour
     
     public Action OnInteractInput;
     public Action OnInteractRelease;
+
+    public Action OnCancelInput;
+    public Action OnHoldCancelInput;
+    
+    private Coroutine _cancelCoroutine;
 
 
     private void Awake()
@@ -48,5 +56,42 @@ public class Main_InputSystem : MonoBehaviour
         {
             OnInteractRelease?.Invoke();
         }
+    }
+
+    
+    public void Cancel(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (_cancelCoroutine != null)
+            {
+                StopCoroutine(_cancelCoroutine);
+            }
+            _cancelCoroutine = StartCoroutine(HoldCancel_Coroutine());
+        }
+        else if (context.canceled)
+        {
+            if (_cancelCoroutine != null)
+            {
+                StopCoroutine(_cancelCoroutine);
+                
+                _cancelCoroutine = null;
+                OnCancelInput?.Invoke();
+            }
+        }
+    }
+
+    private IEnumerator HoldCancel_Coroutine()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < _holdTime)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        OnHoldCancelInput?.Invoke();
+        _cancelCoroutine = null;
     }
 }
