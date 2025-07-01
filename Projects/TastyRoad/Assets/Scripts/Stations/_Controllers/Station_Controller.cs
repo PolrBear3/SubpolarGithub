@@ -51,6 +51,8 @@ public class Station_Controller : MonoBehaviour
     private bool _isRoamArea;
     public bool isRoamArea => _isRoamArea;
 
+    public Action OnStationDestroy;
+
 
     // UnityEngine
     private void Awake()
@@ -145,6 +147,8 @@ public class Station_Controller : MonoBehaviour
 
     public void Destroy_Station()
     {
+        OnStationDestroy?.Invoke();
+        
         Main_Controller.instance.UnTrack_CurrentStation(this);
         Destroy(gameObject);
     }

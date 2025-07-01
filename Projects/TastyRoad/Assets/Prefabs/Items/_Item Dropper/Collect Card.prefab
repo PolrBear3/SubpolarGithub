@@ -254,12 +254,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44df00eaddee948eda43eb679c22965b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fadeSR: {fileID: 6507860424653012280}
   _detection: {fileID: 5739883101272452172}
   _interactable: {fileID: 2852422902794634500}
+  _restrictAutoFade: 0
+  _fadeTime: 60
+  _fadeAlphaValue: 0.5
   _launcher: {fileID: 4653407473077677712}
-  _launchSprite: {fileID: -1749982309, guid: efc963dc4f222479caa64033825131e4, type: 3}
-  _destroyTikCount: 5
-  _transparencyStep: 0.075
 --- !u!1001 &7619357214468527778
 PrefabInstance:
   m_ObjectHideFlags: 0

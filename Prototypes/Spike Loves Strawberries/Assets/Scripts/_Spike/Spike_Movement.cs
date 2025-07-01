@@ -95,8 +95,10 @@ public class Spike_Movement : MonoBehaviour
 
             // Smooth rotation
             float currentAngle = transform.eulerAngles.z;
-            float newAngle = Mathf.LerpAngle(currentAngle, targetAngle, _rotationSpeed * Time.fixedDeltaTime / 360f);
-        
+            
+            float rotationStep = _rotationSpeed * Time.deltaTime;
+            float newAngle = Mathf.LerpAngle(currentAngle, targetAngle, rotationStep);
+            
             transform.rotation = Quaternion.Euler(0, 0, newAngle);
         }
     }

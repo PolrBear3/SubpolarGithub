@@ -45,6 +45,8 @@ public class Berry : Pickup_Object
 
         Level_Controller.instance.player.Toggle_TailDetachment(true);
         Destroy(gameObject);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         if (hadItem == false) return;
         playerData.Set_CurrentInteractable(null);

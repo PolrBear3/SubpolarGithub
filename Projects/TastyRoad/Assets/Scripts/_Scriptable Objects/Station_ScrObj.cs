@@ -16,9 +16,6 @@ public class Station_ScrObj : ScriptableObject
     public Sprite dialogIcon;
 
     [Header("")]
-    public Vector2 centerPosition;
-
-    [Header("")]
     public string stationName;
     [SerializeField] private LocalizedString _localizedString;
     

@@ -43,11 +43,11 @@ public class Camera_Controller : MonoBehaviour
         float xDirection = 0f;
         float yDirection = 0f;
 
-        if (direction.x > 0) xDirection = _updateDistanceValue.x;
-        else if (direction.x < 0) xDirection = -_updateDistanceValue.x;
+        if (direction.x > 0) xDirection = _updateDistanceValue.x + _updateDistanceValue.x / 2;
+        else if (direction.x < 0) xDirection = -_updateDistanceValue.x + _updateDistanceValue.x / 2;
 
-        if (direction.y > 0) yDirection = _updateDistanceValue.y;
-        else if (direction.y < 0) yDirection = -_updateDistanceValue.y;
+        if (direction.y > 0) yDirection = _updateDistanceValue.y + _updateDistanceValue.y / 2;
+        else if (direction.y < 0) yDirection = -_updateDistanceValue.y + _updateDistanceValue.y / 2;
 
         return new Vector2(xDirection, yDirection);
     }

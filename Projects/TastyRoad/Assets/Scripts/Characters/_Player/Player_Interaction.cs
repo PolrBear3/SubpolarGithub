@@ -7,8 +7,9 @@ public class Player_Interaction : MonoBehaviour
     private Player_Controller _controller;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private float _holdTime;
+    [SerializeField] private GameObject _disposeFoodPrefab;
 
     
     private float _defaultTimerXPos;
@@ -103,7 +104,7 @@ public class Player_Interaction : MonoBehaviour
 
         if (interactable == null)
         {
-            Drop_CurrentFood();
+            Dispose_CurrentFood();
             return;
         }
         interactable.Hold_Interact();
@@ -160,7 +161,7 @@ public class Player_Interaction : MonoBehaviour
 
 
     // Player Interact Actions
-    public void Drop_CurrentFood()
+    public void Dispose_CurrentFood()
     {
         FoodData_Controller foodIcon = _controller.foodIcon;
 
@@ -169,6 +170,8 @@ public class Player_Interaction : MonoBehaviour
         CoinLauncher launcher = _controller.coinLauncher;
         launcher.Parabola_CoinLaunch(foodIcon.currentData.foodScrObj.sprite, transform.position);
 
+        StartCoroutine(FoodDispose_DelayCoroutine(foodIcon.currentData.foodScrObj, launcher.range));
+
         foodIcon.Set_CurrentData(null);
         foodIcon.Show_Icon();
         foodIcon.Show_Condition();
@@ -176,6 +179,19 @@ public class Player_Interaction : MonoBehaviour
         
         IndicationTrigger_CurrentFood();
     }
+    private IEnumerator FoodDispose_DelayCoroutine(Food_ScrObj disposeFood, float delayTime)
+    {
+        Vector2 dropPos = transform.position;
+        
+        yield return new WaitForSeconds(delayTime);
+        
+        GameObject disposePrefab = Instantiate(_disposeFoodPrefab, dropPos, Quaternion.identity);
+        Dispose_FoodDrop disposeFoodDrop = disposePrefab.GetComponent<Dispose_FoodDrop>();
+        
+        disposeFoodDrop.Set_FoodData(disposeFood);
+        disposeFoodDrop.Fade_Destroy();
+    }
+    
     
     public void IndicationTrigger_CurrentFood()
     {

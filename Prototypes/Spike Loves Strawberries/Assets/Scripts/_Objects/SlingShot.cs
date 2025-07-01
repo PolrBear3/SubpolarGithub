@@ -76,6 +76,8 @@ public class SlingShot : MonoBehaviour
 
         LeanTween.moveLocal(_sling, Vector2.zero, _slingSpeed).setEase(_tweenType);
         LeanTween.rotateLocal(_sling, new Vector3(0f, 0f, 180f), 0.2f).setEase(_tweenType);
+
+        Audio_Controller.instance.Create_EventInstance(gameObject, 0).start();
     }
 
     private void Release()
@@ -94,6 +96,13 @@ public class SlingShot : MonoBehaviour
         
         player.Set_ReleaseInteractable(null);
         Reset_Sling();
+
+        Audio_Controller audio = Audio_Controller.instance;
+        
+        audio.EventInstance(gameObject, 0).stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        audio.Remove_EventInstance(gameObject, 0);
+        
+        audio.Play_OneShot(gameObject, 1);
     }
 
     private void Reset_Sling()

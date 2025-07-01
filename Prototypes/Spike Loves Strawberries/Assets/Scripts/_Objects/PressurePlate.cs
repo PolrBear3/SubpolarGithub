@@ -24,6 +24,8 @@ public class PressurePlate : MonoBehaviour
     public Action onPressAction;
     public Action onReleaseAction;
 
+    private bool _isPressed = false;
+    
     private Coroutine _coroutine;
     private int _spriteIndex;
     
@@ -78,6 +80,9 @@ public class PressurePlate : MonoBehaviour
 
         bool isPressed = _detection.playerDetected || PickupObject_Placed();
         _coroutine = StartCoroutine(Update_PlatePressure_Coroutine(isPressed));
+
+        if (isPressed == false || _isPressed) return;
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
     private IEnumerator Update_PlatePressure_Coroutine(bool isPressed)
     {
@@ -89,11 +94,13 @@ public class PressurePlate : MonoBehaviour
             {
                 _spriteIndex++;
                 _sr.sprite = _plateSprites[_spriteIndex];
-                
+   
                 yield return new WaitForSeconds(tikTime);
             }
             OnPress?.Invoke();
             onPressAction?.Invoke();
+
+            _isPressed = true;
             
             _coroutine = null;
             yield break;
@@ -101,12 +108,14 @@ public class PressurePlate : MonoBehaviour
         
         OnRelease?.Invoke();
         onReleaseAction?.Invoke();
+        
+        _isPressed = false;
 
         while (_spriteIndex > 0)
         {
             _spriteIndex--;
             _sr.sprite = _plateSprites[_spriteIndex];
-            
+ 
             yield return new WaitForSeconds(tikTime);
         }
         

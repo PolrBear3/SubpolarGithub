@@ -37,6 +37,11 @@ public class LoopMovement_Object : MonoBehaviour
         Toggle_Movement(_toggled);
     }
 
+    public void OnDestroy()
+    {
+        
+    }
+
 
     // Main
     public void Cancel_Movement()

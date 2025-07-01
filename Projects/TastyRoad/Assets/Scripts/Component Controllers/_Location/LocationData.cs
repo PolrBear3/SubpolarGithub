@@ -16,43 +16,48 @@ public class LocationData
     public Location_ScrObj locationScrObj;
 
     
-    [Header("")]
+    [Space(20)]
     [ES3NonSerializable] public Vector2 spawnRangeX;
     [ES3NonSerializable] public Vector2 spawnRangeY;
 
-    [Header("")]
+    [Space(20)]
     [ES3NonSerializable] public float spawnIntervalTime;
  
     
-    [Header("")]
+    [Space(20)]
     [SerializeField][ES3NonSerializable] private SpriteRenderer _screenArea;
     public SpriteRenderer screenArea => _screenArea;
 
     [SerializeField][ES3NonSerializable] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
 
+
+    [Space(20)] 
+    [SerializeField][ES3NonSerializable] private Sprite[] _impedimentSprites;
+    public Sprite[] impedimentSprites => _impedimentSprites;
     
-    [Header("")]
+    
+    [Space(20)]
     [ES3NonSerializable] public TimePhase_Population[] populationData;
 
     [SerializeField][ES3NonSerializable] private AnimatorOverrideController[] _npcSkinOverrides;
     public AnimatorOverrideController[] npcSkinOverrides => _npcSkinOverrides;
 
-    [Header("")] 
     [SerializeField][ES3NonSerializable][Range(0, 100)] private int _maxFoodOrderCount;
     public int maxFoodOrderCount => _maxFoodOrderCount;
     
-    [ES3NonSerializable] private int _currentFoodOrderCount;
-    public int currentFoodOrderCount => _currentFoodOrderCount;
     
-    
-    [Header("")]
+    [Space(20)]
     [SerializeField][ES3NonSerializable] private FoodWeight_Data[] _ingredientUnlocks;
     public FoodWeight_Data[] ingredientUnlocks => _ingredientUnlocks;
 
     [SerializeField][ES3NonSerializable] private StationWeight_Data[] _stationDrops;
     public StationWeight_Data[] stationDrops => _stationDrops;
-
+    
+    
+    [ES3NonSerializable] private int _currentFoodOrderCount;
+    public int currentFoodOrderCount => _currentFoodOrderCount;
+    
 
     // Constructors
     public LocationData(LocationData data)

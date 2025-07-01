@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PrefabSpawner : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _spawnPrefab;
 
-    [Header("")]
+    [Space(20)]
     [Range(0, 100)][SerializeField] private int _spawnAmount;
     [Range(0, 100)][SerializeField] private int _minimumSpawnAmount;
     
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Vector2[] _spawnPositions;
 
 
@@ -37,12 +37,13 @@ public class PrefabSpawner : MonoBehaviour
     public GameObject Spawn_Prefab(Vector2 spawnPosition)
     {
         if (_spawnPrefab == null) return null;
-
         GameObject spawnPrefab = Instantiate(_spawnPrefab, spawnPosition, Quaternion.identity);
-
+        
         // check if spawn prefab is a station
         if (spawnPrefab.TryGetComponent(out Station_Movement movement) == false)
         {
+            Main_Controller.instance.Claim_Position(spawnPrefab.transform.position);
+            
             // set as a child of current location file
             spawnPrefab.transform.SetParent(Main_Controller.instance.otherFile);
             return spawnPrefab;

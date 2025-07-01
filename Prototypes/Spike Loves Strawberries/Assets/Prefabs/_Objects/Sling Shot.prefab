@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 8201652197101976337}
   - component: {fileID: 4751671005715141698}
   - component: {fileID: 4022274672163766330}
+  - component: {fileID: 1800961497773518667}
   - component: {fileID: 1032409810917893889}
   m_Layer: 0
   m_Name: Sling Shot
@@ -209,7 +210,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.9999995, y: 5.9999995}
+    oldSize: {x: 6.0000005, y: 6.0000005}
     newSize: {x: 7, y: 7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -243,6 +244,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _indicationSR: {fileID: 8867169820784591339}
+--- !u!114 &1800961497773518667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4503775821399123110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72740e6f3ed7a4b50b1699327db007f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -692653284
+        Data2: 1217678008
+        Data3: 361125818
+        Data4: -2058964271
+      Path: event:/Hold SlingShot
+  - _reference:
+      Guid:
+        Data1: 2070092473
+        Data2: 1172390348
+        Data3: 1194895259
+        Data4: -1537436874
+      Path: event:/Release SlingShot
+  _fadeDuration: 0
 --- !u!114 &1032409810917893889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +287,6 @@ MonoBehaviour:
   _detection: {fileID: 4751671005715141698}
   _interaction: {fileID: 4022274672163766330}
   _sling: {fileID: 2057841395634098427}
-  _distanceMultiplier: 2
+  _distanceMultiplier: 3
   _tweenType: 30
   _slingSpeed: 1

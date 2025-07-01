@@ -73,18 +73,25 @@ public class Level_Controller : MonoBehaviour
     }
 
 
-    // Level Status Indication
-    private void Update_LevelStatuses()
+    // Level Status
+    private void Update_LevelUnlocks()
+    {
+        for (int i = 0; i < _levels.Length; i++)
+        {
+            LevelStatus_Data previousData = i > 0 ? _data.Completed_LevelData(_levels[i - 1]) : null;
+            
+            if (previousData == null) continue;
+            if (previousData.completed == false) continue;
+            if (_data.Completed_LevelData(_levels[i]) != null) continue;
+            
+            _data.completedDatas.Add(new(_levels[i], 0f));
+        }
+    }
+    
+    private void Update_LevelIndications()
     {
         for (int i = 0; i < _statusIndicators.Length; i++)
         {
-            LevelStatus_Data previousData = i > 0 && i < _levels.Length ? _data.Completed_LevelData(_levels[i - 1]) : null;
-            
-            if (previousData != null && previousData.completed)
-            {
-                _data.completedDatas.Add(new(_levels[i], 0f));
-            }
-            
             bool completed = i < _levels.Length && _data.Completed_LevelData(_levels[i]) != null;
             _statusIndicators[i].Toggle_Lock(!completed);
 
@@ -101,7 +108,9 @@ public class Level_Controller : MonoBehaviour
         _currentLevel = _mainLevel;
         
         Reset_Player();
-        Update_LevelStatuses();
+        
+        Update_LevelUnlocks();
+        Update_LevelIndications();
 
         Camera_Controller camera = Camera_Controller.instance;
         camera.Set_CameraPosition(_currentLevel.transform.position);
@@ -148,7 +157,7 @@ public class Level_Controller : MonoBehaviour
         Set_CurrentLevel();
     }
 
-    private void Restart_CurrentLevel()
+    public void Restart_CurrentLevel()
     {
         if (_currentLevel.levelScrObj == _mainLevel.levelScrObj) return;
 

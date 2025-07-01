@@ -25,7 +25,6 @@ public class ItemDropper : MonoBehaviour
 
 
     private Vector2 _dropPosition;
-
     private Coroutine _coroutine;
 
 
@@ -40,8 +39,7 @@ public class ItemDropper : MonoBehaviour
         if (_dropPosition == Vector2.zero) return transform.position;
         return _dropPosition;
     }
-
-
+    
     public GameObject SnapPosition_Spawn(GameObject spawnItem, Vector2 spawnPosition)
     {
         Main_Controller main = Main_Controller.instance;

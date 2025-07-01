@@ -36,6 +36,7 @@ public class NPC_FoodInteraction : MonoBehaviour
     public Coroutine timeCoroutine => _timeCoroutine;
 
     private Coroutine _transferCoroutine;
+    public Coroutine transferCoroutine => _transferCoroutine;
 
 
     // MonoBehaviour

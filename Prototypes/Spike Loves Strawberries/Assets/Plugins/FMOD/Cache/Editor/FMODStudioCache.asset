@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6010961569280851298
+--- !u!114 &-6581496906153814443
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,35 +10,116 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Name: bank:/BGM.bank
   m_EditorClassIdentifier: 
-  Path: Assets/Sounds/SoundEditor/Build/Desktop/Master.bank
-  Name: Master
-  StudioPath: bank:/Master
-  lastModified: 638867420628422505
-  FileSizes:
-  - Name: Desktop
-    Value: 1036
-  Exists: 1
---- !u!114 &-5154866082336815667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/SFX.bank
-  m_EditorClassIdentifier: 
-  Path: Assets/Sounds/SoundEditor/Build/Desktop/SFX.bank
-  Name: SFX
-  StudioPath: bank:/SFX
-  lastModified: 638867420628447631
+  Path: Sounds/SoundEditor/Build/Desktop/BGM.bank
+  Name: BGM
+  StudioPath: bank:/BGM
+  lastModified: 638868325479914388
   FileSizes:
   - Name: Desktop
     Value: 494
+  Exists: 1
+--- !u!114 &-5712690638596879662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Spike Damage
+  m_EditorClassIdentifier: 
+  Path: event:/Spike Damage
+  Guid:
+    Data1: 1171313247
+    Data2: 1141308946
+    Data3: 1888460689
+    Data4: 550760724
+  Banks:
+  - {fileID: 1912871131756268091}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 104
+--- !u!114 &-3563453445892504154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Pressure Plate
+  m_EditorClassIdentifier: 
+  Path: event:/Pressure Plate
+  Guid:
+    Data1: -1715409266
+    Data2: 1270019678
+    Data3: -1856859519
+    Data4: -85190268
+  Banks:
+  - {fileID: 1912871131756268091}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 103
+--- !u!114 &-2435988529326431996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Release SlingShot
+  m_EditorClassIdentifier: 
+  Path: event:/Release SlingShot
+  Guid:
+    Data1: 2070092473
+    Data2: 1172390348
+    Data3: 1194895259
+    Data4: -1537436874
+  Banks:
+  - {fileID: 1912871131756268091}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 40
+--- !u!114 &-414339795041396045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: Sounds/SoundEditor/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638868325479939006
+  FileSizes:
+  - Name: Desktop
+    Value: 1066
   Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -53,18 +134,51 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 7892616262336145169}
-  - {fileID: -6010961569280851298}
-  - {fileID: -5154866082336815667}
-  EditorEvents: []
+  - {fileID: -414339795041396045}
+  - {fileID: -6581496906153814443}
+  - {fileID: 8691416907665543830}
+  - {fileID: 1912871131756268091}
+  EditorEvents:
+  - {fileID: 4685484783428942786}
+  - {fileID: -5712690638596879662}
+  - {fileID: 148163587166101767}
+  - {fileID: -3563453445892504154}
+  - {fileID: -2435988529326431996}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -6010961569280851298}
+  - {fileID: 8691416907665543830}
   StringsBanks:
-  - {fileID: 7892616262336145169}
-  cacheTime: 638867420628447631
+  - {fileID: -414339795041396045}
+  cacheTime: 638868336386842458
   cacheVersion: 131618
---- !u!114 &7892616262336145169
+--- !u!114 &148163587166101767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Berry Consume
+  m_EditorClassIdentifier: 
+  Path: event:/Berry Consume
+  Guid:
+    Data1: 730501239
+    Data2: 1113469017
+    Data3: -1847289160
+    Data4: -1038857001
+  Banks:
+  - {fileID: 1912871131756268091}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 372
+--- !u!114 &1912871131756268091
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,13 +188,60 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.strings.bank
+  m_Name: bank:/SFX.bank
   m_EditorClassIdentifier: 
-  Path: Assets/Sounds/SoundEditor/Build/Desktop/Master.strings.bank
-  Name: Master.strings
-  StudioPath: bank:/Master.strings
-  lastModified: 638867420628429456
+  Path: Sounds/SoundEditor/Build/Desktop/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 638868336386842458
   FileSizes:
   - Name: Desktop
-    Value: 758
+    Value: 37792
+  Exists: 1
+--- !u!114 &4685484783428942786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Hold SlingShot
+  m_EditorClassIdentifier: 
+  Path: event:/Hold SlingShot
+  Guid:
+    Data1: -692653284
+    Data2: 1217678008
+    Data3: 361125818
+    Data4: -2058964271
+  Banks:
+  - {fileID: 1912871131756268091}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1312
+--- !u!114 &8691416907665543830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Sounds/SoundEditor/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638868325479933246
+  FileSizes:
+  - Name: Desktop
+    Value: 1260
   Exists: 1

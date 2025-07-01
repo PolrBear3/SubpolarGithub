@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2671172086781506534}
   - component: {fileID: 2272482149869642190}
-  - component: {fileID: 4018874916105570401}
   - component: {fileID: 2791255680288065517}
+  - component: {fileID: 258296546069528946}
   - component: {fileID: 2608042303419255440}
   - component: {fileID: 1169991202216155430}
-  - component: {fileID: 258296546069528946}
   - component: {fileID: 1154708703919469280}
   m_Layer: 0
   m_Name: Food Box
@@ -91,27 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &4018874916105570401
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9220211023236177560}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!61 &2791255680288065517
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -157,6 +135,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.4}
   m_EdgeRadius: 0
+--- !u!114 &258296546069528946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220211023236177560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectedprefabs: []
 --- !u!114 &2608042303419255440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +182,7 @@ MonoBehaviour:
         Data3: 243705496
         Data4: 1450492281
       Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
+  _fadeDuration: 0
 --- !u!114 &1169991202216155430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d493788115fd4a4d810b637824475a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stationAnimator: {fileID: 4018874916105570401}
+  _stationAnimator: {fileID: 0}
   _animController: {fileID: 0}
   _interactable: {fileID: 0}
   _iInteractable: {fileID: 0}
@@ -212,19 +204,6 @@ MonoBehaviour:
   _maintenance: {fileID: 0}
   _stationScrObj: {fileID: 11400000, guid: ddd48639fa2c1441d9f93d97f0a94b94, type: 2}
   _itemDropper: {fileID: 0}
---- !u!114 &258296546069528946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9220211023236177560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectedprefabs: []
 --- !u!114 &1154708703919469280
 MonoBehaviour:
   m_ObjectHideFlags: 0

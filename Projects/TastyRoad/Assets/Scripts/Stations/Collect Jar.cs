@@ -13,11 +13,18 @@ public class CollectJar : MonoBehaviour
 
     [Space(20)]
     [SerializeField][Range(0, 100)] private int _searchTime;
+    
+    [Space(10)]
+    [SerializeField][Range(0, 100)] private float _donateTime;
+    [SerializeField] [Range(0, 100)] private int _donateGoldAmount;
 
 
+    private List<NPC_Controller> _trackNPCs = new();
+    
     private Coroutine _coroutine;
+    private Coroutine _donateCoroutine;
 
-
+    
     // MonoBehaviour
     private void Start()
     {
@@ -25,10 +32,13 @@ public class CollectJar : MonoBehaviour
         Toggle_AmountBar();
 
         Collect(_controller.movement.enabled == false);
+        Donate_Collect(_controller.movement.enabled == false);
 
         // subscriptions
         Main_Controller.instance.OnFoodBookmark += Collect;
         _controller.movement.OnLoadPosition += Collect;
+
+        _controller.movement.OnLoadPosition += Donate_Collect;
 
         Detection_Controller detection = _controller.detection;
 
@@ -39,6 +49,9 @@ public class CollectJar : MonoBehaviour
 
         iInteractable.OnInteract += Toggle_GoldAmount;
         iInteractable.OnHoldInteract += Empty;
+        
+        _controller.OnStationDestroy += Empty;
+        _controller.OnStationDestroy += Reset_TrackNPCs;
     }
 
     private void OnDestroy()
@@ -48,6 +61,8 @@ public class CollectJar : MonoBehaviour
         // subscriptions
         Main_Controller.instance.OnFoodBookmark -= Collect;
         _controller.movement.OnLoadPosition -= Collect;
+        
+        _controller.movement.OnLoadPosition -= Donate_Collect;
 
         Detection_Controller detection = _controller.detection;
 
@@ -58,6 +73,9 @@ public class CollectJar : MonoBehaviour
 
         iInteractable.OnInteract -= Toggle_GoldAmount;
         iInteractable.OnHoldInteract -= Empty;
+        
+        _controller.OnStationDestroy -= Empty;
+        _controller.OnStationDestroy -= Reset_TrackNPCs;
     }
 
 
@@ -137,9 +155,44 @@ public class CollectJar : MonoBehaviour
         Update_Sprite();
         Toggle_AmountBar();
     }
+    
+    
+    // NPC Tracking
+    private void Track_NPC(NPC_Controller trackNPC)
+    {
+        if (_trackNPCs.Contains(trackNPC)) return;
+        _trackNPCs.Add(trackNPC);
+    }
+
+    private void Refresh_TrackNPCs()
+    {
+        List<NPC_Controller> trackNPCs = new(_trackNPCs);
+
+        for (int i = 0; i < trackNPCs.Count; i++)
+        {
+            NPC_Movement movement = trackNPCs[i].movement;
+            bool incoming = movement.roamActive == false && movement.targetPosition == (Vector2)transform.position;
+
+            if (incoming && movement.At_TargetPosition(transform.position) == false)
+            {
+                Track_NPC(trackNPCs[i]);
+                continue;
+            }
+            _trackNPCs.Remove(trackNPCs[i]);
+        }
+    }
+
+    private void Reset_TrackNPCs()
+    {
+        foreach (NPC_Controller npc in _trackNPCs)
+        {
+            npc.foodInteraction.Update_RoamArea();
+        }
+        _trackNPCs.Clear();
+    }
 
 
-    // NPC
+    // Payment Collect
     private List<NPC_Controller> PayAvailable_NPCs()
     {
         List<NPC_Controller> allNPCs = Main_Controller.instance.All_NPCs();
@@ -155,12 +208,10 @@ public class CollectJar : MonoBehaviour
 
         return availableNPCs;
     }
-
-
+    
     private void Collect(bool activate)
     {
         if (activate == false) return;
-
         Collect();
     }
 
@@ -185,14 +236,16 @@ public class CollectJar : MonoBehaviour
                 if (_controller.Food_Icon().Is_MaxAmount(interaction.Set_Payment()))
                 {
                     if (movement.roamActive) continue;
-
                     interaction.Update_RoamArea();
+                    
                     continue;
                 }
 
+                Track_NPC(PayAvailable_NPCs()[i]);
+                
                 movement.Stop_FreeRoam();
                 movement.Assign_TargetPosition(transform.position);
-
+                
                 if (movement.At_TargetPosition(transform.position) == false) continue;
 
                 Insert(interaction.Set_Payment());
@@ -200,6 +253,82 @@ public class CollectJar : MonoBehaviour
 
                 Toggle_AmountBar();
             }
+
+            Refresh_TrackNPCs();
+        }
+    }
+
+
+    // Donate
+    private List<NPC_Controller> DonateAvailable_NPCs()
+    {
+        List<NPC_Controller> allNPCs = Main_Controller.instance.All_NPCs();
+        List<NPC_Controller> availableNPCs = new();
+
+        for (int i = 0; i < allNPCs.Count; i++)
+        {
+            if (allNPCs[i].TryGetComponent(out NPC_FoodInteraction interaction) == false) continue;
+            
+            if (interaction.timeCoroutine != null) continue;
+            if (interaction.transferCoroutine != null) continue;
+            if (interaction.payAvailable) continue;
+            
+            if (allNPCs[i].movement.isLeaving) continue;
+            
+            availableNPCs.Add(allNPCs[i]);
+        }
+        return availableNPCs;
+    }
+    
+    private void Donate_Collect(bool activate)
+    {
+        if (activate == false) return;
+        Donate_Collect();
+    }
+
+    private void Donate_Collect()
+    {
+        if (_donateCoroutine != null) return;
+        if (_controller.Food_Icon().Is_MaxAmount()) return;
+        
+        _donateCoroutine = StartCoroutine(Donate_Coroutine());
+    }
+    private IEnumerator Donate_Coroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(_donateTime);
+
+            int donateAmount = Random.Range(0, _donateGoldAmount);
+            if (_controller.Food_Icon().Is_MaxAmount(donateAmount)) continue;
+
+            List<NPC_Controller> availableNPCs = DonateAvailable_NPCs();
+            if (availableNPCs.Count == 0) continue;
+            
+            NPC_Controller targetNPC = availableNPCs[Random.Range(0, availableNPCs.Count)];
+            NPC_Movement movement = targetNPC.movement;
+
+            Track_NPC(targetNPC);
+            
+            movement.Stop_FreeRoam();
+            movement.Assign_TargetPosition(transform.position);
+
+            while (movement.At_TargetPosition() == false) yield return null;
+            
+            Refresh_TrackNPCs();
+            
+            if (movement.At_TargetPosition(transform.position) == false) continue;
+            if (_controller.Food_Icon().Is_MaxAmount(donateAmount)) continue;
+            
+            GoldSystem goldSystem = GoldSystem.instance;
+            Sprite nuggetSprite = goldSystem.defaultIcon;
+
+            CoinLauncher launcher = targetNPC.itemLauncher;
+            
+            launcher.Parabola_CoinLaunch(nuggetSprite, transform.position);
+            Insert(donateAmount);
+            
+            movement.CurrentLocation_FreeRoam(launcher.range);
         }
     }
 }

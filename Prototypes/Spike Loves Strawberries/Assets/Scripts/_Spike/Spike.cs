@@ -185,6 +185,8 @@ public class Spike : MonoBehaviour
         if (_isDead) return;
         
         _damageCoroutine = StartCoroutine(Damage_Coroutine());
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
     private IEnumerator Damage_Coroutine()
     {
@@ -234,7 +236,7 @@ public class Spike : MonoBehaviour
         _isDead = false;
         _data.Set_DamageCount(_maxDamageCount);
         
-        transform.position = Level_Controller.instance.currentLevel.spawnPoint.position;
+        Level_Controller.instance.Restart_CurrentLevel();
         
         _movement.Toggle_Movement(true);
     }

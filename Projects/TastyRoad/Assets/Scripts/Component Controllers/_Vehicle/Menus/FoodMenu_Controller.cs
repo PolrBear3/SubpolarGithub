@@ -168,9 +168,45 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return totalAvailableAmount;
     }
 
+
+    private int Sort_FoodItem(Food_ScrObj food, int amount)
+    {
+        int slotCapacity = _controller.slotsController.singleSlotCapacity;
+        
+        for (int i = 0; i < _currentDatas.Count; i++)
+        {
+            for (int j = 0; j < _currentDatas[i].Count; j++)
+            {
+                if (currentDatas[i][j].hasItem == false) continue;
+                if (currentDatas[i][j].currentFood != food) continue;
+                
+                int calculatedAmount = currentDatas[i][j].currentAmount + amount;
+                int leftOver = calculatedAmount - slotCapacity;
+                
+                calculatedAmount = Mathf.Clamp(calculatedAmount, 0, slotCapacity);
+                
+                FoodData addData = new(food, calculatedAmount);
+                currentDatas[i][j] = new(addData);
+                
+                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+
+                if (leftOver <= 0) return 0;
+                
+                amount = leftOver;
+                continue;
+            }
+            
+            if (amount <= 0) return 0;
+        }
+        return amount;
+    }
+    
     public int Add_FoodItem(Food_ScrObj food, int amount)
     {
-        if (food == null || amount <= 0) return 0;
+        if (food == null) return 0;
+        
+        amount = Sort_FoodItem(food, amount);
+        if (amount <= 0) return 0;
 
         int slotCapacity = _controller.slotsController.singleSlotCapacity;
 
@@ -208,8 +244,8 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // No slots left, return the remaining amount that couldn't be added
         return amount;
     }
-
-
+    
+    
     public void Remove_FoodItem(Food_ScrObj food, int amount)
     {
         if (food == null || amount <= 0) return;

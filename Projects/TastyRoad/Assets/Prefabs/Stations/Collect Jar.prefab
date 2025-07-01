@@ -222,6 +222,7 @@ MonoBehaviour:
         Data3: -1591251052
         Data4: -1705396606
       Path: event:/Basic SFX/Interaction/Nugget_insertPay
+  _fadeDuration: 0
 --- !u!114 &7041178694425679705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +248,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnInteract_Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8479557493213457428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +301,9 @@ MonoBehaviour:
   _jarSprites:
   - {fileID: 1850547636, guid: efc963dc4f222479caa64033825131e4, type: 3}
   - {fileID: -1355500805, guid: efc963dc4f222479caa64033825131e4, type: 3}
-  _searchTime: 1
+  _searchTime: 3
+  _donateTime: 30
+  _donateGoldAmount: 3
 --- !u!1001 &4253899079980892220
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemDrop : MonoBehaviour
 {
-    private SpriteRenderer _sr;
-
+    [Space(20)]
+    [SerializeField] private SpriteRenderer _fadeSR;
     
     [Space(20)] 
     [SerializeField] private Detection_Controller _detection;
@@ -13,41 +14,48 @@ public class ItemDrop : MonoBehaviour
     
     [SerializeField] private IInteractable_Controller _interactable;
     public IInteractable_Controller interactable => _interactable;
+
+    [Space(20)] 
+    [SerializeField] private bool _restrictAutoFade;
     
-    [Space(20)]
-    [SerializeField][Range(0, 100)] private int _destroyTikCount;
-    [SerializeField][Range(0, 1)] private float _transparencyStep;
-    
-    
-    private int _currentTikCount;
+    [Space(10)] 
+    [SerializeField][Range(0, 100)] private float _fadeTime;
+    [SerializeField] [Range(0, 1)] private float _fadeAlphaValue;
     
     
     // UnityEngine
-    private void Awake()
-    {
-        _sr = gameObject.GetComponent<SpriteRenderer>();
-    }
-
     public void Start()
     {
-        globaltime.instance.OnTimeTik += Activate_DestroyTimeTik;
+        if (_restrictAutoFade) return;
+        Fade_Destroy();
     }
 
     public void OnDestroy()
     {
-        globaltime.instance.OnTimeTik -= Activate_DestroyTimeTik;
+        
     }
-    
-    
-    //
-    private void Activate_DestroyTimeTik()
+
+
+    // Main
+    public void Fade_Destroy()
     {
-        if (Input_Controller.instance.Current_ActionMapNum() != 0) return;
+        StartCoroutine(FadeDestroy_Coroutine());
+    }
+    private IEnumerator FadeDestroy_Coroutine()
+    {
+        float elapsed = 0f;
+        Color originalColor = _fadeSR.color;
 
-        _currentTikCount++;
-        Main_Controller.instance.Change_SpriteAlpha(_sr, _sr.color.a - _transparencyStep);
+        while (elapsed < _fadeTime)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / _fadeTime;
 
-        if (_currentTikCount < _destroyTikCount) return;
-        Destroy(gameObject, 0.1f);
+            float alpha = Mathf.Lerp(1f, _fadeAlphaValue, t);
+            _fadeSR.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+
+            yield return null;
+        }
+        Destroy(gameObject);
     }
 }

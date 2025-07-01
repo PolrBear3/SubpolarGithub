@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 2462410315778940925}
   - component: {fileID: 3719519753519411935}
   - component: {fileID: 618211005683255418}
+  - component: {fileID: 8870486772677288656}
   - component: {fileID: 6357786867657860531}
   m_Layer: 0
   m_Name: Exit Plate
@@ -253,6 +254,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2ea10086d604296ac02a88f60f647f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8870486772677288656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3278480739708672071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72740e6f3ed7a4b50b1699327db007f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: -1715409266
+        Data2: 1270019678
+        Data3: -1856859519
+        Data4: -85190268
+      Path: event:/Pressure Plate
+  _fadeDuration: 0
 --- !u!114 &6357786867657860531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,6 +296,7 @@ MonoBehaviour:
   - {fileID: 1855840547, guid: 7305e5a7c3e584e38b7c5f8acc2d1000, type: 3}
   _detection: {fileID: 618211005683255418}
   _updateTime: 2
+  _onlyPlayerPress: 0
   OnPress:
     m_PersistentCalls:
       m_Calls: []

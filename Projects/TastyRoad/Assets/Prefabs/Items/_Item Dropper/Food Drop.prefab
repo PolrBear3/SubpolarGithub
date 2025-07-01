@@ -221,10 +221,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b4d019e39484ed0ad1dc4f9ac68c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fadeSR: {fileID: 6507860424653012280}
   _detection: {fileID: 5739883101272452172}
   _interactable: {fileID: 8841220264673419906}
-  _destroyTikCount: 3
-  _transparencyStep: 0.075
+  _restrictAutoFade: 0
+  _fadeTime: 60
+  _fadeAlphaValue: 0.5
   _foodIcon: {fileID: 648301248028170091}
 --- !u!1001 &5344854207438133248
 PrefabInstance:

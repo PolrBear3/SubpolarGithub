@@ -187,6 +187,10 @@ public class NPC_Movement : MonoBehaviour
     {
         Free_Roam(Main_Controller.instance.currentLocation.data.roamArea);
     }
+    public void CurrentLocation_FreeRoam(float startDelayTime)
+    {
+        Free_Roam(Main_Controller.instance.currentLocation.data.roamArea, startDelayTime);
+    }
     
     public void CurrentLocation_FreeRoam(SpriteRenderer roamArea, float startDelayTime)
     {

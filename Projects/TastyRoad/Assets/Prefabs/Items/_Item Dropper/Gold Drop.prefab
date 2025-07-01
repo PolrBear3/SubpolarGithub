@@ -214,10 +214,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 555d347363178452caa81a179cd07f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fadeSR: {fileID: 877696214930890666}
   _detection: {fileID: 2792188621723537892}
   _interactable: {fileID: 116165900997119407}
-  _destroyTikCount: 3
-  _transparencyStep: 0.075
+  _restrictAutoFade: 0
+  _fadeTime: 60
+  _fadeAlphaValue: 0.5
   _launcher: {fileID: 4138597999117578345}
   _defaultDropAmount: {x: 1, y: 5}
   _goldMagnetAbility: {fileID: 11400000, guid: 37a479d5e37b541ccb57f06531486458, type: 2}

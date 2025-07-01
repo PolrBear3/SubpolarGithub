@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8126727126977622199}
   - component: {fileID: 893464022885294438}
   - component: {fileID: 6026861960153465142}
+  - component: {fileID: 6238098086665387144}
   - component: {fileID: 6367752550734767881}
   m_Layer: 0
   m_Name: Berry
@@ -208,6 +209,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _indicationSR: {fileID: 4880164884648024171}
+--- !u!114 &6238098086665387144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6770236947284308884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72740e6f3ed7a4b50b1699327db007f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundDatas:
+  - _reference:
+      Guid:
+        Data1: 730501239
+        Data2: 1113469017
+        Data3: -1847289160
+        Data4: -1038857001
+      Path: event:/Berry Consume
+  _fadeDuration: 0
 --- !u!114 &6367752550734767881
 MonoBehaviour:
   m_ObjectHideFlags: 0
