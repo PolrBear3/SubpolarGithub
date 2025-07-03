@@ -124,9 +124,9 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         if (_droppedToolBox != null) return;
 
-        Main_Controller main = Main_Controller.instance;
-        Vector2 dropPos = main.SnapPosition(transform.position);
+        Vector2 dropPos = Utility.SnapPosition(transform.position);
 
+        Main_Controller main = Main_Controller.instance;
         if (main.Position_Claimed(dropPos)) return;
 
         GameObject drop = Instantiate(_toolBox, dropPos, quaternion.identity);

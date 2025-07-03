@@ -205,7 +205,7 @@ public class NPC_FoodInteraction : MonoBehaviour
             foodIcon.Set_CurrentData(setData);
             _foodOrderCount++;
 
-            if (Main_Controller.instance.Percentage_Activated(_conditionRequestRate) == false) continue;
+            if (Utility.Percentage_Activated(_conditionRequestRate) == false) continue;
 
             List<FoodCondition_Type> availableConditions = setData.foodScrObj.Available_SetConditions();
             FoodCondition_Type randCondition = availableConditions[Random.Range(0, availableConditions.Count)];

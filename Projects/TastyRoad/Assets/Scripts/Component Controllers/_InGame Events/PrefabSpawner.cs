@@ -10,8 +10,10 @@ public class PrefabSpawner : MonoBehaviour
     [Space(20)]
     [Range(0, 100)][SerializeField] private int _spawnAmount;
     [Range(0, 100)][SerializeField] private int _minimumSpawnAmount;
-    
-    [Space(20)]
+
+    [Space(20)] 
+    [SerializeField] private bool _restrictCrossSpawn;
+    [SerializeField] private bool _restrictSurroundingSpawn;
     [SerializeField] private Vector2[] _spawnPositions;
 
 
@@ -64,12 +66,29 @@ public class PrefabSpawner : MonoBehaviour
     }
 
 
+    private bool SpawnPosition_Restricted(List<Vector2> spawnedPositions, Vector2 centerPosition)
+    {
+        if (!_restrictCrossSpawn && !_restrictSurroundingSpawn) return false;
+        
+        List<Vector2> restrictedPositions = _restrictSurroundingSpawn ? Utility.Surrounding_SnapPositions(centerPosition)
+                : Utility.CrossSurrounding_SnapPositions(centerPosition);
+
+        for (int i = 0; i < restrictedPositions.Count; i++)
+        {
+            if (spawnedPositions.Contains(restrictedPositions[i]) == false) continue;
+            return true;
+        }
+
+        return false;
+    }
+    
     private void Random_Spawn()
     {
         Main_Controller main = Main_Controller.instance;
         Location_Controller location = main.currentLocation;
 
         List<Vector2> spawnPositions = location.All_SpawnPositions();
+        List<Vector2> spawnedPositions = new();
 
         for (int i = 0; i < Spawn_Amount(); i++)
         {
@@ -77,17 +96,21 @@ public class PrefabSpawner : MonoBehaviour
             {
                 int randIndex = Random.Range(0, spawnPositions.Count);
                 Vector2 randPos = spawnPositions[randIndex];
-
+                
                 spawnPositions.RemoveAt(randIndex);
-
+                
                 if (main.Position_Claimed(randPos)) continue;
+                if (SpawnPosition_Restricted(spawnedPositions, randPos)) continue;
 
+                spawnedPositions.Add(randPos);
                 Spawn_Prefab(randPos);
+                
                 break;
             }
         }
     }
 
+    
     private void Assign_Spawn()
     {
         Location_Controller location = Main_Controller.instance.currentLocation;

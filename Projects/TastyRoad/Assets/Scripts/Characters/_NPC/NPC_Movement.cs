@@ -127,7 +127,7 @@ public class NPC_Movement : MonoBehaviour
         Main_Controller main = Main_Controller.instance;
         LocationData currentLocation = main.currentLocation.data;
 
-        Assign_TargetPosition(main.Random_AreaPoint(searchArea));
+        Assign_TargetPosition(Utility.Random_BoundPoint(searchArea.bounds));
     }
 
 

@@ -17,9 +17,12 @@ public class ItemDrop : MonoBehaviour
 
     [Space(20)] 
     [SerializeField] private bool _restrictAutoFade;
+
+    [Space(10)] 
+    [SerializeField] [Range(0, 100)] private int _destroyTime;
+    [SerializeField][Range(0, 100)] private int _fadeTime;
     
     [Space(10)] 
-    [SerializeField][Range(0, 100)] private float _fadeTime;
     [SerializeField] [Range(0, 1)] private float _fadeAlphaValue;
     
     
@@ -43,19 +46,28 @@ public class ItemDrop : MonoBehaviour
     }
     private IEnumerator FadeDestroy_Coroutine()
     {
-        float elapsed = 0f;
+        int timeCount = _destroyTime;
+        bool fadeActivated = false;
+        
         Color originalColor = _fadeSR.color;
 
-        while (elapsed < _fadeTime)
+        while (timeCount > 0)
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / _fadeTime;
+            timeCount--;
 
-            float alpha = Mathf.Lerp(1f, _fadeAlphaValue, t);
-            _fadeSR.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            if (fadeActivated || timeCount > _fadeTime)
+            {
+                yield return new WaitForSeconds(1f);
+                continue;
+            }
 
-            yield return null;
+            fadeActivated = true;
+            _fadeSR.color = new Color(originalColor.r, originalColor.g, originalColor.b, _fadeAlphaValue);
+            
+            yield return new WaitForSeconds(1f);
         }
+
         Destroy(gameObject);
+        yield break;
     }
 }

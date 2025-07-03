@@ -224,7 +224,7 @@ public class DialogSystem : MonoBehaviour
         {
             foreach (var dialog in _currentDialogs)
             {
-                main.Change_ImageAlpha(dialog.iconImage, 1f);
+                Utility.Change_ImageAlpha(dialog.iconImage, 1f);
             }
             return;
         }
@@ -233,11 +233,11 @@ public class DialogSystem : MonoBehaviour
         {
             if (i != _currentDialogNum)
             {
-                main.Change_ImageAlpha(_currentDialogs[i].iconImage, 0.5f);
+                Utility.Change_ImageAlpha(_currentDialogs[i].iconImage, 0.5f);
                 continue;
             }
 
-            main.Change_ImageAlpha(_currentDialogs[i].iconImage, 1f);
+            Utility.Change_ImageAlpha(_currentDialogs[i].iconImage, 1f);
         }
     }
 }

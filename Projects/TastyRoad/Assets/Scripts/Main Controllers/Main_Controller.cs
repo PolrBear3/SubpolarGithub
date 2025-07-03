@@ -83,109 +83,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Tools
-    /// <summary>
-    /// (-1, 0, 1) horizontal(left, right), vertical(top bottom), position x and y(local position)
-    /// </summary>
-    public Vector2 OuterCamera_Position(float horizontal, float vertical, float positionX, float positionY)
-    {
-        float horizontalPos = horizontal;
-        float verticalPos = vertical;
-
-        if (horizontalPos == 0) horizontalPos = 0.5f;
-        else if (horizontalPos == -1f) horizontalPos = 0f;
-
-        if (verticalPos == 0) verticalPos = 0.5f;
-        else if (verticalPos == -1f) verticalPos = 0f;
-
-        Vector2 cameraPosition = cameraController.mainCamera.ViewportToWorldPoint(new Vector2(horizontalPos, verticalPos));
-
-        return new Vector2(cameraPosition.x + positionX, cameraPosition.y + positionY);
-    }
-    /// <summary>
-    /// left is -1, right is 1
-    /// </summary>
-    public Vector2 OuterCamera_Position(int leftRight)
-    {
-        // left
-        if (leftRight <= 0) return OuterCamera_Position(-1, 0, -2, -3);
-
-        // right
-        else return OuterCamera_Position(1, 0, 2, -3);
-    }
-
-
-    /// <summary>
-    /// Changes inserted sprite to target transparency
-    /// </summary>
-    public void Change_SpriteAlpha(SpriteRenderer sr, float alpha)
-    {
-        Color color = sr.color;
-        color.a = alpha;
-        sr.color = color;
-    }
-
-    public void Change_ImageAlpha(Image image, float alpha)
-    {
-        Color color = image.color;
-        color.a = alpha;
-        image.color = color;
-    }
-
-
-    /// <returns>
-    /// True if inserted percentage amount is activated, False if not activated
-    /// </returns>
-    public bool Percentage_Activated(float percentage)
-    {
-        float comparePercentage = Mathf.Round(UnityEngine.Random.Range(0f, 100f)) * 1f;
-        return percentage >= comparePercentage;
-    }
-
-    public bool Percentage_Activated(float rangeValue, float percentage)
-    {
-        float comparePercentage = Mathf.Round(UnityEngine.Random.Range(0f, rangeValue)) * 1f;
-        return percentage >= comparePercentage;
-    }
-
-
-    /// <returns>
-    /// Mathf Round floats of inserted vector x and y value
-    /// </returns>
-    public Vector2 SnapPosition(Vector2 position)
-    {
-        float snapX = (float)Mathf.Round(position.x);
-        float snapY = (float)Mathf.Round(position.y);
-
-        return new Vector2(snapX, snapY);
-    }
-    public Vector2 SnapPosition(Vector2 position, Bounds bounds)
-    {
-        // Round the position to the nearest integer
-        int snapX = Mathf.RoundToInt(position.x);
-        int snapY = Mathf.RoundToInt(position.y);
-
-        // Clamp the snapped position within the integer bounds
-        snapX = Mathf.Clamp(snapX, Mathf.CeilToInt(bounds.min.x), Mathf.FloorToInt(bounds.max.x));
-        snapY = Mathf.Clamp(snapY, Mathf.CeilToInt(bounds.min.y), Mathf.FloorToInt(bounds.max.y));
-
-        return new Vector2(snapX, snapY);
-    }
-
-    /// <returns>
-    /// Random point inside the boundary of inserted sprite renderer
-    /// </returns>
-    public Vector2 Random_AreaPoint(SpriteRenderer area)
-    {
-        Vector2 centerPosition = area.bounds.center;
-
-        float randX = UnityEngine.Random.Range(centerPosition.x - area.bounds.extents.x, centerPosition.x + area.bounds.extents.x);
-        float randY = UnityEngine.Random.Range(centerPosition.y - area.bounds.extents.y, centerPosition.y + area.bounds.extents.y);
-
-        return new Vector2(randX, randY);
-    }
-
-
     // Position Control
     private List<Vector2> _claimedPositions = new();
     public List<Vector2> claimedPositions => _claimedPositions;
@@ -247,11 +144,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         return setLocation.GetComponent<Location_Controller>();
     }
-
-
-    // Current Sub Locations and Other Interactables
-
-
+    
 
     // Current Vechicle Control
     private Vehicle_Controller _currentVehicle;

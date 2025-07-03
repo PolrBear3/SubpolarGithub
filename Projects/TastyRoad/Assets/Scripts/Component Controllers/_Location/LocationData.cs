@@ -30,11 +30,6 @@ public class LocationData
 
     [SerializeField][ES3NonSerializable] private SpriteRenderer _roamArea;
     public SpriteRenderer roamArea => _roamArea;
-
-
-    [Space(20)] 
-    [SerializeField][ES3NonSerializable] private Sprite[] _impedimentSprites;
-    public Sprite[] impedimentSprites => _impedimentSprites;
     
     
     [Space(20)]

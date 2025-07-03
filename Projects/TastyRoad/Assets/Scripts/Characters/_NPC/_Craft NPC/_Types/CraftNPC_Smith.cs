@@ -158,7 +158,7 @@ public class CraftNPC_Smith : CraftNPC
         if (Table_SetAvailable() == false) return;
 
         Main_Controller main = Main_Controller.instance;
-        Vector2 dropPos = main.SnapPosition(transform.position);
+        Vector2 dropPos = Utility.SnapPosition(transform.position);
 
         if (main.Position_Claimed(dropPos)) return;
 

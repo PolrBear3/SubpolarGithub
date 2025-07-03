@@ -287,17 +287,17 @@ public class LocationMenu_Controller : MonoBehaviour
         {
             if (i == _tiles.Length / 2)
             {
-                _tiles[i].anim.Play("LocationTile_press");
+                _tiles[i].anim.Play("WorldTile_press");
                 continue;
             }
 
             if (i == _hoverTileNum)
             {
-                _tiles[i].anim.Play("LocationTile_hover");
+                _tiles[i].anim.Play("WorldTile_hover");
                 continue;
             }
 
-            _tiles[i].anim.Play("LocationTile_unpress");
+            _tiles[i].anim.Play("WorldTile_unpress");
         }
     }
 
@@ -315,48 +315,50 @@ public class LocationMenu_Controller : MonoBehaviour
 
     private void Update_PreviousTiles(Data_Controller data, WorldMap_Controller worldMap)
     {
-        int worldNum = worldMap.currentData.worldNum - 1;
-        int locationNum = data.LocationCount_inWorld(worldNum);
+        int previousWorldNum = worldMap.currentData.worldNum - 1;
+        int locationNum = data.LocationCount_inWorld(previousWorldNum);
+
+        if (previousWorldNum <= 0) return;
 
         for (int i = _tiles.Length / 2 - 1; i >= 0; i--)
         {
             if (!_tiles[i].locked) continue;
 
-            locationNum--;
-
-            if (locationNum < 0)
+            if (locationNum <= 0)
             {
-                worldNum--;
-                locationNum = data.LocationCount_inWorld(worldNum) - 1;
-
-                if (locationNum < 0) break;
+                previousWorldNum--;
+                if (previousWorldNum <= 0) return;
+                
+                locationNum = data.LocationCount_inWorld(previousWorldNum);
             }
 
             _tiles[i].Toggle_Lock(false);
-            _tiles[i].Set_WorldMapData(new(worldNum, locationNum));
-            _tiles[i].Set_AnimatorOverrider(data.World_Data(worldNum).tileAnimOverrider);
+            _tiles[i].Set_WorldMapData(new(previousWorldNum, locationNum));
+            _tiles[i].Set_AnimatorOverrider(data.World_Data(previousWorldNum).tileAnimOverrider);
+
+            locationNum--;
         }
     }
     private void Update_NextTiles(Data_Controller data, WorldMap_Controller worldMap)
     {
-        int worldNum = worldMap.currentData.worldNum + 1;
-        int locationNum = 0;
+        int nextWorldNum = worldMap.currentData.worldNum + 1;
+        int locationNum = 1;
 
         for (int i = _tiles.Length / 2 + 1; i < _tiles.Length; i++)
         {
             if (!_tiles[i].locked) continue;
 
-            if (locationNum >= data.LocationCount_inWorld(worldNum))
+            if (locationNum > data.LocationCount_inWorld(nextWorldNum))
             {
-                worldNum++;
-                locationNum = 0;
+                nextWorldNum++;
 
-                if (worldNum >= data.worldData.Length) break;
+                if (nextWorldNum >= data.worldData.Length) return;
+                locationNum = 1;
             }
 
             _tiles[i].Toggle_Lock(false);
-            _tiles[i].Set_WorldMapData(new(worldNum, locationNum));
-            _tiles[i].Set_AnimatorOverrider(data.World_Data(worldNum).tileAnimOverrider);
+            _tiles[i].Set_WorldMapData(new(nextWorldNum, locationNum));
+            _tiles[i].Set_AnimatorOverrider(data.World_Data(nextWorldNum).tileAnimOverrider);
 
             locationNum++;
         }

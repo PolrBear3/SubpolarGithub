@@ -83,11 +83,11 @@ public class ItemSlot : MonoBehaviour
         // transparency control
         if (_data.isLocked == true)
         {
-            main.Change_ImageAlpha(_iconImage, _transparentValue);
+            Utility.Change_ImageAlpha(_iconImage, _transparentValue);
         }
         else
         {
-            main.Change_ImageAlpha(_iconImage, 1f);
+            Utility.Change_ImageAlpha(_iconImage, 1f);
         }
     }
 

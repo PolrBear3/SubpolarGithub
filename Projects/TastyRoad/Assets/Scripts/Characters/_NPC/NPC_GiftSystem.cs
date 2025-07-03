@@ -170,7 +170,7 @@ public class NPC_GiftSystem : MonoBehaviour
         Main_Controller main = Main_Controller.instance;
 
         // check if current position is claimed
-        if (main.Position_Claimed(main.SnapPosition(transform.position))) return false;
+        if (main.Position_Claimed(Utility.SnapPosition(transform.position))) return false;
 
         FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
 
@@ -196,7 +196,7 @@ public class NPC_GiftSystem : MonoBehaviour
         audio.Play_OneShot(gameObject, 3);
 
         // check drop rate
-        if (Main_Controller.instance.Percentage_Activated(100f, _itemDropRate) == false) return;
+        if (Utility.Percentage_Activated(_itemDropRate) == false) return;
         
         // sound
         audio.Play_OneShot(gameObject, 4);

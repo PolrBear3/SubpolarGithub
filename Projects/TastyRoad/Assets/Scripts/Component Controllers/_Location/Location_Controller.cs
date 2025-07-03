@@ -65,7 +65,7 @@ public class Location_Controller : MonoBehaviour
     }
 
 
-    // Positions
+    // Position Utilities
     public List<Vector2> All_SpawnPositions()
     {
         Main_Controller main = Main_Controller.instance;
@@ -79,7 +79,7 @@ public class Location_Controller : MonoBehaviour
         {
             for (int y = (int)rangeY.x; y <= (int)rangeY.y; y++)
             {
-                Vector2 spawnPos = main.SnapPosition(new Vector2(x, y));
+                Vector2 spawnPos = Utility.SnapPosition(new Vector2(x, y));
                 spawnPositions.Add(spawnPos);
             }
         }
@@ -129,7 +129,7 @@ public class Location_Controller : MonoBehaviour
 
     public Vector2 Redirected_SnapPosition(Vector2 targetPosition)
     {
-        return Main_Controller.instance.SnapPosition(Redirected_Position(targetPosition));
+        return Utility.SnapPosition(Redirected_Position(targetPosition));
     }
 
 

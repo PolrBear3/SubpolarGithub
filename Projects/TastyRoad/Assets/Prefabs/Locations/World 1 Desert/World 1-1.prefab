@@ -78,7 +78,6 @@ MonoBehaviour:
     spawnIntervalTime: 2
     _screenArea: {fileID: 511933965664114992}
     _roamArea: {fileID: 620701033008239444}
-    _impedimentSprites: []
     populationData:
     - timePhase: 0
       maxPopulation: 10
@@ -589,7 +588,7 @@ GameObject:
   - component: {fileID: 2928902604118258200}
   - component: {fileID: 511933965664114992}
   m_Layer: 0
-  m_Name: Sky
+  m_Name: Screen Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1258,7 +1257,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnAmount
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnPrefab
@@ -1266,7 +1265,11 @@ PrefabInstance:
       objectReference: {fileID: 9220211023236177560, guid: 79bb113e0111e4cc0923ca363cdae8a4, type: 3}
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _minimumSpawnAmount
-      value: 6
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
+      propertyPath: _restrictSurroundingSpawn
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1428,7 +1431,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnAmount
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _spawnPrefab
@@ -1436,7 +1439,7 @@ PrefabInstance:
       objectReference: {fileID: 9220211023236177560, guid: 79bb113e0111e4cc0923ca363cdae8a4, type: 3}
     - target: {fileID: 5664077834325616251, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: _minimumSpawnAmount
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
       propertyPath: m_LocalPosition.x
