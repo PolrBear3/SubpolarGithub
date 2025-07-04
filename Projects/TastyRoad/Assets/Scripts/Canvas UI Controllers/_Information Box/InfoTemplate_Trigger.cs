@@ -47,10 +47,10 @@ public class InfoTemplate_Trigger : MonoBehaviour
     public string KeyControl_Template(string action1, string action2, string holdAction)
     {
         string action1Key = "<sprite=0> " + action1 + "\n";
-        string action2Key = "<sprite=2> " + action2 + "\n";
+        string action2Key = "<sprite=2> " + action2;
         
         _templates[1].Set_SmartInfo("hold", holdAction);
-        string holdKey = _templates[1].InfoString();
+        string holdKey = !string.IsNullOrEmpty(holdAction) ? "\n" + _templates[1].InfoString() : String.Empty;
 
         return action1Key + action2Key + holdKey;
     }

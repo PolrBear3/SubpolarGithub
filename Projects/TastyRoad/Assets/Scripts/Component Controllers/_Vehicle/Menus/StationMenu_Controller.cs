@@ -262,6 +262,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         string holdInfo = cursorData.isLocked == false
             ? infoTrigger.TemplateString(7) + "/" + infoTrigger.TemplateString(9)
             : infoTrigger.TemplateString(8);
+        if (TutorialQuest_Controller.instance.CurrentQuest("BuildStation") != null) holdInfo = String.Empty;
 
         string bluePrintInfo = cursorData.isLocked ? " ( " + _bluePrintTemplate.InfoString() + ")" : string.Empty;
         string currentStationInfo = "<sprite=70> " + cursorData.currentStation.LocalizedName() + bluePrintInfo +  "\n";
@@ -453,6 +454,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         if (cursor.data.isLocked == true)
         {
+            if (TutorialQuest_Controller.instance.CurrentQuest("BuildStation") != null) return;
+            
             cursor.Empty_Item();
             _controller.infoBox.gameObject.SetActive(false);
             return;
@@ -538,11 +541,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
-    private void Station_TargetDirection_Control(float inputDirection)
+    private void Station_TargetDirection_Control(Vector2 inputDirection)
     {
-        List<Station_Controller> retrieveStations = new(Retrieve_Stations());
+        int direction = inputDirection.x != 0 ? (int)Mathf.Sign(inputDirection.x) :
+            inputDirection.y != 0 ? (int)Mathf.Sign(inputDirection.y) : 0;
 
-        int directedNum = _targetNum + (int)inputDirection;
+        List<Station_Controller> retrieveStations = new(Retrieve_Stations());
+        
+        int directedNum = _targetNum + direction;
         _targetNum = (directedNum + retrieveStations.Count) % retrieveStations.Count;
 
         _interactStation.TransparentBlink_Toggle(false);
@@ -571,7 +577,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.data.hasItem = true;
 
         _interactionMode = true;
-        _controller.OnCursorControl_Input += Station_TargetDirection_Control;
+        _controller.OnCursor_DirectionInput += Station_TargetDirection_Control;
         _controller.OnOption1_Input += Retrieve_StationPrefab;
         _controller.OnExit_Input += Cancel_Retrieve;
 
@@ -616,7 +622,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // empty cursor
         cursor.Assign_Data(new());
 
-        _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
+        _controller.OnCursor_DirectionInput -= Station_TargetDirection_Control;
         _controller.OnOption1_Input -= Retrieve_StationPrefab;
         _controller.OnExit_Input -= Cancel_Retrieve;
 
@@ -638,7 +644,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _interactionMode = false;
 
-        _controller.OnCursorControl_Input -= Station_TargetDirection_Control;
+        _controller.OnCursor_DirectionInput -= Station_TargetDirection_Control;
         _controller.OnOption1_Input -= Retrieve_StationPrefab;
         _controller.OnExit_Input -= Cancel_Retrieve;
 

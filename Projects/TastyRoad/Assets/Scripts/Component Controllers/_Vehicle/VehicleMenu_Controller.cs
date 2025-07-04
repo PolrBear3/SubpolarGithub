@@ -74,7 +74,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     public Action OnCursor_Input;
     public Action OnCursor_OuterInput;
 
-    public Action<float> OnCursorControl_Input;
+    public Action<Vector2> OnCursor_DirectionInput;
     public Action<float> OnCursor_YInput;
 
     public Action OnSelect_Input;
@@ -177,9 +177,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     private void CursorControl(Vector2 inputDirection)
     {
         if (Input_Controller.instance.isHolding) return;
+        OnCursor_DirectionInput?.Invoke(inputDirection);
 
-        OnCursorControl_Input?.Invoke(inputDirection.x);
-        
         if (MenuInteraction_Active()) return;
         
         // sound
