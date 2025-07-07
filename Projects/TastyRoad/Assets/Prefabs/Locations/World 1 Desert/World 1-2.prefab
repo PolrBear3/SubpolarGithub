@@ -238,11 +238,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2336143983497007546}
   - {fileID: 7149495904403675265}
+  - {fileID: 2336143983497007546}
   - {fileID: 2323256870050394079}
   - {fileID: 7197741216739313249}
-  - {fileID: 3831390864677241536}
   m_Father: {fileID: 2074082356524549681}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1213107788564363204
@@ -1215,7 +1214,7 @@ PrefabInstance:
       objectReference: {fileID: 935265376, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     - target: {fileID: 8425791093612531182, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
       propertyPath: m_Name
-      value: Way Sign
+      value: Station Shop Way Sign
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1381,68 +1380,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7325306285980191583, guid: be9d6985163cf43c08dc99d4dfde92a7, type: 3}
   m_PrefabInstance: {fileID: 4785703973921712488}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &4893005987834961467
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7317049210538456528}
-    m_Modifications:
-    - target: {fileID: 7180495848804328051, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_Name
-      value: Mail Box
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
---- !u!4 &3831390864677241536 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8560400286164753659, guid: b09aa290f7b994d8c8cb2d97fc86b964, type: 3}
-  m_PrefabInstance: {fileID: 4893005987834961467}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5618623515843155128
 PrefabInstance:
@@ -1799,15 +1736,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2146786824580960504, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2146786824580960504, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2146786824580960504, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2146786824580960504, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1827,7 +1764,7 @@ PrefabInstance:
       objectReference: {fileID: -1401049284, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
     - target: {fileID: 8425791093612531182, guid: d5abcc75d85e946e7b2a9192e7df5400, type: 3}
       propertyPath: m_Name
-      value: Way Sign (1)
+      value: Grocery Way Sign
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

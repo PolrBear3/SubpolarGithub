@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class GasPump : MonoBehaviour, ISaveLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private IInteractable_Controller _interactable;
     [SerializeField] private Detection_Controller _detection;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Clock_Timer _fillClock;
     [SerializeField] private AmountBar _fillBar;
 
     [SerializeField] private GameObject _spawnReadyIcon;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Station_ScrObj _oilDrum;
-    [SerializeField] private GameObject _spawnPoint;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 1000)] private int _defaultPrice;
     [SerializeField][Range(0, 100)] private int _fillTime;
 
@@ -37,11 +36,6 @@ public class GasPump : MonoBehaviour, ISaveLoadable
     private void Start()
     {
         Load_PurchaseState();
-        Toggle_SpawnPoint();
-
-        // Subscriptions
-        _detection.EnterEvent += Toggle_SpawnPoint;
-        _detection.ExitEvent += Toggle_SpawnPoint;
 
         _interactable.OnInteract += Toggle_Price;
 
@@ -53,12 +47,7 @@ public class GasPump : MonoBehaviour, ISaveLoadable
 
     private void OnDestroy()
     {
-        Reset_OnFill();
-
         // Subscriptions
-        _detection.EnterEvent -= Toggle_SpawnPoint;
-        _detection.ExitEvent -= Toggle_SpawnPoint;
-
         _interactable.OnInteract -= Toggle_Price;
 
         _interactable.OnHoldInteract -= Purchase;
@@ -87,11 +76,6 @@ public class GasPump : MonoBehaviour, ISaveLoadable
         if (_fillBar.Is_MaxAmount()) return;
 
         GoldSystem.instance.Indicate_TriggerData(new(_oilDrum.dialogIcon, -_data.price));
-    }
-
-    private void Toggle_SpawnPoint()
-    {
-        _spawnPoint.SetActive(_detection.player != null);
     }
 
 
@@ -123,10 +107,28 @@ public class GasPump : MonoBehaviour, ISaveLoadable
         if (_fillBar.Is_MaxAmount() == false) return;
 
         Main_Controller main = Main_Controller.instance;
+        List<Vector2> spawnPositions = Utility.Surrounding_SnapPositions(transform.position);
 
-        if (main.Position_Claimed(_spawnPoint.transform.position)) return;
+        for (int i = spawnPositions.Count - 1; i >= 0; i--)
+        {
+            if (main.Position_Claimed(spawnPositions[i]))
+            {
+                spawnPositions.RemoveAt(i);
+                continue;
+            }
 
-        Station_Controller stationController = main.Spawn_Station(_oilDrum, _spawnPoint.transform.position);
+            if (main.currentLocation.Restricted_Position(spawnPositions[i]))
+            {
+                spawnPositions.RemoveAt(i);
+                continue;
+            }
+
+            break;
+        }
+        
+        if (spawnPositions.Count == 0) return;
+
+        Station_Controller stationController = main.Spawn_Station(_oilDrum, spawnPositions[^1]);
         stationController.movement.Load_Position();
 
         _data.Toggle_PurchaseState(false);
@@ -172,19 +174,5 @@ public class GasPump : MonoBehaviour, ISaveLoadable
 
         _coroutine = null;
         yield break;
-    }
-
-
-    private void Reset_OnFill()
-    {
-        Main_Controller main = Main_Controller.instance;
-
-        if (_coroutine == null) return;
-        if (main.Position_Claimed(_spawnPoint.transform.position) == false) return;
-
-        StopCoroutine(_coroutine);
-        _coroutine = null;
-
-        main.UnClaim_Position(_spawnPoint.transform.position);
     }
 }

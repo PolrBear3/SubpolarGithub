@@ -288,17 +288,20 @@ public class NPC_FoodInteraction : MonoBehaviour
         _controller.timer.Stop_Time();
         _controller.timer.Toggle_ClockColor(true);
 
-        _transferCoroutine = StartCoroutine(Transfer_FoodOrder_Coroutine());
+        _transferCoroutine = StartCoroutine(FoodTransfer_Coroutine());
 
         _transferData = new(transferData);
         _transferDatas.Add(new(transferData));
+
+        ArchiveMenu_Controller archive = Main_Controller.instance.currentVehicle.menu.archiveMenu;
+        archive.Update_FoodTransferCount(transferData.foodScrObj, 1);
         
         AbilityManager.IncreasePoint(1);
         TutorialQuest_Controller.instance.Complete_Quest("Serve" + transferData.foodScrObj.name, 1);
 
         return true;
     }
-    private IEnumerator Transfer_FoodOrder_Coroutine()
+    private IEnumerator FoodTransfer_Coroutine()
     {
         FoodData_Controller foodIcon = _controller.foodIcon;
 

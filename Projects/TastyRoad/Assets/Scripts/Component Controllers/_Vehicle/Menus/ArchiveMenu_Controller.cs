@@ -658,7 +658,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         tutorialQuest.Complete_Quest(targetQuest, MaxUnlock_IngredientCount() - questCount);
     }
 
+    public void Update_FoodTransferCount(Food_ScrObj food, int updateValue)
+    {
+        if (FoodIngredient_Unlocked(food) == false) return;
+        IngredientUnlocked_FoodData(food).Update_TikCount(updateValue);
+    }
 
+    
+    // Slot Item Indication Effects
     private void Update_MaterialShineSlot(ItemSlot targetSlot)
     {
         ItemSlot_Data data = targetSlot.data;
