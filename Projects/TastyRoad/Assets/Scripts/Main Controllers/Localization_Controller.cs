@@ -105,7 +105,7 @@ public class Localization_Controller : MonoBehaviour
 
         foreach (Locale locale in locales)
         {
-            if (locale.Identifier.CultureInfo.EnglishName.Equals(languageName, StringComparison.OrdinalIgnoreCase))
+            if (locale.Identifier.CultureInfo.NativeName.Equals(languageName, StringComparison.OrdinalIgnoreCase))
             {
                 LocalizationSettings.SelectedLocale = locale;
                 return;
