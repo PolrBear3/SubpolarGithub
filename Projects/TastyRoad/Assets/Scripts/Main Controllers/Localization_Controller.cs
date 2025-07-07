@@ -7,12 +7,21 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.Serialization;
 
+[System.Serializable]
+public struct LanguageName
+{
+    public string englishName;
+    public string setName;
+}
+
 public class Localization_Controller : MonoBehaviour
 {
     public static Localization_Controller instance;
     
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private string[] _tableReferences;
+
     
     private List<string> _languageNames = new();
     public List<string> languageNames => _languageNames;
@@ -80,14 +89,14 @@ public class Localization_Controller : MonoBehaviour
         
         foreach (Locale locale in locals)
         {
-            _languageNames.Add(locale.Identifier.CultureInfo.EnglishName);
+            _languageNames.Add(locale.Identifier.CultureInfo.NativeName);
         }
     }
     
     
     public string Current_LanguageName()
     {
-        return LocalizationSettings.SelectedLocale.Identifier.CultureInfo.EnglishName;
+        return LocalizationSettings.SelectedLocale.Identifier.CultureInfo.NativeName;
     }
 
     public void Update_Language(string languageName)
