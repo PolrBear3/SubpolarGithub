@@ -87,8 +87,10 @@ public class Stack_Table : Table
 
     public void Stack_Food()
     {
-        FoodData_Controller tableIcon = stationController.Food_Icon();
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
+        if (playerIcon.hasFood == false) return;
+        
+        FoodData_Controller tableIcon = stationController.Food_Icon();
 
         // stack player food
         tableIcon.Set_CurrentData(playerIcon.currentData);
