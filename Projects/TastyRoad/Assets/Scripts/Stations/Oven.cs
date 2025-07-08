@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 using FMODUnity;
 using System.Linq;
 
-public class Oven : Table, IInteractable
+public class Oven : Table
 {
     [Header("")]
     [SerializeField] private SpriteRenderer _heatEmission;
@@ -27,28 +27,37 @@ public class Oven : Table, IInteractable
     // UnityEngine
     private new void Start()
     {
-        base.Start();
-
         Heat_Food();
         Update_CurrentVisual();
+        
+        // subscription
+        stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
+        
+        IInteractable_Controller interactable = stationController.iInteractable;
+
+        interactable.OnInteract += Basic_SwapFood;
+        interactable.OnInteract += Heat_Food;
+        interactable.OnInteract += Update_CurrentVisual;
+        
+        interactable.OnHoldInteract += Transfer_CurrentFood;
+        interactable.OnHoldInteract += Heat_Food;
+        interactable.OnHoldInteract += Update_CurrentVisual;
     }
 
-
-    // IInteractable
-    public new void Interact()
+    private new void OnDestroy()
     {
-        Basic_SwapFood();
+        // subscription
+        stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
+        
+        IInteractable_Controller interactable = stationController.iInteractable;
 
-        Heat_Food();
-        Update_CurrentVisual();
-    }
-
-    public new void Hold_Interact()
-    {
-        base.Hold_Interact();
-
-        Heat_Food();
-        Update_CurrentVisual();
+        interactable.OnInteract -= Basic_SwapFood;
+        interactable.OnInteract -= Heat_Food;
+        interactable.OnInteract -= Update_CurrentVisual;
+        
+        interactable.OnHoldInteract -= Transfer_CurrentFood;
+        interactable.OnHoldInteract -= Heat_Food;
+        interactable.OnHoldInteract -= Update_CurrentVisual;
     }
 
 

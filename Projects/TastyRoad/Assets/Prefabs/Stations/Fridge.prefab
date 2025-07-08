@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3074170813001202522}
   - component: {fileID: -4096339114709284101}
   - component: {fileID: 3019193634138335640}
+  - component: {fileID: 6908636572030756148}
   - component: {fileID: -6508325263318014687}
   - component: {fileID: -5428001685738594384}
   - component: {fileID: 3520185296310609668}
@@ -225,6 +226,7 @@ MonoBehaviour:
         Data3: 243705496
         Data4: 1450492281
       Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
+  _fadeDuration: 0
 --- !u!114 &3019193634138335640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +240,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &6908636572030756148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7366090731837522239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInteract_Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &-6508325263318014687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +270,7 @@ MonoBehaviour:
   _stationAnimator: {fileID: 3074170813001202522}
   _animController: {fileID: 0}
   _interactable: {fileID: 0}
-  _iInteractable: {fileID: 0}
+  _iInteractable: {fileID: 6908636572030756148}
   _detection: {fileID: 3019193634138335640}
   _movement: {fileID: -5428001685738594384}
   _maintenance: {fileID: 3520185296310609668}
@@ -298,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f285d22b4c3d4bac8f0856970a32eeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mergeAbility: {fileID: 0}
   _delayTimeBar: {fileID: 7263404010187449094}
   _freezeDelayTime: 5
 --- !u!1 &9150957638827360907

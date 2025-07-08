@@ -39,6 +39,9 @@ public class Player_Interaction : MonoBehaviour
 
         input.OnInteract += Interact;
         input.OnHoldInteract += HoldInteract;
+        
+        input.OnAction1 += Action1;
+        input.OnAction2 += Action2;
 
         _controller.foodIcon.OnCurrentDataSet += IndicationTrigger_CurrentFood;
     }
@@ -56,6 +59,9 @@ public class Player_Interaction : MonoBehaviour
 
         input.OnInteract -= Interact;
         input.OnHoldInteract -= HoldInteract;
+        
+        input.OnAction1 -= Action1;
+        input.OnAction2 -= Action2;
         
         _controller.foodIcon.OnCurrentDataSet -= IndicationTrigger_CurrentFood;
     }
@@ -86,13 +92,14 @@ public class Player_Interaction : MonoBehaviour
     }
 
 
+    // IInteractable
     private void Interact()
     {
         if (enabled == false) return;
 
         IInteractable interactable = Closest_Interactable();
-
         if (interactable == null) return;
+        
         interactable.Interact();
     }
 
@@ -101,13 +108,29 @@ public class Player_Interaction : MonoBehaviour
         if (enabled == false) return;
 
         IInteractable interactable = Closest_Interactable();
-
         if (interactable == null)
         {
             Dispose_CurrentFood();
             return;
         }
+        
         interactable.Hold_Interact();
+    }
+
+    private void Action1()
+    {
+        IInteractable interactable = Closest_Interactable();
+        if (interactable == null) return;
+        
+        interactable.Action1();
+    }
+
+    private void Action2()
+    {
+        IInteractable interactable = Closest_Interactable();
+        if (interactable == null) return;
+        
+        interactable.Action2();
     }
 
 

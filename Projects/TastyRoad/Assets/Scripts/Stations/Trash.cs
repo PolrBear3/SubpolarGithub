@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Trash : Stack_Table, IInteractable
+public class Trash : Stack_Table
 {
     [Header("")]
     [SerializeField] private UnityEvent_Data[] _rewardDropActions;
@@ -13,15 +13,38 @@ public class Trash : Stack_Table, IInteractable
     // MonoBehaviour
     private new void Start()
     {
-        base.Start();
-
         stationController.Food_Icon().ShowIcon_LockToggle(true);
         AmountBar_Toggle();
+        
+        // subscriptions
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract += Interact;
+        
+        interactable.OnHoldInteract += PlayAnimation_TrashFood;
+        interactable.OnHoldInteract += Trash_AllFood;
+        interactable.OnHoldInteract += AmountBar_Toggle;
+        
+        stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
+    }
+
+    private new void OnDestroy()
+    {
+        // subscriptions
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract -= Interact;
+        
+        interactable.OnHoldInteract -= PlayAnimation_TrashFood;
+        interactable.OnHoldInteract -= Trash_AllFood;
+        interactable.OnHoldInteract -= AmountBar_Toggle;
+        
+        stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
     }
 
 
-    // IInteractable
-    public new void Interact()
+    // IInteractable_Controller
+    private void Interact()
     {
         PlayAnimation_TrashFood();
 
@@ -29,14 +52,6 @@ public class Trash : Stack_Table, IInteractable
         {
             Trash_Food();
         }
-
-        AmountBar_Toggle();
-    }
-
-    public new void Hold_Interact()
-    {
-        PlayAnimation_TrashFood();
-        Trash_AllFood();
 
         AmountBar_Toggle();
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Table : MonoBehaviour, IInteractable
+public class Table : MonoBehaviour
 {
     [Space(20)]
     private Station_Controller _stationController;
@@ -23,6 +23,12 @@ public class Table : MonoBehaviour, IInteractable
     {
         _stationController.detection.ExitEvent += UnInteract;
         _stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
+
+        IInteractable_Controller interactable = _stationController.iInteractable;
+
+        interactable.OnInteract += Interact;
+        interactable.OnUnInteract += UnInteract;
+        interactable.OnHoldInteract += Transfer_CurrentFood;
     }
 
     public void OnDestroy()
@@ -30,6 +36,12 @@ public class Table : MonoBehaviour, IInteractable
         _stationController.detection.ExitEvent -= UnInteract;
         _stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
 
+        IInteractable_Controller interactable = _stationController.iInteractable;
+
+        interactable.OnInteract -= Interact;
+        interactable.OnUnInteract -= UnInteract;
+        interactable.OnHoldInteract -= Transfer_CurrentFood;
+        
         Input_Controller input = Input_Controller.instance;
 
         input.OnAction1 -= Basic_SwapFood;
@@ -37,8 +49,8 @@ public class Table : MonoBehaviour, IInteractable
     }
 
 
-    // IInteractable
-    public void Interact()
+    // IInteractable_Controller
+    private void Interact()
     {
         if (MergedFood() == null)
         {
@@ -70,12 +82,7 @@ public class Table : MonoBehaviour, IInteractable
         input.OnAction2 += Merge_Food;
     }
 
-    public void Hold_Interact()
-    {
-        Transfer_CurrentFood();
-    }
-
-    public void UnInteract()
+    private void UnInteract()
     {
         if (_stationController.movement.enabled) return;
 

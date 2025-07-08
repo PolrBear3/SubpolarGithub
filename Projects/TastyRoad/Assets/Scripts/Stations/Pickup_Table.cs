@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickup_Table : Stack_Table, IInteractable
+public class Pickup_Table : Stack_Table
 {
     [Space(20)] 
     [SerializeField] private Sprite[] _sprites;
@@ -30,6 +30,14 @@ public class Pickup_Table : Stack_Table, IInteractable
         main.OnFoodBookmark += Update_Sprite;
         
         stationController.maintenance.OnDurabilityBreak += Update_TargetNPC;
+
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract += Update_Sprite;
+        interactable.OnInteract += Take_FoodOrder;
+        
+        interactable.OnHoldInteract += Update_Sprite;
+        interactable.OnHoldInteract += Take_FoodOrder;
     }
 
     private new void OnDestroy()
@@ -43,24 +51,14 @@ public class Pickup_Table : Stack_Table, IInteractable
         main.OnFoodBookmark -= Update_Sprite;
 
         stationController.maintenance.OnDurabilityBreak -= Update_TargetNPC;
-    }
-
-
-    // IInteractable
-    public new void Interact()
-    {
-        base.Interact();
-
-        Update_Sprite();
-        Take_FoodOrder();
-    }
-
-    public new void Hold_Interact()
-    {
-        base.Hold_Interact();
         
-        Update_Sprite();
-        Take_FoodOrder();
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract -= Update_Sprite;
+        interactable.OnInteract -= Take_FoodOrder;
+        
+        interactable.OnHoldInteract -= Update_Sprite;
+        interactable.OnHoldInteract -= Take_FoodOrder;
     }
 
     

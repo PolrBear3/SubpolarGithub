@@ -8,6 +8,9 @@ public interface IInteractable
     void Interact();
     void Hold_Interact();
 
+    void Action1();
+    void Action2();
+
     void UnInteract();
 }
 

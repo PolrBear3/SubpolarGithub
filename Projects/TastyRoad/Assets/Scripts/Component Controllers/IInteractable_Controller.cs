@@ -11,6 +11,10 @@ public class IInteractable_Controller : MonoBehaviour, IInteractable
     
     public Action OnInteract;
     public Action OnHoldInteract;
+
+    public Action OnAction1;
+    public Action OnAction2;
+    
     public Action OnUnInteract;
     
     private bool _interactLocked;
@@ -24,12 +28,26 @@ public class IInteractable_Controller : MonoBehaviour, IInteractable
         OnInteract?.Invoke();
         OnInteract_Event?.Invoke();
     }
-
+    
     public void Hold_Interact()
     {
         if (_interactLocked) return;
 
         OnHoldInteract?.Invoke();
+    }
+
+    public void Action1()
+    {
+        if (_interactLocked) return;
+        
+        OnAction1?.Invoke();
+    }
+
+    public void Action2()
+    {
+        if (_interactLocked) return;
+        
+        OnAction2?.Invoke();
     }
 
     public void UnInteract()

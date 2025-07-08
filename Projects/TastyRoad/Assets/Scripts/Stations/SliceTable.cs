@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SliceTable : Table, IInteractable
+public class SliceTable : Table
 {
     [Header("")]
     [SerializeField] private Rhythm_HitBox _rhythmHitBox;
@@ -13,47 +13,43 @@ public class SliceTable : Table, IInteractable
     // UnityEngine
     private new void Start()
     {
-        base.Start();
-
         Audio_Controller.instance.Create_EventInstance(gameObject, 3);
         Toggle_SliceAction();
 
         // subscriptions
+        _rhythmHitBox.OnHitSuccess += Slice;
+        
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent += Toggle_SliceAction;
         detection.ExitEvent += Toggle_SliceAction;
+
+        IInteractable_Controller interactable = stationController.iInteractable;
         
-        _rhythmHitBox.OnHitSuccess += Slice;
+        interactable.OnInteract += Basic_SwapFood;
+        interactable.OnInteract += Toggle_SliceAction;
+        
+        interactable.OnHoldInteract += Transfer_CurrentFood;
+        interactable.OnHoldInteract += Toggle_SliceAction;
     }
 
     private new void OnDestroy()
     {
-        base.OnDestroy();
-
         // subscriptions
+        _rhythmHitBox.OnHitSuccess -= Slice;
+        
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent -= Toggle_SliceAction;
         detection.ExitEvent -= Toggle_SliceAction;
-
-        _rhythmHitBox.OnHitSuccess -= Slice;
-    }
-
-
-    // IInteractable
-    public new void Interact()
-    {
-        Basic_SwapFood();
-
-        Toggle_SliceAction();
-    }
-
-    public new void Hold_Interact()
-    {
-        base.Hold_Interact();
-
-        Toggle_SliceAction();
+        
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract -= Basic_SwapFood;
+        interactable.OnInteract -= Toggle_SliceAction;
+        
+        interactable.OnHoldInteract -= Transfer_CurrentFood;
+        interactable.OnHoldInteract -= Toggle_SliceAction;
     }
 
 

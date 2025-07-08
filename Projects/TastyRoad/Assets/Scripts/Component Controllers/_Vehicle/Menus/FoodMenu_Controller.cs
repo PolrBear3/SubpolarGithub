@@ -783,10 +783,10 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         for (int i = foodDatas.Count - 1; i >= 0; i--)
         {
             Food_ScrObj dataFood = foodDatas[i].foodScrObj;
+            
             if (AddAvailable_Amount(dataFood) <= 0) continue;
-
             if (foodDatas[i].Has_Condition(FoodCondition_Type.heated)) continue;
-
+            
             if (!SlicedFood_Retrievable(foodDatas, foodDatas[i]))
             {
                 foodDatas.RemoveAt(i);

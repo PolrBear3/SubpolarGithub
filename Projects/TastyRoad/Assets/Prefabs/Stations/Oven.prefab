@@ -298,6 +298,7 @@ GameObject:
   - component: {fileID: 620783135722199293}
   - component: {fileID: 6477832995663536682}
   - component: {fileID: 8298693645448894692}
+  - component: {fileID: 5898851606294935607}
   - component: {fileID: 7155682911388194378}
   - component: {fileID: -5017999228258243358}
   - component: {fileID: -7032971272813982881}
@@ -501,6 +502,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &5898851606294935607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4573784915183013672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInteract_Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7155682911388194378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,7 +574,7 @@ MonoBehaviour:
   _stationAnimator: {fileID: 6477832995663536682}
   _animController: {fileID: 0}
   _interactable: {fileID: 0}
-  _iInteractable: {fileID: 0}
+  _iInteractable: {fileID: 5898851606294935607}
   _detection: {fileID: 8298693645448894692}
   _movement: {fileID: -7032971272813982881}
   _maintenance: {fileID: 4184550447876101353}

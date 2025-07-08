@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 5908351277094408431}
   - component: {fileID: 105776843876959450}
   - component: {fileID: 2009275281452978819}
+  - component: {fileID: 7843631224595775515}
   - component: {fileID: 1634544206406302433}
   - component: {fileID: 7504132898305469517}
   - component: {fileID: -7660575948742224011}
@@ -288,6 +289,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _detectedprefabs: []
+--- !u!114 &7843631224595775515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8403737644267042646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInteract_Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1634544206406302433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +345,7 @@ MonoBehaviour:
         Data3: -1518920025
         Data4: 746053890
       Path: event:/Station SFX/SliceTable_slice
+  _fadeDuration: 0
 --- !u!114 &7504132898305469517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,7 +361,7 @@ MonoBehaviour:
   _stationAnimator: {fileID: 105776843876959450}
   _animController: {fileID: 0}
   _interactable: {fileID: 0}
-  _iInteractable: {fileID: 0}
+  _iInteractable: {fileID: 7843631224595775515}
   _detection: {fileID: 2009275281452978819}
   _movement: {fileID: -7660575948742224011}
   _maintenance: {fileID: 4752872632587438941}
@@ -389,6 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f07c58c9915204ddd9cfbcea4ae0a14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mergeAbility: {fileID: 0}
   _rhythmHitBox: {fileID: 4722882592323120035}
 --- !u!1001 &15326743857311862
 PrefabInstance:

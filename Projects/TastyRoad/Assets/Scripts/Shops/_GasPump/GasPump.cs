@@ -125,11 +125,19 @@ public class GasPump : MonoBehaviour, ISaveLoadable
 
             break;
         }
-        
-        if (spawnPositions.Count == 0) return;
 
-        Station_Controller stationController = main.Spawn_Station(_oilDrum, spawnPositions[^1]);
-        stationController.movement.Load_Position();
+        // add to station menu on no spawn positions available
+        if (spawnPositions.Count == 0)
+        {
+            StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
+            if (stationMenu.Add_StationItem(_oilDrum, 1) == null) return;
+        }
+        // spawn on position
+        else
+        {
+            Station_Controller stationController = main.Spawn_Station(_oilDrum, spawnPositions[^1]);
+            stationController.movement.Load_Position();
+        }
 
         _data.Toggle_PurchaseState(false);
         

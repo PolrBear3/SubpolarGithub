@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 3672566732274342706}
   - component: {fileID: 1010970402213928676}
   - component: {fileID: 2050151741136552749}
-  - component: {fileID: 8381733351552418898}
   - component: {fileID: 3551917571397297857}
+  - component: {fileID: 7745934739472571426}
+  - component: {fileID: 8381733351552418898}
   - component: {fileID: -87010650432210433}
   - component: {fileID: 3609195736537386832}
   - component: {fileID: 3928886942652671882}
@@ -191,6 +192,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3551917571397297857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5231110676368674916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectedprefabs: []
+--- !u!114 &7745934739472571426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5231110676368674916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInteract_Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8381733351552418898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,19 +255,6 @@ MonoBehaviour:
         Data4: 1450492281
       Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
   _fadeDuration: 0
---- !u!114 &3551917571397297857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5231110676368674916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectedprefabs: []
 --- !u!114 &-87010650432210433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +270,7 @@ MonoBehaviour:
   _stationAnimator: {fileID: 2050151741136552749}
   _animController: {fileID: 0}
   _interactable: {fileID: 0}
-  _iInteractable: {fileID: 0}
+  _iInteractable: {fileID: 7745934739472571426}
   _detection: {fileID: 3551917571397297857}
   _movement: {fileID: 3609195736537386832}
   _maintenance: {fileID: 3928886942652671882}

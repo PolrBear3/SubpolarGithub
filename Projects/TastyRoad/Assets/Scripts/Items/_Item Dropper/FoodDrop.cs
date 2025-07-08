@@ -22,6 +22,9 @@ public class FoodDrop : ItemDrop
         interactable.OnInteract += Pickup;
         interactable.OnHoldInteract += Pickup_All;
 
+        interactable.OnAction1 += Pickup;
+        interactable.OnAction2 += Pickup;
+
         detection.EnterEvent += AmountBar_Toggle;
         detection.ExitEvent += AmountBar_Toggle;
     }
@@ -33,6 +36,9 @@ public class FoodDrop : ItemDrop
         // subscriptions
         interactable.OnInteract -= Pickup;
         interactable.OnHoldInteract -= Pickup_All;
+        
+        interactable.OnAction1 -= Pickup;
+        interactable.OnAction2 -= Pickup;
         
         detection.EnterEvent -= AmountBar_Toggle;
         detection.ExitEvent -= AmountBar_Toggle;

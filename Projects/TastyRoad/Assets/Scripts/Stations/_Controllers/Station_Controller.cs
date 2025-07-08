@@ -10,7 +10,7 @@ public class Station_Controller : MonoBehaviour
     public SpriteRenderer spriteRenderer => _spriteRenderer;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Animator _stationAnimator;
     public Animator stationAnmiator => _stationAnimator;
 
@@ -18,7 +18,7 @@ public class Station_Controller : MonoBehaviour
     public BasicAnimation_Controller animController => _animController;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private ActionBubble_Interactable _interactable;
     public ActionBubble_Interactable interactable => _interactable;
 
@@ -29,7 +29,7 @@ public class Station_Controller : MonoBehaviour
     public Detection_Controller detection => _detection;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Station_Movement _movement;
     public Station_Movement movement => _movement;
 
@@ -40,7 +40,7 @@ public class Station_Controller : MonoBehaviour
     public Station_ScrObj stationScrObj => _stationScrObj;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private ItemDropper _itemDropper;
     public ItemDropper itemDropper => _itemDropper;
 

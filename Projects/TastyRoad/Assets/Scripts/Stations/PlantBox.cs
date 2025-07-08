@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlantBox : Stack_Table, IInteractable
+public class PlantBox : Stack_Table
 {
     [Header("")]
     [SerializeField] private Food_ScrObj[] _plantableFoods;
@@ -47,7 +47,7 @@ public class PlantBox : Stack_Table, IInteractable
 
 
     // IInteractable
-    public new void Interact()
+    private void Interact()
     {
         Plant();
         Harvest();
@@ -55,13 +55,13 @@ public class PlantBox : Stack_Table, IInteractable
         Update_Sprite();
     }
 
-    public new void Hold_Interact()
+    private void Hold_Interact()
     {
         if (_growthInProgress) return;
         if (stationController.Food_Icon().hasFood == false) return;
 
         // Harvest All
-        Transfer_All();
+        // Transfer_All();
 
         Update_Sprite();
         Update_AmountBar();

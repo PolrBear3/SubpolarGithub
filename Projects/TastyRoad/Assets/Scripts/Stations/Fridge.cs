@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Fridge : Stack_Table, IInteractable
+public class Fridge : Stack_Table
 {
-    [FormerlySerializedAs("_delfayTimeBar")]
-    [Header("")] 
+    [Space(20)] 
     [SerializeField] private AmountBar _delayTimeBar;
     [SerializeField][Range(0, 100)] private float _freezeDelayTime;
 
@@ -24,6 +23,11 @@ public class Fridge : Stack_Table, IInteractable
         
         detection.EnterEvent += () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
         detection.ExitEvent += () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
+
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract += Freeze_Food;
+        interactable.OnHoldInteract += Freeze_Food;
     }
 
     public new void OnDestroy()
@@ -35,26 +39,15 @@ public class Fridge : Stack_Table, IInteractable
         
         detection.EnterEvent -= () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
         detection.ExitEvent -= () => _delayTimeBar.Toggle(DelayBar_ToggleAvailable());
-    }
-    
-
-    // IInteractable
-    public new void Interact()
-    {
-        base.Interact();
-
-        Freeze_Food();
-    }
-
-    public new void Hold_Interact()
-    {
-        base.Hold_Interact();
-
-        Freeze_Food();
+        
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract -= Freeze_Food;
+        interactable.OnHoldInteract -= Freeze_Food;
     }
 
 
-    //
+    // Main
     private bool DelayBar_ToggleAvailable()
     {
         return _coroutine != null && stationController.detection.player == null;

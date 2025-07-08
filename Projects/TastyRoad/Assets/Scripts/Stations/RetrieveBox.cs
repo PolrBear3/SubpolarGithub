@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RetrieveBox : Stack_Table, IInteractable
+public class RetrieveBox : Stack_Table
 {
     [SerializeField] private Sprite _boxOpen;
     [SerializeField] private Sprite _boxClosed;
@@ -36,20 +36,20 @@ public class RetrieveBox : Stack_Table, IInteractable
 
 
     // IInteractable
-    public new void Interact()
+    private void Interact()
     {
         Perform_FoodInteraction();
         Sprite_Update();
     }
 
-    public new void Hold_Interact()
+    private void Hold_Interact()
     {
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
 
         bool hasCondition = playerIcon.hasFood && playerIcon.currentData.conditionDatas.Count > 0;
         if (hasCondition) return;
 
-        base.Hold_Interact();
+        // base.Hold_Interact();
         Sprite_Update();
     }
 

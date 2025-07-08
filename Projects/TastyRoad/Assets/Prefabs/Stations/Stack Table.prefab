@@ -97,11 +97,12 @@ GameObject:
   - component: {fileID: 1348396588127702286}
   - component: {fileID: 7840295720369087224}
   - component: {fileID: 2573375324766377340}
+  - component: {fileID: 8412270414187220779}
+  - component: {fileID: 8852439738283544405}
   - component: {fileID: 3825626118709617338}
   - component: {fileID: 6720296030224709635}
   - component: {fileID: 1839000738827018954}
   - component: {fileID: 1191293295187301583}
-  - component: {fileID: 8412270414187220779}
   - component: {fileID: 4992449557237522461}
   m_Layer: 0
   m_Name: Stack Table
@@ -274,6 +275,34 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8412270414187220779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6396736850199884155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _detectedprefabs: []
+--- !u!114 &8852439738283544405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6396736850199884155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c8a9bac7b0a48cca0545de7177861c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnInteract_Event:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3825626118709617338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,6 +337,7 @@ MonoBehaviour:
         Data3: 243705496
         Data4: 1450492281
       Path: event:/Basic SFX/Food Interaction/FoodInteract_merge1
+  _fadeDuration: 0
 --- !u!114 &6720296030224709635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +353,7 @@ MonoBehaviour:
   _stationAnimator: {fileID: 2573375324766377340}
   _animController: {fileID: 0}
   _interactable: {fileID: 0}
-  _iInteractable: {fileID: 0}
+  _iInteractable: {fileID: 8852439738283544405}
   _detection: {fileID: 8412270414187220779}
   _movement: {fileID: 1839000738827018954}
   _maintenance: {fileID: 1191293295187301583}
@@ -356,19 +386,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: 6720296030224709635}
   _durabilityBreakIcon: {fileID: 3596704344626413313}
---- !u!114 &8412270414187220779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6396736850199884155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab611f6d2756d4216885fe068d9ef5de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectedprefabs: []
 --- !u!114 &4992449557237522461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479eb4cf660ef402b8de45b16d1a452a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mergeAbility: {fileID: 0}
 --- !u!1001 &1841694555715027484
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodBox : MonoBehaviour, IInteractable
+public class FoodBox : MonoBehaviour
 {
     private Station_Controller _controller;
 
@@ -18,6 +18,20 @@ public class FoodBox : MonoBehaviour, IInteractable
         // subscriptions
         _controller.detection.EnterEvent += Toggle_AmountBar;
         _controller.detection.ExitEvent += Toggle_AmountBar;
+
+        IInteractable_Controller interactable = _controller.iInteractable;
+
+        interactable.OnInteract += Transfer_Food;
+        interactable.OnInteract += Empty_Destroy;
+        
+        interactable.OnAction1 += Transfer_Food;
+        interactable.OnAction1 += Empty_Destroy;
+        
+        interactable.OnAction2 += Transfer_Food;
+        interactable.OnAction2 += Empty_Destroy;
+
+        interactable.OnHoldInteract += Transfer_Food;
+        interactable.OnHoldInteract += Empty_Destroy;
     }
 
     private void OnDestroy()
@@ -25,25 +39,20 @@ public class FoodBox : MonoBehaviour, IInteractable
         // subscriptions
         _controller.detection.EnterEvent -= Toggle_AmountBar;
         _controller.detection.ExitEvent -= Toggle_AmountBar;
-    }
+        
+        IInteractable_Controller interactable = _controller.iInteractable;
 
+        interactable.OnInteract -= Transfer_Food;
+        interactable.OnInteract -= Empty_Destroy;
 
-    // IInteractable
-    public void Interact()
-    {
-        Transfer_Food();
-        Empty_Destroy();
-    }
+        interactable.OnAction1 -= Transfer_Food;
+        interactable.OnAction1 -= Empty_Destroy;
+        
+        interactable.OnAction2 -= Transfer_Food;
+        interactable.OnAction2 -= Empty_Destroy;
 
-    public void Hold_Interact()
-    {
-        Transfer_All();
-        Empty_Destroy();
-    }
-
-    public void UnInteract()
-    {
-
+        interactable.OnHoldInteract -= Transfer_Food;
+        interactable.OnHoldInteract -= Empty_Destroy;
     }
 
 

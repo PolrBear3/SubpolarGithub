@@ -2,34 +2,54 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Stack_Table : Table, IInteractable
+public class Stack_Table : Table
 {
     // MonoBehaviour
     public new void Start()
     {
-        base.Start();
-
         // subscriptions
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent += AmountBar_Toggle;
         detection.ExitEvent += AmountBar_Toggle;
+        
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract += Interact;
+        interactable.OnHoldInteract += Transfer_All;
+        
+        interactable.OnAction1 += Stack_Food;
+        interactable.OnAction2 += Pickup_Food;
+        
+        interactable.OnHoldInteract += AmountBar_Toggle;
+
+        stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
     }
 
     public new void OnDestroy()
     {
-        base.OnDestroy();
-
         // subscriptions
         Detection_Controller detection = stationController.detection;
 
         detection.EnterEvent -= AmountBar_Toggle;
         detection.ExitEvent -= AmountBar_Toggle;
+        
+        IInteractable_Controller interactable = stationController.iInteractable;
+        
+        interactable.OnInteract -= Interact;
+        interactable.OnHoldInteract -= Transfer_All;
+        
+        interactable.OnAction1 -= Stack_Food;
+        interactable.OnAction2 -= Pickup_Food;
+        
+        interactable.OnHoldInteract -= AmountBar_Toggle;
+
+        stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
     }
 
 
-    // IInteractable
-    public new void Interact()
+    // IInteractable_Controller
+    private void Interact()
     {
         FoodData_Controller tableIcon = stationController.Food_Icon();
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
@@ -43,12 +63,6 @@ public class Stack_Table : Table, IInteractable
         }
 
         Stack_Food();
-    }
-
-    public new void Hold_Interact()
-    {
-        Transfer_CurrentFood();
-        AmountBar_Toggle();
     }
 
 
@@ -99,7 +113,30 @@ public class Stack_Table : Table, IInteractable
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 
+    public void Pickup_Food()
+    {
+        FoodData_Controller stationIcon = stationController.Food_Icon();
+        if (stationIcon.hasFood == false) return;
+        
+        FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
+        if (playerIcon.DataCount_Maxed()) return;
+        
+        playerIcon.Set_CurrentData(stationIcon.currentData);
+        stationIcon.Set_CurrentData(null);
+        
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
 
+        stationIcon.Show_Icon();
+        stationIcon.Show_Condition();
+        stationIcon.Toggle_SubDataBar(true);
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+    }
+
+    
     public void Transfer_All()
     {
         FoodData_Controller stationIcon = stationController.Food_Icon();
