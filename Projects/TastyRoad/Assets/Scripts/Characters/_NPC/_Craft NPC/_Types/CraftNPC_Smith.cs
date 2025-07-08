@@ -1,7 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class CraftNPC_Smith : CraftNPC
@@ -15,7 +14,7 @@ public class CraftNPC_Smith : CraftNPC
 
     [Space(20)]
     [SerializeField] private ItemDropper _itemDropper;
-    [SerializeField] private Station_ScrObj[] _modifyStations;
+    [SerializeField] private Station_ScrObj[] _defaultStations;
     
     
     private ActionSelector _setTable;
@@ -34,9 +33,10 @@ public class CraftNPC_Smith : CraftNPC
         Subscribe_OnSave(Save_Data);
 
         // subscriptions
-        globaltime.instance.OnTimeTik += MoveTo_SetPosition;
-
         ActionBubble_Interactable interactable = npcController.interactable;
+
+        globaltime.instance.OnTimeTik += MoveTo_SetPosition;
+        interactable.OnHoldInteract += MoveTo_SetPosition;
 
         interactable.OnInteract += Toggle_PurchasePrice;
         interactable.OnInteract += Update_ActionBubble;
@@ -51,9 +51,10 @@ public class CraftNPC_Smith : CraftNPC
         Collect_Table();
         
         // subscriptions
-        globaltime.instance.OnTimeTik -= MoveTo_SetPosition;
-
         ActionBubble_Interactable interactable = npcController.interactable;
+        
+        globaltime.instance.OnTimeTik -= MoveTo_SetPosition;
+        interactable.OnHoldInteract -= MoveTo_SetPosition;
 
         interactable.OnInteract -= Toggle_PurchasePrice;
         interactable.OnInteract -= Update_ActionBubble;
@@ -162,7 +163,7 @@ public class CraftNPC_Smith : CraftNPC
 
         if (main.Position_Claimed(dropPos)) return;
 
-        GameObject drop = Instantiate(_smithTable, dropPos, quaternion.identity);
+        GameObject drop = Instantiate(_smithTable, dropPos, Quaternion.identity);
         drop.transform.SetParent(main.otherFile);
 
         _setTable = drop.GetComponent<ActionSelector>();
@@ -234,6 +235,25 @@ public class CraftNPC_Smith : CraftNPC
         return allStations;
     }
 
+    private Station_ScrObj Random_LinkedStation(Station_ScrObj exchangeStation)
+    {
+        int randIndex = UnityEngine.Random.Range(0, exchangeStation.linkedStationDatas.Length);
+        
+        if (exchangeStation.linkedStationDatas.Length > 0)
+        {
+            return exchangeStation.linkedStationDatas[randIndex].stationScrObj;
+        }
+        
+        if (_defaultStations.Length == 0)
+        {
+            Debug.Log(gameObject.name + " _defaultStation list empty !");
+            return null;
+        }
+        
+        randIndex = UnityEngine.Random.Range(0, _defaultStations.Length);
+        return _defaultStations[randIndex];
+    }
+
 
     public void Increase_StationDurability()
     {
@@ -292,23 +312,23 @@ public class CraftNPC_Smith : CraftNPC
             return;
         }
 
-        // destroy random modify station
         int randIndex = UnityEngine.Random.Range(0, surroundingStations.Count);
 
-        Station_Controller modifyStation = surroundingStations[randIndex];
-        StationData stationData = new(modifyStation.data);
+        Station_Controller exchangeStation = surroundingStations[randIndex];
+        StationData stationData = new(exchangeStation.data);
 
-        modifyStation.Destroy_Station();
+        Station_ScrObj updateStation = Random_LinkedStation(exchangeStation.stationScrObj);
+        if (updateStation == null) return;
+        
+        // destroy exchange station
+        exchangeStation.Destroy_Station();
         Main_Controller.instance.UnClaim_Position(stationData.position);
 
         // drop
-        int newRandIndex = UnityEngine.Random.Range(0, _modifyStations.Length);
-        Station_ScrObj newStationScrObj = _modifyStations[newRandIndex];
-
         GameObject spawnCollectCard = _itemDropper.SnapPosition_Spawn(_itemDropper.collectCard, stationData.position);
         CollectCard collectCard = spawnCollectCard.GetComponent<CollectCard>();
         
-        collectCard.Set_Blueprint(newStationScrObj);
+        collectCard.Set_Blueprint(updateStation);
         collectCard.Assign_Pickup(collectCard.StationBluePrint_toArchive);
 
         Set_PurchaseData(new(defaultPrice));

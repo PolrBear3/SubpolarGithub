@@ -36,12 +36,16 @@ public class CraftNPC_Mechanic : CraftNPC
 
         // subscriptions
         Main_Controller.instance.currentVehicle.menu.On_MenuToggle += Update_RecentMenuNum;
+        
+        globaltime globaltime = globaltime.instance;
 
-        globaltime.instance.OnTimeTik += Set_ToolBox;
-        globaltime.instance.OnTimeTik += Collect_ToolBox;
+        globaltime.OnTimeTik += Set_ToolBox;
+        globaltime.OnTimeTik += Collect_ToolBox;
 
         ActionBubble_Interactable interactable = npcController.interactable;
 
+        interactable.OnHoldInteract += Set_ToolBox;
+        
         interactable.OnInteract += Toggle_ActionBubble;
         interactable.OnInteract += Toggle_PurchasePrice;
 
@@ -56,11 +60,15 @@ public class CraftNPC_Mechanic : CraftNPC
 
         // subscriptions
         Main_Controller.instance.currentVehicle.menu.On_MenuToggle += Update_RecentMenuNum;
+        
+        globaltime globaltime = globaltime.instance;
 
-        globaltime.instance.OnTimeTik -= Set_ToolBox;
-        globaltime.instance.OnTimeTik -= Collect_ToolBox;
+        globaltime.OnTimeTik -= Set_ToolBox;
+        globaltime.OnTimeTik -= Collect_ToolBox;
 
         ActionBubble_Interactable interactable = npcController.interactable;
+
+        interactable.OnHoldInteract -= Set_ToolBox;
 
         interactable.OnInteract -= Toggle_ActionBubble;
         interactable.OnInteract -= Toggle_PurchasePrice;

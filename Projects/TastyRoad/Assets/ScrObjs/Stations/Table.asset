@@ -12,12 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4dba61780b644199b6fe691ad5c5ce8, type: 3}
   m_Name: Table
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5231110676368674916, guid: 1db0e29d504eb442fa76834cf11c32ef, type: 3}
-  usageGuide: {fileID: 11400000, guid: 3a4504abbbfa047bb9363a94072f2d15, type: 2}
-  sprite: {fileID: 1634097058, guid: efc963dc4f222479caa64033825131e4, type: 3}
-  miniSprite: {fileID: 234615065, guid: efc963dc4f222479caa64033825131e4, type: 3}
-  dialogIcon: {fileID: -26572875, guid: efc963dc4f222479caa64033825131e4, type: 3}
-  centerPosition: {x: -3, y: 0}
   stationName: Table
   _localizedString:
     m_TableReference:
@@ -29,9 +23,19 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   id: 44567
+  prefab: {fileID: 5231110676368674916, guid: 1db0e29d504eb442fa76834cf11c32ef, type: 3}
+  usageGuide: {fileID: 11400000, guid: 3a4504abbbfa047bb9363a94072f2d15, type: 2}
+  sprite: {fileID: 1634097058, guid: efc963dc4f222479caa64033825131e4, type: 3}
+  miniSprite: {fileID: 234615065, guid: efc963dc4f222479caa64033825131e4, type: 3}
+  dialogIcon: {fileID: -26572875, guid: efc963dc4f222479caa64033825131e4, type: 3}
   price: 10
   buildToArchiveCount: 1
   durability: 18
+  _linkedStationDatas:
+  - _stationScrObj: {fileID: 11400000, guid: 8623fed056b3b4feea071950d35bac10, type: 2}
+    _position: {x: 0, y: 0}
+    _durability: 0
+    _amount: 0
   references:
     version: 2
     RefIds: []
