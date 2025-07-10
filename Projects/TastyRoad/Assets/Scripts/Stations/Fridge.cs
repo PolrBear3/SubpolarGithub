@@ -28,6 +28,9 @@ public class Fridge : Stack_Table
         
         interactable.OnInteract += Freeze_Food;
         interactable.OnHoldInteract += Freeze_Food;
+        
+        interactable.OnAction1 += Freeze_Food;
+        interactable.OnAction2 += Cancel_FreezeCoroutine;
     }
 
     public new void OnDestroy()
@@ -44,6 +47,9 @@ public class Fridge : Stack_Table
         
         interactable.OnInteract -= Freeze_Food;
         interactable.OnHoldInteract -= Freeze_Food;
+        
+        interactable.OnAction1 -= Freeze_Food;
+        interactable.OnAction2 -= Cancel_FreezeCoroutine;
     }
 
 
@@ -52,7 +58,6 @@ public class Fridge : Stack_Table
     {
         return _coroutine != null && stationController.detection.player == null;
     }
-    
     
     private bool AllFood_Frozen()
     {
@@ -64,6 +69,19 @@ public class Fridge : Stack_Table
             if (datas[i].Current_ConditionLevel(FoodCondition_Type.frozen) < 3) return false;
         }
         return true;
+    }
+
+
+    private void Cancel_FreezeCoroutine()
+    {
+        if (stationController.Food_Icon().hasFood && !AllFood_Frozen()) return;
+        
+        _delayTimeBar.Toggle(false);
+        
+        if (_coroutine == null) return;
+        
+        StopCoroutine(_coroutine);
+        _coroutine = null;
     }
     
     private void Freeze_Food()
@@ -86,9 +104,9 @@ public class Fridge : Stack_Table
         // restrict rotten system
         foodIcon.Toggle_TikCount(false);
 
-        _coroutine = StartCoroutine(Freeze_Food_Coroutine());
+        _coroutine = StartCoroutine(Freeze_Coroutine());
     }
-    private IEnumerator Freeze_Food_Coroutine()
+    private IEnumerator Freeze_Coroutine()
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
