@@ -21,6 +21,9 @@ public class NPC_GiftSystem : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _itemDropRate;
     [SerializeField] private ActionSelector_Data[] _giftActionDatas;
 
+    [Space(40)] 
+    [SerializeField] private VideoGuide_Trigger _videoGuide;
+
 
     public Action<bool> OnDurationToggle;
     private Coroutine _coroutine;
@@ -39,6 +42,8 @@ public class NPC_GiftSystem : MonoBehaviour
         _controller.interactable.OnHoldInteract += Gift;
 
         globaltime.instance.OnTimeTik += Update_CoolTime;
+
+        _controller.interactable.OnInteract += _videoGuide.Trigger_CurrentGuide;
     }
 
     private void OnDestroy()
@@ -48,6 +53,8 @@ public class NPC_GiftSystem : MonoBehaviour
         _controller.interactable.OnHoldInteract -= Gift;
 
         globaltime.instance.OnTimeTik -= Update_CoolTime;
+        
+        _controller.interactable.OnInteract -= _videoGuide.Trigger_CurrentGuide;
     }
 
 
