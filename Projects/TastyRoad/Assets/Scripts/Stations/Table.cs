@@ -5,12 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Table : MonoBehaviour
 {
-    [Space(20)]
     private Station_Controller _stationController;
     public Station_Controller stationController => _stationController;
-    
-    [Space(20)]
-    [SerializeField] private Ability_ScrObj _mergeAbility;
+
+    [SerializeField] private Ability_ScrObj _foodPrinterAbility;
 
 
     // UnityEngine
@@ -28,7 +26,9 @@ public class Table : MonoBehaviour
 
         interactable.OnInteract += Interact;
         interactable.OnUnInteract += UnInteract;
-        interactable.OnHoldInteract += Transfer_CurrentFood;
+
+        interactable.OnAction1 += Action_SwapFood;
+        interactable.OnAction2 += Action_SwapFood;
     }
 
     public void OnDestroy()
@@ -40,11 +40,13 @@ public class Table : MonoBehaviour
 
         interactable.OnInteract -= Interact;
         interactable.OnUnInteract -= UnInteract;
-        interactable.OnHoldInteract -= Transfer_CurrentFood;
+
+        interactable.OnAction1 -= Action_SwapFood;
+        interactable.OnAction2 -= Action_SwapFood;
         
         Input_Controller input = Input_Controller.instance;
 
-        input.OnAction1 -= Basic_SwapFood;
+        input.OnAction1 -= SwapFood;
         input.OnAction2 -= Merge_Food;
     }
 
@@ -54,7 +56,7 @@ public class Table : MonoBehaviour
     {
         if (MergedFood() == null)
         {
-            Basic_SwapFood();
+            SwapFood();
             return;
         }
 
@@ -78,7 +80,7 @@ public class Table : MonoBehaviour
 
         Input_Controller input = Input_Controller.instance;
 
-        input.OnAction1 += Basic_SwapFood;
+        input.OnAction1 += SwapFood;
         input.OnAction2 += Merge_Food;
     }
 
@@ -92,13 +94,13 @@ public class Table : MonoBehaviour
 
         Input_Controller input = Input_Controller.instance;
 
-        input.OnAction1 -= Basic_SwapFood;
+        input.OnAction1 -= SwapFood;
         input.OnAction2 -= Merge_Food;
     }
 
 
     // Functions
-    public void Basic_SwapFood()
+    public void SwapFood()
     {
         FoodData_Controller playerFoodIcon = Main_Controller.instance.Player().foodIcon;
 
@@ -123,6 +125,13 @@ public class Table : MonoBehaviour
         UnInteract();
     }
 
+    public void Action_SwapFood()
+    {
+        if (_stationController.ActionBubble().bubbleOn) return;
+
+        SwapFood();
+    }
+    
 
     private Food_ScrObj MergedFood()
     {
@@ -139,14 +148,25 @@ public class Table : MonoBehaviour
     {
         Food_ScrObj mergedFood = MergedFood();
 
-        FoodData_Controller playerFoodIcon = Main_Controller.instance.Player().foodIcon;
+        Player_Controller player = Main_Controller.instance.Player();
+        FoodData_Controller playerFoodIcon = player.foodIcon;
         FoodData_Controller stationFoodIcon = stationController.Food_Icon();
 
         bool bothHaveFood = playerFoodIcon.hasFood && stationFoodIcon.hasFood;
 
         // player food assign
         playerFoodIcon.Set_CurrentData(null);
+        
+        // duplicate Ability
+        int duplicateAmount = player.abilityManager.data.AbilityData(_foodPrinterAbility).activationCount;
 
+        for (int i = 0; i < duplicateAmount; i++)
+        {
+            if (playerFoodIcon.DataCount_Maxed()) break;
+            playerFoodIcon.Set_CurrentData(new(mergedFood));
+        }
+
+        // player food icon update
         playerFoodIcon.Show_Icon();
         playerFoodIcon.Toggle_SubDataBar(true);
         playerFoodIcon.Show_Condition();
@@ -183,37 +203,8 @@ public class Table : MonoBehaviour
         maintenance.Update_Durability(-1);
         maintenance.Update_DurabilityBreak();
     }
-
-
-    public void Transfer_CurrentFood()
-    {
-        FoodData_Controller tableIcon = _stationController.Food_Icon();
-        FoodData_Controller playerIcon = Main_Controller.instance.Player().foodIcon;
-
-        // check if table empty or player full amount
-        if (tableIcon.hasFood == false || playerIcon.DataCount_Maxed())
-        {
-            Basic_SwapFood();
-            return;
-        }
-
-        // player
-        playerIcon.Set_CurrentData(tableIcon.currentData);
-
-        playerIcon.Show_Icon();
-        playerIcon.Show_Condition();
-        playerIcon.Toggle_SubDataBar(true);
-
-        // table
-        tableIcon.Set_CurrentData(null);
-
-        tableIcon.Show_Icon();
-        tableIcon.Show_Condition();
-
-        // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
-    }
-
+    
+    
     public void Drop_CurrentFood()
     {
         FoodData_Controller foodIcon = _stationController.Food_Icon();

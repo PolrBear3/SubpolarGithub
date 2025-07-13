@@ -184,8 +184,8 @@ public class AbilityManager : MonoBehaviour, ISaveLoadable
         if (behaviour == null) return;
                 
         activatedAbility.Update_ActivationCount(1);
-  
-        IAbility abilityInterface = behaviour.gameObject.GetComponent<IAbility>();
+
+        if (!behaviour.gameObject.TryGetComponent(out IAbility abilityInterface)) return;
         abilityInterface.Activate();
     }
 }

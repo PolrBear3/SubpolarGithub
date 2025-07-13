@@ -18,10 +18,12 @@ public class Ability_Behaviour : MonoBehaviour
 
     
     // Data
-    [Header("")]
+    [Space(20)]
     [SerializeField] private AbilityManager _manager;
     public AbilityManager manager => _manager;
 
     [SerializeField] private Ability_ScrObj _abilityScrObj;
     public Ability_ScrObj abilityScrObj => _abilityScrObj;
+    
+    [SerializeField] [Range(0, 100)] private int _maxCoolTime;
 }

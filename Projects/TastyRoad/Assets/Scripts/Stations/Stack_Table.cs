@@ -79,7 +79,7 @@ public class Stack_Table : Table
     public void Swap_Food()
     {
         // swap
-        Basic_SwapFood();
+        SwapFood();
 
         FoodData_Controller tableIcon = stationController.Food_Icon();
         tableIcon.Toggle_SubDataBar(true);

@@ -26,10 +26,10 @@ public class SliceTable : Table
 
         IInteractable_Controller interactable = stationController.iInteractable;
         
-        interactable.OnInteract += Basic_SwapFood;
+        interactable.OnInteract += SwapFood;
         interactable.OnInteract += Toggle_SliceAction;
         
-        interactable.OnHoldInteract += Transfer_CurrentFood;
+        interactable.OnHoldInteract += SwapFood;
         interactable.OnHoldInteract += Toggle_SliceAction;
     }
 
@@ -45,10 +45,10 @@ public class SliceTable : Table
         
         IInteractable_Controller interactable = stationController.iInteractable;
         
-        interactable.OnInteract -= Basic_SwapFood;
+        interactable.OnInteract -= SwapFood;
         interactable.OnInteract -= Toggle_SliceAction;
         
-        interactable.OnHoldInteract -= Transfer_CurrentFood;
+        interactable.OnHoldInteract -= SwapFood;
         interactable.OnHoldInteract -= Toggle_SliceAction;
     }
 

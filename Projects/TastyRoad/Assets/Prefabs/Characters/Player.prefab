@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _manager: {fileID: 9176286486368829597}
   _abilityScrObj: {fileID: 11400000, guid: 87d60c67253004abda55375e9d9b2b06, type: 2}
+  _maxCoolTime: 0
   _increaseStep: 0.2
 --- !u!1 &4879237002746571725
 GameObject:
@@ -81,6 +82,7 @@ Transform:
   - {fileID: 5057337575154072477}
   - {fileID: 8296711461185803545}
   - {fileID: 4070299431896671505}
+  - {fileID: 8845648850118418400}
   m_Father: {fileID: 6130762936683660599}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9176286486368829597
@@ -108,8 +110,56 @@ MonoBehaviour:
   - {fileID: 3575797394090838233}
   - {fileID: 1961197218414903567}
   - {fileID: 5110501974089967490}
+  - {fileID: 2451786365181475436}
   _maxAbilityPoint: 12
   editorAbility: {fileID: 11400000, guid: 6b8665cb2120548de98c6b7de1feeb2c, type: 2}
+--- !u!1 &5215818207762090817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8845648850118418400}
+  - component: {fileID: 2451786365181475436}
+  m_Layer: 0
+  m_Name: Food Duplicate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8845648850118418400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5215818207762090817}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6766563164769141658}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2451786365181475436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5215818207762090817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86272acd100d54eb3bcfb2405a58d4c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _manager: {fileID: 9176286486368829597}
+  _abilityScrObj: {fileID: 11400000, guid: 0a1accdec8304463bb71de8d086a45da, type: 2}
+  _maxCoolTime: 0
 --- !u!1 &6723353288808524999
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,6 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _manager: {fileID: 9176286486368829597}
   _abilityScrObj: {fileID: 11400000, guid: 0aad30092f3da4efba467954273f82ab, type: 2}
+  _maxCoolTime: 0
 --- !u!1 &6894812432335870425
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,6 +565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _manager: {fileID: 9176286486368829597}
   _abilityScrObj: {fileID: 11400000, guid: 37a479d5e37b541ccb57f06531486458, type: 2}
+  _maxCoolTime: 0
   _multiplyIncreaseAmount: 0.5
 --- !u!1 &8426581385630118480
 GameObject:
@@ -561,6 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _manager: {fileID: 9176286486368829597}
   _abilityScrObj: {fileID: 11400000, guid: 6b8665cb2120548de98c6b7de1feeb2c, type: 2}
+  _maxCoolTime: 0
   _increaseValue: 1
 --- !u!1001 &2354461093863969094
 PrefabInstance:

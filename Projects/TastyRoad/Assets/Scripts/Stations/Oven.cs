@@ -35,11 +35,20 @@ public class Oven : Table
         
         IInteractable_Controller interactable = stationController.iInteractable;
 
-        interactable.OnInteract += Basic_SwapFood;
+        interactable.OnInteract += SwapFood;
+        interactable.OnAction1 += SwapFood;
+        interactable.OnAction2 += SwapFood;
+        
         interactable.OnInteract += Heat_Food;
         interactable.OnInteract += Update_CurrentVisual;
         
-        interactable.OnHoldInteract += Transfer_CurrentFood;
+        interactable.OnAction1 += Heat_Food;
+        interactable.OnAction1 += Update_CurrentVisual;
+        
+        interactable.OnAction2 += Heat_Food;
+        interactable.OnAction2 += Update_CurrentVisual;
+
+        interactable.OnHoldInteract += SwapFood;
         interactable.OnHoldInteract += Heat_Food;
         interactable.OnHoldInteract += Update_CurrentVisual;
     }
@@ -51,11 +60,20 @@ public class Oven : Table
         
         IInteractable_Controller interactable = stationController.iInteractable;
 
-        interactable.OnInteract -= Basic_SwapFood;
+        interactable.OnInteract -= SwapFood;
+        interactable.OnAction1 -= SwapFood;
+        interactable.OnAction2 -= SwapFood;
+        
         interactable.OnInteract -= Heat_Food;
         interactable.OnInteract -= Update_CurrentVisual;
         
-        interactable.OnHoldInteract -= Transfer_CurrentFood;
+        interactable.OnAction1 -= Heat_Food;
+        interactable.OnAction1 -= Update_CurrentVisual;
+        
+        interactable.OnAction2 -= Heat_Food;
+        interactable.OnAction2 -= Update_CurrentVisual;
+        
+        interactable.OnHoldInteract -= SwapFood;
         interactable.OnHoldInteract -= Heat_Food;
         interactable.OnHoldInteract -= Update_CurrentVisual;
     }
