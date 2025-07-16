@@ -5,12 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Action_Bubble : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _toggle;
     [SerializeField] private GameObject _leftBubble;
     [SerializeField] private GameObject _rightBubble;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private SpriteRenderer _leftIcon;
     public SpriteRenderer leftIcon => _leftIcon;
 
@@ -20,13 +20,15 @@ public class Action_Bubble : MonoBehaviour
     private bool _bubbleOn;
     public bool bubbleOn => _bubbleOn;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private float _toggleHeight;
     private float _defaultHeight;
 
-    [Header("")]
     [SerializeField] private Sprite[] _setSprites;
     public Sprite[] setSprites => _setSprites;
+    
+    [Space(20)] 
+    [SerializeField] private UI_EffectController _effectController;
 
 
     // MonoBehaviour
@@ -47,6 +49,8 @@ public class Action_Bubble : MonoBehaviour
         if (toggleOn)
         {
             Update_Bubble(_leftIcon.sprite, _rightIcon.sprite);
+            _effectController.Update_Scale(gameObject);
+            
             return;
         }
 

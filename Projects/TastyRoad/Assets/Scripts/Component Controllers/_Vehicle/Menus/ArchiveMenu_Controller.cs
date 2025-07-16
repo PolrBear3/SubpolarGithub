@@ -20,9 +20,14 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Space(20)]
     [SerializeField] private GameObject _foodOrderIndicator;
     [SerializeField] private Clock_Timer _foodOrderTimer;
-    
-    [Space(20)]
+
+    [Space(20)] 
+    [SerializeField] private Sprite _maxUnlockIcon;
     [SerializeField][Range(0, 500)] private int _maxUnlockAmount;
+
+    [Space(20)] 
+    [SerializeField] private Sprite _maxTransferIcon;
+    [SerializeField][Range(0, 500)] private int _maxTransferAmount;
     
     [Space(80)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
@@ -54,9 +59,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
         _controller.Update_PageArrows();
 
-        Update_CurrentDatas();
-
         // subscriptions
+        _controller.On_MenuToggle += Update_CurrentDatas;
         _controller.On_MenuToggle += Update_MaterialShineSlots;
 
         _controller.OnCursor_OuterInput += Clamp_CursorPosition;
@@ -88,6 +92,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
         // subscriptions
+        _controller.On_MenuToggle -= Update_CurrentDatas;
         _controller.On_MenuToggle -= Update_MaterialShineSlots;
 
         _controller.OnCursor_OuterInput -= Clamp_CursorPosition;
@@ -238,11 +243,12 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             ingredientStatus = infoTrigger.TemplateString(4);
         }
 
-        string dragInfo = "<sprite=69> " + dragFood.LocalizedName() + "\n";
-        string unlockCount = "<sprite=88> " + FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n\n";
+        string dragInfo = "<sprite=69> " + dragFood.LocalizedName() + "\n\n";
+        string unlockCount = "<sprite=88> " + FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n";
+        string transferCount = "<sprite=106> " + IngredientUnlocked_FoodData(dragFood).tikCount + "/" + _maxTransferAmount + "\n\n";
         string controlInfo = infoTrigger.KeyControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
 
-        info.Update_InfoText(dragInfo + unlockCount + lockStatus + controlInfo);
+        info.Update_InfoText(dragInfo + unlockCount + transferCount + lockStatus + controlInfo);
     }
 
 
@@ -504,24 +510,21 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         }
     }
 
-    private void Update_CurrentDatas()
+    private void Update_CurrentDatas(bool menuToggle)
     {
+        if (!menuToggle) return;
+        
         for (int i = 0; i < _currentDatas.Count; i++)
         {
             for (int j = 0; j < _currentDatas[i].Count; j++)
             {
                 if (!_currentDatas[i][j].hasItem) continue;
+                
                 Food_ScrObj dataFood = _currentDatas[i][j].foodData.foodScrObj;
-
                 RemoveDuplicate_ArchivedFood(dataFood);
-
-                /*
-                if (!FoodIngredient_Unlocked(dataFood)) continue;
-                Unlock_FoodIngredient(dataFood, 0);
-                */
             }
         }
-
+        
         _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
     }
 
@@ -639,7 +642,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             _ingredientUnlocks.Add(new(food, unlockAmount));
             _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
 
-            Update_CurrentDatas();
+            Update_CurrentDatas(true);
             return;
         }
 
@@ -661,6 +664,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public void Update_FoodTransferCount(Food_ScrObj food, int updateValue)
     {
         if (FoodIngredient_Unlocked(food) == false) return;
+        FoodData targetData = IngredientUnlocked_FoodData(food);
+
+        if (targetData.tikCount >= _maxTransferAmount) return;
         IngredientUnlocked_FoodData(food).Update_TikCount(updateValue);
     }
 

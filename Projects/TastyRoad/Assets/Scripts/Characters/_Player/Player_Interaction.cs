@@ -11,6 +11,8 @@ public class Player_Interaction : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _holdTime;
     [SerializeField] private GameObject _disposeFoodPrefab;
 
+
+    private int _interactableIndex;
     
     private float _defaultTimerXPos;
     private Coroutine _timerCoroutine;
@@ -82,13 +84,21 @@ public class Player_Interaction : MonoBehaviour
     private IInteractable Closest_Interactable()
     {
         Detection_Controller detection = _controller.detection;
+        List<IInteractable> currentInteractables = detection.All_Interactables();
 
-        if (detection.Closest_Interactable() == null) return null;
-        if (!detection.Closest_Interactable().TryGetComponent(out IInteractable interactable)) return null;
+        if (currentInteractables.Count == 0)
+        {
+            _interactableIndex = 0;
+            return null;
+        }
 
-        Refresh_DetectedInteractables(interactable);
+        if (_interactableIndex >= currentInteractables.Count) _interactableIndex = 0;
+        
+        IInteractable closestInteractable = currentInteractables[_interactableIndex];
+        _interactableIndex ++;
 
-        return interactable;
+        Refresh_DetectedInteractables(closestInteractable);
+        return closestInteractable;
     }
 
 

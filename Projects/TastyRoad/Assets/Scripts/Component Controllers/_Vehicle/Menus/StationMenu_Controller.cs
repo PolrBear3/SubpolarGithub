@@ -474,7 +474,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _controller.OnOption1_Input += movement.Set_Position;
         _controller.OnOption1_Input += Place_StationPrefab;
         _controller.OnExit_Input += Cancel_Export;
-
+        
         Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
     }
 
@@ -502,6 +502,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         _controller.OnOption1_Input -= Place_StationPrefab;
         _controller.OnExit_Input -= Cancel_Export;
+        
+        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
     }
 
     private void Cancel_Export()

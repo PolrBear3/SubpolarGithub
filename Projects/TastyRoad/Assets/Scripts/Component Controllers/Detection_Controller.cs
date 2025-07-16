@@ -76,19 +76,33 @@ public class Detection_Controller : MonoBehaviour
         return closestObject;
     }
 
-    /// <returns>All Detected prefabs that have IInteractable</returns>
+    /// <returns>All Detected prefabs that have IInteractable, distance sorted</returns>
     public List<IInteractable> All_Interactables()
     {
-        List<IInteractable> returnList = new();
+        List<(IInteractable interactable, float distance)> tempList = new();
 
         for (int i = 0; i < _detectedprefabs.Count; i++)
         {
             if (_detectedprefabs[i].TryGetComponent(out IInteractable interactable) == false) continue;
-            returnList.Add(interactable);
+
+            float distance = Vector2.Distance(transform.position, _detectedprefabs[i].transform.position);
+            tempList.Add((interactable, distance));
+        }
+
+        // Sort from closest to farthest
+        tempList.Sort((a, b) => a.distance.CompareTo(b.distance));
+
+        // Extract just the sorted interactables
+        List<IInteractable> returnList = new();
+        foreach (var pair in tempList)
+        {
+            if (returnList.Contains(pair.interactable)) continue;
+            returnList.Add(pair.interactable);
         }
 
         return returnList;
     }
+
 
     /// <returns>Closest Detected Object that has IInteractable</returns>
     public GameObject Closest_Interactable()

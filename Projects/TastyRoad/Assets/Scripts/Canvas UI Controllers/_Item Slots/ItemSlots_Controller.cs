@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ItemSlots_Controller : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private ItemSlot_Cursor _cursor;
     public ItemSlot_Cursor cursor => _cursor;
 
     [SerializeField] private List<ItemSlot> _itemSlots = new();
     public List<ItemSlot> itemSlots => _itemSlots;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 1000)] private int _singleSlotCapacity;
     public int singleSlotCapacity => _singleSlotCapacity;
 

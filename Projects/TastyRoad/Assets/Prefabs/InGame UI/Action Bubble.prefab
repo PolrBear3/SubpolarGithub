@@ -213,6 +213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7398666411424898518}
   - component: {fileID: 5611561378352079672}
+  - component: {fileID: 2576255300157444395}
   m_Layer: 0
   m_Name: Action Bubble
   m_TagString: Untagged
@@ -255,6 +256,22 @@ MonoBehaviour:
   _rightIcon: {fileID: 186648045154746888}
   _toggleHeight: 0
   _setSprites: []
+  _effectController: {fileID: 2576255300157444395}
+--- !u!114 &2576255300157444395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4034252938134837271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fff8a1a50fc84cdaa9789869a7b038a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tweenType: 30
+  _initialScale: {x: 0, y: 0}
+  _durationTime: 0.25
 --- !u!1 &8145603810519875947
 GameObject:
   m_ObjectHideFlags: 0

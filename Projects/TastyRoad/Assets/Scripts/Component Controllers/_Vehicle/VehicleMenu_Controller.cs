@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
 public interface IVehicleMenu
 {
@@ -210,7 +209,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         FlipUpdate_InfoBox(prevSlotNum);
     }
 
-    private void Select()
+    public void Select()
     {
         OnSelect_Input?.Invoke();
 
@@ -222,7 +221,7 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
         _infoBox.Update_RectLayout();
     }
 
-    private void HoldSelect()
+    public void HoldSelect()
     {
         OnHoldSelect_Input?.Invoke();
     }
@@ -308,6 +307,25 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
 
         VehicleMenu_Toggle(false);
         Main_Controller.instance.Player().Toggle_Controllers(true);
+    }
+    
+    
+    // MenuButton_Controller
+    public void CursorHover(int slotNum)
+    {
+        if (MenuInteraction_Active()) return;
+        
+        int prevSlotNum = (int)_slotsController.cursor.currentSlot.gridNum.x;
+        
+        ItemSlot_Cursor cursor = _slotsController.cursor;
+        cursor.Navigate_toSlot(_slotsController.itemSlots[slotNum]);
+
+        Update_PageArrows();
+
+        OnCursor_Input?.Invoke();
+        FlipUpdate_InfoBox(prevSlotNum);
+
+        Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
 

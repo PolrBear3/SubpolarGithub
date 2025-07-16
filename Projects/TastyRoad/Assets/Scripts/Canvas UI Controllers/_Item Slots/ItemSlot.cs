@@ -4,43 +4,40 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using Unity.VisualScripting;
 
 public class ItemSlot : MonoBehaviour
 {
     private RectTransform _rectTransform;
     public RectTransform rectTransform => _rectTransform;
+    
+    
+    [Space(20)]
+    [SerializeField] private Image _iconImage;
+    [SerializeField] private Image _bookmarkIcon;
+
+    [SerializeField] private TextMeshProUGUI _amountText;
+    
+    [Space(20)]
+    [SerializeField] private RectTransform _cursorPoint;
+    public RectTransform cursorPoint => _cursorPoint;
+    
+    [Space(20)]
+    [SerializeField] private GameObject _bookmarkUnlockedIcon;
+    [SerializeField] private GameObject _ingredientUnlockedIcon;
+
+    [SerializeField][Range(0, 1)] private float _transparentValue;
+    
+    [Space(20)]
+    [SerializeField][Range(0, 10)] private float _shineSpeed;
+    [SerializeField][Range(0, 10)] private float _materialLoopTime;
+
 
     private ItemSlot_Data _data;
     public ItemSlot_Data data => _data;
 
     private Vector2 _gridNum;
     public Vector2 gridNum => _gridNum;
-
-
-    [Header("")]
-    [SerializeField] private Image _iconImage;
-    [SerializeField] private Image _bookmarkIcon;
-
-    [SerializeField] private TextMeshProUGUI _amountText;
-
-
-    [Header("")]
-    [SerializeField] private RectTransform _cursorPoint;
-    public RectTransform cursorPoint => _cursorPoint;
-
-
-    [Header("")]
-    [SerializeField] private GameObject _bookmarkUnlockedIcon;
-    [SerializeField] private GameObject _ingredientUnlockedIcon;
-
-    [SerializeField][Range(0, 1)] private float _transparentValue;
-
-
-    [Header("")]
-    [SerializeField][Range(0, 10)] private float _shineSpeed;
-    [SerializeField][Range(0, 10)] private float _materialLoopTime;
-
+    
     private Coroutine _materialCoroutine;
 
 

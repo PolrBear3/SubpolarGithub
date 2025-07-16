@@ -169,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 1390078884071688794}
   - component: {fileID: 5111179811996979666}
   - component: {fileID: 528457431310643277}
+  - component: {fileID: 6530671310180934952}
   m_Layer: 5
   m_Name: Item Slot
   m_TagString: Untagged
@@ -256,6 +257,32 @@ MonoBehaviour:
   _transparentValue: 0.5
   _shineSpeed: 0.5
   _materialLoopTime: 0.25
+  _microIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &6530671310180934952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6789293106057947993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d5e75e4ca304454893dc7062f26e7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  On_PointerEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  On_PointerExit:
+    m_PersistentCalls:
+      m_Calls: []
+  On_PointerClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7115451399013295189
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,7 +492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a9e043f66a8944ee4b855d453775a20b, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -576,7 +603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
