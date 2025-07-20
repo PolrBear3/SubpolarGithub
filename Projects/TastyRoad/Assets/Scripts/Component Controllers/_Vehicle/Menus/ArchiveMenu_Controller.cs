@@ -13,8 +13,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private Sprite _panelSprite;
 
     [Space(20)]
+    [SerializeField] private Vector2 _ingredientBoxOffset;
     [SerializeField] private RectTransform _ingredientBox;
-    [SerializeField] private RectTransform _ingredientBoxPoint;
     [SerializeField] private FoodCondition_Indicator[] _indicators;
 
     [Space(20)]
@@ -721,8 +721,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (_ingredientBox.gameObject.activeSelf) return;
 
         _ingredientBox.gameObject.SetActive(true);
-
-        _ingredientBox.transform.position = _ingredientBoxPoint.transform.position;
+        _ingredientBox.transform.position = (Vector2)_controller.infoBox.transform.position + _ingredientBoxOffset;
+       
         Update_IngredientBox();
     }
 

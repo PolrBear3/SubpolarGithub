@@ -20,8 +20,10 @@ public class CraftNPC : MonoBehaviour
     [SerializeField] private Sprite _npcIconSprite;
     public Sprite npcIconSprite => _npcIconSprite;
 
+    [SerializeField] private Sprite _paymentIconSprite;
+
+    [Space(10)]
     [SerializeField] private SpriteRenderer _statusIcon;
-    private Sprite _defaultSprite;
 
     [Space(20)]
     [SerializeField][Range(0, 1000)] private int _defalutPrice;
@@ -33,6 +35,8 @@ public class CraftNPC : MonoBehaviour
     [Space(60)]
     [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
+    
+    private Sprite _defaultSprite;
 
     private CraftNPC_Data _data;
     public CraftNPC_Data data => _data;
@@ -149,14 +153,15 @@ public class CraftNPC : MonoBehaviour
     // Main Interactions
     public void Toggle_PayIcon()
     {
+        _statusIcon.gameObject.SetActive(true);
+        
         if (_purchaseData.purchased == false)
         {
-            _statusIcon.gameObject.SetActive(false);
+            _statusIcon.sprite = _defaultSprite;
             return;
         }
 
-        _statusIcon.sprite = _defaultSprite;
-        _statusIcon.gameObject.SetActive(true);
+        _statusIcon.sprite = _paymentIconSprite;
     }
 
     private void Pay()

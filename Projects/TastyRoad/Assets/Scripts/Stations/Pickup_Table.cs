@@ -10,7 +10,6 @@ public class Pickup_Table : Stack_Table
     [Space(20)]
     [SerializeField][Range(0, 100)] private int _searchTime;
 
-
     private NPC_Controller _targetNPC;
     private Coroutine _coroutine;
 
@@ -77,7 +76,7 @@ public class Pickup_Table : Stack_Table
     
     
     // NPC
-    private List<NPC_Controller> ConditionLevelMatch_NPCs(List<NPC_Controller> targetNPCs)
+    private List<NPC_Controller> ConditionMatch_SortedNPCs(List<NPC_Controller> targetNPCs)
     {
         FoodData_Controller tableFoodIcon = stationController.Food_Icon();
         if (tableFoodIcon.hasFood == false) return targetNPCs;
@@ -95,7 +94,7 @@ public class Pickup_Table : Stack_Table
         return targetNPCs;
     }
 
-    private List<NPC_Controller> FoodOrder_NPCs()
+    private NPC_Controller FoodOrder_NPC()
     {
         Location_Controller location = Main_Controller.instance.currentLocation;
         
@@ -104,16 +103,19 @@ public class Pickup_Table : Stack_Table
 
         for (int i = 0; i < foodOrderNPCs.Count; i++)
         {
-            NPC_Controller npc = foodOrderNPCs[i];
+            if (!foodOrderNPCs[i].movement.roamActive) continue;
+            
+            NPC_FoodInteraction foodInteraction = foodOrderNPCs[i].foodInteraction;
 
-            if (npc.foodInteraction == null) continue;
-            if (npc.foodInteraction.timeCoroutine == null) continue;
-            if (stationController.Food_Icon().Has_SameFood(npc.foodIcon.currentData.foodScrObj) == false) continue;
+            if (foodInteraction == null) continue;
+            if (foodInteraction.timeCoroutine == null) continue;
+            if (stationController.Food_Icon().Has_SameFood(foodOrderNPCs[i].foodIcon.currentData.foodScrObj) == false) continue;
 
-            orderNPCs.Add(npc);
+            orderNPCs.Add(foodOrderNPCs[i]);
         }
 
-        return ConditionLevelMatch_NPCs(orderNPCs);
+        if (orderNPCs.Count == 0) return null;
+        return ConditionMatch_SortedNPCs(orderNPCs)[0];
     }
 
 
@@ -137,43 +139,36 @@ public class Pickup_Table : Stack_Table
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
-        while (foodIcon.hasFood && Main_Controller.instance.Food_BookmarkedFood())
+        while (stationController.Food_Icon().hasFood && Main_Controller.instance.Food_BookmarkedFood())
         {
             yield return new WaitForSeconds(_searchTime);
 
-            List<NPC_Controller> foodOrderNPCs = FoodOrder_NPCs();
-            if (foodOrderNPCs.Count <= 0) continue;
+            _targetNPC = FoodOrder_NPC();
+            if (_targetNPC == null || _targetNPC.gameObject == null) continue;
+            
+            NPC_Movement npcMovement = _targetNPC.movement;
+            if (npcMovement.isLeaving) continue;
 
-            for (int i = 0; i < foodOrderNPCs.Count; i++)
+            npcMovement.Stop_FreeRoam();
+            npcMovement.Assign_TargetPosition(transform.position);
+            
+            while (!npcMovement.At_TargetPosition(transform.position))  yield return null;
+            
+            NPC_FoodInteraction npcFoodInteraction = _targetNPC.foodInteraction;
+            FoodData transferData = new(_targetNPC.foodIcon.currentData);
+
+            if (stationController.Food_Icon().hasFood == false || npcFoodInteraction.Transfer_FoodOrder(transferData) == false)
             {
-                _targetNPC = foodOrderNPCs[i];
-                NPC_Movement movement = _targetNPC.movement;
-
-                movement.Stop_FreeRoam();
-                movement.Assign_TargetPosition(transform.position);
-
-                while (!movement.At_TargetPosition(transform.position)) yield return null;
-
-                Food_ScrObj orderFood = _targetNPC.foodIcon.currentData.foodScrObj;
-                NPC_FoodInteraction interaction = _targetNPC.foodInteraction;
-
-                FoodData transferData = foodIcon.Empty_TargetData(orderFood);
-                Update_Sprite();
-
-                if (interaction.Transfer_FoodOrder(transferData))
-                {
-                    Audio_Controller.instance.Play_OneShot(gameObject, 1);
-                    
-                    _targetNPC = null;
-                    break;
-                }
-
                 Update_TargetNPC();
+                continue;
             }
-
+            
+            foodIcon.Set_CurrentData(null);
             foodIcon.Show_Icon();
             foodIcon.Show_Condition();
             AmountBar_Toggle();
+            
+            Audio_Controller.instance.Play_OneShot(gameObject, 1);
             
             Station_Maintenance maintenance = stationController.maintenance;
             
