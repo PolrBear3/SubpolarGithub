@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 9094981842974887859}
   - component: {fileID: 2978574373251596411}
   - component: {fileID: 6217879069349174343}
+  - component: {fileID: 7076830569141617503}
   m_Layer: 0
   m_Name: Buddy NPC
   m_TagString: Untagged
@@ -306,6 +307,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
+  _buddyNPC: {fileID: 0}
+  _recruitRate: 0
+  _recruitQuestIcon: {fileID: 0}
+  _recruitBar: {fileID: 0}
+--- !u!114 &7076830569141617503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5817206134798704318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d44f4131696649bdad397396c344fa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &360263924987747241
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -40,6 +40,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     public int currentPageNum => _currentPageNum;
 
     private List<FoodData> _ingredientUnlocks = new();
+    public List<FoodData> ingredientUnlocks => _ingredientUnlocks;
     
 
     // Editor
@@ -802,6 +803,7 @@ public class ArchiveMenu_Controller_Controller_Inspector : Editor
 
             bool rawFood = Main_Controller.instance.dataController.Is_RawFood(archiveFood);
             menu.Unlock_BookmarkToggle(menu.Archive_Food(archiveFood), rawFood || !menu.FoodIngredient_Unlocked(archiveFood));
+            menu.Unlock_FoodIngredient(archiveFood, 0);
         }
 
         EditorGUILayout.EndHorizontal();

@@ -178,15 +178,7 @@ public class NPC_Movement : MonoBehaviour
         yield break;
     }
 
-    public void Free_Roam(SpriteRenderer roamArea)
-    {
-        Free_Roam(roamArea, Random_IntervalTime());
-    }
 
-    public void CurrentLocation_FreeRoam()
-    {
-        Free_Roam(Main_Controller.instance.currentLocation.data.roamArea);
-    }
     public void CurrentLocation_FreeRoam(float startDelayTime)
     {
         Free_Roam(Main_Controller.instance.currentLocation.data.roamArea, startDelayTime);

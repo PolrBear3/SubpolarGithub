@@ -11,7 +11,7 @@ public class AmountBar : MonoBehaviour
     private Sprite[] _amountBarSprites;
     public Sprite[] amountBarSprite => _amountBarSprites;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Sprite[] _defaultBarSprites;
     [SerializeField] private Sprite[] _greenBarSprites;
 
@@ -26,17 +26,20 @@ public class AmountBar : MonoBehaviour
     public bool toggledOn => _toggledOn;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private int _maxAmount;
     public int maxAmount => _maxAmount;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private bool _toggleLocked;
     public bool toggleLocked => _toggleLocked;
 
     [SerializeField][Range(0, 100)] private float _durationTime;
+    public float durationTime => _durationTime;
 
 
+    public Action OnMaxAmount;
+    
     private Coroutine _amountBarCoroutine;
 
 
@@ -57,12 +60,18 @@ public class AmountBar : MonoBehaviour
     {
         _currentAmount = setAmount;
         _currentAmount = Mathf.Clamp(_currentAmount, 0, _maxAmount);
+
+        if (_currentAmount < _maxAmount) return;
+        OnMaxAmount?.Invoke();
     }
 
     public void Update_Amount(int updateAmount)
     {
         _currentAmount += updateAmount;
         _currentAmount = Mathf.Clamp(_currentAmount, 0, _maxAmount);
+        
+        if (_currentAmount < _maxAmount) return;
+        OnMaxAmount?.Invoke();
     }
 
 

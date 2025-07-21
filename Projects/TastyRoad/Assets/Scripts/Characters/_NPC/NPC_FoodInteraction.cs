@@ -169,12 +169,18 @@ public class NPC_FoodInteraction : MonoBehaviour
         return null;
     }
 
+    public bool FoodInteraction_Active()
+    {
+        return _payAvailable || _timeCoroutine != null || _transferCoroutine != null;
+    }
+    
     private bool SetOrder_Active()
     {
         if (_controller.movement.isLeaving) return false;
+        if (_controller.interaction.isRecruiting) return false;
+        
         if (_foodOrderCount > 0) return false;
-        if (_timeCoroutine != null) return false;
-        if (_payAvailable) return false;
+        if (FoodInteraction_Active()) return false;
 
         // check if additional food orders are left
         if (_controller.foodIcon.AllDatas().Count > 0) return false;

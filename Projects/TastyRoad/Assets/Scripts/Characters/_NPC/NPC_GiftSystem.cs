@@ -10,21 +10,24 @@ public class NPC_GiftSystem : MonoBehaviour
 
     [Space(20)]
     [SerializeField] private GameObject _giftCoolTimeBar;
+    
     [SerializeField] private AmountBar _coolTimeBar;
+    public AmountBar coolTimeBar => _coolTimeBar;
 
     
     [Space(20)]
-    [SerializeField][Range(0, 100)] private int _dropCoolTime;
+    [SerializeField][Range(0, 100)] private float _itemDropRate;
     [SerializeField][Range(0, 100)] private int _dropAmountRange;
 
     [Space(20)] 
-    [SerializeField][Range(0, 100)] private float _itemDropRate;
     [SerializeField] private ActionSelector_Data[] _giftActionDatas;
 
     [Space(40)] 
     [SerializeField] private VideoGuide_Trigger _videoGuide;
 
 
+    public Action OnGift;
+    
     public Action<bool> OnDurationToggle;
     private Coroutine _coroutine;
 
@@ -34,12 +37,12 @@ public class NPC_GiftSystem : MonoBehaviour
     {
         _giftCoolTimeBar.SetActive(false);
 
-        _coolTimeBar.Set_Amount(_dropCoolTime);
+        _coolTimeBar.Set_Amount(_coolTimeBar.maxAmount);
         _coolTimeBar.Toggle(true);
 
         // subscriptions
-        _controller.interactable.OnHoldInteract += ToggleBar_Duration;
         _controller.interactable.OnHoldInteract += Gift;
+        _controller.interactable.OnHoldInteract += ToggleBar_Duration;
 
         globaltime.instance.OnTimeTik += Update_CoolTime;
 
@@ -62,6 +65,8 @@ public class NPC_GiftSystem : MonoBehaviour
     private void ToggleBar_Duration()
     {
         if (_coroutine != null) return;
+        if (_controller.interaction.isRecruiting) return;
+        if (_controller.foodInteraction.FoodInteraction_Active()) return;
 
         _coroutine = StartCoroutine(ToggleBar_Duration_Coroutine());
     }
@@ -72,7 +77,7 @@ public class NPC_GiftSystem : MonoBehaviour
         OnDurationToggle?.Invoke(false);
         _giftCoolTimeBar.SetActive(true);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(_coolTimeBar.durationTime);
 
         OnDurationToggle?.Invoke(true);
         _giftCoolTimeBar.SetActive(false);
@@ -84,7 +89,7 @@ public class NPC_GiftSystem : MonoBehaviour
 
     private void Update_CoolTime()
     {
-        if (_coolTimeBar.currentAmount >= _dropCoolTime) return;
+        if (_coolTimeBar.Is_MaxAmount()) return;
 
         _coolTimeBar.Update_Amount(1);
         Update_CoolTimBar();
@@ -92,8 +97,8 @@ public class NPC_GiftSystem : MonoBehaviour
 
     private void Update_CoolTimBar()
     {
-        _coolTimeBar.Toggle_BarColor(_coolTimeBar.currentAmount >= _dropCoolTime);
-        _coolTimeBar.Load_Custom(_dropCoolTime, _coolTimeBar.currentAmount);
+        _coolTimeBar.Toggle_BarColor(_coolTimeBar.Is_MaxAmount());
+        _coolTimeBar.Load(_coolTimeBar.currentAmount);
     }
 
 
@@ -169,10 +174,10 @@ public class NPC_GiftSystem : MonoBehaviour
     private bool Gift_Available()
     {
         // check if cool time complete
-        if (_coolTimeBar.currentAmount < _dropCoolTime) return false;
+        if (!_coolTimeBar.Is_MaxAmount()) return false;
 
-        // check if food serve waiting
-        if (_controller.foodIcon.hasFood) return false;
+        // food interaction active
+        if (_controller.foodInteraction.FoodInteraction_Active()) return false;
 
         Main_Controller main = Main_Controller.instance;
 
@@ -197,6 +202,8 @@ public class NPC_GiftSystem : MonoBehaviour
         // start cool time
         _coolTimeBar.Set_Amount(0);
         Update_CoolTimBar();
+        
+        OnGift?.Invoke();
 
         // sound
         Audio_Controller audio = Audio_Controller.instance;
