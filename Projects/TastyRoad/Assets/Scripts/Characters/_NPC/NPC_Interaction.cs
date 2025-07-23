@@ -8,14 +8,14 @@ public class NPC_Interaction : MonoBehaviour
     [SerializeField] private NPC_Controller _controller;
 
     [Space(20)] 
-    [SerializeField] private GameObject _buddyNPC;
-    [SerializeField] [Range(0, 100)] private float _recruitRate;
-    
-    [Space(10)] 
     [SerializeField] private SpriteRenderer _recruitQuestIcon;
     [SerializeField] private AmountBar _recruitBar;
+    
+    [SerializeField] [Range(0, 100)] private float _recruitRate;
+    
 
-
+    private Sprite _emptyQuestSprite;
+    
     private bool _isRecruiting;
     public bool isRecruiting => _isRecruiting;
     
@@ -25,6 +25,7 @@ public class NPC_Interaction : MonoBehaviour
     // UnityEngine
     private void Start()
     {
+        // subscriptions
         ActionBubble_Interactable interactable = _controller.interactable;
 
         interactable.OnInteract += Interact_FacePlayer;
@@ -32,6 +33,12 @@ public class NPC_Interaction : MonoBehaviour
 
         if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
         
+        // reset data
+        _emptyQuestSprite = _recruitQuestIcon.sprite;
+        _recruitQuestIcon.gameObject.SetActive(false);
+        _recruitBar.Toggle(false);
+        
+        // recruitment subscriptions
         interactable.OnHoldInteract += Transfer_RecruitQuestFood;
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
@@ -42,11 +49,13 @@ public class NPC_Interaction : MonoBehaviour
 
     private void OnDestroy()
     {
+        // subscriptions
         ActionBubble_Interactable interactable = _controller.interactable;
 
         interactable.OnInteract -= Interact_FacePlayer;
         interactable.OnHoldInteract -= Interact_FacePlayer;
 
+        // recruitment subscriptions
         if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
         
         interactable.OnHoldInteract -= Transfer_RecruitQuestFood;
@@ -77,15 +86,20 @@ public class NPC_Interaction : MonoBehaviour
     
     
     // Buddy Recruit
-    private Food_ScrObj Random_RecruitQuestFood()
+    private List<NPC_Controller> Current_BuddyNPCs()
     {
-        ArchiveMenu_Controller archiveMenu = Main_Controller.instance.currentVehicle.menu.archiveMenu;
-        List<FoodData> unlockedFoodDatas = archiveMenu.ingredientUnlocks;
-
-        if (unlockedFoodDatas.Count == 0) return null;
+        List<GameObject> characters = Main_Controller.instance.currentCharacters;
+        List<NPC_Controller> buddyNPCs = new();
         
-        int randIndex = Random.Range(0, unlockedFoodDatas.Count);
-        return unlockedFoodDatas[randIndex].foodScrObj;
+        for (int i = 0; i < characters.Count; i++)
+        {
+            if (!characters[i].TryGetComponent(out Buddy_NPC buddyNPC)) continue;
+            if (!characters[i].TryGetComponent(out NPC_Controller controller)) continue;
+            
+            buddyNPCs.Add(controller);
+        }
+        
+        return buddyNPCs;
     }
     
     
@@ -93,18 +107,12 @@ public class NPC_Interaction : MonoBehaviour
     {
         if (_isRecruiting) return;
         if (!Utility.Percentage_Activated(_recruitRate)) return;
-       
-        FoodData_Controller foodIcon = _controller.foodIcon;
-        Food_ScrObj questFood = Random_RecruitQuestFood();
-
-        if (questFood == null) return;
         
         _isRecruiting = true;
         
-        foodIcon.Set_CurrentData(new(questFood));
-        _recruitQuestIcon.sprite = foodIcon.currentData.foodScrObj.sprite;
+        _recruitQuestIcon.gameObject.SetActive(true);
+        _recruitQuestIcon.sprite = _emptyQuestSprite;
         
-        _recruitBar.transform.parent.gameObject.SetActive(true);
         _recruitBar.Toggle_BarColor(true);
         _recruitBar.Toggle(true);
         _recruitBar.Load();
@@ -114,8 +122,10 @@ public class NPC_Interaction : MonoBehaviour
     {
         _isRecruiting = false;
         
+        _recruitQuestIcon.gameObject.SetActive(false);
+        _recruitBar.Toggle(false);
+
         _controller.foodIcon.Update_AllDatas(null);
-        _recruitBar.transform.parent.gameObject.SetActive(false);
     }
     
     
@@ -123,41 +133,55 @@ public class NPC_Interaction : MonoBehaviour
     {
         if (!_isRecruiting) return;
 
-        FoodData_Controller playerIcon = _controller.interactable.detection.player.foodIcon;
-        if (!playerIcon.hasFood) return;
-
-        FoodData_Controller foodIcon = _controller.foodIcon;
-        if (!foodIcon.Is_SameFood(playerIcon.currentData.foodScrObj)) return;
+        Player_Controller player = _controller.interactable.detection.player;
+        FoodData_Controller playerIcon = player.foodIcon;
         
+        if (!playerIcon.hasFood) return;
+        
+        Food_ScrObj playerFood = playerIcon.currentData.foodScrObj;
+        FoodData_Controller foodIcon = _controller.foodIcon;
+
         playerIcon.Set_CurrentData(null);
         playerIcon.Show_Icon();
         playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();
-        
-        _recruitBar.Update_Amount(1);
 
-        if (_recruitBar.Is_MaxAmount())
+        _controller.giftSystem.coolTimeBar.Set_Amount(0);
+        
+        // different food
+        if (!foodIcon.Is_SameFood(playerFood))
         {
-            Cancel_Recruitment();
+            foodIcon.Set_CurrentData(null);
+            foodIcon.Set_CurrentData(new(playerFood));
             
-            Main_Controller main = Main_Controller.instance;
+            _recruitQuestIcon.sprite = playerFood.sprite;
             
-            // spawn buddy
-            GameObject spawnBuddy = Instantiate(_buddyNPC, transform.position, Quaternion.identity);
-            spawnBuddy.transform.SetParent(main.characterFile);
-            
-            main.UnTrack_CurrentCharacter(gameObject);
-            Destroy(gameObject);
+            _recruitBar.Set_Amount(1);
+            _recruitBar.Load();
 
             return;
         }
+        
+        // same food
+        _recruitBar.Update_Amount(1);
 
-        foodIcon.Set_CurrentData(new(Random_RecruitQuestFood()));
-        _recruitQuestIcon.sprite = foodIcon.currentData.foodScrObj.sprite;
+        if (!_recruitBar.Is_MaxAmount())
+        {
+            _recruitBar.Load();
+            return;
+        }
+        
+        Cancel_Recruitment();
+            
+        Main_Controller main = Main_Controller.instance;
 
-        _recruitBar.Load();
+        // spawn buddy
+        GameObject spawnBuddy = Instantiate(player.buddyController.buddyNPC, transform.position, Quaternion.identity);
+        Buddy_NPC buddy = spawnBuddy.GetComponent<Buddy_NPC>();
+        
+        player.buddyController.Track_CurrentBuddy(buddy, new(playerFood));
 
-        // reset gift drop cooltime
-        _controller.giftSystem.coolTimeBar.Set_Amount(0);
+        main.UnTrack_CurrentCharacter(gameObject);
+        Destroy(gameObject);
     }
 }

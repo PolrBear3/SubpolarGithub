@@ -111,10 +111,21 @@ public class Detection_Controller : MonoBehaviour
 
         for (int i = 0; i < _detectedprefabs.Count; i++)
         {
-            if (_detectedprefabs[i].TryGetComponent(out IInteractable interactable))
+            if (!_detectedprefabs[i].TryGetComponent(out IInteractable interactable)) continue;
+            
+            // check iinteractable controller
+            if (_detectedprefabs[i].TryGetComponent(out IInteractable_Controller interactableController))
             {
-                detectedInteractables.Add(_detectedprefabs[i]);
+                if (interactableController.interactLocked) continue;
             }
+
+            // check action bubble
+            if (_detectedprefabs[i].TryGetComponent(out ActionBubble_Interactable bubbleInteractable))
+            {
+                if (bubbleInteractable.interactLocked) continue;
+            }
+            
+            detectedInteractables.Add(_detectedprefabs[i]);
         }
 
         if (detectedInteractables.Count <= 0) return null;

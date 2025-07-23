@@ -37,7 +37,7 @@ public class FoodData_Controller : MonoBehaviour
     public Action OnFoodHide;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private SpriteRenderer _foodIcon;
     public SpriteRenderer foodIcon => _foodIcon;
 
@@ -45,19 +45,19 @@ public class FoodData_Controller : MonoBehaviour
     public AmountBar amountBar => _amountBar;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private SpriteRenderer[] _conditionBoxes;
 
     [SerializeField] private ConditionSprites[] _conditionSprites;
     public ConditionSprites[] conditionSprites => _conditionSprites;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private float _toggleHeight;
     private float _defaultHeight;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private int _maxDataCount;
     public int maxDataCount => _maxDataCount;
 

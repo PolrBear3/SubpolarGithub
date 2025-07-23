@@ -68,6 +68,8 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         UnClaim_CustomPositions();
+
+        Debug.Log(_claimedPositions.Count);
         ES3.Save("_claimedPositions", _claimedPositions);
 
         Save_BookmarkedFood();

@@ -10,18 +10,23 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public SpriteRenderer sr => _sr;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Player_Movement _movement;
     public Player_Movement movement => _movement;
 
     [SerializeField] private Player_Interaction _interaction;
     public Player_Interaction interaction => _interaction;
 
+    
+    [Space(20)]
     [SerializeField] private AbilityManager _abilityManager;
     public AbilityManager abilityManager => _abilityManager;
+    
+    [SerializeField] private Buddy_Controller _buddyController;
+    public Buddy_Controller buddyController => _buddyController;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Detection_Controller _detection;
     public Detection_Controller detection => _detection;
 
@@ -29,7 +34,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public BasicAnimation_Controller animationController => _animationController;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private FoodData_Controller _foodIcon;
     public FoodData_Controller foodIcon => _foodIcon;
 
@@ -69,9 +74,8 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public void Load_Data()
     {
         if (ES3.KeyExists("Player_Controller/_foodIcon.AllDatas()") == false) return;
-
+        
         _foodIcon.Update_AllDatas(ES3.Load("Player_Controller/_foodIcon.AllDatas()", _foodIcon.AllDatas()));
-
         _foodIcon.Show_Icon();
         _foodIcon.Show_Condition();
     }

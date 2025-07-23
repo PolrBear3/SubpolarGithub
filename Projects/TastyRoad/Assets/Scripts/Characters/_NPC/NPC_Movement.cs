@@ -11,8 +11,8 @@ public class NPC_Movement : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _defaultMoveSpeed;
     public float defaultMoveSpeed => _defaultMoveSpeed;
 
-    [SerializeField][Range(0, 100)] private int _intervalTime;
-    public int intervalTime => _intervalTime;
+    [SerializeField][Range(0, 100)] private float _intervalTime;
+    public float intervalTime => _intervalTime;
 
     
     private float _moveSpeed;

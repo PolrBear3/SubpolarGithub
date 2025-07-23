@@ -160,6 +160,52 @@ MonoBehaviour:
   _manager: {fileID: 9176286486368829597}
   _abilityScrObj: {fileID: 11400000, guid: 0a1accdec8304463bb71de8d086a45da, type: 2}
   _maxCoolTime: 0
+--- !u!1 &6664975762988744867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 332515629407738874}
+  - component: {fileID: 3443147725922780319}
+  m_Layer: 0
+  m_Name: Buddy Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &332515629407738874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6664975762988744867}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6130762936683660599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3443147725922780319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6664975762988744867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 289dfc7db588045d59c2d43ba2feb6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buddyNPC: {fileID: 5817206134798704318, guid: dd434ebcb514a4eb8b52d7a326be20af, type: 3}
+  _defaultBuddyCount: 2
 --- !u!1 &6723353288808524999
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +297,7 @@ Transform:
   - {fileID: 180810302585553501}
   - {fileID: 6565867677892656787}
   - {fileID: 6766563164769141658}
+  - {fileID: 332515629407738874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &466314399972811326
@@ -485,6 +532,7 @@ MonoBehaviour:
   _movement: {fileID: 1296528359833819897}
   _interaction: {fileID: 9121272627405539894}
   _abilityManager: {fileID: 9176286486368829597}
+  _buddyController: {fileID: 3443147725922780319}
   _detection: {fileID: 1671117369573998975}
   _animationController: {fileID: 3822302725464732542}
   _foodIcon: {fileID: 3671351110632059167}

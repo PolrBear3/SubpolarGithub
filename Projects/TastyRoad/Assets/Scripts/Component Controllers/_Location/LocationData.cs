@@ -209,6 +209,12 @@ public class LocationData
     
     
     // NPC
+    public AnimatorOverrideController Random_NPCSkinOverride()
+    {
+        int randIndex = UnityEngine.Random.Range(0, _npcSkinOverrides.Length);
+        return _npcSkinOverrides[randIndex];
+    }
+    
     public void UpdateCurrent_FoodOrderCount(int updateValue)
     {
         _currentFoodOrderCount += updateValue;

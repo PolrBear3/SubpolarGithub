@@ -18,6 +18,7 @@ public class IInteractable_Controller : MonoBehaviour, IInteractable
     public Action OnUnInteract;
     
     private bool _interactLocked;
+    public bool interactLocked => _interactLocked;
 
 
     // IInteractable

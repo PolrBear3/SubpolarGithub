@@ -271,7 +271,7 @@ public class Location_Controller : MonoBehaviour
             NPC_Movement movement = npcController.movement;
 
             // set random theme skin for current location
-            npcController.basicAnim.Set_OverrideController(_data.npcSkinOverrides[UnityEngine.Random.Range(0, _data.npcSkinOverrides.Length)]);
+            npcController.basicAnim.Set_OverrideController(_data.Random_NPCSkinOverride());
 
             // set npc free roam location
             movement.Free_Roam(_data.roamArea, movement.Random_IntervalTime());

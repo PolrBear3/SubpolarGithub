@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingLayerID: 1862457933
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1015908546, guid: 8c99d34896b414ee9859f23993f0f708, type: 3}
+  m_Sprite: {fileID: 200673080, guid: 8c99d34896b414ee9859f23993f0f708, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animOverride: {fileID: 0}
+  _animOverride: {fileID: 22100000, guid: e2a1b859638a04a48824689c281064fb, type: 2}
   _defaultAnimation: 
 --- !u!114 &2630561444930076325
 MonoBehaviour:
@@ -292,8 +292,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
-  _defaultMoveSpeed: 5
-  _intervalTime: 3
+  _defaultMoveSpeed: 15
+  _intervalTime: 0.25
 --- !u!114 &6217879069349174343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,10 +307,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
-  _buddyNPC: {fileID: 0}
-  _recruitRate: 0
   _recruitQuestIcon: {fileID: 0}
   _recruitBar: {fileID: 0}
+  _recruitRate: 0
 --- !u!114 &7076830569141617503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d44f4131696649bdad397396c344fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 9094981842974887859}
+  _playerDistanceRange: 1
 --- !u!1001 &360263924987747241
 PrefabInstance:
   m_ObjectHideFlags: 0
