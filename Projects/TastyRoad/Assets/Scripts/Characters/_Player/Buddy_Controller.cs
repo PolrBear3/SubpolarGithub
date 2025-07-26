@@ -20,8 +20,9 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private GameObject _buddyNPC;
     public GameObject buddyNPC => _buddyNPC;
         
+    [Space(20)]
     [SerializeField] [Range(0, 10)] private int _defaultBuddyCount;
-    
+
     
     private BuddyController_Data _data;
     
@@ -58,9 +59,25 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
     {
         _data = ES3.Load("Buddy_Controller/BuddyController_Data", new BuddyController_Data(new()));
     }
-    
-    
-    // Main
+
+
+    // Datas
+    public Buddy_NPC Follow_Buddy(Buddy_NPC targetBuddy)
+    {
+        for (int i = _currentBuddies.Count - 1; i >= 0; i--)
+        {
+            if (i == 0) return null;
+            if (targetBuddy != _currentBuddies[i]) continue;
+            if (currentBuddies[i - 1].isFollowing == false) continue;
+            
+            return currentBuddies[i - 1];
+        }
+
+        return null;
+    }
+
+
+    // Buddies Control
     private void Spawn_SavedBuddies()
     {
         List<FoodData> loadedFoodDatas = _data.automateFoodDatas;
@@ -75,7 +92,7 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
             Track_CurrentBuddy(buddy, new(loadData));
         }
     }
-    
+
     public void Track_CurrentBuddy(Buddy_NPC trackBuddy, FoodData automateFoodData)
     {
         _currentBuddies.Add(trackBuddy);

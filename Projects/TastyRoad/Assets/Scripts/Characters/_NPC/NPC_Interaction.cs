@@ -137,8 +137,10 @@ public class NPC_Interaction : MonoBehaviour
         FoodData_Controller playerIcon = player.foodIcon;
         
         if (!playerIcon.hasFood) return;
-        
+
+        FoodData playerFoodData = new(playerIcon.currentData);
         Food_ScrObj playerFood = playerIcon.currentData.foodScrObj;
+        
         FoodData_Controller foodIcon = _controller.foodIcon;
 
         playerIcon.Set_CurrentData(null);
@@ -179,7 +181,7 @@ public class NPC_Interaction : MonoBehaviour
         GameObject spawnBuddy = Instantiate(player.buddyController.buddyNPC, transform.position, Quaternion.identity);
         Buddy_NPC buddy = spawnBuddy.GetComponent<Buddy_NPC>();
         
-        player.buddyController.Track_CurrentBuddy(buddy, new(playerFood));
+        player.buddyController.Track_CurrentBuddy(buddy, playerFoodData);
 
         main.UnTrack_CurrentCharacter(gameObject);
         Destroy(gameObject);

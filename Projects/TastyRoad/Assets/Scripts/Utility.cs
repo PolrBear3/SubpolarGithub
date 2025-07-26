@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
+
+[System.Serializable]
+public struct UnityEvent_Data
+{
+    [Range(0, 100)] public float probability;
+    public UnityEvent action;
+}
 
 public static class Utility
 {

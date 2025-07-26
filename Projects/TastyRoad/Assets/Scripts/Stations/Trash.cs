@@ -141,7 +141,7 @@ public class Trash : Stack_Table
         Main_Controller main = Main_Controller.instance;
         Location_Controller currentLocation = main.currentLocation;
 
-        List<Vector2> centeredPositions = main.dataController.Centered_PositionDatas(transform.position, 1);
+        List<Vector2> centeredPositions = Utility.Surrounding_SnapPositions(transform.position);
         List<Vector2> dropPositions = new();
 
         for (int i = 0; i < centeredPositions.Count; i++)

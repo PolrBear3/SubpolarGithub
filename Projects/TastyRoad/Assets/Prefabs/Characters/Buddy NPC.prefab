@@ -323,7 +323,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
-  _playerDistanceRange: 1
+  _followSpacingDistance: 1
+  _pickupStations:
+  - {fileID: 11400000, guid: ddd48639fa2c1441d9f93d97f0a94b94, type: 2}
+  - {fileID: 11400000, guid: 8d1e6b36626de4a3ea7b9c6ec7712fc7, type: 2}
 --- !u!1001 &360263924987747241
 PrefabInstance:
   m_ObjectHideFlags: 0

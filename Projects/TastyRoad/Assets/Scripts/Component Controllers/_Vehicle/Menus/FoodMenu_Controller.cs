@@ -662,31 +662,29 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // assign exported food to food box
         FoodData cursorFood = new(currentCursorData.currentFood);
-        foodBoxIcon.Set_CurrentData(cursorFood);
+        int exportAmount = Mathf.Clamp(currentCursorData.currentAmount, 0, _maxExportAmount);
 
-        // show food icon
+        for (int i = 0; i < exportAmount; i++)
+        {
+            foodBoxIcon.Set_CurrentData(new(cursorFood));
+        }
         foodBoxIcon.Show_Icon();
 
-        // sound
-        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
-
-        // assign exported food amount according to dragging amount
-        if (currentCursorData.currentAmount > _maxExportAmount)
+        // cursor update
+        if (currentCursorData.currentAmount - exportAmount > 0)
         {
-            // max amount
-            foodBoxIcon.currentData.Set_Amount(_maxExportAmount);
-            _controller.slotsController.cursor.data.Assign_Amount(currentCursorData.currentAmount - _maxExportAmount);
+            _controller.slotsController.cursor.data.Assign_Amount(currentCursorData.currentAmount - exportAmount);
         }
         else
         {
-            // bellow max amount
-            foodBoxIcon.currentData.Set_Amount(currentCursorData.currentAmount);
             _controller.slotsController.cursor.Empty_Item();
-
             _controller.infoBox.gameObject.SetActive(false);
         }
 
         RottenFood_DataUpdate(foodBoxIcon);
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
     }
 
 

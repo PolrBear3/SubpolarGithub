@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public interface IInteractable
 {
@@ -13,21 +12,6 @@ public interface IInteractable
 
     void UnInteract();
 }
-
-[System.Serializable]
-public struct UnityEvent_Data
-{
-    [Range(0, 100)] public float probability;
-    public UnityEvent action;
-}
-
-[System.Serializable]
-public class Multiple_PositionData
-{
-    [SerializeField] private Vector2[] _positionData;
-    public Vector2[] positionData => _positionData;
-}
-
 
 public class Data_Controller : MonoBehaviour
 {
@@ -42,10 +26,6 @@ public class Data_Controller : MonoBehaviour
     [Header("")]
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
-
-    [Header("")]
-    [SerializeField] private Multiple_PositionData[] _positionDatas;
-    public Multiple_PositionData[] positionDatas => _positionDatas;
 
 
     // Get World and Location
@@ -278,22 +258,5 @@ public class Data_Controller : MonoBehaviour
         }
 
         return null;
-    }
-
-
-    // Get Position Data
-    public List<Vector2> Centered_PositionDatas(Vector2 centerPos, int dataNum)
-    {
-        dataNum = Mathf.Clamp(dataNum, 0, _positionDatas.Length - 1);
-
-        Vector2[] dataPositions = _positionDatas[dataNum].positionData;
-        List<Vector2> centeredPositions = new();
-
-        foreach (Vector2 pos in dataPositions)
-        {
-            centeredPositions.Add(centerPos + pos);
-        }
-
-        return centeredPositions;
     }
 }

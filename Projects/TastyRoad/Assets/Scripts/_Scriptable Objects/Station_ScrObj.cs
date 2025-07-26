@@ -22,7 +22,11 @@ public class Station_ScrObj : ScriptableObject
     public Sprite miniSprite;
     public Sprite dialogIcon;
 
-    [Space(20)]
+    [Space(20)] 
+    [SerializeField] private FoodCondition_Type[] _conditionUpdateTypes;
+    public FoodCondition_Type[] conditionUpdateTypes => _conditionUpdateTypes;
+    
+    [Space(10)]
     [Range(0, 1000)] public int price;
     [Range(0, 100)] public int buildToArchiveCount;
     [Range(0, 100)] public int durability;

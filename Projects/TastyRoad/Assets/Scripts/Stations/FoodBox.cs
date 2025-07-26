@@ -60,16 +60,23 @@ public class FoodBox : MonoBehaviour
     private void Toggle_AmountBar()
     {
         FoodData_Controller foodIcon = _controller.Food_Icon();
-        int currentAmount = foodIcon.currentData.currentAmount;
-
-        foodIcon.Toggle_AmountBar(currentAmount > 1 && _controller.detection.player != null);
+        foodIcon.Toggle_SubDataBar(_controller.detection.player != null);
     }
 
 
     private void Transfer_Food()
     {
-        FoodData_Controller playerIcon = _controller.detection.player.foodIcon;
-
+        Player_Controller player = _controller.detection.player;
+        
+        if (player == null)
+        {
+            Toggle_AmountBar();
+            Empty_Destroy();
+            
+            return;
+        }
+        
+        FoodData_Controller playerIcon = player.foodIcon;
         if (playerIcon.DataCount_Maxed()) return;
 
         FoodData_Controller stationIcon = _controller.Food_Icon();
@@ -83,8 +90,8 @@ public class FoodBox : MonoBehaviour
         playerIcon.Toggle_SubDataBar(true);
 
         // update current data & decrease one amount
-        stationIcon.currentData.Update_Amount(-1);
-        stationIcon.Toggle_AmountBar(stationIcon.currentData.currentAmount > 1);
+        stationIcon.Set_CurrentData(null);
+        Toggle_AmountBar();
 
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
@@ -122,7 +129,7 @@ public class FoodBox : MonoBehaviour
 
     private void Empty_Destroy()
     {
-        if (_controller.Food_Icon().currentData.currentAmount > 0) return;
+        if (_controller.Food_Icon().AllDatas().Count > 0) return;
 
         OnDestroy();
 
