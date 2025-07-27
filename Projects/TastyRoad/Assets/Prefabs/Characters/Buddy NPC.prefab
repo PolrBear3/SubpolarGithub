@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 660597ed320aa400a8e087d77e83e611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animOverride: {fileID: 22100000, guid: e2a1b859638a04a48824689c281064fb, type: 2}
+  _animOverride: {fileID: 0}
   _defaultAnimation: 
 --- !u!114 &2630561444930076325
 MonoBehaviour:
@@ -323,6 +323,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
+  _buddyAnimators:
+  - {fileID: 22100000, guid: e2a1b859638a04a48824689c281064fb, type: 2}
   _followSpacingDistance: 1
   _pickupStations:
   - {fileID: 11400000, guid: ddd48639fa2c1441d9f93d97f0a94b94, type: 2}

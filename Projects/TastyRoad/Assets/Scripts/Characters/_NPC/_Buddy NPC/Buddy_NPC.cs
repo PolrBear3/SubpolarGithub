@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,9 @@ public class Buddy_NPC : MonoBehaviour
     [Space(20)]
     [SerializeField] private NPC_Controller _controller;
     public NPC_Controller controller => _controller;
+
+    [Space(20)] 
+    [SerializeField] private AnimatorOverrideController[] _buddyAnimators;
 
     [Space(20)] 
     [SerializeField] [Range(0, 10)] private float _followSpacingDistance;
@@ -30,6 +32,9 @@ public class Buddy_NPC : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
+        int animatorIndex = Random.Range(0, _buddyAnimators.Length);
+        _controller.basicAnim.Set_OverrideController(_buddyAnimators[animatorIndex]);
+        
         _controller.foodIcon.amountBar.Toggle(true);
         
         Follow_Player();
@@ -127,6 +132,7 @@ public class Buddy_NPC : MonoBehaviour
             
             if (foodIcon == null) continue;
             if (foodIcon.Has_SameFood(placedFood) == false) continue;
+            if (foodIcon.currentData.conditionDatas.Count != 0) continue;
 
             return stations[i];
         }
