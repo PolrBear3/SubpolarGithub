@@ -332,6 +332,23 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
 
     /// <returns>
+    /// only stations that are placed
+    /// </returns>
+    public List<Station_Controller> CurrentStations()
+    {
+        List<Station_Controller> placedStations = new();
+        
+        for (int i = 0; i < _currentStations.Count; i++)
+        {
+            if (_currentStations[i].movement == null) continue;
+            if (_currentStations[i].movement.enabled == true) continue;
+            
+            placedStations.Add(_currentStations[i]);
+        }
+        
+        return placedStations;
+    }
+    /// <returns>
     /// only stations that have movement controller, if false
     /// </returns>
     public List<Station_Controller> CurrentStations(bool allStations)

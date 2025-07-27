@@ -8,25 +8,25 @@ using UnityEngine.Localization;
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Food!")]
 public class Food_ScrObj : ScriptableObject
 {
-    [Header("")]
+    [Space(20)]
     public Sprite sprite;
     public Sprite eatSprite;
 
-    [Header("")]
+    [Space(20)]
     public string foodName;
     [SerializeField] private LocalizedString _localizedString;
     
     [Space(20)]
     public int id;
 
-    [Header("")]
+    [Space(20)]
     [Range(0, 999)] public int price;
 
-    [Header("")]
+    [Space(20)]
     public List<FoodData> ingredients = new();
     public FoodCondition_Type[] restrictedCondtions;
 
-    [Header("")]
+    [Space(20)]
     [Range(0, 999)] public int unlockAmount;
     public FoodData[] unlocks;
 
@@ -64,12 +64,10 @@ public class Food_ScrObj : ScriptableObject
     {
         List<Food_ScrObj> foods = new();
 
-        // is Raw Food
         if (ingredients.Count <= 0)
         {
             foods.Add(this);
         }
-        // is Cooked Food
         else
         {
             foreach (FoodData data in ingredients)
@@ -81,6 +79,21 @@ public class Food_ScrObj : ScriptableObject
         return foods;
     }
 
+    public List<FoodData> Conditioned_Ingredients()
+    {
+        if (ingredients.Count <= 0) return null;
+        
+        List<FoodData> ingredientDatas = new();
+
+        foreach (FoodData data in ingredients)
+        {
+            ingredientDatas.Add(data);
+        }
+
+        return ingredientDatas;
+    }
+    
+    
     public bool Ingredients_Match(List<FoodData> ingredientDatas)
     {
         for (int i = 0; i < ingredients.Count; i++)

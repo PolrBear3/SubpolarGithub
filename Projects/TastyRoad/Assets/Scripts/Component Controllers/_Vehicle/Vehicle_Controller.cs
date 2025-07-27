@@ -115,6 +115,19 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
 
     // Interact Area Control
+    public Vector2 Random_InteractPoint()
+    {
+        Location_Controller location = Main_Controller.instance.currentLocation;
+        Vector2 pointPos = Utility.Random_BoundPoint(_interactArea.bounds);
+
+        while (location.Restricted_Position(pointPos))
+        {
+            pointPos = Utility.Random_BoundPoint(_interactArea.bounds);
+        }
+        
+        return pointPos;
+    }
+    
     public bool Is_InteractArea(Vector2 checkPosition)
     {
         Bounds bounds = _interactArea.bounds;

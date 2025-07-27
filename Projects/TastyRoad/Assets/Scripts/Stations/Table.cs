@@ -23,7 +23,11 @@ public class Table : MonoBehaviour
         _stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
 
         IInteractable_Controller interactable = _stationController.iInteractable;
-
+        FoodData_Controller stationFoodIcon = stationController.Food_Icon();
+        
+        interactable.OnTriggerInteract += stationFoodIcon.Show_Icon;
+        interactable.OnTriggerInteract += stationFoodIcon.Show_Condition;
+        
         interactable.OnInteract += Interact;
         interactable.OnUnInteract += UnInteract;
 

@@ -44,4 +44,14 @@ public class Station_ScrObj : ScriptableObject
         
         return _localizedString.GetLocalizedString();
     }
+
+    public bool Has_ConditionUpdateType(FoodCondition_Type conditionType)
+    {
+        for (int i = 0; i < _conditionUpdateTypes.Length; i++)
+        {
+            if (conditionType != _conditionUpdateTypes[i]) continue;
+            return true;
+        }
+        return false;
+    }
 }

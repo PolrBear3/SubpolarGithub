@@ -14,6 +14,11 @@ public class Stack_Table : Table
         detection.ExitEvent += AmountBar_Toggle;
         
         IInteractable_Controller interactable = stationController.iInteractable;
+        FoodData_Controller foodIcon = stationController.Food_Icon();
+
+        interactable.OnTriggerInteract += foodIcon.Show_Icon;
+        interactable.OnTriggerInteract += foodIcon.Show_Condition;
+        interactable.OnTriggerInteract += AmountBar_Toggle;
         
         interactable.OnInteract += Interact;
         interactable.OnHoldInteract += Transfer_All;
@@ -35,6 +40,11 @@ public class Stack_Table : Table
         detection.ExitEvent -= AmountBar_Toggle;
         
         IInteractable_Controller interactable = stationController.iInteractable;
+        FoodData_Controller foodIcon = stationController.Food_Icon();
+
+        interactable.OnTriggerInteract -= foodIcon.Show_Icon;
+        interactable.OnTriggerInteract -= foodIcon.Show_Condition;
+        interactable.OnTriggerInteract -= AmountBar_Toggle;
         
         interactable.OnInteract -= Interact;
         interactable.OnHoldInteract -= Transfer_All;
@@ -51,8 +61,8 @@ public class Stack_Table : Table
     // IInteractable_Controller
     private void Interact()
     {
-        FoodData_Controller tableIcon = stationController.Food_Icon();
         FoodData_Controller playerIcon = stationController.detection.player.foodIcon;
+        FoodData_Controller tableIcon = stationController.Food_Icon();
 
         bool swapAvailable = tableIcon.hasFood == false || playerIcon.hasFood == false;
 

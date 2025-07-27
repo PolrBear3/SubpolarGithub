@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IInteractable
 {
+    void Trigger_Interact();
+    
     void Interact();
     void Hold_Interact();
 

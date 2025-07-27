@@ -8,6 +8,8 @@ public class IInteractable_Controller : MonoBehaviour, IInteractable
 {
     [Space(20)]
     [SerializeField] private UnityEvent OnInteract_Event;
+
+    public Action OnTriggerInteract;
     
     public Action OnInteract;
     public Action OnHoldInteract;
@@ -22,6 +24,11 @@ public class IInteractable_Controller : MonoBehaviour, IInteractable
 
 
     // IInteractable
+    public void Trigger_Interact()
+    {
+        OnTriggerInteract.Invoke();
+    }
+    
     public void Interact()
     {
         if (_interactLocked) return;

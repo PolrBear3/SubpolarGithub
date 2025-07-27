@@ -3,17 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuddyController_Data
-{
-    [ES3Serializable] private List<FoodData> _automateFoodDatas = new();
-    public List<FoodData> automateFoodDatas => _automateFoodDatas;
-
-    public BuddyController_Data(List<FoodData> saveFoodDatas)
-    {
-        _automateFoodDatas = saveFoodDatas;
-    }
-}
-
 public class Buddy_Controller : MonoBehaviour, ISaveLoadable
 {
     [Space(20)]
@@ -22,9 +11,10 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
         
     [Space(20)]
     [SerializeField] [Range(0, 10)] private int _defaultBuddyCount;
-
     
-    private BuddyController_Data _data;
+    [SerializeField] [Range(0, 6)] private int _defaultMergeCount;
+    public int defaultMergeCount => _defaultMergeCount;
+
     
     private int _maxBuddyCount;
     public int maxBuddyCount => _maxBuddyCount;
@@ -45,19 +35,19 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        _data.automateFoodDatas.Clear();
+        List<BuddyNPC_Data> buddyDatas = new();
         
         foreach (Buddy_NPC buddy in _currentBuddies)
         {
-            _data.automateFoodDatas.Add(buddy.automateFoodData);
+            buddyDatas.Add(buddy.data);
         }
         
-        ES3.Save("Buddy_Controller/BuddyController_Data", _data);
+        ES3.Save("Buddy_Controller/BuddyNPC_Datas", buddyDatas);
     }
 
     public void Load_Data()
     {
-        _data = ES3.Load("Buddy_Controller/BuddyController_Data", new BuddyController_Data(new()));
+        
     }
 
 
@@ -80,46 +70,50 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
     // Buddies Control
     private void Spawn_SavedBuddies()
     {
-        List<FoodData> loadedFoodDatas = _data.automateFoodDatas;
+        List<BuddyNPC_Data> loadBuddyDatas = ES3.Load("Buddy_Controller/BuddyNPC_Datas", new List<BuddyNPC_Data>());
 
-        foreach (FoodData loadData in loadedFoodDatas)
+        foreach (BuddyNPC_Data loadData in loadBuddyDatas)
         {
-            // set random spawn points to vehicle nearby positions //
+            Vector2 spawnPosition = Main_Controller.instance.currentVehicle.Random_InteractPoint();
+            GameObject loadBuddy = Instantiate(_buddyNPC, spawnPosition, Quaternion.identity);
             
-            GameObject loadBuddy = Instantiate(_buddyNPC, transform.position, Quaternion.identity);
             Buddy_NPC buddy = loadBuddy.GetComponent<Buddy_NPC>();
-        
-            Track_CurrentBuddy(buddy, new(loadData));
+            Track_CurrentBuddy(buddy);
+
+            buddy.Set_Data(loadData);
+            buddy.Load_DataIndication();
         }
     }
 
-    public void Track_CurrentBuddy(Buddy_NPC trackBuddy, FoodData automateFoodData)
+    public void Track_CurrentBuddy(Buddy_NPC trackBuddy)
     {
         _currentBuddies.Add(trackBuddy);
         
         trackBuddy.controller.interactable.LockInteract(true);
-        trackBuddy.Set_AutomateFoodData(new(automateFoodData));
         
         Main_Controller main = Main_Controller.instance;
         trackBuddy.transform.SetParent(main.characterFile);
 
         if (_currentBuddies.Count <= _maxBuddyCount) return;
-        
-        Buddy_NPC oldBuddy = _currentBuddies[0];
-        
+        Remove_Buddy(_currentBuddies[0]);
+    }
+
+    public void Remove_Buddy(Buddy_NPC buddy)
+    {
         // spawn normal npc
-        GameObject spawnNPC = Main_Controller.instance.Spawn_Character(1, oldBuddy.transform.position);
+        GameObject spawnNPC = Main_Controller.instance.Spawn_Character(1, buddy.transform.position);
         NPC_Controller normalNPC = spawnNPC.GetComponent<NPC_Controller>();
 
+        Main_Controller main = Main_Controller.instance;
         LocationData data = main.currentLocation.data;
         
         normalNPC.basicAnim.Set_OverrideController(data.Random_NPCSkinOverride());
         normalNPC.movement.Free_Roam(data.roamArea, normalNPC.movement.Random_IntervalTime());
         
         // remove old buddy
-        _currentBuddies.Remove(oldBuddy);
+        _currentBuddies.Remove(buddy);
         
-        main.UnTrack_CurrentCharacter(oldBuddy.gameObject);
-        Destroy(oldBuddy.gameObject);
+        main.UnTrack_CurrentCharacter(buddy.gameObject);
+        Destroy(buddy.gameObject);
     }
 }

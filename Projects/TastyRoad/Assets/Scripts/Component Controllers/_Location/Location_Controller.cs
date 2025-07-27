@@ -48,9 +48,6 @@ public class Location_Controller : MonoBehaviour
 
 
     // Position Checks
-    /// <returns>
-    /// True if checkPosition is in restricted range and position claimed, False if not
-    /// </returns>
     public bool Restricted_Position(Vector2 checkPosition)
     {
         bool restricted = false;

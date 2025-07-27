@@ -20,7 +20,13 @@ public class FoodBox : MonoBehaviour
         _controller.detection.ExitEvent += Toggle_AmountBar;
 
         IInteractable_Controller interactable = _controller.iInteractable;
+        FoodData_Controller foodIcon = _controller.Food_Icon();
 
+        interactable.OnTriggerInteract += foodIcon.Show_Icon;
+        interactable.OnTriggerInteract += foodIcon.Show_Condition;
+        interactable.OnTriggerInteract += Toggle_AmountBar;
+        interactable.OnTriggerInteract += Empty_Destroy;
+        
         interactable.OnInteract += Transfer_Food;
         interactable.OnInteract += Empty_Destroy;
         
@@ -41,7 +47,13 @@ public class FoodBox : MonoBehaviour
         _controller.detection.ExitEvent -= Toggle_AmountBar;
         
         IInteractable_Controller interactable = _controller.iInteractable;
+        FoodData_Controller foodIcon = _controller.Food_Icon();
 
+        interactable.OnTriggerInteract -= foodIcon.Show_Icon;
+        interactable.OnTriggerInteract -= foodIcon.Show_Condition;
+        interactable.OnTriggerInteract -= Toggle_AmountBar;
+        interactable.OnTriggerInteract -= Empty_Destroy;
+        
         interactable.OnInteract -= Transfer_Food;
         interactable.OnInteract -= Empty_Destroy;
 

@@ -21,6 +21,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public bool unInteractLocked => _unInteractLocked;
 
 
+    public Action OnTriggerInteract;
+    
     public Action OnInteract;
     public Action OnHoldInteract;
 
@@ -58,6 +60,11 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
 
     // IInteractable
+    public void Trigger_Interact()
+    {
+        OnTriggerInteract.Invoke();
+    }
+    
     public void Interact()
     {
         if (_interactLocked || _bubble == null) return;

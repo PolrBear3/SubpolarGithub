@@ -24,6 +24,7 @@ public class FoodCondition_Data
     public FoodCondition_Type type;
     public int level;
 
+    // New
     public FoodCondition_Data(FoodCondition_Type type)
     {
         this.type = type;

@@ -176,12 +176,18 @@ public class NPC_Interaction : MonoBehaviour
         Cancel_Recruitment();
             
         Main_Controller main = Main_Controller.instance;
+        Buddy_Controller buddyController = player.buddyController;
 
         // spawn buddy
         GameObject spawnBuddy = Instantiate(player.buddyController.buddyNPC, transform.position, Quaternion.identity);
-        Buddy_NPC buddy = spawnBuddy.GetComponent<Buddy_NPC>();
         
-        player.buddyController.Track_CurrentBuddy(buddy, playerFoodData);
+        Buddy_NPC buddy = spawnBuddy.GetComponent<Buddy_NPC>();
+        buddyController.Track_CurrentBuddy(buddy);
+
+        int mergeCount = buddyController.defaultMergeCount; // + ability //
+         
+        buddy.Set_Data(new(playerFoodData, mergeCount));
+        buddy.Load_DataIndication();
 
         main.UnTrack_CurrentCharacter(gameObject);
         Destroy(gameObject);
