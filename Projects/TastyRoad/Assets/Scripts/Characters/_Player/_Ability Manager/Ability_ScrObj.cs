@@ -21,6 +21,10 @@ public class Ability_ScrObj : ScriptableObject
     [SerializeField] private Sprite[] _activationIconSprite;
     public Sprite[] activationIconSprite => _activationIconSprite;
     
+    [Space(20)]
+    [SerializeField] [Range(0, 100)] private int _activateStepValue;
+    public int activateStepValue => _activateStepValue;
+    
 
     // Gets
     public string Description()
@@ -34,5 +38,10 @@ public class Ability_ScrObj : ScriptableObject
     public int Max_ActivationCount()
     {
         return _activationIconSprite.Length - 1;
+    }
+
+    public int ActivationStep_Value()
+    {
+        return Mathf.Clamp(_activateStepValue, 1, 100);
     }
 }

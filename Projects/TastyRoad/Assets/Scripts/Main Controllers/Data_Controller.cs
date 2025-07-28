@@ -112,6 +112,23 @@ public class Data_Controller : MonoBehaviour
 
         return allFoods;
     }
+    
+    /// <returns>
+    /// cooked foods that has ingredient
+    /// </returns>
+    public List<Food_ScrObj> Foods_WithIngredient(Food_ScrObj ingredient)
+    {
+        List<Food_ScrObj> foods = new();
+        
+        for (int i = 0; i < AllFoods().Count; i++)
+        {
+            if (Is_RawFood(AllFoods()[i])) continue;
+            if (AllFoods()[i].Has_Ingredient(ingredient) == false) continue;
+            
+            foods.Add(AllFoods()[i]);
+        }
+        return foods;
+    }
 
     public Food_ScrObj Food()
     {
@@ -160,7 +177,7 @@ public class Data_Controller : MonoBehaviour
 
         return null;
     }
-
+    
 
     // Get Raw Food
     public Food_ScrObj RawFood()

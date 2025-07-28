@@ -162,7 +162,7 @@ public class Table : MonoBehaviour
         playerFoodIcon.Set_CurrentData(null);
         
         // duplicate Ability
-        int duplicateAmount = player.abilityManager.data.AbilityData(_foodPrinterAbility).activationCount;
+        int duplicateAmount = player.abilityManager.data.Ability_ActivationCount(_foodPrinterAbility);
 
         for (int i = 0; i < duplicateAmount; i++)
         {

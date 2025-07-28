@@ -12,9 +12,6 @@ public class Ability
     [ES3Serializable][SerializeField] private int _activationCount;
     public int activationCount => _activationCount;
 
-    [ES3Serializable][SerializeField] private int _coolTime;
-    public int coolTime => _coolTime;
-
 
     // New
     public Ability(Ability_ScrObj setAbility)
@@ -32,10 +29,5 @@ public class Ability
     public void Update_ActivationCount(int updateValue)
     {
         _activationCount += updateValue;
-    }
-
-    public void Update_CoolTime(int updateValue)
-    {
-        _coolTime += updateValue;
     }
 }

@@ -24,6 +24,4 @@ public class Ability_Behaviour : MonoBehaviour
 
     [SerializeField] private Ability_ScrObj _abilityScrObj;
     public Ability_ScrObj abilityScrObj => _abilityScrObj;
-    
-    [SerializeField] [Range(0, 100)] private int _maxCoolTime;
 }

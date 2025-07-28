@@ -103,6 +103,11 @@ public class NPC_GiftSystem : MonoBehaviour
 
 
     // Gift Action Datas
+    public int Random_DropAmount()
+    {
+        return UnityEngine.Random.Range(1, _dropAmountRange + 1);
+    }
+    
     private ActionSelector_Data WeightRandom_GiftAction()
     {
         float totalWeight = 0f;
@@ -144,17 +149,14 @@ public class NPC_GiftSystem : MonoBehaviour
         List<Food_ScrObj> foodIngredients = randWeightedFood.Ingredients();
 
         Food_ScrObj dropFood = foodIngredients[UnityEngine.Random.Range(0, foodIngredients.Count)];
-        int dropAmount = UnityEngine.Random.Range(1, _dropAmountRange + 1);
-        
-        Debug.Log(dropFood + " " + dropAmount);
-        return new(dropFood, dropAmount);
+
+        return new(dropFood, Random_DropAmount());
     }
     
     public void Drop_Food()
     {
         ItemDropper dropper = _controller.itemDropper;
-        Debug.Log("Drop_Food");
-        
+
         dropper.Drop_Food(FoodDrop());
     }
     

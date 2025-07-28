@@ -14,6 +14,9 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
     
     [SerializeField] [Range(0, 6)] private int _defaultMergeCount;
     public int defaultMergeCount => _defaultMergeCount;
+    
+    [Space(60)] 
+    [SerializeField] private Ability_ScrObj _multipleBuddiesAbility;
 
     
     private int _maxBuddyCount;
@@ -93,8 +96,11 @@ public class Buddy_Controller : MonoBehaviour, ISaveLoadable
         
         Main_Controller main = Main_Controller.instance;
         trackBuddy.transform.SetParent(main.characterFile);
-
-        if (_currentBuddies.Count <= _maxBuddyCount) return;
+        
+        int activationCount = main.Player().abilityManager.data.Ability_ActivationCount(_multipleBuddiesAbility);
+        int maxBuddycount = _maxBuddyCount + activationCount * _multipleBuddiesAbility.ActivationStep_Value();
+        
+        if (_currentBuddies.Count <= maxBuddycount) return;
         Remove_Buddy(_currentBuddies[0]);
     }
 

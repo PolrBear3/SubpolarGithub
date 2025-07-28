@@ -36,4 +36,12 @@ public class AbilityManager_Data
         }
         return null;
     }
+
+    public int Ability_ActivationCount(Ability_ScrObj searchAbility)
+    {
+        Ability searchAbilityData = AbilityData(searchAbility);
+        if (searchAbilityData == null) return 0;
+        
+        return searchAbilityData.activationCount;
+    }
 }

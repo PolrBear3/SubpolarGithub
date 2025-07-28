@@ -31,13 +31,21 @@ public class BuddyNPC_Data
     // Get
     public bool Ingredient_Collected(Food_ScrObj ingredient)
     {
-        for (int i = 0; i < _collectedIngredients.Count; i++)
+        List<Food_ScrObj> requiredIngredients = new(_automateFoodData.foodScrObj.Ingredients());
+        int collectedCount = 0;
+        
+        foreach (FoodData data in _collectedIngredients)
         {
-            if (ingredient != _collectedIngredients[i].foodScrObj) continue;
-            return true;
+            if (data.foodScrObj != ingredient) continue;
+            collectedCount++;
         }
 
-        return false;
+        for (int i = 0; i < collectedCount; i++)
+        {
+            if (!requiredIngredients.Remove(ingredient)) break;
+        }
+
+        return !requiredIngredients.Contains(ingredient);
     }
     
     public bool Ingredients_Collected()

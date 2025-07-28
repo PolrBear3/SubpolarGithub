@@ -92,7 +92,18 @@ public class Food_ScrObj : ScriptableObject
 
         return ingredientDatas;
     }
-    
+
+
+    public bool Has_Ingredient(Food_ScrObj ingredient)
+    {
+        for (int i = 0; i < ingredients.Count; i++)
+        {
+            if (ingredient != ingredients[i].foodScrObj) continue;
+            return true;
+        }
+
+        return false;
+    }
     
     public bool Ingredients_Match(List<FoodData> ingredientDatas)
     {

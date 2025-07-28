@@ -32,16 +32,48 @@ public class Buddy_NPC : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
-        int animatorIndex = Random.Range(0, _buddyAnimators.Length);
-        _controller.basicAnim.Set_OverrideController(_buddyAnimators[animatorIndex]);
-        
         _controller.foodIcon.amountBar.Toggle(true);
         
+        Load_SkinAnimator();
         Follow_Player();
     }
 
 
     // Data
+    private void Load_SkinAnimator()
+    {
+        Buddy_Controller buddyController = Main_Controller.instance.Player().buddyController;
+
+        List<AnimatorOverrideController> currentAnimators = new();
+        foreach (Buddy_NPC buddy in buddyController.currentBuddies)
+        {
+            currentAnimators.Add(buddy.controller.basicAnim.animOverride);
+        }
+        
+        List<AnimatorOverrideController> buddyAnimators = new();
+        foreach (AnimatorOverrideController animator in _buddyAnimators)
+        {
+            buddyAnimators.Add(animator);
+        }
+
+        while (buddyAnimators.Count > 0)
+        {
+            int randIndex = Random.Range(0, buddyAnimators.Count);
+            AnimatorOverrideController animator = buddyAnimators[randIndex];
+
+            if (currentAnimators.Contains(animator))
+            {
+                buddyAnimators.Remove(animator);
+                continue;
+            }
+
+            _controller.basicAnim.Set_OverrideController(animator);
+            return;
+        }
+        
+        _controller.basicAnim.Set_OverrideController(_buddyAnimators[Random.Range(0, _buddyAnimators.Length)]);
+    }
+    
     public void Set_Data(BuddyNPC_Data data)
     {
         _data = data;

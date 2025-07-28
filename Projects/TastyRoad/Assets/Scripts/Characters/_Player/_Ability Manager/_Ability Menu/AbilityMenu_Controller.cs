@@ -135,7 +135,7 @@ public class AbilityMenu_Controller : MonoBehaviour
 
         foreach (Ability_ScrObj ability in availableAbilities)
         {
-            int activationCount = managerData.AbilityData(ability).activationCount;
+            int activationCount = managerData.Ability_ActivationCount(ability);
             
             float ratio = activationCount / (float)ability.Max_ActivationCount();
             float weight = Mathf.Clamp01(1f - ratio);
@@ -307,8 +307,7 @@ public class AbilityMenu_Controller : MonoBehaviour
         manager.Activate_Ability(currentAbility);
 
         // dialog
-        Ability abilityData = manager.data.AbilityData(currentAbility);
-        int activationCount = abilityData.activationCount;
+        int activationCount = manager.data.Ability_ActivationCount(currentAbility);
         
         Sprite abilitySprite = currentAbility.activationIconSprite[activationCount];
         string activationInfo = activationCount + "/" + currentAbility.Max_ActivationCount() + " " + _infoTemplate.TemplateString(1);

@@ -155,7 +155,7 @@ Animator:
   m_GameObject: {fileID: 5817206134798704318}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 38aea67124a1d446b89aa70d683605ef, type: 2}
+  m_Controller: {fileID: 22100000, guid: 0f3ae3604c3414f43bd0d52e933a62cb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -330,6 +330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
+  _recruitQuestIcon: {fileID: 0}
+  _recruitBar: {fileID: 0}
+  _recruitRate: 0
 --- !u!114 &8048547352410133038
 MonoBehaviour:
   m_ObjectHideFlags: 0

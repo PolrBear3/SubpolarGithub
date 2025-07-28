@@ -13,6 +13,9 @@ public class NPC_Interaction : MonoBehaviour
     
     [SerializeField] [Range(0, 100)] private float _recruitRate;
     
+    [Space(60)] 
+    [SerializeField] private Ability_ScrObj _buddyMergeCountAbility;
+    
 
     private Sprite _emptyQuestSprite;
     
@@ -32,6 +35,7 @@ public class NPC_Interaction : MonoBehaviour
         interactable.OnHoldInteract += Interact_FacePlayer;
 
         if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
+        if (_recruitQuestIcon == null) return;
         
         // reset data
         _emptyQuestSprite = _recruitQuestIcon.sprite;
@@ -42,6 +46,7 @@ public class NPC_Interaction : MonoBehaviour
         interactable.OnHoldInteract += Transfer_RecruitQuestFood;
 
         NPC_GiftSystem giftSystem = _controller.giftSystem;
+        if (giftSystem == null) return;
 
         _controller.giftSystem.coolTimeBar.OnMaxAmount += Cancel_Recruitment;
         _controller.giftSystem.OnGift += Toggle_Recruitment;
@@ -55,12 +60,14 @@ public class NPC_Interaction : MonoBehaviour
         interactable.OnInteract -= Interact_FacePlayer;
         interactable.OnHoldInteract -= Interact_FacePlayer;
 
-        // recruitment subscriptions
         if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
+        if (_recruitQuestIcon == null) return;
         
+        // recruitment subscriptions
         interactable.OnHoldInteract -= Transfer_RecruitQuestFood;
         
         NPC_GiftSystem giftSystem = _controller.giftSystem;
+        if (giftSystem == null) return;
 
         _controller.giftSystem.coolTimeBar.OnMaxAmount -= Cancel_Recruitment;
         _controller.giftSystem.OnGift -= Toggle_Recruitment;
@@ -172,19 +179,35 @@ public class NPC_Interaction : MonoBehaviour
             _recruitBar.Load();
             return;
         }
-        
         Cancel_Recruitment();
-            
-        Main_Controller main = Main_Controller.instance;
-        Buddy_Controller buddyController = player.buddyController;
 
-        // spawn buddy
-        GameObject spawnBuddy = Instantiate(player.buddyController.buddyNPC, transform.position, Quaternion.identity);
+        Main_Controller main = Main_Controller.instance;
+        
+        // raw food
+        if (main.dataController.Is_RawFood(playerFood))
+        {
+            List<Food_ScrObj> ingredientFoods = main.dataController.Foods_WithIngredient(playerFood);
+            int randIndex = Random.Range(0, ingredientFoods.Count);
+
+            for (int i = 0; i < _controller.giftSystem.Random_DropAmount(); i++)
+            {
+                playerIcon.Set_CurrentData(new(ingredientFoods[randIndex]));
+            }
+            playerIcon.Show_Icon();
+            playerIcon.Toggle_SubDataBar(true);
+            playerIcon.Show_Condition();
+            
+            return;
+        }
+            
+        Buddy_Controller buddyController = player.buddyController;
+        GameObject spawnBuddy = Instantiate(buddyController.buddyNPC, transform.position, Quaternion.identity);
         
         Buddy_NPC buddy = spawnBuddy.GetComponent<Buddy_NPC>();
         buddyController.Track_CurrentBuddy(buddy);
 
-        int mergeCount = buddyController.defaultMergeCount; // + ability //
+        int abilityCount = player.abilityManager.data.Ability_ActivationCount(_buddyMergeCountAbility);
+        int mergeCount = buddyController.defaultMergeCount + abilityCount;
          
         buddy.Set_Data(new(playerFoodData, mergeCount));
         buddy.Load_DataIndication();

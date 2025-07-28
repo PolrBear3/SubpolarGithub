@@ -8,10 +8,13 @@ public class BasicAnimation_Controller : MonoBehaviour
     public SpriteRenderer spriteRenderer => _spriteRenderer;
 
     private Animator _animator;
+    public Animator animator => _animator;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private AnimatorOverrideController _animOverride;
+    public AnimatorOverrideController animOverride => _animOverride;
+    
     [SerializeField] private string _defaultAnimation;
 
 
@@ -45,7 +48,7 @@ public class BasicAnimation_Controller : MonoBehaviour
     private void Set_OverrideController()
     {
         if (_animOverride == null) return;
-
+        
         _animator.runtimeAnimatorController = _animOverride;
     }
     public void Set_OverrideController(AnimatorOverrideController setOverrider)
