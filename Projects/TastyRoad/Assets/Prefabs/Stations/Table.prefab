@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: -87010650432210433}
   - component: {fileID: 3609195736537386832}
   - component: {fileID: 6583535744904325927}
+  - component: {fileID: 4822021569820490841}
   - component: {fileID: 6181532817078306231}
   m_Layer: 0
   m_Name: Table
@@ -387,6 +388,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _controller: {fileID: -87010650432210433}
   _durabilityBreakIcon: {fileID: 1096320692611759957}
+--- !u!114 &4822021569820490841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5231110676368674916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842efa719c170451d9fa7d43259f0654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mergeFoods:
+  - {fileID: 11400000, guid: 93f468edd125c4322bd0f18fa9ba6a7b, type: 2}
+  - {fileID: 11400000, guid: 8d8b1aec53dc64fc2bc3da499ee3abbc, type: 2}
+  - {fileID: 11400000, guid: 40c3114a360e24555aed5fd2c9eac7d5, type: 2}
+  - {fileID: 11400000, guid: b304d3831cc074e3cb7aaaa3a2013c01, type: 2}
+  - {fileID: 11400000, guid: 23bb1e404be1448fbba81041dda56de8, type: 2}
+  - {fileID: 11400000, guid: c1fc42627f37141f8a6c9dee95bc973e, type: 2}
+  - {fileID: 11400000, guid: fa306448d687242e6b9cc99ccc1727cc, type: 2}
 --- !u!114 &6181532817078306231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9bb058d8c78a44bdb2af3b860c2dc77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _foodListController: {fileID: 4822021569820490841}
   _foodPrinterAbility: {fileID: 11400000, guid: 0a1accdec8304463bb71de8d086a45da, type: 2}
 --- !u!1001 &1517393429545405773
 PrefabInstance:

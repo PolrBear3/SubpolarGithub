@@ -186,7 +186,7 @@ public class NPC_Interaction : MonoBehaviour
         // raw food
         if (main.dataController.Is_RawFood(playerFood))
         {
-            List<Food_ScrObj> ingredientFoods = main.dataController.Foods_WithIngredient(playerFood);
+            List<Food_ScrObj> ingredientFoods = main.dataController.AllFoods(playerFood);
             int randIndex = Random.Range(0, ingredientFoods.Count);
 
             for (int i = 0; i < _controller.giftSystem.Random_DropAmount(); i++)

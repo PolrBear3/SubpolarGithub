@@ -112,11 +112,22 @@ public class Data_Controller : MonoBehaviour
 
         return allFoods;
     }
-    
+    public List<Food_ScrObj> AllFoods(List<FoodData> ingredientDatas)
+    {
+        List<Food_ScrObj> allFoods = AllFoods();
+
+        for (int i = allFoods.Count - 1; i >= 0; i--)
+        {
+            if (AllFoods()[i].Ingredients_Match(ingredientDatas)) continue;
+            allFoods.RemoveAt(i);
+        }
+
+        return allFoods;
+    }
     /// <returns>
     /// cooked foods that has ingredient
     /// </returns>
-    public List<Food_ScrObj> Foods_WithIngredient(Food_ScrObj ingredient)
+    public List<Food_ScrObj> AllFoods(Food_ScrObj ingredient)
     {
         List<Food_ScrObj> foods = new();
         
@@ -166,13 +177,14 @@ public class Data_Controller : MonoBehaviour
 
         return null;
     }
-
     public Food_ScrObj Food(List<FoodData> ingredientDatas)
     {
-        for (int i = 0; i < AllFoods().Count; i++)
+        List<Food_ScrObj> allFoods = AllFoods();
+        
+        for (int i = 0; i < allFoods.Count; i++)
         {
-            if (!AllFoods()[i].Ingredients_Match(ingredientDatas)) continue;
-            return AllFoods()[i];
+            if (allFoods[i].Ingredients_Match(ingredientDatas) == false) continue;
+            return allFoods[i];
         }
 
         return null;

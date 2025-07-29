@@ -778,6 +778,25 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         List<FoodData> foodDatas = playerFood.AllDatas();
 
+        // dialog update
+        for (int i = 0; i < foodDatas.Count; i++)
+        {
+            DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
+            Food_ScrObj dataFood = foodDatas[i].foodScrObj;
+            
+            if (AddAvailable_Amount(dataFood) <= 0)
+            {
+                dialog.Update_Dialog(0);
+                break;
+            }
+            
+            if (foodDatas[i].Has_Condition(FoodCondition_Type.heated) == false) continue;
+
+            dialog.Update_Dialog(1);
+            break;
+        }
+
+        // update data
         for (int i = foodDatas.Count - 1; i >= 0; i--)
         {
             Food_ScrObj dataFood = foodDatas[i].foodScrObj;

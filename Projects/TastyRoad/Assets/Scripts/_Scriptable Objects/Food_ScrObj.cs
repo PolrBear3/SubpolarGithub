@@ -107,19 +107,21 @@ public class Food_ScrObj : ScriptableObject
     
     public bool Ingredients_Match(List<FoodData> ingredientDatas)
     {
+        List<FoodData> datas = new(ingredientDatas);
+        
         for (int i = 0; i < ingredients.Count; i++)
         {
-            for (int j = ingredientDatas.Count - 1; j >= 0; j--)
+            for (int j = datas.Count - 1; j >= 0; j--)
             {
-                if (ingredientDatas[j] == null) continue;
-                if (ingredientDatas[j].foodScrObj != ingredients[i].foodScrObj) continue;
-                if (!ingredients[i].Conditions_Match(ingredientDatas[j].conditionDatas)) continue;
+                if (datas[j] == null) continue;
+                if (datas[j].foodScrObj != ingredients[i].foodScrObj) continue;
+                if (!ingredients[i].Conditions_Match(datas[j].conditionDatas)) continue;
 
-                ingredientDatas.RemoveAt(j);
+                datas.RemoveAt(j);
             }
         }
 
-        return ingredientDatas.Count <= 0;
+        return datas.Count <= 0;
     }
 
 

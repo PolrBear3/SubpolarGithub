@@ -8,6 +8,10 @@ public class Table : MonoBehaviour
     private Station_Controller _stationController;
     public Station_Controller stationController => _stationController;
 
+    
+    [Space(20)]
+    [SerializeField] private FoodList_Controller _foodListController;
+
     [SerializeField] private Ability_ScrObj _foodPrinterAbility;
 
 
@@ -142,10 +146,7 @@ public class Table : MonoBehaviour
         FoodData tableData = _stationController.Food_Icon().currentData;
         FoodData playerData = Main_Controller.instance.Player().foodIcon.currentData;
 
-        Data_Controller data = Main_Controller.instance.dataController;
-        List<FoodData> ingredientDatas = new() { tableData, playerData };
-
-        return data.Food(ingredientDatas);
+        return _foodListController.MergedFood(new List<FoodData>() { tableData, playerData });
     }
 
     private void Merge_Food()
