@@ -35,8 +35,8 @@ public class Table : MonoBehaviour
         interactable.OnInteract += Interact;
         interactable.OnUnInteract += UnInteract;
 
-        interactable.OnAction1 += Action_SwapFood;
-        interactable.OnAction2 += Action_SwapFood;
+        interactable.OnAction1 += PlaceFood;
+        interactable.OnAction2 += TakeFood;
     }
 
     public void OnDestroy()
@@ -49,8 +49,8 @@ public class Table : MonoBehaviour
         interactable.OnInteract -= Interact;
         interactable.OnUnInteract -= UnInteract;
 
-        interactable.OnAction1 -= Action_SwapFood;
-        interactable.OnAction2 -= Action_SwapFood;
+        interactable.OnAction1 += PlaceFood;
+        interactable.OnAction2 += TakeFood;
         
         Input_Controller input = Input_Controller.instance;
 
@@ -110,10 +110,11 @@ public class Table : MonoBehaviour
     // Functions
     public void SwapFood()
     {
+        FoodData_Controller stationIcon = _stationController.Food_Icon();
         FoodData_Controller playerFoodIcon = Main_Controller.instance.Player().foodIcon;
 
         // swap data with player
-        _stationController.Food_Icon().Swap_Data(playerFoodIcon);
+        stationIcon.Swap_Data(playerFoodIcon);
 
         // show player food data
         playerFoodIcon.Show_Icon();
@@ -121,11 +122,11 @@ public class Table : MonoBehaviour
         playerFoodIcon.Toggle_SubDataBar(true);
 
         // show table food data
-        _stationController.Food_Icon().Show_Icon();
-        _stationController.Food_Icon().Show_Condition();
+        stationIcon.Show_Icon();
+        stationIcon.Show_Condition();
 
         // play sound on non empty food swap
-        if (playerFoodIcon.hasFood || _stationController.Food_Icon().hasFood)
+        if (playerFoodIcon.hasFood || stationIcon.hasFood)
         {
             Audio_Controller.instance.Play_OneShot(gameObject, 1);
         }
@@ -133,11 +134,52 @@ public class Table : MonoBehaviour
         UnInteract();
     }
 
-    public void Action_SwapFood()
+    public void PlaceFood()
     {
-        if (_stationController.ActionBubble().bubbleOn) return;
+        Action_Bubble bubble = _stationController.ActionBubble();
+        if (bubble != null && bubble.bubbleOn) return;
 
-        SwapFood();
+        FoodData_Controller foodIcon = _stationController.Food_Icon();
+        FoodData_Controller playerIcon = Main_Controller.instance.Player().foodIcon;
+
+        if (foodIcon.hasFood || playerIcon.hasFood == false)
+        {
+            SwapFood();
+            return;
+        }
+
+        foodIcon.Set_CurrentData(new(playerIcon.currentData));
+        foodIcon.Show_Icon();
+        foodIcon.Show_Condition();
+        
+        playerIcon.Set_CurrentData(null);
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
+    }
+
+    public void TakeFood()
+    {
+        Action_Bubble bubble = _stationController.ActionBubble();
+        if (bubble != null && bubble.bubbleOn) return;
+
+        FoodData_Controller foodIcon = _stationController.Food_Icon();
+        FoodData_Controller playerIcon = Main_Controller.instance.Player().foodIcon;
+
+        if (foodIcon.hasFood == false || playerIcon.DataCount_Maxed())
+        {
+            SwapFood();
+            return;
+        }
+
+        playerIcon.Set_CurrentData(new(foodIcon.currentData));
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
+        
+        foodIcon.Set_CurrentData(null);
+        foodIcon.Show_Icon();
+        foodIcon.Show_Condition();
     }
     
 
