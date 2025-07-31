@@ -30,6 +30,8 @@ public class Input_Controller : MonoBehaviour
     private ControlScheme_ScrObj _currentScheme;
     public ControlScheme_ScrObj currentScheme => _currentScheme;
 
+    private string _currentSchemeName;
+
     private List<string> _actionMaps = new();
 
 
@@ -74,16 +76,12 @@ public class Input_Controller : MonoBehaviour
         Set_Instance();
         Set_ActionMaps();
         
-        Handle_SchemeUpdate(_playerInput);
-  
-        // subscription
-        _playerInput.onControlsChanged += Handle_SchemeUpdate;
+        Update_CurrentScheme(_playerInput.currentControlScheme);
     }
 
-    private void OnDestroy()
+    private void Update()
     {
-        // subscription
-        _playerInput.onControlsChanged -= Handle_SchemeUpdate;
+        CurrentScheme_Update();
     }
     
     
@@ -116,6 +114,7 @@ public class Input_Controller : MonoBehaviour
         OnActionMapUpdate?.Invoke();
     }
 
+    
     public int Current_ActionMapNum()
     {
         string currentMapName = _playerInput.currentActionMap.name;
@@ -127,8 +126,7 @@ public class Input_Controller : MonoBehaviour
         }
         return 0;
     }
-
-
+    
     public InputActionReference ActionReference(string actionName)
     {
         ActionKey_Data[] datas = _currentScheme.actionKeyDatas;
@@ -143,11 +141,13 @@ public class Input_Controller : MonoBehaviour
 
 
     // Scheme Control
-    private void Handle_SchemeUpdate(PlayerInput playerInput)
+    private void CurrentScheme_Update()
     {
-        Update_CurrentScheme(_playerInput.currentControlScheme);
+        if (_currentSchemeName == _playerInput.currentControlScheme) return;
+        _currentSchemeName = _playerInput.currentControlScheme;
+        
+        Update_CurrentScheme(_currentSchemeName);
     }
-    
     
     public void Update_CurrentScheme(string schemeName)
     {
@@ -236,7 +236,7 @@ public class Input_Controller : MonoBehaviour
             Inovke_AnyInput(context);
             return;
         }
-
+        
         OnInteract?.Invoke();
         Inovke_AnyInput(context);
     }
@@ -298,6 +298,10 @@ public class Input_Controller : MonoBehaviour
         if (!context.performed) return;
 
         Vector2 directionInput = context.ReadValue<Vector2>();
+
+        directionInput = Mathf.Abs(directionInput.x) >= Mathf.Abs(directionInput.y)
+            ? new(Mathf.Sign(directionInput.x), 0f)
+            : new(0f, Mathf.Sign(directionInput.y));
 
         RecentUI_InputManager().OnCursorControl?.Invoke(directionInput);
         _cursorDirection = directionInput;
@@ -370,7 +374,7 @@ public class Input_Controller_Inspector : Editor
         {
             if (controller.currentScheme.schemeName == "PC")
             {
-                controller.Update_CurrentScheme("GamePad");
+                controller.Update_CurrentScheme("Gamepad");
                 return;
             }
             controller.Update_CurrentScheme("PC");

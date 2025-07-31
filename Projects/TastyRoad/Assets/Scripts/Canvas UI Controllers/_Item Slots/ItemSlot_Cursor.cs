@@ -67,6 +67,7 @@ public class ItemSlot_Cursor : MonoBehaviour
         _data.Empty_Item();
 
         _cursorImage.sprite = _recentCursorSprite;
+        _cursorImage.color = Color.white;
 
         _data.currentAmount = 0;
         _amountText.text = "";
