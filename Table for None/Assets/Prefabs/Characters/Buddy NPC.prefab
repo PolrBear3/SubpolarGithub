@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _controller: {fileID: 9094981842974887859}
-  _defaultMoveSpeed: 5
+  _defaultMoveSpeed: 8
   _intervalTime: 0.25
 --- !u!114 &6217879069349174343
 MonoBehaviour:
@@ -323,7 +323,8 @@ MonoBehaviour:
   _buddyAnimators:
   - {fileID: 22100000, guid: e2a1b859638a04a48824689c281064fb, type: 2}
   _followSpacingDistance: 1
-  _followIncreaseSpeed: 10
+  _followSpeed: 15
+  _actionDelayTime: 1
   _pickupStations:
   - {fileID: 11400000, guid: ddd48639fa2c1441d9f93d97f0a94b94, type: 2}
   - {fileID: 11400000, guid: 8d1e6b36626de4a3ea7b9c6ec7712fc7, type: 2}

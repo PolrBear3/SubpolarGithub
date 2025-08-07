@@ -14,9 +14,12 @@ public class Buddy_NPC : MonoBehaviour
 
     [Space(20)] 
     [SerializeField] [Range(0, 10)] private float _followSpacingDistance;
-    [SerializeField] [Range(0, 100)] private float _followIncreaseSpeed;
-    
+    [SerializeField] [Range(0, 100)] private float _followSpeed;
+
     [Space(10)] 
+    [SerializeField] [Range(0, 10)] private int _actionDelayTime;
+    
+    [Space(20)] 
     [SerializeField] private Station_ScrObj[] _pickupStations;
     [SerializeField] private Station_ScrObj[] _placeStations;
 
@@ -110,7 +113,7 @@ public class Buddy_NPC : MonoBehaviour
         _isFollowing = true;
 
         NPC_Movement movement = _controller.movement;
-        movement.Set_MoveSpeed(movement.defaultMoveSpeed + _followIncreaseSpeed);
+        movement.Set_MoveSpeed(_followSpeed);
         
         _coroutine = StartCoroutine(Follow_Coroutine());
     }
@@ -218,7 +221,9 @@ public class Buddy_NPC : MonoBehaviour
                 if (pickupStation == null) continue;
 
                 movement.Assign_TargetPosition(pickupStation.transform.position);
+                
                 while (movement.At_TargetPosition() == false) yield return null;
+                yield return new WaitForSeconds(_actionDelayTime);
                 
                 if (pickupStation == null) continue;
 
@@ -295,7 +300,9 @@ public class Buddy_NPC : MonoBehaviour
             if (placeStation == null) continue;
             
             movement.Assign_TargetPosition(placeStation.transform.position);
+            
             while (movement.At_TargetPosition() == false) yield return null;
+            yield return new WaitForSeconds(_actionDelayTime);
 
             if (placeStation == null) continue;
             

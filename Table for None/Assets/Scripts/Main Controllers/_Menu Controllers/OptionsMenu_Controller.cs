@@ -119,7 +119,7 @@ public class OptionsMenu_Controller : Menu_Controller
     
     
     // Menu_Controller base
-    public void Select_Action(int index)
+    public new void Select_Action(int index)
     {
         if (index != currentIndex)
         {
