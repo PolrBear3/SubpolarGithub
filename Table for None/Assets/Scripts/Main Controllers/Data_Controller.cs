@@ -47,7 +47,7 @@ public class Data_Controller : MonoBehaviour
         for (int i = 0; i < _worldData.Length; i++)
         {
             if (indexNum != i) continue;
-            return _worldData[i].locations.Length;
+            return _worldData[i].LocationCount();
         }
 
         return 0;
@@ -110,6 +110,13 @@ public class Data_Controller : MonoBehaviour
             allFoods.Add(cookedFoods[i]);
         }
 
+        if (Main_Controller.instance.demoBuild == false) return allFoods;
+
+        for (int i = allFoods.Count - 1; i >= 0; i--)
+        {
+            if (allFoods[i].demoBuild) continue;
+            allFoods.RemoveAt(i);
+        }
         return allFoods;
     }
     public List<Food_ScrObj> AllFoods(List<FoodData> ingredientDatas)
@@ -161,22 +168,6 @@ public class Data_Controller : MonoBehaviour
 
         return null;
     }
-    public Food_ScrObj Food(Food_ScrObj foodScrObj)
-    {
-        for (int i = 0; i < rawFoods.Count; i++)
-        {
-            if (foodScrObj != rawFoods[i]) continue;
-            return rawFoods[i];
-        }
-
-        for (int i = 0; i < cookedFoods.Count; i++)
-        {
-            if (foodScrObj != cookedFoods[i]) continue;
-            return cookedFoods[i];
-        }
-
-        return null;
-    }
     public Food_ScrObj Food(List<FoodData> ingredientDatas)
     {
         List<Food_ScrObj> allFoods = AllFoods();
@@ -196,25 +187,6 @@ public class Data_Controller : MonoBehaviour
     {
         return rawFoods[Random.Range(0, rawFoods.Count)];
     }
-    public Food_ScrObj RawFood(int foodID)
-    {
-        for (int i = 0; i < rawFoods.Count; i++)
-        {
-            if (foodID != rawFoods[i].id) continue;
-            return rawFoods[i];
-        }
-        return null;
-    }
-    public Food_ScrObj RawFood(Food_ScrObj foodScrObj)
-    {
-        for (int i = 0; i < rawFoods.Count; i++)
-        {
-            if (foodScrObj != rawFoods[i]) continue;
-            return rawFoods[i];
-        }
-        return null;
-    }
-
     public bool Is_RawFood(Food_ScrObj foodScrObj)
     {
         if (foodScrObj == null) return false;
@@ -228,6 +200,16 @@ public class Data_Controller : MonoBehaviour
 
 
     // Get Cooked Food
+    public Food_ScrObj CookedFood(Food_ScrObj foodScrObj)
+    {
+        for (int i = 0; i < cookedFoods.Count; i++)
+        {
+            if (foodScrObj != cookedFoods[i]) continue;
+            return cookedFoods[i];
+        }
+        return null;
+    }
+    
     /// <summary>
     /// Check if State Data Matches (checks if visitor data matches home data)
     /// </summary>
@@ -254,40 +236,5 @@ public class Data_Controller : MonoBehaviour
 
         if (matchCount > 0) return false;
         else return true;
-    }
-
-
-    public Food_ScrObj CookedFood()
-    {
-        return cookedFoods[Random.Range(0, cookedFoods.Count)];
-    }
-    public Food_ScrObj CookedFood(int foodID)
-    {
-        for (int i = 0; i < cookedFoods.Count; i++)
-        {
-            if (foodID != cookedFoods[i].id) continue;
-            return cookedFoods[i];
-        }
-        return null;
-    }
-    public Food_ScrObj CookedFood(Food_ScrObj foodScrObj)
-    {
-        for (int i = 0; i < cookedFoods.Count; i++)
-        {
-            if (foodScrObj != cookedFoods[i]) continue;
-            return cookedFoods[i];
-        }
-        return null;
-    }
-
-    public Food_ScrObj CookedFood(List<FoodData> ingredientDatas)
-    {
-        for (int i = 0; i < cookedFoods.Count; i++)
-        {
-            if (!cookedFoods[i].Ingredients_Match(ingredientDatas)) continue;
-            return cookedFoods[i];
-        }
-
-        return null;
     }
 }

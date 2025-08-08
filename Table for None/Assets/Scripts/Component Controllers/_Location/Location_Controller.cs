@@ -61,6 +61,11 @@ public class Location_Controller : MonoBehaviour
         return restricted;
     }
 
+    public bool At_Location(GameObject checkObject)
+    {
+        return _data.screenArea.bounds.Contains(checkObject.transform.position);
+    }
+    
 
     // Position Utilities
     public List<Vector2> All_SpawnPositions()

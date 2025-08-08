@@ -140,6 +140,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
+        if (_guideToggled) return;
         if (_guideActive == false) return;
         if (guideScrObj == null) return;
         if (Guide_Triggered(guideScrObj)) return;

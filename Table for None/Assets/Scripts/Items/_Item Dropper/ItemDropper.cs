@@ -141,7 +141,6 @@ public class ItemDropper : MonoBehaviour
 
         return null;
     }
-
     /// <returns>
     /// random weighted food from targetFoods
     /// </returns>
@@ -171,7 +170,6 @@ public class ItemDropper : MonoBehaviour
 
         return null;
     }
-
     /// <returns>
     /// random weighted food that is higher price than compareFood.
     /// </returns>
@@ -244,9 +242,12 @@ public class ItemDropper : MonoBehaviour
 
     public void Drop_Ingredient()
     {
+        Food_ScrObj foodScrObj = Weighted_RandomFood();
+        if (foodScrObj == null) return;
+        
         CollectCard droppedCard = DropReturn_CollectCard();
 
-        droppedCard.Set_FoodIngredient(Weighted_RandomFood());
+        droppedCard.Set_FoodIngredient(foodScrObj);
         droppedCard.Assign_Pickup(droppedCard.FoodIngredient_toArchive);
     }
 

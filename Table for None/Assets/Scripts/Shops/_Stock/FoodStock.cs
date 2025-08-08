@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
-using Unity.VisualScripting;
 using UnityEngine.Serialization;
 
 public class FoodStock : MonoBehaviour
@@ -47,8 +46,6 @@ public class FoodStock : MonoBehaviour
     private StockData _stockData;
     public StockData stockData => _stockData;
 
-    public Action OnUnlock;
-
 
     // UnityEngine
     private void Awake()
@@ -73,16 +70,14 @@ public class FoodStock : MonoBehaviour
         // subscriptions
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
-
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
-        
+ 
         _interactable.OnInteract += Toggle_Dialog;
         _interactable.OnInteract += Toggle_Price;
 
         _interactable.OnInteract += Toggle_AmountBar;
         _interactable.OnUnInteract += Toggle_AmountBar;
 
-        _interactable.OnAction1 += Unlock;
+        _interactable.OnAction1 += Purchase_Stock;
         _interactable.OnAction1 += Purchase_Single;
         _interactable.OnAction2 += Purchase_All;
     }
@@ -90,7 +85,18 @@ public class FoodStock : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
-        OnUnlock = null;
+        _interactable.detection.EnterEvent -= Toggle_AmountBar;
+        _interactable.detection.ExitEvent -= Toggle_AmountBar;
+ 
+        _interactable.OnInteract -= Toggle_Dialog;
+        _interactable.OnInteract -= Toggle_Price;
+
+        _interactable.OnInteract -= Toggle_AmountBar;
+        _interactable.OnUnInteract -= Toggle_AmountBar;
+
+        _interactable.OnAction1 -= Purchase_Stock;
+        _interactable.OnAction1 -= Purchase_Single;
+        _interactable.OnAction2 -= Purchase_All;
     }
 
 
@@ -103,6 +109,18 @@ public class FoodStock : MonoBehaviour
         return _stockData;
     }
 
+    public void Set_PurchaseData(PurchaseData data)
+    {
+        if (data == null)
+        {
+            _unlockPriceData = new(false);
+            return;
+        }
+        
+        _unlockPriceData = new(data.price);
+        _unlockPriceData.Toggle_PurchaseState(data.purchased);
+    }
+    
     public void Set_FoodData(FoodData data)
     {
         if (data == null) return;
@@ -150,6 +168,7 @@ public class FoodStock : MonoBehaviour
 
         Update_Sprite();
         Update_TagSprite();
+        Update_Bubble();
     }
 
     public void Toggle_Discount(bool toggle)
@@ -158,7 +177,7 @@ public class FoodStock : MonoBehaviour
 
         Update_TagSprite();
     }
-
+    
 
     private void Toggle_AmountBar()
     {
@@ -171,7 +190,9 @@ public class FoodStock : MonoBehaviour
 
     private void Toggle_Price()
     {
-        if (_stockData.unlocked == false)
+        if (_stockData.unlocked == false) return;
+        
+        if (_unlockPriceData.purchased == false)
         {
             int unlockPrice = _unlockPriceData == null ? _defaultUnlockPrice : _unlockPriceData.price;
             GoldSystem.instance.Indicate_TriggerData(new(_dialog.defaultData.icon, -unlockPrice));
@@ -187,6 +208,7 @@ public class FoodStock : MonoBehaviour
     private void Toggle_Dialog()
     {
         if (_stockData.unlocked == false) return;
+        if (_unlockPriceData.purchased == false) return;
         
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
 
@@ -215,6 +237,12 @@ public class FoodStock : MonoBehaviour
 
         if (_stockData.unlocked == false)
         {
+            bubble.Empty_Bubble();
+            return;
+        }
+
+        if (_unlockPriceData == null || _unlockPriceData.purchased == false)
+        {
             Sprite unlockSprite = bubble.setSprites[0];
 
             bubble.Set_Bubble(unlockSprite, null);
@@ -235,13 +263,18 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        // raw food & default
-        _sr.sprite = _sprites[1];
+        if (_unlockPriceData == null || _unlockPriceData.purchased == false)
+        {
+            _sr.sprite = _sprites[1];
+            return;
+        }
+
+        _sr.sprite = _sprites[2];
     }
 
     private void Update_TagSprite()
     {
-        if (_stockData.unlocked == false)
+        if (_stockData.unlocked == false || _unlockPriceData == null || _unlockPriceData.purchased == false)
         {
             _tagSR.color = Color.clear;
             return;
@@ -264,8 +297,32 @@ public class FoodStock : MonoBehaviour
         _tagSR.sprite = _tagSprites[1];
     }
 
+    
+    // Interaction
+    private void Purchase_Stock()
+    {
+        if (_stockData.unlocked == false) return;
+        if (_unlockPriceData.purchased) return;
 
-    // Functions
+        int unlockPrice = _unlockPriceData == null ? _defaultUnlockPrice : _unlockPriceData.price;
+        
+        if (GoldSystem.instance.Update_CurrentAmount(-unlockPrice) == false)
+        {
+            _interactable.UnInteract();
+            return;
+        }
+
+        _unlockPriceData.Toggle_PurchaseState(true);
+        _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[1], transform.position);
+
+        Update_Sprite();
+        Update_TagSprite();
+        Update_Bubble();
+        
+        _interactable.UnInteract();
+    }
+    
+    
     private int StockedFood_Price()
     {
         if (_stockData.unlocked == false || _foodIcon.hasFood == false) return 0;
@@ -281,8 +338,7 @@ public class FoodStock : MonoBehaviour
 
         return price;
     }
-
-
+    
     private bool Purchase(int purchaseAmount)
     {
         if (_stockData.unlocked == false) return false;
@@ -362,32 +418,5 @@ public class FoodStock : MonoBehaviour
         // coin launch animation
         Transform player = _interactable.detection.player.transform;
         _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[0], player.position);
-    }
-
-
-    public void Set_UnlockPrice(int price)
-    {
-        _unlockPriceData = new(price);
-    }
-    
-    private void Unlock()
-    {
-        if (_stockData.unlocked) return;
-
-        int unlockPrice = _unlockPriceData == null ? _defaultUnlockPrice : _unlockPriceData.price;
-        
-        if (GoldSystem.instance.Update_CurrentAmount(-unlockPrice) == false)
-        {
-            _interactable.UnInteract();
-            return;
-        }
-
-        Toggle_Unlock(true);
-        OnUnlock?.Invoke();
-
-        _launcher.Parabola_CoinLaunch(_launcher.setCoinSprites[1], transform.position);
-
-        Update_Bubble();
-        _interactable.UnInteract();
     }
 }

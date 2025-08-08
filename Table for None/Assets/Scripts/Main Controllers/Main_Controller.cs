@@ -10,6 +10,10 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
     public static Main_Controller instance;
 
+    
+    [SerializeField] private bool _demoBuild;
+    public bool demoBuild => _demoBuild;
+
 
     [Space(20)]
     [SerializeField] private Camera_Controller _cameraController;

@@ -149,6 +149,12 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 
     private void Cycle_New()
     {
+        if (_data.currentNPC == null)
+        {
+            Spawn_New(true);
+            return;
+        }
+        
         if (_data.currentNPC.purchaseData.purchased) return;
         
         _cycleCoroutine = StartCoroutine(Cycle_New_Coroutine());

@@ -8,6 +8,8 @@ using UnityEngine.Localization;
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Food!")]
 public class Food_ScrObj : ScriptableObject
 {
+    public bool demoBuild;
+    
     [Space(20)]
     public Sprite sprite;
     public Sprite eatSprite;

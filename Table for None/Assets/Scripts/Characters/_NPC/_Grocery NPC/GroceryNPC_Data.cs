@@ -142,4 +142,13 @@ public class GroceryNPC_Data
         
         return true;
     }
+    public bool FoodData_UnlockMaxed(List<Food_ScrObj> foodScrObjs)
+    {
+        for (int i = 0; i < foodScrObjs.Count; i++)
+        {
+            if (FoodData_UnlockMaxed(foodScrObjs[i])) continue;
+            return false;
+        }
+        return true;
+    }
 }
