@@ -89,6 +89,7 @@ public class InformationBox : MonoBehaviour
     public void Update_InfoText(string infoText)
     {
         _infoText.text = infoText.ToString();
+        Update_RectLayout();
     }
     public void Update_RectLayout()
     {

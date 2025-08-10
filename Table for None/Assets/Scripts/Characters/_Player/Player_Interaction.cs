@@ -214,7 +214,6 @@ public class Player_Interaction : MonoBehaviour
         disposeFoodDrop.Fade_Destroy();
     }
     
-    
     public void IndicationTrigger_CurrentFood()
     {
         FoodData_Controller foodIcon = _controller.foodIcon;

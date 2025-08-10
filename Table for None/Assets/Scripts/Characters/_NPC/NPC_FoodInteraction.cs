@@ -221,9 +221,11 @@ public class NPC_FoodInteraction : MonoBehaviour
             setData.Update_Condition(new FoodCondition_Data(randCondition, randLevel));
         }
 
+        Main_Controller main = Main_Controller.instance;
+        
         if (foodIcon.hasFood == false)
         {
-            Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, false);
+            main.currentLocation.Track_FoodOrderNPC(_controller, false);
             return;
         }
 
@@ -233,7 +235,12 @@ public class NPC_FoodInteraction : MonoBehaviour
         Run_OrderTime();
         Update_RoamArea();
         
-        Main_Controller.instance.currentLocation.Track_FoodOrderNPC(_controller, true);
+        main.currentLocation.Track_FoodOrderNPC(_controller, true);
+
+        ArchiveMenu_Controller archive = main.currentVehicle.menu.archiveMenu;
+        
+        archive.Update_OrderCount(foodIcon.currentData.foodScrObj);
+        archive.Update_InfoBox();
     }
 
 
@@ -300,7 +307,10 @@ public class NPC_FoodInteraction : MonoBehaviour
         _transferDatas.Add(new(transferData));
 
         ArchiveMenu_Controller archive = Main_Controller.instance.currentVehicle.menu.archiveMenu;
+        
         archive.Update_FoodTransferCount(transferData.foodScrObj, 1);
+        archive.FoodInteraction_Data(_transferData.foodScrObj).Update_ServeCount(Payment_Amount());
+        archive.Update_InfoBox();
         
         AbilityManager.IncreasePoint(1);
         TutorialQuest_Controller.instance.Complete_Quest("Serve" + transferData.foodScrObj.name, 1);
@@ -355,7 +365,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
 
     // Payment
-    public int Set_Payment()
+    public int Payment_Amount()
     {
         int payAmount = 0;
 
@@ -372,6 +382,13 @@ public class NPC_FoodInteraction : MonoBehaviour
             // condition match calculation
             payAmount += orderData.Conditions_MatchCount(_transferData.conditionDatas) * _conditionBonusPay;
         }
+        
+        return payAmount;
+    }
+    
+    public int Set_Payment()
+    {
+        int payAmount = Payment_Amount();
 
         _payAvailable = payAmount > 0;
         _collectIndicator.SetActive(_payAvailable);
@@ -384,6 +401,8 @@ public class NPC_FoodInteraction : MonoBehaviour
     {
         if (_payAvailable == false) return;
 
+        Main_Controller main = Main_Controller.instance;
+        
         GoldSystem goldSystem = GoldSystem.instance;
         goldSystem.Update_CurrentAmount(payAmount);
 
@@ -401,9 +420,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         // sfx
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
 
-        bool npcFull = Main_Controller.instance.currentLocation.FoodOrderNPC_Maxed();
-        
-        if (foodIcon.hasFood == false || Main_Controller.instance.bookmarkedFoods.Count <= 0 || npcFull)
+        bool npcFull = main.currentLocation.FoodOrderNPC_Maxed();
+        if (foodIcon.hasFood == false || main.bookmarkedFoods.Count <= 0 || npcFull)
         {
             foodIcon.Update_AllDatas(null);
             foodIcon.Show_Icon();
@@ -422,6 +440,8 @@ public class NPC_FoodInteraction : MonoBehaviour
         foodIcon.Show_Condition();
 
         Update_RoamArea();
+        
+        main.currentVehicle.menu.archiveMenu.Update_OrderCount(foodIcon.currentData.foodScrObj);
     }
 
     private void Collect_Payment()

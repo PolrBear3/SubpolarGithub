@@ -29,21 +29,31 @@ public class PlaceableStock : MonoBehaviour
     [SerializeField] private Ability_ScrObj _goldMagnetAbility;
 
 
-    private StockData _data;
-    public StockData data => _data;
-    
-    private PurchaseData _purchaseData;
-    public PurchaseData purchaseData => _purchaseData;
+    private FoodStock_Data _data;
+    public FoodStock_Data data => _data;
+
 
 
     // UnityEngine
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
+        
+        if (_data != null) return;
+        _data = new FoodStock_Data(new StockData(false));
+
+        if (_data.stockPurchaseData != null) return;
+        _data.Set_PurchaseData(new(false));
     }
 
     private void Start()
     {
+        _foodIcon.Show_Icon();
+        
+        Toggle_AmountBar();
+        Toggle_PurchaseState(_data.Stock_Purchased());
+        
+        Update_BubbleActions();
         Update_forComplete();
         Update_PreviewIcon();
 
@@ -78,66 +88,43 @@ public class PlaceableStock : MonoBehaviour
 
 
     // Data Control
-    private void Load_Data()
+    public void Set_Data(FoodStock_Data data)
     {
-        Toggle_PurchaseState(_purchaseData != null && _purchaseData.purchased);
-        
-        if (_data != null) return;
-        _data = new(null);
+        if (data == null) return;
+        _data = data;
 
-        Update_BubbleActions();
-
-        if (_purchaseData != null) return;
-        Set_PurchaseData(new(0));
-    }
-    public void Load_Data(List<FoodData> placedData, StockData stockData)
-    {
-        if (placedData == null || placedData.Count <= 0) return;
-
-        _foodIcon.Update_AllDatas(placedData);
-        _data = new(stockData);
-        
-        Update_BubbleActions();
+        _foodIcon.Update_AllDatas(_data.stockedFoodDatas);
+        _data.Set_StockedFoodData(_foodIcon.AllDatas());
     }
     
     public void Reset_Data()
     {
+        _data.stockedFoodDatas.Clear();
+        
         _foodIcon.Update_AllDatas(null);
         _foodIcon.Show_Icon();
 
-        _data.Toggle_Complete(false);
-        Update_forComplete();
-
-        _interactable.LockInteract(false);
-
-        Update_BubbleActions();
-        Toggle_AmountBar();
-    }
-    
-    public void Set_PurchaseData(PurchaseData purchaseData)
-    {
-        if (purchaseData == null)
-        {
-            _purchaseData = new(0);
-            return;
-        }
+        _data.stockData.Toggle_Complete(false);
         
-        _purchaseData = purchaseData;
+        Update_forComplete();
+        Update_BubbleActions();
+        
+        Toggle_AmountBar();
     }
 
 
     // Updates and Toggles
     public void Update_forComplete()
     {
-        Load_Data();
-
-        _foodIcon.Toggle_Height(_data.isComplete);
+        bool bundleComplete = _data.stockData.isComplete;
+        
+        _foodIcon.Toggle_Height(bundleComplete);
         _foodIcon.Hide_Condition();
         
-        _interactable.bubble.Toggle_Height(_data.isComplete);
-        _interactable.LockInteract(_data.isComplete);
+        _interactable.bubble.Toggle_Height(bundleComplete);
+        _interactable.LockInteract(bundleComplete);
 
-        if (_data.isComplete == false)
+        if (bundleComplete == false)
         {
             _sr.sprite = _sprites[0];
             _foodIcon.ShowIcon_LockToggle(false);
@@ -154,14 +141,14 @@ public class PlaceableStock : MonoBehaviour
     
     public void Toggle_PurchaseState(bool toggle)
     {
-        bool hasPayment = _purchaseData != null && _purchaseData.price > 0;
-        _paymentIcon.SetActive(toggle && hasPayment);
+        PurchaseData purchaseData = _data.stockPurchaseData;
+        purchaseData.Toggle_PurchaseState(toggle);
         
-        if (_purchaseData == null) return;
-        _purchaseData.Toggle_PurchaseState(toggle);
+        bool hasPayment = _data.Stock_Purchased() && purchaseData.price > 0;
+        _paymentIcon.SetActive(toggle && hasPayment);
     }
 
-    private void Update_PreviewIcon()
+    public void Update_PreviewIcon()
     {
         if (_paymentIcon.activeSelf || _previewIcon.hasFood == false)
         {
@@ -217,7 +204,7 @@ public class PlaceableStock : MonoBehaviour
     // Functions
     private bool Place_Available()
     {
-        if (_data.isComplete || _foodIcon.DataCount_Maxed()) return false;
+        if (_data.stockData.isComplete || _foodIcon.DataCount_Maxed()) return false;
         
         Player_Controller player = _interactable.detection.player;
         if (player == null) return false;
@@ -238,6 +225,8 @@ public class PlaceableStock : MonoBehaviour
 
         FoodData_Controller playerIcon = _interactable.detection.player.foodIcon;
 
+        _data.stockedFoodDatas.Add(new(playerIcon.currentData));
+        
         // add data to _placedFoods
         _foodIcon.Set_CurrentData(playerIcon.currentData);
         _foodIcon.Show_Icon();
@@ -256,11 +245,12 @@ public class PlaceableStock : MonoBehaviour
     private void Complete()
     {
         if (!foodIcon.hasFood) return;
-
-        _data.Toggle_Complete(true);
-        Update_forComplete();
         
+        _data.stockData.Toggle_Complete(true);
+        
+        Update_forComplete();
         Update_BubbleActions();
+        
         Complete_BundleQuest();
         
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
@@ -279,15 +269,15 @@ public class PlaceableStock : MonoBehaviour
     
     private void Collect_Payment()
     {
-        if (_purchaseData.purchased == false) return;
+        if (_data.Stock_Purchased() == false) return;
         
         Toggle_PurchaseState(false);
         Update_PreviewIcon();
 
-        if (_purchaseData.price <= 0) return;
+        PurchaseData stockPurchaseData = _data.stockPurchaseData;
+        if (stockPurchaseData.price <= 0) return;
         
-        int paymentAmount = _purchaseData.price;
-        
+        int paymentAmount = stockPurchaseData.price;
         GoldSystem.instance.Update_CurrentAmount(paymentAmount);
 
         Transform player = _interactable.detection.player.transform;

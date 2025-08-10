@@ -5,14 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class GroceryNPC_Data
 {
+    [ES3Serializable] private Food_ScrObj _questFoodScrObj;
+    public Food_ScrObj questFoodScrObj => _questFoodScrObj;
+    
     [ES3Serializable] private int _questCompleteCount;
     public int questCompleteCount => _questCompleteCount;
     
     [ES3Serializable] private bool _questComplete;
     public bool questComplete => _questComplete;
     
-    [ES3Serializable] private List<FoodData> _unlockDatas;
+    [ES3Serializable] private List<FoodData> _unlockDatas = new();
     public List<FoodData> unlockDatas => _unlockDatas;
+    
+    [ES3Serializable] private List<FoodStock_Data> _foodStockDatas = new();
+    public List<FoodStock_Data> foodStockDatas => _foodStockDatas;
+    
+    [ES3Serializable] private List<FoodStock_Data> _placeableStockDatas = new();
+    public List<FoodStock_Data> placeableStockDatas => _placeableStockDatas;
 
 
     // New
@@ -31,7 +40,12 @@ public class GroceryNPC_Data
     }
     
     
-    // Control
+    // Data
+    public void Set_QuestFood(Food_ScrObj questFoodScrObj)
+    {
+        _questFoodScrObj = questFoodScrObj;
+    }
+    
     public void Update_QuestCompleteCount(int updateValue)
     {
         _questCompleteCount += updateValue;

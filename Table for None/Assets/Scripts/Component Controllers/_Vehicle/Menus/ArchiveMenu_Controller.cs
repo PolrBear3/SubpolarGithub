@@ -41,6 +41,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private List<FoodData> _ingredientUnlocks = new();
     public List<FoodData> ingredientUnlocks => _ingredientUnlocks;
     
+    private List<NPC_FoodInteractionData> _foodInteractionDatas = new();
+    public List<NPC_FoodInteractionData> foodInteractionDatas => _foodInteractionDatas;
+    
 
     // Editor
     [HideInInspector] public Food_ScrObj archiveFood;
@@ -197,7 +200,7 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Drop_Food();
     }
     
-    private void Update_InfoBox()
+    public void Update_InfoBox()
     {
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot_Data cursorData = cursor.data;
@@ -242,13 +245,20 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         {
             ingredientStatus = infoTrigger.TemplateString(4);
         }
+        
+        // recent npc food interaction data
+        NPC_FoodInteractionData recentData = FoodInteraction_Data(dragFood);
+        string orderCountString = recentData != null ? "<sprite=107> " + recentData.orderFoodData.currentAmount.ToString() + "  " : null;
+        string serveCountString = recentData != null ? "<sprite=108> " + recentData.serveCount.ToString() + "  " : null;
+        string paymentString = recentData != null ? "<sprite=56> " + recentData.goldCount.ToString() + "\n\n" : null;
+        string recentDataString = recentData != null ? orderCountString + serveCountString + paymentString : null;
 
         string dragInfo = "<sprite=69> " + dragFood.LocalizedName() + "\n\n";
         string unlockCount = "<sprite=88> " + FoodIngredient_UnlockCount(dragFood) + "/" + _maxUnlockAmount + "\n";
         string transferCount = "<sprite=106> " + IngredientUnlocked_FoodData(dragFood).tikCount + "/" + _maxTransferAmount + "\n\n";
         string controlInfo = infoTrigger.KeyControl_Template(bookmarkStatus, ingredientStatus, bookmarkStatus);
 
-        info.Update_InfoText(dragInfo + unlockCount + transferCount + lockStatus + controlInfo);
+        info.Update_InfoText(dragInfo + unlockCount + transferCount + recentDataString + lockStatus + controlInfo);
     }
 
 
@@ -414,26 +424,19 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void CurrentFood_BookmarkToggle()
     {
-        //
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot_Data cursorData = cursor.data;
-
-        // check if cursor has item
+        
         if (cursorData.hasItem == false) return;
-
         Hide_IngredientBox();
-
-        //
+        
         ItemSlot currentSlot = cursor.currentSlot;
-
-        // check if current hover slot has no item
         if (currentSlot.data.hasItem)
         {
             Swap_Food();
             return;
         }
 
-        // drop current item
         Drop_Food();
 
         if (currentSlot.data.isLocked == true)
@@ -442,20 +445,22 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             _controller.infoBox.gameObject.SetActive(false);
             return;
         }
-
-        // toggle
+        
         currentSlot.Toggle_BookMark(!currentSlot.data.bookMarked);
 
         // main data update
         Main_Controller main = Main_Controller.instance;
 
-        if (currentSlot.data.bookMarked == true)
+        if (currentSlot.data.bookMarked == false)
         {
-            main.AddFood_toBookmark(currentSlot.data.currentFood);
+            main.RemoveFood_fromBookmark(currentSlot.data.currentFood);
             return;
         }
 
-        main.RemoveFood_fromBookmark(currentSlot.data.currentFood);
+        main.AddFood_toBookmark(currentSlot.data.currentFood);
+        
+        // reset recent data
+        _foodInteractionDatas.Remove(FoodInteraction_Data(currentSlot.data.currentFood));
     }
 
     private void Toggle_OrderIndicator()
@@ -588,8 +593,31 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         return toggleData;
     }
 
+    
+    // NPC Food Interaction
+    public NPC_FoodInteractionData FoodInteraction_Data(Food_ScrObj interactFood)
+    {
+        for (int i = 0; i < _foodInteractionDatas.Count; i++)
+        {
+            if (interactFood != _foodInteractionDatas[i].orderFoodData.foodScrObj) continue;
+            return _foodInteractionDatas[i];
+        }
+        return null;
+    }
 
-
+    public void Update_OrderCount(Food_ScrObj orderFood)
+    {
+        NPC_FoodInteractionData orderFoodData = FoodInteraction_Data(orderFood);
+        
+        if (orderFoodData == null)
+        {
+            _foodInteractionDatas.Add(new(orderFood));
+            return;
+        }
+        orderFoodData.orderFoodData.Update_Amount(1);
+    }
+    
+    
     // Ingredient Data
     private int MaxUnlock_IngredientCount()
     {
