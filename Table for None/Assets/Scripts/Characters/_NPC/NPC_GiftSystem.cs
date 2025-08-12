@@ -62,7 +62,7 @@ public class NPC_GiftSystem : MonoBehaviour
         _controller.interactable.OnHoldInteract += Gift;
         _controller.interactable.OnHoldInteract += ToggleBar_Duration;
 
-        globaltime.instance.OnTimeTik += Update_CoolTime;
+        GlobalTime_Controller.instance.OnTimeTik += Update_CoolTime;
 
         _controller.interactable.OnInteract += _videoGuide.Trigger_CurrentGuide;
         
@@ -90,7 +90,7 @@ public class NPC_GiftSystem : MonoBehaviour
         _controller.interactable.OnHoldInteract -= ToggleBar_Duration;
         _controller.interactable.OnHoldInteract -= Gift;
 
-        globaltime.instance.OnTimeTik -= Update_CoolTime;
+        GlobalTime_Controller.instance.OnTimeTik -= Update_CoolTime;
         
         _controller.interactable.OnInteract -= _videoGuide.Trigger_CurrentGuide;
         

@@ -36,14 +36,14 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 
         // subscription
         Main_Controller.instance.worldMap.OnNewLocation += _data.Reset_SpawnStatus;
-        globaltime.instance.OnDayTime += Cycle_New;
+        GlobalTime_Controller.instance.OnDayTime += Cycle_New;
     }
 
     private void OnDestroy()
     {
         // subscription
         Main_Controller.instance.worldMap.OnNewLocation += _data.Reset_SpawnStatus;
-        globaltime.instance.OnDayTime -= Cycle_New;
+        GlobalTime_Controller.instance.OnDayTime -= Cycle_New;
     }
 
 

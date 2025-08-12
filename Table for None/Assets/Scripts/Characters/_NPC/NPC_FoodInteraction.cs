@@ -45,7 +45,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         _collectIndicator.SetActive(false);
 
         // subscriptions
-        globaltime.instance.OnTimeTik += Set_FoodOrder;
+        GlobalTime_Controller.instance.OnTimeTik += Set_FoodOrder;
 
         ActionBubble_Interactable interactable = _controller.interactable;
         interactable.OnInteract += Transfer_FoodOrder;
@@ -61,7 +61,7 @@ public class NPC_FoodInteraction : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
-        globaltime.instance.OnTimeTik -= Set_FoodOrder;
+        GlobalTime_Controller.instance.OnTimeTik -= Set_FoodOrder;
 
         ActionBubble_Interactable interactable = _controller.interactable;
         interactable.OnInteract -= Transfer_FoodOrder;

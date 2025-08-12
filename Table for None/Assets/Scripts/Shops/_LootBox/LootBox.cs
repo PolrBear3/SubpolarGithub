@@ -47,7 +47,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         // subscriptions
         Main_Controller.instance.worldMap.OnNewLocation += Reset_DroppedState;
         
-        globaltime globaltime = globaltime.instance;
+        GlobalTime_Controller globaltime = GlobalTime_Controller.instance;
         globaltime.OnDayTime += _data.droppedMapHistory.Clear;
         globaltime.OnTimeTik += Refill;
         
@@ -59,7 +59,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         // subscriptions
         Main_Controller.instance.worldMap.OnNewLocation -= Reset_DroppedState;
         
-        globaltime globaltime = globaltime.instance;
+        GlobalTime_Controller globaltime = GlobalTime_Controller.instance;
         globaltime.OnDayTime -= _data.droppedMapHistory.Clear;
         globaltime.OnTimeTik -= Refill;
 

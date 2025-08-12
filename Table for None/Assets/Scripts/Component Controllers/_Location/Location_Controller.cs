@@ -31,19 +31,20 @@ public class Location_Controller : MonoBehaviour
         // Toggle Off All Roam Area Colors On Game Start
         _data.roamArea.color = Color.clear;
 
-        _maxPopulationData = _data.Max_PopulationData(globaltime.instance.currentTimePhase);
+        GlobalTime_Controller globalTime = GlobalTime_Controller.instance;
+        _maxPopulationData = _data.Max_PopulationData(globalTime.data.timePhase);
 
         _data.UpdateCurrent_FoodOrderCount(_data.maxFoodOrderCount);
         Cycle_NPCSpawn();
 
         // subscriptions
-        globaltime.instance.OnTimeTik += Update_MaxPopulation;
+        globalTime.OnTimeTik += Update_MaxPopulation;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        globaltime.instance.OnTimeTik -= Update_MaxPopulation;
+        GlobalTime_Controller.instance.OnTimeTik -= Update_MaxPopulation;
     }
 
 
@@ -201,7 +202,8 @@ public class Location_Controller : MonoBehaviour
     /// </summary>
     private void Update_MaxPopulation()
     {
-        TimePhase currentTimePhase = _data.Max_PopulationData(globaltime.instance.currentTimePhase).timePhase;
+        GlobalTime_Controller globalTime = GlobalTime_Controller.instance;
+        TimePhase currentTimePhase = _data.Max_PopulationData(globalTime.data.timePhase).timePhase;
 
         if (_maxPopulationData.timePhase == currentTimePhase) return;
 

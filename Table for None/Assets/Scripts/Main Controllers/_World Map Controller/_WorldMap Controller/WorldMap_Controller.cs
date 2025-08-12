@@ -53,7 +53,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
         Play_LocationBGM(location);
         
         // load saved location
-        if (ES3.KeyExists("WorldMap_Controller/WorldMap_Data"))
+        if (ES3.KeyExists("WorldMap_Controller/WorldMap_ControllerData"))
         {
             if (_data.newLocation == false) return;
 
@@ -74,9 +74,9 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("WorldMap_Controller/WorldMap_Data"))
+        if (ES3.KeyExists("WorldMap_Controller/WorldMap_ControllerData"))
         {
-            _data = ES3.Load<WorldMap_ControllerData>("WorldMap_Controller/WorldMap_Data");
+            _data = ES3.Load<WorldMap_ControllerData>("WorldMap_Controller/WorldMap_ControllerData");
             return;
         }
         
@@ -88,7 +88,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
     // IBackupLoadable
     public bool Has_Conflict()
     {
-        return true;
+        return false;
     }
 
     public void Load_Backup()

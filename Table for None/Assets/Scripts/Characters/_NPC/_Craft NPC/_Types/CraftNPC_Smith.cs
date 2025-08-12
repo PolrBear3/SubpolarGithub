@@ -35,7 +35,7 @@ public class CraftNPC_Smith : CraftNPC
         // subscriptions
         ActionBubble_Interactable interactable = npcController.interactable;
 
-        globaltime.instance.OnTimeTik += MoveTo_SetPosition;
+        GlobalTime_Controller.instance.OnTimeTik += MoveTo_SetPosition;
         interactable.OnHoldInteract += MoveTo_SetPosition;
 
         interactable.OnInteract += Toggle_PurchasePrice;
@@ -53,7 +53,7 @@ public class CraftNPC_Smith : CraftNPC
         // subscriptions
         ActionBubble_Interactable interactable = npcController.interactable;
         
-        globaltime.instance.OnTimeTik -= MoveTo_SetPosition;
+        GlobalTime_Controller.instance.OnTimeTik -= MoveTo_SetPosition;
         interactable.OnHoldInteract -= MoveTo_SetPosition;
 
         interactable.OnInteract -= Toggle_PurchasePrice;

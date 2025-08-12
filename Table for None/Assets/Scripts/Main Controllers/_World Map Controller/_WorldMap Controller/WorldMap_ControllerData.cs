@@ -5,13 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class WorldMap_ControllerData
 {
-    private WorldMap_Data _currentData;
+    [ES3Serializable] private WorldMap_Data _currentData;
     public WorldMap_Data currentData => _currentData;
     
-    private HashSet<WorldMap_Data> _visitedDatas = new();
+    [ES3Serializable] private HashSet<WorldMap_Data> _visitedDatas = new();
     public HashSet<WorldMap_Data> visitedDatas => _visitedDatas;
     
-    private bool _newLocation;
+    [ES3Serializable] private bool _newLocation;
     public bool newLocation => _newLocation;
     
     

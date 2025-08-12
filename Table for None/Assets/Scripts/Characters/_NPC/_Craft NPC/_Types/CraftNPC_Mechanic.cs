@@ -37,7 +37,7 @@ public class CraftNPC_Mechanic : CraftNPC
         // subscriptions
         Main_Controller.instance.currentVehicle.menu.On_MenuToggle += Update_RecentMenuNum;
         
-        globaltime globaltime = globaltime.instance;
+        GlobalTime_Controller globaltime = GlobalTime_Controller.instance;
 
         globaltime.OnTimeTik += Set_ToolBox;
         globaltime.OnTimeTik += Collect_ToolBox;
@@ -61,7 +61,7 @@ public class CraftNPC_Mechanic : CraftNPC
         // subscriptions
         Main_Controller.instance.currentVehicle.menu.On_MenuToggle += Update_RecentMenuNum;
         
-        globaltime globaltime = globaltime.instance;
+        GlobalTime_Controller globaltime = GlobalTime_Controller.instance;
 
         globaltime.OnTimeTik -= Set_ToolBox;
         globaltime.OnTimeTik -= Collect_ToolBox;

@@ -40,9 +40,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private WorldMap_Controller _worldMap;
     public WorldMap_Controller worldMap => _worldMap;
 
-    [SerializeField] private globaltime _globalTime;
-    public globaltime globalTime => _globalTime;
-
     [SerializeField] private SubLocations_Controller _subLocation;
     public SubLocations_Controller subLocation => _subLocation;
 

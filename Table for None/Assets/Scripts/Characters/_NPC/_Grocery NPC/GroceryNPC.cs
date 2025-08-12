@@ -98,7 +98,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // action subscription
         Main_Controller.instance.worldMap.OnNewLocation += Restock_Instant;
 
-        globaltime globaltime = globaltime.instance;
+        GlobalTime_Controller globaltime = GlobalTime_Controller.instance;
         
         globaltime.OnTimeTik += Collect_FoodBundles;
         globaltime.OnTimeTik += Set_Discount;
@@ -124,7 +124,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         // action subscription
         Main_Controller.instance.worldMap.OnNewLocation -= Restock_Instant;
         
-        globaltime globaltime = globaltime.instance;
+        GlobalTime_Controller globaltime = GlobalTime_Controller.instance;
         
         globaltime.OnTimeTik -= Collect_FoodBundles;
         globaltime.OnTimeTik -= Set_Discount;

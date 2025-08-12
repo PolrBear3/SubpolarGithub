@@ -91,12 +91,12 @@ public class MainMenu_Controller : Menu_Controller
             return;
         }
         
-        // get current location data //
-        WorldMap_Data mapData = ES3.Load("WorldMap_Controller/WorldMap_Data", new WorldMap_Data(0, 0));
+        // get current location data
+        WorldMap_Data mapData = ES3.Load<WorldMap_ControllerData>("WorldMap_Controller/WorldMap_ControllerData").currentData;
         string mapDataString = "<sprite=95> " + (mapData.worldNum) + "-" + (mapData.locationNum);
 
-        // get current gold amount //
-        GoldSystem_Data goldData = ES3.Load("GoldSystem/GoldSystem_Data", new GoldSystem_Data(0));
+        // get current gold amount
+        GoldSystem_Data goldData = ES3.Load<GoldSystem_Data>("GoldSystem/GoldSystem_Data");
         string goldDataString = "<sprite=56> " + goldData.goldAmount;
         
         _dataInfoText.text = mapDataString + "   " + goldDataString;

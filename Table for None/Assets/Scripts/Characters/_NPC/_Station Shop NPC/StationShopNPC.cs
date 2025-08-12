@@ -79,7 +79,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         WorldMap_Controller worldMap = Main_Controller.instance.worldMap;
         worldMap.OnNewLocation -= Restock_New;
         
-        globaltime.instance.OnDayTime -= Restock_ArchivedStation;
+        GlobalTime_Controller.instance.OnDayTime -= Restock_ArchivedStation;
         
         _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
 
