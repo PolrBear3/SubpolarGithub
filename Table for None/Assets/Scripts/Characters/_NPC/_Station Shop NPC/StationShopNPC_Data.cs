@@ -8,11 +8,15 @@ public class StationShopNPC_Data
     [ES3Serializable] private List<StationData> _archiveDatas = new();
     public List<StationData> archiveDatas => _archiveDatas;
     
+    [ES3Serializable] private List<StationStock_Data> _stationStockDatas = new();
+    public List<StationStock_Data> stationStockDatas => _stationStockDatas;
+    
+    
     [ES3Serializable] private bool _scrapCollected;
     public bool scrapCollected => _scrapCollected;
     
-    [ES3Serializable] private Station_ScrObj _buildStation;
-    public Station_ScrObj buildStation => _buildStation;
+    [ES3Serializable] private Station_ScrObj _buildingStation;
+    public Station_ScrObj buildingStation => _buildingStation;
 
 
     // New
@@ -22,20 +26,20 @@ public class StationShopNPC_Data
     }
     
     
-    // Data Control
+    // Action Datas
     public void Reset_ActionState()
     {
         _scrapCollected = false;
-        _buildStation = null;
+        _buildingStation = null;
     }
     
-    public void Collect_Scrap()
+    public void Set_ScrapCollectState()
     {
         _scrapCollected = true;
     }
     
-    public void Build_Station(Station_ScrObj buildStation)
+    public void Set_BuildingStation(Station_ScrObj buildStation)
     {
-        _buildStation = buildStation;
+        _buildingStation = buildStation;
     }
 }

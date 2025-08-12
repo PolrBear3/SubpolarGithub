@@ -115,7 +115,7 @@ public class LocationMenu_Controller : MonoBehaviour
         if (toggle == false) return;
 
         // update panel
-        int currentWorldNum = main.worldMap.currentData.worldNum;
+        int currentWorldNum = main.worldMap.data.currentData.worldNum;
         Sprite panelSprite = main.dataController.World_Data(currentWorldNum).panelSprite;
 
         _menuPanel.sprite = panelSprite;
@@ -277,7 +277,7 @@ public class LocationMenu_Controller : MonoBehaviour
         Data_Controller data = main.dataController;
 
         WorldMap_Controller worldMap = main.worldMap;
-        WorldMap_Data currentData = worldMap.currentData;
+        WorldMap_Data currentData = worldMap.data.currentData;
 
         int currentWorldNum = currentData.worldNum;
         int worldIndexNum = currentWorldNum - 1;
@@ -336,7 +336,7 @@ public class LocationMenu_Controller : MonoBehaviour
 
     private void Update_PreviousTiles(Data_Controller data, WorldMap_Controller worldMap)
     {
-        int previousWorldNum = worldMap.currentData.worldNum - 1;
+        int previousWorldNum = worldMap.data.currentData.worldNum - 1;
         int locationNum = data.LocationCount_inWorld(previousWorldNum);
 
         if (previousWorldNum <= 0) return;
@@ -362,7 +362,7 @@ public class LocationMenu_Controller : MonoBehaviour
     }
     private void Update_NextTiles(Data_Controller data, WorldMap_Controller worldMap)
     {
-        int nextWorldNum = worldMap.currentData.worldNum + 1;
+        int nextWorldNum = worldMap.data.currentData.worldNum + 1;
         int locationNum = 1;
 
         for (int i = _tiles.Length / 2 + 1; i < _tiles.Length; i++)

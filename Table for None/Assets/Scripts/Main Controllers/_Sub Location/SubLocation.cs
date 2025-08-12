@@ -38,7 +38,7 @@ public class SubLocation : MonoBehaviour
         player.Toggle_Controllers(false);
 
         // set load icon
-        int worldNum = main.worldMap.currentData.worldNum;
+        int worldNum = main.worldMap.data.currentData.worldNum;
         main.transitionCanvas.Set_LoadIcon(main.dataController.World_Data(worldNum).worldIcon);
 
         // curtain scene transition

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
 public class StationShopNPC : MonoBehaviour, ISaveLoadable
 {
@@ -95,16 +94,29 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("StationShopNPC/StationShopNPC_Data", _data);
+        _data.stationStockDatas.Clear();
+       
+        foreach (StationStock stationStock in _stationStocks)
+        {
+            _data.stationStockDatas.Add(stationStock.data);
+        }
         
-        Save_StationStocks();
+        ES3.Save("StationShopNPC/StationShopNPC_Data", _data);
     }
 
     public void Load_Data()
     {
         _data = ES3.Load("StationShopNPC/StationShopNPC_Data", new StationShopNPC_Data(new()));
+
+        List<StationStock_Data> stockDatas = _data.stationStockDatas;
         
-        Load_StationStocks();
+        for (int i = 0; i < stockDatas.Count; i++)
+        {
+            // check if not enough stocks are available to load
+            if (i > _stationStocks.Length - 1) break; 
+
+            _stationStocks[i].Set_Data(stockDatas[i]);
+        }
     }
 
 
@@ -145,45 +157,13 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     }
 
 
-    // Station Stock Control
-    private void Save_StationStocks()
-    {
-        Dictionary<StationData, StockData> stationStockDatas = new();
-
-        for (int i = 0; i < _stationStocks.Length; i++)
-        {
-            stationStockDatas.Add(new(_stationStocks[i].currentStation), new(_stationStocks[i].stockData));
-        }
-
-        ES3.Save("StationShopNPC/stationStockDatas", stationStockDatas);
-    }
-
-    private void Load_StationStocks()
-    {
-        Dictionary<StationData, StockData> stationStockDatas = new();
-        stationStockDatas = ES3.Load("StationShopNPC/stationStockDatas", stationStockDatas);
-
-        List<StationData> stations = new(stationStockDatas.Keys);
-        List<StockData> stockDatas = new(stationStockDatas.Values);
-
-        for (int i = 0; i < stationStockDatas.Count; i++)
-        {
-            // check if not enough station stocks are available to load
-            if (i > _stationStocks.Length - 1) return;
-
-            _stationStocks[i].Set_StationData(stations[i]);
-            _stationStocks[i].Set_StockData(stockDatas[i]);
-        }
-    }
-
-
+    // Station Stock Datas
     private bool StationStocks_Full()
     {
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold) return false;
+            if (_stationStocks[i].data.Station_Sold()) return false;;
         }
-
         return true;
     }
 
@@ -193,7 +173,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].stockData.isDiscount == false) continue;
+            if (_stationStocks[i].data.discountData.isDiscount == false) continue;
             count++;
         }
 
@@ -308,8 +288,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold) continue;
-            if (_stationStocks[i].currentStation.stationScrObj != checkStation) continue;
+            if (_stationStocks[i].data.Station_Sold()) continue;
+            if (_stationStocks[i].data.stationData.stationScrObj != checkStation) continue;
             checkCount++;
         }
         
@@ -455,14 +435,14 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         ItemSlot_Data bookmarkedData = bookmarkedDatas[bookmarkedDatas.Count - 1];
         Station_ScrObj recentStation = bookmarkedData.currentStation;
         
-        _data.Build_Station(recentStation);
+        _data.Set_BuildingStation(recentStation);
 
         // refresh movement
         NPC_Movement movement = _npcController.movement;
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold == false) continue;
+            if (_stationStocks[i].data.Station_Sold() == false) continue;
 
             // go to scrap
             movement.Assign_TargetPosition(_scrapStack.transform.position);
@@ -487,7 +467,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             }
 
             // collect scrap
-            _data.Collect_Scrap();
+            _data.Set_ScrapCollectState();
             
             _scrapStack.amountBar.Set_Amount(0);
             _scrapStack.amountBar.Toggle_BarColor(_scrapStack.amountBar.Is_MaxAmount());
@@ -550,11 +530,11 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     {
         if (_data.scrapCollected == false) return;
 
-        Station_ScrObj buildStation = _data.buildStation;
+        Station_ScrObj buildStation = _data.buildingStation;
 
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold == false) continue;
+            if (_stationStocks[i].data.Station_Sold() == false) continue;
             
             // set price
             int restockPrice = ArchivedStation_BuildCount(buildStation) <= 0 ? 0 : buildStation.price;
@@ -646,7 +626,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         
         for (int i = 0; i < _stationStocks.Length; i++)
         {
-            if (_stationStocks[i].sold == false) continue;
+            if (_stationStocks[i].data.Station_Sold() == false) continue;
 
             NPC_Movement movement = _npcController.movement;
 

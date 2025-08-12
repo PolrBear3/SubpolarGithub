@@ -80,13 +80,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _npcController.foodIcon.Show_Icon(0.5f);
         _questBar.Toggle_BarColor(true);
         
-        Toggle_QuestBar();
-
         Update_FoodStockDatas();
         Update_BundleQuest();
-
-        Toggle_UnlockingFood();
         
+        Toggle_QuestBar();
+        Toggle_UnlockingFood();
+ 
         // untrack
         Main_Controller.instance.UnTrack_CurrentCharacter(gameObject);
 
@@ -195,7 +194,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         
         for (int i = 0; i < foodStockDatas.Count; i++)
         {
-            if (i + 1 > allFoodStocks.Count) break;
+            // check if not enough stocks are available to load
+            if (i > allFoodStocks.Count - 1) break;
             
             allFoodStocks[i].Set_Data(foodStockDatas[i]);
             allFoodStocks[i].Set_FoodData(foodStockDatas[i].Recent_StockedFood());
@@ -206,7 +206,9 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < placeStockDatas.Count; i++)
         {
-            if (i + 1 > _placeableStocks.Length) break;
+            // check if not enough stocks are available to load
+            if (i > _placeableStocks.Length - 1) break;
+            
             _placeableStocks[i].Set_Data(placeStockDatas[i]);
         }
         
@@ -218,7 +220,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
         Set_QuestFood(_data.questFoodScrObj);
     }
-
+    
 
     // Basics
     private void Interact_FacePlayer()
@@ -381,8 +383,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _questBar.Load_Custom(_questCount, _data.questCompleteCount);
         _questBar.Toggle(true);
     }
-
-
+    
     private void Set_QuestFood(Food_ScrObj food)
     {
         _data.Set_QuestFood(food);
@@ -399,7 +400,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         questIcon.Set_CurrentData(new(food));
         questIcon.Show_Icon(0.5f);
     }
-
     /// <summary>
     /// Sets a random quest food that was not previously set
     /// </summary>
@@ -425,8 +425,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         Set_QuestFood(questFood);
     }
-
-
+    
     private void Complete_Quest()
     {
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();

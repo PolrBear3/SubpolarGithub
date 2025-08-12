@@ -9,6 +9,12 @@ public interface ISaveLoadable
     void Save_Data();
     void Load_Data();
 }
+
+public interface IBackupLoadable
+{
+    bool Has_Conflict();
+    void Load_Backup();
+}
  
 public class SaveLoad_Controller : MonoBehaviour
 {
@@ -29,26 +35,45 @@ public class SaveLoad_Controller : MonoBehaviour
     }
 
 
-    //
+    // Gets
     private static List<ISaveLoadable> All_ISaveLoadables()
     {
         IEnumerable<ISaveLoadable> saveLoadableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveLoadable>();
         return new(saveLoadableObjects);
     }
 
+    
+    // Main
     public void SaveAll_ISaveLoadable()
     {
-        for (int i = 0; i < All_ISaveLoadables().Count; i++)
+        List<ISaveLoadable> saveLoadables = All_ISaveLoadables();
+        
+        for (int i = 0; i < saveLoadables.Count; i++)
         {
-            All_ISaveLoadables()[i].Save_Data();
+            saveLoadables[i].Save_Data();
         }
     }
     
     private void LoadAll_ISaveLoadable()
     {
-        for (int i = 0; i < All_ISaveLoadables().Count; i++)
+        List<ISaveLoadable> saveLoadables = All_ISaveLoadables();
+        
+        for (int i = 0; i < saveLoadables.Count; i++)
         {
-            All_ISaveLoadables()[i].Load_Data();
+            var saveObject = saveLoadables[i];
+            saveObject.Load_Data();
+            
+            if (saveObject is not IBackupLoadable backupLoadable) continue;
+            if (backupLoadable.Has_Conflict() == false) continue;
+            
+            backupLoadable.Load_Backup();
         }
+    }
+
+
+    public void Load_IBackupLoadable(IBackupLoadable backupLoadable)
+    {
+        if (backupLoadable.Has_Conflict() == false) return;
+        backupLoadable.Load_Backup();
     }
 }

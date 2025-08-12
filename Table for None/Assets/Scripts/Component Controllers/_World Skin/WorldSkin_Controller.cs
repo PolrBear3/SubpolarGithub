@@ -11,7 +11,7 @@ public class WorldSkin_Controller : MonoBehaviour
     // Main
     public Sprite[] CurrentWorld_SkinSprites()
     {
-        int currentWorldNum = Main_Controller.instance.worldMap.currentData.worldNum;
+        int currentWorldNum = Main_Controller.instance.worldMap.data.currentData.worldNum;
         return _skinDatas[currentWorldNum - 1].skinSprites;
     }
 }

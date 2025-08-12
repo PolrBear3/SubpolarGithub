@@ -95,8 +95,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
     // Drop Loot Data Control
     private bool CurrentLocation_Dropped()
     {
-        WorldMap_Data currentLocationData = Main_Controller.instance.worldMap.currentData;
-
+        WorldMap_Data currentLocationData = Main_Controller.instance.worldMap.data.currentData;
         return _data.droppedMapHistory.Contains(currentLocationData);
     }
     
@@ -207,8 +206,8 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         FoodDrop dropLootItem = _itemDropper.Drop_Food(dropPoint);
         FoodData_Controller dropFoodIcon = dropLootItem.foodIcon;
 
-        WorldMap_Data locationData = Main_Controller.instance.worldMap.currentData;
-        _data.Add_MapHistory(locationData);
+        WorldMap_Data currentLocationData = Main_Controller.instance.worldMap.data.currentData;
+        _data.Add_MapHistory(currentLocationData);
 
         int maxDataCount = 0;
 
