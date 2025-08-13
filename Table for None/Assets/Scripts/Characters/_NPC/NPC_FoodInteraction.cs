@@ -130,7 +130,7 @@ public class NPC_FoodInteraction : MonoBehaviour
     // Set Food Order
     private FoodData New_FoodOrder()
     {
-        List<Food_ScrObj> bookMarks = Main_Controller.instance.bookmarkedFoods;
+        List<Food_ScrObj> bookMarks = Main_Controller.instance.data.bookmarkedFoods;
         if (bookMarks.Count <= 0) return null;
 
         List<FoodWeight_Data> foodWeights = new();
@@ -185,7 +185,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         // check if additional food orders are left
         if (_controller.foodIcon.AllDatas().Count > 0) return false;
 
-        List<Food_ScrObj> bookMarks = Main_Controller.instance.bookmarkedFoods;
+        List<Food_ScrObj> bookMarks = Main_Controller.instance.data.bookmarkedFoods;
         if (bookMarks.Count <= 0) return false;
 
         Location_Controller currentLocation = Main_Controller.instance.currentLocation;
@@ -421,7 +421,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         Audio_Controller.instance.Play_OneShot(gameObject, 2);
 
         bool npcFull = main.currentLocation.FoodOrderNPC_Maxed();
-        if (foodIcon.hasFood == false || main.bookmarkedFoods.Count <= 0 || npcFull)
+        if (foodIcon.hasFood == false || main.data.bookmarkedFoods.Count <= 0 || npcFull)
         {
             foodIcon.Update_AllDatas(null);
             foodIcon.Show_Icon();

@@ -2,45 +2,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
+public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable, IBackupLoadable
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private VehicleMenu_Controller _controller;
     public VehicleMenu_Controller controller => _controller;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Station_ScrObj _foodBox;
     [SerializeField] private Transform[] _exportIndicators;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private int _maxExportAmount;
-
-
-    private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
-    public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
-
-    private int _currentPageNum;
-    
-    private List<FoodData> _rottenDatas = new();
-    
     
     [Space(80)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
-
-
+    
     // Editor
     [HideInInspector] public Food_ScrObj foodToAdd;
     [HideInInspector] public int amountToAdd;
 
+
+    private FoodMenu_Data _data;
+    private int _currentPageNum;
+    
 
     // UnityEngine
     private void OnEnable()
     {
         VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
         
-        _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        _controller.slotsController.Set_Datas(_data.slotDatas[_currentPageNum]);
 
-        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
+        _controller.Update_PageDots(_data.slotDatas.Count, _currentPageNum);
         _controller.Update_PageArrows();
 
         // subscriptions
@@ -68,7 +62,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private void OnDisable()
     {
         // save current showing slots contents to _currentDatas
-        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
+        _data.slotDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
         Drag_Cancel();
 
         // subscriptions
@@ -104,23 +98,32 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("FoodMenu_Controller/_currentDatas", _currentDatas);
-        ES3.Save("FoodMenu_Controller/_rottenDatas", _rottenDatas);
+        ES3.Save("FoodMenu_Controller/FoodMenu_Data", _data);
     }
 
     public void Load_Data()
     {
-        // load saved slot datas
-        if (ES3.KeyExists("FoodMenu_Controller/_currentDatas"))
+        if (ES3.KeyExists("FoodMenu_Controller/FoodMenu_Data") == false)
         {
-            _currentDatas = ES3.Load("FoodMenu_Controller/_currentDatas", _currentDatas);
-            _rottenDatas = ES3.Load("FoodMenu_Controller/_rottenDatas", _rottenDatas);
-
+            _data = new();
+            _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
+            
             return;
         }
+        _data = ES3.Load("FoodMenu_Controller/FoodMenu_Data", new FoodMenu_Data());
+    }
+    
+    
+    // IBackupLoadable
+    public bool Has_Conflict()
+    {
+        if (_data.slotDatas != null) return false;
+        return true;
+    }
 
-        // set new slot datas
-        _controller.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
+    public void Load_Backup()
+    {
+        _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
     }
 
 
@@ -138,7 +141,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas()
     {
-        return _currentDatas;
+        return _data.slotDatas;
     }
 
 
@@ -150,11 +153,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         int totalAvailableAmount = 0;
         int slotCapacity = _controller.slotsController.singleSlotCapacity;
 
-        for (int i = 0; i < _currentDatas.Count; i++)
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
+        
+        for (int i = 0; i < slotDatas.Count; i++)
         {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
+            for (int j = 0; j < slotDatas[i].Count; j++)
             {
-                ItemSlot_Data slotData = currentDatas[i][j];
+                ItemSlot_Data slotData = slotDatas[i][j];
 
                 // Skip if the slot has a different food item
                 if (slotData.hasItem && slotData.currentFood != food) continue;
@@ -171,24 +176,25 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private int Sort_FoodItem(Food_ScrObj food, int amount)
     {
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
         int slotCapacity = _controller.slotsController.singleSlotCapacity;
         
-        for (int i = 0; i < _currentDatas.Count; i++)
+        for (int i = 0; i < slotDatas.Count; i++)
         {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
+            for (int j = 0; j < slotDatas[i].Count; j++)
             {
-                if (currentDatas[i][j].hasItem == false) continue;
-                if (currentDatas[i][j].currentFood != food) continue;
+                if (slotDatas[i][j].hasItem == false) continue;
+                if (slotDatas[i][j].currentFood != food) continue;
                 
-                int calculatedAmount = currentDatas[i][j].currentAmount + amount;
+                int calculatedAmount = slotDatas[i][j].currentAmount + amount;
                 int leftOver = calculatedAmount - slotCapacity;
                 
                 calculatedAmount = Mathf.Clamp(calculatedAmount, 0, slotCapacity);
                 
                 FoodData addData = new(food, calculatedAmount);
-                currentDatas[i][j] = new(addData);
+                slotDatas[i][j] = new(addData);
                 
-                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+                _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
 
                 if (leftOver <= 0) return 0;
                 
@@ -208,35 +214,36 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         amount = Sort_FoodItem(food, amount);
         if (amount <= 0) return 0;
 
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
         int slotCapacity = _controller.slotsController.singleSlotCapacity;
 
-        for (int i = 0; i < _currentDatas.Count; i++)
+        for (int i = 0; i < slotDatas.Count; i++)
         {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
+            for (int j = 0; j < slotDatas[i].Count; j++)
             {
                 // Skip if slot has a different item or is full
-                if (currentDatas[i][j].hasItem == true && currentDatas[i][j].currentFood != food) continue;
-                if (currentDatas[i][j].currentAmount >= slotCapacity) continue;
+                if (slotDatas[i][j].hasItem == true && slotDatas[i][j].currentFood != food) continue;
+                if (slotDatas[i][j].currentAmount >= slotCapacity) continue;
 
                 // Calculate the total amount that would be in the slot
-                int calculatedAmount = currentDatas[i][j].currentAmount + amount;
+                int calculatedAmount = slotDatas[i][j].currentAmount + amount;
                 int leftOver = calculatedAmount - slotCapacity;
 
                 // If no leftover, just update the slot and return
                 if (leftOver <= 0)
                 {
                     FoodData addData = new(food, calculatedAmount);
-                    currentDatas[i][j] = new(addData);
+                    slotDatas[i][j] = new(addData);
 
-                    _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+                    _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
                     return 0;
                 }
 
                 // If leftover, fill the current slot to capacity
                 FoodData leftOverData = new(food, slotCapacity);
-                currentDatas[i][j] = new(leftOverData);
+                slotDatas[i][j] = new(leftOverData);
 
-                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+                _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
                 amount = leftOver;
             }
         }
@@ -250,7 +257,9 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (food == null || amount <= 0) return;
 
-        List<ItemSlot_Data> currentDatas = _currentDatas[_currentPageNum];
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
+        List<ItemSlot_Data> currentDatas = slotDatas[_currentPageNum];
+        
         int removeAmount = amount;
 
         for (int i = 0; i < currentDatas.Count; i++)
@@ -263,13 +272,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 removeAmount -= currentDatas[i].currentAmount;
                 currentDatas[i] = new();
 
-                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+                _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
                 continue;
             }
 
             currentDatas[i].currentAmount -= removeAmount;
 
-            _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+            _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
             return;
         }
     }
@@ -352,7 +361,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
         }
 
-        if (_currentDatas.Count <= 1) return;
+        if (_data.slotDatas.Count <= 1) return;
 
         int direction = nextSlots ? 1 : -1;
         Update_CurrentPage(direction);
@@ -360,35 +369,39 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Update_PageNum(float direction)
     {
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
+        
         if (direction == 1)
         {
             // next slots
-            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
+            _currentPageNum = (_currentPageNum + 1) % slotDatas.Count;
             return;
         }
 
         // previous slots
-        _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
+        _currentPageNum = (_currentPageNum - 1 + slotDatas.Count) % slotDatas.Count;
     }
 
     private void Update_CurrentPage(float yInputValue) // y input
     {
-        if (_currentDatas.Count <= 1) return;
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
+        
+        if (slotDatas.Count <= 1) return;
 
         ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
         // save current slots data to current page data, before moving on to next page
-        _currentDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
+        slotDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
 
         Update_PageNum(yInputValue);
 
         // load data to slots
-        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.Set_Datas(slotDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
 
         // indicator
-        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
+        _controller.Update_PageDots(slotDatas.Count, _currentPageNum);
     }
 
 
@@ -468,11 +481,12 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         cursor.Empty_Item();
 
         ItemSlots_Controller slotsController = _controller.slotsController;
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
 
-        _currentDatas[_currentPageNum] = slotsController.CurrentSlots_toDatas();
+        slotDatas[_currentPageNum] = slotsController.CurrentSlots_toDatas();
         Add_FoodItem(cursorData.currentFood, cursorData.currentAmount);
 
-        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.Set_Datas(slotDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
     }
 
@@ -606,22 +620,13 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // FoodBox Export System
-    private void Toggle_ExportIndicators(bool toggleOn)
-    {
-        foreach (var indicator in _exportIndicators)
-        {
-            indicator.gameObject.SetActive(toggleOn);
-        }
-    }
-
-
     private List<Transform> Available_ExportPositions()
     {
         List<Transform> exportPositions = new();
 
         for (int i = 0; i < _exportIndicators.Length; i++)
         {
-            if (Main_Controller.instance.Position_Claimed(_exportIndicators[i].position)) continue;
+            if (Main_Controller.instance.data.Position_Claimed(_exportIndicators[i].position)) continue;
             exportPositions.Add(_exportIndicators[i]);
         }
 
@@ -638,6 +643,14 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     }
 
 
+    private void Toggle_ExportIndicators(bool toggleOn)
+    {
+        foreach (var indicator in _exportIndicators)
+        {
+            indicator.gameObject.SetActive(toggleOn);
+        }
+    }
+    
     private void Export_Food()
     {
         // if no food to export on cursor
@@ -656,7 +669,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         // spawn and track food box
         Station_Controller station = main.Spawn_Station(_foodBox, Available_ExportPosition());
-        main.Claim_Position(station.transform.position);
+        main.data.Claim_Position(station.transform.position);
 
         FoodData_Controller foodBoxIcon = station.Food_Icon();
 
@@ -680,8 +693,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             _controller.slotsController.cursor.Empty_Item();
             _controller.infoBox.gameObject.SetActive(false);
         }
-
-        RottenFood_DataUpdate(foodBoxIcon);
         
         // sound
         Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 0);
@@ -689,64 +700,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
 
     // Food Retrieve System
-    private FoodData RottenFood_Data(Food_ScrObj targetFood)
-    {
-        for (int i = 0; i < _rottenDatas.Count; i++)
-        {
-            if (targetFood != _rottenDatas[i].foodScrObj) continue;
-            return _rottenDatas[i];
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// for Export
-    /// </summary>
-    private void RottenFood_DataUpdate(FoodData_Controller dataController)
-    {
-        FoodData controllerData = dataController.currentData;
-        FoodData updateData = RottenFood_Data(controllerData.foodScrObj);
-
-        if (updateData == null) return;
-        updateData.Update_Amount(-controllerData.currentAmount);
-
-        int rottenLevel = updateData.Current_ConditionLevel(FoodCondition_Type.rotten);
-
-        controllerData.Update_Condition(new(FoodCondition_Type.rotten, rottenLevel));
-        dataController.Show_Condition();
-
-        if (updateData.currentAmount > 0) return;
-        _rottenDatas.Remove(updateData);
-    }
-
-    /// <summary>
-    /// for Retrieve
-    /// </summary>
-    private void RottenFood_DataUpdate(FoodData data)
-    {
-        if (!data.Has_Condition(FoodCondition_Type.rotten)) return;
-
-        Food_ScrObj rottenFood = data.foodScrObj;
-        FoodData rottenData = RottenFood_Data(rottenFood);
-
-        if (rottenData == null)
-        {
-            _rottenDatas.Add(new(data));
-            return;
-        }
-
-        rottenData.Update_Amount(1);
-
-        int dataLevel = data.Current_ConditionLevel(FoodCondition_Type.rotten);
-        int storedDataLevel = rottenData.Current_ConditionLevel(FoodCondition_Type.rotten);
-
-        if (dataLevel <= storedDataLevel) return;
-
-        rottenData.Clear_Condition(FoodCondition_Type.rotten);
-        rottenData.Update_Condition(new(FoodCondition_Type.rotten, dataLevel));
-    }
-
-
     private bool SlicedFood_Retrievable(List<FoodData> foodDatas, FoodData targetData)
     {
         Food_ScrObj dataFood = targetData.foodScrObj;
@@ -762,8 +715,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         return foodAmount % 2 == 0;
     }
-
-
+    
     private void Retrieve_PlayerFood()
     {
         FoodData_Controller playerFood = _controller.vehicleController.detection.player.foodIcon;
@@ -810,8 +762,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
                 continue;
             }
 
-            RottenFood_DataUpdate(foodDatas[i]);
-
             Add_FoodItem(dataFood, 1);
             foodDatas.RemoveAt(i);
         }
@@ -852,7 +802,7 @@ public class FoodMenu_Controller_Inspector : Editor
 
         if (GUILayout.Button("Add New Page of Slots"))
         {
-            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.currentDatas);
+            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.ItemSlot_Datas());
         }
         GUILayout.Space(20);
 

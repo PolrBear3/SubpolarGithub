@@ -231,7 +231,7 @@ public class NPC_GiftSystem : MonoBehaviour
         Main_Controller main = Main_Controller.instance;
 
         // check if current position is claimed
-        if (main.Position_Claimed(Utility.SnapPosition(transform.position))) return false;
+        if (main.data.Position_Claimed(Utility.SnapPosition(transform.position))) return false;
 
         FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
 

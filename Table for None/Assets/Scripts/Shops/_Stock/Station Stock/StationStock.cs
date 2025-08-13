@@ -115,7 +115,7 @@ public class StationStock : MonoBehaviour
         StationMenu_Controller stationMenu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
         
-        bool slotFull = slotsController.Empty_SlotData(stationMenu.currentDatas) == null;
+        bool slotFull = slotsController.Empty_SlotData(stationMenu.ItemSlot_Datas()) == null;
 
         if (slotFull)
         {

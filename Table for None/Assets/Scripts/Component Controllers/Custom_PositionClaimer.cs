@@ -92,7 +92,7 @@ public class Custom_PositionClaimer : MonoBehaviour
         foreach (Vector2 position in Current_Positions())
         {
             Vector2 snapPos = Utility.SnapPosition(position);
-            if (main.Position_Claimed(snapPos) == false) continue;
+            if (main.data.Position_Claimed(snapPos) == false) continue;
 
             return true;
         }
@@ -111,7 +111,7 @@ public class Custom_PositionClaimer : MonoBehaviour
             Vector2 snapPos = Utility.SnapPosition(position);
             snapPositions.Add(snapPos);
 
-            main.Claim_Position(snapPos);
+            main.data.Claim_Position(snapPos);
         }
 
         return snapPositions[snapPositions.Count / 2];
@@ -124,7 +124,7 @@ public class Custom_PositionClaimer : MonoBehaviour
         foreach (Vector2 position in Current_Positions())
         {
             Vector2 snapPos = Utility.SnapPosition(position);
-            main.UnClaim_Position(snapPos);
+            main.data.claimedPositions.Remove(snapPos);
         }
     }
 }

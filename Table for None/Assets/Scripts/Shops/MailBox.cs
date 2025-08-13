@@ -133,7 +133,7 @@ public class MailBox : MonoBehaviour
 
         for (int i = 0; i < spawnPoints.Count; i++)
         {
-            if (Main_Controller.instance.Position_Claimed(spawnPoints[i]) == true) continue;
+            if (Main_Controller.instance.data.Position_Claimed(spawnPoints[i]) == true) continue;
             return spawnPoints[i];
         }
 

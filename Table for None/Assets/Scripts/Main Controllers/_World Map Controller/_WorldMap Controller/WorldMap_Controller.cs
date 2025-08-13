@@ -133,7 +133,7 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
 
         // reset settings before moving on to new location
         main.Destroy_AllStations();
-        main.ResetAll_ClaimedPositions();
+        main.data.claimedPositions.Clear();
 
         // set new location
         _data.Set_WorldMapData(updateData);

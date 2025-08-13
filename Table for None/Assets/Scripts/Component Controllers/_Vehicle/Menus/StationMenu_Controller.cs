@@ -14,9 +14,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Space(80)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
     
-    
-    private Dictionary<int, List<ItemSlot_Data>> _currentDatas = new();
-    public Dictionary<int, List<ItemSlot_Data>> currentDatas => _currentDatas;
+    // Editor
+    [HideInInspector] public Station_ScrObj editStation;
+    [HideInInspector] public bool lockStation;
+
+
+    private StationMenu_Data _data;
 
     private int _currentPageNum;
     public int currentPageNum => _currentPageNum;
@@ -26,19 +29,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     private Station_Controller _interactStation;
     
 
-    // Editor
-    [HideInInspector] public Station_ScrObj editStation;
-    [HideInInspector] public bool lockStation;
-
-
     // UnityEngine
     private void OnEnable()
     {
         VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
         
-        _controller.slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        _controller.slotsController.Set_Datas(_data.slotDatas[_currentPageNum]);
 
-        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
+        _controller.Update_PageDots(_data.slotDatas.Count, _currentPageNum);
         _controller.Update_PageArrows();
 
         _controller.vehicleController.interactArea.gameObject.SetActive(true);
@@ -65,7 +63,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         // save current dragging item before menu close
         Drag_Cancel();
-        _currentDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
+        _data.slotDatas[_currentPageNum] = _controller.slotsController.CurrentSlots_toDatas();
 
         _controller.vehicleController.interactArea.gameObject.SetActive(false);
 
@@ -96,20 +94,32 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("StationMenu_Controller/_currentDatas", _currentDatas);
+        ES3.Save("StationMenu_Controller/StationMenu_Data", _data);
     }
 
     public void Load_Data()
     {
-        // load saved slot datas
-        if (ES3.KeyExists("StationMenu_Controller/_currentDatas"))
+        if (ES3.KeyExists("StationMenu_Controller/StationMenu_Data") == false)
         {
-            _currentDatas = ES3.Load("StationMenu_Controller/_currentDatas", _currentDatas);
+            _data = new();
+            _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
+            
             return;
         }
+        _data = ES3.Load("StationMenu_Controller/StationMenu_Data", new StationMenu_Data());
+    }
+    
+    
+    // IBackupLoadable
+    public bool Has_Conflict()
+    {
+        if (_data.slotDatas != null) return false;
+        return true;
+    }
 
-        // set new slot datas
-        _controller.slotsController.AddNewPage_ItemSlotDatas(_currentDatas);
+    public void Load_Backup()
+    {
+        _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
     }
 
 
@@ -127,7 +137,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public Dictionary<int, List<ItemSlot_Data>> ItemSlot_Datas()
     {
-        return _currentDatas;
+        return _data.slotDatas;
     }
 
 
@@ -136,23 +146,24 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     {
         if (amount <= 0) return null;
 
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
         int repeatAmount = amount;
 
-        for (int i = 0; i < _currentDatas.Count; i++)
+        for (int i = 0; i < slotDatas.Count; i++)
         {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
+            for (int j = 0; j < slotDatas[i].Count; j++)
             {
-                if (_currentDatas[i][j].hasItem == true) continue;
+                if (slotDatas[i][j].hasItem == true) continue;
 
                 StationData addStation = new(station);
-                _currentDatas[i][j] = new(addStation);
+                slotDatas[i][j] = new(addStation);
 
-                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+                _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
 
                 repeatAmount--;
 
                 if (repeatAmount > 0) continue;
-                return _currentDatas[i][j];
+                return slotDatas[i][j];
             }
         }
 
@@ -164,7 +175,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         if (lockData == null) return null;
 
         lockData.isLocked = toggle;
-        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+        _controller.Update_ItemSlots(gameObject, _data.slotDatas[_currentPageNum]);
 
         return lockData;
     }
@@ -172,15 +183,17 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Remove_StationItem(Station_ScrObj station)
     {
-        for (int i = 0; i < _currentDatas.Count; i++)
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
+        
+        for (int i = 0; i < slotDatas.Count; i++)
         {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
+            for (int j = 0; j < slotDatas[i].Count; j++)
             {
-                if (_currentDatas[i][j].hasItem == false) continue;
-                if (station != _currentDatas[i][j].currentStation) continue;
+                if (slotDatas[i][j].hasItem == false) continue;
+                if (station != slotDatas[i][j].currentStation) continue;
 
-                _currentDatas[i][j].Empty_Item();
-                _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+                slotDatas[i][j].Empty_Item();
+                _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
 
                 return;
             }
@@ -192,16 +205,17 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     /// </summary>
     public void Remove_StationItem(Station_ScrObj station, int amount)
     {
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
         int repeatAmount = amount;
 
-        for (int i = 0; i < _currentDatas.Count; i++)
+        for (int i = 0; i < slotDatas.Count; i++)
         {
-            for (int j = 0; j < _currentDatas[i].Count; j++)
+            for (int j = 0; j < slotDatas[i].Count; j++)
             {
-                if (_currentDatas[i][j].hasItem == false) continue;
-                if (station != _currentDatas[i][j].currentStation) continue;
+                if (slotDatas[i][j].hasItem == false) continue;
+                if (station != slotDatas[i][j].currentStation) continue;
 
-                _currentDatas[i][j].Empty_Item();
+                slotDatas[i][j].Empty_Item();
 
                 repeatAmount--;
 
@@ -209,7 +223,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             }
         }
 
-        _controller.Update_ItemSlots(gameObject, _currentDatas[_currentPageNum]);
+        _controller.Update_ItemSlots(gameObject, slotDatas[_currentPageNum]);
     }
 
 
@@ -293,7 +307,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             cursor.Navigate_toSlot(slotsController.ItemSlot(new(0f, 0f)));
         }
 
-        if (_currentDatas.Count <= 1) return;
+        if (_data.slotDatas.Count <= 1) return;
 
         int direction = nextSlots ? 1 : -1;
         Update_CurrentPage(direction);
@@ -301,35 +315,39 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Update_PageNum(float direction)
     {
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
+        
         if (direction == 1)
         {
             // next slots
-            _currentPageNum = (_currentPageNum + 1) % _currentDatas.Count;
+            _currentPageNum = (_currentPageNum + 1) % slotDatas.Count;
             return;
         }
 
         // previous slots
-        _currentPageNum = (_currentPageNum - 1 + _currentDatas.Count) % _currentDatas.Count;
+        _currentPageNum = (_currentPageNum - 1 + slotDatas.Count) % slotDatas.Count;
     }
 
     private void Update_CurrentPage(float yInputValue) // y input
     {
-        if (_currentDatas.Count <= 1) return;
+        Dictionary<int, List<ItemSlot_Data>> slotDatas = _data.slotDatas;
+        
+        if (slotDatas.Count <= 1) return;
 
         ItemSlots_Controller slotsController = _controller.slotsController;
         ItemSlot_Cursor cursor = slotsController.cursor;
 
         // save current slots data to current page data, before moving on to next page
-        _currentDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
+        slotDatas[_currentPageNum] = new(slotsController.CurrentSlots_toDatas());
 
         Update_PageNum(yInputValue);
 
         // load data to slots
-        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.Set_Datas(slotDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
 
         // indicator
-        _controller.Update_PageDots(_currentDatas.Count, _currentPageNum);
+        _controller.Update_PageDots(slotDatas.Count, _currentPageNum);
     }
 
 
@@ -361,14 +379,14 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         ItemSlot_Data cursorData = new(cursor.data);
         cursor.Empty_Item();
 
-        _currentDatas[_currentPageNum] = slotsController.CurrentSlots_toDatas();
+        _data.slotDatas[_currentPageNum] = slotsController.CurrentSlots_toDatas();
 
         ItemSlot_Data cancelData = Add_StationItem(cursorData.currentStation, 1);
 
         cancelData.isLocked = cursorData.isLocked;
         cancelData.Set_StationData(cursorData.stationData);
 
-        slotsController.Set_Datas(_currentDatas[_currentPageNum]);
+        slotsController.Set_Datas(_data.slotDatas[_currentPageNum]);
         slotsController.SlotsAssign_Update();
     }
 
@@ -471,6 +489,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         Station_Movement movement = _interactStation.movement;
 
+        _controller.OnCursor_DirectionInput += movement.Update_Position;
         _controller.OnOption1_Input += movement.Set_Position;
         _controller.OnOption1_Input += Place_StationPrefab;
         _controller.OnExit_Input += Cancel_Export;
@@ -488,16 +507,19 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     private void Complete_StationPlace()
     {
-        Vehicle_Controller vehicle = _controller.vehicleController;
-
         _controller.slotsController.cursor.Empty_Item();
-        _controller.OnOption1_Input -= _interactStation.movement.Set_Position;
+        
+        Station_Movement movement = _interactStation.movement;
+        
+        _controller.OnCursor_DirectionInput -= movement.Update_Position;
+        _controller.OnOption1_Input -= movement.Set_Position;
 
         VideoGuide_Controller.instance.Trigger_Guide(_interactStation.stationScrObj.usageGuide);
         
         _interactionMode = false;
         _interactStation = null;
 
+        Vehicle_Controller vehicle = _controller.vehicleController;
         Main_Controller.instance.Sort_CurrentStation_fromClosest(vehicle.transform);
 
         _controller.OnOption1_Input -= Place_StationPrefab;
@@ -516,7 +538,10 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // return exported station back to current slot
         Drag_Cancel();
 
-        _controller.OnOption1_Input -= _interactStation.movement.Set_Position;
+        Station_Movement movement = _interactStation.movement;
+        
+        _controller.OnCursor_DirectionInput -= movement.Update_Position;
+        _controller.OnOption1_Input -= movement.Set_Position;
 
         // destroy current exported station
         _interactStation.Destroy_Station();
@@ -602,7 +627,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         StationData interactStationData = new(_interactStation.data);
 
-        main.UnClaim_Position(_interactStation.transform.position);
+        main.data.claimedPositions.Remove(_interactStation.transform.position);
 
         // swap station
         if (currentSlot.data.hasItem)
@@ -686,7 +711,7 @@ public class StationMenu_Controller_Inspector : Editor
 
         if (GUILayout.Button("Add New Page of Slots"))
         {
-            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.currentDatas);
+            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.ItemSlot_Datas());
         }
         GUILayout.Space(20);
 

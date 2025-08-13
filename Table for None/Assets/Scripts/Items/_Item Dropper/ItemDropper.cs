@@ -45,7 +45,7 @@ public class ItemDropper : MonoBehaviour
         Main_Controller main = Main_Controller.instance;
         Vector2 spawnSnapPos = Utility.SnapPosition(spawnPosition);
 
-        if (main.Position_Claimed(spawnSnapPos)) return null;
+        if (main.data.Position_Claimed(spawnSnapPos)) return null;
 
         GameObject itemGameObject = Instantiate(spawnItem, spawnSnapPos, Quaternion.identity);
         itemGameObject.transform.SetParent(main.otherFile);

@@ -230,7 +230,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
             if (claimer.Is_ClaimPosition(claimer.All_InteractPositions()[i]) == false) continue;
             Vector2 redirectedPos = location.Redirected_SnapPosition(claimer.All_InteractPositions()[i]);
 
-            if (main.Position_Claimed(redirectedPos)) return false;
+            if (main.data.Position_Claimed(redirectedPos)) return false;
         }
 
         return true;

@@ -44,7 +44,7 @@ public class Station_Maintenance : MonoBehaviour
 
         if (currentDurability > 0) return;
 
-        Main_Controller.instance.UnClaim_Position(transform.position);
+        Main_Controller.instance.data.claimedPositions.Remove(transform.position);
         OnDurabilityBreak?.Invoke();
 
         Audio_Controller.instance.Play_OneShot(gameObject, 0);

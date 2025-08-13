@@ -9,33 +9,33 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 {
     public static GoldSystem instance;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Image _panel;
     [SerializeField] private Sprite _indicatePanel;
 
     private Sprite _defaultPanel;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Image _iconImage;
 
     private Sprite _defaultIcon;
     public Sprite defaultIcon => _defaultIcon;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private TextMeshProUGUI _amountText;
     [SerializeField] private TextMeshProUGUI _shadowText;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Color _red;
     [SerializeField] private Color _green;
 
     private Color _defaultColor;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private float _shakeHeight;
     [SerializeField] private LeanTweenType _shakeTweenType;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 10)] private float _durationTime;
     [SerializeField][Range(0, 10)] private float _shineSpeed;
 

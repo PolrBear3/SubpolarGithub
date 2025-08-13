@@ -149,7 +149,7 @@ public class Station_Controller : MonoBehaviour
     {
         OnStationDestroy?.Invoke();
         
-        Main_Controller.instance.UnTrack_CurrentStation(this);
+        Main_Controller.instance.currentStations.Remove(this);
         Destroy(gameObject);
     }
 }

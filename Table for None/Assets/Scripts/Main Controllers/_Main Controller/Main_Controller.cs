@@ -10,6 +10,9 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
     public static Main_Controller instance;
 
+    private MainController_Data _data;
+    public MainController_Data data => _data;
+
     
     [SerializeField] private bool _demoBuild;
     public bool demoBuild => _demoBuild;
@@ -69,48 +72,18 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void Save_Data()
     {
         UnClaim_CustomPositions();
-        ES3.Save("_claimedPositions", _claimedPositions);
-
-        Save_BookmarkedFood();
         Save_CurrentStations();
+        
+        ES3.Save("Main_Controller/MainController_Data", _data);
     }
 
     public void Load_Data()
     {
-        _claimedPositions = ES3.Load("_claimedPositions", _claimedPositions);
+        _data = ES3.Load("Main_Controller/MainController_Data", new MainController_Data());
 
-        Load_bookmarkedFood();
         Load_CurrentStations();
     }
-
-
-    // Position Control
-    private List<Vector2> _claimedPositions = new();
-    public List<Vector2> claimedPositions => _claimedPositions;
-
-    public void ResetAll_ClaimedPositions()
-    {
-        _claimedPositions.Clear();
-    }
-
-    public void Claim_Position(Vector2 position)
-    {
-        if (Position_Claimed(position)) return;
-        _claimedPositions.Add(position);
-    }
-    public void UnClaim_Position(Vector2 position)
-    {
-        _claimedPositions.Remove(position);
-    }
-
-    public bool Position_Claimed(Vector2 checkPosition)
-    {
-        for (int i = 0; i < _claimedPositions.Count; i++)
-        {
-            if (checkPosition == _claimedPositions[i]) return true;
-        }
-        return false;
-    }
+    
 
     /// <summary>
     /// Before saving, UnClaim custom positions from all Custom_positionClaimer
@@ -216,55 +189,44 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     private void Save_CurrentStations()
     {
-        // exported station datas, all food datas
-        Dictionary<StationData, List<FoodData>> stationDatas = new();
-
+        _data.stationLoadDatas.Clear();
+        
         for (int i = 0; i < _currentStations.Count; i++)
         {
             if (_currentStations[i].movement != null && _currentStations[i].movement.enabled == true) continue;
-
             StationData stationData = new(_currentStations[i].data);
-            stationDatas.Add(stationData, new());
 
-            if (_currentStations[i].Food_Icon() == null || _currentStations[i].Food_Icon().hasFood == false) continue;
-
-            stationDatas[stationData] = new(_currentStations[i].Food_Icon().AllDatas());
+            FoodData_Controller stationIcon = _currentStations[i].Food_Icon();
+            List<FoodData> foodDatas = stationIcon != null ? stationIcon.AllDatas() : null;
+            
+            _data.stationLoadDatas.Add(new(stationData, foodDatas, _worldMap.data.currentData));
         }
-
-        ES3.Save("Main_Controller/stationDatas", stationDatas);
     }
     private void Load_CurrentStations()
     {
-        if (ES3.KeyExists("Main_Controller/stationDatas") == false) return;
+        List<Station_LoadData> stationLoadDatas = _data.stationLoadDatas;
 
-        // exported station datas, all food datas
-        Dictionary<StationData, List<FoodData>> stationDatas = ES3.Load("Main_Controller/stationDatas", new Dictionary<StationData, List<FoodData>>());
-
-        foreach (var data in stationDatas)
+        for (int i = 0; i < stationLoadDatas.Count; i++)
         {
-            StationData stationData = new(data.Key);
-            List<FoodData> foodDatas = new(data.Value);
-
-            // spawn saved stations
+            StationData stationData = stationLoadDatas[i].stationData;
+            
+            // spawn saved station
             Station_Controller station = Spawn_Station(stationData.stationScrObj, stationData.position);
-
-            // load station data
             station.Set_Data(stationData);
 
-            // deactivate and set station if a movement script is attached
+            // claim position
             Station_Movement movement = station.movement;
-
-            if (movement != null)
-            {
-                movement.Load_Position();
-            }
-
+            
+            if (movement != null) movement.Load_Position();
+            else _data.Claim_Position(station.transform.position);
+            
             // load food data
-            if (station.Food_Icon() == null) continue;
-
-            station.Food_Icon().Update_AllDatas(foodDatas);
-            station.Food_Icon().Show_Icon();
-            station.Food_Icon().Show_Condition();
+            FoodData_Controller stationIcon = station.Food_Icon();
+            if (stationLoadDatas[i].foodDatas == null || stationIcon == null) continue;
+            
+            stationIcon.Update_AllDatas(stationLoadDatas[i].foodDatas);
+            stationIcon.Show_Icon();
+            stationIcon.Show_Condition();
         }
     }
 
@@ -274,10 +236,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         station.transform.SetParent(_stationFile);
     }
-    public void UnTrack_CurrentStation(Station_Controller station)
-    {
-        _currentStations.Remove(station);
-    }
 
     public int Destroy_AllStations()
     {
@@ -285,7 +243,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         for (int i = _currentStations.Count - 1; i >= 0; i--)
         {
-            UnClaim_Position(currentStations[i].transform.position);
+            _data.claimedPositions.Remove(currentStations[i].transform.position);
             _currentStations[i].Destroy_Station();
 
             destroyCount++;
@@ -390,87 +348,28 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         .CompareTo
         (Vector2.Distance(y.transform.position, target.position)));
     }
-
-
-    // Main Game Global BookMark Foods Control
-    private List<Food_ScrObj> _bookmarkedFoods = new();
-    public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
-
+    
+    
+    // // Food Bookmarking
     public Action OnFoodBookmark;
-
-    private void Save_BookmarkedFood()
-    {
-        List<int> foodIDs = new();
-
-        for (int i = 0; i < _bookmarkedFoods.Count; i++)
-        {
-            foodIDs.Add(_bookmarkedFoods[i].id);
-        }
-
-        ES3.Save("Main_Controller/_bookmarkedFoods/foodIDs", foodIDs);
-    }
-    private void Load_bookmarkedFood()
-    {
-        List<int> foodIDs = new();
-
-        foodIDs = ES3.Load("Main_Controller/_bookmarkedFoods/foodIDs", foodIDs);
-
-        for (int i = 0; i < foodIDs.Count; i++)
-        {
-            _bookmarkedFoods.Add(dataController.Food(foodIDs[i]));
-        }
-    }
-
-    private void RemoveDuplicates_fromBookmark()
-    {
-        HashSet<Food_ScrObj> hashFoods = new();
-        List<Food_ScrObj> nonDuplicateFoods = new();
-
-        for (int i = 0; i < _bookmarkedFoods.Count; i++)
-        {
-            // if _bookmarkedFoods[i] is not in hashFoods, add & return true
-            if (!hashFoods.Add(_bookmarkedFoods[i])) continue;
-
-            // also add to nonDuplicateFoods
-            nonDuplicateFoods.Add(_bookmarkedFoods[i]);
-        }
-
-        _bookmarkedFoods = nonDuplicateFoods;
-    }
-
-    public void AddFood_toBookmark(Food_ScrObj food)
+    
+    public void Add_Bookmark(Food_ScrObj food)
     {
         if (food == null) return;
 
-        _bookmarkedFoods.Add(food);
-        RemoveDuplicates_fromBookmark();
+        _data.bookmarkedFoods.Add(food);
+        _data.Remove_DuplicateBookmarks();
 
         OnFoodBookmark?.Invoke();
     }
-    public void RemoveFood_fromBookmark(Food_ScrObj food)
+    public void Remove_Bookmark(Food_ScrObj food)
     {
         if (food == null) return;
 
-        _bookmarkedFoods.Remove(food);
-        RemoveDuplicates_fromBookmark();
+        _data.bookmarkedFoods.Remove(food);
+        _data.Remove_DuplicateBookmarks();
 
         OnFoodBookmark?.Invoke();
-    }
-
-    public bool Is_BookmarkedFood(Food_ScrObj food)
-    {
-        if (food == null) return false;
-
-        for (int i = 0; i < _bookmarkedFoods.Count; i++)
-        {
-            if (food == _bookmarkedFoods[i]) return true;
-        }
-        return false;
-    }
-
-    public bool Food_BookmarkedFood()
-    {
-        return _bookmarkedFoods.Count > 0;
     }
 }
 

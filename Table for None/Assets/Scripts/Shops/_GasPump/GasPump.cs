@@ -111,7 +111,7 @@ public class GasPump : MonoBehaviour, ISaveLoadable
 
         for (int i = spawnPositions.Count - 1; i >= 0; i--)
         {
-            if (main.Position_Claimed(spawnPositions[i]))
+            if (main.data.Position_Claimed(spawnPositions[i]))
             {
                 spawnPositions.RemoveAt(i);
                 continue;

@@ -151,8 +151,8 @@ public class FoodBox : MonoBehaviour
         // station control
         Main_Controller main = Main_Controller.instance;
 
-        main.UnTrack_CurrentStation(_controller);
-        main.UnClaim_Position(transform.position);
+        main.currentStations.Remove(_controller);
+        main.data.claimedPositions.Remove(transform.position);
 
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
 

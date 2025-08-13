@@ -178,7 +178,7 @@ public class LocationMenu_Controller : MonoBehaviour
         StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
 
-        int currentAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj("Oil Drum"));
+        int currentAmount = slotsController.StationAmount(stationMenu.ItemSlot_Datas(), data.Station_ScrObj("Oil Drum"));
         int requireAmount = Mathf.Abs(centerTileNum - _hoverTileNum);
         
         InfoTemplate_Trigger trigger = gameObject.GetComponent<InfoTemplate_Trigger>();
@@ -219,7 +219,7 @@ public class LocationMenu_Controller : MonoBehaviour
         StationMenu_Controller stationMenu = main.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = stationMenu.controller.slotsController;
 
-        int oilAmount = slotsController.StationAmount(stationMenu.currentDatas, data.Station_ScrObj(79025));
+        int oilAmount = slotsController.StationAmount(stationMenu.ItemSlot_Datas(), data.Station_ScrObj(79025));
         int requireOil = Mathf.Abs(centerNum - _hoverTileNum);
 
         if (oilAmount < requireOil) return false;

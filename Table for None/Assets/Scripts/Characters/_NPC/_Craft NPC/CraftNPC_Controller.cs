@@ -173,7 +173,7 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
         
         while (movement.At_TargetPosition() == false) yield return null;
         
-        Spawn_New();
+        Spawn_New(true);
         
         _cycleCoroutine = null;
         yield break;

@@ -7,21 +7,18 @@ using UnityEngine.InputSystem;
 
 public class Station_Movement : MonoBehaviour
 {
-    private Rigidbody2D _rigidBody;
     private Station_Controller _stationController;
 
-    [Header("")]
     [SerializeField] private GameObject _movementArrows;
     public GameObject movementArrows => _movementArrows;
-
+    
     public Action OnLoadPosition;
 
 
     // UnityEngine
     private void Awake()
     {
-        if (gameObject.TryGetComponent(out Station_Controller stationController)) { _stationController = stationController; }
-        if (gameObject.TryGetComponent(out Rigidbody2D rigidbody)) { _rigidBody = rigidbody; }
+        _stationController = GetComponent<Station_Controller>();
     }
 
     private void Start()
@@ -29,31 +26,15 @@ public class Station_Movement : MonoBehaviour
         _movementArrows.SetActive(true);
     }
 
-    private void Update()
+
+    // Main
+    public void Update_Position(Vector2 direction)
     {
-        RestrictBlink_Update();
-        SnapPosition_Update();
-    }
-
-    private void FixedUpdate()
-    {
-        CursorControl_MovementUpdate();
-    }
-
-
-    //
-    private void CursorControl_MovementUpdate()
-    {
-        Vector2 inputDirection = Input_Controller.instance.cursorDirection;
-        float speed = 3f;
-
-        _rigidBody.velocity = new Vector2(inputDirection.x * speed, inputDirection.y * speed);
+        Debug.Log(direction);
     }
 
     private void SnapPosition_Update()
     {
-        if (_rigidBody.velocity != Vector2.zero) return;
-
         Main_Controller main = Main_Controller.instance;
         Vehicle_Controller vehicle = main.currentVehicle;
 
@@ -69,7 +50,7 @@ public class Station_Movement : MonoBehaviour
         Main_Controller main = Main_Controller.instance;
 
         Vector2 snapPosition = Utility.SnapPosition(transform.position);
-        if (main.Position_Claimed(snapPosition)) return false;
+        if (main.data.Position_Claimed(snapPosition)) return false;
 
         Location_Controller location = main.currentLocation;
         if (location.Restricted_Position(snapPosition)) return false;
@@ -117,20 +98,18 @@ public class Station_Movement : MonoBehaviour
         _stationController.TransparentBlink_Toggle(false);
         _movementArrows.SetActive(false);
 
-        MathRound_Snap_Position();
-
+        SnapPosition_Claim();
         OnLoadPosition?.Invoke();
-
-        _rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+        
         enabled = false;
     }
 
 
-    private void MathRound_Snap_Position()
+    private void SnapPosition_Claim()
     {
         Vector2 snapPosition = Utility.SnapPosition(transform.position);
 
         transform.localPosition = snapPosition;
-        Main_Controller.instance.Claim_Position(snapPosition);
+        Main_Controller.instance.data.Claim_Position(snapPosition);
     }
 }

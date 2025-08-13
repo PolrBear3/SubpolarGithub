@@ -104,7 +104,7 @@ public class Location_Controller : MonoBehaviour
             int randIndex = UnityEngine.Random.Range(0, spawnPositions.Count);
             Vector2 randPos = spawnPositions[randIndex];
 
-            if (main.Position_Claimed(randPos))
+            if (main.data.Position_Claimed(randPos))
             {
                 spawnPositions.RemoveAt(randIndex);
                 continue;

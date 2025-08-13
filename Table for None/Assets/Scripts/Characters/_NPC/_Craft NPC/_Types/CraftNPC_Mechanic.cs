@@ -135,7 +135,7 @@ public class CraftNPC_Mechanic : CraftNPC
         Vector2 dropPos = Utility.SnapPosition(transform.position);
 
         Main_Controller main = Main_Controller.instance;
-        if (main.Position_Claimed(dropPos)) return;
+        if (main.data.Position_Claimed(dropPos)) return;
 
         GameObject drop = Instantiate(_toolBox, dropPos, quaternion.identity);
         drop.transform.SetParent(main.otherFile);
@@ -167,7 +167,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
         for (int i = 0; i < surroundPositions.Count; i++)
         {
-            if (main.Position_Claimed(surroundPositions[i])) continue;
+            if (main.data.Position_Claimed(surroundPositions[i])) continue;
             if (location.Restricted_Position(surroundPositions[i])) continue;
 
             return true;
@@ -185,7 +185,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
         for (int i = 0; i < surroundPositions.Count; i++)
         {
-            if (main.Position_Claimed(surroundPositions[i])) continue;
+            if (main.data.Position_Claimed(surroundPositions[i])) continue;
             return surroundPositions[i];
         }
 
@@ -212,7 +212,7 @@ public class CraftNPC_Mechanic : CraftNPC
 
         while (movement.At_TargetPosition(setPos) == false) yield return null;
 
-        if (Main_Controller.instance.Position_Claimed(setPos))
+        if (Main_Controller.instance.data.Position_Claimed(setPos))
         {
             Set_ToolBox();
 

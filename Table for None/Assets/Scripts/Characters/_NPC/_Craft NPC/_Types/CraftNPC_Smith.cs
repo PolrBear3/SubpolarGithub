@@ -161,7 +161,7 @@ public class CraftNPC_Smith : CraftNPC
         Main_Controller main = Main_Controller.instance;
         Vector2 dropPos = Utility.SnapPosition(transform.position);
 
-        if (main.Position_Claimed(dropPos)) return;
+        if (main.data.Position_Claimed(dropPos)) return;
 
         GameObject drop = Instantiate(_smithTable, dropPos, Quaternion.identity);
         drop.transform.SetParent(main.otherFile);
@@ -322,7 +322,7 @@ public class CraftNPC_Smith : CraftNPC
         
         // destroy exchange station
         exchangeStation.Destroy_Station();
-        Main_Controller.instance.UnClaim_Position(stationData.position);
+        Main_Controller.instance.data.claimedPositions.Remove(stationData.position);
 
         // drop
         GameObject spawnCollectCard = _itemDropper.SnapPosition_Spawn(_itemDropper.collectCard, stationData.position);

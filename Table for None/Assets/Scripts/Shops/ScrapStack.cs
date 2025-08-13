@@ -109,7 +109,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        int vehicleAmount = slotsController.StationAmount(menu.currentDatas, _scrap);
+        int vehicleAmount = slotsController.StationAmount(menu.ItemSlot_Datas(), _scrap);
 
         if (vehicleAmount <= 0)
         {
@@ -149,7 +149,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slotsController = menu.controller.slotsController;
 
-        if (slotsController.Empty_SlotData(menu.currentDatas) == null)
+        if (slotsController.Empty_SlotData(menu.ItemSlot_Datas()) == null)
         {
             dialog.Update_Dialog(3);
             return;
@@ -165,7 +165,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
             
             retrievedAmount++;
 
-            if (slotsController.Empty_SlotData(menu.currentDatas) == null) break;
+            if (slotsController.Empty_SlotData(menu.ItemSlot_Datas()) == null) break;
         }
 
         Toggle_AmountBar();

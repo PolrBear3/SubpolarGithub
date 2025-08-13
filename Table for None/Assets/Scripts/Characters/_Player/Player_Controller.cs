@@ -45,6 +45,9 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     public Clock_Timer timer => _timer;
 
 
+    private PlayerData _data;
+    public PlayerData data => _data;
+    
     private bool _hidden;
     public bool hidden => _hidden;
 
@@ -61,6 +64,8 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
+        _foodIcon.Show_Icon();
+        _foodIcon.Show_Condition();
         _foodIcon.Toggle_SubDataBar(true);
     }
 
@@ -68,16 +73,22 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("Player_Controller/_foodIcon.AllDatas()", _foodIcon.AllDatas());
+        _data.foodDatas.Clear();
+
+        List<FoodData> foodDatas = _foodIcon.AllDatas();
+        foreach (FoodData data in foodDatas)
+        {
+            _data.foodDatas.Add(data);
+        }
+        
+        ES3.Save("Player_Controller/PlayerData", _data);
     }
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("Player_Controller/_foodIcon.AllDatas()") == false) return;
+        _data = ES3.Load("Player_Controller/PlayerData", new PlayerData());
         
-        _foodIcon.Update_AllDatas(ES3.Load("Player_Controller/_foodIcon.AllDatas()", _foodIcon.AllDatas()));
-        _foodIcon.Show_Icon();
-        _foodIcon.Show_Condition();
+        _foodIcon.Update_AllDatas(_data.foodDatas);
     }
 
 

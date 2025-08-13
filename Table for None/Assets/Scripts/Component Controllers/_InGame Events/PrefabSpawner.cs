@@ -44,7 +44,7 @@ public class PrefabSpawner : MonoBehaviour
         // check if spawn prefab is a station
         if (spawnPrefab.TryGetComponent(out Station_Movement movement) == false)
         {
-            Main_Controller.instance.Claim_Position(spawnPrefab.transform.position);
+            Main_Controller.instance.data.Claim_Position(spawnPrefab.transform.position);
             
             // set as a child of current location file
             spawnPrefab.transform.SetParent(Main_Controller.instance.otherFile);
@@ -99,7 +99,7 @@ public class PrefabSpawner : MonoBehaviour
                 
                 spawnPositions.RemoveAt(randIndex);
                 
-                if (main.Position_Claimed(randPos)) continue;
+                if (main.data.Position_Claimed(randPos)) continue;
                 if (SpawnPosition_Restricted(spawnedPositions, randPos)) continue;
 
                 spawnedPositions.Add(randPos);

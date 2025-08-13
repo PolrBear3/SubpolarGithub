@@ -66,7 +66,7 @@ public class Pickup_Table : Stack_Table
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
-        if (foodIcon.hasFood == false || Main_Controller.instance.Food_BookmarkedFood() == false)
+        if (foodIcon.hasFood == false || Main_Controller.instance.data.bookmarkedFoods.Count == 0)
         {
             stationController.spriteRenderer.sprite = _sprites[0];
             return;
@@ -131,7 +131,7 @@ public class Pickup_Table : Stack_Table
         if (_coroutine != null) return;
         
         if (stationController.Food_Icon().hasFood == false) return;
-        if (Main_Controller.instance.Food_BookmarkedFood() == false) return;
+        if (Main_Controller.instance.data.bookmarkedFoods.Count == 0) return;
 
         _coroutine = StartCoroutine(Take_FoodOrder_Coroutine());
     }
@@ -139,7 +139,7 @@ public class Pickup_Table : Stack_Table
     {
         FoodData_Controller foodIcon = stationController.Food_Icon();
 
-        while (stationController.Food_Icon().hasFood && Main_Controller.instance.Food_BookmarkedFood())
+        while (stationController.Food_Icon().hasFood && Main_Controller.instance.data.bookmarkedFoods.Count == 0)
         {
             yield return new WaitForSeconds(_searchTime);
 

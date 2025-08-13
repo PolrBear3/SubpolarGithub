@@ -111,7 +111,7 @@ public class CollectCard : ItemDrop
         StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
 
         // available slots check
-        if (menu.controller.slotsController.Empty_SlotData(menu.currentDatas) == null)
+        if (menu.controller.slotsController.Empty_SlotData(menu.ItemSlot_Datas()) == null)
         {
             dialog.Update_Dialog(2);
             return;

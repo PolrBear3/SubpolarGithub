@@ -404,7 +404,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         StationMenu_Controller menu = Main_Controller.instance.currentVehicle.menu.stationMenu;
         ItemSlots_Controller slots = menu.controller.slotsController;
 
-        List<ItemSlot_Data> bookmarkedData = slots.BookMarked_Datas(menu.currentDatas, true);
+        List<ItemSlot_Data> bookmarkedData = slots.BookMarked_Datas(menu.ItemSlot_Datas(), true);
 
         // check if there are bookmarked stations
         if (bookmarkedData.Count <= 0)
@@ -430,7 +430,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         ItemSlots_Controller slots = stationMenu.controller.slotsController;
 
         // get recent bookmarked station
-        List<ItemSlot_Data> bookmarkedDatas = slots.BookMarked_Datas(stationMenu.currentDatas, true);
+        List<ItemSlot_Data> bookmarkedDatas = slots.BookMarked_Datas(stationMenu.ItemSlot_Datas(), true);
 
         ItemSlot_Data bookmarkedData = bookmarkedDatas[bookmarkedDatas.Count - 1];
         Station_ScrObj recentStation = bookmarkedData.currentStation;
@@ -478,7 +478,7 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             bookmarkedDatas[bookmarkedDatas.Count - 1].Empty_Item();
             bookmarkedDatas.RemoveAt(bookmarkedDatas.Count - 1);
 
-            menu.Update_ItemSlots(stationMenu.gameObject, stationMenu.currentDatas[stationMenu.currentPageNum]);
+            menu.Update_ItemSlots(stationMenu.gameObject, stationMenu.ItemSlot_Datas()[stationMenu.currentPageNum]);
 
             // move to random box stack
             movement.Assign_TargetPosition(_boxStackPoints[Random.Range(0, _boxStackPoints.Length)].position);
