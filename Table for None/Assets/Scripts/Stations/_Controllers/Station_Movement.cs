@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,53 +27,81 @@ public class Station_Movement : MonoBehaviour
 
 
     // Main
-    public void Update_Position(Vector2 direction)
-    {
-        Debug.Log(direction);
-    }
-
-    private void SnapPosition_Update()
+    private bool NonStation_PositionClaimed(Vector2 searchPosition)
     {
         Main_Controller main = Main_Controller.instance;
-        Vehicle_Controller vehicle = main.currentVehicle;
 
-        transform.position = Utility.SnapPosition(transform.position, vehicle.interactArea.bounds);
+        Vector2 snapPosition = Utility.SnapPosition(searchPosition);
+        List<Station_Controller> placedStations = main.CurrentStations(snapPosition);
+
+        placedStations.Remove(_stationController);
+        return placedStations.Count == 0 && main.data.Position_Claimed(snapPosition);
+    }
+    
+    private bool OverlapStation_Placed(Vector2 searchPosition)
+    {
+        Main_Controller main = Main_Controller.instance;
+        List<Station_Controller> placedStations = main.CurrentStations(Utility.SnapPosition(searchPosition));
+        
+        for (int i = 0; i < placedStations.Count; i++)
+        {
+            if (placedStations[i] == _stationController) continue;
+            if (placedStations[i].stationScrObj.overlapPlaceable == false) continue;
+
+            return true;
+        }
+        return false;
     }
 
-
-    /// <returns>
-    /// True if current snap position is not claimed and not in a location restricted area
-    /// </returns>
     public bool PositionSet_Available()
     {
         Main_Controller main = Main_Controller.instance;
-
         Vector2 snapPosition = Utility.SnapPosition(transform.position);
+
+        if (NonStation_PositionClaimed(snapPosition)) return false;
+        
+        Station_ScrObj currentStation = _stationController.stationScrObj;
+        
+        if (currentStation.overlapPlaceable && OverlapStation_Placed(transform.position) == false) return true;
         if (main.data.Position_Claimed(snapPosition)) return false;
-
-        Location_Controller location = main.currentLocation;
-        if (location.Restricted_Position(snapPosition)) return false;
-
-        Vehicle_Controller vehicle = main.currentVehicle;
-        if (vehicle.Is_InteractArea(transform.position) == false) return false;
 
         return true;
     }
-
-    /// <summary>
-    /// Toggle active on claimed positions
-    /// </summary>
-    private void RestrictBlink_Update()
+    
+    
+    public void Update_Position(Vector2 direction)
     {
-        Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller location = main.currentLocation;
+        
+        Vehicle_Controller vehicle = main.currentVehicle;
+        Bounds interactArea = vehicle.interactArea.bounds;
+        
+        Vector2 updatePos = Utility.SnapPosition(new Vector2(transform.position.x + direction.x, transform.position.y + direction.y));
 
-        bool isRestricted = PositionSet_Available() == false;
-        bool isInteractArea = vehicle.Is_InteractArea(transform.position);
+        if (location.Restricted_Position(updatePos)) return;
+        if (vehicle.Is_InteractArea(updatePos) == false) return;
 
-        _stationController.RestrictionBlink_Toggle(isRestricted || isInteractArea == false);
+        transform.position = updatePos;
     }
+    
+    
+    /// <summary>
+    /// Disables movement and set current station when game is loaded or spawned manually
+    /// </summary>
+    public void Load_Position()
+    {
+        Vector2 snapPosition = Utility.SnapPosition(transform.position);
+        
+        _stationController.TransparentBlink_Toggle(false);
+        _movementArrows.SetActive(false);
 
-
+        SnapPosition_Claim();
+        OnLoadPosition?.Invoke();
+        
+        enabled = false;
+    }
+    
     /// <summary>
     /// Disables movement and set current station after movement is controlled
     /// </summary>
@@ -87,29 +114,13 @@ public class Station_Movement : MonoBehaviour
         Load_Position();
         _stationController.data.Update_Position(transform.position);
     }
-
-    /// <summary>
-    /// Disables movement and set current station when game is loaded or spawned manually
-    /// </summary>
-    public void Load_Position()
-    {
-        Vector2 snapPosition = Utility.SnapPosition(transform.position);
-
-        _stationController.TransparentBlink_Toggle(false);
-        _movementArrows.SetActive(false);
-
-        SnapPosition_Claim();
-        OnLoadPosition?.Invoke();
-        
-        enabled = false;
-    }
-
-
+    
+    
     private void SnapPosition_Claim()
     {
         Vector2 snapPosition = Utility.SnapPosition(transform.position);
 
-        transform.localPosition = snapPosition;
+        transform.position = snapPosition;
         Main_Controller.instance.data.Claim_Position(snapPosition);
     }
 }

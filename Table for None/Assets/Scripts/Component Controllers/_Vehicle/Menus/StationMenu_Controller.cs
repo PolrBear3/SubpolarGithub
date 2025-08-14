@@ -488,6 +488,9 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation.Set_Data(new(cursor.data.stationData));
 
         Station_Movement movement = _interactStation.movement;
+        
+        _interactStation.TransparentBlink_Toggle(true);
+        movement.movementArrows.SetActive(true);
 
         _controller.OnCursor_DirectionInput += movement.Update_Position;
         _controller.OnOption1_Input += movement.Set_Position;
@@ -627,15 +630,17 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         StationData interactStationData = new(_interactStation.data);
 
-        main.data.claimedPositions.Remove(_interactStation.transform.position);
-
         // swap station
         if (currentSlot.data.hasItem)
         {
+            bool sameTypeStation = currentSlot.data.currentStation.overlapPlaceable == interactStationData.stationScrObj.overlapPlaceable;
+            if (main.CurrentStations(_interactStation.transform.position).Count > 1 && sameTypeStation == false) return;
+            
             Station_Controller exportStation = main.Spawn_Station(currentSlot.data.currentStation, _interactStation.transform.position);
             StationData swapStationData = new(currentSlot.data.stationData);
 
             exportStation.Set_Data(swapStationData);
+            exportStation.data.Update_Position(_interactStation.transform.position);
             exportStation.movement.Load_Position();
         }
 
@@ -645,6 +650,12 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         currentSlot.data.Set_StationData(interactStationData);
 
         _interactStation.Destroy_Station();
+        
+        // claimed position data update
+        if (main.CurrentStations(interactStationData.position).Count == 0)
+        {
+            main.data.claimedPositions.Remove(interactStationData.position);
+        }
 
         // empty cursor
         cursor.Assign_Data(new());

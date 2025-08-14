@@ -186,7 +186,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // Current Stations Control
     private List<Station_Controller> _currentStations = new();
     public List<Station_Controller> currentStations => _currentStations;
-
+    
     private void Save_CurrentStations()
     {
         _data.stationLoadDatas.Clear();
@@ -202,34 +202,56 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
             _data.stationLoadDatas.Add(new(stationData, foodDatas, _worldMap.data.currentData));
         }
     }
+    
+    private void Load_Station(Station_LoadData stationLoadData)
+    {
+        StationData stationData = stationLoadData.stationData;
+        
+        // spawn saved station
+        Station_Controller station = Spawn_Station(stationData.stationScrObj, stationData.position);
+        station.Set_Data(stationData);
+
+        // claim position
+        Station_Movement movement = station.movement;
+            
+        if (movement != null) movement.Load_Position();
+        else _data.Claim_Position(station.transform.position);
+            
+        // load food data
+        FoodData_Controller stationIcon = station.Food_Icon();
+        if (stationLoadData.foodDatas == null || stationIcon == null) return;
+            
+        stationIcon.Update_AllDatas(stationLoadData.foodDatas);
+        stationIcon.Show_Icon();
+        stationIcon.Show_Condition();
+    }
     private void Load_CurrentStations()
     {
         List<Station_LoadData> stationLoadDatas = _data.stationLoadDatas;
 
-        for (int i = 0; i < stationLoadDatas.Count; i++)
+        // default station load
+        for (int i = stationLoadDatas.Count - 1; i >= 0; i--)
         {
-            StationData stationData = stationLoadDatas[i].stationData;
-            
-            // spawn saved station
-            Station_Controller station = Spawn_Station(stationData.stationScrObj, stationData.position);
-            station.Set_Data(stationData);
+            if (stationLoadDatas[i].stationData.stationScrObj.overlapPlaceable) continue;
 
-            // claim position
-            Station_Movement movement = station.movement;
-            
-            if (movement != null) movement.Load_Position();
-            else _data.Claim_Position(station.transform.position);
-            
-            // load food data
-            FoodData_Controller stationIcon = station.Food_Icon();
-            if (stationLoadDatas[i].foodDatas == null || stationIcon == null) continue;
-            
-            stationIcon.Update_AllDatas(stationLoadDatas[i].foodDatas);
-            stationIcon.Show_Icon();
-            stationIcon.Show_Condition();
+            Load_Station(stationLoadDatas[i]);
+            stationLoadDatas.RemoveAt(i);
+        }
+
+        // overlap station load
+        foreach (Station_LoadData data in stationLoadDatas)
+        {
+            Load_Station(data);
         }
     }
 
+    public Station_Controller Spawn_Station(Station_ScrObj stationScrObj, Vector2 spawnPosition)
+    {
+        GameObject spawnStation = Instantiate(stationScrObj.prefab, spawnPosition, Quaternion.identity);
+
+        if (!spawnStation.TryGetComponent(out Station_Controller stationController)) return null;
+        return stationController;
+    }
     public void Track_CurrentStation(Station_Controller station)
     {
         _currentStations.Add(station);
@@ -251,7 +273,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         return destroyCount;
     }
-
+    
     public bool Is_StationArea(Vector2 areaPoint)
     {
         for (int i = 0; i < _currentStations.Count; i++)
@@ -266,26 +288,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
 
         return false;
-    }
-
-    public Station_Controller Spawn_Station(Station_ScrObj stationScrObj, Vector2 spawnPosition)
-    {
-        GameObject spawnStation = Instantiate(stationScrObj.prefab, spawnPosition, Quaternion.identity);
-
-        if (!spawnStation.TryGetComponent(out Station_Controller stationController)) return null;
-        return stationController;
-    }
-    public Station_Controller Station(Vector2 searchPosition)
-    {
-        for (int i = 0; i < currentStations.Count; i++)
-        {
-            if (searchPosition.x != currentStations[i].transform.position.x) continue;
-            if (searchPosition.y != currentStations[i].transform.position.y) continue;
-
-            return currentStations[i];
-        }
-
-        return null;
     }
 
     /// <returns>
@@ -337,7 +339,23 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
         return searchStations;
     }
-
+    /// <returns>
+    /// All searchStations in _currentStations
+    /// </returns>
+    public List<Station_Controller> CurrentStations(Vector2 searchPosition)
+    {
+        List<Station_Controller> searchStations = new();
+        
+        for (int i = 0; i < _currentStations.Count; i++)
+        {
+            if (searchPosition != (Vector2)_currentStations[i].transform.position) continue;
+            searchStations.Add(_currentStations[i]);
+        }
+        
+        return searchStations;
+    }
+    
+    
     /// <summary>
     /// sorts current stations list from closest to farthest from target
     /// </summary>

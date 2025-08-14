@@ -19,11 +19,7 @@ public class MainController_Data
     // Claimed Positions
     public bool Position_Claimed(Vector2 checkPosition)
     {
-        for (int i = 0; i < _claimedPositions.Count; i++)
-        {
-            if (checkPosition == _claimedPositions[i]) return true;
-        }
-        return false;
+        return _claimedPositions.Contains(checkPosition);
     }
     
     public void Claim_Position(Vector2 position)

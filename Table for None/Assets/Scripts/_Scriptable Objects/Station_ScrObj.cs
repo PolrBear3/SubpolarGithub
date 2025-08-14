@@ -23,15 +23,18 @@ public class Station_ScrObj : ScriptableObject
     public Sprite dialogIcon;
 
     [Space(20)] 
-    [SerializeField] private FoodCondition_Type[] _conditionUpdateTypes;
-    public FoodCondition_Type[] conditionUpdateTypes => _conditionUpdateTypes;
+    [SerializeField] private bool _overlapPlaceable;
+    public bool overlapPlaceable => _overlapPlaceable;
+
+    [SerializeField] private Vector2 _offsetPosition;
+    public Vector2 offsetPosition => _offsetPosition;
     
     [Space(10)]
     [Range(0, 1000)] public int price;
     [Range(0, 100)] public int buildToArchiveCount;
     [Range(0, 100)] public int durability;
 
-    [Space(10)] 
+    [Space(10)]
     [SerializeField] private StationData[] _linkedStationDatas;
     public StationData[] linkedStationDatas => _linkedStationDatas;
     
@@ -43,15 +46,5 @@ public class Station_ScrObj : ScriptableObject
         if (string.IsNullOrEmpty(_localizedString.TableReference) && string.IsNullOrEmpty(_localizedString.TableEntryReference)) return stationName;
         
         return _localizedString.GetLocalizedString();
-    }
-
-    public bool Has_ConditionUpdateType(FoodCondition_Type conditionType)
-    {
-        for (int i = 0; i < _conditionUpdateTypes.Length; i++)
-        {
-            if (conditionType != _conditionUpdateTypes[i]) continue;
-            return true;
-        }
-        return false;
     }
 }
