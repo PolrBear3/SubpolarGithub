@@ -16,7 +16,7 @@ public class Table : MonoBehaviour
 
 
     // UnityEngine
-    private void Awake()
+    public void Awake()
     {
         _stationController = gameObject.GetComponent<Station_Controller>();
     }

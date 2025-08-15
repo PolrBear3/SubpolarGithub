@@ -7,24 +7,35 @@ using System.Linq;
 
 public class Oven : Table
 {
-    [Header("")]
-    [SerializeField] private SpriteRenderer _heatEmission;
+    [Space(20)]
+    [SerializeField] private Sprite _heatEmissionSprite;
     [SerializeField] private Light2D _light;
+    [SerializeField] private Material[] _materials;
 
-    private Coroutine _emissionCoroutine;
-
-    [Header("")]
+    [Space(20)]
     [SerializeField] private float _heatIncreaseTime;
+
     [SerializeField][Range(0, 10)] private float _emissionValue;
     [SerializeField][Range(0, 10)] private float _lightValue;
 
-    [Header("")] 
+    [Space(20)]
     [SerializeField] private AmountBar _heatDelayBar;
+
     
+    private Sprite _defaultSprite;
+    
+    private Coroutine _emissionCoroutine;
     private Coroutine _heatCoroutine;
-    
+
 
     // UnityEngine
+    private new void Awake()
+    {
+        base.Awake();
+        
+        _defaultSprite = stationController.spriteRenderer.sprite;
+    }
+    
     private new void Start()
     {
         Heat_Food();
@@ -91,29 +102,35 @@ public class Oven : Table
     }
     private IEnumerator Update_CurrentVisual_Coroutine()
     {
+        SpriteRenderer sr = stationController.spriteRenderer;
+        
         // active
         if (HeatFood_Available())
         {
             _light.intensity = _lightValue;
-            _heatEmission.color = Color.white;
+            
+            sr.sprite = _heatEmissionSprite;
+            sr.material = _materials[1];
 
             LeanTween.value(gameObject, 0f, _emissionValue, 2f).setOnUpdate((float val) =>
             {
-                _heatEmission.material.SetFloat("_Glow", val);
+                sr.material.SetFloat("_Glow", val);
             });
         }
         // inactive
         else
         {
-            LeanTween.value(gameObject, _heatEmission.material.GetFloat("_Glow"), 0f, 2f).setOnUpdate((float val) =>
+            LeanTween.value(gameObject, sr.material.GetFloat("_Glow"), 0f, 2f).setOnUpdate((float val) =>
             {
-                _heatEmission.material.SetFloat("_Glow", val);
+                sr.material.SetFloat("_Glow", val);
             });
 
             yield return new WaitForSeconds(2f);
 
             _light.intensity = 0f;
-            _heatEmission.color = Color.clear;
+            
+            sr.sprite = _defaultSprite;
+            sr.material = _materials[0];
         }
     }
     

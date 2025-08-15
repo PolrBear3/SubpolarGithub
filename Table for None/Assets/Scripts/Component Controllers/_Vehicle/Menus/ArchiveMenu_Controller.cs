@@ -31,10 +31,6 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Space(80)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
     
-    // Editor
-    [HideInInspector] public Food_ScrObj archiveFood;
-    [HideInInspector] public bool unlockIngredient;
-
 
     private ArchiveMenu_Data _data;
     private int _currentPageNum;
@@ -823,58 +819,3 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Hide_IngredientBox();
     }
 }
-
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(ArchiveMenu_Controller))]
-public class ArchiveMenu_Controller_Controller_Inspector : Editor
-{
-    //
-    private SerializedProperty _archiveFoodProp;
-    private SerializedProperty _unlockIngredientProp;
-
-    private void OnEnable()
-    {
-        _archiveFoodProp = serializedObject.FindProperty("archiveFood");
-        _unlockIngredientProp = serializedObject.FindProperty("unlockIngredient");
-    }
-
-
-    //
-    public override void OnInspectorGUI()
-    {
-        ArchiveMenu_Controller menu = (ArchiveMenu_Controller)target;
-
-        base.OnInspectorGUI();
-        serializedObject.Update();
-
-        GUILayout.Space(60);
-
-        //
-        EditorGUILayout.BeginHorizontal();
-
-        EditorGUILayout.PropertyField(_archiveFoodProp, GUIContent.none);
-        Food_ScrObj archiveFood = (Food_ScrObj)_archiveFoodProp.objectReferenceValue;
-
-        EditorGUILayout.PropertyField(_unlockIngredientProp, GUIContent.none);
-        bool unlockIngredient = _unlockIngredientProp.boolValue;
-
-        if (GUILayout.Button("Archive Food"))
-        {
-            if (unlockIngredient)
-            {
-                menu.Unlock_FoodIngredient(archiveFood, 1);
-            }
-
-            bool rawFood = Main_Controller.instance.dataController.Is_RawFood(archiveFood);
-            menu.Unlock_BookmarkToggle(menu.Archive_Food(archiveFood), rawFood || !menu.FoodIngredient_Unlocked(archiveFood));
-            menu.Unlock_FoodIngredient(archiveFood, 0);
-        }
-
-        EditorGUILayout.EndHorizontal();
-        //
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
-#endif

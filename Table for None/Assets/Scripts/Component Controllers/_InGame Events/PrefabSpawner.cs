@@ -42,7 +42,7 @@ public class PrefabSpawner : MonoBehaviour
         GameObject spawnPrefab = Instantiate(_spawnPrefab, spawnPosition, Quaternion.identity);
         
         // check if spawn prefab is a station
-        if (spawnPrefab.TryGetComponent(out Station_Movement movement) == false)
+        if (spawnPrefab.TryGetComponent(out Station_Controller station) == false)
         {
             Main_Controller.instance.data.Claim_Position(spawnPrefab.transform.position);
             
@@ -52,7 +52,9 @@ public class PrefabSpawner : MonoBehaviour
         }
 
         // set station
-        movement.Load_Position();
+        station.Set_Data(new(station.stationScrObj, station.transform.position));
+        station.movement.Load_Position();
+        
         return spawnPrefab;
     }
 

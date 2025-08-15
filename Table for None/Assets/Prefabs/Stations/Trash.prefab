@@ -286,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60d067a75bd04e088c55ff577cb7ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stationController: {fileID: -264751344495149270}
   _movementArrows: {fileID: 6860468482480181011}
 --- !u!114 &3022627385430847850
 MonoBehaviour:
@@ -313,6 +314,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0799bbf3b5414d6d8642d86a591bb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _foodListController: {fileID: 0}
+  _foodPrinterAbility: {fileID: 0}
   _rewardDropActions:
   - probability: 50
     action:

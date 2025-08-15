@@ -58,6 +58,17 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 
     [SerializeField] private Transform _otherFile;
     public Transform otherFile => _otherFile;
+    
+    
+    // Editor
+    [HideInInspector] public Food_ScrObj foodToAdd;
+    [HideInInspector] public int amountToAdd;
+    
+    [HideInInspector] public Station_ScrObj editStation;
+    [HideInInspector] public bool lockStation;
+    
+    [HideInInspector] public Food_ScrObj archiveFood;
+    [HideInInspector] public bool unlockIngredient;
 
 
     // MonoBehaviour
@@ -206,15 +217,17 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Load_Station(Station_LoadData stationLoadData)
     {
         StationData stationData = stationLoadData.stationData;
-        
-        // spawn saved station
+
         Station_Controller station = Spawn_Station(stationData.stationScrObj, stationData.position);
         station.Set_Data(stationData);
-
-        // claim position
+        
         Station_Movement movement = station.movement;
-            
-        if (movement != null) movement.Load_Position();
+        
+        if (movement != null)
+        {
+            movement.Load_Position();
+            station.transform.position = movement.Offset_Position();
+        }
         else _data.Claim_Position(station.transform.position);
             
         // load food data
@@ -348,10 +361,13 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         
         for (int i = 0; i < _currentStations.Count; i++)
         {
-            if (searchPosition != (Vector2)_currentStations[i].transform.position) continue;
+            Station_Movement movement = _currentStations[i].movement;
+            if (movement == null || movement.enabled) continue;
+            
+            if (searchPosition != (Vector2)_currentStations[i].data.position) continue;
+            
             searchStations.Add(_currentStations[i]);
         }
-        
         return searchStations;
     }
     
@@ -396,7 +412,27 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
 [CustomEditor(typeof(Main_Controller))]
 public class Main_Controller_Inspector : Editor
 {
-    //
+    private SerializedProperty foodToAddProp;
+    private SerializedProperty amountToAddProp;
+    
+    private SerializedProperty editStationProp;
+    private SerializedProperty lockStationProp;
+    
+    private SerializedProperty _archiveFoodProp;
+    private SerializedProperty _unlockIngredientProp;
+    
+    private void OnEnable()
+    {
+        foodToAddProp = serializedObject.FindProperty("foodToAdd");
+        amountToAddProp = serializedObject.FindProperty("amountToAdd");
+        
+        editStationProp = serializedObject.FindProperty("editStation");
+        lockStationProp = serializedObject.FindProperty("lockStation");
+        
+        _archiveFoodProp = serializedObject.FindProperty("archiveFood");
+        _unlockIngredientProp = serializedObject.FindProperty("unlockIngredient");
+    }
+    
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -404,11 +440,93 @@ public class Main_Controller_Inspector : Editor
 
         GUILayout.Space(60);
 
-        if (GUILayout.Button("Test Button"))
+        if (GUILayout.Button("Add Gold"))
         {
             GoldSystem.instance.Update_CurrentAmount(50);
         }
+        
+        GUILayout.Space(30);
+        
+        if (GUILayout.Button("Add New Page of Slots"))
+        {
+            FoodMenu_Controller foodMenu = Main_Controller.instance.currentVehicle.menu.foodMenu;
+            foodMenu.controller.slotsController.AddNewPage_ItemSlotDatas(foodMenu.ItemSlot_Datas());
+        }
+        
+        GUILayout.BeginHorizontal();
+        
+        EditorGUILayout.PropertyField(foodToAddProp, GUIContent.none);
+        Food_ScrObj foodToAdd = (Food_ScrObj)foodToAddProp.objectReferenceValue;
 
+        EditorGUILayout.PropertyField(amountToAddProp, GUIContent.none);
+        int amountToAdd = amountToAddProp.intValue;
+        
+        GUILayout.EndHorizontal();
+        
+        if (GUILayout.Button("Add Food"))
+        {
+            FoodMenu_Controller foodMenu = Main_Controller.instance.currentVehicle.menu.foodMenu;
+            foodMenu.Add_FoodItem(foodToAdd, amountToAdd);
+        }
+
+        if (GUILayout.Button("Remove Food"))
+        {
+            FoodMenu_Controller foodMenu = Main_Controller.instance.currentVehicle.menu.foodMenu;
+            foodMenu.Remove_FoodItem(foodToAdd, amountToAdd);
+        }
+        
+        GUILayout.Space(30);
+
+        if (GUILayout.Button("Add New Page of Slots"))
+        {
+            StationMenu_Controller stationMenu = Main_Controller.instance.currentVehicle.menu.stationMenu;
+            stationMenu.controller.slotsController.AddNewPage_ItemSlotDatas(stationMenu.ItemSlot_Datas());
+        }
+
+        EditorGUILayout.BeginHorizontal();
+
+        EditorGUILayout.PropertyField(editStationProp, GUIContent.none);
+        Station_ScrObj editStation = (Station_ScrObj)editStationProp.objectReferenceValue;
+
+        EditorGUILayout.PropertyField(lockStationProp, GUIContent.none);
+        bool lockStation = lockStationProp.boolValue;
+
+        if (GUILayout.Button("Add Station"))
+        {
+            StationMenu_Controller stationMenu = Main_Controller.instance.currentVehicle.menu.stationMenu;
+            stationMenu.Toggle_DataLock(stationMenu.Add_StationItem(editStation, 1), lockStation);
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+        if (GUILayout.Button("Remove Station"))
+        {
+            StationMenu_Controller stationMenu = Main_Controller.instance.currentVehicle.menu.stationMenu;
+            stationMenu.Remove_StationItem(editStation);
+        }
+        
+        GUILayout.Space(30);
+        
+        EditorGUILayout.PropertyField(_archiveFoodProp, GUIContent.none);
+        Food_ScrObj archiveFood = (Food_ScrObj)_archiveFoodProp.objectReferenceValue;
+
+        EditorGUILayout.PropertyField(_unlockIngredientProp, GUIContent.none);
+        bool unlockIngredient = _unlockIngredientProp.boolValue;
+
+        if (GUILayout.Button("Archive Food"))
+        {
+            ArchiveMenu_Controller archiveMenu = Main_Controller.instance.currentVehicle.menu.archiveMenu;
+            
+            if (unlockIngredient)
+            {
+                archiveMenu.Unlock_FoodIngredient(archiveFood, 1);
+            }
+
+            bool rawFood = Main_Controller.instance.dataController.Is_RawFood(archiveFood);
+            archiveMenu.Unlock_BookmarkToggle(archiveMenu.Archive_Food(archiveFood), rawFood || !archiveMenu.FoodIngredient_Unlocked(archiveFood));
+            archiveMenu.Unlock_FoodIngredient(archiveFood, 0);
+        }
+        
         serializedObject.ApplyModifiedProperties();
     }
 }

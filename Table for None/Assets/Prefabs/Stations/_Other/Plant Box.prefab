@@ -208,6 +208,7 @@ MonoBehaviour:
         Data3: -911600471
         Data4: 1970102881
       Path: event:/Basic SFX/Station/Station_break
+  _fadeDuration: 0
 --- !u!114 &3551917571397297857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60d067a75bd04e088c55ff577cb7ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stationController: {fileID: -87010650432210433}
   _movementArrows: {fileID: 3185406992926476595}
 --- !u!114 &7279824778005714765
 MonoBehaviour:
@@ -267,6 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 099add4aa4ee940de946cc533668935d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _foodListController: {fileID: 0}
+  _foodPrinterAbility: {fileID: 0}
   _plantableFoods:
   - {fileID: 11400000, guid: 7523c1d9c091a4aad8bd6a87cf995310, type: 2}
   _unPlantedSprite: {fileID: 1153679454, guid: efc963dc4f222479caa64033825131e4, type: 3}

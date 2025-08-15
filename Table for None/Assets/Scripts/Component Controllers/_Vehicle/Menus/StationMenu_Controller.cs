@@ -14,10 +14,6 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Space(80)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
     
-    // Editor
-    [HideInInspector] public Station_ScrObj editStation;
-    [HideInInspector] public bool lockStation;
-
 
     private StationMenu_Data _data;
 
@@ -485,10 +481,13 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         Station_ScrObj cursorStation = cursor.data.currentStation;
 
         _interactStation = Main_Controller.instance.Spawn_Station(cursorStation, vehicle.stationSpawnPoint.position);
+        
         _interactStation.Set_Data(new(cursor.data.stationData));
+        _interactStation.data.Update_Position(vehicle.stationSpawnPoint.position);
 
         Station_Movement movement = _interactStation.movement;
-        
+        _interactStation.transform.position = movement.Offset_Position();
+
         _interactStation.TransparentBlink_Toggle(true);
         movement.movementArrows.SetActive(true);
 
@@ -633,14 +632,19 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         // swap station
         if (currentSlot.data.hasItem)
         {
-            bool sameTypeStation = currentSlot.data.currentStation.overlapPlaceable == interactStationData.stationScrObj.overlapPlaceable;
-            if (main.CurrentStations(_interactStation.transform.position).Count > 1 && sameTypeStation == false) return;
-            
+            if (main.CurrentStations(_interactStation.data.position).Count >= 1)
+            {
+                bool offsetPlaced = interactStationData.stationScrObj.overlapPlaceable &&
+                                    (Vector2)_interactStation.transform.position != _interactStation.data.position;
+
+                if (currentSlot.data.currentStation.overlapPlaceable == false && offsetPlaced) return;
+            }
+
             Station_Controller exportStation = main.Spawn_Station(currentSlot.data.currentStation, _interactStation.transform.position);
             StationData swapStationData = new(currentSlot.data.stationData);
 
             exportStation.Set_Data(swapStationData);
-            exportStation.data.Update_Position(_interactStation.transform.position);
+            exportStation.data.Update_Position(_interactStation.data.position);
             exportStation.movement.Load_Position();
         }
 
@@ -652,9 +656,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation.Destroy_Station();
         
         // claimed position data update
-        if (main.CurrentStations(interactStationData.position).Count == 0)
+        List<Station_Controller> currentStations = main.CurrentStations(interactStationData.position);
+        
+        if (currentStations.Count == 0)
         {
             main.data.claimedPositions.Remove(interactStationData.position);
+        }
+
+        foreach (Station_Controller station in currentStations)
+        {
+            station.transform.position = station.movement.Offset_Position();
         }
 
         // empty cursor
@@ -692,63 +703,3 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         _interactStation = null;
     }
 }
-
-
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(StationMenu_Controller))]
-public class StationMenu_Controller_Inspector : Editor
-{
-    //
-    private SerializedProperty editStationProp;
-    private SerializedProperty lockStationProp;
-
-    private void OnEnable()
-    {
-        editStationProp = serializedObject.FindProperty("editStation");
-        lockStationProp = serializedObject.FindProperty("lockStation");
-    }
-
-
-    //
-    public override void OnInspectorGUI()
-    {
-        StationMenu_Controller menu = (StationMenu_Controller)target;
-
-        base.OnInspectorGUI();
-        serializedObject.Update();
-
-        GUILayout.Space(60);
-
-        if (GUILayout.Button("Add New Page of Slots"))
-        {
-            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.ItemSlot_Datas());
-        }
-        GUILayout.Space(20);
-
-        //
-        EditorGUILayout.BeginHorizontal();
-
-        EditorGUILayout.PropertyField(editStationProp, GUIContent.none);
-        Station_ScrObj editStation = (Station_ScrObj)editStationProp.objectReferenceValue;
-
-        EditorGUILayout.PropertyField(lockStationProp, GUIContent.none);
-        bool lockStation = lockStationProp.boolValue;
-
-        if (GUILayout.Button("Add Station"))
-        {
-            menu.Toggle_DataLock(menu.Add_StationItem(editStation, 1), lockStation);
-        }
-
-        EditorGUILayout.EndHorizontal();
-        //
-
-        if (GUILayout.Button("Remove Station"))
-        {
-            menu.Remove_StationItem(editStation);
-        }
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
-#endif

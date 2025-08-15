@@ -18,10 +18,6 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable, I
     [Space(80)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
     
-    // Editor
-    [HideInInspector] public Food_ScrObj foodToAdd;
-    [HideInInspector] public int amountToAdd;
-
 
     private FoodMenu_Data _data;
     private int _currentPageNum;
@@ -775,58 +771,3 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable, I
         Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 1);
     }
 }
-
-
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(FoodMenu_Controller))]
-public class FoodMenu_Controller_Inspector : Editor
-{
-    private SerializedProperty foodToAddProp;
-    private SerializedProperty amountToAddProp;
-
-    private void OnEnable()
-    {
-        foodToAddProp = serializedObject.FindProperty("foodToAdd");
-        amountToAddProp = serializedObject.FindProperty("amountToAdd");
-    }
-
-    public override void OnInspectorGUI()
-    {
-        FoodMenu_Controller menu = (FoodMenu_Controller)target;
-
-        base.OnInspectorGUI();
-        serializedObject.Update();
-
-        GUILayout.Space(60);
-
-        if (GUILayout.Button("Add New Page of Slots"))
-        {
-            menu.controller.slotsController.AddNewPage_ItemSlotDatas(menu.ItemSlot_Datas());
-        }
-        GUILayout.Space(20);
-
-        GUILayout.BeginHorizontal();
-
-        EditorGUILayout.PropertyField(foodToAddProp, GUIContent.none);
-        Food_ScrObj foodToAdd = (Food_ScrObj)foodToAddProp.objectReferenceValue;
-
-        EditorGUILayout.PropertyField(amountToAddProp, GUIContent.none);
-        int amountToAdd = amountToAddProp.intValue;
-
-        GUILayout.EndHorizontal();
-
-        if (GUILayout.Button("Add Food"))
-        {
-            menu.Add_FoodItem(foodToAdd, amountToAdd);
-        }
-
-        if (GUILayout.Button("Remove Food"))
-        {
-            menu.Remove_FoodItem(foodToAdd, amountToAdd);
-        }
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
-#endif

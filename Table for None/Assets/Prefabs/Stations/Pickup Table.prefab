@@ -288,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60d067a75bd04e088c55ff577cb7ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stationController: {fileID: -87010650432210433}
   _movementArrows: {fileID: 3185406992926476595}
 --- !u!114 &3928886942652671882
 MonoBehaviour:
@@ -315,7 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2999fa581c2094f15adaeccba6405e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mergeAbility: {fileID: 0}
+  _foodListController: {fileID: 0}
+  _foodPrinterAbility: {fileID: 0}
   _sprites:
   - {fileID: -1081251772, guid: efc963dc4f222479caa64033825131e4, type: 3}
   - {fileID: 162567920, guid: efc963dc4f222479caa64033825131e4, type: 3}

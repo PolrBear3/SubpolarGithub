@@ -208,6 +208,7 @@ MonoBehaviour:
         Data3: -911600471
         Data4: 1970102881
       Path: event:/Basic SFX/Station/Station_break
+  _fadeDuration: 0
 --- !u!114 &-87010650432210433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60d067a75bd04e088c55ff577cb7ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stationController: {fileID: -87010650432210433}
   _movementArrows: {fileID: 3185406992926476595}
 --- !u!114 &3551917571397297857
 MonoBehaviour:
@@ -267,6 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3925c97ee874a9ea64c6f55715422c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _foodListController: {fileID: 0}
+  _foodPrinterAbility: {fileID: 0}
   _boxOpen: {fileID: 724607070, guid: efc963dc4f222479caa64033825131e4, type: 3}
   _boxClosed: {fileID: -268384869, guid: efc963dc4f222479caa64033825131e4, type: 3}
 --- !u!1001 &1517393429545405773

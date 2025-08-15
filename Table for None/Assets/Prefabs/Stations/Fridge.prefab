@@ -288,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60d067a75bd04e088c55ff577cb7ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stationController: {fileID: -6508325263318014687}
   _movementArrows: {fileID: 6549519839148828657}
 --- !u!114 &3520185296310609668
 MonoBehaviour:
@@ -315,7 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f285d22b4c3d4bac8f0856970a32eeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mergeAbility: {fileID: 0}
+  _foodListController: {fileID: 0}
+  _foodPrinterAbility: {fileID: 0}
   _delayTimeBar: {fileID: 7263404010187449094}
   _freezeDelayTime: 5
 --- !u!1 &9150957638827360907
