@@ -19,7 +19,6 @@ public class Station_ScrObj : ScriptableObject
 
     [Space(20)]
     public Sprite sprite;
-    public Sprite miniSprite;
     public Sprite dialogIcon;
 
     [Space(20)] 

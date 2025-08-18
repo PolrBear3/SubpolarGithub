@@ -119,7 +119,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         if (_controller.foodIcon.hasFood == false)
         {
-            movement.Free_Roam(locationRoamArea, 0f);
+            movement.CurrentLocation_FreeRoam(_controller.movement.Random_IntervalTime());
             return;
         }
 

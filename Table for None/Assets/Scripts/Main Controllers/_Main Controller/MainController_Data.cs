@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class MainController_Data
 {
-    [ES3Serializable] private List<Vector2> _claimedPositions = new();
+    [ES3NonSerializable] private List<Vector2> _claimedPositions = new();
     public List<Vector2> claimedPositions => _claimedPositions;
 
     [ES3Serializable] private List<Station_LoadData> _stationLoadDatas = new();
@@ -16,7 +16,7 @@ public class MainController_Data
     public List<Food_ScrObj> bookmarkedFoods => _bookmarkedFoods;
     
     
-    // Claimed Positions
+    // Claimed Positions Datas
     public bool Position_Claimed(Vector2 checkPosition)
     {
         return _claimedPositions.Contains(checkPosition);
@@ -29,7 +29,7 @@ public class MainController_Data
     }
     
     
-    // Food Bookmarking
+    // Food Bookmark Datas
     public void Remove_DuplicateBookmarks()
     {
         HashSet<Food_ScrObj> hashFoods = new();

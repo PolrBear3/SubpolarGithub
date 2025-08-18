@@ -186,7 +186,7 @@ public class LootBox : MonoBehaviour, ISaveLoadable
         for (int i = 0; i < surroundingPositions.Count; i++)
         {
             if (Main_Controller.instance.data.Position_Claimed(surroundingPositions[i])) continue;
-            if (currentLocation.Restricted_Position(surroundingPositions[i])) continue;
+            if (currentLocation.Is_OuterSpawnPoint(surroundingPositions[i])) continue;
 
             return surroundingPositions[i];
         }

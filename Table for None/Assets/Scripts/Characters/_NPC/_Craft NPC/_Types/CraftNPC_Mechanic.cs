@@ -168,7 +168,7 @@ public class CraftNPC_Mechanic : CraftNPC
         for (int i = 0; i < surroundPositions.Count; i++)
         {
             if (main.data.Position_Claimed(surroundPositions[i])) continue;
-            if (location.Restricted_Position(surroundPositions[i])) continue;
+            if (location.Is_OuterSpawnPoint(surroundPositions[i])) continue;
 
             return true;
         }

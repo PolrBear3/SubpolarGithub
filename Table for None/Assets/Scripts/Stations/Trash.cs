@@ -147,7 +147,7 @@ public class Trash : Stack_Table
         for (int i = 0; i < centeredPositions.Count; i++)
         {
             if (main.data.Position_Claimed(centeredPositions[i])) continue;
-            if (currentLocation.Restricted_Position(centeredPositions[i])) continue;
+            if (currentLocation.Is_OuterSpawnPoint(centeredPositions[i])) continue;
 
             dropPositions.Add(centeredPositions[i]);
         }

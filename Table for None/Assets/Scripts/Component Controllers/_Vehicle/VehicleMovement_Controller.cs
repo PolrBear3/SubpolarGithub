@@ -147,7 +147,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         Location_Controller location = Main_Controller.instance.currentLocation;
         Transform vehicle = _controller.transform;
 
-        if (location.Restricted_Position(vehicle.position) == false) return;
+        if (location.Is_OuterSpawnPoint(vehicle.position) == false) return;
 
         vehicle.position = location.Redirected_Position(vehicle.position);
     }
@@ -225,7 +225,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         for (int i = 0; i < claimer.All_InteractPositions().Count; i++)
         {
-            if (location.Restricted_Position(claimer.All_InteractPositions()[i])) return false;
+            if (location.Is_OuterSpawnPoint(claimer.All_InteractPositions()[i])) return false;
 
             if (claimer.Is_ClaimPosition(claimer.All_InteractPositions()[i]) == false) continue;
             Vector2 redirectedPos = location.Redirected_SnapPosition(claimer.All_InteractPositions()[i]);

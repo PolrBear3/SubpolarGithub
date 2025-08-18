@@ -41,19 +41,23 @@ public class PrefabSpawner : MonoBehaviour
         if (_spawnPrefab == null) return null;
         GameObject spawnPrefab = Instantiate(_spawnPrefab, spawnPosition, Quaternion.identity);
         
+        Main_Controller main = Main_Controller.instance;
+        
         // check if spawn prefab is a station
         if (spawnPrefab.TryGetComponent(out Station_Controller station) == false)
         {
-            Main_Controller.instance.data.Claim_Position(spawnPrefab.transform.position);
+            main.data.Claim_Position(spawnPrefab.transform.position);
             
             // set as a child of current location file
-            spawnPrefab.transform.SetParent(Main_Controller.instance.otherFile);
+            spawnPrefab.transform.SetParent(main.otherFile);
             return spawnPrefab;
         }
 
         // set station
         station.Set_Data(new(station.stationScrObj, station.transform.position));
-        station.movement.Load_Position();
+        
+        if (station.movement !=null) station.movement.Load_Position();
+        else main.data.Claim_Position(station.transform.position);
         
         return spawnPrefab;
     }
@@ -122,7 +126,7 @@ public class PrefabSpawner : MonoBehaviour
         for (int i = 0; i < _spawnPositions.Length; i++)
         {
             if (spawnCount <= 0) return;
-            if (location.Restricted_Position(_spawnPositions[i])) continue;
+            if (location.Is_OuterSpawnPoint(_spawnPositions[i])) continue;
 
             Spawn_Prefab(_spawnPositions[i]);
             spawnCount--;

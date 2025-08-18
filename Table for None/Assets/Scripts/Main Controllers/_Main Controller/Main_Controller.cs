@@ -82,7 +82,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        UnClaim_CustomPositions();
         Save_CurrentStations();
         
         ES3.Save("Main_Controller/MainController_Data", _data);
@@ -91,21 +90,17 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public void Load_Data()
     {
         _data = ES3.Load("Main_Controller/MainController_Data", new MainController_Data());
-
-        Load_CurrentStations();
     }
     
 
-    /// <summary>
-    /// Before saving, UnClaim custom positions from all Custom_positionClaimer
-    /// </summary>
-    private void UnClaim_CustomPositions()
+    // Custom Position Claimers
+    public void load_CustomPositions()
     {
         Custom_PositionClaimer[] claimers = FindObjectsOfType<Custom_PositionClaimer>();
 
         foreach (Custom_PositionClaimer claimer in claimers)
         {
-            claimer.UnClaim_CurrentPositions();
+            claimer.Claim_CurrentPositions();
         }
     }
 
@@ -217,8 +212,11 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     private void Load_Station(Station_LoadData stationLoadData)
     {
         StationData stationData = stationLoadData.stationData;
-
-        Station_Controller station = Spawn_Station(stationData.stationScrObj, stationData.position);
+        
+        Vector2 loadPosition = stationData.position;
+        if (_data.Position_Claimed(loadPosition)) return;
+        
+        Station_Controller station = Spawn_Station(stationData.stationScrObj, loadPosition);
         station.Set_Data(stationData);
         
         Station_Movement movement = station.movement;
@@ -238,7 +236,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         stationIcon.Show_Icon();
         stationIcon.Show_Condition();
     }
-    private void Load_CurrentStations()
+    public void Load_CurrentStations()
     {
         List<Station_LoadData> stationLoadDatas = _data.stationLoadDatas;
 

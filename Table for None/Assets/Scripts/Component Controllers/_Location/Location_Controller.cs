@@ -24,6 +24,9 @@ public class Location_Controller : MonoBehaviour
     private List<NPC_Controller> _foodOrderNPCs = new();
     public List<NPC_Controller> foodOrderNPCs => _foodOrderNPCs;
 
+    private List<SpriteRenderer> _restrictedAreas = new();
+    public List<SpriteRenderer> restrictedAreas => _restrictedAreas;
+
 
     // UnityEngine
     private void Start()
@@ -49,7 +52,7 @@ public class Location_Controller : MonoBehaviour
 
 
     // Position Checks
-    public bool Restricted_Position(Vector2 checkPosition)
+    public bool Is_OuterSpawnPoint(Vector2 checkPosition)
     {
         bool restricted = false;
 
@@ -65,6 +68,16 @@ public class Location_Controller : MonoBehaviour
     public bool At_Location(GameObject checkObject)
     {
         return _data.screenArea.bounds.Contains(checkObject.transform.position);
+    }
+    
+    public SpriteRenderer Restricted_Area(Vector2 checkPosition)
+    {
+        for (int i = 0; i < _restrictedAreas.Count; i++)
+        {
+            if (restrictedAreas[i].bounds.Contains(checkPosition) == false) continue;
+            return restrictedAreas[i];
+        }
+        return null;
     }
     
 
@@ -122,7 +135,7 @@ public class Location_Controller : MonoBehaviour
     /// </returns>
     public Vector2 Redirected_Position(Vector2 restrictedPosition)
     {
-        if (Restricted_Position(restrictedPosition) == false) return restrictedPosition;
+        if (Is_OuterSpawnPoint(restrictedPosition) == false) return restrictedPosition;
 
         float closestXPos = Mathf.Clamp(restrictedPosition.x, _data.spawnRangeX.x, _data.spawnRangeX.y);
         float closestYPos = Mathf.Clamp(restrictedPosition.y, _data.spawnRangeY.x, _data.spawnRangeY.y);
@@ -278,7 +291,7 @@ public class Location_Controller : MonoBehaviour
             npcController.basicAnim.Set_OverrideController(_data.Random_NPCSkinOverride());
 
             // set npc free roam location
-            movement.Free_Roam(_data.roamArea, movement.Random_IntervalTime());
+            movement.CurrentLocation_FreeRoam(movement.Random_IntervalTime());
         }
     }
 

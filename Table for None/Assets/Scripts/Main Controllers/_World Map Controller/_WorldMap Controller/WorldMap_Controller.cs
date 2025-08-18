@@ -51,17 +51,17 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
     {
         Location_Controller location = Load_CurrentLocation();
         Play_LocationBGM(location);
-        
-        // load saved location
-        if (ES3.KeyExists("WorldMap_Controller/WorldMap_ControllerData"))
-        {
-            if (_data.newLocation == false) return;
 
-            Activate_NewLocationEvents();
+        if (ES3.KeyExists("WorldMap_Controller/WorldMap_ControllerData") && _data.newLocation == false)
+        {
+            Main_Controller main = Main_Controller.instance;
+            
+            main.load_CustomPositions();
+            main.Load_CurrentStations();
+            
             return;
         }
-
-        // new game location
+        
         Activate_NewLocationEvents();
     }
 

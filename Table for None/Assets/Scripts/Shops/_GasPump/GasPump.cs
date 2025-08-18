@@ -117,7 +117,7 @@ public class GasPump : MonoBehaviour, ISaveLoadable
                 continue;
             }
 
-            if (main.currentLocation.Restricted_Position(spawnPositions[i]))
+            if (main.currentLocation.Is_OuterSpawnPoint(spawnPositions[i]))
             {
                 spawnPositions.RemoveAt(i);
                 continue;

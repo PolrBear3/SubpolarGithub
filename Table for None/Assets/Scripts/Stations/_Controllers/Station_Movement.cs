@@ -101,7 +101,7 @@ public class Station_Movement : MonoBehaviour
         Vector2 dataPos = _stationController.data.position;
         Vector2 updatePos = Utility.SnapPosition(new Vector2(dataPos.x + direction.x, dataPos.y + direction.y));
 
-        if (location.Restricted_Position(updatePos)) return;
+        if (location.Is_OuterSpawnPoint(updatePos)) return;
         if (vehicle.Is_InteractArea(updatePos) == false) return;
 
         _stationController.data.Update_Position(updatePos);
@@ -118,7 +118,7 @@ public class Station_Movement : MonoBehaviour
 
         Main_Controller.instance.data.Claim_Position(_stationController.data.position);
         OnLoadPosition?.Invoke();
-        
+
         enabled = false;
     }
     

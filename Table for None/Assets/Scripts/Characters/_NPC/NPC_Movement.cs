@@ -14,6 +14,9 @@ public class NPC_Movement : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _intervalTime;
     public float intervalTime => _intervalTime;
 
+    [Space(20)] 
+    [SerializeField] [Range(0, 100)] private float _updateDelayTime;
+
     
     private float _moveSpeed;
 
@@ -124,9 +127,6 @@ public class NPC_Movement : MonoBehaviour
     /// </summary>
     private void Assign_TargetPosition(SpriteRenderer searchArea)
     {
-        Main_Controller main = Main_Controller.instance;
-        LocationData currentLocation = main.currentLocation.data;
-
         Assign_TargetPosition(Utility.Random_BoundPoint(searchArea.bounds));
     }
 
@@ -178,12 +178,77 @@ public class NPC_Movement : MonoBehaviour
         yield break;
     }
 
-
+    /// <summary>
+    /// Redirects to opposite direction if restricted area is detected from Location_Controller
+    /// </summary>
     public void CurrentLocation_FreeRoam(float startDelayTime)
     {
-        Free_Roam(Main_Controller.instance.currentLocation.data.roamArea, startDelayTime);
+        if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
+
+        _roamActive = true;
+        _currentRoamArea = Main_Controller.instance.currentLocation.data.roamArea;
+        _moveCoroutine = StartCoroutine(CurrentLocation_FreeRoam_Coroutine(startDelayTime));
+    }
+    private IEnumerator CurrentLocation_FreeRoam_Coroutine(float startDelayTime)
+    {
+        yield return new WaitForSeconds(startDelayTime);
+
+        if (_roamActive == false)
+        {
+            _moveCoroutine = null;
+            yield break;
+        }
+
+        Location_Controller currentLocation = Main_Controller.instance.currentLocation;
+        SpriteRenderer locationRoamArea = currentLocation.data.roamArea;
+
+        while (_roamActive == true)
+        {
+            Assign_TargetPosition(locationRoamArea);
+            
+            while (At_TargetPosition() == false)
+            {
+                float updateDelayTime = Mathf.Clamp(_updateDelayTime, 0.5f, _updateDelayTime);
+                yield return new WaitForSeconds(updateDelayTime);
+                
+                SpriteRenderer restrictedArea = currentLocation.Restricted_Area(transform.position);
+                if (restrictedArea == null) continue;
+
+                Bounds roamBounds = locationRoamArea.bounds;
+                float directionValue = restrictedArea.bounds.center.x;
+                
+                float randXPoint;
+                float randYPoint = Random.Range(roamBounds.min.y, roamBounds.max.y);
+                
+                if (transform.position.x >= directionValue)
+                {
+                    // pick between current position x and right edge of current location
+                    randXPoint = Random.Range(transform.position.x, roamBounds.max.x);
+                }
+                else
+                {
+                    // pick between left edge of current location and current position x
+                    randXPoint = Random.Range(roamBounds.min.x, transform.position.x);
+                }
+
+                Assign_TargetPosition(transform.position);
+                yield return new WaitForSeconds(Random_IntervalTime());
+                
+                Assign_TargetPosition(new Vector2(randXPoint, randYPoint));
+                continue;
+            }
+
+            if (_roamActive == false) break;
+            yield return new WaitForSeconds(Random_IntervalTime());
+        }
+
+        _moveCoroutine = null;
+        yield break;
     }
     
+    /// <summary>
+    /// Excludes outer spawn range from current Location_Controller
+    /// </summary>
     public void CurrentLocation_FreeRoam(SpriteRenderer roamArea, float startDelayTime)
     {
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);
@@ -208,7 +273,7 @@ public class NPC_Movement : MonoBehaviour
         {
             Assign_TargetPosition(roamArea);
 
-            while (currentLocation.Restricted_Position(_targetPosition))
+            while (currentLocation.Is_OuterSpawnPoint(_targetPosition))
             {
                 Assign_TargetPosition(roamArea);
             }

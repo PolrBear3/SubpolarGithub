@@ -133,7 +133,7 @@ public class StationStock : MonoBehaviour
         stationMenu.Add_StationItem(currentStation, 1);
 
         // station coin launch animation
-        _launcher.Parabola_CoinLaunch(currentStation.miniSprite, _interactable.detection.player.transform.position);
+        _launcher.Parabola_CoinLaunch(currentStation.dialogIcon, _interactable.detection.player.transform.position);
 
         // tutorial quest
         TutorialQuest_Controller.instance.Complete_Quest("PurchaseStation", 1);

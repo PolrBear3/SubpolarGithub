@@ -13,6 +13,8 @@ public class Food_ScrObj : ScriptableObject
     [Space(20)]
     public Sprite sprite;
     public Sprite eatSprite;
+    
+    public Color spriteColor;
 
     [Space(20)]
     public string foodName;

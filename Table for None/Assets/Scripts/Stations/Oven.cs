@@ -120,6 +120,8 @@ public class Oven : Table
         // inactive
         else
         {
+            if (sr.sprite == _defaultSprite) yield break;
+            
             LeanTween.value(gameObject, sr.material.GetFloat("_Glow"), 0f, 2f).setOnUpdate((float val) =>
             {
                 sr.material.SetFloat("_Glow", val);

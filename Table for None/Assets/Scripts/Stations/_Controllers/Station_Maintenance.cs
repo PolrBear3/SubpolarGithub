@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Station_Maintenance : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Station_Controller _controller;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private GameObject _durabilityBreakIcon;
 
 
@@ -18,6 +18,11 @@ public class Station_Maintenance : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
+        if (_controller.stationScrObj.durability <= 0)
+        {
+            _durabilityBreakIcon.SetActive(false);
+            return;
+        }
         Update_DurabilityBreak();
     }
 

@@ -474,14 +474,15 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
             _controller.infoBox.gameObject.SetActive(false);
             return;
         }
-
-        _interactionMode = true;
-
+        
         Vehicle_Controller vehicle = _controller.vehicleController;
         Station_ScrObj cursorStation = cursor.data.currentStation;
 
         _interactStation = Main_Controller.instance.Spawn_Station(cursorStation, vehicle.stationSpawnPoint.position);
+        if (_interactStation == null) return;
         
+        _interactionMode = true;
+
         _interactStation.Set_Data(new(cursor.data.stationData));
         _interactStation.data.Update_Position(vehicle.stationSpawnPoint.position);
 

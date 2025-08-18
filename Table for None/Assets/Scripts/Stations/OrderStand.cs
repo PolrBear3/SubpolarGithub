@@ -194,19 +194,9 @@ public class OrderStand : MonoBehaviour
 
     private void Reset_CurrentNPCs()
     {
-        Main_Controller main = Main_Controller.instance;
-
-        SpriteRenderer vehicleArea = main.currentVehicle.interactArea;
-        SpriteRenderer locationArea = main.currentLocation.data.roamArea;
-
-        for (int i = 0; i < _currentNPCs.Count; i++)
+        foreach (NPC_Controller npc in _currentNPCs)
         {
-            if (_currentNPCs[i].foodInteraction.timeCoroutine != null)
-            {
-                _currentNPCs[i].movement.Free_Roam(vehicleArea, 0f);
-                continue;
-            }
-            _currentNPCs[i].movement.Free_Roam(locationArea, 0f);
+            npc.foodInteraction.Update_RoamArea();
         }
         _currentNPCs.Clear();
 

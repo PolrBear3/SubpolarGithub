@@ -50,13 +50,14 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     private new void Start()
     {
         base.Start();
-
         _interactArea.gameObject.SetActive(false);
+        
+        // set _interactArea as restricted area for NPC free roam
+        Main_Controller.instance.currentLocation.restrictedAreas.Add(_interactArea);
 
         // subscription
         detection.ExitEvent += Transparency_Update;
         OnAction1 += Open_VehicleMenu;
-
         OnInteract += _guideTrigger.Trigger_CurrentGuide;
     }
 
@@ -65,7 +66,6 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
         // subscription
         detection.ExitEvent += Transparency_Update;
         OnAction1 -= Open_VehicleMenu;
-        
         OnInteract -= _guideTrigger.Trigger_CurrentGuide;
     }
 
@@ -120,7 +120,7 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
         Location_Controller location = Main_Controller.instance.currentLocation;
         Vector2 pointPos = Utility.Random_BoundPoint(_interactArea.bounds);
 
-        while (location.Restricted_Position(pointPos))
+        while (location.Is_OuterSpawnPoint(pointPos))
         {
             pointPos = Utility.Random_BoundPoint(_interactArea.bounds);
         }
