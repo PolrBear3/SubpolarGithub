@@ -9,14 +9,15 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 {
     public static GoldSystem instance;
 
-    [Space(20)]
+    [Space(20)] 
     [SerializeField] private Image _panel;
-    [SerializeField] private Sprite _indicatePanel;
-
-    private Sprite _defaultPanel;
-
+    [SerializeField] private UI_EffectController _uiEffectController;
+    
     [Space(20)]
+    [SerializeField] private Sprite _indicatePanel;
     [SerializeField] private Image _iconImage;
+    
+    private Sprite _defaultPanel;
 
     private Sprite _defaultIcon;
     public Sprite defaultIcon => _defaultIcon;
@@ -61,6 +62,9 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 
     private void Start()
     {
+        Cutscene_Controller cutScene = Cutscene_Controller.instance;
+        Toggle_Panel(cutScene.coroutine == null);
+        
         _iconImage.sprite = _defaultIcon;
 
         if (_data == null) Load_Data();
@@ -69,8 +73,10 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
         // subscriptions
         Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
 
-        vehicle.menu.On_MenuToggle += ToggleUpdate_Panel;
-        vehicle.locationMenu.On_MenuToggle += ToggleUpdate_Panel;
+        vehicle.menu.On_MenuToggle += Toggle_MenuUpdate;
+        vehicle.locationMenu.On_MenuToggle += Toggle_MenuUpdate;
+        
+        cutScene.OnToggle += Toggle_Panel;
     }
 
     private void OnDestroy()
@@ -78,8 +84,10 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
         // subscriptions
         Vehicle_Controller vehicle = Main_Controller.instance.currentVehicle;
 
-        vehicle.menu.On_MenuToggle -= ToggleUpdate_Panel;
-        vehicle.locationMenu.On_MenuToggle -= ToggleUpdate_Panel;
+        vehicle.menu.On_MenuToggle -= Toggle_MenuUpdate;
+        vehicle.locationMenu.On_MenuToggle -= Toggle_MenuUpdate;
+        
+        Cutscene_Controller.instance.OnToggle -= Toggle_Panel;
     }
 
 
@@ -97,9 +105,17 @@ public class GoldSystem : MonoBehaviour, ISaveLoadable
 
 
     // Indication
-    private void ToggleUpdate_Panel(bool toggle)
+    private void Toggle_Panel(bool toggle)
     {
-        _panel.gameObject.SetActive(!toggle);
+        _panel.gameObject.SetActive(toggle);
+
+        if (toggle == false) return;
+        _uiEffectController.Update_Scale(_panel.rectTransform);
+    }
+    
+    private void Toggle_MenuUpdate(bool otherMenuOpened)
+    {
+        Toggle_Panel(!otherMenuOpened);
     }
 
 

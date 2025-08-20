@@ -25,7 +25,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)] 
     [SerializeField] private UI_ClockTimer _holdTimer;
     
-    [Space(80)]
+    [Space(60)]
+    [SerializeField] private VideoGuide_Trigger _guideTrigger;
     [SerializeField] private Input_Manager _inputManager;
 
 
@@ -59,6 +60,11 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         input.Update_EmojiAsset(_navigateText);
 
         // subscriptions
+        Cutscene_Controller cutScene = Cutscene_Controller.instance;
+        
+        cutScene.OnEnd += Load_GuideActivation;
+        cutScene.OnEnd += _guideTrigger.Trigger_CurrentGuide;
+        
         _inputManager.OnSelectStart += _holdTimer.Run_ClockSprite;
         _inputManager.OnSelect += _holdTimer.Stop_ClockSpriteRun;
         _inputManager.OnHoldSelect += _holdTimer.Stop_ClockSpriteRun;
@@ -78,6 +84,11 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
+        Cutscene_Controller cutScene = Cutscene_Controller.instance;
+        
+        cutScene.OnEnd -= Load_GuideActivation;
+        cutScene.OnEnd -= _guideTrigger.Trigger_CurrentGuide;
+        
         _inputManager.OnSelectStart -= _holdTimer.Run_ClockSprite;
         _inputManager.OnSelect -= _holdTimer.Stop_ClockSpriteRun;
         _inputManager.OnHoldSelect -= _holdTimer.Stop_ClockSpriteRun;
@@ -112,7 +123,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     
     
     // Data
-    private void Toggle_GuideActivation(bool toggle)
+    public void Toggle_GuideActivation(bool toggle)
     {
         _guideActive = toggle;
         OnGuide_ActivationTrigger?.Invoke();
@@ -124,6 +135,14 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     {
         _guideActive = !_guideActive;
         OnGuide_ActivationTrigger?.Invoke();
+    }
+
+    private void Load_GuideActivation()
+    {
+        bool savedState = ES3.Load("VideoGuide_Controller/Guide_ActiveState", true);
+        if (savedState == false) return;
+        
+        Toggle_GuideActivation(true);
     }
     
     

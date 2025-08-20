@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEditor;
+using TMPro;
 
 public class Main_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -60,6 +61,12 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     public Transform otherFile => _otherFile;
     
     
+    [Space(20)]
+    [SerializeField] private UI_EffectController _uiEffectController;
+    [SerializeField] private Image _statusPanel;
+    [SerializeField] private TextMeshProUGUI _statusText;
+    
+    
     // Editor
     [HideInInspector] public Food_ScrObj foodToAdd;
     [HideInInspector] public int amountToAdd;
@@ -78,6 +85,16 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         Application.targetFrameRate = 60;
     }
 
+    private void Start()
+    {
+        Cutscene_Controller.instance.OnEnd += Toggle_StatusPanel;
+    }
+
+    private void OnDestroy()
+    {
+        Cutscene_Controller.instance.OnEnd -= Toggle_StatusPanel;
+    }
+
 
     // ISaveLoadable
     public void Save_Data()
@@ -93,6 +110,31 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
     }
     
 
+    // Status Intro Panel
+    private void Toggle_StatusPanel(bool toggle)
+    {
+        _statusPanel.gameObject.SetActive(toggle);
+
+        if (toggle == false) return;
+        
+        WorldMap_Data currentData = _worldMap.data.currentData;
+        int worldNum = currentData.worldNum;
+        
+        Sprite panelSprite = Main_Controller.instance.dataController.World_Data(worldNum).statusPanelSprite;
+        _statusPanel.sprite = panelSprite;
+        
+        string worldDataString = "<sprite=95> " + worldNum + "-" + currentData.locationNum;
+        string goldString = "<sprite=56> " + GoldSystem.instance.data.goldAmount;
+        
+        _statusText.text = worldDataString + "   " + goldString;
+        _uiEffectController.Update_Scale(_statusPanel.gameObject);
+    }
+    public void Toggle_StatusPanel()
+    {
+        Toggle_StatusPanel(Cutscene_Controller.instance.coroutine != null);
+    }
+    
+    
     // Custom Position Claimers
     public void load_CustomPositions()
     {
@@ -214,7 +256,7 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         StationData stationData = stationLoadData.stationData;
         
         Vector2 loadPosition = stationData.position;
-        if (_data.Position_Claimed(loadPosition)) return;
+        if (_data.Position_Claimed(loadPosition) && CurrentStations(loadPosition).Count <= 0) return;
         
         Station_Controller station = Spawn_Station(stationData.stationScrObj, loadPosition);
         station.Set_Data(stationData);
@@ -285,22 +327,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         return destroyCount;
     }
     
-    public bool Is_StationArea(Vector2 areaPoint)
-    {
-        for (int i = 0; i < _currentStations.Count; i++)
-        {
-            if (_currentStations[i].isRoamArea) continue;
-
-            // get station sprite render bound
-            Bounds stationArea = _currentStations[i].spriteRenderer.bounds;
-
-            // check if areaPoint is inside stationArea
-            if (stationArea.Contains(areaPoint)) return true;
-        }
-
-        return false;
-    }
-
     /// <returns>
     /// only stations that are placed
     /// </returns>
@@ -368,7 +394,6 @@ public class Main_Controller : MonoBehaviour, ISaveLoadable
         }
         return searchStations;
     }
-    
     
     /// <summary>
     /// sorts current stations list from closest to farthest from target

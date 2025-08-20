@@ -300,7 +300,7 @@ public class CraftNPC_Smith : CraftNPC
 
         for (int i = surroundingStations.Count - 1; i >= 0; i--)
         {
-            if (surroundingStations[i].maintenance != null) continue;
+            if (surroundingStations[i].maintenance != null) continue; //
             surroundingStations.RemoveAt(i);
         }
 

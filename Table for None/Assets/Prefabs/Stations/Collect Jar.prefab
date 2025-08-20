@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 651189877046526725}
   - component: {fileID: 8479557493213457428}
   - component: {fileID: 5240349222724760642}
+  - component: {fileID: 8525473960297262225}
   - component: {fileID: 2760221407869996016}
   m_Layer: 0
   m_Name: Collect Jar
@@ -241,7 +242,7 @@ MonoBehaviour:
   _iInteractable: {fileID: 651189877046526725}
   _detection: {fileID: 7041178694425679705}
   _movement: {fileID: 5240349222724760642}
-  _maintenance: {fileID: 0}
+  _maintenance: {fileID: 8525473960297262225}
   _stationScrObj: {fileID: 11400000, guid: c32ff8ce5146c45c79af7acf780abf86, type: 2}
   _itemDropper: {fileID: 0}
 --- !u!114 &5240349222724760642
@@ -258,6 +259,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stationController: {fileID: 8479557493213457428}
   _movementArrows: {fileID: 6649912392739945966}
+--- !u!114 &8525473960297262225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7242740814026304155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445f8f028848a4ece8af41ca86d257c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _controller: {fileID: 0}
+  _durabilityBreakIcon: {fileID: 0}
 --- !u!114 &2760221407869996016
 MonoBehaviour:
   m_ObjectHideFlags: 0

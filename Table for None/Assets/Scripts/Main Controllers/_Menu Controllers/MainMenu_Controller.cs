@@ -28,6 +28,8 @@ public class MainMenu_Controller : Menu_Controller
         {
             button.Set_DefaultPosition();
         }
+        
+        Input_Controller.instance.Toggle_Input(true);
     }
     
     

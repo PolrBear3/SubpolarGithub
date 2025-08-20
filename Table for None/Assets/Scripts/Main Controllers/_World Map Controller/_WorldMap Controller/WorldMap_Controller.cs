@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 using FMOD.Studio;
 
 [System.Serializable]
@@ -32,7 +33,6 @@ public struct WorldMap_Data
 
 public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
 {
-    [Space(20)]
     [SerializeField] private Location_ScrObj _startingLocation;
 
 
@@ -54,6 +54,8 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
 
         if (ES3.KeyExists("WorldMap_Controller/WorldMap_ControllerData") && _data.newLocation == false)
         {
+            Input_Controller.instance.Toggle_Input(true);
+            
             Main_Controller main = Main_Controller.instance;
             
             main.load_CustomPositions();
@@ -62,7 +64,13 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
             return;
         }
         
+        VideoGuide_Controller.instance.Toggle_GuideActivation(false);
         Activate_NewLocationEvents();
+        
+        Cutscene_Controller cutScene = Cutscene_Controller.instance;
+        cutScene.Play_CurrentPlayable();
+        
+        Main_Controller.instance.Toggle_StatusPanel();
     }
 
 

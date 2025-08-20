@@ -201,7 +201,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         Player_Controller player = Main_Controller.instance.Player();
 
         player.Toggle_Controllers(false);
-        player.Toggle_Hide(true);
+        player.Toggle_Show(false);
         
         // sound
         Audio_Controller audio = Audio_Controller.instance;
@@ -265,7 +265,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // player update
         Player_Controller player = main.Player();
 
-        player.Toggle_Hide(false);
+        player.Toggle_Show(true);
         player.Toggle_Controllers(true);
 
         player.transform.position = _controller.driverSeatPoint.position;

@@ -39,14 +39,45 @@ public class InteractIndicator_Controller : MonoBehaviour
 
     private void Start()
     {
-        Input_Controller input = Input_Controller.instance;
+        Toggle(Toggle_Available());
         
-        input.OnActionMapUpdate += () => _infoBox.gameObject.SetActive(false);
-        input.OnActionMapUpdate += () => _iconBox.gameObject.SetActive(input.Current_ActionMapNum() == 0 && _iconImage.sprite != null);
+        // subscriptions
+        Input_Controller.instance.OnActionMapUpdate += Toggle;
+        Cutscene_Controller.instance.OnToggle += Toggle;
+    }
+
+    private void OnDestroy()
+    {
+        Cutscene_Controller.instance.OnToggle -= Toggle;
+    }
+
+
+    // Trigger
+    private bool Toggle_Available()
+    {
+        bool inGame = Input_Controller.instance.Current_ActionMapNum() == 0 && _iconImage.sprite != null;
+        bool cutscenePlaying = Cutscene_Controller.instance.coroutine != null;
+        
+        return inGame && cutscenePlaying == false;
+    }
+    
+    private void Toggle(bool toggle)
+    {
+        if (toggle == false || _iconImage.sprite == null)
+        {
+            _iconBox.gameObject.SetActive(false);
+            _infoBox.gameObject.SetActive(false);
+            
+            return;
+        }
+        Trigger(_iconImage.sprite, _infoText.text);
+    }
+    private void Toggle()
+    {
+        Toggle(Toggle_Available());
     }
     
     
-    // Trigger
     public void Trigger(Sprite icon, string info)
     {
         _iconBox.gameObject.SetActive(icon != null);
@@ -76,9 +107,9 @@ public class InteractIndicator_Controller : MonoBehaviour
     private void Toggle_InfoBox()
     {
         Cancel_Coroutine();
-        _coroutine = StartCoroutine(Show_InfoBox());
+        _coroutine = StartCoroutine(InfoBox_Coroutine());
     }
-    private IEnumerator Show_InfoBox()
+    private IEnumerator InfoBox_Coroutine()
     {
         _infoBox.gameObject.SetActive(true);
        

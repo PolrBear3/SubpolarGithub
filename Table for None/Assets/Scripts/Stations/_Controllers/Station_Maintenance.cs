@@ -18,6 +18,8 @@ public class Station_Maintenance : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
+        if (_durabilityBreakIcon == null) return;
+        
         if (_controller.stationScrObj.durability <= 0)
         {
             _durabilityBreakIcon.SetActive(false);

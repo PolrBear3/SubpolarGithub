@@ -11,6 +11,9 @@ public class WorldData
     [SerializeField] private Sprite _panelSprite;
     public Sprite panelSprite => _panelSprite;
 
+    [SerializeField] private Sprite _statusPanelSprite;
+    public Sprite statusPanelSprite => _statusPanelSprite;
+
     [SerializeField] private AnimatorOverrideController _tileAnimOverrider;
     public AnimatorOverrideController tileAnimOverrider => _tileAnimOverrider;
 

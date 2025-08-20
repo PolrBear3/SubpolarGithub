@@ -32,18 +32,24 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     
     private void Start()
     {
+        Toggle_QuestBox(true);
         Update_QuestText();
-        _questBox.gameObject.SetActive(_currentQuests.Count > 0);
 
-        Input_Controller input = Input_Controller.instance;
-        input.OnActionMapUpdate += () => _questBox.gameObject.SetActive(input.Current_ActionMapNum() == 0 && _currentQuests.Count > 0);
+        // subscriptions
+        Cutscene_Controller.instance.OnToggle += Toggle_QuestBox;
+
+        Input_Controller.instance.OnActionMapUpdate += Toggle_QuestBox;
 
         Localization_Controller.instance.OnLocalizationLoad += Update_QuestText;
         Localization_Controller.instance.OnLanguageChanged += Update_QuestText;
+
     }
 
     private void OnDestroy()
     {
+        // subscriptions
+        Cutscene_Controller.instance.OnToggle -= Toggle_QuestBox;
+        
         Localization_Controller.instance.OnLocalizationLoad -= Update_QuestText;
         Localization_Controller.instance.OnLanguageChanged -= Update_QuestText;
     }
@@ -99,6 +105,29 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     }
     
     
+    // Main
+    private bool QuestBox_ToggleAvailable()
+    {
+        bool inGame = Input_Controller.instance.Current_ActionMapNum() == 0 && _currentQuests.Count > 0;
+        bool cutscenePlaying = Cutscene_Controller.instance.coroutine != null;
+
+        return inGame && cutscenePlaying == false;
+    }
+    
+    private void Toggle_QuestBox(bool toggle)
+    {
+        bool toggleAvailable = QuestBox_ToggleAvailable();
+        _questBox.gameObject.SetActive(toggle && toggleAvailable);
+
+        if (toggle == false || toggleAvailable == false) return;
+        _effectController.Update_Scale(_questBox.gameObject);
+    }
+    private void Toggle_QuestBox()
+    {
+        Toggle_QuestBox(QuestBox_ToggleAvailable());
+    }
+    
+    
     // Quest Box Control
     private void Update_QuestText()
     {
@@ -149,9 +178,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         Update_QuestText();
         
         bool isIngame = Input_Controller.instance.Current_ActionMapNum() == 0;
-        _questBox.gameObject.SetActive(isIngame && _currentQuests.Count > 0);
-        
-        _effectController.Update_Scale(_questBox);
+        Toggle_QuestBox(isIngame && _currentQuests.Count > 0);
     }
     public void Complete_Quest(string questName, int completeUpdateValue)
     {

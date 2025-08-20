@@ -7,6 +7,9 @@ using TMPro;
 
 public class DialogSystem : MonoBehaviour
 {
+    [Space(20)] 
+    [SerializeField] private GameObject _components;
+    
     [Space(20)]
     [SerializeField] RectTransform _dialogPanel;
     [SerializeField] private UI_EffectController _uiEffectController;
@@ -39,11 +42,12 @@ public class DialogSystem : MonoBehaviour
     private void Start()
     {
         _infoBox.Set_DefalutHeight();
-
+        
         Refresh_CurrentDialogs();
         Update_NavigateBox();
         
         HoverToggle_CurrentDialog(false);
+        Toggle_Panel(Cutscene_Controller.instance.coroutine == null);
 
         // subscriptions
         Input_Controller input = Input_Controller.instance;
@@ -59,6 +63,8 @@ public class DialogSystem : MonoBehaviour
         
         localizationController.OnLanguageChanged += Refresh_CurrentDialogs;
         localizationController.OnLanguageChanged += Update_NavigateBox;
+        
+        Cutscene_Controller.instance.OnToggle += Toggle_Panel;
     }
 
     private void OnDestroy()
@@ -70,6 +76,8 @@ public class DialogSystem : MonoBehaviour
         
         localizationController.OnLanguageChanged -= Refresh_CurrentDialogs;
         localizationController.OnLanguageChanged -= Update_NavigateBox;
+        
+        Cutscene_Controller.instance.OnToggle -= Toggle_Panel;
     }
 
 
@@ -91,6 +99,14 @@ public class DialogSystem : MonoBehaviour
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
 
         return dialogBox;
+    }
+
+    private void Toggle_Panel(bool toggle)
+    {
+        _components.SetActive(toggle);
+
+        if (toggle == false) return;
+        _uiEffectController.Update_Scale(_components);
     }
 
 

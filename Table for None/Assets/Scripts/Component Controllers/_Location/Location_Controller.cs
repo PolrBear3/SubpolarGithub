@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-
 public class Location_Controller : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private LocationData _data;
     public LocationData data => _data;
 
@@ -20,12 +19,16 @@ public class Location_Controller : MonoBehaviour
 
 
     private TimePhase_Population _maxPopulationData;
+    private int _additionalPopulation;
 
     private List<NPC_Controller> _foodOrderNPCs = new();
     public List<NPC_Controller> foodOrderNPCs => _foodOrderNPCs;
 
     private List<SpriteRenderer> _restrictedAreas = new();
     public List<SpriteRenderer> restrictedAreas => _restrictedAreas;
+    
+    [Space(60)]
+    [SerializeField] private int _currentMaxPopulation;
 
 
     // UnityEngine
@@ -209,6 +212,16 @@ public class Location_Controller : MonoBehaviour
         return currentNPCs;
     }
 
+    private int Current_MaxPopulation()
+    {
+        int maxPopulation = _data.Max_PopulationData(TimePhase.Day).maxPopulation +
+                            _data.Max_PopulationData(TimePhase.Night).maxPopulation;
+        
+        _currentMaxPopulation = Mathf.Clamp(_maxPopulationData.maxPopulation + _additionalPopulation, 0, maxPopulation);
+        
+        return Mathf.Clamp(_maxPopulationData.maxPopulation + _additionalPopulation, 0, maxPopulation);
+    }
+    
 
     /// <summary>
     /// for _maxPopulation data update
@@ -223,6 +236,19 @@ public class Location_Controller : MonoBehaviour
         _maxPopulationData = _data.Max_PopulationData(currentTimePhase);
     }
 
+    public void Update_AdditionalPopulation(int updateValue)
+    {
+        int calculatedValue = _additionalPopulation + updateValue;
+
+        if (calculatedValue <= 0)
+        {
+            _additionalPopulation = 0;
+            return;
+        }
+        
+        _additionalPopulation += updateValue;
+    }
+
     /// <summary>
     /// for leave (decrease)
     /// </summary>
@@ -231,7 +257,7 @@ public class Location_Controller : MonoBehaviour
         List<NPC_Controller> npcs = Current_npcControllers();
 
         // if current npc amount is more than _currentMaxSpawn
-        int npcOverFlowCount = npcs.Count - _maxPopulationData.maxPopulation;
+        int npcOverFlowCount = npcs.Count - Current_MaxPopulation();
 
         if (npcOverFlowCount <= 0) return;
 
@@ -257,7 +283,7 @@ public class Location_Controller : MonoBehaviour
             movement.Leave(0f);
         }
     }
-
+    
 
     /// <summary>
     /// for spawn
@@ -270,7 +296,7 @@ public class Location_Controller : MonoBehaviour
     {
         while (true)
         {
-            while (Current_npcControllers().Count >= _maxPopulationData.maxPopulation)
+            while (Current_npcControllers().Count >= Current_MaxPopulation())
             {
                 Decrease_npcPopulation();
 
@@ -317,7 +343,7 @@ public class Location_Controller : MonoBehaviour
     
     public bool FoodOrderNPC_Maxed()
     {
-        if (_foodOrderNPCs.Count >= _maxPopulationData.maxPopulation) return false;
+        if (_foodOrderNPCs.Count >= Current_MaxPopulation()) return false;
         
         return _foodOrderNPCs.Count >= _data.currentFoodOrderCount;
     }

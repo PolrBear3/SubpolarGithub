@@ -17,15 +17,15 @@ public interface IInteractable
 
 public class Data_Controller : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private WorldData[] _worldData;
     public WorldData[] worldData => _worldData;
 
-    [Header("")]
+    [Space(20)]
     public List<Station_ScrObj> stations = new();
     public List<GameObject> characters = new();
 
-    [Header("")]
+    [Space(20)]
     public List<Food_ScrObj> rawFoods = new();
     public List<Food_ScrObj> cookedFoods = new();
 

@@ -40,9 +40,6 @@ public class LocationMenu_Controller : MonoBehaviour
     private void Start()
     {
         Toggle_Menu(false);
-
-        Update_FoodIndications();
-        Update_StationIndications();
         
         // subscriptions
         _inputManager.OnCursorControl += CursorControl;
@@ -117,7 +114,6 @@ public class LocationMenu_Controller : MonoBehaviour
         // update panel
         int currentWorldNum = main.worldMap.data.currentData.worldNum;
         Sprite panelSprite = main.dataController.World_Data(currentWorldNum).panelSprite;
-
         _menuPanel.sprite = panelSprite;
 
         _hoverTileNum = _tiles.Length / 2;
@@ -130,6 +126,8 @@ public class LocationMenu_Controller : MonoBehaviour
         Update_InfoBox();
         Update_TilesAnimation();
 
+        Update_FoodIndications();
+        Update_StationIndications();
         Toggle_ResourceIndications();
         
         _uiEffect.Update_Scale(_menuPanel.rectTransform);
@@ -396,6 +394,11 @@ public class LocationMenu_Controller : MonoBehaviour
 
     private void Update_FoodIndications()
     {
+        foreach (Transform child in _foodIconBox.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        
         LocationData currentData = Main_Controller.instance.currentLocation.data;
         List<Food_ScrObj> ingredientDrops = currentData.Sorted_IngredientUnlocks();
 
@@ -410,6 +413,11 @@ public class LocationMenu_Controller : MonoBehaviour
 
     private void Update_StationIndications()
     {
+        foreach (Transform child in _stationIconBox.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        
         LocationData currentData = Main_Controller.instance.currentLocation.data;
         List<Station_ScrObj> stationDrops = currentData.Sorted_StationDrops();
 

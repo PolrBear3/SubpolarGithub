@@ -58,15 +58,23 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     private void Awake()
     {
         _sr = gameObject.GetComponent<SpriteRenderer>();
-
+        
         Main_Controller.instance.Track_CurrentCharacter(gameObject);
     }
 
     private void Start()
     {
-        _foodIcon.Show_Icon();
-        _foodIcon.Show_Condition();
-        _foodIcon.Toggle_SubDataBar(true);
+        Cutscene_Controller cutScene = Cutscene_Controller.instance;
+        Toggle_Show(cutScene.coroutine == null);
+        
+        // subscriptions
+        cutScene.OnToggle += Toggle_Show;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        Cutscene_Controller.instance.OnToggle += Toggle_Show;
     }
 
 
@@ -100,12 +108,12 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
 
 
     // Functions
-    public void Toggle_Hide(bool toggleOn)
+    public void Toggle_Show(bool toggle)
     {
-        _hidden = toggleOn;
+        _hidden = toggle;
         OnHideToggle?.Invoke();
 
-        if (toggleOn)
+        if (toggle == false)
         {
             _sr.color = Color.clear;
 
@@ -123,6 +131,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
         _foodIcon.Toggle_SubDataBar(true);
     }
 
+    
     /// <summary>
     /// Disables all movement controls, detections and interactions
     /// </summary>

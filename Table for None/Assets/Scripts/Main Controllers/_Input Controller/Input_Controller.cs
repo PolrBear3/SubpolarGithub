@@ -35,6 +35,8 @@ public class Input_Controller : MonoBehaviour
     private List<string> _actionMaps = new();
 
 
+    private bool _inputActive;
+    
     private Vector2 _movementDirection;
     public Vector2 movementDirection => _movementDirection;
 
@@ -79,9 +81,34 @@ public class Input_Controller : MonoBehaviour
         Update_CurrentScheme(_playerInput.currentControlScheme);
     }
 
+    private void Start()
+    {
+        Cutscene_Controller cutScene = Cutscene_Controller.instance;
+        
+        Toggle_Input(cutScene == null || cutScene.coroutine == null);
+        
+        // subscriptions
+        if (cutScene == null) return;
+        Cutscene_Controller.instance.OnToggle += Toggle_Input;
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
+        if (Cutscene_Controller.instance == null) return;
+        Cutscene_Controller.instance.OnToggle -= Toggle_Input;
+    }
+
     private void Update()
     {
         CurrentScheme_Update();
+    }
+    
+    
+    // Player Input
+    public void Toggle_Input(bool toggle)
+    {
+        _inputActive = toggle;
     }
     
     
@@ -159,6 +186,8 @@ public class Input_Controller : MonoBehaviour
     
     public void Update_EmojiAsset(TextMeshProUGUI text)
     {
+        if (_playerInput.enabled == false) return;
+        
         text.spriteAsset = _currentScheme.emojiAsset;
     }
     
@@ -189,6 +218,8 @@ public class Input_Controller : MonoBehaviour
     // InGame
     private void Inovke_AnyInput(InputAction.CallbackContext context)
     {
+        if (_inputActive == false) return;
+        
         InputActionReference actionRef = ActionReference(context.action.name);
         if (actionRef == null) return;
 
@@ -199,7 +230,9 @@ public class Input_Controller : MonoBehaviour
     public void Movement(InputAction.CallbackContext context)
     {
         _movementDirection = Vector2.zero;
-
+        
+        if (_inputActive == false) return;
+        
         Vector2 directionInput = context.ReadValue<Vector2>();
 
         OnMovement?.Invoke(directionInput);
@@ -209,7 +242,8 @@ public class Input_Controller : MonoBehaviour
     public void Navigate(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-
+        if (_inputActive == false) return;
+        
         Vector2 directionInput = context.ReadValue<Vector2>();
 
         OnNavigate?.Invoke(directionInput);
@@ -217,6 +251,8 @@ public class Input_Controller : MonoBehaviour
 
     public void Interact(InputAction.CallbackContext context)
     {
+        if (_inputActive == false) return;
+        
         if (context.started)
         {
             _isHolding = true;
@@ -232,10 +268,14 @@ public class Input_Controller : MonoBehaviour
 
         if (Time.time - _currentHoldTime >= _holdTime)
         {
+            if (_inputActive == false) return;
+            
             OnHoldInteract?.Invoke();
             Inovke_AnyInput(context);
             return;
         }
+        
+        if (_inputActive == false) return;
         
         OnInteract?.Invoke();
         Inovke_AnyInput(context);
@@ -253,6 +293,7 @@ public class Input_Controller : MonoBehaviour
         }
 
         if (context.performed == false) return;
+        if (_inputActive == false) return;
 
         OnAction1?.Invoke();
         Inovke_AnyInput(context);
@@ -270,6 +311,7 @@ public class Input_Controller : MonoBehaviour
         }
 
         if (context.performed == false) return;
+        if (_inputActive == false) return;
 
         OnAction2?.Invoke();
         Inovke_AnyInput(context);
@@ -278,6 +320,8 @@ public class Input_Controller : MonoBehaviour
     public void Cancel(InputAction.CallbackContext context)
     {
         if (context.performed == false) return;
+        if (_inputActive == false) return;
+        
         OnCancel?.Invoke();
     }
 
@@ -296,6 +340,7 @@ public class Input_Controller : MonoBehaviour
 
         if (_isHolding) return;
         if (!context.performed) return;
+        if (_inputActive == false) return;
 
         Vector2 directionInput = context.ReadValue<Vector2>();
 
@@ -309,6 +354,8 @@ public class Input_Controller : MonoBehaviour
 
     public void Select(InputAction.CallbackContext context)
     {
+        if (_inputActive == false) return;
+        
         if (context.started)
         {
             _isHolding = true;
@@ -321,6 +368,8 @@ public class Input_Controller : MonoBehaviour
         if (context.canceled == false) return;
 
         _isHolding = false;
+        
+        if (_inputActive == false) return;
 
         if (Time.time - _currentHoldTime >= _holdTime)
         {
@@ -335,6 +384,7 @@ public class Input_Controller : MonoBehaviour
     {
         if (_isHolding) return;
         if (context.performed == false) return;
+        if (_inputActive == false) return;
         
         RecentUI_InputManager().OnOption1?.Invoke();
     }
@@ -343,6 +393,7 @@ public class Input_Controller : MonoBehaviour
     {
         if (_isHolding) return;
         if (context.performed == false) return;
+        if (_inputActive == false) return;
         
         RecentUI_InputManager().OnOption2?.Invoke();
     }
@@ -351,6 +402,7 @@ public class Input_Controller : MonoBehaviour
     {
         if (_isHolding) return;
         if (context.performed == false) return;
+        if (_inputActive == false) return;
         
         RecentUI_InputManager().OnExit?.Invoke();
     }

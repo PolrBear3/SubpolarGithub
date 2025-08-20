@@ -10,24 +10,20 @@ public class TransitionCanvas_Controller : MonoBehaviour
     public static TransitionCanvas_Controller instance;
     
     
-    [Header("")]
+    [Space(20)]
     [SerializeField] private RectTransform _curtain;
     [SerializeField] private Image _loadIconImage;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private LeanTweenType _leanTweenType;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0F, 10F)] private float _loadTime;
     [SerializeField][Range(0F, 10F)] private float _transitionTime;
     
     
     private Coroutine _coroutine;
     public Coroutine coroutine => _coroutine;
-
-
-    [Space(60)] 
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
     
 
     // UnityEngine
@@ -91,16 +87,6 @@ public class TransitionCanvas_Controller : MonoBehaviour
         LeanTween.alpha(_loadIconImage.rectTransform, 0f, 0f);
 
         yield return new WaitForSeconds(_transitionTime);
-        
-        VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
-        if (videoGuide == null)
-        {
-            _coroutine = null;
-            yield break;
-        }
-        
-        // guide
-        VideoGuide_Controller.instance.Trigger_Guide(_guideTrigger);
 
         _coroutine = null;
         yield break;
