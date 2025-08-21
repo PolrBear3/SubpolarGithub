@@ -350,6 +350,8 @@ public class VehicleMenu_Controller : MonoBehaviour, ISaveLoadable
     
     public void VehicleMenu_Toggle(bool toggleOn)
     {
+        if (toggleOn == _menuPanel.gameObject.activeSelf) return;
+        
         Main_Controller.instance.Player().Toggle_Controllers(!toggleOn);
 
         if (toggleOn == false)
