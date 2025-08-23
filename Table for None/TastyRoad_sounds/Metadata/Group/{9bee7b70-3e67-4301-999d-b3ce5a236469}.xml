@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="MixerGroup" id="{9bee7b70-3e67-4301-999d-b3ce5a236469}">
 		<property name="volume">
-			<value>-4</value>
+			<value>-0.5</value>
 		</property>
 		<property name="name">
 			<value>BGM</value>
@@ -20,10 +20,8 @@
 	<object class="MixerBusEffectChain" id="{60136164-ca41-41e1-a77a-bb0971c3ddd8}">
 		<relationship name="effects">
 			<destination>{8debea3f-df73-4b13-adea-d59168b01257}</destination>
-			<destination>{1da50d4e-44b0-44ee-adf5-1abec84bb461}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{52547c9a-3036-4285-8c00-1c78de682e88}" />
 	<object class="MixerBusFader" id="{8debea3f-df73-4b13-adea-d59168b01257}" />
-	<object class="GainEffect" id="{1da50d4e-44b0-44ee-adf5-1abec84bb461}" />
 </objects>

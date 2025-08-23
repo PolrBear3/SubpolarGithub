@@ -45,7 +45,6 @@ public class NPC_FoodInteraction : MonoBehaviour
         _collectIndicator.SetActive(false);
 
         // subscriptions
-        Main_Controller.instance.OnFoodBookmark += Set_FoodOrder;
         GlobalTime_Controller.instance.OnTimeTik += Set_FoodOrder;
 
         ActionBubble_Interactable interactable = _controller.interactable;
@@ -62,7 +61,6 @@ public class NPC_FoodInteraction : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
-        Main_Controller.instance.OnFoodBookmark -= Set_FoodOrder;
         GlobalTime_Controller.instance.OnTimeTik -= Set_FoodOrder;
 
         ActionBubble_Interactable interactable = _controller.interactable;
@@ -309,7 +307,7 @@ public class NPC_FoodInteraction : MonoBehaviour
         _transferDatas.Add(new(transferData));
 
         ArchiveMenu_Controller archive = Main_Controller.instance.currentVehicle.menu.archiveMenu;
-        
+
         archive.Update_FoodTransferCount(transferData.foodScrObj, 1);
         archive.FoodInteraction_Data(_transferData.foodScrObj).Update_ServeCount(Payment_Amount());
         archive.Update_InfoBox();
@@ -357,7 +355,7 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         FoodData_Controller playerIcon = _controller.interactable.detection.player.foodIcon;
 
-        if (Transfer_FoodOrder(playerIcon.currentData) == false) return;
+        if (playerIcon.hasFood == false || Transfer_FoodOrder(playerIcon.currentData) == false) return;
 
         playerIcon.Set_CurrentData(null);
         playerIcon.Toggle_SubDataBar(true);

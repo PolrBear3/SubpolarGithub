@@ -133,8 +133,7 @@ public class PauseMenu_Controller : Menu_Controller
     // Video Guide System
     private void Update_GuideToggleText()
     {
-        bool guideActive = VideoGuide_Controller.instance.guideActive;
-        
+        bool guideActive = VideoGuide_Controller.instance.data.guideActive;
         _guideToggleText.text = guideActive ? _guideToggleTrigger.TemplateString(1) : _guideToggleTrigger.TemplateString(0);
     }
 }

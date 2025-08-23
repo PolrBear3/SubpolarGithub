@@ -38,7 +38,7 @@ public class TutorialQuest
     public int currentCompleteCount => _currentCompleteCount;
     
     
-    //
+    // Current Data
     public string Description()
     {
         if (_localizedDescription == null) return _description;

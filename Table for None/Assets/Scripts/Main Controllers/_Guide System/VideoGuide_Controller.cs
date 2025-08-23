@@ -30,13 +30,11 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private Input_Manager _inputManager;
 
 
-    private bool _guideActive;
-    public bool guideActive => _guideActive;
+    private VideoGuide_ControllerData _data;
+    public VideoGuide_ControllerData data => _data;
 
     private bool _guideToggled;
     public bool guideToggled => _guideToggled;
-    
-    private List<int> _triggeredGuideIDs = new();
 
     private Guide_ScrObj _currentGuide;
     private int _currentClipNum;
@@ -105,21 +103,19 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     // ISaveLoadable
     public void Save_Data()
     {
-        ES3.Save("VideoGuide_Controller/Guide_ActiveState", _guideActive);
-        ES3.Save("VideoGuide_Controller/Triggered_GuideIDs", _triggeredGuideIDs);
+        ES3.Save("VideoGuide_Controller/VideoGuide_ControllerData", _data);
     }
 
     public void Load_Data()
     {
-        _triggeredGuideIDs = ES3.Load("VideoGuide_Controller/Triggered_GuideIDs", _triggeredGuideIDs);
-        _guideActive = ES3.Load("VideoGuide_Controller/Guide_ActiveState", true);
+        _data = ES3.Load("VideoGuide_Controller/VideoGuide_ControllerData", new VideoGuide_ControllerData(true));
     }
     
     
     // Data
     public void Toggle_GuideActivation(bool toggle)
     {
-        _guideActive = toggle;
+        _data.Toggle_GuideActivation(toggle);
         OnGuide_ActivationTrigger?.Invoke();
 
         if (toggle) return;
@@ -129,14 +125,14 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     }
     public void Toggle_GuideActivation()
     {
-        _guideActive = !_guideActive;
+        _data.Toggle_GuideActivation(!_data.guideActive);
         OnGuide_ActivationTrigger?.Invoke();
     }
 
     private void Load_GuideActivation()
     {
-        bool savedState = ES3.Load("VideoGuide_Controller/Guide_ActiveState", true);
-        if (savedState == false) return;
+        bool guideActive = ES3.Load("VideoGuide_Controller/VideoGuide_ControllerData", new VideoGuide_ControllerData(true)).guideActive;
+        if (guideActive == false) return;
         
         Toggle_GuideActivation(true);
         VideoGuide_Controller.instance.Trigger_Guide(_triggerGuide);
@@ -146,22 +142,17 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     // Trigger
     public bool Guide_Triggered(Guide_ScrObj guideScrObj)
     {
-        for (int i = 0; i < _triggeredGuideIDs.Count; i++)
-        {
-            if (guideScrObj.guideID != _triggeredGuideIDs[i]) continue;
-            return true;
-        }
-        return false;
+        return _data.triggeredGuides.Contains(guideScrObj);
     }
 
     public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
         if (_guideToggled) return;
-        if (_guideActive == false) return;
+        if (_data.guideActive == false) return;
         if (guideScrObj == null) return;
         if (Guide_Triggered(guideScrObj)) return;
         
-        _triggeredGuideIDs.Add(guideScrObj.guideID);
+        _data.triggeredGuides.Add(guideScrObj);
         
         if (guideScrObj.clipDatas.Length <= 0) return;
         _currentGuide = guideScrObj;

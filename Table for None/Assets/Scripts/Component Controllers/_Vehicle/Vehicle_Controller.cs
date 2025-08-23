@@ -92,7 +92,11 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable, IRes
     // IRestrictable
     public bool IsRestricted()
     {
-        List<Station_Controller> allCurrentStations = Main_Controller.instance.currentStations;
+        Main_Controller main = Main_Controller.instance;
+        
+        if (_restrictedArea.bounds.Contains(main.Player().transform.position) == false) return false;
+        
+        List<Station_Controller> allCurrentStations = main.currentStations;
         int count = 0;
         
         for (int i = 0; i < allCurrentStations.Count; i++)
