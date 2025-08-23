@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
+public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable, IRestrictable
 {
     [Space(20)]
     [SerializeField] private VehicleMovement_Controller _movement;
@@ -24,6 +24,8 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
 
     [SerializeField] private SpriteRenderer _interactArea;
     public SpriteRenderer interactArea => _interactArea;
+    
+    [SerializeField] private SpriteRenderer _restrictedArea;
 
     [Space(20)]
     [SerializeField] private Transform _transparencyPoint;
@@ -53,7 +55,7 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
         _interactArea.gameObject.SetActive(false);
         
         // set _interactArea as restricted area for NPC free roam
-        Main_Controller.instance.currentLocation.restrictedAreas.Add(_interactArea);
+        Main_Controller.instance.currentLocation.restrictAreaDatas.Add(new(_restrictedArea, gameObject));
 
         // subscription
         detection.ExitEvent += Transparency_Update;
@@ -85,7 +87,26 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
     {
         _interactArea.size = ES3.Load("Vehicle_Controller/_interactArea.size", _interactArea.size);
     }
-
+    
+    
+    // IRestrictable
+    public bool IsRestricted()
+    {
+        List<Station_Controller> allCurrentStations = Main_Controller.instance.currentStations;
+        int count = 0;
+        
+        for (int i = 0; i < allCurrentStations.Count; i++)
+        {
+            if (_restrictedArea.bounds.Contains(allCurrentStations[i].transform.position) == false) continue;
+            if (allCurrentStations[i].Food_Icon() == null) continue;
+            if (allCurrentStations[i].movement == null || allCurrentStations[i].movement.enabled) continue;
+            
+            count++;
+            if (count >= 2) return true;
+        }
+        return false;
+    }
+    
 
     // Vehicle Sprite Control
     private void Transparency_Update()
@@ -127,13 +148,13 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable
         
         return pointPos;
     }
-    
+
     public bool Is_InteractArea(Vector2 checkPosition)
     {
         Bounds bounds = _interactArea.bounds;
         return bounds.Contains(checkPosition);
     }
-
+    
     public void Update_InteractArea_Range(Vector2 updateValue)
     {
         _interactArea.size = updateValue;

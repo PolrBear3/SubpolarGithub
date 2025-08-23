@@ -24,8 +24,8 @@ public class Location_Controller : MonoBehaviour
     private List<NPC_Controller> _foodOrderNPCs = new();
     public List<NPC_Controller> foodOrderNPCs => _foodOrderNPCs;
 
-    private List<SpriteRenderer> _restrictedAreas = new();
-    public List<SpriteRenderer> restrictedAreas => _restrictedAreas;
+    private List<RestrictedArea_Data> _restrictAreaDatas = new();
+    public List<RestrictedArea_Data> restrictAreaDatas => _restrictAreaDatas;
     
     [Space(60)]
     [SerializeField] private int _currentMaxPopulation;
@@ -72,13 +72,23 @@ public class Location_Controller : MonoBehaviour
     {
         return _data.screenArea.bounds.Contains(checkObject.transform.position);
     }
-    
-    public SpriteRenderer Restricted_Area(Vector2 checkPosition)
+
+    public RestrictedArea_Data RestrictedArea_Data(GameObject checkObject)
     {
-        for (int i = 0; i < _restrictedAreas.Count; i++)
+        for (int i = 0; i < _restrictAreaDatas.Count; i++)
         {
-            if (restrictedAreas[i].bounds.Contains(checkPosition) == false) continue;
-            return restrictedAreas[i];
+            if (checkObject != _restrictAreaDatas[i].iRestrictableObject) continue;
+            return _restrictAreaDatas[i];
+        }
+
+        return null;
+    }
+    public RestrictedArea_Data RestrictedArea_Data(Vector2 checkPosition)
+    {
+        for (int i = 0; i < _restrictAreaDatas.Count; i++)
+        {
+            if (_restrictAreaDatas[i].areaSr.bounds.Contains(checkPosition) == false) continue;
+            return _restrictAreaDatas[i];
         }
         return null;
     }

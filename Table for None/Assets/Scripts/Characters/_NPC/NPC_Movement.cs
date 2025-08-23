@@ -211,11 +211,14 @@ public class NPC_Movement : MonoBehaviour
                 float updateDelayTime = Mathf.Clamp(_updateDelayTime, 0.5f, _updateDelayTime);
                 yield return new WaitForSeconds(updateDelayTime);
                 
-                SpriteRenderer restrictedArea = currentLocation.Restricted_Area(transform.position);
+                RestrictedArea_Data restrictedArea = currentLocation.RestrictedArea_Data(transform.position);
+                
                 if (restrictedArea == null) continue;
+                if (restrictedArea.iRestrictableObject.TryGetComponent(out IRestrictable restrictable) == false) continue;
+                if (restrictable.IsRestricted() == false) continue;
 
                 Bounds roamBounds = locationRoamArea.bounds;
-                float directionValue = restrictedArea.bounds.center.x;
+                float directionValue = restrictedArea.areaSr.bounds.center.x;
                 
                 float randXPoint;
                 float randYPoint = Random.Range(roamBounds.min.y, roamBounds.max.y);

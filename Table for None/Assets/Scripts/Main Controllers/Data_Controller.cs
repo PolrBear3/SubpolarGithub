@@ -15,6 +15,11 @@ public interface IInteractable
     void UnInteract();
 }
 
+public interface IRestrictable
+{
+    bool IsRestricted();
+}
+
 public class Data_Controller : MonoBehaviour
 {
     [Space(20)]

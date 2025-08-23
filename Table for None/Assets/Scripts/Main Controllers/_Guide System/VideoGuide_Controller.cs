@@ -26,7 +26,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [SerializeField] private UI_ClockTimer _holdTimer;
     
     [Space(60)]
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
+    [SerializeField] private Guide_ScrObj _triggerGuide;
     [SerializeField] private Input_Manager _inputManager;
 
 
@@ -60,10 +60,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         input.Update_EmojiAsset(_navigateText);
 
         // subscriptions
-        Cutscene_Controller cutScene = Cutscene_Controller.instance;
-        
-        cutScene.OnEnd += Load_GuideActivation;
-        cutScene.OnEnd += _guideTrigger.Trigger_CurrentGuide;
+        Cutscene_Controller.instance.OnEnd += Load_GuideActivation;
         
         _inputManager.OnSelectStart += _holdTimer.Run_ClockSprite;
         _inputManager.OnSelect += _holdTimer.Stop_ClockSpriteRun;
@@ -84,10 +81,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
-        Cutscene_Controller cutScene = Cutscene_Controller.instance;
-        
-        cutScene.OnEnd -= Load_GuideActivation;
-        cutScene.OnEnd -= _guideTrigger.Trigger_CurrentGuide;
+        Cutscene_Controller.instance.OnEnd -= Load_GuideActivation;
         
         _inputManager.OnSelectStart -= _holdTimer.Run_ClockSprite;
         _inputManager.OnSelect -= _holdTimer.Stop_ClockSpriteRun;
@@ -128,7 +122,9 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         _guideActive = toggle;
         OnGuide_ActivationTrigger?.Invoke();
 
-        if (toggle && _playerPanel.gameObject.activeSelf == false) return;
+        if (toggle) return;
+        if (_playerPanel.gameObject.activeSelf == false) return;
+        
         Toggle_VideoPanel(false);
     }
     public void Toggle_GuideActivation()
@@ -143,6 +139,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         if (savedState == false) return;
         
         Toggle_GuideActivation(true);
+        VideoGuide_Controller.instance.Trigger_Guide(_triggerGuide);
     }
     
     
