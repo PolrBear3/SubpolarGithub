@@ -450,7 +450,7 @@ public class OptionsMenu_Controller : Menu_Controller
     // Language
     public void Set_Language(TextMeshProUGUI text)
     {
-        if (_adjusting) return;
+        if (_adjusting)  return;
 
         _previewData = new(_data);
         

@@ -238,8 +238,9 @@ public class AbilityMenu_Controller : MonoBehaviour
     // Menu
     private void Toggle_Menu(bool toggle)
     {
-        TransitionCanvas_Controller.instance.Toggle_PauseScreen(toggle);
-        
+        if (PauseMenu_Controller.instance.isPaused) return;
+        Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(toggle);
+
         _toggleMenu.SetActive(toggle);
         _inputManager.Toggle_Input(toggle);
         

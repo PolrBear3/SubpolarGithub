@@ -10,12 +10,6 @@ public interface ISaveLoadable
     void Load_Data();
 }
 
-public interface IBackupLoadable
-{
-    bool Has_Conflict();
-    void Load_Backup();
-}
- 
 public class SaveLoad_Controller : MonoBehaviour
 {
     public static SaveLoad_Controller instance;
@@ -47,10 +41,10 @@ public class SaveLoad_Controller : MonoBehaviour
     public void SaveAll_ISaveLoadable()
     {
         List<ISaveLoadable> saveLoadables = All_ISaveLoadables();
-        
-        for (int i = 0; i < saveLoadables.Count; i++)
+
+        foreach (ISaveLoadable data in saveLoadables)
         {
-            saveLoadables[i].Save_Data();
+            data.Save_Data();
         }
     }
     
@@ -58,22 +52,9 @@ public class SaveLoad_Controller : MonoBehaviour
     {
         List<ISaveLoadable> saveLoadables = All_ISaveLoadables();
         
-        for (int i = 0; i < saveLoadables.Count; i++)
+        foreach (ISaveLoadable data in saveLoadables)
         {
-            var saveObject = saveLoadables[i];
-            saveObject.Load_Data();
-            
-            if (saveObject is not IBackupLoadable backupLoadable) continue;
-            if (backupLoadable.Has_Conflict() == false) continue;
-            
-            backupLoadable.Load_Backup();
+            data.Load_Data();
         }
-    }
-
-
-    public void Load_IBackupLoadable(IBackupLoadable backupLoadable)
-    {
-        if (backupLoadable.Has_Conflict() == false) return;
-        backupLoadable.Load_Backup();
     }
 }

@@ -30,14 +30,31 @@ public struct VideoClip_Data
 [CreateAssetMenu(menuName = "New ScriptableObject/ New Guide!")]
 public class Guide_ScrObj : ScriptableObject
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private string _guideName;
     public string guideName => _guideName;
 
+    [SerializeField] private LocalizedString _localizedName;
+    
+    [Space(20)]
     [SerializeField] private int _guideID;
     public int guideID => _guideID;
 
-    [Header("")]
+    [Space(20)] 
+    [SerializeField] private Sprite _iconSprite;
+    public Sprite iconSprite => _iconSprite;
+
+    [Space(20)]
     [SerializeField] private VideoClip_Data[] _clipDatas;
     public VideoClip_Data[] clipDatas => _clipDatas;
+    
+    
+    // Get
+    public string LocalizedName()
+    {
+        if (_localizedName == null) return _guideName;
+        if (string.IsNullOrEmpty(_localizedName.TableReference) && string.IsNullOrEmpty(_localizedName.TableEntryReference)) return _guideName;
+        
+        return _localizedName.GetLocalizedString();
+    }
 }

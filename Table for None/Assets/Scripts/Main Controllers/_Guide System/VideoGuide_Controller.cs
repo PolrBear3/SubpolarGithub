@@ -21,8 +21,11 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)]
     [SerializeField] private TextMeshProUGUI _infoText;
     [SerializeField] private TextMeshProUGUI _navigateText;
-    
+
     [Space(20)] 
+    [SerializeField] private GameObject _guideToggleBox;
+    public GameObject guideToggleBox => _guideToggleBox;
+    
     [SerializeField] private UI_ClockTimer _holdTimer;
     
     [Space(60)]
@@ -115,6 +118,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     // Data
     public void Toggle_GuideActivation(bool toggle)
     {
+        if (PauseMenu_Controller.instance.isPaused) return;
+        
         _data.Toggle_GuideActivation(toggle);
         OnGuide_ActivationTrigger?.Invoke();
 
@@ -144,7 +149,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     {
         return _data.triggeredGuides.Contains(guideScrObj);
     }
-
+    
     public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
         if (_guideToggled) return;
@@ -205,12 +210,12 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
 
     private void Toggle_VideoPanel(bool toggle)
     {
-        Input_Controller input = Input_Controller.instance;
-
         _guideToggled = toggle;
-        Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(toggle);
+
+        bool showPauseScreen = toggle || PauseMenu_Controller.instance.isPaused;
+        Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(showPauseScreen);
+
         _playerPanel.gameObject.SetActive(toggle);
-        
         OnGuideToggle?.Invoke();
 
         if (toggle == false)
@@ -234,6 +239,27 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         
         Update_NavigateText();
     }
+    public void Toggle_VideoPanel(Guide_ScrObj guideScrObj)
+    {
+        _currentGuide = guideScrObj;
+        _guideToggled = true;
+        _currentClipNum = 0;
+        
+        Main_Controller.instance.transitionCanvas.Toggle_PauseScreen(true);
+        _playerPanel.gameObject.SetActive(true);
+        
+        OnGuideToggle?.Invoke();
+        
+        _inputManager.Toggle_Input(true);
+        _uiEffectController.Update_Scale(_playerPanel.rectTransform);
+        
+        VideoClip_Data clipData = _currentGuide.clipDatas[_currentClipNum];
+
+        Toggle_VideoClip(clipData.video);
+        _infoText.text = clipData.Info();
+        
+        Update_NavigateText();
+    }
 
 
     public void Navigate_NextVideo()
@@ -248,5 +274,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         
         Update_ClipData(_currentClipNum);
         Update_NavigateText();
+        
+        // sound
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 }

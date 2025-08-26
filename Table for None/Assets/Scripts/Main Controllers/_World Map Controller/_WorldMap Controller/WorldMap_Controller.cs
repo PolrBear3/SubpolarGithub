@@ -31,7 +31,7 @@ public struct WorldMap_Data
     }
 }
 
-public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
+public class WorldMap_Controller : MonoBehaviour, ISaveLoadable
 {
     [SerializeField] private Location_ScrObj _startingLocation;
 
@@ -82,26 +82,16 @@ public class WorldMap_Controller : MonoBehaviour, ISaveLoadable, IBackupLoadable
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("WorldMap_Controller/WorldMap_ControllerData"))
+        string keyName = "WorldMap_Controller/WorldMap_ControllerData";
+        
+        if (ES3.KeyExists(keyName))
         {
-            _data = ES3.Load<WorldMap_ControllerData>("WorldMap_Controller/WorldMap_ControllerData");
+            _data = ES3.Load<WorldMap_ControllerData>(keyName);
             return;
         }
         
         WorldMap_Data startLocationData = new(_startingLocation.worldNum, _startingLocation.locationNum);
-        _data = ES3.Load("WorldMap_Controller/WorldMap_ControllerData", new WorldMap_ControllerData(startLocationData));
-    }
-    
-    
-    // IBackupLoadable
-    public bool Has_Conflict()
-    {
-        return false;
-    }
-
-    public void Load_Backup()
-    {
-        Debug.Log("WorldMap_Controller.Load_Backup");
+        _data = ES3.Load(keyName, new WorldMap_ControllerData(startLocationData));
     }
 
 

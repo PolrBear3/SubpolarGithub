@@ -53,11 +53,12 @@ public class DialogSystem : MonoBehaviour
         Input_Controller input = Input_Controller.instance;
         
         input.OnNavigate += Navigate_InfoBox;
-        input.OnActionMapUpdate += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0 && _infoBox.gameObject.activeSelf == false);
+        input.OnActionMapUpdate += Toggle_NavigateBox;
 
         PauseMenu_Controller pause = PauseMenu_Controller.instance;
+        
         pause.OnPause += () => Toggle_InfoBox(false);
-        pause.OnPause += () => _navigateBox.SetActive(input.Current_ActionMapNum() == 0 && _infoBox.gameObject.activeSelf == false);
+        pause.OnPause += Toggle_NavigateBox;
 
         Localization_Controller localizationController = Localization_Controller.instance;
         
@@ -70,7 +71,12 @@ public class DialogSystem : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
-        Input_Controller.instance.OnNavigate -= Navigate_InfoBox;
+        Input_Controller input = Input_Controller.instance;
+        
+        input.OnNavigate -= Navigate_InfoBox;
+        input.OnActionMapUpdate -= Toggle_NavigateBox;
+        
+        PauseMenu_Controller.instance.OnPause -= Toggle_NavigateBox;
         
         Localization_Controller localizationController = Localization_Controller.instance;
         
@@ -199,6 +205,17 @@ public class DialogSystem : MonoBehaviour
     
     
     // Navigate Box Control
+    private void Toggle_NavigateBox()
+    {
+        Input_Controller input = Input_Controller.instance;
+        bool toggle = input.Current_ActionMapNum() == 0 && _infoBox.gameObject.activeSelf == false;
+        
+        _navigateBox.SetActive(toggle);
+
+        if (toggle == false) return;
+        _uiEffectController.Update_Scale(_navigateBox);
+    }
+    
     private void Update_NavigateBox()
     {
         InfoTemplate_Trigger template = gameObject.GetComponent<InfoTemplate_Trigger>();

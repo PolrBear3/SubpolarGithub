@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable, IBackupLoadable
+public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 {
     [Space(20)]
     [SerializeField] private VehicleMenu_Controller _controller;
@@ -99,27 +99,16 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable, I
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("FoodMenu_Controller/FoodMenu_Data") == false)
+        string keyName = "FoodMenu_Controller/FoodMenu_Data";
+        
+        if (ES3.KeyExists(keyName) == false)
         {
             _data = new();
             _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
             
             return;
         }
-        _data = ES3.Load("FoodMenu_Controller/FoodMenu_Data", new FoodMenu_Data());
-    }
-    
-    
-    // IBackupLoadable
-    public bool Has_Conflict()
-    {
-        if (_data.slotDatas != null) return false;
-        return true;
-    }
-
-    public void Load_Backup()
-    {
-        _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
+        _data = ES3.Load(keyName, new FoodMenu_Data());
     }
 
 

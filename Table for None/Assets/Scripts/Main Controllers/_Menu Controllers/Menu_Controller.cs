@@ -5,15 +5,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 [System.Serializable]
 public class Menu_EventButton
 {
+    [SerializeField] private Image _selectIcon;
+    public Image selectIcon => _selectIcon;
+    
     [SerializeField] private Image _button;
     public Image button => _button;
 
     [SerializeField] private Image _hoverIndication;
     public Image hoverIndication => _hoverIndication;
+    
+    [SerializeField] private TextMeshProUGUI _buttonText;
+    public TextMeshProUGUI buttonText => _buttonText;
+    
     
     [Space(20)]
     [SerializeField] private UnityEvent _actionEvent;
@@ -27,6 +35,7 @@ public class Menu_EventButton
     public Vector2 defaultPosition => _defaultPosition;
 
 
+    // Main
     public void Set_DefaultPosition()
     {
         _defaultPosition = button.rectTransform.anchoredPosition;
@@ -38,6 +47,14 @@ public class Menu_EventButton
         {
             navigateEvent.Invoke();
         }
+    }
+
+    public void Set_SelectIcon(Sprite iconSprite)
+    {
+        _selectIcon.gameObject.SetActive(iconSprite != null);
+        
+        if (iconSprite == null) return;
+        _selectIcon.sprite = iconSprite;
     }
 }
 
@@ -52,24 +69,31 @@ public class Menu_Controller : MonoBehaviour
     [Space(20)]
     [SerializeField] private Menu_EventButton[] _eventButtons;
     public Menu_EventButton[] eventButtons => _eventButtons;
+    
+    [SerializeField] [Range(0, 100)] private float _maxTextSize;
 
     [Space(20)]
     public UnityEvent OnExitMenu;
 
+    [Space(20)]
+    [SerializeField] private Input_Manager _inputManager;
+    public Input_Manager inputManager => _inputManager;
+    
+    
     private bool _toggled;
 
     private int _currentIndex;
     public int currentIndex => _currentIndex;
 
+    
     private Action OnExit;
+    
     public Action OnNavigate;
+    public Action<int> OnNavigateX;
+    public Action<int> OnWrapAroundY;
+    
     public Action OnAction;
     
-    
-    [Space(80)]
-    [SerializeField] private Input_Manager _inputManager;
-    public Input_Manager inputManager => _inputManager;
-
 
     // MonoBehaviour
     public void Awake()
@@ -103,6 +127,20 @@ public class Menu_Controller : MonoBehaviour
     }
     
 
+    // Gets
+    public List<Menu_EventButton> EventButtons_InOrder()
+    {
+        List<Menu_EventButton> eventButtons = new();
+
+        for (int i = _eventButtons.Length - 1; i >= 0; i--)
+        {
+            eventButtons.Add(_eventButtons[i]);
+        }
+        
+        return eventButtons;
+    }
+    
+    
     // Data Control
     public void Set_CurrentIndex(int indexNum)
     {
@@ -127,6 +165,9 @@ public class Menu_Controller : MonoBehaviour
             _toggled = true;
             _inputManager.Toggle_Input(true);
 
+            Update_TextSize();
+            
+            _currentIndex = _eventButtons.Length - 1;
             NavigateUpdate_EventButtons();
 
             if (_uiEffectController == null) return;
@@ -144,14 +185,32 @@ public class Menu_Controller : MonoBehaviour
     
     public void Navigate_ButtonIndex(Vector2 direction)
     {
-        if (direction.y == 0) return;
+        if (direction.y == 0)
+        {
+            OnNavigateX?.Invoke((int)direction.x);
+            OnNavigate?.Invoke();
+            
+            // sound
+            Audio_Controller.instance.Play_OneShot(gameObject, 1);
+            
+            return;
+        }
+            
         if (TransitionCanvas_Controller.instance.coroutine != null) return;
         
         int actionCount = _eventButtons.Length;
         if (actionCount <= 0) return;
 
+        int previousIndex = _currentIndex;
         _currentIndex = (_currentIndex + (int)direction.y + actionCount) % actionCount;
+        
         NavigateUpdate_EventButtons();
+        
+        bool toLast = previousIndex == 0 && _currentIndex == actionCount - 1;
+        bool toFirst = previousIndex == actionCount - 1 && _currentIndex == 0;
+
+        if (toLast == false && toFirst == false) return;
+        OnWrapAroundY?.Invoke(toLast ? 1 : -1);
     }
     public void Navigate_ButtonIndex(int index)
     {
@@ -183,6 +242,39 @@ public class Menu_Controller : MonoBehaviour
         
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
+    }
+    
+    
+    public void Update_TextSize(TextMeshProUGUI updateText)
+    {
+        float textSize = 1;
+        int lineCount = updateText.textInfo.lineCount;
+
+        for (int i = 0; i < _maxTextSize * 10; i++)
+        {
+            textSize += 0.1f;
+            
+            updateText.fontSize = textSize;
+            updateText.ForceMeshUpdate();
+            
+            lineCount = updateText.textInfo.lineCount;
+
+            if (lineCount <= 1 && textSize < _maxTextSize) continue;
+            break;
+        }
+
+        updateText.fontSize = Mathf.Round((textSize - 0.1f) * 10f) / 10f;
+        updateText.ForceMeshUpdate();
+    }
+    public void Update_TextSize()
+    {
+        Debug.Log("Update_TextSize");
+        
+        foreach (Menu_EventButton eventButton in _eventButtons)
+        {
+            if (eventButton.buttonText == null) continue;
+            Update_TextSize(eventButton.buttonText);
+        }
     }
     
     

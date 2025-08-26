@@ -95,14 +95,16 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("StationMenu_Controller/StationMenu_Data") == false)
+        string keyName = "StationMenu_Controller/StationMenu_Data";
+        
+        if (ES3.KeyExists(keyName) == false)
         {
             _data = new();
             _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
             
             return;
         }
-        _data = ES3.Load("StationMenu_Controller/StationMenu_Data", new StationMenu_Data());
+        _data = ES3.Load(keyName, new StationMenu_Data());
     }
     
     

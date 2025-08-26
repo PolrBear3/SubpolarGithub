@@ -114,8 +114,9 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
         CraftNPC craftNPC = spawnNPC.GetComponent<CraftNPC>();
         _data.Set_CurrentNPC(craftNPC);
 
+        if (PauseMenu_Controller.instance.isPaused) return craftNPC;
         VideoGuide_Controller.instance.Trigger_Guide(_guideTrigger);
-
+        
         return craftNPC;
     }
     private void Spawn()

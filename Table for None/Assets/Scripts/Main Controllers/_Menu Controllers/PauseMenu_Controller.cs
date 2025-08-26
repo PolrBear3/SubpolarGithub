@@ -101,6 +101,7 @@ public class PauseMenu_Controller : Menu_Controller
             return;
         }
 
+        Update_TextSize();
         Update_GuideToggleText();
         
         OnPause?.Invoke();

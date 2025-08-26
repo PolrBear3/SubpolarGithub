@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class UI_ClockTimer : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Image _clockImage;
     [SerializeField] private List<Sprite> _clockSprites = new();
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 10)] private float _inputHoldTime;
 
     private Coroutine _timeCoroutine;
@@ -31,6 +31,7 @@ public class UI_ClockTimer : MonoBehaviour
             _timeCoroutine = null;
         }
 
+        if (gameObject.activeInHierarchy == false) return;
         _timeCoroutine = StartCoroutine(Run_ClockSprite_Coroutine());
     }
     private IEnumerator Run_ClockSprite_Coroutine()
@@ -54,6 +55,7 @@ public class UI_ClockTimer : MonoBehaviour
             _timeCoroutine = null;
         }
 
+        if (gameObject.activeInHierarchy == false) return;
         _clockImage.color = Color.clear;
     }
 }

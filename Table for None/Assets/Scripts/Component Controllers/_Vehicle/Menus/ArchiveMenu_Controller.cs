@@ -45,9 +45,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         VideoGuide_Controller.instance.Trigger_Guide(_guideScrObj);
         
         _controller.slotsController.Set_Datas(_data.slotDatas[_currentPageNum]);
-
+        
         _controller.Update_PanelSprite(_panelSprite);
-
         _controller.Update_PageDots(_data.slotDatas.Count, _currentPageNum);
         _controller.Update_PageArrows();
 
@@ -129,29 +128,18 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     public void Load_Data()
     {
-        if (ES3.KeyExists("ArchiveMenu_Controller/ArchiveMenu_Data") == false)
+        string keyName = "ArchiveMenu_Controller/ArchiveMenu_Data";
+        
+        if (ES3.KeyExists(keyName) == false)
         {
             _data = new();
             _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
 
             return;
         }
-        _data = ES3.Load("ArchiveMenu_Controller/ArchiveMenu_Data", new ArchiveMenu_Data());
+        _data = ES3.Load(keyName, new ArchiveMenu_Data());
     }
     
-    
-    // IBackupLoadable
-    public bool Has_Conflict()
-    {
-        if (_data.slotDatas != null) return false;
-        return true;
-    }
-
-    public void Load_Backup()
-    {
-        _controller.slotsController.AddNewPage_ItemSlotDatas(_data.slotDatas);
-    }
-
 
     // IVehicleMenu
     public void Start_Menu()

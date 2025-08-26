@@ -118,7 +118,8 @@ public class TransitionCanvas_Controller : MonoBehaviour
     public void Toggle_PauseScreen(bool toggle)
     {
         if (Main_Controller.instance.globalVolume.profile.TryGet(out DepthOfField effect) == false) return;
-
+        if (toggle && effect.active) return;
+        
         effect.active = toggle;
     }
 }
