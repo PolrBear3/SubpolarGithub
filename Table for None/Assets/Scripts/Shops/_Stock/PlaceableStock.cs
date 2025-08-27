@@ -180,7 +180,7 @@ public class PlaceableStock : MonoBehaviour
 
         if (_foodIcon.hasFood == false)
         {
-            bubble.Set_Bubble(bubble.setSprites[0], null);
+            bubble.Set_Bubble(bubble.bubbleData[0].iconSprite, null);
 
             _interactable.OnAction1 += Place;
             return;
@@ -188,13 +188,13 @@ public class PlaceableStock : MonoBehaviour
 
         if (_foodIcon.DataCount_Maxed())
         {
-            bubble.Set_Bubble(bubble.setSprites[1], null);
+            bubble.Set_Bubble(bubble.bubbleData[1].iconSprite, null);
 
             _interactable.OnAction1 += Complete;
             return;
         }
 
-        bubble.Set_Bubble(bubble.setSprites[0], bubble.setSprites[1]);
+        bubble.Set_Bubble(bubble.bubbleData[0].iconSprite, bubble.bubbleData[0].iconSprite);
 
         _interactable.OnAction1 += Place;
         _interactable.OnAction2 += Complete;

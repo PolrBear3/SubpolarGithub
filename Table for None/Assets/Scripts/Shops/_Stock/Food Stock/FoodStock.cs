@@ -228,7 +228,7 @@ public class FoodStock : MonoBehaviour
 
         if (_data.Stock_Purchased() == false)
         {
-            Sprite unlockSprite = bubble.setSprites[0];
+            Sprite unlockSprite = bubble.bubbleData[0].iconSprite;
 
             bubble.Set_Bubble(unlockSprite, null);
             bubble.Toggle_Height(true);
@@ -236,7 +236,7 @@ public class FoodStock : MonoBehaviour
             return;
         }
 
-        bubble.Set_Bubble(bubble.setSprites[1], bubble.setSprites[2]);
+        bubble.Set_Bubble(bubble.bubbleData[1].iconSprite, bubble.bubbleData[2].iconSprite);
         bubble.Toggle_Height(false);
     }
 

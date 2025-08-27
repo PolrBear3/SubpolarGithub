@@ -2,6 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
+
+[System.Serializable]
+public class ActionBubble_Data
+{
+    [SerializeField] private Sprite _iconSprite;
+    public Sprite iconSprite => _iconSprite;
+    
+    [SerializeField] private string _bubbleInfo;
+    public string bubbleInfo => _bubbleInfo;
+    
+    [SerializeField] private LocalizedString _localizedInfo;
+    
+    // New
+    public ActionBubble_Data(Sprite iconSprite, string bubbleInfo)
+    {
+        _iconSprite = iconSprite;
+        _bubbleInfo = bubbleInfo;
+    }
+    
+    // Get
+    public string LocalizedInfo()
+    {
+        if (_localizedInfo == null) return _bubbleInfo;
+        if (string.IsNullOrEmpty(_localizedInfo.TableReference) && string.IsNullOrEmpty(_localizedInfo.TableEntryReference)) return _bubbleInfo;
+        
+        return _localizedInfo.GetLocalizedString();
+    }
+}
 
 public class Action_Bubble : MonoBehaviour
 {
@@ -19,18 +48,18 @@ public class Action_Bubble : MonoBehaviour
 
     [Space(20)] 
     [SerializeField] private ActionKey[] _actionKeys;
-
-    [Space(20)]
     [SerializeField] private float _toggleHeight;
-    private float _defaultHeight;
 
-    [SerializeField] private Sprite[] _setSprites;
-    public Sprite[] setSprites => _setSprites;
-    
+    [Space(20)] 
+    [SerializeField] private ActionBubble_Data[] _bubbleData;
+    public ActionBubble_Data[] bubbleData => _bubbleData;
+
     [Space(20)] 
     [SerializeField] private UI_EffectController _effectController;
-    
-    
+
+
+    private float _defaultHeight;
+
     private bool _bubbleOn;
     public bool bubbleOn => _bubbleOn;
     
@@ -65,6 +94,13 @@ public class Action_Bubble : MonoBehaviour
         {
             actionKey.Set_CurrentKey();
         }
+
+        List<ActionBubble_Data> bubbleData = new()
+        {
+            new(_leftIcon.sprite, null),
+            new(_rightIcon.sprite, null)
+        };
+        InteractIndicator_Controller.instance.Toggle(bubbleData);
     }
 
 

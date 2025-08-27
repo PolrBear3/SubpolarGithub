@@ -5,6 +5,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
+public class InteractIndicator_Component
+{
+    [SerializeField] private RectTransform _iconBox;
+    public RectTransform iconBox => _iconBox;
+    
+    [SerializeField] private Image _iconImage;
+    public Image iconImage => _iconImage;
+
+    [Space(10)] 
+    [SerializeField] private Image _infoBox;
+    public Image infoBox => _infoBox;
+    
+    [SerializeField] private TextMeshProUGUI _infoText;
+    public TextMeshProUGUI infoText => _infoText;
+
+    public float iconBoxPos;
+    public float infoBoxPos;
+}
+
 public class InteractIndicator_Controller : MonoBehaviour
 {
     public static InteractIndicator_Controller instance;
@@ -12,15 +32,14 @@ public class InteractIndicator_Controller : MonoBehaviour
 
     [Space(20)] 
     [SerializeField] private UI_EffectController _uiEffect;
-    [SerializeField] private RectTransform _interactIndicator;
     
-    [Space(20)] 
-    [SerializeField] private RectTransform _iconBox;
-    [SerializeField] private Image _iconImage;
-
-    [Space(20)] 
-    [SerializeField] private Image _infoBox;
-    [SerializeField] private TextMeshProUGUI _infoText;
+    [Space(20)]
+    [SerializeField] private RectTransform _interactIndicator;
+    [SerializeField] private InteractIndicator_Component _mainComponent;
+    
+    [Space(20)]
+    [SerializeField] private RectTransform _actionBubbleIndicator;
+    [SerializeField] private InteractIndicator_Component[] _bubbleComponents;
 
     [Space(20)] 
     [SerializeField] [Range(0, 100)] private float _infoShowtime;
@@ -33,8 +52,15 @@ public class InteractIndicator_Controller : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        foreach (InteractIndicator_Component component in _bubbleComponents)
+        {
+            component.iconBoxPos = component.iconBox.anchoredPosition.x;
+            component.infoBoxPos = component.infoBox.rectTransform.anchoredPosition.x;
+        }
         
         Trigger(null, null);
+        Toggle(null);
     }
 
     private void Start()
@@ -55,7 +81,7 @@ public class InteractIndicator_Controller : MonoBehaviour
     // Trigger
     private bool Toggle_Available()
     {
-        bool inGame = Input_Controller.instance.Current_ActionMapNum() == 0 && _iconImage.sprite != null;
+        bool inGame = Input_Controller.instance.Current_ActionMapNum() == 0 && _mainComponent.iconImage.sprite != null;
         bool cutscenePlaying = Cutscene_Controller.instance.coroutine != null;
         
         return inGame && cutscenePlaying == false;
@@ -63,14 +89,14 @@ public class InteractIndicator_Controller : MonoBehaviour
     
     private void Toggle(bool toggle)
     {
-        if (toggle == false || _iconImage.sprite == null)
+        if (toggle == false || _mainComponent.iconImage.sprite == null)
         {
-            _iconBox.gameObject.SetActive(false);
-            _infoBox.gameObject.SetActive(false);
-            
+            _mainComponent.iconBox.gameObject.SetActive(false);
+            _mainComponent.infoBox.gameObject.SetActive(false);
+
             return;
         }
-        Trigger(_iconImage.sprite, _infoText.text);
+        Trigger(_mainComponent.iconImage.sprite, _mainComponent.infoText.text);
     }
     private void Toggle()
     {
@@ -80,22 +106,22 @@ public class InteractIndicator_Controller : MonoBehaviour
     
     public void Trigger(Sprite icon, string info)
     {
-        _iconBox.gameObject.SetActive(icon != null);
+        _mainComponent.iconBox.gameObject.SetActive(icon != null);
 
         if (icon == null)
         {
-            _iconImage.sprite = null;
+            _mainComponent.iconImage.sprite = null;
             
-            _infoBox.gameObject.SetActive(false);
+            _mainComponent.infoBox.gameObject.SetActive(false);
             return;
         }
         
-        _iconImage.sprite = icon;
-        _infoText.text = info;
+        _mainComponent.iconImage.sprite = icon;
+        _mainComponent.infoText.text = info;
 
         if (info == null || info == String.Empty)
         {
-            _infoBox.gameObject.SetActive(false);
+            _mainComponent.infoBox.gameObject.SetActive(false);
             return;
         }
         
@@ -111,11 +137,11 @@ public class InteractIndicator_Controller : MonoBehaviour
     }
     private IEnumerator InfoBox_Coroutine()
     {
-        _infoBox.gameObject.SetActive(true);
+        _mainComponent.infoBox.gameObject.SetActive(true);
        
         yield return new WaitForSeconds(_infoShowtime);
         
-        _infoBox.gameObject.SetActive(false);
+        _mainComponent.infoBox.gameObject.SetActive(false);
         _coroutine = null;
     }
 
@@ -130,4 +156,37 @@ public class InteractIndicator_Controller : MonoBehaviour
     
     
     // Action Bubble Trigger
+    public void Toggle(List<ActionBubble_Data> bubbleDatas)
+    {
+        bool toggle = bubbleDatas != null && bubbleDatas.Count > 0;
+
+        _actionBubbleIndicator.gameObject.SetActive(toggle);
+        Toggle(!toggle);
+
+        if (toggle == false) return;
+
+        for (int i = 0; i < _bubbleComponents.Length; i++)
+        {
+            bool componentToggle = bubbleDatas.Count - 1 < i;
+            
+            _bubbleComponents[i].iconBox.gameObject.SetActive(componentToggle);
+            _bubbleComponents[i].infoBox.gameObject.SetActive(componentToggle);
+            
+            if (componentToggle == false) break;
+
+            _bubbleComponents[i].iconImage.sprite = bubbleDatas[i].iconSprite;
+            _bubbleComponents[i].infoText.text = bubbleDatas[i].bubbleInfo;
+        }
+
+        bool isDefaultPos = bubbleDatas.Count > 1;
+        
+        foreach (InteractIndicator_Component component in _bubbleComponents)
+        {
+            float iconBoxPos = isDefaultPos ? component.iconBoxPos : 0f;
+            float textBoxPos = isDefaultPos ? component.infoBoxPos : 0f;
+            
+            component.iconBox.anchoredPosition = new Vector2(iconBoxPos, component.iconBox.anchoredPosition.y);
+            component.infoBox.rectTransform.anchoredPosition = new Vector2(iconBoxPos, component.iconBox.anchoredPosition.y);
+        }
+    }
 }

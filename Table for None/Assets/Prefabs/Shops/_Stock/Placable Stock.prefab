@@ -514,8 +514,12 @@ PrefabInstance:
       value: 0.71
       objectReference: {fileID: 0}
     - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
-      propertyPath: _setSprites.Array.size
+      propertyPath: _bubbleData.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _setSprites.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: _setSprites.Array.data[0]
@@ -529,6 +533,14 @@ PrefabInstance:
       propertyPath: _setSprites.Array.data[2]
       value: 
       objectReference: {fileID: 1591499186, guid: efc963dc4f222479caa64033825131e4, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleData.Array.data[0]._iconSprite
+      value: 
+      objectReference: {fileID: 2106366949, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleData.Array.data[1]._iconSprite
+      value: 
+      objectReference: {fileID: 1216267519, guid: f311721b981194c6ba14962d17b64207, type: 3}
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 0
