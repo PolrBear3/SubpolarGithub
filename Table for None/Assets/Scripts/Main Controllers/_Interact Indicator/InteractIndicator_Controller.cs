@@ -127,4 +127,7 @@ public class InteractIndicator_Controller : MonoBehaviour
         StopCoroutine(_coroutine);
         _coroutine = null;
     }
+    
+    
+    // Action Bubble Trigger
 }

@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run sdltest",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/sdltest",
+            "cwd": "${workspaceFolder}",
+            "MIMode": "lldb",
+            "preLaunchTask": "Build SDL test"
+        }
+    ]
+}
