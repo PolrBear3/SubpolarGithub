@@ -13,7 +13,7 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     public Action_Bubble bubble => _bubble;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private bool _interactLocked;
     public bool interactLocked => _interactLocked;
 

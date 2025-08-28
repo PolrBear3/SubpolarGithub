@@ -15,8 +15,8 @@ public class InteractIndicator_Component
     public Image iconImage => _iconImage;
 
     [Space(10)] 
-    [SerializeField] private Image _infoBox;
-    public Image infoBox => _infoBox;
+    [SerializeField] private RectTransform _infoBox;
+    public RectTransform infoBox => _infoBox;
     
     [SerializeField] private TextMeshProUGUI _infoText;
     public TextMeshProUGUI infoText => _infoText;
@@ -44,8 +44,9 @@ public class InteractIndicator_Controller : MonoBehaviour
     [Space(20)] 
     [SerializeField] [Range(0, 100)] private float _infoShowtime;
 
-    
+
     private Coroutine _coroutine;
+    private Action_Bubble _indicatingBubble;
     
     
     // UnityEngine
@@ -56,11 +57,11 @@ public class InteractIndicator_Controller : MonoBehaviour
         foreach (InteractIndicator_Component component in _bubbleComponents)
         {
             component.iconBoxPos = component.iconBox.anchoredPosition.x;
-            component.infoBoxPos = component.infoBox.rectTransform.anchoredPosition.x;
+            component.infoBoxPos = component.infoBox.anchoredPosition.x;
         }
         
         Trigger(null, null);
-        Toggle(null);
+        Toggle(null, null);
     }
 
     private void Start()
@@ -93,9 +94,10 @@ public class InteractIndicator_Controller : MonoBehaviour
         {
             _mainComponent.iconBox.gameObject.SetActive(false);
             _mainComponent.infoBox.gameObject.SetActive(false);
-
+            
             return;
         }
+
         Trigger(_mainComponent.iconImage.sprite, _mainComponent.infoText.text);
     }
     private void Toggle()
@@ -125,6 +127,7 @@ public class InteractIndicator_Controller : MonoBehaviour
             return;
         }
         
+        _actionBubbleIndicator.gameObject.SetActive(false);
         Toggle_InfoBox();
         
         _uiEffect.Update_Scale(_interactIndicator);
@@ -156,37 +159,49 @@ public class InteractIndicator_Controller : MonoBehaviour
     
     
     // Action Bubble Trigger
-    public void Toggle(List<ActionBubble_Data> bubbleDatas)
+    public void Toggle(Action_Bubble targetBubble, List<ActionBubble_Data> bubbleDatas)
     {
+        if (_indicatingBubble != null && _indicatingBubble != targetBubble) return;
+        _indicatingBubble = targetBubble;
+        
         bool toggle = bubbleDatas != null && bubbleDatas.Count > 0;
 
-        _actionBubbleIndicator.gameObject.SetActive(toggle);
-        Toggle(!toggle);
+        if (_actionBubbleIndicator != null) _actionBubbleIndicator.gameObject.SetActive(toggle);
+        if (_interactIndicator != null) _interactIndicator.gameObject.SetActive(!toggle);
 
-        if (toggle == false) return;
-
-        for (int i = 0; i < _bubbleComponents.Length; i++)
+        if (toggle == false)
         {
-            bool componentToggle = bubbleDatas.Count - 1 < i;
-            
-            _bubbleComponents[i].iconBox.gameObject.SetActive(componentToggle);
-            _bubbleComponents[i].infoBox.gameObject.SetActive(componentToggle);
-            
-            if (componentToggle == false) break;
-
-            _bubbleComponents[i].iconImage.sprite = bubbleDatas[i].iconSprite;
-            _bubbleComponents[i].infoText.text = bubbleDatas[i].bubbleInfo;
+            _indicatingBubble = null;
+            return;
         }
 
-        bool isDefaultPos = bubbleDatas.Count > 1;
-        
+        int updateCount = 0;
+        for (int i = 0; i < _bubbleComponents.Length; i++)
+        {
+            bool componentToggle = i <= bubbleDatas.Count - 1 && bubbleDatas[i].iconSprite != null;
+
+            string bubbleInfo = bubbleDatas[i].bubbleInfo;
+            bool hasInfo = bubbleInfo != null && bubbleInfo != string.Empty;
+            
+            _bubbleComponents[i].iconBox.gameObject.SetActive(componentToggle);
+            _bubbleComponents[i].infoBox.gameObject.SetActive(componentToggle && hasInfo);
+            
+            if (componentToggle == false) break;
+            
+            _bubbleComponents[i].iconImage.sprite = bubbleDatas[i].iconSprite;
+            _bubbleComponents[i].infoText.text = bubbleDatas[i].bubbleInfo;
+            
+            updateCount++;
+        }
+
+        bool isDefaultPos = updateCount > 1;
         foreach (InteractIndicator_Component component in _bubbleComponents)
         {
             float iconBoxPos = isDefaultPos ? component.iconBoxPos : 0f;
             float textBoxPos = isDefaultPos ? component.infoBoxPos : 0f;
             
             component.iconBox.anchoredPosition = new Vector2(iconBoxPos, component.iconBox.anchoredPosition.y);
-            component.infoBox.rectTransform.anchoredPosition = new Vector2(iconBoxPos, component.iconBox.anchoredPosition.y);
+            component.infoBox.anchoredPosition = new Vector2(textBoxPos, component.infoBox.anchoredPosition.y);
         }
     }
 }

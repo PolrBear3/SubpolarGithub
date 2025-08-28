@@ -4,23 +4,20 @@ using UnityEngine;
 
 public class OrderStand : MonoBehaviour
 {
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Station_Controller _stationController;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Clock_Timer _coolTimer;
     [SerializeField] private AmountBar _npcCountBar;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private Sprite[] _toggleSprites;
-    [SerializeField] private Sprite[] _bubbleSprites;
-
-
-    [Header("")]
+    
+    [Space(20)]
     [SerializeField] private SpriteRenderer _orderingArea;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField][Range(0, 100)] private int _searchTime;
     [SerializeField][Range(0, 100)] private int _maxCount;
     
@@ -43,10 +40,8 @@ public class OrderStand : MonoBehaviour
 
         interactable.OnInteract += Toggle_Indications;
         interactable.OnUnInteract += Toggle_Indications;
-
-        Detection_Controller detection = _stationController.detection;
-
-        detection.EnterEvent += Toggle_Indications;
+        
+        _stationController.detection.EnterEvent += Toggle_Indications;
     }
 
     private void OnDestroy()
@@ -60,29 +55,22 @@ public class OrderStand : MonoBehaviour
         interactable.OnInteract -= Toggle_Indications;
         interactable.OnUnInteract -= Toggle_Indications;
 
-        Detection_Controller detection = _stationController.detection;
-
-        detection.EnterEvent -= Toggle_Indications;
+        _stationController.detection.EnterEvent -= Toggle_Indications;
     }
 
 
     // Indications
     private void Toggle_Sprite()
     {
+        Sprite mainSprite = _coroutine == null ? _toggleSprites[0] : _toggleSprites[1];
+        _stationController.spriteRenderer.sprite = mainSprite;
+        
         Action_Bubble bubble = _stationController.interactable.bubble;
-
-        if (_coroutine == null)
-        {
-            _stationController.spriteRenderer.sprite = _toggleSprites[0];
-            bubble.Set_Bubble(_bubbleSprites[1], null);
-
-            return;
-        }
-
-        _stationController.spriteRenderer.sprite = _toggleSprites[1];
-        bubble.Set_Bubble(_bubbleSprites[0], null);
+        ActionBubble_Data bubbleData = _coroutine == null ? bubble.bubbleData[1] : bubble.bubbleData[0];
+        
+        bubble.Set_Bubble(bubbleData.iconSprite, null);
     }
-
+    
     private void Toggle_Indications()
     {
         Action_Bubble bubble = _stationController.interactable.bubble;

@@ -73,6 +73,13 @@ public class Action_Bubble : MonoBehaviour
     private void Start()
     {
         Toggle(false);
+
+        if (_leftIcon.sprite != null) return;
+        
+        Sprite leftIconSprite = _bubbleData.Length > 0 ? _bubbleData[0].iconSprite : null;
+        Sprite rightIconSprite = _bubbleData.Length > 1 ? _bubbleData[1].iconSprite : null;
+        
+        Set_Bubble(leftIconSprite, rightIconSprite);
     }
 
 
@@ -84,6 +91,7 @@ public class Action_Bubble : MonoBehaviour
             _bubbleOn = false;
             _toggle.SetActive(false);
             
+            Toggle_BubbleData(false);
             return;
         }
         
@@ -94,15 +102,29 @@ public class Action_Bubble : MonoBehaviour
         {
             actionKey.Set_CurrentKey();
         }
-
-        List<ActionBubble_Data> bubbleData = new()
-        {
-            new(_leftIcon.sprite, null),
-            new(_rightIcon.sprite, null)
-        };
-        InteractIndicator_Controller.instance.Toggle(bubbleData);
+        
+        Toggle_BubbleData(true);
     }
+    
+    private void Toggle_BubbleData(bool toggle)
+    {
+        InteractIndicator_Controller indicator = InteractIndicator_Controller.instance;
 
+        if (toggle == false)
+        {
+            indicator.Toggle(this, null);
+            return;
+        }
+        
+        List<ActionBubble_Data> bubbleData = new();
+        
+        for (int i = 0; i < _bubbleData.Length; i++)
+        {
+            bubbleData.Add(_bubbleData[i]);
+        }
+        indicator.Toggle(this, bubbleData);
+    }
+    
 
     // Icon Sprite
     public void Set_Bubble(Sprite leftIcon, Sprite rightIcon)
