@@ -180,9 +180,9 @@ public class InteractIndicator_Controller : MonoBehaviour
         {
             bool componentToggle = i <= bubbleDatas.Count - 1 && bubbleDatas[i].iconSprite != null;
 
-            string bubbleInfo = bubbleDatas[i].bubbleInfo;
+            string bubbleInfo = componentToggle ? bubbleDatas[i].bubbleInfo : null;
             bool hasInfo = bubbleInfo != null && bubbleInfo != string.Empty;
-            
+
             _bubbleComponents[i].iconBox.gameObject.SetActive(componentToggle);
             _bubbleComponents[i].infoBox.gameObject.SetActive(componentToggle && hasInfo);
             

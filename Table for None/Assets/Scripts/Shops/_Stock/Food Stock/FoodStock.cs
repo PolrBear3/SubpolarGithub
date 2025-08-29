@@ -223,21 +223,25 @@ public class FoodStock : MonoBehaviour
         if (_data.stockData.unlocked == false)
         {
             bubble.Empty_Bubble();
+            bubble.Set_IndicatorToggleDatas(null);
             return;
         }
 
         if (_data.Stock_Purchased() == false)
         {
-            Sprite unlockSprite = bubble.bubbleData[0].iconSprite;
+            Sprite unlockSprite = bubble.bubbleDatas[0].iconSprite;
 
             bubble.Set_Bubble(unlockSprite, null);
             bubble.Toggle_Height(true);
 
+            bubble.Set_IndicatorToggleDatas(new() { bubble.bubbleDatas[0] });
             return;
         }
 
-        bubble.Set_Bubble(bubble.bubbleData[1].iconSprite, bubble.bubbleData[2].iconSprite);
+        bubble.Set_Bubble(bubble.bubbleDatas[1].iconSprite, bubble.bubbleDatas[2].iconSprite);
         bubble.Toggle_Height(false);
+        
+        bubble.Set_IndicatorToggleDatas(new() { bubble.bubbleDatas[1], bubble.bubbleDatas[2] });
     }
 
     private void Update_Sprite()
@@ -401,6 +405,7 @@ public class FoodStock : MonoBehaviour
 
     private void Purchase_All()
     {
+        if (_data.stockPurchaseData.purchased == false) return;
         if (Purchase(_foodIcon.currentData.currentAmount) == false) return;
 
         // coin launch animation

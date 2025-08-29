@@ -9122,8 +9122,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 6159379447971834147}
     m_Modifications:
     - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1897204511, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_IsActive
@@ -9134,7 +9138,15 @@ PrefabInstance:
       value: Action Bubble
       objectReference: {fileID: 0}
     - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _loadToggleDatas
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: _bubbleData.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
@@ -9145,9 +9157,21 @@ PrefabInstance:
       propertyPath: _bubbleData.Array.data[1]._iconSprite
       value: 
       objectReference: {fileID: 1897204511, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[0]._iconSprite
+      value: 
+      objectReference: {fileID: 736871765, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[1]._iconSprite
+      value: 
+      objectReference: {fileID: 1897204511, guid: f742cc4a031634b97b9cde0d76e18513, type: 3}
+    - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 736871765, guid: f311721b981194c6ba14962d17b64207, type: 3}
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9219,8 +9243,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 5419941011623935099}
     m_Modifications:
     - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1534491374, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 186648045154746888, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3226532186795327079, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_IsActive
@@ -9231,7 +9259,15 @@ PrefabInstance:
       value: Action Bubble
       objectReference: {fileID: 0}
     - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _loadToggleDatas
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: _bubbleData.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
@@ -9250,9 +9286,21 @@ PrefabInstance:
       propertyPath: _bubbleData.Array.data[1]._iconSprite
       value: 
       objectReference: {fileID: -1534491374, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[0]._iconSprite
+      value: 
+      objectReference: {fileID: 1289501263, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[1]._iconSprite
+      value: 
+      objectReference: {fileID: -1534491374, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1289501263, guid: f311721b981194c6ba14962d17b64207, type: 3}
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.x

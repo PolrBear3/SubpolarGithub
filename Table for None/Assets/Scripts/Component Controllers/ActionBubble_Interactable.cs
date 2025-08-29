@@ -77,6 +77,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
         }
 
         _bubble.Toggle(true);
+        if (bubble.bubbleOn == false) return;
+        
         OnInteract?.Invoke();
 
         if (_actionsSubscribed) return;

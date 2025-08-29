@@ -66,9 +66,10 @@ public class OrderStand : MonoBehaviour
         _stationController.spriteRenderer.sprite = mainSprite;
         
         Action_Bubble bubble = _stationController.interactable.bubble;
-        ActionBubble_Data bubbleData = _coroutine == null ? bubble.bubbleData[1] : bubble.bubbleData[0];
-        
+        ActionBubble_Data bubbleData = _coroutine == null ? bubble.bubbleDatas[1] : bubble.bubbleDatas[0];
+
         bubble.Set_Bubble(bubbleData.iconSprite, null);
+        bubble.Set_IndicatorToggleDatas(new List<ActionBubble_Data>() { bubbleData });
     }
     
     private void Toggle_Indications()

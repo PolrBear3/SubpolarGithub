@@ -50,9 +50,11 @@ public class Action_Bubble : MonoBehaviour
     [SerializeField] private ActionKey[] _actionKeys;
     [SerializeField] private float _toggleHeight;
 
-    [Space(20)] 
-    [SerializeField] private ActionBubble_Data[] _bubbleData;
-    public ActionBubble_Data[] bubbleData => _bubbleData;
+    [Space(20)]
+    [SerializeField] private bool _loadToggleDatas;
+    
+    [SerializeField] private ActionBubble_Data[] _bubbleDatas;
+    public ActionBubble_Data[] bubbleDatas => _bubbleDatas;
 
     [Space(20)] 
     [SerializeField] private UI_EffectController _effectController;
@@ -62,6 +64,8 @@ public class Action_Bubble : MonoBehaviour
 
     private bool _bubbleOn;
     public bool bubbleOn => _bubbleOn;
+    
+    private List<ActionBubble_Data> _indicatorToggleDatas = new();
     
 
     // MonoBehaviour
@@ -73,25 +77,21 @@ public class Action_Bubble : MonoBehaviour
     private void Start()
     {
         Toggle(false);
-
-        if (_leftIcon.sprite != null) return;
-        
-        Sprite leftIconSprite = _bubbleData.Length > 0 ? _bubbleData[0].iconSprite : null;
-        Sprite rightIconSprite = _bubbleData.Length > 1 ? _bubbleData[1].iconSprite : null;
-        
-        Set_Bubble(leftIconSprite, rightIconSprite);
+        Load_IndicatorToggleDatas();
     }
 
 
     // Show and Hide
     public void Toggle(bool toggleOn)
     {
+        InteractIndicator_Controller indicator = InteractIndicator_Controller.instance;
+        
         if (toggleOn == false)
         {
             _bubbleOn = false;
             _toggle.SetActive(false);
             
-            Toggle_BubbleData(false);
+            indicator.Toggle(this, null);
             return;
         }
         
@@ -102,27 +102,29 @@ public class Action_Bubble : MonoBehaviour
         {
             actionKey.Set_CurrentKey();
         }
+
+        if (_indicatorToggleDatas.Count <= 0) return;
+        indicator.Toggle(this, _indicatorToggleDatas);
+    }
+
+
+    // Interact Indicator
+    private void Load_IndicatorToggleDatas()
+    {
+        if (_loadToggleDatas == false) return;
         
-        Toggle_BubbleData(true);
+        for (int i = 0; i < _bubbleDatas.Length; i++)
+        {
+            _indicatorToggleDatas.Add(_bubbleDatas[i]);
+        }
     }
     
-    private void Toggle_BubbleData(bool toggle)
+    public void Set_IndicatorToggleDatas(List<ActionBubble_Data> setDatas)
     {
-        InteractIndicator_Controller indicator = InteractIndicator_Controller.instance;
-
-        if (toggle == false)
-        {
-            indicator.Toggle(this, null);
-            return;
-        }
+        _indicatorToggleDatas.Clear();
         
-        List<ActionBubble_Data> bubbleData = new();
-        
-        for (int i = 0; i < _bubbleData.Length; i++)
-        {
-            bubbleData.Add(_bubbleData[i]);
-        }
-        indicator.Toggle(this, bubbleData);
+        if (setDatas == null) return;
+        _indicatorToggleDatas = setDatas;
     }
     
 
