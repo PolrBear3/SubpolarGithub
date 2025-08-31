@@ -11,14 +11,16 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
 
     [SerializeField] private Action_Bubble _bubble;
     public Action_Bubble bubble => _bubble;
-
-
+    
     [Space(20)]
     [SerializeField] private bool _interactLocked;
     public bool interactLocked => _interactLocked;
 
     [SerializeField] private bool _unInteractLocked;
     public bool unInteractLocked => _unInteractLocked;
+    
+    [Space(40)]
+    [SerializeField] private Guide_ScrObj _interactGuide;
 
 
     public Action OnTriggerInteract;
@@ -69,6 +71,8 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
     {
         if (_interactLocked || _bubble == null) return;
 
+        VideoGuide_Controller.instance.Trigger_Guide(_interactGuide);
+        
         if (_bubble.bubbleOn)
         {
             // bubble off
@@ -76,11 +80,10 @@ public class ActionBubble_Interactable : MonoBehaviour, IInteractable
             return;
         }
 
-        _bubble.Toggle(true);
-        if (bubble.bubbleOn == false) return;
-        
         OnInteract?.Invoke();
-
+        _bubble.Toggle(true);
+        
+        if (bubble.bubbleOn == false) return;
         if (_actionsSubscribed) return;
 
         Input_Controller input = Input_Controller.instance;

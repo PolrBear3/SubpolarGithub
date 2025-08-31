@@ -6,31 +6,16 @@ using UnityEngine.Localization;
 [System.Serializable]
 public class TutorialQuest_Group
 {
-    [SerializeField] private TutorialQuest[] _quests;
-    public TutorialQuest[] quests => _quests;
+    [SerializeField] private TutorialQuest_ScrObj[] _quests;
+    public TutorialQuest_ScrObj[] quests => _quests;
 }
 
 [System.Serializable]
 public class TutorialQuest
 {
-    [Space(20)]
-    [SerializeField] private string _questName;
-    public string questName => _questName;
+    [ES3Serializable] private TutorialQuest_ScrObj _questScrObj;
+    public TutorialQuest_ScrObj questScrObj => _questScrObj;
     
-    [SerializeField] private string _description;
-    public string description => _description;
-
-    [SerializeField][Range(0, 100)] private int _completeCount;
-    public int completeCount => _completeCount;
-    
-    [SerializeField] [Range(0, 9999999)] private int _goldAmount;
-    public int goldAmount => _goldAmount;
-    
-    [Space(20)]
-    [SerializeField] private LocalizedString _localizedDescription;
-    public LocalizedString localizedDescription => _localizedDescription;
-
-
     private int _groupNum;
     public int groupNum => _groupNum;
     
@@ -38,24 +23,24 @@ public class TutorialQuest
     public int currentCompleteCount => _currentCompleteCount;
     
     
-    // Current Data
-    public string Description()
+    // New
+    public TutorialQuest(TutorialQuest_ScrObj questScrObj, int groupNum)
     {
-        if (_localizedDescription == null) return _description;
-        if (string.IsNullOrEmpty(_localizedDescription.TableReference) && string.IsNullOrEmpty(_localizedDescription.TableEntryReference)) return _description;
-
-        return _localizedDescription.GetLocalizedString();
+        _questScrObj = questScrObj;
+        _groupNum = groupNum;
     }
-
-
+    
+    
+    // Current Data
     public void Set_GroupNum(int groupNum)
     {
         _groupNum = groupNum;
     }
     
+    
     public void Load_CompleteCount(int loadValue)
     {
-        _currentCompleteCount = Mathf.Clamp(loadValue, 0, completeCount);
+        _currentCompleteCount = Mathf.Clamp(loadValue, 0, _questScrObj.completeCount);
     }
     
     public int Update_CompleteCount(int updateValue)

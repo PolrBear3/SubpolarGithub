@@ -241,6 +241,7 @@ MonoBehaviour:
   _bubble: {fileID: 9010983189097042859}
   _interactLocked: 0
   _unInteractLocked: 0
+  _interactGuide: {fileID: 11400000, guid: c38f2ac4151e84a15b99a244bc9e1ea4, type: 2}
 --- !u!114 &7604224372020232355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,7 +271,6 @@ MonoBehaviour:
   _defaultUnlockPrice: 20
   _bonusUnlockPrice: 10
   _discountPercentage: 50
-  _guideTrigger: {fileID: 0}
 --- !u!1 &6231251741471268091
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,6 +431,30 @@ PrefabInstance:
       propertyPath: _bubbleDatas.Array.data[2]._iconSprite
       value: 
       objectReference: {fileID: 673369202, guid: f311721b981194c6ba14962d17b64207, type: 3}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[0]._localizedInfo.m_TableEntryReference.m_KeyId
+      value: 27326804040605696
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[1]._localizedInfo.m_TableEntryReference.m_KeyId
+      value: 27327342794760192
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[2]._localizedInfo.m_TableEntryReference.m_KeyId
+      value: 27327421169524736
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[0]._localizedInfo.m_TableReference.m_TableCollectionName
+      value: GUID:40f4f92780776447da64b56711bc8b2f
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[1]._localizedInfo.m_TableReference.m_TableCollectionName
+      value: GUID:40f4f92780776447da64b56711bc8b2f
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[2]._localizedInfo.m_TableReference.m_TableCollectionName
+      value: GUID:40f4f92780776447da64b56711bc8b2f
+      objectReference: {fileID: 0}
     - target: {fileID: 6816945852193664447, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 0

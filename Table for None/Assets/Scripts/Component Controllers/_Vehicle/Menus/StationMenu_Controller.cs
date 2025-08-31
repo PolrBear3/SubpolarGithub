@@ -11,7 +11,7 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
     [SerializeField] private Information_Template _bluePrintTemplate;
     
-    [Space(80)]
+    [Space(40)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
     
 
@@ -683,8 +683,8 @@ public class StationMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
 
         TutorialQuest_Controller quest = TutorialQuest_Controller.instance;
         
-        quest.Complete_Quest(interactStationData.stationScrObj.stationName + "Pickup", 1);
-        quest.Complete_Quest(interactStationData.stationScrObj.stationName + "Retrieve", 1);
+        quest.Complete_Quest(quest.CurrentQuest("Collect " + interactStationData.stationScrObj.stationName), 1);
+        quest.Complete_Quest(quest.CurrentQuest("Retrieve " + interactStationData.stationScrObj.stationName), 1);
         
         Audio_Controller.instance.Play_OneShot(_controller.vehicleController.gameObject, 1);
     }

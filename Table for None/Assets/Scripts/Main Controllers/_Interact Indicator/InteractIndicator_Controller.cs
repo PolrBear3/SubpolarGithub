@@ -46,6 +46,8 @@ public class InteractIndicator_Controller : MonoBehaviour
 
 
     private Coroutine _coroutine;
+    private Coroutine _bubbleCoroutine;
+    
     private Action_Bubble _indicatingBubble;
     
     
@@ -69,17 +71,48 @@ public class InteractIndicator_Controller : MonoBehaviour
         Toggle(Toggle_Available());
         
         // subscriptions
-        Input_Controller.instance.OnActionMapUpdate += Toggle;
+        Input_Controller input = Input_Controller.instance;
+        
+        input.OnActionMapUpdate += Toggle;
+        input.OnActionMapUpdate += PauseUpdate_Indicators;
+        
         Cutscene_Controller.instance.OnToggle += Toggle;
     }
 
     private void OnDestroy()
     {
+        // subscriptions
+        Input_Controller input = Input_Controller.instance;
+        
+        input.OnActionMapUpdate -= Toggle;
+        input.OnActionMapUpdate -= PauseUpdate_Indicators;
+        
         Cutscene_Controller.instance.OnToggle -= Toggle;
     }
 
 
     // Trigger
+    private void PauseUpdate_Indicators()
+    {
+        if (PauseMenu_Controller.instance.isPaused == false)
+        {
+            // for localization update
+            _mainComponent.infoBox.gameObject.SetActive(false);
+            
+            _interactIndicator.gameObject.SetActive(true);
+            return;
+        }
+        
+        if (_bubbleCoroutine != null)
+        {
+            StopCoroutine(_bubbleCoroutine);
+            _bubbleCoroutine = null;
+        }
+        
+        _actionBubbleIndicator.gameObject.SetActive(false);
+    }
+    
+    
     private bool Toggle_Available()
     {
         bool inGame = Input_Controller.instance.Current_ActionMapNum() == 0 && _mainComponent.iconImage.sprite != null;
@@ -180,7 +213,7 @@ public class InteractIndicator_Controller : MonoBehaviour
         {
             bool componentToggle = i <= bubbleDatas.Count - 1 && bubbleDatas[i].iconSprite != null;
 
-            string bubbleInfo = componentToggle ? bubbleDatas[i].bubbleInfo : null;
+            string bubbleInfo = componentToggle ? bubbleDatas[i].LocalizedInfo() : null;
             bool hasInfo = bubbleInfo != null && bubbleInfo != string.Empty;
 
             _bubbleComponents[i].iconBox.gameObject.SetActive(componentToggle);
@@ -189,7 +222,7 @@ public class InteractIndicator_Controller : MonoBehaviour
             if (componentToggle == false) break;
             
             _bubbleComponents[i].iconImage.sprite = bubbleDatas[i].iconSprite;
-            _bubbleComponents[i].infoText.text = bubbleDatas[i].bubbleInfo;
+            _bubbleComponents[i].infoText.text = bubbleDatas[i].LocalizedInfo();
             
             updateCount++;
         }
@@ -203,5 +236,17 @@ public class InteractIndicator_Controller : MonoBehaviour
             component.iconBox.anchoredPosition = new Vector2(iconBoxPos, component.iconBox.anchoredPosition.y);
             component.infoBox.anchoredPosition = new Vector2(textBoxPos, component.infoBox.anchoredPosition.y);
         }
+
+        if (_bubbleCoroutine != null) StopCoroutine(_bubbleCoroutine);
+        _bubbleCoroutine = StartCoroutine(BubbleIndicator_Coroutine());
+    }
+    private IEnumerator BubbleIndicator_Coroutine()
+    {
+        yield return new WaitForSeconds(_infoShowtime);
+
+        _actionBubbleIndicator.gameObject.SetActive(false);
+        _interactIndicator.gameObject.SetActive(true);
+        
+        _bubbleCoroutine = null;
     }
 }

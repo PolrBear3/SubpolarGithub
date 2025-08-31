@@ -108,7 +108,7 @@ public class CraftNPC_Mechanic : CraftNPC
         }
         
         bubble.Set_Bubble(_droppedToolBox.indicatorIcon.sprite, null);
-        
+
         if (bubble.bubbleOn == false) return;
         dialog.Update_Dialog(_droppedToolBox.currentIndex);
     }

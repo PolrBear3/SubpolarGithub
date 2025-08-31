@@ -268,8 +268,6 @@ public class Menu_Controller : MonoBehaviour
     }
     public void Update_TextSize()
     {
-        Debug.Log("Update_TextSize");
-        
         foreach (Menu_EventButton eventButton in _eventButtons)
         {
             if (eventButton.buttonText == null) continue;

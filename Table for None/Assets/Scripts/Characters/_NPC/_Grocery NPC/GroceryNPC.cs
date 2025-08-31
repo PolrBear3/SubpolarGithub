@@ -60,9 +60,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     [SerializeField][Range(0, 100)] private int _questCoolTime;
     [SerializeField][Range(0, 100)] private int _questCount;
 
-    [Space(60)] 
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
-    [SerializeField] private Guide_ScrObj _unlockGuide;
+    [Space(40)]
+    [SerializeField] private TutorialQuest_ScrObj _bundleQuest;
 
     
     private GroceryNPC_Data _data;
@@ -108,8 +107,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         _npcController.movement.TargetPosition_UpdateEvent += FoodBox_DirectionUpdate;
 
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
-        
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
 
@@ -134,8 +131,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         _npcController.movement.TargetPosition_UpdateEvent -= FoodBox_DirectionUpdate;
 
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
-        
         _interactable.OnInteract -= Cancel_Action;
         _interactable.OnInteract -= Interact_FacePlayer;
 
@@ -354,7 +349,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         {
             if (_data.FoodData_UnlockMaxed(_foodStockDatas[i].UnlockedFoods()) == false) continue;
             FoodStock[] unlcokStocks = _foodStockDatas[i].foodStocks;
-
+            
             for (int j = 0; j < unlcokStocks.Length; j++)
             {
                 if (unlcokStocks[j].data.Stock_Purchased()) continue;
@@ -365,6 +360,13 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
                 int calculatedPrice = unlcokStocks[j].defaultUnlockPrice + unlcokStocks[j].bonusUnlockPrice * (unlockCount - 1);
                 unlcokStocks[j].data.Set_PurchaseData(new(calculatedPrice));
             }
+        }
+        
+        List<FoodStock> allStocks = All_FoodStocks();
+
+        for (int i = 0; i < allStocks.Count; i++)
+        {
+            allStocks[i].Toggle_Unlock(allStocks[i].data.stockData.unlocked);
         }
     }
     
@@ -747,11 +749,6 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             Update_BundleQuest();
 
             Toggle_UnlockingFood();
-            
-            Main_Controller main = Main_Controller.instance;
-            if (main.currentLocation.At_Location(main.Player().gameObject)) continue;
-            
-            VideoGuide_Controller.instance.Trigger_Guide(_unlockGuide);
         }
 
         Cancel_Action();
@@ -761,12 +758,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private void Update_BundleQuest()
     {
         TutorialQuest_Controller questController = TutorialQuest_Controller.instance;
-        TutorialQuest bundleQuest = questController.CurrentQuest("CompleteAllBundles");
+        TutorialQuest bundleQuest = questController.CurrentQuest(_bundleQuest);
         
         int currentMaxCount = _data.MaxUnlocked_FoodDatas().Count;
         int completeCount = bundleQuest.currentCompleteCount;
 
-        questController.Complete_Quest(bundleQuest, currentMaxCount - completeCount);
+        questController.Complete_Quest(_bundleQuest, currentMaxCount - completeCount);
     }
 
 

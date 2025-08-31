@@ -23,8 +23,8 @@ public class StationStock : MonoBehaviour
     [Space(20)]
     [Range(0, 100)][SerializeField] private int _discountPercentage;
     
-    [Space(60)]
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
+    [Space(40)] 
+    [SerializeField] private TutorialQuest_ScrObj _stationPurchaseQuest;
 
 
     private StationStock_Data _data;
@@ -47,7 +47,6 @@ public class StationStock : MonoBehaviour
 
         // subscriptions
         _interactable.OnInteract += Toggle_Price;
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnAction1 += Purchase;
         _interactable.OnAction2 += Toggle_Discount;
@@ -57,7 +56,6 @@ public class StationStock : MonoBehaviour
     {
         // subscriptions
         _interactable.OnInteract -= Toggle_Price;
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnAction1 -= Purchase;
         _interactable.OnAction2 -= Toggle_Discount;
@@ -136,7 +134,7 @@ public class StationStock : MonoBehaviour
         _launcher.Parabola_CoinLaunch(currentStation.dialogIcon, _interactable.detection.player.transform.position);
 
         // tutorial quest
-        TutorialQuest_Controller.instance.Complete_Quest("PurchaseStation", 1);
+        TutorialQuest_Controller.instance.Complete_Quest(_stationPurchaseQuest, 1);
         
         Update_toSold();
         Toggle_Discount(false);

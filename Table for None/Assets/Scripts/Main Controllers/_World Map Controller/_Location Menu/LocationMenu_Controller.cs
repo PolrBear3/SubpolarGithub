@@ -28,8 +28,11 @@ public class LocationMenu_Controller : MonoBehaviour
     [SerializeField] private Transform _stationIconBox;
     [SerializeField] private Transform _foodIconBox;
     
-    [Space(60)]
+    [Space(20)]
     [SerializeField] private Input_Manager _inputManager;
+    
+    [Space(40)]
+    [SerializeField] private TutorialQuest_ScrObj _newLocationQuest;
 
 
     public Action<bool> On_MenuToggle;
@@ -243,7 +246,7 @@ public class LocationMenu_Controller : MonoBehaviour
         OnDestroy();
         main.Player().detection.Toggle_BoxCollider(false);
         
-        TutorialQuest_Controller.instance.Complete_Quest("LocationUpdate", 1);
+        TutorialQuest_Controller.instance.Complete_Quest(_newLocationQuest, 1);
     }
     public void Select_HoverTile(int index)
     {

@@ -31,7 +31,6 @@ public class NPC_GiftSystem : MonoBehaviour
 
     
     [Space(40)]
-    [SerializeField] private VideoGuide_Trigger _videoGuide;
     [SerializeField] private Guide_ScrObj _recruitGuide;
     [SerializeField] private Ability_ScrObj _buddyMergeCountAbility;
 
@@ -64,8 +63,6 @@ public class NPC_GiftSystem : MonoBehaviour
 
         GlobalTime_Controller.instance.OnTimeTik += Update_CoolTime;
 
-        _controller.interactable.OnInteract += _videoGuide.Trigger_CurrentGuide;
-        
         if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
         if (_recruitQuestIcon == null) return;
         
@@ -91,9 +88,7 @@ public class NPC_GiftSystem : MonoBehaviour
         _controller.interactable.OnHoldInteract -= Gift;
 
         GlobalTime_Controller.instance.OnTimeTik -= Update_CoolTime;
-        
-        _controller.interactable.OnInteract -= _videoGuide.Trigger_CurrentGuide;
-        
+
         if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
         if (_recruitQuestIcon == null) return;
         

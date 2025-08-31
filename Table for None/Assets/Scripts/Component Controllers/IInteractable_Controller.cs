@@ -8,6 +8,10 @@ public class IInteractable_Controller : MonoBehaviour, IInteractable
 {
     [Space(20)]
     [SerializeField] private UnityEvent OnInteract_Event;
+    
+    [Space(40)]
+    [SerializeField] private Guide_ScrObj _interactGuide;
+    
 
     public Action OnTriggerInteract;
     
@@ -35,6 +39,8 @@ public class IInteractable_Controller : MonoBehaviour, IInteractable
 
         OnInteract?.Invoke();
         OnInteract_Event?.Invoke();
+        
+        VideoGuide_Controller.instance.Trigger_Guide(_interactGuide);
     }
     
     public void Hold_Interact()

@@ -17,6 +17,7 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)]
     [SerializeField] private UI_EffectController _uiEffectController;
     [SerializeField] private Image _playerPanel;
+    [SerializeField] private Image _prepareBox;
     
     [Space(20)]
     [SerializeField] private TextMeshProUGUI _infoText;
@@ -45,6 +46,8 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     public Action OnGuide_ActivationTrigger;
     public Action OnGuideTrigger;
     public Action OnGuideToggle;
+    
+    private Coroutine _videoCoroutine;
 
 
     // UnityEngine
@@ -165,12 +168,6 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
         Toggle_VideoPanel(true);
         OnGuideTrigger?.Invoke();
     }
-    public void Trigger_Guide(VideoGuide_Trigger guideTrigger)
-    {
-        if (guideTrigger == null) return;
-        
-        Trigger_Guide(guideTrigger.triggerGuide);
-    }
     
 
     // UI Control
@@ -204,8 +201,27 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     {
         if (clip == null) return;
 
+        if (_videoCoroutine != null) StopCoroutine(_videoCoroutine);
+        _videoCoroutine = StartCoroutine(VideoClip_Coroutine(clip));
+    }
+    private IEnumerator VideoClip_Coroutine(VideoClip clip)
+    {
+        _videoPlayer.Stop();
+        
+        _prepareBox.color = Color.black;
+        
         _videoPlayer.clip = clip;
+        _videoPlayer.Prepare();
+        
+        while (!_videoPlayer.isPrepared) yield return null;
+
+        LeanTween.alpha(_prepareBox.rectTransform, 0f, 0.1f);
+        
+        _videoPlayer.time = 0;
+        _videoPlayer.frame = 0;
         _videoPlayer.Play();
+
+        _videoCoroutine = null;
     }
 
     private void Toggle_VideoPanel(bool toggle)

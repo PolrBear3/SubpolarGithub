@@ -223,7 +223,7 @@ public class OptionsMenu_Controller : Menu_Controller
 
         Apply_OptionsData(_data);
         ES3.Save("OptionsMenu_Controller/OptionsData", _data, "OptionsFile.es3");
-
+        
         if (_data.resolution == previousData.resolution && _data.isFullScreen == previousData.isFullScreen) return;
         
         _previewData = new(previousData);
@@ -475,7 +475,6 @@ public class OptionsMenu_Controller : Menu_Controller
         _adjustmentTexts[_adjustingButtonIndex].text = localizeController.languageNames[_adjustIndexNum];
 
         _previewData.Set_Language(localizeController.languageNames[_adjustIndexNum].ToString());
-        
         _saveButton.SetActive(_adjusting);
     }
 }

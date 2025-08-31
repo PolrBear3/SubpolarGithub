@@ -69,7 +69,6 @@ public class OrderStand : MonoBehaviour
         ActionBubble_Data bubbleData = _coroutine == null ? bubble.bubbleDatas[1] : bubble.bubbleDatas[0];
 
         bubble.Set_Bubble(bubbleData.iconSprite, null);
-        bubble.Set_IndicatorToggleDatas(new List<ActionBubble_Data>() { bubbleData });
     }
     
     private void Toggle_Indications()

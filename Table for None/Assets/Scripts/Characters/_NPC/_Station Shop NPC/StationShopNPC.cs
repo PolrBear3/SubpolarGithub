@@ -27,9 +27,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
     [Space(20)] 
     [SerializeField][Range(1, 6)] private int _restockScrapAmount;
     [SerializeField][Range(1, 100)] private int _duplicateAmount;
-    
-    [Space(60)] 
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
+
+    [Space(40)] 
+    [SerializeField] private TutorialQuest_ScrObj _buildQuest;
     
 
     private StationShopNPC_Data _data;
@@ -56,7 +56,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         WorldMap_Controller worldMap = Main_Controller.instance.worldMap;
         worldMap.OnNewLocation += Restock_New;
 
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
 
@@ -80,8 +79,6 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
         worldMap.OnNewLocation -= Restock_New;
         
         GlobalTime_Controller.instance.OnDayTime -= Restock_ArchivedStation;
-        
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
 
         _interactable.OnInteract -= Cancel_Action;
         _interactable.OnInteract -= Interact_FacePlayer;
@@ -515,8 +512,8 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             // quest
             TutorialQuest_Controller quest = TutorialQuest_Controller.instance;
             
-            quest.Complete_Quest("BuildStation", 1);
-            quest.Complete_Quest("Build" + recentStation.stationName, 1);
+            quest.Complete_Quest(_buildQuest, 1);
+            quest.Complete_Quest(quest.CurrentQuest("Build " + recentStation.stationName), 1);
 
             Cancel_Action();
             yield break;
@@ -547,9 +544,9 @@ public class StationShopNPC : MonoBehaviour, ISaveLoadable
             
             // quest
             TutorialQuest_Controller quest = TutorialQuest_Controller.instance;
-            
-            quest.Complete_Quest("BuildStation", 1);
-            quest.Complete_Quest("Build" + buildStation.stationName, 1);
+
+            quest.Complete_Quest(_buildQuest, 1);
+            quest.Complete_Quest(quest.CurrentQuest("Build " + buildStation.stationName), 1);
 
             break;
         }

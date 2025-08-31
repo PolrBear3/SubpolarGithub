@@ -62,7 +62,9 @@ public class Table : MonoBehaviour
     // IInteractable_Controller
     private void Interact()
     {
-        if (MergedFood() == null)
+        Food_ScrObj mergedFood = MergedFood();
+        
+        if (mergedFood == null)
         {
             SwapFood();
             return;
@@ -77,13 +79,12 @@ public class Table : MonoBehaviour
         }
 
         FoodData_Controller foodIcon = _stationController.Food_Icon();
-        Sprite leftSprite = _stationController.stationScrObj.dialogIcon;
+        Sprite leftSprite = foodIcon.hasFood ? foodIcon.currentData.foodScrObj.sprite : _stationController.stationScrObj.dialogIcon;
 
-        if (foodIcon.hasFood)
-        {
-            leftSprite = foodIcon.currentData.foodScrObj.sprite;
-        }
-
+        ActionBubble_Data swapBubbleData = new(leftSprite, bubble.bubbleDatas[0].LocalizedInfo());
+        ActionBubble_Data mergeBubbleData = new(mergedFood.sprite, bubble.bubbleDatas[1].LocalizedInfo());
+        
+        bubble.Set_IndicatorToggleDatas(new() { swapBubbleData, mergeBubbleData } );
         bubble.Update_Bubble(leftSprite, MergedFood().sprite);
 
         Input_Controller input = Input_Controller.instance;
@@ -236,7 +237,8 @@ public class Table : MonoBehaviour
         menu.Unlock_FoodIngredient(mergedFood, 1);
         
         // quest
-        TutorialQuest_Controller.instance.Complete_Quest("Make" + mergedFood.name, 1);
+        TutorialQuest_Controller questController = TutorialQuest_Controller.instance;
+        questController.Complete_Quest(questController.CurrentQuest("Cook " + mergedFood.name), 1);
 
         // sound
         Audio_Controller.instance.Play_OneShot(gameObject, 2);

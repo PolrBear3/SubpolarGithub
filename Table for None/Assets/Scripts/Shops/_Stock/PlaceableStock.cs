@@ -24,8 +24,7 @@ public class PlaceableStock : MonoBehaviour
     [Space(20)] 
     [SerializeField] private Sprite[] _sprites;
     
-    [Space(60)]
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
+    [Space(40)]
     [SerializeField] private Ability_ScrObj _goldMagnetAbility;
 
 
@@ -58,8 +57,6 @@ public class PlaceableStock : MonoBehaviour
         Update_PreviewIcon();
 
         // subscriptions
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
-        
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.detection.ExitEvent += Toggle_AmountBar;
 
@@ -72,8 +69,6 @@ public class PlaceableStock : MonoBehaviour
     private void OnDestroy()
     {
         // subscriptions
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
-        
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.detection.ExitEvent -= Toggle_AmountBar;
 
@@ -173,6 +168,8 @@ public class PlaceableStock : MonoBehaviour
     private void Update_BubbleActions()
     {
         Action_Bubble bubble = _interactable.bubble;
+        InteractIndicator_Controller indicator = InteractIndicator_Controller.instance;
+        
         bubble.Empty_Bubble();
         
         _interactable.OnAction1 = null;
@@ -181,6 +178,7 @@ public class PlaceableStock : MonoBehaviour
         if (_foodIcon.hasFood == false)
         {
             bubble.Set_Bubble(bubble.bubbleDatas[0].iconSprite, null);
+            bubble.Set_IndicatorToggleDatas(new(){ bubble.bubbleDatas[0] });
 
             _interactable.OnAction1 += Place;
             return;
@@ -189,12 +187,14 @@ public class PlaceableStock : MonoBehaviour
         if (_foodIcon.DataCount_Maxed())
         {
             bubble.Set_Bubble(bubble.bubbleDatas[1].iconSprite, null);
+            bubble.Set_IndicatorToggleDatas(new(){ bubble.bubbleDatas[1] });
 
             _interactable.OnAction1 += Complete;
             return;
         }
 
         bubble.Set_Bubble(bubble.bubbleDatas[0].iconSprite, bubble.bubbleDatas[1].iconSprite);
+        bubble.Set_IndicatorToggleDatas(new(){ bubble.bubbleDatas[0], bubble.bubbleDatas[1] });
 
         _interactable.OnAction1 += Place;
         _interactable.OnAction2 += Complete;
@@ -258,11 +258,12 @@ public class PlaceableStock : MonoBehaviour
 
     private void Complete_BundleQuest()
     {
+        TutorialQuest_Controller questController = TutorialQuest_Controller.instance;
         List<FoodData> foodDatas = _foodIcon.AllDatas();
 
         foreach (FoodData data in foodDatas)
         {
-            TutorialQuest_Controller.instance.Complete_Quest("CompleteBundle" + data.foodScrObj.name, 1);
+            questController.Complete_Quest(questController.CurrentQuest("Complete " + data.foodScrObj.name + " Bundle"), 1);
         }
     }
     

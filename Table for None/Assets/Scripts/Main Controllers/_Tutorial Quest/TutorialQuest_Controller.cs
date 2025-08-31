@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.Serialization;
 
 public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
 {
@@ -23,6 +22,11 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
 
     private TutorialQuest_ControllerData _data;
     public TutorialQuest_ControllerData data => _data;
+
+    private List<TutorialQuest_ScrObj> _showingQuests = new();
+    public List<TutorialQuest_ScrObj> showingQuests => _showingQuests;
+    
+    public Action OnQuestComplete;
     
     
     // UnityEngine
@@ -73,8 +77,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
             {
                 for (int j = 0; j < _questGroups[i].quests.Length; j++)
                 {
-                    currentQuests.Add(_questGroups[i].quests[j]);
-                    _questGroups[i].quests[j].Set_GroupNum(i);
+                    currentQuests.Add(new(_questGroups[i].quests[j], i));
                 }
             }
             return;
@@ -87,13 +90,13 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         {
             for (int j = 0; j < _questGroups.Length; j++)
             {
-                TutorialQuest[] questsInGroup = _questGroups[j].quests;
+                TutorialQuest_ScrObj[] questsInGroup = _questGroups[j].quests;
                 
                 for (int k = 0; k < questsInGroup.Length; k++)
                 {
-                    if (loadedQuests[i].questName != questsInGroup[k].questName) continue;
-                    
+                    if (loadedQuests[i].questScrObj != questsInGroup[k]) continue;
                     loadedQuests[i].Set_GroupNum(j);
+                    
                     break;
                 }
             }
@@ -132,6 +135,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         List<TutorialQuest> currentQuests = _data.currentQuests;
         if (currentQuests.Count <= 0) return;
         
+        _showingQuests.Clear();
         _questText.text = "";
         
         int currentGroupNum = currentQuests[0].groupNum;
@@ -141,8 +145,11 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         {
             if (currentGroupNum != currentQuests[i].groupNum) break;
 
-            string completeCountString = "[ " + currentQuests[i].currentCompleteCount + "/" + currentQuests[i].completeCount + " ]  ";
-            questLines.Add(completeCountString + Quest(currentQuests[i].questName).Description());
+            TutorialQuest_ScrObj questScrObj = currentQuests[i].questScrObj;
+            _showingQuests.Add(questScrObj); 
+            
+            string completeCountString = "[ " + currentQuests[i].currentCompleteCount + "/" + questScrObj.completeCount + " ]  ";
+            questLines.Add(completeCountString + questScrObj.Description());
         }
         
         _questText.text = string.Join("\n\n", questLines);
@@ -150,38 +157,37 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
     
     
     // Data Control
-    public TutorialQuest Quest(string questName)
-    {
-        for (int i = 0; i < _questGroups.Length; i++)
-        {
-            TutorialQuest[] groupQuests = _questGroups[i].quests;
-            
-            for (int j = 0; j < groupQuests.Length; j++)
-            {
-                if (questName != groupQuests[j].questName) continue;
-                return groupQuests[j];
-            }
-        }
-        return null;
-    }
-    public TutorialQuest CurrentQuest(string questName)
+    public TutorialQuest CurrentQuest(TutorialQuest_ScrObj questScrObj)
     {
         List<TutorialQuest> currentQuests = _data.currentQuests;
         
         for (int i = 0; i < currentQuests.Count; i++)
         {
-            if (questName != currentQuests[i].questName) continue;
+            if (questScrObj != currentQuests[i].questScrObj) continue;
             return currentQuests[i];
         }
 
         return null;
     }
-
-    public void Complete_Quest(TutorialQuest questData, int completeUpdateValue)
+    public TutorialQuest_ScrObj CurrentQuest(string questName)
     {
-        if (questData == null || completeUpdateValue == 0) return;
+        List<TutorialQuest> currentQuests = _data.currentQuests;
         
-        if (questData.Update_CompleteCount(completeUpdateValue) < questData.completeCount)
+        for (int i = 0; i < currentQuests.Count; i++)
+        {
+            if (questName != currentQuests[i].questScrObj.questName) continue;
+            return currentQuests[i].questScrObj;
+        }
+
+        return null;
+    }
+
+    public void Complete_Quest(TutorialQuest_ScrObj questScrObj, int completeUpdateValue)
+    {
+        TutorialQuest currentQuest = CurrentQuest(questScrObj);
+        if (currentQuest == null || completeUpdateValue == 0) return;
+
+        if (currentQuest.Update_CompleteCount(completeUpdateValue) < questScrObj.completeCount)
         {
             Update_QuestText();
             return;
@@ -189,16 +195,14 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
         
         List<TutorialQuest> currentQuests = _data.currentQuests;
         
-        GoldSystem.instance.Update_CurrentAmount(questData.goldAmount);
-        currentQuests.Remove(questData);
+        GoldSystem.instance.Update_CurrentAmount(questScrObj.goldAmount);
+        currentQuests.Remove(currentQuest);
         
         Update_QuestText();
         
         bool isIngame = Input_Controller.instance.Current_ActionMapNum() == 0;
         Toggle_QuestBox(isIngame && currentQuests.Count > 0);
-    }
-    public void Complete_Quest(string questName, int completeUpdateValue)
-    {
-        Complete_Quest(CurrentQuest(questName), completeUpdateValue);
+        
+        OnQuestComplete?.Invoke();
     }
 }

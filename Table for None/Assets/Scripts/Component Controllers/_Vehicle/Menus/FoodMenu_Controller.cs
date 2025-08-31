@@ -15,7 +15,7 @@ public class FoodMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [Space(20)]
     [SerializeField][Range(0, 100)] private int _maxExportAmount;
     
-    [Space(80)]
+    [Space(40)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
     
 

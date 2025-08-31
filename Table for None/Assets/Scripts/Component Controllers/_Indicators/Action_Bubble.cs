@@ -14,6 +14,7 @@ public class ActionBubble_Data
     public string bubbleInfo => _bubbleInfo;
     
     [SerializeField] private LocalizedString _localizedInfo;
+    public LocalizedString localizedInfo => _localizedInfo;
     
     // New
     public ActionBubble_Data(Sprite iconSprite, string bubbleInfo)
@@ -149,7 +150,6 @@ public class Action_Bubble : MonoBehaviour
 
         // toggle on
         _bubbleOn = true;
-
         _toggle.SetActive(true);
 
         // left bubble toggle on
@@ -168,6 +168,9 @@ public class Action_Bubble : MonoBehaviour
         }
 
         Update_BubblePosition();
+        
+        if (_indicatorToggleDatas.Count <= 0) return;
+        InteractIndicator_Controller.instance.Toggle(this, _indicatorToggleDatas);
     }
 
     public void Empty_Bubble()

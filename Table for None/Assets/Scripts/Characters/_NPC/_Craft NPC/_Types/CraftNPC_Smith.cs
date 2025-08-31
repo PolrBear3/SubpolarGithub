@@ -92,7 +92,6 @@ public class CraftNPC_Smith : CraftNPC
         bubble.Set_Bubble(_setTable.indicatorIcon.sprite, null);
 
         if (bubble.bubbleOn == false) return;
-
         dialog.Update_Dialog(_setTable.currentIndex);
     }
 

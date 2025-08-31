@@ -36,9 +36,6 @@ public class FoodStock : MonoBehaviour
     
     [Range(0, 100)][SerializeField] private int _discountPercentage;
 
-    [Space(60)]
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
-
 
     private FoodStock_Data _data;
     public FoodStock_Data data => _data;
@@ -151,6 +148,7 @@ public class FoodStock : MonoBehaviour
     public void Toggle_Unlock(bool toggle)
     {
         _data.stockData.Toggle_UnLock(toggle);
+        _interactable.LockInteract(!toggle);
 
         Update_Sprite();
         Update_TagSprite();

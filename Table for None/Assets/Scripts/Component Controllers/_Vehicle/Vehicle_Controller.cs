@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable, IRestrictable
 {
-    [Space(20)]
+    [Space(40)]
     [SerializeField] private VehicleMovement_Controller _movement;
     public VehicleMovement_Controller movement => _movement;
 
@@ -17,6 +17,8 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable, IRes
     
     [SerializeField] private Custom_PositionClaimer _positionClaimer;
     public Custom_PositionClaimer positionClaimer => _positionClaimer;
+    
+    [SerializeField] private TutorialQuest_Indicator _questIndicator;
     
     [Space(20)]
     [SerializeField] private GameObject _spritesFile;
@@ -35,9 +37,6 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable, IRes
 
     [SerializeField] private Transform _driverSeatPoint;
     public Transform driverSeatPoint => _driverSeatPoint;
-
-    [Space(60)] 
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
     
     
     private bool _transparencyLocked;
@@ -58,17 +57,17 @@ public class Vehicle_Controller : ActionBubble_Interactable, ISaveLoadable, IRes
         Main_Controller.instance.currentLocation.restrictAreaDatas.Add(new(_restrictedArea, gameObject));
 
         // subscription
+        OnInteract += _questIndicator.Interact_Toggle;
         detection.ExitEvent += Transparency_Update;
         OnAction1 += Open_VehicleMenu;
-        OnInteract += _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void OnDestroy()
     {
         // subscription
+        OnInteract -= _questIndicator.Interact_Toggle;
         detection.ExitEvent += Transparency_Update;
         OnAction1 -= Open_VehicleMenu;
-        OnInteract -= _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void Update()

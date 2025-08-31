@@ -31,9 +31,6 @@ public class CraftNPC : MonoBehaviour
 
     [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
     public float upgradeTimeValue => _upgradeTimeValue;
-    
-    [Space(60)]
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
     
     private Sprite _defaultSprite;
@@ -64,19 +61,13 @@ public class CraftNPC : MonoBehaviour
         _npcController.movement.Free_Roam(Main_Controller.instance.currentLocation.data.roamArea, 0f);
 
         // subscriptions
-        ActionBubble_Interactable interactable = _npcController.interactable;
-
-        interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
-        interactable.OnHoldInteract += Pay;
+        _npcController.interactable.OnHoldInteract += Pay;
     }
 
     public void OnDestroy()
     {
         // subscriptions
-        ActionBubble_Interactable interactable = _npcController.interactable;
-
-        interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
-        interactable.OnHoldInteract -= Pay;
+        _npcController.interactable.OnHoldInteract -= Pay;
     }
 
 

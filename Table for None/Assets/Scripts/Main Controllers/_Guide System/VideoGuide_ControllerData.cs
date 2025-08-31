@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class VideoGuide_ControllerData
 {
     [ES3Serializable] private List<Guide_ScrObj> _triggeredGuides = new();

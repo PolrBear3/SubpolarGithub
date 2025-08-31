@@ -9,6 +9,9 @@ public class FoodDrop : ItemDrop
     [SerializeField] private FoodData_Controller _foodIcon;
     public FoodData_Controller foodIcon => _foodIcon;
 
+    [Space(40)] 
+    [SerializeField] private TutorialQuest_ScrObj _foodPickupQuest;
+
 
     // UnityEngine
     private new void Start()
@@ -95,7 +98,7 @@ public class FoodDrop : ItemDrop
         if (Transfer_Available())
         {
             Audio_Controller.instance.Play_OneShot(gameObject, 0);
-            TutorialQuest_Controller.instance.Complete_Quest("FoodPickup", 1);
+            TutorialQuest_Controller.instance.Complete_Quest(_foodPickupQuest, 1);
         }
         
         if (Transfer() == false) return;
@@ -119,7 +122,7 @@ public class FoodDrop : ItemDrop
         if (Transfer_Available())
         {
             Audio_Controller.instance.Play_OneShot(gameObject, 0);
-            TutorialQuest_Controller.instance.Complete_Quest("FoodPickup", 1);
+            TutorialQuest_Controller.instance.Complete_Quest(_foodPickupQuest, 1);
         }
         
         for (int i = 0; i < pickupAmount; i++)

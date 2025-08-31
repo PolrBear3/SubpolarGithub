@@ -313,7 +313,9 @@ public class NPC_FoodInteraction : MonoBehaviour
         archive.Update_InfoBox();
         
         AbilityManager.IncreasePoint(1);
-        TutorialQuest_Controller.instance.Complete_Quest("Serve" + transferData.foodScrObj.name, 1);
+
+        TutorialQuest_Controller questController = TutorialQuest_Controller.instance;
+        questController.Complete_Quest(questController.CurrentQuest("Serve " + transferData.foodScrObj.name), 1);
 
         return true;
     }

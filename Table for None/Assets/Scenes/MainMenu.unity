@@ -365,7 +365,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: demo 1.7.1
+  m_text: demo 1.8
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 718e40650df1f481484fb36338ba511f, type: 2}
   m_sharedMaterial: {fileID: -4348457179764921032, guid: 718e40650df1f481484fb36338ba511f, type: 2}
@@ -6693,8 +6693,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37
-  m_fontSizeBase: 37
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6931,7 +6931,7 @@ MonoBehaviour:
   - _selectIcon: {fileID: 0}
     _button: {fileID: 364875119}
     _hoverIndication: {fileID: 1745106529}
-    _buttonText: {fileID: 521694589}
+    _buttonText: {fileID: 0}
     _actionEvent:
       m_PersistentCalls:
         m_Calls:
@@ -6987,7 +6987,7 @@ MonoBehaviour:
   - _selectIcon: {fileID: 0}
     _button: {fileID: 168751038}
     _hoverIndication: {fileID: 238751239}
-    _buttonText: {fileID: 177213963}
+    _buttonText: {fileID: 0}
     _actionEvent:
       m_PersistentCalls:
         m_Calls:
@@ -7031,7 +7031,7 @@ MonoBehaviour:
   - _selectIcon: {fileID: 0}
     _button: {fileID: 1350425635}
     _hoverIndication: {fileID: 87523495}
-    _buttonText: {fileID: 960559747}
+    _buttonText: {fileID: 0}
     _actionEvent:
       m_PersistentCalls:
         m_Calls:
@@ -7075,7 +7075,7 @@ MonoBehaviour:
   - _selectIcon: {fileID: 0}
     _button: {fileID: 355138918}
     _hoverIndication: {fileID: 793120968}
-    _buttonText: {fileID: 721985778}
+    _buttonText: {fileID: 0}
     _actionEvent:
       m_PersistentCalls:
         m_Calls:
@@ -9182,8 +9182,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46
-  m_fontSizeBase: 46
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -9965,8 +9965,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11745,9 +11745,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.35
-    width: 0.2765625
-    height: 0.27656248
+    y: 0.31944445
+    width: 0.29270834
+    height: 0.29270834
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -18252,40 +18252,6 @@ MonoBehaviour:
   _menuPanel: {fileID: 1047660916}
   _eventButtons:
   - _selectIcon: {fileID: 0}
-    _button: {fileID: 678869285}
-    _hoverIndication: {fileID: 807672922}
-    _buttonText: {fileID: 0}
-    _actionEvent:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1552865429}
-          m_TargetAssemblyTypeName: MainMenu_Controller, Assembly-CSharp
-          m_MethodName: Start_InGame
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    _navigateEvents:
-    - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1552865429}
-          m_TargetAssemblyTypeName: MainMenu_Controller, Assembly-CSharp
-          m_MethodName: Update_DataInfoText
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - _selectIcon: {fileID: 0}
     _button: {fileID: 105640038}
     _hoverIndication: {fileID: 1715037623}
     _buttonText: {fileID: 0}
@@ -18330,6 +18296,40 @@ MonoBehaviour:
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 1
+          m_CallState: 2
+  - _selectIcon: {fileID: 0}
+    _button: {fileID: 678869285}
+    _hoverIndication: {fileID: 807672922}
+    _buttonText: {fileID: 0}
+    _actionEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1552865429}
+          m_TargetAssemblyTypeName: MainMenu_Controller, Assembly-CSharp
+          m_MethodName: Start_InGame
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _navigateEvents:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1552865429}
+          m_TargetAssemblyTypeName: MainMenu_Controller, Assembly-CSharp
+          m_MethodName: Update_DataInfoText
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
           m_CallState: 2
   _maxTextSize: 0
   OnExitMenu:

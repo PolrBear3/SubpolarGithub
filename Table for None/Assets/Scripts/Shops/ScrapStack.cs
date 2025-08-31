@@ -12,15 +12,14 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     [SerializeField] private AmountBar _amountBar;
     public AmountBar amountBar => _amountBar;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Station_ScrObj _scrap;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Sprite[] _scrapSprites;
-    
-    
-    [Space(60)]
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
+
+    [Space(40)] 
+    [SerializeField] private TutorialQuest_ScrObj _stackScrapQuest;
 
 
     // UnityEngine
@@ -37,8 +36,6 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Update_CurrentSprite();
 
         // subscriptions
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
-        
         _interactable.detection.EnterEvent += Toggle_AmountBar;
         _interactable.OnInteract += Toggle_AmountBar;
         _interactable.OnUnInteract += Toggle_AmountBar;
@@ -50,8 +47,6 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
     private void OnDestroy()
     {
         // subscriptions
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
-        
         _interactable.detection.EnterEvent -= Toggle_AmountBar;
         _interactable.OnInteract -= Toggle_AmountBar;
         _interactable.OnUnInteract -= Toggle_AmountBar;
@@ -90,7 +85,6 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
 
         _amountBar.Toggle_BarColor(_amountBar.Is_MaxAmount());
         _amountBar.Load();
-
         _amountBar.Toggle(!_interactable.bubble.bubbleOn);
     }
 
@@ -132,7 +126,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Toggle_AmountBar();
         Update_CurrentSprite();
         
-        TutorialQuest_Controller.instance.Complete_Quest("ScrapStack", stackAmount);
+        TutorialQuest_Controller.instance.Complete_Quest(_stackScrapQuest, stackAmount);
         Audio_Controller.instance.Play_OneShot(gameObject, 0);
     }
 
@@ -171,7 +165,7 @@ public class ScrapStack : MonoBehaviour, ISaveLoadable
         Toggle_AmountBar();
         Update_CurrentSprite();
         
-        TutorialQuest_Controller.instance.Complete_Quest("ScrapStack", -retrievedAmount);
+        TutorialQuest_Controller.instance.Complete_Quest(_stackScrapQuest, -retrievedAmount);
         Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 }

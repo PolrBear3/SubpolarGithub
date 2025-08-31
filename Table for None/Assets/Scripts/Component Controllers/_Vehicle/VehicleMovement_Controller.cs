@@ -9,6 +9,7 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)]
     [SerializeField] private Vehicle_Controller _controller;
     [SerializeField] private ActionBubble_Interactable _interactable;
+    [SerializeField] private TutorialQuest_Indicator _questIndicator;
     
     [Space(20)]
     [SerializeField] private Animator _wheelsAnim;
@@ -23,9 +24,6 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
     [Space(20)] 
     [SerializeField] private Sprite _interactIcon;
     [SerializeField] private Information_Template _interactTemplate;
-    
-    [Space(60)] 
-    [SerializeField] private VideoGuide_Trigger _guideTrigger;
 
 
     private bool _onBoard;
@@ -54,10 +52,9 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // subscriptions
         Main_Controller.instance.worldMap.OnNewLocation += Moveto_DefaultPosition;
 
+        _interactable.OnInteract += _questIndicator.Interact_Toggle;
         _interactable.OnAction1 += Ride;
         _interactable.OnAction2 += _controller.Open_LocationMenu;
-
-        _interactable.OnInteract += _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void OnDestroy()
@@ -65,10 +62,9 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
         // subscriptions
         Main_Controller.instance.worldMap.OnNewLocation -= Moveto_DefaultPosition;
 
+        _interactable.OnInteract -= _questIndicator.Interact_Toggle;
         _interactable.OnAction1 -= Ride;
         _interactable.OnAction2 -= _controller.Open_LocationMenu;
-        
-        _interactable.OnInteract -= _guideTrigger.Trigger_CurrentGuide;
     }
 
     private void Update()

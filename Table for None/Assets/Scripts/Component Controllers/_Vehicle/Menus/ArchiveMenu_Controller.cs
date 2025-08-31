@@ -28,8 +28,9 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     [SerializeField] private Sprite _maxTransferIcon;
     [SerializeField][Range(0, 500)] private int _maxTransferAmount;
     
-    [Space(80)]
+    [Space(40)]
     [SerializeField] private Guide_ScrObj _guideScrObj;
+    [SerializeField] private TutorialQuest_ScrObj _cookCountMaxQuest;
     
 
     private ArchiveMenu_Data _data;
@@ -692,10 +693,11 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
         
         // tutorial quest
         TutorialQuest_Controller tutorialQuest = TutorialQuest_Controller.instance;
-        TutorialQuest targetQuest = tutorialQuest.CurrentQuest("CookCountMax");
         
+        TutorialQuest targetQuest = tutorialQuest.CurrentQuest(_cookCountMaxQuest);
         int questCount = targetQuest.currentCompleteCount;
-        tutorialQuest.Complete_Quest(targetQuest, MaxUnlock_IngredientCount() - questCount);
+        
+        tutorialQuest.Complete_Quest(_cookCountMaxQuest, MaxUnlock_IngredientCount() - questCount);
     }
 
     public void Update_FoodTransferCount(Food_ScrObj food, int updateValue)
