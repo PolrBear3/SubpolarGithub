@@ -190,6 +190,8 @@ public class ArchiveMenu_Controller : MonoBehaviour, IVehicleMenu, ISaveLoadable
     
     public void Update_InfoBox()
     {
+        if (gameObject.activeSelf == false) return;
+        
         ItemSlot_Cursor cursor = _controller.slotsController.cursor;
         ItemSlot_Data cursorData = cursor.data;
         ItemSlot_Data slotData = cursor.currentSlot.data;

@@ -116,7 +116,10 @@ public class Station_Movement : MonoBehaviour
         _stationController.TransparentBlink_Toggle(false);
         _movementArrows.SetActive(false);
 
-        Main_Controller.instance.data.Claim_Position(_stationController.data.position);
+        StationData data = _stationController.data;
+        Vector2 claimPos = data != null ? data.position : Utility.SnapPosition(transform.position);
+        
+        Main_Controller.instance.data.Claim_Position(claimPos);
         OnLoadPosition?.Invoke();
 
         enabled = false;
