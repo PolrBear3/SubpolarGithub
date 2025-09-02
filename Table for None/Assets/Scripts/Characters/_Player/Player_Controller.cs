@@ -110,7 +110,7 @@ public class Player_Controller : MonoBehaviour, ISaveLoadable
     // Functions
     public void Toggle_Show(bool toggle)
     {
-        _hidden = toggle;
+        _hidden = !toggle;
         OnHideToggle?.Invoke();
 
         if (toggle == false)
