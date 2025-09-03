@@ -11,10 +11,10 @@ public class ItemSlot_Cursor : MonoBehaviour
     public RectTransform rectTransform => _rectTransform;
 
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private ItemSlots_Controller _slotsController;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private Image _cursorImage;
     public Image cursorImage => _cursorImage;
 
@@ -22,7 +22,7 @@ public class ItemSlot_Cursor : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _amountText;
 
-    [Header("")]
+    [Space(20)]
     [SerializeField] private UI_ClockTimer _holdTimer;
     public UI_ClockTimer holdTimer => _holdTimer;
 

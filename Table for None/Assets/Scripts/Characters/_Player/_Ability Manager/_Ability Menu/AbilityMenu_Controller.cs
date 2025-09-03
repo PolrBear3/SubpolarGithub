@@ -49,7 +49,7 @@ public class AbilityMenu_Controller : MonoBehaviour
 
         pauseMenu.OnPauseExit += Toggle_Menu;
         VideoGuide_Controller.instance.OnGuideToggle += Toggle_Menu;
-
+        
         _inputManager.OnCursorControl += Navigate_Button;
         _inputManager.OnHoldSelect += Select_Ability;
         
@@ -250,7 +250,7 @@ public class AbilityMenu_Controller : MonoBehaviour
         {
             lightController.Toggle_CurrentColorLock(toggle);
             lightController.Update_CurrentColor(lightController.defaultColor, _transitionDuration);
-            
+
             Save_Data();
             return;
         }
@@ -261,6 +261,7 @@ public class AbilityMenu_Controller : MonoBehaviour
         foreach (AbilityMenu_Button button in _buttons)
         {
             button.Toggle_Select(false);
+            button.holdTimer.Stop_ClockSpriteRun();
         }
 
         _buttonIndexNum = 0;
@@ -269,10 +270,9 @@ public class AbilityMenu_Controller : MonoBehaviour
     
     public void Toggle_Menu()
     {
-        if (VideoGuide_Controller.instance.guideToggled) return;
+        if (Input_Controller.instance.Current_ActionMapNum() != 0) return;
         
         AbilityManager manager = Main_Controller.instance.Player().abilityManager;
-
         if (manager.AbilityPoint_Maxed() == false || manager.ActivateAvailable_AbilityScrObjs().Count <= 0)
         {
             Toggle_Menu(false);
@@ -280,7 +280,6 @@ public class AbilityMenu_Controller : MonoBehaviour
         }
 
         if (_toggleMenu.activeSelf) return;
-        if (PauseMenu_Controller.instance.isPaused) return;
         
         Toggle_Menu(true);
         _uiEffectController.Update_Scale(_menuPanel.rectTransform);

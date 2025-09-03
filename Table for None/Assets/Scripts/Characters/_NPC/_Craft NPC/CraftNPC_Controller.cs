@@ -17,10 +17,6 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
     public CraftNPC_ControllerData data => _data;
 
     private Coroutine _cycleCoroutine;
-    
-    
-    [Space(60)]
-    [SerializeField] private Guide_ScrObj _guideTrigger;
 
 
     // MonoBehaviour
@@ -113,9 +109,6 @@ public class CraftNPC_Controller : MonoBehaviour, ISaveLoadable
 
         CraftNPC craftNPC = spawnNPC.GetComponent<CraftNPC>();
         _data.Set_CurrentNPC(craftNPC);
-
-        if (PauseMenu_Controller.instance.isPaused) return craftNPC;
-        VideoGuide_Controller.instance.Trigger_Guide(_guideTrigger);
         
         return craftNPC;
     }

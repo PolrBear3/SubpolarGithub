@@ -21,9 +21,12 @@ public class Menu_EventButton
     
     [SerializeField] private TextMeshProUGUI _buttonText;
     public TextMeshProUGUI buttonText => _buttonText;
+
+
+    [Space(20)] 
+    [SerializeField] private UI_ClockTimer _holdTimer;
+    public UI_ClockTimer holdTimer => _holdTimer;
     
-    
-    [Space(20)]
     [SerializeField] private UnityEvent _actionEvent;
     public UnityEvent actionEvent => _actionEvent;
     
@@ -61,8 +64,12 @@ public class Menu_EventButton
 public class Menu_Controller : MonoBehaviour
 {
     [Space(20)]
+    [SerializeField] private Input_Manager _inputManager;
+    public Input_Manager inputManager => _inputManager;
+    
     [SerializeField] private UI_EffectController _uiEffectController;
 
+    [Space(20)]
     [SerializeField] private Image _menuPanel;
     public Image menuPanel => _menuPanel;
     
@@ -74,10 +81,6 @@ public class Menu_Controller : MonoBehaviour
 
     [Space(20)]
     public UnityEvent OnExitMenu;
-
-    [Space(20)]
-    [SerializeField] private Input_Manager _inputManager;
-    public Input_Manager inputManager => _inputManager;
     
     
     private bool _toggled;
@@ -106,6 +109,9 @@ public class Menu_Controller : MonoBehaviour
         // subscriptions
         _inputManager.OnCursorControl += Navigate_ButtonIndex;
         _inputManager.OnSelect += Select_Action;
+
+        _inputManager.OnSelectStart += HoldSelect_Start;
+        _inputManager.OnHoldSelect += HoldSelect_Action;
         
         OnExit = () => OnExitMenu?.Invoke();
         _inputManager.OnExit += OnExit;
@@ -121,6 +127,9 @@ public class Menu_Controller : MonoBehaviour
         // subscriptions
         _inputManager.OnCursorControl -= Navigate_ButtonIndex;
         _inputManager.OnSelect -= Select_Action;
+        
+        _inputManager.OnSelectStart -= HoldSelect_Start;
+        _inputManager.OnHoldSelect -= HoldSelect_Action;
         
         _inputManager.OnExit -= OnExit;
         OnExit = null;
@@ -281,7 +290,14 @@ public class Menu_Controller : MonoBehaviour
         if (TransitionCanvas_Controller.instance.coroutine != null) return;
         if (_eventButtons.Length <= 0) return;
 
-        _eventButtons[_currentIndex].actionEvent?.Invoke();
+        Menu_EventButton currentButton = _eventButtons[_currentIndex];
+        if (currentButton.holdTimer != null)
+        {
+            currentButton.holdTimer.Stop_ClockSpriteRun();
+            return;
+        }
+        
+        currentButton.actionEvent?.Invoke();
         OnAction?.Invoke();
     }
     public void Select_Action(int index)
@@ -292,6 +308,24 @@ public class Menu_Controller : MonoBehaviour
             return;
         }
         Select_Action();
+    }
+
+    private void HoldSelect_Start()
+    {
+        Menu_EventButton currentButton = _eventButtons[_currentIndex];
+        if (currentButton.holdTimer == null) return;
+        
+        currentButton.holdTimer.Run_ClockSprite();
+    }
+    private void HoldSelect_Action()
+    {
+        Menu_EventButton currentButton = _eventButtons[_currentIndex];
+        
+        if (currentButton.holdTimer == null) return;
+        currentButton.holdTimer.Stop_ClockSpriteRun();
+        
+        currentButton.actionEvent?.Invoke();
+        OnAction?.Invoke();
     }
 
     

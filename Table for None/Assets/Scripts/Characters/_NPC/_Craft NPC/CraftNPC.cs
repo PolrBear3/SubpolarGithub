@@ -32,6 +32,10 @@ public class CraftNPC : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _upgradeTimeValue;
     public float upgradeTimeValue => _upgradeTimeValue;
 
+    [Space(20)] 
+    [SerializeField] private Guide_ScrObj _basicGuide;
+    [SerializeField] private Guide_ScrObj _customGuide;
+
     
     private Sprite _defaultSprite;
 
@@ -61,13 +65,19 @@ public class CraftNPC : MonoBehaviour
         _npcController.movement.Free_Roam(Main_Controller.instance.currentLocation.data.roamArea, 0f);
 
         // subscriptions
-        _npcController.interactable.OnHoldInteract += Pay;
+        ActionBubble_Interactable interactable = _npcController.interactable;
+
+        interactable.OnInteract += Toggle_Guide;
+        interactable.OnHoldInteract += Pay;
     }
 
     public void OnDestroy()
     {
         // subscriptions
-        _npcController.interactable.OnHoldInteract -= Pay;
+        ActionBubble_Interactable interactable = _npcController.interactable;
+
+        interactable.OnInteract -= Toggle_Guide;
+        interactable.OnHoldInteract -= Pay;
     }
 
 
@@ -142,6 +152,14 @@ public class CraftNPC : MonoBehaviour
 
 
     // Main Interactions
+    private void Toggle_Guide()
+    {
+        VideoGuide_Controller videoGuide = VideoGuide_Controller.instance;
+        Guide_ScrObj toggleGuide = videoGuide.Guide_Triggered(_basicGuide) ? _customGuide : _basicGuide;
+        
+        videoGuide.Trigger_Guide(toggleGuide);
+    }
+    
     public void Toggle_PayIcon()
     {
         _statusIcon.gameObject.SetActive(true);
