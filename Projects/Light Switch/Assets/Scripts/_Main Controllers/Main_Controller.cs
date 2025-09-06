@@ -20,6 +20,20 @@ public class Main_Controller : MonoBehaviour
     [SerializeField] private Localization_Controller _localizationController;
     public Localization_Controller localizationController => _localizationController;
     
+    
+    [Space(20)]
+    [SerializeField] private TileBoard _tileBoard;
+    public TileBoard tileBoard => _tileBoard;
+    
+    [SerializeField] private Inventory _inventory;
+    public Inventory inventory => _inventory;
+    
+    [SerializeField] private Shop _shop;
+    public Shop shop => _shop;
+    
+    [SerializeField] private SwitchPlacer _switchPlacer;
+    public SwitchPlacer switchPlacer => _switchPlacer;
+    
 
     // MonoBehaviour
     private void Awake()

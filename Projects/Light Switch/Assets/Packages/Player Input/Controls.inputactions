@@ -1,1 +1,46 @@
-{}
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Input",
+            "id": "294a4e72-8a3d-440c-9b5b-cb0974819e38",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "5a3152be-634d-44fa-8d1f-da0b2b7be28e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7f1d7f98-c8a9-4494-8325-4bb34f1e50ae",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "PC",
+            "bindingGroup": "PC",
+            "devices": [
+                {
+                    "devicePath": "<VirtualMouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

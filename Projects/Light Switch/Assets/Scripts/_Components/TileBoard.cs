@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,23 @@ public class TileBoard : MonoBehaviour
     [Space(20)]
     [SerializeField] private Transform _setTileStartPoint;
     [SerializeField] private GameObject _tilePrefab;
+    
+    [Space(20)]
+    [SerializeField] private int _tileLayerIndex;
+    public int tileLayerIndex => _tileLayerIndex;
+
+
+    private List<Tile> _setTiles = new();
+    public List<Tile> setTiles => _setTiles;
+    
+    private Tile _hoverTile;
+    public Tile hoverTile => _hoverTile;
+    
+    private Tile _previousTile;
+    public Tile previousTile => _previousTile;
+    
+    public Action OnTileHover;
+    public Action<Tile> OnTileSelect;
     
     
     // MonoBehaviour
@@ -38,7 +56,17 @@ public class TileBoard : MonoBehaviour
 
                 GameObject cellObject = Instantiate(_tilePrefab, cellPosition, Quaternion.identity, transform);
                 cellObject.transform.SetParent(_setTileStartPoint);
+                
+                _setTiles.Add(cellObject.GetComponent<Tile>());
             }
         }
+    }
+
+    public void Update_HoverTile(Tile tile)
+    {
+        _previousTile = _hoverTile != null ? _hoverTile : tile;
+        _hoverTile = tile;
+
+        OnTileHover?.Invoke();
     }
 }

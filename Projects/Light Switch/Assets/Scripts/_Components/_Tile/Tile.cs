@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer _sr;
+    
+    [Space(20)]
     [SerializeField] private Clickable_EventSystem _eventSystem;
+
 
     private Tile_Data _data;
     public Tile_Data data => _data;
@@ -13,18 +17,33 @@ public class Tile : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
-        _eventSystem.OnClick += Spawn_Switch;
+        _eventSystem.OnEnter += Update_HoverTile;
+        _eventSystem.OnClick += Select;
     }
 
     private void OnDestroy()
     {
-        _eventSystem.OnClick -= Spawn_Switch;
+        _eventSystem.OnEnter -= Update_HoverTile;
+        _eventSystem.OnClick -= Select;
     }
 
 
     // Main
-    private void Spawn_Switch()
+    private void Update_HoverTile()
     {
-        Debug.Log("This is Tile");
+        Main_Controller.instance.tileBoard.Update_HoverTile(this);
+    }
+    
+    public void Select()
+    {
+        Main_Controller.instance.tileBoard.OnTileSelect?.Invoke(this);
+    }
+    
+    
+    // Indication
+    public void Toggle_HoverIndication(bool toggle)
+    {
+        Color color = toggle ? Color.gray : Color.white;
+        _sr.color = color;
     }
 }
