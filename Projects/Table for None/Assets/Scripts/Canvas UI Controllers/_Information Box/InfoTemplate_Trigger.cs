@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class InfoTemplate_Trigger : MonoBehaviour
+public class  InfoTemplate_Trigger : MonoBehaviour
 {
     [Space(20)] 
     [SerializeField] private TextMeshProUGUI _setText;

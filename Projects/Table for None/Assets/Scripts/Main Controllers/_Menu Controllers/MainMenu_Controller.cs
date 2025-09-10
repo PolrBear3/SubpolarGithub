@@ -8,7 +8,7 @@ using FMOD.Studio;
 public class MainMenu_Controller : Menu_Controller
 {
     [Space(20)]
-    [SerializeField] private Information_Template _newGameTemplate;
+    [SerializeField] private InfoTemplate_Trigger _infoTemplate;
     [SerializeField] private TextMeshProUGUI _dataInfoText;
     
     [Space(20)]
@@ -87,9 +87,15 @@ public class MainMenu_Controller : Menu_Controller
     
     public void Update_DataInfoText(bool newData)
     {
-        if (newData || ES3.FileExists("SaveFile.es3") == false)
+        if (newData)
         {
-            _dataInfoText.text = _newGameTemplate.InfoString();
+            _dataInfoText.text = _infoTemplate.TemplateString(1);
+            return;
+        }
+        
+        if (ES3.FileExists("SaveFile.es3") == false)
+        {
+            _dataInfoText.text = _infoTemplate.TemplateString(0);
             return;
         }
         
@@ -102,6 +108,10 @@ public class MainMenu_Controller : Menu_Controller
         string goldDataString = "<sprite=56> " + goldData.goldAmount;
         
         _dataInfoText.text = mapDataString + "   " + goldDataString;
+    }
+    public void Update_DataInfoText()
+    {
+        _dataInfoText.text = _infoTemplate.TemplateString(0);
     }
     
     

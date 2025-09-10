@@ -11772,10 +11772,10 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.07005209
+    x: 0
     y: 0
-    width: 0.2240741
-    height: 0.22407407
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -14851,17 +14851,7 @@ MonoBehaviour:
   OnExitMenu:
     m_PersistentCalls:
       m_Calls: []
-  _newGameTemplate:
-    _infoName: 
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: GUID:399ac8ec33ea244d889d8615a13d8492
-      m_TableEntryReference:
-        m_KeyId: 3604325111685120
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
+  _infoTemplate: {fileID: 1552865432}
   _dataInfoText: {fileID: 1586667185}
   _linkButtons:
   - _selectIcon: {fileID: 0}
@@ -14882,9 +14872,6 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     _navigateEvents: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &1552865430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14946,6 +14933,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _setText: {fileID: 0}
   _templates:
+  - _infoName: 
+    _localizedInfo:
+      m_TableReference:
+        m_TableCollectionName: GUID:399ac8ec33ea244d889d8615a13d8492
+      m_TableEntryReference:
+        m_KeyId: 50695582337982464
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
   - _infoName: 
     _localizedInfo:
       m_TableReference:
