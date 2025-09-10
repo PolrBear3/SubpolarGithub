@@ -62,6 +62,14 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
     [Space(40)]
     [SerializeField] private TutorialQuest_ScrObj _bundleQuest;
+    
+    [Space(10)]
+    [SerializeField] private TutorialQuest_ScrObj _iceCreamBundleQuest;
+    [SerializeField] private Food_ScrObj _iceCream;
+    
+    [Space(10)]
+    [SerializeField] private TutorialQuest_ScrObj _applePieBundleQuest;
+    [SerializeField] private Food_ScrObj _applePie;
 
     
     private GroceryNPC_Data _data;
@@ -764,6 +772,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         int completeCount = bundleQuest.currentCompleteCount;
 
         questController.Complete_Quest(_bundleQuest, currentMaxCount - completeCount);
+        questController.Complete_Quest(_iceCreamBundleQuest, _data.FoodData_UnlockMaxed(_iceCream) ? 1 : 0);
+        questController.Complete_Quest(_applePieBundleQuest, _data.FoodData_UnlockMaxed(_applePie) ? 1 : 0);
     }
 
 

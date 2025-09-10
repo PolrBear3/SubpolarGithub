@@ -250,23 +250,9 @@ public class PlaceableStock : MonoBehaviour
         
         Update_forComplete();
         Update_BubbleActions();
-        
-        Complete_BundleQuest();
-        
+
         gameObject.GetComponent<DialogTrigger>().Update_Dialog(0);
     }
-
-    private void Complete_BundleQuest()
-    {
-        TutorialQuest_Controller questController = TutorialQuest_Controller.instance;
-        List<FoodData> foodDatas = _foodIcon.AllDatas();
-
-        foreach (FoodData data in foodDatas)
-        {
-            questController.Complete_Quest(questController.CurrentQuest("Complete " + data.foodScrObj.name + " Bundle"), 1);
-        }
-    }
-    
     
     private void Collect_Payment()
     {
