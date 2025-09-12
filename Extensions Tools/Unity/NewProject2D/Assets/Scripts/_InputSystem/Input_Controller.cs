@@ -30,6 +30,8 @@ public class Input_Controller : MonoBehaviour
     private ControlScheme_ScrObj _currentScheme;
     public ControlScheme_ScrObj currentScheme => _currentScheme;
 
+    private string _currentSchemeName;
+    
     private List<string> _actionMaps = new();
 
 
@@ -80,6 +82,11 @@ public class Input_Controller : MonoBehaviour
         _playerInput.onControlsChanged += Handle_SchemeUpdate;
     }
 
+    private void Update()
+    {
+        CurrentScheme_Update();
+    }
+    
     private void OnDestroy()
     {
         // subscription
@@ -143,6 +150,14 @@ public class Input_Controller : MonoBehaviour
 
 
     // Scheme Control
+    private void CurrentScheme_Update()
+    {
+        if (_currentSchemeName == _playerInput.currentControlScheme) return;
+        _currentSchemeName = _playerInput.currentControlScheme;
+        
+        Update_CurrentScheme(_currentSchemeName);
+    }
+    
     private void Handle_SchemeUpdate(PlayerInput playerInput)
     {
         Update_CurrentScheme(_playerInput.currentControlScheme);

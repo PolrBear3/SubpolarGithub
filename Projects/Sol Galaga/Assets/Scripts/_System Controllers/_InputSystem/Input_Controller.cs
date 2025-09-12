@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEditor;
 using TMPro;
 
 public class Input_Controller : MonoBehaviour
@@ -11,10 +10,10 @@ public class Input_Controller : MonoBehaviour
     public static Input_Controller instance;
 
     
+    [Space(20)]
     [SerializeField] private PlayerInput _playerInput;
     public PlayerInput playerInput => _playerInput;
 
-    [Space(20)]
     [SerializeField] private ControlScheme_ScrObj[] _schemes;
 
     [Space(20)]
@@ -30,6 +29,8 @@ public class Input_Controller : MonoBehaviour
     private ControlScheme_ScrObj _currentScheme;
     public ControlScheme_ScrObj currentScheme => _currentScheme;
 
+    private string _currentSchemeName;
+    
     private List<string> _actionMaps = new();
 
 
@@ -73,11 +74,16 @@ public class Input_Controller : MonoBehaviour
     {
         Set_Instance();
         Set_ActionMaps();
-        
+
         Handle_SchemeUpdate(_playerInput);
   
         // subscription
         _playerInput.onControlsChanged += Handle_SchemeUpdate;
+    }
+
+    private void Update()
+    {
+        CurrentScheme_Update();
     }
 
     private void OnDestroy()
@@ -143,6 +149,14 @@ public class Input_Controller : MonoBehaviour
 
 
     // Scheme Control
+    private void CurrentScheme_Update()
+    {
+        if (_currentSchemeName == _playerInput.currentControlScheme) return;
+        _currentSchemeName = _playerInput.currentControlScheme;
+        
+        Update_CurrentScheme(_currentSchemeName);
+    }
+    
     private void Handle_SchemeUpdate(PlayerInput playerInput)
     {
         Update_CurrentScheme(_playerInput.currentControlScheme);
@@ -153,7 +167,12 @@ public class Input_Controller : MonoBehaviour
     {
         _currentScheme = ControlScheme(schemeName);
         OnSchemeUpdate?.Invoke();
-        
+
+        if (_currentScheme == null)
+        {
+            Debug.Log("_currentScheme data null");
+            return;
+        }
         Debug.Log("_currentScheme: " + _currentScheme.name + "/ _playerInput.currentControlScheme: " + _playerInput.currentControlScheme);
     }
     
@@ -351,32 +370,3 @@ public class Input_Controller : MonoBehaviour
         RecentUI_InputManager().OnExit?.Invoke();
     }
 }
-
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Input_Controller))]
-public class Input_Controller_Inspector : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        Input_Controller controller = (Input_Controller)target;
-
-        base.OnInspectorGUI();
-        serializedObject.Update();
-
-        GUILayout.Space(60);
-
-        if (GUILayout.Button("Toggle Scheme"))
-        {
-            if (controller.currentScheme.schemeName == "PC")
-            {
-                controller.Update_CurrentScheme("GamePad");
-                return;
-            }
-            controller.Update_CurrentScheme("PC");
-        }
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
-#endif
