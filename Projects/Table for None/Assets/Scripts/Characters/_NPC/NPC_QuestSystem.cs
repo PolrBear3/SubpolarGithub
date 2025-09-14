@@ -26,8 +26,9 @@ public class NPC_QuestSystem : MonoBehaviour
     public bool questActive => _questActive;
 
     private int _prizeIndex;
-
+    
     private int _goldPaymentQuestPrice;
+    private int _foodTrasferQuestAmount;
 
     private Food_ScrObj _foodIngredientPrize;
     private Station_ScrObj _stationBlueprintPrize;
@@ -40,12 +41,20 @@ public class NPC_QuestSystem : MonoBehaviour
         _prizeIcon.gameObject.SetActive(_questActive);
         
         // subscriptions
+        ActionBubble_Interactable interactable = _controller.interactable;
+
+        _controller.interactable.OnInteract += Update_BubbleIndication;
+        _controller.interactable.OnHoldInteract += Complete_Quest;
         _controller.interactable.OnAction1 += Complete_Quest;
     }
 
     private void OnDestroy()
     {
         // subscriptions
+        ActionBubble_Interactable interactable = _controller.interactable;
+
+        _controller.interactable.OnInteract -= Update_BubbleIndication;
+        _controller.interactable.OnHoldInteract -= Complete_Quest;
         _controller.interactable.OnAction1 -= Complete_Quest;
     }
 
@@ -57,6 +66,38 @@ public class NPC_QuestSystem : MonoBehaviour
         
         if (prizeSprite == null) return;
         _prizeIcon.sprite = prizeSprite;
+    }
+
+    private void Update_BubbleIndication()
+    {
+        if (_questActive == false) return;
+        
+        Action_Bubble bubble = _controller.interactable.bubble;
+        
+        if (_controller.foodIcon.hasFood == false)
+        {
+            Sprite goldSprite = GoldSystem.instance.defaultIcon;
+            string goldPayString = _goldPaymentQuestPrice + " <sprite=56> " + bubble.bubbleDatas[0].LocalizedInfo();
+            ActionBubble_Data goldBubbleData = new(goldSprite, goldPayString);
+
+            bubble.Set_Bubble(goldSprite, null);
+            bubble.Set_IndicatorToggleDatas(new(){ goldBubbleData });
+            
+            return;
+        }
+        
+        FoodData_Controller foodIcon = _controller.foodIcon;
+        
+        Food_ScrObj currentFood = foodIcon.currentData.foodScrObj;
+        string foodTransferString = currentFood.LocalizedName() + " " + bubble.bubbleDatas[0].LocalizedInfo();
+
+        int completeCount = _foodTrasferQuestAmount - foodIcon.AllDatas().Count;
+        string completeCountString = "[ " + completeCount + "/" + _foodTrasferQuestAmount + " ]  ";
+        
+        ActionBubble_Data foodBubbleData = new(currentFood.sprite, completeCountString + foodTransferString);
+        
+        bubble.Set_Bubble(currentFood.sprite, null);
+        bubble.Set_IndicatorToggleDatas(new(){ foodBubbleData });
     }
     
     
@@ -135,6 +176,8 @@ public class NPC_QuestSystem : MonoBehaviour
         
         foodIcon.Update_AllDatas(FoodTransfer_QuestDatas());
         foodIcon.Hide_Icon();
+
+        _foodTrasferQuestAmount = foodIcon.AllDatas().Count;
     }
 
     private void Complete_Quest()
@@ -152,7 +195,8 @@ public class NPC_QuestSystem : MonoBehaviour
         }
         
         // food transfer quest
-        
+
+        if (foodIcon.hasFood) return;
         _questActive = false;
     }
     
