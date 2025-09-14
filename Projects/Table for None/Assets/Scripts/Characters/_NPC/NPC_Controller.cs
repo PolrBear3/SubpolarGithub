@@ -39,6 +39,9 @@ public class NPC_Controller : MonoBehaviour
 
     [SerializeField] private NPC_GiftSystem _giftSystem;
     public NPC_GiftSystem giftSystem => _giftSystem;
+    
+    [SerializeField] private NPC_QuestSystem _questSystem;
+    public NPC_QuestSystem questSystem => _questSystem;
 
 
     // UnityEngine

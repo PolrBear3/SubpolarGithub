@@ -19,34 +19,9 @@ public class NPC_GiftSystem : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _itemDropRate;
     [SerializeField][Range(0, 100)] private int _dropAmountRange;
 
-    [Space(20)] 
-    [SerializeField] private ActionSelector_Data[] _giftActionDatas;
-    
-    
-    [Space(40)] 
-    [SerializeField] private SpriteRenderer _recruitQuestIcon;
-    [SerializeField] private AmountBar _recruitBar;
-    
-    [SerializeField] [Range(0, 100)] private float _recruitRate;
 
-    
-    [Space(40)]
-    [SerializeField] private Guide_ScrObj _recruitGuide;
-    [SerializeField] private Ability_ScrObj _buddyMergeCountAbility;
-
-
-    public Action OnGift;
-    
     public Action<bool> OnDurationToggle;
     private Coroutine _coroutine;
-    
-    
-    private Sprite _emptyQuestSprite;
-    
-    private bool _isRecruiting;
-    public bool isRecruiting => _isRecruiting;
-    
-    private Coroutine _recruitBarCoroutine;
 
 
     // UnityEngine
@@ -56,50 +31,21 @@ public class NPC_GiftSystem : MonoBehaviour
 
         _coolTimeBar.Set_Amount(_coolTimeBar.maxAmount);
         _coolTimeBar.Toggle(true);
-
+        
         // subscriptions
-        _controller.interactable.OnHoldInteract += Gift;
+        _controller.interactable.OnHoldInteract += Gift_Gold;
         _controller.interactable.OnHoldInteract += ToggleBar_Duration;
 
         GlobalTime_Controller.instance.OnTimeTik += Update_CoolTime;
-
-        if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
-        if (_recruitQuestIcon == null) return;
-        
-        // reset data
-        _emptyQuestSprite = _recruitQuestIcon.sprite;
-        _recruitQuestIcon.gameObject.SetActive(false);
-        _recruitBar.Toggle(false);
-        
-        // recruitment subscriptions
-        _controller.interactable.OnHoldInteract += Transfer_RecruitQuestFood;
-
-        NPC_GiftSystem giftSystem = _controller.giftSystem;
-        if (giftSystem == null) return;
-
-        _controller.giftSystem.coolTimeBar.OnMaxAmount += Cancel_Recruitment;
-        _controller.giftSystem.OnGift += Toggle_Recruitment;
     }
 
     private void OnDestroy()
     {
         // subscriptions
+        _controller.interactable.OnHoldInteract -= Gift_Gold;
         _controller.interactable.OnHoldInteract -= ToggleBar_Duration;
-        _controller.interactable.OnHoldInteract -= Gift;
 
         GlobalTime_Controller.instance.OnTimeTik -= Update_CoolTime;
-
-        if (gameObject.TryGetComponent(out Buddy_NPC buddyNPC)) return;
-        if (_recruitQuestIcon == null) return;
-        
-        // recruitment subscriptions
-        _controller.interactable.OnHoldInteract -= Transfer_RecruitQuestFood;
-        
-        NPC_GiftSystem giftSystem = _controller.giftSystem;
-        if (giftSystem == null) return;
-
-        _controller.giftSystem.coolTimeBar.OnMaxAmount -= Cancel_Recruitment;
-        _controller.giftSystem.OnGift -= Toggle_Recruitment;
     }
 
 
@@ -107,7 +53,7 @@ public class NPC_GiftSystem : MonoBehaviour
     private void ToggleBar_Duration()
     {
         if (_coroutine != null) return;
-        if (_isRecruiting) return;
+        // if (_isRecruiting) return;
         if (_controller.foodInteraction.FoodInteraction_Active()) return;
 
         _coroutine = StartCoroutine(ToggleBar_Duration_Coroutine());
@@ -144,41 +90,55 @@ public class NPC_GiftSystem : MonoBehaviour
     }
 
 
-    // Gift Action Datas
-    public int Random_DropAmount()
+    // Datas
+    private int Random_DropAmount()
     {
         return UnityEngine.Random.Range(1, _dropAmountRange + 1);
     }
-    
-    private ActionSelector_Data WeightRandom_GiftAction()
+
+    private int Random_GoldAmount(Food_ScrObj giftFood)
     {
-        float totalWeight = 0f;
-
-        // Calculate total weight
-        foreach (var data in _giftActionDatas)
-        {
-            totalWeight += data.activateValue;
-        }
-
-        // If no weight, return null or random fallback
-        if (totalWeight <= 0f) return null;
-
-        float randomValue = UnityEngine.Random.Range(0f, totalWeight);
-        float cumulative = 0f;
-
-        foreach (var data in _giftActionDatas)
-        {
-            cumulative += data.activateValue;
-            if (randomValue <= cumulative)
-            {
-                return data;
-            }
-        }
-
-        return null;
+        return UnityEngine.Random.Range(giftFood.price / 2, giftFood.price + 1);
     }
     
     
+    // Main
+    private bool Gift_Available()
+    {
+        // check if cool time complete
+        if (!_coolTimeBar.Is_MaxAmount()) return false;
+
+        // food interaction active
+        if (_controller.foodInteraction.FoodInteraction_Active()) return false;
+        
+        // quest active
+        if (_controller.questSystem.questActive) return false;
+
+        Main_Controller main = Main_Controller.instance;
+
+        // check if current position is claimed
+        if (main.data.Position_Claimed(Utility.SnapPosition(transform.position))) return false;
+
+        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
+
+        // check if player has gift food
+        if (playerFoodIcon.hasFood == false) return false;
+
+        return true;
+    }
+    
+    private void Empty_PlayerFood()
+    {
+        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
+        
+        playerFoodIcon.Set_CurrentData(null);
+        playerFoodIcon.Show_Icon();
+        playerFoodIcon.Toggle_SubDataBar(true);
+        playerFoodIcon.Show_Condition();
+    }
+    
+    
+    // Food Drop
     private FoodData FoodDrop()
     {
         FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
@@ -195,7 +155,7 @@ public class NPC_GiftSystem : MonoBehaviour
         return new(dropFood, Random_DropAmount());
     }
     
-    public void Drop_Food()
+    public void Gift_Food()
     {
         ItemDropper dropper = _controller.itemDropper;
 
@@ -203,75 +163,39 @@ public class NPC_GiftSystem : MonoBehaviour
     }
     
     
-    // Actions
-    private void Empty_PlayerFood()
-    {
-        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
-        
-        playerFoodIcon.Set_CurrentData(null);
-        playerFoodIcon.Show_Icon();
-        playerFoodIcon.Toggle_SubDataBar(true);
-        playerFoodIcon.Show_Condition();
-    }
-    
-    
-    private bool Gift_Available()
-    {
-        // check if cool time complete
-        if (!_coolTimeBar.Is_MaxAmount()) return false;
-
-        // food interaction active
-        if (_controller.foodInteraction.FoodInteraction_Active()) return false;
-
-        Main_Controller main = Main_Controller.instance;
-
-        // check if current position is claimed
-        if (main.data.Position_Claimed(Utility.SnapPosition(transform.position))) return false;
-
-        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
-
-        // check if player has gift food
-        if (playerFoodIcon.hasFood == false) return false;
-
-        return true;
-    }
-    
-    private void Gift()
+    // Gold Drop
+    private void Gift_Gold()
     {
         if (Gift_Available() == false) return;
 
+        // check drop rate
+        if (Utility.Percentage_Activated(_itemDropRate) == false) return;
+        
+        // set drop amount
         Food_ScrObj playerFood = _controller.interactable.detection.player.foodIcon.currentData.foodScrObj;
+        int goldAmount = Random_GoldAmount(playerFood);
+
+        if (goldAmount <= 0) return;
         Empty_PlayerFood();
+        
+        // drop gold
+        ItemDropper dropper = _controller.itemDropper;
+        
+        dropper.Set_DropPosition(transform.position);
+        dropper.Drop_Gold(goldAmount);
         
         // start cool time
         _coolTimeBar.Set_Amount(0);
         Update_CoolTimBar();
         
-        OnGift?.Invoke();
-
         // sound
         Audio_Controller audio = Audio_Controller.instance;
         audio.Play_OneShot(gameObject, 3);
-
-        // check drop rate
-        if (Utility.Percentage_Activated(_itemDropRate) == false) return;
-        
-        // sound
-        audio.Play_OneShot(gameObject, 4);
-        
-        // drop gift
-        ItemDropper dropper = _controller.itemDropper;
-        
-        if (Main_Controller.instance.dataController.Is_RawFood(playerFood))
-        {
-            dropper.Drop_Gold(UnityEngine.Random.Range(1, playerFood.price + 1));
-            return;
-        }
-        dropper.Drop_CollectCard();
     }
     
     
     // Buddy Recruit
+    /*
     private List<NPC_Controller> Current_BuddyNPCs()
     {
         List<GameObject> characters = Main_Controller.instance.currentCharacters;
@@ -396,4 +320,5 @@ public class NPC_GiftSystem : MonoBehaviour
         main.UnTrack_CurrentCharacter(gameObject);
         Destroy(gameObject);
     }
+    */
 }

@@ -177,7 +177,9 @@ public class NPC_FoodInteraction : MonoBehaviour
     private bool SetOrder_Active()
     {
         if (_controller.movement.isLeaving) return false;
-        if (_controller.giftSystem.isRecruiting) return false;
+
+        if (_controller.questSystem.questActive) return false;
+        // if (_controller.giftSystem.isRecruiting) return false;
         
         if (_foodOrderCount > 0) return false;
         if (FoodInteraction_Active()) return false;

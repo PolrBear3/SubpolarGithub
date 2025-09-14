@@ -206,7 +206,7 @@ public class Location_Controller : MonoBehaviour
 
 
     // NPC Control
-    private List<NPC_Controller> Current_npcControllers()
+    public List<NPC_Controller> Current_npcControllers()
     {
         List<GameObject> currentCharacters = Main_Controller.instance.currentCharacters;
         List<NPC_Controller> currentNPCs = new();
