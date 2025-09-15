@@ -103,7 +103,7 @@ public class FoodData_Controller : MonoBehaviour
         List<FoodData> foodDatas = new(_subDatas);
 
         if (_currentData == null) return foodDatas;
-        foodDatas.Add(_currentData);
+        foodDatas.Insert(0, _currentData);
 
         return foodDatas;
     }

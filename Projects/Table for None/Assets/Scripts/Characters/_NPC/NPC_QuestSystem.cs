@@ -23,8 +23,8 @@ public class NPC_QuestSystem : MonoBehaviour
 
 
     private bool _questActive;
-    public bool questActive => _questActive;
-
+    private bool _questComplete;
+    
     private int _prizeIndex;
     
     private int _goldPaymentQuestPrice;
@@ -32,6 +32,8 @@ public class NPC_QuestSystem : MonoBehaviour
 
     private Food_ScrObj _foodIngredientPrize;
     private Station_ScrObj _stationBlueprintPrize;
+
+    private Coroutine _coroutine;
     
     
     // MonoBehaviour
@@ -44,8 +46,12 @@ public class NPC_QuestSystem : MonoBehaviour
         ActionBubble_Interactable interactable = _controller.interactable;
 
         _controller.interactable.OnInteract += Update_BubbleIndication;
+        
         _controller.interactable.OnHoldInteract += Complete_Quest;
         _controller.interactable.OnAction1 += Complete_Quest;
+        
+        _controller.interactable.OnHoldInteract += Drop_CurrentPrize;
+        _controller.interactable.OnAction1 += Drop_CurrentPrize;
     }
 
     private void OnDestroy()
@@ -54,8 +60,12 @@ public class NPC_QuestSystem : MonoBehaviour
         ActionBubble_Interactable interactable = _controller.interactable;
 
         _controller.interactable.OnInteract -= Update_BubbleIndication;
+        
         _controller.interactable.OnHoldInteract -= Complete_Quest;
         _controller.interactable.OnAction1 -= Complete_Quest;
+        
+        _controller.interactable.OnHoldInteract -= Drop_CurrentPrize;
+        _controller.interactable.OnAction1 -= Drop_CurrentPrize;
     }
 
 
@@ -109,10 +119,11 @@ public class NPC_QuestSystem : MonoBehaviour
 
         for (int i = 0; i < currentNPCs.Count; i++)
         {
-            if (currentNPCs[i].questSystem.questActive == false) continue;
+            NPC_QuestSystem questSystem = currentNPCs[i].questSystem;
+            if (questSystem._questActive == false && questSystem._questComplete == false) continue;
+            
             count++;
         }
-        
         return count;
     }
     
@@ -124,6 +135,11 @@ public class NPC_QuestSystem : MonoBehaviour
         if (Utility.Percentage_Activated(_questActiveRate) == false) return false;
         
         return true;
+    }
+
+    public bool QuestSystem_Active()
+    {
+        return _questActive || _coroutine != null;
     }
 
 
@@ -180,24 +196,48 @@ public class NPC_QuestSystem : MonoBehaviour
         _foodTrasferQuestAmount = foodIcon.AllDatas().Count;
     }
 
+
+    private void Toggle_CompleteQuest()
+    {
+        _questComplete = true;
+        _prizeIcon.gameObject.SetActive(false);
+        
+        Action_Bubble bubble = _controller.interactable.bubble;
+        
+        bubble.Empty_Bubble();
+        bubble.Set_IndicatorToggleDatas(null);
+    }
+    
     private void Complete_Quest()
     {
         if (_questActive == false) return;
 
+        // gold payment quest
         FoodData_Controller foodIcon = _controller.foodIcon;
-
         if (foodIcon.hasFood == false)
         {
-            // gold payment quest
+            if (GoldSystem.instance.Update_CurrentAmount(-_goldPaymentQuestPrice) == false) return;
 
-            _questActive = false;
+            Toggle_CompleteQuest();
             return;
         }
         
         // food transfer quest
+        FoodData_Controller playerIcon = Main_Controller.instance.Player().foodIcon;
+        if (playerIcon.hasFood == false) return;
+        
+        Food_ScrObj questFood = foodIcon.currentData.foodScrObj;
+        if (playerIcon.Has_SameFood(questFood) == false) return;
 
+        playerIcon.Empty_TargetData(questFood);
+        playerIcon.Show_Icon();
+        playerIcon.Show_Condition();
+        playerIcon.Toggle_SubDataBar(true);
+        
+        foodIcon.Set_CurrentData(null);
+        
         if (foodIcon.hasFood) return;
-        _questActive = false;
+        Toggle_CompleteQuest();
     }
     
     
@@ -229,14 +269,56 @@ public class NPC_QuestSystem : MonoBehaviour
 
     private void Drop_CurrentPrize()
     {
+        if (_questActive == false || _questComplete == false) return;
+        
+        _controller.interactable.LockInteract(true);
+        _coroutine = StartCoroutine(DropPrize_Coroutine());
+    }
+    private IEnumerator DropPrize_Coroutine()
+    {
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller location = Main_Controller.instance.currentLocation;
+        NPC_Movement movement = _controller.movement;
+
+        Vector2 dropPos = location.All_SpawnPositions(transform.position)[0];
+
+        movement.Stop_FreeRoam();
+        movement.Assign_TargetPosition(dropPos);
+
+        while (movement.At_TargetPosition(dropPos) == false)
+        {
+            if (main.data.Position_Claimed(dropPos))
+            {
+                dropPos = location.All_SpawnPositions(transform.position)[0];
+            }
+            yield return null;
+        }
+        movement.CurrentLocation_FreeRoam(0f);
+        
+        _controller.interactable.LockInteract(false);
+        _questActive = false;
+        
+        // set collect card
+        ItemDropper prizeDropper = _controller.itemDropper;
+        
+        prizeDropper.Set_DropPosition(dropPos);
+        CollectCard prizeDrop = prizeDropper.DropReturn_CollectCard();
+        
+        // drop food ingredient
         if (_foodIngredientPrize != null)
         {
-            // drop food ingredient
-            
-            return;
+            prizeDrop.Set_FoodIngredient(_foodIngredientPrize);
+            prizeDrop.Assign_Pickup(prizeDrop.FoodIngredient_toArchive);
+
+            _coroutine = null;
+            yield break;
         }
         
         // drop blueprint
+        prizeDrop.Set_Blueprint(_stationBlueprintPrize);
+        prizeDrop.Assign_Pickup(prizeDrop.StationBluePrint_toArchive);
+
+        _coroutine = null;
     }
     
     

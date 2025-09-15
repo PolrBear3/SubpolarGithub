@@ -41,15 +41,14 @@ public class AbilityMenu_Controller : MonoBehaviour
         
         // subscriptions
         AbilityManager.OnMaxPoint += Toggle_Menu;
-
+        
         PauseMenu_Controller pauseMenu = PauseMenu_Controller.instance;
         
         _inputManager.OnExit += () => Toggle_Menu(false);
         _inputManager.OnExit += () => pauseMenu.Toggle_Pause(true);
 
         pauseMenu.OnPauseExit += Toggle_Menu;
-        VideoGuide_Controller.instance.OnGuideToggle += Toggle_Menu;
-        
+
         _inputManager.OnCursorControl += Navigate_Button;
         _inputManager.OnHoldSelect += Select_Ability;
         
@@ -66,7 +65,6 @@ public class AbilityMenu_Controller : MonoBehaviour
         AbilityManager.OnMaxPoint -= Toggle_Menu;
         
         PauseMenu_Controller.instance.OnPauseExit -= Toggle_Menu;
-        VideoGuide_Controller.instance.OnGuideToggle -= Toggle_Menu;
 
         _inputManager.OnCursorControl -= Navigate_Button;
         _inputManager.OnHoldSelect -= Select_Ability;

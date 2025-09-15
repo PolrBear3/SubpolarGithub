@@ -35,10 +35,6 @@ public class Guide_ScrObj : ScriptableObject
     public string guideName => _guideName;
 
     [SerializeField] private LocalizedString _localizedName;
-    
-    [Space(20)]
-    [SerializeField] private int _guideID;
-    public int guideID => _guideID;
 
     [Space(20)] 
     [SerializeField] private Sprite _iconSprite;

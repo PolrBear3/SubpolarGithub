@@ -18,7 +18,7 @@ public class NPC_FoodInteraction : MonoBehaviour
     [SerializeField][Range(0, 100)] private float _conditionRequestRate;
     [SerializeField][Range(0, 100)] private int _conditionBonusPay;
     
-    [Space(60)]
+    [Space(40)]
     [SerializeField] private Ability_ScrObj _foodOrderAbility;
     [SerializeField] private Ability_ScrObj _goldMagnetAbility;
 
@@ -178,7 +178,7 @@ public class NPC_FoodInteraction : MonoBehaviour
     {
         if (_controller.movement.isLeaving) return false;
 
-        if (_controller.questSystem.questActive) return false;
+        if (_controller.questSystem.QuestSystem_Active()) return false;
         // if (_controller.giftSystem.isRecruiting) return false;
         
         if (_foodOrderCount > 0) return false;

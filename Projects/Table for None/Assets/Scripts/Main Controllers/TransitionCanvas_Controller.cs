@@ -20,7 +20,10 @@ public class TransitionCanvas_Controller : MonoBehaviour
     [Space(20)]
     [SerializeField][Range(0F, 10F)] private float _loadTime;
     [SerializeField][Range(0F, 10F)] private float _transitionTime;
-    
+
+
+    private bool _pauseScreenToggled;
+    public bool pauseScreenToggled => _pauseScreenToggled;
     
     private Coroutine _coroutine;
     public Coroutine coroutine => _coroutine;
@@ -118,8 +121,9 @@ public class TransitionCanvas_Controller : MonoBehaviour
     public void Toggle_PauseScreen(bool toggle)
     {
         if (Main_Controller.instance.globalVolume.profile.TryGet(out DepthOfField effect) == false) return;
-        if (toggle && effect.active) return;
+        if (toggle && _pauseScreenToggled) return;
         
         effect.active = toggle;
+        _pauseScreenToggled = toggle;
     }
 }

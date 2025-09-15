@@ -152,13 +152,16 @@ public class VideoGuide_Controller : MonoBehaviour, ISaveLoadable
     {
         return _data.triggeredGuides.Contains(guideScrObj);
     }
-    
+
     public void Trigger_Guide(Guide_ScrObj guideScrObj)
     {
         if (_guideToggled) return;
         if (_data.guideActive == false) return;
+        
         if (guideScrObj == null) return;
         if (Guide_Triggered(guideScrObj)) return;
+        
+        if (TransitionCanvas_Controller.instance.pauseScreenToggled) return;
         
         _data.triggeredGuides.Add(guideScrObj);
         

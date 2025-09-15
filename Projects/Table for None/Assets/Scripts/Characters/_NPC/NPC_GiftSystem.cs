@@ -53,7 +53,7 @@ public class NPC_GiftSystem : MonoBehaviour
     private void ToggleBar_Duration()
     {
         if (_coroutine != null) return;
-        // if (_isRecruiting) return;
+        if (_controller.questSystem.QuestSystem_Active()) return;
         if (_controller.foodInteraction.FoodInteraction_Active()) return;
 
         _coroutine = StartCoroutine(ToggleBar_Duration_Coroutine());
@@ -107,12 +107,9 @@ public class NPC_GiftSystem : MonoBehaviour
     {
         // check if cool time complete
         if (!_coolTimeBar.Is_MaxAmount()) return false;
-
-        // food interaction active
-        if (_controller.foodInteraction.FoodInteraction_Active()) return false;
         
-        // quest active
-        if (_controller.questSystem.questActive) return false;
+        if (_controller.questSystem.QuestSystem_Active()) return false;
+        if (_controller.foodInteraction.FoodInteraction_Active()) return false;
 
         Main_Controller main = Main_Controller.instance;
 

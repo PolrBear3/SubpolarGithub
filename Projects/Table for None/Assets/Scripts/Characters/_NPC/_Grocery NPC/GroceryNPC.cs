@@ -446,10 +446,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             return;
         }
 
-        FoodData_Controller playerIcon = _detection.player.foodIcon;
         FoodData_Controller questIcon = _npcController.foodIcon;
-
-        if (playerIcon.hasFood == false || questIcon.Is_SameFood(playerIcon.currentData.foodScrObj) == false)
+        Food_ScrObj questFood = questIcon.currentData.foodScrObj;
+        
+        FoodData_Controller playerIcon = _detection.player.foodIcon;
+        
+        if (playerIcon.hasFood == false || playerIcon.Has_SameFood(questFood) == false)
         {
             dialog.Update_Dialog(0);
             return;
@@ -461,7 +463,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         Toggle_QuestBar();
 
         // remove player food
-        playerIcon.Set_CurrentData(null);
+        playerIcon.Empty_TargetData(questFood);
         playerIcon.Show_Icon();
         playerIcon.Toggle_SubDataBar(true);
         playerIcon.Show_Condition();

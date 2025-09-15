@@ -117,12 +117,32 @@ public class Location_Controller : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns the closest, non claimed, spawn position from mainPosition
+    /// </summary>
+    public List<Vector2> All_SpawnPositions(Vector2 mainPosition)
+    {
+        Main_Controller main = Main_Controller.instance;
+        List<Vector2> allPositions = All_SpawnPositions();
+        
+        for (int i = allPositions.Count - 1; i >= 0; i--)
+        {
+            if (main.data.Position_Claimed(allPositions[i]) == false) continue;
+            allPositions.RemoveAt(i);
+        }
+        
+        allPositions.Sort((a, b) =>
+            Vector2.Distance(mainPosition, a).CompareTo(Vector2.Distance(mainPosition, b))
+        );
+
+        return allPositions;
+    }
+
+    /// <summary>
     /// Returns a random, non claimed, spawn position
     /// </summary>
     public Vector2 Random_SpawnPosition()
     {
         Main_Controller main = Main_Controller.instance;
-
         List<Vector2> spawnPositions = All_SpawnPositions();
 
         while (spawnPositions.Count > 0)
@@ -277,10 +297,11 @@ public class Location_Controller : MonoBehaviour
             if (npcs[i].foodInteraction == null) continue;
 
             NPC_Movement movement = npcs[i].movement;
-
+            
+            if (movement.roamActive == false) continue;
             if (movement.currentRoamArea != _data.roamArea) continue;
+            
             if (npcOverFlowCount <= 0) break;
-
             npcOverFlowCount--;
 
             if (movement.isLeaving)
