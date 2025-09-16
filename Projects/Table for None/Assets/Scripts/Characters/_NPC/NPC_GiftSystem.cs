@@ -21,7 +21,9 @@ public class NPC_GiftSystem : MonoBehaviour
 
 
     public Action<bool> OnDurationToggle;
+    
     private Coroutine _coroutine;
+    private Coroutine _giftCoroutine;
 
 
     // UnityEngine
@@ -111,14 +113,8 @@ public class NPC_GiftSystem : MonoBehaviour
         if (_controller.questSystem.QuestSystem_Active()) return false;
         if (_controller.foodInteraction.FoodInteraction_Active()) return false;
 
-        Main_Controller main = Main_Controller.instance;
-
-        // check if current position is claimed
-        if (main.data.Position_Claimed(Utility.SnapPosition(transform.position))) return false;
-
-        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
-
         // check if player has gift food
+        FoodData_Controller playerFoodIcon = _controller.interactable.detection.player.foodIcon;
         if (playerFoodIcon.hasFood == false) return false;
 
         return true;
@@ -165,20 +161,46 @@ public class NPC_GiftSystem : MonoBehaviour
     {
         if (Gift_Available() == false) return;
 
+        // gift food
+        Food_ScrObj playerFood = _controller.interactable.detection.player.foodIcon.currentData.foodScrObj;
+        Empty_PlayerFood();
+        
         // check drop rate
         if (Utility.Percentage_Activated(_itemDropRate) == false) return;
         
         // set drop amount
-        Food_ScrObj playerFood = _controller.interactable.detection.player.foodIcon.currentData.foodScrObj;
         int goldAmount = Random_GoldAmount(playerFood);
-
         if (goldAmount <= 0) return;
-        Empty_PlayerFood();
         
+        _controller.interactable.LockInteract(true);
+        _giftCoroutine = StartCoroutine(GolfGift_Coroutine(goldAmount));
+    }
+    private IEnumerator GolfGift_Coroutine(int goldAmount)
+    {
+        Main_Controller main = Main_Controller.instance;
+        Location_Controller location = Main_Controller.instance.currentLocation;
+        NPC_Movement movement = _controller.movement;
+        
+        Vector2 dropPos = location.All_SpawnPositions(transform.position)[0];
+        
+        movement.Stop_FreeRoam();
+        movement.Assign_TargetPosition(dropPos);
+
+        while (movement.At_TargetPosition(dropPos) == false)
+        {
+            if (main.data.Position_Claimed(dropPos))
+            {
+                dropPos = location.All_SpawnPositions(transform.position)[0];
+                movement.Assign_TargetPosition(dropPos);
+            }
+            yield return null;
+        }
+        movement.CurrentLocation_FreeRoam(0f);
+
         // drop gold
         ItemDropper dropper = _controller.itemDropper;
         
-        dropper.Set_DropPosition(transform.position);
+        dropper.Set_DropPosition(dropPos);
         dropper.Drop_Gold(goldAmount);
         
         // start cool time
@@ -188,6 +210,9 @@ public class NPC_GiftSystem : MonoBehaviour
         // sound
         Audio_Controller audio = Audio_Controller.instance;
         audio.Play_OneShot(gameObject, 3);
+        
+        _controller.interactable.LockInteract(false);
+        _giftCoroutine = null;
     }
     
     

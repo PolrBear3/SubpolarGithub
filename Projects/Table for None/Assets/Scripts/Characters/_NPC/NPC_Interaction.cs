@@ -35,12 +35,13 @@ public class NPC_Interaction : MonoBehaviour
         movement.Stop_FreeRoam();
         _controller.basicAnim.Flip_Sprite(_controller.interactable.detection.player.gameObject);
 
-        if (movement.isLeaving == true)
+        if (movement.isLeaving == true && _controller.questSystem.QuestSystem_Active() == false)
         {
             movement.Leave(movement.intervalTime);
             return;
         }
 
+        movement.Cancel_LeaveState();
         movement.CurrentLocation_FreeRoam(movement.currentRoamArea, movement.intervalTime);
     }
 }

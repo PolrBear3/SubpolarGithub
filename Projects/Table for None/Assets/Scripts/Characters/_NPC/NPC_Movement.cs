@@ -292,7 +292,13 @@ public class NPC_Movement : MonoBehaviour
     }
 
 
-    // Remove
+    // Leave
+    public void Cancel_LeaveState()
+    {
+        _isLeaving = false;
+        Assign_TargetPosition(transform.position);
+    }
+    
     public void Leave(float startDelayTime)
     {
         if (_moveCoroutine != null) StopCoroutine(_moveCoroutine);

@@ -17,6 +17,7 @@ public class SliceTable : Table
         Toggle_SliceAction();
 
         // subscriptions
+        stationController.maintenance.OnDurabilityBreak += Drop_CurrentFood;
         _rhythmHitBox.OnHitSuccess += Slice;
         
         Detection_Controller detection = stationController.detection;
@@ -36,6 +37,7 @@ public class SliceTable : Table
     private new void OnDestroy()
     {
         // subscriptions
+        stationController.maintenance.OnDurabilityBreak -= Drop_CurrentFood;
         _rhythmHitBox.OnHitSuccess -= Slice;
         
         Detection_Controller detection = stationController.detection;

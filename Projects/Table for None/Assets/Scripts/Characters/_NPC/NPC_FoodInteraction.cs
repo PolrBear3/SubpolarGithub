@@ -177,9 +177,6 @@ public class NPC_FoodInteraction : MonoBehaviour
     private bool SetOrder_Active()
     {
         if (_controller.movement.isLeaving) return false;
-
-        if (_controller.questSystem.QuestSystem_Active()) return false;
-        // if (_controller.giftSystem.isRecruiting) return false;
         
         if (_foodOrderCount > 0) return false;
         if (FoodInteraction_Active()) return false;
@@ -233,6 +230,8 @@ public class NPC_FoodInteraction : MonoBehaviour
 
         foodIcon.Show_Icon(0.5f);
         foodIcon.Show_Condition();
+        
+        _controller.questSystem.Toggle_PrizeIcon(false);
 
         Run_OrderTime();
         Update_RoamArea();
@@ -430,6 +429,8 @@ public class NPC_FoodInteraction : MonoBehaviour
             foodIcon.Update_AllDatas(null);
             foodIcon.Show_Icon();
             foodIcon.Show_Condition();
+            
+            _controller.questSystem.Toggle_PrizeIcon(true);
 
             Update_RoamArea();
             

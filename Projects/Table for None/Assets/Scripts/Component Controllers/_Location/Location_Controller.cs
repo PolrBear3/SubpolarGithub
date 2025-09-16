@@ -294,13 +294,16 @@ public class Location_Controller : MonoBehaviour
         // current location roaming npc only leave
         for (int i = 0; i < npcs.Count; i++)
         {
+            // default npc only
             if (npcs[i].foodInteraction == null) continue;
 
+            // all 
             NPC_Movement movement = npcs[i].movement;
             
             if (movement.roamActive == false) continue;
             if (movement.currentRoamArea != _data.roamArea) continue;
             
+            // population control
             if (npcOverFlowCount <= 0) break;
             npcOverFlowCount--;
 

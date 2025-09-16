@@ -77,12 +77,21 @@ public class NPC_QuestSystem : MonoBehaviour
         if (prizeSprite == null) return;
         _prizeIcon.sprite = prizeSprite;
     }
+    public void Toggle_PrizeIcon(bool toggle)
+    {
+        _prizeIcon.gameObject.SetActive(toggle && _questActive);
+    }
 
     private void Update_BubbleIndication()
     {
-        if (_questActive == false) return;
-        
         Action_Bubble bubble = _controller.interactable.bubble;
+
+        if (_questActive == false || _controller.foodInteraction.FoodInteraction_Active())
+        {
+            bubble.Empty_Bubble();
+            bubble.Set_IndicatorToggleDatas(null);
+            return;
+        }
         
         if (_controller.foodIcon.hasFood == false)
         {
@@ -111,7 +120,7 @@ public class NPC_QuestSystem : MonoBehaviour
     }
     
     
-    // Main
+    // Get
     private int QuestActive_Count()
     {
         List<NPC_Controller> currentNPCs = Main_Controller.instance.currentLocation.Current_npcControllers();
@@ -171,6 +180,7 @@ public class NPC_QuestSystem : MonoBehaviour
     }
 
     
+    // Quest Control
     private void Activate_Quest()
     {
         if (Active_Available() == false) return;
@@ -195,8 +205,7 @@ public class NPC_QuestSystem : MonoBehaviour
 
         _foodTrasferQuestAmount = foodIcon.AllDatas().Count;
     }
-
-
+    
     private void Toggle_CompleteQuest()
     {
         _questComplete = true;
@@ -211,6 +220,7 @@ public class NPC_QuestSystem : MonoBehaviour
     private void Complete_Quest()
     {
         if (_questActive == false) return;
+        if (_controller.foodInteraction.FoodInteraction_Active()) return;
 
         // gold payment quest
         FoodData_Controller foodIcon = _controller.foodIcon;
@@ -241,6 +251,7 @@ public class NPC_QuestSystem : MonoBehaviour
     }
     
     
+    // Prize Control
     private void Set_RandomPrize()
     {
         if (_questActive == false) return;
@@ -290,6 +301,7 @@ public class NPC_QuestSystem : MonoBehaviour
             if (main.data.Position_Claimed(dropPos))
             {
                 dropPos = location.All_SpawnPositions(transform.position)[0];
+                movement.Assign_TargetPosition(dropPos);
             }
             yield return null;
         }
