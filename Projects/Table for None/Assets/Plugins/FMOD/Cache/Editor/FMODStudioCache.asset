@@ -69,10 +69,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638906118123941391
+  lastModified: 638937427446388574
   FileSizes:
   - Name: Desktop
-    Value: 1170720
+    Value: 1196128
   Exists: 1
 --- !u!114 &-8842336582695762211
 MonoBehaviour:
@@ -113,10 +113,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638906118115105155
+  lastModified: 638937427445646181
   FileSizes:
   - Name: Desktop
-    Value: 2102
+    Value: 2208
   Exists: 1
 --- !u!114 &-8302899947674091205
 MonoBehaviour:
@@ -507,12 +507,14 @@ MonoBehaviour:
   - {fileID: 7956754271902513960}
   - {fileID: 555226408079235369}
   - {fileID: -7237776138683433217}
+  - {fileID: 4876740091148639874}
+  - {fileID: 5538404029150913395}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1291012834966449344}
   StringsBanks:
   - {fileID: -8782401601473127640}
-  cacheTime: 638906118123941391
+  cacheTime: 638937427446388574
   cacheVersion: 131618
 --- !u!114 &276690538390073772
 MonoBehaviour:
@@ -604,10 +606,10 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638906118115098884
+  lastModified: 638937427445641112
   FileSizes:
   - Name: Desktop
-    Value: 1870
+    Value: 1552
   Exists: 1
 --- !u!114 &3758027296563283760
 MonoBehaviour:
@@ -651,11 +653,38 @@ MonoBehaviour:
   Path: TastyRoad_sounds/Build/Desktop/BGM.bank
   Name: BGM
   StudioPath: bank:/BGM
-  lastModified: 638906118115067820
+  lastModified: 638931161488186511
   FileSizes:
   - Name: Desktop
     Value: 1359104
   Exists: 1
+--- !u!114 &4876740091148639874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Interaction/CraftNPC_Upgrade
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Interaction/CraftNPC_Upgrade
+  Guid:
+    Data1: 395993634
+    Data2: 1208779023
+    Data3: -962541940
+    Data4: -1491056172
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 626
 --- !u!114 &5209807877655061866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,6 +740,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 516
+--- !u!114 &5538404029150913395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Basic SFX/Vechicle/Vehicle_break
+  m_EditorClassIdentifier: 
+  Path: event:/Basic SFX/Vechicle/Vehicle_break
+  Guid:
+    Data1: 1035358749
+    Data2: 1078698044
+    Data3: 689184140
+    Data4: 57413085
+  Banks:
+  - {fileID: -9098409597259461469}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 593
 --- !u!114 &6924463659752812726
 MonoBehaviour:
   m_ObjectHideFlags: 0

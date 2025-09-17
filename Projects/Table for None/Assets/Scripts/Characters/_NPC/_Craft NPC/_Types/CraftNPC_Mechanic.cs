@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using FMOD.Studio;
 
 public class CraftNPC_Mechanic : CraftNPC
 {
@@ -247,6 +248,8 @@ public class CraftNPC_Mechanic : CraftNPC
 
         Destroy(currentToolBox);
         Toggle_ActionBubble();
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 
     private void Collect_ToolBox()
@@ -319,9 +322,16 @@ public class CraftNPC_Mechanic : CraftNPC
             yield return null;
         }
 
+        // sound
+        SoundData_Controller soundController = gameObject.GetComponent<SoundData_Controller>();
+        soundController.Toggle_LoopSound(3, true);
+        
         // upgrade time delay
         yield return new WaitForSeconds(upgradeTimeValue);
 
+        // sound
+        soundController.Toggle_LoopSound(3, false);
+        
         // upgrade
         _droppedToolBox.Invoke_Action();
 

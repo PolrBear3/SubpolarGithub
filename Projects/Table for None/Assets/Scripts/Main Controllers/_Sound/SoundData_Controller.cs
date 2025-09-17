@@ -24,6 +24,26 @@ public class SoundData_Controller : MonoBehaviour
     }
     
     
+    // Loop
+    public void Toggle_LoopSound(int dataIndex, bool toggle)
+    {
+        Audio_Controller audioController = Audio_Controller.instance;
+        
+        if (toggle)
+        {
+            EventInstance newInstance = audioController.Create_EventInstance(gameObject, dataIndex);
+            newInstance.start();
+
+            return;
+        }
+        
+        EventInstance playingInstance = audioController.EventInstance(gameObject, dataIndex);
+        
+        playingInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        audioController.Remove_EventInstance(gameObject, dataIndex);
+    }
+    
+    
     // Parameter Automation Control
     public void Stop_FadeOut()
     {

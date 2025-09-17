@@ -192,6 +192,8 @@ public class CraftNPC_Smith : CraftNPC
         
         _setTable = null;
         Destroy(setTable);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 
 
@@ -212,7 +214,13 @@ public class CraftNPC_Smith : CraftNPC
         movement.Assign_TargetPosition(_setTable.transform.position);
 
         while (movement.At_TargetPosition() == false) yield return null;
+        
+        SoundData_Controller soundController = gameObject.GetComponent<SoundData_Controller>();
+        soundController.Toggle_LoopSound(3, true);
+        
         yield return new WaitForSeconds(upgradeTimeValue);
+        
+        soundController.Toggle_LoopSound(3, false);
 
         // activate action
         _setTable.Invoke_Action();
@@ -342,6 +350,6 @@ public class CraftNPC_Smith : CraftNPC
         Set_PurchaseData(new(defaultPrice));
         Toggle_PayIcon();
         
-        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+        Audio_Controller.instance.Play_OneShot(gameObject, 4);
     }
 }
