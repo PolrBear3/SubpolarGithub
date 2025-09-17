@@ -6,12 +6,17 @@ using UnityEngine;
 public class Card_Movement : MonoBehaviour
 {
     [Space(20)] 
-    [SerializeField] private SpriteRenderer _cardShadow;
+    [SerializeField] private Card _card;
+    [SerializeField] private GameObject _cardShadow;
     
     [Space(20)] 
     [SerializeField] private Vector2 _shadowOffset;
+    
+    [Space(10)] 
     [SerializeField][Range(0, 100)] private float _moveSpeed;
+    [SerializeField][Range(0, 10)] private float _shadowSpeed;
 
+    
     private bool _dragging;
     public bool dragging => _dragging;
     
@@ -19,7 +24,7 @@ public class Card_Movement : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
-        Update_Shadows();
+        _cardShadow.transform.localPosition = Vector2.zero;
     }
 
     private void Update()
@@ -31,7 +36,13 @@ public class Card_Movement : MonoBehaviour
     // Main
     public void Toggle_DragDrop()
     {
+        Cursor cursor = Game_Controller.instance.cursor;
+        if (cursor.currentCard != null && cursor.currentCard != _card) return;
+        
         _dragging = !_dragging;
+        
+        Card setCard = _dragging ? _card : null;
+        cursor.Set_CurrentCard(setCard);
     }
     
     private void MouseFollow_Update()
@@ -49,6 +60,9 @@ public class Card_Movement : MonoBehaviour
     // Effects
     public void Update_Shadows()
     {
-        _cardShadow.transform.localPosition = _dragging ? _shadowOffset : Vector2.zero;
+        Vector2 updatePos = _dragging ? _shadowOffset : Vector2.zero;
+        
+        LeanTween.cancel(_cardShadow);
+        LeanTween.moveLocal(_cardShadow, updatePos, _shadowSpeed);
     }
 }
