@@ -89,10 +89,11 @@ public class CraftNPC_Smith : CraftNPC
             return;
         }
 
+        int actionIndex = _setTable.currentIndex;
+        ActionBubble_Data data = new(_setTable.indicatorIcon.sprite, bubble.bubbleDatas[actionIndex].LocalizedInfo());
+        
+        bubble.Set_IndicatorToggleDatas(new() { data });
         bubble.Set_Bubble(_setTable.indicatorIcon.sprite, null);
-
-        if (bubble.bubbleOn == false) return;
-        dialog.Update_Dialog(_setTable.currentIndex);
     }
 
     private void Toggle_PurchasePrice()
@@ -204,6 +205,7 @@ public class CraftNPC_Smith : CraftNPC
     private IEnumerator Purchase_Coroutine()
     {
         Toggle_Action(true);
+        _setTable.interactable.Toggle_Lock(true);
         
         // move to action selector
         NPC_Movement movement = npcController.movement;

@@ -107,10 +107,11 @@ public class CraftNPC_Mechanic : CraftNPC
             return;
         }
         
+        int actionIndex = _droppedToolBox.currentIndex;
+        ActionBubble_Data data = new(_droppedToolBox.indicatorIcon.sprite, bubble.bubbleDatas[actionIndex].LocalizedInfo());
+        
+        bubble.Set_IndicatorToggleDatas(new() { data });
         bubble.Set_Bubble(_droppedToolBox.indicatorIcon.sprite, null);
-
-        if (bubble.bubbleOn == false) return;
-        dialog.Update_Dialog(_droppedToolBox.currentIndex);
     }
 
     private void Toggle_PurchasePrice()
@@ -291,6 +292,7 @@ public class CraftNPC_Mechanic : CraftNPC
     private IEnumerator Purchase_Coroutine()
     {
         Toggle_Action(true);
+        _droppedToolBox.interactable.Toggle_Lock(true);
 
         NPC_Movement movement = npcController.movement;
 

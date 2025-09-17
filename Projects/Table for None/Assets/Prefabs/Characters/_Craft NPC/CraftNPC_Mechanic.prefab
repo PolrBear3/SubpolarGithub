@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5544714521306889460}
   - component: {fileID: 2509055865607579981}
   - component: {fileID: 1331804926663461836}
-  - component: {fileID: 2855206062070600141}
   - component: {fileID: 8503040837155109127}
   - component: {fileID: -2268305881826384539}
   - component: {fileID: -7268301005637499790}
@@ -164,67 +163,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2855206062070600141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5817206134798704318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d605da9d49834612997633e80a27b3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultData:
-    icon: {fileID: -1926662494, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: 
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: 
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  _datas:
-  - icon: {fileID: 1924485764, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Increase vehicle movement speed
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
-      m_TableEntryReference:
-        m_KeyId: 15176525182656512
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - icon: {fileID: 2137494065, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Expand <sprite=57> export range
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
-      m_TableEntryReference:
-        m_KeyId: 15176534015860736
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  - icon: {fileID: -1080054068, guid: f311721b981194c6ba14962d17b64207, type: 3}
-    info: Increase the amount of recently opened menu slots
-    _localizedInfo:
-      m_TableReference:
-        m_TableCollectionName: GUID:402a6afc25e1a4cfc900c2be419405a8
-      m_TableEntryReference:
-        m_KeyId: 15176562235138048
-        m_Key: 
-      m_FallbackState: 0
-      m_WaitForCompletion: 0
-      m_LocalVariables: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &8503040837155109127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _npcController: {fileID: 9094981842974887859}
-  _dialog: {fileID: 2855206062070600141}
+  _dialog: {fileID: 0}
   _npcIconSprite: {fileID: -1926662494, guid: f311721b981194c6ba14962d17b64207, type: 3}
   _paymentIconSprite: {fileID: 2049654787, guid: f311721b981194c6ba14962d17b64207, type: 3}
   _statusIcon: {fileID: 6953078712826172495}
@@ -529,6 +467,34 @@ PrefabInstance:
     - target: {fileID: 4034252938134837271, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_Name
       value: Action Bubble
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[0]._localizedInfo.m_TableEntryReference.m_KeyId
+      value: 15176525182656512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[1]._localizedInfo.m_TableEntryReference.m_KeyId
+      value: 15176534015860736
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[2]._localizedInfo.m_TableEntryReference.m_KeyId
+      value: 15176562235138048
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[0]._localizedInfo.m_TableReference.m_TableCollectionName
+      value: GUID:402a6afc25e1a4cfc900c2be419405a8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[1]._localizedInfo.m_TableReference.m_TableCollectionName
+      value: GUID:402a6afc25e1a4cfc900c2be419405a8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5611561378352079672, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
+      propertyPath: _bubbleDatas.Array.data[2]._localizedInfo.m_TableReference.m_TableCollectionName
+      value: GUID:402a6afc25e1a4cfc900c2be419405a8
       objectReference: {fileID: 0}
     - target: {fileID: 7398666411424898518, guid: 7dc8394f75e4747daaee1286703e7056, type: 3}
       propertyPath: m_LocalPosition.x
