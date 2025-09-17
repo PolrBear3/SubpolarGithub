@@ -106,7 +106,14 @@ public class FoodBox : MonoBehaviour
         Toggle_AmountBar();
 
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 1);
+        Audio_Controller audio = Audio_Controller.instance;
+        
+        if (playerIcon.DataCount_Maxed() == false)
+        {
+            audio.Play_OneShot(gameObject, 1);
+            return;
+        }
+        audio.Play_OneShot(gameObject, 2);
     }
 
     private void Transfer_All()

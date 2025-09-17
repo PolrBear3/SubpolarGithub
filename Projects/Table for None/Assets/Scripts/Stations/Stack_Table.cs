@@ -114,15 +114,17 @@ public class Stack_Table : Table
         playerIcon.Show_Condition();
         playerIcon.Toggle_SubDataBar(true);
 
+        Audio_Controller audio = Audio_Controller.instance;
+        
         if (tableIcon.DataCount_Maxed() == false)
         {
             // sound
-            Audio_Controller.instance.Play_OneShot(gameObject, 1);
+            audio.Play_OneShot(gameObject, 1);
             return;
         }
 
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+        audio.Play_OneShot(gameObject, 2);
     }
 
     public void Pickup_Food()
@@ -143,9 +145,16 @@ public class Stack_Table : Table
         stationIcon.Show_Icon();
         stationIcon.Show_Condition();
         stationIcon.Toggle_SubDataBar(true);
-        
+
         // sound
-        Audio_Controller.instance.Play_OneShot(gameObject, 2);
+        Audio_Controller audio = Audio_Controller.instance;
+        
+        if (playerIcon.DataCount_Maxed() == false)
+        {
+            audio.Play_OneShot(gameObject, 1);
+            return;
+        }
+        audio.Play_OneShot(gameObject, 2);
     }
 
     

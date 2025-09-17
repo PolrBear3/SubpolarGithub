@@ -99,13 +99,8 @@ public class CraftNPC_Smith : CraftNPC
     {
         GoldSystem system = GoldSystem.instance;
 
-        if (_setTable == null || purchaseData.purchased == false)
-        {
-            system.Indicate_TriggerData(new(npcIconSprite, -defaultPrice));
-            return;
-        }
-
-        // additional price indication //
+        if (_setTable != null || purchaseData.purchased) return;
+        system.Indicate_TriggerData(new(npcIconSprite, -defaultPrice));
     }
 
 
@@ -125,8 +120,9 @@ public class CraftNPC_Smith : CraftNPC
     private Vector2 Table_SetPosition()
     {
         Location_Controller currentLocation = Main_Controller.instance.currentLocation;
-
-        return currentLocation.Random_SpawnPosition();
+        List<Vector2> setPositions = currentLocation.All_SpawnPositions(transform.position);
+        
+        return setPositions[0];
     }
 
 
@@ -140,12 +136,21 @@ public class CraftNPC_Smith : CraftNPC
     {
         Toggle_Action(true);
 
+        Main_Controller main = Main_Controller.instance;
         NPC_Movement movement = npcController.movement;
         
-        Vector2 movePosition = Table_SetPosition();
-        movement.Assign_TargetPosition(movePosition);
+        Vector2 setPosition = Table_SetPosition();
+        movement.Assign_TargetPosition(setPosition);
 
-        while (movement.At_TargetPosition(movePosition) == false) yield return null;
+        while (movement.At_TargetPosition(setPosition) == false)
+        {
+            if (main.data.Position_Claimed(setPosition))
+            {
+                setPosition = Table_SetPosition();
+                movement.Assign_TargetPosition(setPosition);
+            }
+            yield return null;
+        }
 
         Set_Table();
 
@@ -174,6 +179,8 @@ public class CraftNPC_Smith : CraftNPC
         }
 
         Update_ActionBubble();
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
     private void Collect_Table()
@@ -299,7 +306,7 @@ public class CraftNPC_Smith : CraftNPC
 
         for (int i = surroundingStations.Count - 1; i >= 0; i--)
         {
-            if (surroundingStations[i].maintenance != null) continue; //
+            if (surroundingStations[i].maintenance != null) continue;
             surroundingStations.RemoveAt(i);
         }
 
@@ -332,5 +339,7 @@ public class CraftNPC_Smith : CraftNPC
 
         Set_PurchaseData(new(defaultPrice));
         Toggle_PayIcon();
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 2);
     }
 }

@@ -157,6 +157,8 @@ public class Table : MonoBehaviour
         playerIcon.Show_Icon();
         playerIcon.Show_Condition();
         playerIcon.Toggle_SubDataBar(true);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
     public void TakeFood()
@@ -181,6 +183,8 @@ public class Table : MonoBehaviour
         foodIcon.Set_CurrentData(null);
         foodIcon.Show_Icon();
         foodIcon.Show_Condition();
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
     
 

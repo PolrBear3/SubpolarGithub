@@ -31,17 +31,24 @@ public class NPC_Interaction : MonoBehaviour
     private void Interact_FacePlayer()
     {
         NPC_Movement movement = _controller.movement;
+        BasicAnimation_Controller basicAnim = _controller.basicAnim;
 
+        NPC_QuestSystem questSystem = _controller.questSystem;
+        bool questActive = questSystem != null && questSystem.QuestSystem_Active();
+       
         movement.Stop_FreeRoam();
-        _controller.basicAnim.Flip_Sprite(_controller.interactable.detection.player.gameObject);
-
-        if (movement.isLeaving == true && _controller.questSystem.QuestSystem_Active() == false)
+        
+        if (movement.isLeaving == true && questActive == false)
         {
             movement.Leave(movement.intervalTime);
+            basicAnim.Flip_Sprite(_controller.interactable.detection.player.gameObject);
+            
             return;
         }
 
         movement.Cancel_LeaveState();
+        basicAnim.Flip_Sprite(_controller.interactable.detection.player.gameObject);
+        
         movement.CurrentLocation_FreeRoam(movement.currentRoamArea, movement.intervalTime);
     }
 }

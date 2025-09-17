@@ -117,13 +117,8 @@ public class CraftNPC_Mechanic : CraftNPC
     {
         GoldSystem system = GoldSystem.instance;
 
-        if (_toolBox == null || purchaseData.purchased == false)
-        {
-            system.Indicate_TriggerData(new(npcIconSprite, -Purchase_Price()));
-            return;
-        }
-
-        // additional price indication //
+        if (_toolBox != null || purchaseData.purchased) return;
+        system.Indicate_TriggerData(new(npcIconSprite, -Purchase_Price()));
     }
 
 
@@ -149,6 +144,8 @@ public class CraftNPC_Mechanic : CraftNPC
         }
         
         npcController.interactable.bubble.Set_Bubble(_droppedToolBox.indicatorIcon.sprite, null);
+        
+        Audio_Controller.instance.Play_OneShot(gameObject, 1);
     }
 
 
