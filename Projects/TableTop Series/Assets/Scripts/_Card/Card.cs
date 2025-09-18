@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Card : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class Card : MonoBehaviour
     [SerializeField] private Card_Movement _movement;
     public Card_Movement movement => _movement;
     
+    [Space(20)] 
+    [SerializeField] private SortingGroup _sortingGroup;
+    public SortingGroup sortingGroup => _sortingGroup;
+    
     
     private Card_Data _data;
     public Card_Data data => _data;
@@ -19,9 +24,12 @@ public class Card : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
+        Game_Controller.instance.tableTop.currentCards.Add(this);
+        
         // subscriptions
         _eventSystem.OnClick += _movement.Toggle_DragDrop;
         _eventSystem.OnClick += _movement.Update_Shadows;
+        _eventSystem.OnClick += Update_LayerOrder;
     }
 
     private void OnDestroy()
@@ -29,5 +37,18 @@ public class Card : MonoBehaviour
         // subscriptions
         _eventSystem.OnClick -= _movement.Toggle_DragDrop;
         _eventSystem.OnClick -= _movement.Update_Shadows;
+        _eventSystem.OnClick -= Update_LayerOrder;
+    }
+    
+    
+    // Visual
+    private void Update_LayerOrder()
+    {
+        if (_movement.dragging == false) return;
+        
+        int orderNum = _movement.dragging ? 1 : 0;
+        _sortingGroup.sortingOrder = orderNum;
+        
+        Game_Controller.instance.tableTop.Update_LayerOrders(this);
     }
 }

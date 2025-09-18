@@ -261,6 +261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7870741456787001913}
+  - component: {fileID: 3499581900410653454}
   - component: {fileID: 1796006013149203312}
   - component: {fileID: 3625635284987150204}
   - component: {fileID: 8347857598153567105}
@@ -290,6 +291,18 @@ Transform:
   - {fileID: 1991240913993017912}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &3499581900410653454
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7238070546733478049}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!61 &1796006013149203312
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -361,6 +374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _eventSystem: {fileID: 3625635284987150204}
   _movement: {fileID: 133380981143170579}
+  _sortingGroup: {fileID: 3499581900410653454}
 --- !u!114 &133380981143170579
 MonoBehaviour:
   m_ObjectHideFlags: 0

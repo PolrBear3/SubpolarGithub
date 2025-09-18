@@ -7,6 +7,10 @@ public class Game_Controller : MonoBehaviour
     public static Game_Controller instance;
     
     [Space(20)]
+    [SerializeField] private Camera _mainCamera;
+    public Camera mainCamera => _mainCamera;
+    
+    [Space(20)]
     [SerializeField] private Cursor _cursor;
     public Cursor cursor => _cursor;
     
