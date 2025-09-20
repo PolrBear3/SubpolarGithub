@@ -45,10 +45,6 @@ public class Card : MonoBehaviour
     private void Update_LayerOrder()
     {
         if (_movement.dragging == false) return;
-        
-        int orderNum = _movement.dragging ? 1 : 0;
-        _sortingGroup.sortingOrder = orderNum;
-        
-        Game_Controller.instance.tableTop.Update_LayerOrders(this);
+        _sortingGroup.sortingOrder = Game_Controller.instance.tableTop.Max_CardLayerOrder() + 1;
     }
 }

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class TableTop : MonoBehaviour
 {
+    [Space(20)] 
+    [SerializeField] private IPointer_EventSystem _eventSystem;
+    
     [Space(20)]
     [SerializeField] private CardLauncher _cardLauncher;
     [SerializeField] private Transform _launchedCards;
@@ -25,6 +28,13 @@ public class TableTop : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LaunchCards_Coroutine());
+        
+        // subscriptions
+    }
+
+    private void OnDestroy()
+    {
+        // subscriptions
     }
 
 
@@ -47,13 +57,18 @@ public class TableTop : MonoBehaviour
     }
     
     
-    // Visual
-    public void Update_LayerOrders(Card placedCard)
+    // Current Cards
+    public int Max_CardLayerOrder()
     {
+        int maxOrder = 0;
+
         for (int i = 0; i < _currentCards.Count; i++)
         {
-            if (_currentCards[i] == placedCard) continue;
-            _currentCards[i].sortingGroup.sortingOrder = 0;
+            int sortingOrder = _currentCards[i].sortingGroup.sortingOrder;
+            if (sortingOrder <= maxOrder) continue;
+            
+            maxOrder = sortingOrder;
         }
+        return maxOrder;
     }
 }

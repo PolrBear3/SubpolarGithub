@@ -6,6 +6,15 @@
             "id": "3a2c6b9f-435d-4415-94f9-8efdd44b50e7",
             "actions": [
                 {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "bf1576cf-bcec-4cbb-9f8e-0771498d1243",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Exit",
                     "type": "Button",
                     "id": "1537059a-675d-4898-b84c-256c704d3e07",
@@ -16,6 +25,17 @@
                 }
             ],
             "bindings": [
+                {
+                    "name": "",
+                    "id": "8e3640c4-abdf-4305-a74d-fefde70dc8ab",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
                 {
                     "name": "",
                     "id": "b342b453-d7ae-4bbd-9642-f0fa7f977d9c",
@@ -37,6 +57,11 @@
             "devices": [
                 {
                     "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 }

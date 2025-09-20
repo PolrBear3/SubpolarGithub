@@ -7,18 +7,6 @@ public class Cursor : MonoBehaviour
 {
     private Card _currentCard;
     public Card currentCard => _currentCard;
-    
-    
-    // MonoBehaviour
-    private void Start()
-    {
-        
-    }
-
-    private void OnDestroy()
-    {
-        
-    }
 
 
     // Main
