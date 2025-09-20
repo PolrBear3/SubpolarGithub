@@ -243,6 +243,8 @@ public class VehicleMovement_Controller : MonoBehaviour, ISaveLoadable
 
         Input_Controller.instance.OnInteract -= Exit;
         _interactable.OnAction2 += _controller.Open_LocationMenu;
+        
+        LeanTween.color(_controller.spritesFile, Color.white, 0.01f);
 
         // set vehicle to snap point
         Main_Controller main = Main_Controller.instance;

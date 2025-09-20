@@ -148,7 +148,7 @@ public class TutorialQuest_Controller : MonoBehaviour, ISaveLoadable
             TutorialQuest_ScrObj questScrObj = currentQuests[i].questScrObj;
             _showingQuests.Add(questScrObj); 
             
-            string completeCountString = "[ " + currentQuests[i].currentCompleteCount + "/" + questScrObj.completeCount + " ]  ";
+            string completeCountString = "<sprite=69> [ " + currentQuests[i].currentCompleteCount + "/" + questScrObj.completeCount + " ]  ";
             questLines.Add(completeCountString + questScrObj.Description());
         }
         

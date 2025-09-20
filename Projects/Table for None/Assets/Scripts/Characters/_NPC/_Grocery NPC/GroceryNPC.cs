@@ -33,7 +33,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     [SerializeField] private NPC_Controller _npcController;
     
     [SerializeField] private Detection_Controller _detection;
-    [SerializeField] private IInteractable_Controller _interactable;
+    [SerializeField] private ActionBubble_Interactable _interactable;
 
     [Space(20)]
     [SerializeField] private SpriteRenderer _foodBox;
@@ -117,11 +117,14 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
 
         _interactable.OnInteract += Cancel_Action;
         _interactable.OnInteract += Interact_FacePlayer;
+        
+        _interactable.OnInteract += Update_QuestBubble;
 
         _detection.EnterEvent += Toggle_QuestBar;
         _detection.ExitEvent += Toggle_QuestBar;
-
+        
         _interactable.OnHoldInteract += Complete_Quest;
+        _interactable.OnAction1 += Complete_Quest;
     }
 
     private void OnDestroy()
@@ -142,10 +145,13 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         _interactable.OnInteract -= Cancel_Action;
         _interactable.OnInteract -= Interact_FacePlayer;
 
+        _interactable.OnInteract -= Update_QuestBubble;
+
         _detection.EnterEvent -= Toggle_QuestBar;
         _detection.ExitEvent -= Toggle_QuestBar;
 
         _interactable.OnHoldInteract -= Complete_Quest;
+        _interactable.OnAction1 -= Complete_Quest;
     }
 
 
@@ -252,7 +258,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     private void Start_Action()
     {
         _actionTimer.Toggle_RunAnimation(true);
-        _interactable.Toggle_Lock(true);
+        _interactable.LockInteract(true);
 
         _foodBox.color = Color.white;
 
@@ -273,7 +279,7 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
         }
 
         _actionTimer.Toggle_RunAnimation(false);
-        _interactable.Toggle_Lock(false);
+        _interactable.LockInteract(false);
 
         _foodBox.color = Color.clear;
 
@@ -380,6 +386,27 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     
 
     // Quest
+    private void Update_QuestBubble()
+    {
+        Action_Bubble bubble = _interactable.bubble;
+        
+        if (_data.questComplete)
+        {
+            bubble.Empty_Bubble();
+            bubble.Set_IndicatorToggleDatas(null);
+            
+            return;
+        }
+
+        Sprite questFoodSprite = _npcController.foodIcon.currentData.foodScrObj.sprite;
+        ActionBubble_Data bubbleData = new(questFoodSprite, bubble.bubbleDatas[0].LocalizedInfo());
+        
+        bubble.Set_Bubble(questFoodSprite, null);
+        bubble.Set_IndicatorToggleDatas(new(){ bubbleData });
+        
+        _questBarObject.SetActive(false);
+    }
+    
     public void Toggle_QuestBar()
     {
         if (_data.questComplete || _detection.player == null || _actionTimer.animationRunning)
@@ -387,12 +414,12 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
             _questBarObject.SetActive(false);
             return;
         }
-
         _questBarObject.SetActive(true);
         
         _questBar.Load_Custom(_questCount, _data.questCompleteCount);
         _questBar.Toggle(true);
     }
+    
     
     private void Set_QuestFood(Food_ScrObj food)
     {
@@ -438,6 +465,8 @@ public class GroceryNPC : MonoBehaviour, ISaveLoadable
     
     private void Complete_Quest()
     {
+        _interactable.UnInteract();
+        
         DialogTrigger dialog = gameObject.GetComponent<DialogTrigger>();
         
         if (_data.questComplete)
