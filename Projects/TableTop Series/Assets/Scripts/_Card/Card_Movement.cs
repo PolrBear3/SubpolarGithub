@@ -43,11 +43,12 @@ public class Card_Movement : MonoBehaviour
     // Drag and Drop
     public void Toggle_DragDrop()
     {
-        Cursor cursor = Game_Controller.instance.cursor;
+        Game_Controller controller = Game_Controller.instance;
+        
+        Cursor cursor = controller.cursor;
         if (cursor.currentCard != null && cursor.currentCard != _card) return;
         
         _dragging = !_dragging;
-        Assign_TargetPosition(transform.position);
         
         Card setCard = _dragging ? _card : null;
         cursor.Set_CurrentCard(setCard);
@@ -62,12 +63,44 @@ public class Card_Movement : MonoBehaviour
         
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * _moveSpeed);
     }
+    
+    
+    public void Update_SnapPosition()
+    {
+        if (_dragging) return;
+        
+        TableTop tableTop = Game_Controller.instance.tableTop;
+        
+        Vector2 currentPosition = transform.position;
+        Vector2 snapPosition = Utility.SnapPosition(currentPosition);
+
+        if (tableTop.Position_CardDropped(snapPosition) == false)
+        {
+            Assign_TargetPosition(snapPosition);
+            return;
+        }
+        
+        List<Vector2> snapPositions = Utility.SurroundingPositions(snapPosition);
+
+        for (int i = snapPositions.Count - 1; i >= 0; i--)
+        {
+            if (tableTop.Position_CardDropped(snapPositions[i]) == false) continue;
+            snapPositions.RemoveAt(i);
+        }
+        
+        snapPositions.Sort((a, b) =>
+            Vector2.Distance(currentPosition, a).CompareTo(Vector2.Distance(currentPosition, b))
+        );
+        
+        if (snapPositions.Count == 0) return;
+        Assign_TargetPosition(snapPositions[0]);
+    }
 
     
     // Movements
     private bool At_TargetPosition()
     {
-        float threshold = 0.1f;
+        float threshold = 0.01f;
         float distanceFromTarget = Vector2.Distance(transform.position, _targetPosition);
         
         return distanceFromTarget < threshold;

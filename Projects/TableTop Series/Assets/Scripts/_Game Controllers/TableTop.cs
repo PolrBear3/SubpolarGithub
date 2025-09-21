@@ -6,7 +6,7 @@ using UnityEngine;
 public class TableTop : MonoBehaviour
 {
     [Space(20)] 
-    [SerializeField] private IPointer_EventSystem _eventSystem;
+    [SerializeField] private Vector2 _cardGridRange;
     
     [Space(20)]
     [SerializeField] private CardLauncher _cardLauncher;
@@ -38,7 +38,7 @@ public class TableTop : MonoBehaviour
     }
 
 
-    // Main
+    // New Cards
     private void Launch_StaticCard()
     {
         float xPos = UnityEngine.Random.Range(_horizontalLaunchRange.x, _horizontalLaunchRange.y);
@@ -70,5 +70,17 @@ public class TableTop : MonoBehaviour
             maxOrder = sortingOrder;
         }
         return maxOrder;
+    }
+
+    public bool Position_CardDropped(Vector2 checkPosition)
+    {
+        float threshold = 0.05f;
+
+        for (int i = 0; i < _currentCards.Count; i++)
+        {
+            float distance = Vector2.Distance(checkPosition, _currentCards[i].transform.position);
+            if (distance <= threshold) return true;
+        }
+        return false;
     }
 }

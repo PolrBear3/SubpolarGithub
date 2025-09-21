@@ -28,6 +28,7 @@ public class Card : MonoBehaviour
         
         // subscriptions
         _eventSystem.OnClick += _movement.Toggle_DragDrop;
+        _eventSystem.OnClick += _movement.Update_SnapPosition;
         _eventSystem.OnClick += _movement.Update_Shadows;
         _eventSystem.OnClick += Update_LayerOrder;
     }
@@ -36,6 +37,7 @@ public class Card : MonoBehaviour
     {
         // subscriptions
         _eventSystem.OnClick -= _movement.Toggle_DragDrop;
+        _eventSystem.OnClick -= _movement.Update_SnapPosition;
         _eventSystem.OnClick -= _movement.Update_Shadows;
         _eventSystem.OnClick -= Update_LayerOrder;
     }
