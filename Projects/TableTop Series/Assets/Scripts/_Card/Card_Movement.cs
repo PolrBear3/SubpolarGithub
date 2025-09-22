@@ -24,6 +24,8 @@ public class Card_Movement : MonoBehaviour
 
     private Vector2 _targetPosition;
     
+    private Coroutine _coroutine;
+    
 
     // MonoBehaviour
     private void Start()
@@ -69,7 +71,12 @@ public class Card_Movement : MonoBehaviour
     {
         if (_dragging) return;
         
-        TableTop tableTop = Game_Controller.instance.tableTop;
+        Game_Controller controller = Game_Controller.instance;
+        Cursor cursor = controller.cursor;
+        
+        if (cursor.currentCard != null && cursor.currentCard != _card) return;
+        
+        TableTop tableTop = controller.tableTop;
         
         Vector2 currentPosition = transform.position;
         Vector2 snapPosition = Utility.SnapPosition(currentPosition);
@@ -94,6 +101,27 @@ public class Card_Movement : MonoBehaviour
         
         if (snapPositions.Count == 0) return;
         Assign_TargetPosition(snapPositions[0]);
+    }
+
+    public void Update_OverlapRestriction()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+        
+        if (_dragging) return;
+        if (At_TargetPosition() == false) return;
+
+        _coroutine = StartCoroutine(OverlapRestriction_Coroutine());
+    }
+    private IEnumerator OverlapRestriction_Coroutine()
+    {
+        while (_dragging == false)
+        {
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     
