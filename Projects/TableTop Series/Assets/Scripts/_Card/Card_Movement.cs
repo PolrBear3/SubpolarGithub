@@ -66,7 +66,6 @@ public class Card_Movement : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * _moveSpeed);
     }
     
-    
     public void Update_SnapPosition()
     {
         if (_dragging) return;
@@ -77,51 +76,29 @@ public class Card_Movement : MonoBehaviour
         if (cursor.currentCard != null && cursor.currentCard != _card) return;
         
         TableTop tableTop = controller.tableTop;
-        
         Vector2 currentPosition = transform.position;
-        Vector2 snapPosition = Utility.SnapPosition(currentPosition);
 
-        if (tableTop.Position_CardDropped(snapPosition) == false)
+        if (tableTop.Position_CardOverlapped(_card) == false)
         {
-            Assign_TargetPosition(snapPosition);
+            Assign_TargetPosition(currentPosition);
             return;
         }
-        
-        List<Vector2> snapPositions = Utility.SurroundingPositions(snapPosition);
 
-        for (int i = snapPositions.Count - 1; i >= 0; i--)
+        Vector2 snapPosition = Utility.SnapPosition(currentPosition);
+        List<Vector2> surroundingPositions = Utility.SurroundingPositions(snapPosition);
+
+        for (int i = surroundingPositions.Count - 1; i >= 0; i--)
         {
-            if (tableTop.Position_CardDropped(snapPositions[i]) == false) continue;
-            snapPositions.RemoveAt(i);
+            if (tableTop.Position_CardOverlapped(surroundingPositions[i]) == false) continue;
+            surroundingPositions.RemoveAt(i);
         }
         
-        snapPositions.Sort((a, b) =>
+        surroundingPositions.Sort((a, b) =>
             Vector2.Distance(currentPosition, a).CompareTo(Vector2.Distance(currentPosition, b))
         );
         
-        if (snapPositions.Count == 0) return;
-        Assign_TargetPosition(snapPositions[0]);
-    }
-
-    public void Update_OverlapRestriction()
-    {
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-            _coroutine = null;
-        }
-        
-        if (_dragging) return;
-        if (At_TargetPosition() == false) return;
-
-        _coroutine = StartCoroutine(OverlapRestriction_Coroutine());
-    }
-    private IEnumerator OverlapRestriction_Coroutine()
-    {
-        while (_dragging == false)
-        {
-            yield return new WaitForSeconds(1f);
-        }
+        if (surroundingPositions.Count == 0) return;
+        Assign_TargetPosition(surroundingPositions[0]);
     }
 
     

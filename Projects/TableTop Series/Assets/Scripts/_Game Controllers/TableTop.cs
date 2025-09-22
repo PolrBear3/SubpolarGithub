@@ -7,6 +7,7 @@ public class TableTop : MonoBehaviour
 {
     [Space(20)] 
     [SerializeField] private Vector2 _cardGridRange;
+    [SerializeField] [Range(0, 10)] private float _cardSeperationSpace;
     
     [Space(20)]
     [SerializeField] private CardLauncher _cardLauncher;
@@ -17,7 +18,7 @@ public class TableTop : MonoBehaviour
     [SerializeField] private Vector2 _verticalLaunchRange;
 
     [Space(20)] 
-    [SerializeField] [Range(0, 100)] private int _startingCardAmount;
+    [SerializeField][Range(0, 100)] private int _startingCardAmount;
     
     
     private List<Card> _currentCards = new();
@@ -72,14 +73,23 @@ public class TableTop : MonoBehaviour
         return maxOrder;
     }
 
-    public bool Position_CardDropped(Vector2 checkPosition)
+    public bool Position_CardOverlapped(Vector2 cardPosition)
     {
-        float threshold = 0.05f;
-
         for (int i = 0; i < _currentCards.Count; i++)
         {
-            float distance = Vector2.Distance(checkPosition, _currentCards[i].transform.position);
-            if (distance <= threshold) return true;
+            float distance = Vector2.Distance(cardPosition, _currentCards[i].transform.position);
+            if (distance <= _cardSeperationSpace) return true;
+        }
+        return false;
+    }
+    public bool Position_CardOverlapped(Card card)
+    {
+        for (int i = 0; i < _currentCards.Count; i++)
+        {
+            if (card == _currentCards[i]) continue;
+            
+            float distance = Vector2.Distance(card.transform.position, _currentCards[i].transform.position);
+            if (distance <= _cardSeperationSpace) return true;
         }
         return false;
     }
