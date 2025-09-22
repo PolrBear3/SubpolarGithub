@@ -31,7 +31,7 @@ public class Card_Movement : MonoBehaviour
     private void Start()
     {
         _camera = Game_Controller.instance.mainCamera;
-
+        
         _cardShadow.transform.localPosition = Vector2.zero;
     }
 
@@ -66,39 +66,18 @@ public class Card_Movement : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * _moveSpeed);
     }
     
-    public void Update_SnapPosition()
+    public void UpdatePosition_OnOverlap()
     {
         if (_dragging) return;
-        
-        Game_Controller controller = Game_Controller.instance;
-        Cursor cursor = controller.cursor;
-        
-        if (cursor.currentCard != null && cursor.currentCard != _card) return;
-        
-        TableTop tableTop = controller.tableTop;
-        Vector2 currentPosition = transform.position;
 
-        if (tableTop.Position_CardOverlapped(_card) == false)
+        Card_Detection detection = _card.detection;
+        List<Card> detectedCards = detection.detectedCards;
+
+        if (detectedCards.Count == 0)
         {
-            Assign_TargetPosition(currentPosition);
+            Assign_TargetPosition(transform.position);
             return;
         }
-
-        Vector2 snapPosition = Utility.SnapPosition(currentPosition);
-        List<Vector2> surroundingPositions = Utility.SurroundingPositions(snapPosition);
-
-        for (int i = surroundingPositions.Count - 1; i >= 0; i--)
-        {
-            if (tableTop.Position_CardOverlapped(surroundingPositions[i]) == false) continue;
-            surroundingPositions.RemoveAt(i);
-        }
-        
-        surroundingPositions.Sort((a, b) =>
-            Vector2.Distance(currentPosition, a).CompareTo(Vector2.Distance(currentPosition, b))
-        );
-        
-        if (surroundingPositions.Count == 0) return;
-        Assign_TargetPosition(surroundingPositions[0]);
     }
 
     

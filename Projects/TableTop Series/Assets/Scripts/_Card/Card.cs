@@ -9,6 +9,9 @@ public class Card : MonoBehaviour
     [SerializeField] private IPointer_EventSystem _eventSystem;
     
     [Space(20)] 
+    [SerializeField] private Card_Detection _detection;
+    public Card_Detection detection => _detection;
+    
     [SerializeField] private Card_Movement _movement;
     public Card_Movement movement => _movement;
     
@@ -28,7 +31,10 @@ public class Card : MonoBehaviour
         
         // subscriptions
         _eventSystem.OnClick += _movement.Toggle_DragDrop;
-        _eventSystem.OnClick += _movement.Update_SnapPosition;
+        
+        _eventSystem.OnClick += _movement.UpdatePosition_OnOverlap;
+        _detection.OnCardDetection += _movement.UpdatePosition_OnOverlap;
+        
         _eventSystem.OnClick += _movement.Update_Shadows;
         _eventSystem.OnClick += Update_LayerOrder;
     }
@@ -37,7 +43,10 @@ public class Card : MonoBehaviour
     {
         // subscriptions
         _eventSystem.OnClick -= _movement.Toggle_DragDrop;
-        _eventSystem.OnClick -= _movement.Update_SnapPosition;
+
+        _eventSystem.OnClick -= _movement.UpdatePosition_OnOverlap;
+        _detection.OnCardDetection -= _movement.UpdatePosition_OnOverlap;
+        
         _eventSystem.OnClick -= _movement.Update_Shadows;
         _eventSystem.OnClick -= Update_LayerOrder;
     }

@@ -262,9 +262,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7870741456787001913}
   - component: {fileID: 3499581900410653454}
+  - component: {fileID: 8689185007471093089}
   - component: {fileID: 1796006013149203312}
   - component: {fileID: 3625635284987150204}
   - component: {fileID: 8347857598153567105}
+  - component: {fileID: 6824167402683039305}
   - component: {fileID: 133380981143170579}
   m_Layer: 0
   m_Name: Static Card
@@ -303,6 +305,33 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!50 &8689185007471093089
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7238070546733478049}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 2
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!61 &1796006013149203312
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -346,7 +375,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.8, y: 0.8}
   m_EdgeRadius: 0
 --- !u!114 &3625635284987150204
 MonoBehaviour:
@@ -373,8 +402,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eventSystem: {fileID: 3625635284987150204}
+  _detection: {fileID: 6824167402683039305}
   _movement: {fileID: 133380981143170579}
   _sortingGroup: {fileID: 3499581900410653454}
+--- !u!114 &6824167402683039305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7238070546733478049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19aec052d456c4f9ebfca9d60f68da3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _card: {fileID: 8347857598153567105}
+  _detectedCards: []
 --- !u!114 &133380981143170579
 MonoBehaviour:
   m_ObjectHideFlags: 0
