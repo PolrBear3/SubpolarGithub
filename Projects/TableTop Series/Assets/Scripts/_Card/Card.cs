@@ -6,6 +6,9 @@ using UnityEngine.Rendering;
 public class Card : MonoBehaviour
 {
     [Space(20)] 
+    [SerializeField] private SortingGroup _sortingGroup;
+    public SortingGroup sortingGroup => _sortingGroup;
+    
     [SerializeField] private IPointer_EventSystem _eventSystem;
     
     [Space(20)] 
@@ -14,10 +17,6 @@ public class Card : MonoBehaviour
     
     [SerializeField] private Card_Movement _movement;
     public Card_Movement movement => _movement;
-    
-    [Space(20)] 
-    [SerializeField] private SortingGroup _sortingGroup;
-    public SortingGroup sortingGroup => _sortingGroup;
     
     
     private Card_Data _data;
@@ -31,9 +30,7 @@ public class Card : MonoBehaviour
         
         // subscriptions
         _eventSystem.OnClick += _movement.Toggle_DragDrop;
-        
-        _eventSystem.OnClick += _movement.UpdatePosition_OnOverlap;
-        _detection.OnCardDetection += _movement.UpdatePosition_OnOverlap;
+        _eventSystem.OnClick += movement.Push_OverlappedCards;
         
         _eventSystem.OnClick += _movement.Update_Shadows;
         _eventSystem.OnClick += Update_LayerOrder;
@@ -43,10 +40,8 @@ public class Card : MonoBehaviour
     {
         // subscriptions
         _eventSystem.OnClick -= _movement.Toggle_DragDrop;
+        _eventSystem.OnClick -= movement.Push_OverlappedCards;
 
-        _eventSystem.OnClick -= _movement.UpdatePosition_OnOverlap;
-        _detection.OnCardDetection -= _movement.UpdatePosition_OnOverlap;
-        
         _eventSystem.OnClick -= _movement.Update_Shadows;
         _eventSystem.OnClick -= Update_LayerOrder;
     }

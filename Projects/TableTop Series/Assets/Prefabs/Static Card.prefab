@@ -401,10 +401,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca27ce6138f82472a9c3a03cffe73be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sortingGroup: {fileID: 3499581900410653454}
   _eventSystem: {fileID: 3625635284987150204}
   _detection: {fileID: 6824167402683039305}
   _movement: {fileID: 133380981143170579}
-  _sortingGroup: {fileID: 3499581900410653454}
 --- !u!114 &6824167402683039305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,6 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19aec052d456c4f9ebfca9d60f68da3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: 1796006013149203312}
   _card: {fileID: 8347857598153567105}
   _detectedCards: []
 --- !u!114 &133380981143170579

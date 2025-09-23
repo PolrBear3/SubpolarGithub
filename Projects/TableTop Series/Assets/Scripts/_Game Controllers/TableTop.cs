@@ -7,15 +7,13 @@ public class TableTop : MonoBehaviour
 {
     [Space(20)] 
     [SerializeField] private Vector2 _cardGridRange;
-    [SerializeField] [Range(0, 10)] private float _cardSeperationSpace;
     
+    [SerializeField][Range(0, 10)] private float _cardSeperationDistance;
+    public float cardSeperationDistance => _cardSeperationDistance;
+
     [Space(20)]
     [SerializeField] private CardLauncher _cardLauncher;
     [SerializeField] private Transform _launchedCards;
-
-    [Space(20)]
-    [SerializeField] private Vector2 _horizontalLaunchRange;
-    [SerializeField] private Vector2 _verticalLaunchRange;
 
     [Space(20)] 
     [SerializeField][Range(0, 100)] private int _startingCardAmount;
@@ -42,12 +40,12 @@ public class TableTop : MonoBehaviour
     // New Cards
     private void Launch_StaticCard()
     {
-        float xPos = UnityEngine.Random.Range(_horizontalLaunchRange.x, _horizontalLaunchRange.y);
-        float yPos = UnityEngine.Random.Range(_verticalLaunchRange.x, _verticalLaunchRange.y);
-        
-        _cardLauncher.Launch_Card(new Vector2(xPos, yPos)).transform.SetParent(_launchedCards);
-    }
+        float randXPos = UnityEngine.Random.Range(-_cardGridRange.x, _cardGridRange.x);
+        float randYPos = UnityEngine.Random.Range(-_cardGridRange.y, _cardGridRange.y);
 
+        Card launchedCard = _cardLauncher.Launch_Card(new(randXPos, randYPos));
+        launchedCard.transform.SetParent(_launchedCards);
+    }
     private IEnumerator LaunchCards_Coroutine()
     {
         for (int i = 0; i < _startingCardAmount; i++)
@@ -71,26 +69,5 @@ public class TableTop : MonoBehaviour
             maxOrder = sortingOrder;
         }
         return maxOrder;
-    }
-
-    public bool Position_CardOverlapped(Vector2 cardPosition)
-    {
-        for (int i = 0; i < _currentCards.Count; i++)
-        {
-            float distance = Vector2.Distance(cardPosition, _currentCards[i].transform.position);
-            if (distance <= _cardSeperationSpace) return true;
-        }
-        return false;
-    }
-    public bool Position_CardOverlapped(Card card)
-    {
-        for (int i = 0; i < _currentCards.Count; i++)
-        {
-            if (card == _currentCards[i]) continue;
-            
-            float distance = Vector2.Distance(card.transform.position, _currentCards[i].transform.position);
-            if (distance <= _cardSeperationSpace) return true;
-        }
-        return false;
     }
 }

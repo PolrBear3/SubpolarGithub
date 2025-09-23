@@ -9,14 +9,21 @@ public class CardLauncher : MonoBehaviour
     
     
     // Main
-    public Card Launch_Card(Vector2 launchDestination)
+    public Card Launch_Card(Vector2 spawnPosition)
     {
         if (_cardPrefab == null) return null;
-        GameObject launchedCard = Instantiate(_cardPrefab, transform.position, Quaternion.identity);
+        GameObject launchedCard = Instantiate(_cardPrefab, spawnPosition, Quaternion.identity);
         
         if (launchedCard.TryGetComponent(out Card card) == false) return null;
-        card.movement.Assign_TargetPosition(launchDestination);
+        
+        // refresh detection
+        BoxCollider2D collider = card.detection.boxCollider;
+        
+        collider.enabled = false;
+        collider.enabled = true;
         
         return card;
     }
+    
+    // [] Launch Animation Effect
 }

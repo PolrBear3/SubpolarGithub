@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Card_Movement : MonoBehaviour
 {
+    private Camera _camera;
+    
+    
     [Space(20)] 
     [SerializeField] private Card _card;
     [SerializeField] private GameObject _cardShadow;
@@ -15,16 +18,12 @@ public class Card_Movement : MonoBehaviour
     [Space(10)] 
     [SerializeField][Range(0, 100)] private float _moveSpeed;
     [SerializeField][Range(0, 10)] private float _shadowSpeed;
-
-
-    private Camera _camera;
+    
     
     private bool _dragging;
     public bool dragging => _dragging;
 
     private Vector2 _targetPosition;
-    
-    private Coroutine _coroutine;
     
 
     // MonoBehaviour
@@ -32,6 +31,7 @@ public class Card_Movement : MonoBehaviour
     {
         _camera = Game_Controller.instance.mainCamera;
         
+        _targetPosition = transform.position;
         _cardShadow.transform.localPosition = Vector2.zero;
     }
 
@@ -54,6 +54,9 @@ public class Card_Movement : MonoBehaviour
         
         Card setCard = _dragging ? _card : null;
         cursor.Set_CurrentCard(setCard);
+
+        if (_dragging) return;
+        Assign_TargetPosition(transform.position);
     }
     
     private void MouseFollow_Update()
@@ -65,42 +68,69 @@ public class Card_Movement : MonoBehaviour
         
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * _moveSpeed);
     }
-    
-    public void UpdatePosition_OnOverlap()
-    {
-        if (_dragging) return;
-
-        Card_Detection detection = _card.detection;
-        List<Card> detectedCards = detection.detectedCards;
-
-        if (detectedCards.Count == 0)
-        {
-            Assign_TargetPosition(transform.position);
-            return;
-        }
-    }
 
     
-    // Movements
-    private bool At_TargetPosition()
+    // Target Direction Movement
+    public bool Is_Moving()
     {
-        float threshold = 0.01f;
-        float distanceFromTarget = Vector2.Distance(transform.position, _targetPosition);
-        
-        return distanceFromTarget < threshold;
+        return Vector2.Distance(transform.position, _targetPosition) > 0.01f;
     }
-
+    
+    public void Assign_TargetPosition(Vector2 targetPosition)
+    {
+        _targetPosition = targetPosition;
+    }
+    
     private void TargetPosition_MovementUpdate()
     {
         if (_dragging) return;
-        if (At_TargetPosition()) return;
-        
-        transform.position = Vector2.Lerp(transform.position, _targetPosition, _moveSpeed * 0.1f * Time.deltaTime);
+        if (Is_Moving() == false) return;
+
+        transform.position = Vector2.Lerp(transform.position, _targetPosition, Time.deltaTime * _moveSpeed);
     }
     
-    public void Assign_TargetPosition(Vector2 assignPosition)
+    
+    // Seperation
+    private Vector2 Pushed_TargetPosition(Vector2 pushedCardPosition, float pushedDistance)
     {
-        _targetPosition = assignPosition;
+        float currentDistance = Vector2.Distance(transform.position, pushedCardPosition);
+        if (currentDistance >= pushedDistance) return pushedCardPosition;
+        
+        Vector2 pushDirection = pushedCardPosition - (Vector2)transform.position;
+        
+        if (pushDirection.sqrMagnitude < 1e-6f)
+        {
+            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
+            pushDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        }
+        
+        pushDirection.Normalize();
+        float pushDistance = pushedDistance - currentDistance;
+
+        return pushedCardPosition + pushDirection * pushDistance;
+    }
+    
+    public void Push_OverlappedCards()
+    {
+        if (_dragging) return;
+
+        List<Card> detectedCards = _card.detection.detectedCards;
+        float pushDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
+
+        for (int i = 0; i < detectedCards.Count; i++)
+        {
+            Card_Movement movement = detectedCards[i].movement;
+            
+            Vector2 detectedCardPos = detectedCards[i].transform.position;
+            Vector2 pushedPos = Pushed_TargetPosition(detectedCardPos, pushDistance);
+            
+            movement.Assign_TargetPosition(pushedPos);
+        }
+    }
+    
+    public void Update_PushedMovement()
+    {
+        if (_dragging) return;
     }
     
     

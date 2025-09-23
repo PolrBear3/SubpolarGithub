@@ -6,13 +6,17 @@ using UnityEngine;
 public class Card_Detection : MonoBehaviour
 {
     [Space(20)] 
+    [SerializeField] private BoxCollider2D _collider;
+    public BoxCollider2D boxCollider => _collider;
+    
     [SerializeField] private Card _card;
 
-    
+    [Space(20)] 
     [SerializeField] private List<Card> _detectedCards = new();
     public List<Card> detectedCards => _detectedCards;
     
     public Action OnCardDetection;
+    public Action OnCardExit;
     
 
     // OnTrigger
@@ -28,5 +32,7 @@ public class Card_Detection : MonoBehaviour
     {
         if (other.TryGetComponent(out Card card) == false) return;
         _detectedCards.Remove(card);
+        
+        OnCardExit?.Invoke();
     }
 }
