@@ -30,7 +30,9 @@ public class Card : MonoBehaviour
         
         // subscriptions
         _eventSystem.OnClick += _movement.Toggle_DragDrop;
-        _eventSystem.OnClick += movement.Push_OverlappedCards;
+        
+        _eventSystem.OnClick += _movement.Push_OverlappedCards;
+        _detection.OnCardDetection += _movement.Update_PushedMovement;
         
         _eventSystem.OnClick += _movement.Update_Shadows;
         _eventSystem.OnClick += Update_LayerOrder;
@@ -40,7 +42,9 @@ public class Card : MonoBehaviour
     {
         // subscriptions
         _eventSystem.OnClick -= _movement.Toggle_DragDrop;
-        _eventSystem.OnClick -= movement.Push_OverlappedCards;
+        
+        _eventSystem.OnClick -= _movement.Push_OverlappedCards;
+        _detection.OnCardDetection -= _movement.Update_PushedMovement;
 
         _eventSystem.OnClick -= _movement.Update_Shadows;
         _eventSystem.OnClick -= Update_LayerOrder;

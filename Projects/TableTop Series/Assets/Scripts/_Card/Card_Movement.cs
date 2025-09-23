@@ -91,23 +91,21 @@ public class Card_Movement : MonoBehaviour
     
     
     // Seperation
-    private Vector2 Pushed_TargetPosition(Vector2 pushedCardPosition, float pushedDistance)
+    private Vector2 Pushed_TargetPosition(Vector2 pushStartPos, Vector2 pushedCardPosition)
     {
-        float currentDistance = Vector2.Distance(transform.position, pushedCardPosition);
-        if (currentDistance >= pushedDistance) return pushedCardPosition;
+        float seperationDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
+        float currentDistance = Vector2.Distance(pushStartPos, pushedCardPosition);
         
-        Vector2 pushDirection = pushedCardPosition - (Vector2)transform.position;
-        
-        if (pushDirection.sqrMagnitude < 1e-6f)
-        {
-            float angle = UnityEngine.Random.value * Mathf.PI * 2f;
-            pushDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-        }
-        
-        pushDirection.Normalize();
-        float pushDistance = pushedDistance - currentDistance;
+        if (currentDistance >= seperationDistance) return pushedCardPosition;
 
-        return pushedCardPosition + pushDirection * pushDistance;
+        Vector2 pushDirection = pushedCardPosition - pushStartPos;
+        float pushDistance = seperationDistance - currentDistance;
+        
+        return pushedCardPosition + pushDirection.normalized * pushDistance;
+    }
+    private Vector2 Pushed_TargetPosition(Vector2 pushedCardPosition)
+    {
+        return Pushed_TargetPosition(transform.position, pushedCardPosition);
     }
     
     public void Push_OverlappedCards()
@@ -115,14 +113,13 @@ public class Card_Movement : MonoBehaviour
         if (_dragging) return;
 
         List<Card> detectedCards = _card.detection.detectedCards;
-        float pushDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
 
         for (int i = 0; i < detectedCards.Count; i++)
         {
             Card_Movement movement = detectedCards[i].movement;
             
             Vector2 detectedCardPos = detectedCards[i].transform.position;
-            Vector2 pushedPos = Pushed_TargetPosition(detectedCardPos, pushDistance);
+            Vector2 pushedPos = Pushed_TargetPosition(detectedCardPos);
             
             movement.Assign_TargetPosition(pushedPos);
         }
@@ -131,6 +128,17 @@ public class Card_Movement : MonoBehaviour
     public void Update_PushedMovement()
     {
         if (_dragging) return;
+        if (Is_Moving()) return;
+
+        Card_Movement pushingCardMovement = _card.detection.detectedCards[0].movement;
+        if (pushingCardMovement._dragging) return;
+        
+        Vector2 pushingCardTargetPos = pushingCardMovement._targetPosition;
+        
+        float pushDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
+        Vector2 pushedPosition = Pushed_TargetPosition(pushingCardTargetPos, transform.position);
+        
+        Assign_TargetPosition(pushedPosition);
     }
     
     
