@@ -6,9 +6,6 @@ using UnityEngine;
 public class Card_Detection : MonoBehaviour
 {
     [Space(20)] 
-    [SerializeField] private BoxCollider2D _collider;
-    public BoxCollider2D boxCollider => _collider;
-    
     [SerializeField] private Card _card;
 
     [Space(20)] 
@@ -34,5 +31,25 @@ public class Card_Detection : MonoBehaviour
         _detectedCards.Remove(card);
         
         OnCardExit?.Invoke();
+    }
+    
+    
+    // Detected Cards
+    public Card Closest_DetectedCard()
+    {
+        if (_detectedCards.Count == 0) return null;
+        Card closestCard = _detectedCards[0];
+
+        for (int i = 0; i < _detectedCards.Count; i++)
+        {
+            if (i == 0) continue;
+            
+            float closestDistance = Vector2.Distance(transform.position, closestCard.transform.position);
+            if (Vector2.Distance(transform.position, _detectedCards[i].transform.position) >= closestDistance) continue;
+            
+            closestCard = _detectedCards[i];
+        }
+        
+        return closestCard;
     }
 }

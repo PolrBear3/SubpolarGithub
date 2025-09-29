@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: be70fcb0321054f3986513b0ebbb96af
+guid: 629a05ed5a58849c582255ca426b66fc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -71,8 +71,8 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
+    textureFormat: 4
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WorldSpace_0
+      name: TableTop Sprites_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 16
-        width: 16
-        height: 16
+        y: 200
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d999a1e1962c453296924f00c191728
-      internalID: 1865750878
+      spriteID: 42dc0b6c661e1466fae940e707362759
+      internalID: -475459183
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WorldSpace_1
+      name: TableTop Sprites_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 16
-        width: 16
-        height: 16
+        x: 200
+        y: 200
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,50 +158,113 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7b5af114efd5428685a2c9bc66bf36e
-      internalID: 922808741
+      spriteID: cc9064dc9b58945a7ab640498af55492
+      internalID: -266103706
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WorldSpace_2
+      name: TableTop Sprites_2
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 200
+        width: 380
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7165a527a12046efb7ac5ba45f31638
+      internalID: -556285231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TableTop Sprites_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
-        width: 16
-        height: 16
+        y: 0
+        width: 180
+        height: 180
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 173f33e916fed4f8fa70778a1b86f485
-      internalID: 2131062806
+      spriteID: b4280d8b44fb14d19b0af4839bf18d03
+      internalID: -701075577
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WorldSpace_3
+      name: TableTop Sprites_4
       rect:
         serializedVersion: 2
-        x: 16
-        y: 48
-        width: 16
-        height: 16
+        x: 200
+        y: 0
+        width: 180
+        height: 180
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9e34f5ee663654389bb84d0331b686b3
-      internalID: 1190723013
+      spriteID: b1d8db00908634b1e980971ac7c21afe
+      internalID: 146815036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TableTop Sprites_5
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 380
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73c95588fd70e42359c77ecc2a71a939
+      internalID: -313636097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TableTop Sprites_6
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 200
+        width: 180
+        height: 180
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e62f9f4819cd94eec924ad872345870c
+      internalID: -1892341207
       vertices: []
       indices: 
       edges: []
@@ -217,10 +280,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      WorldSpace_0: 1865750878
-      WorldSpace_1: 922808741
-      WorldSpace_2: 2131062806
-      WorldSpace_3: 1190723013
+      TableTop Sprites_0: -475459183
+      TableTop Sprites_1: -266103706
+      TableTop Sprites_2: -556285231
+      TableTop Sprites_3: -701075577
+      TableTop Sprites_4: 146815036
+      TableTop Sprites_5: -313636097
+      TableTop Sprites_6: -1892341207
+      TableTop Sprites_7: -1605290346
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

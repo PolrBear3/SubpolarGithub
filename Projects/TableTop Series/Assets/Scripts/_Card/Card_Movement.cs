@@ -8,33 +8,42 @@ public class Card_Movement : MonoBehaviour
     private Camera _camera;
     
     
-    [Space(20)] 
+    [Space(20)]
     [SerializeField] private Card _card;
     [SerializeField] private GameObject _cardShadow;
+
+    [Space(20)] 
+    [SerializeField][Range(0, 10)] private float _dragTikTime;
+    
+    [Space(20)]
+    [SerializeField] private Vector2 _shadowOffset;
+    [SerializeField][Range(0, 10)] private float _shadowSpeed;
     
     [Space(20)] 
-    [SerializeField] private Vector2 _shadowOffset;
-    
-    [Space(10)] 
     [SerializeField][Range(0, 100)] private float _moveSpeed;
-    [SerializeField][Range(0, 10)] private float _shadowSpeed;
+    [SerializeField][Range(0, 10)] private float _moveBreakValue;
     
     
     private bool _dragging;
     public bool dragging => _dragging;
 
+    public Action WhileDragging;
+
     private Vector2 _targetPosition;
+    private Vector2 _currentVelocity;
+    
+    private Coroutine _draggingUpdateCoroutine;
+    private Coroutine _outerPositionCoroutine;
     
 
     // MonoBehaviour
     private void Start()
     {
         _camera = Game_Controller.instance.mainCamera;
-        
-        _targetPosition = transform.position;
+
         _cardShadow.transform.localPosition = Vector2.zero;
     }
-
+    
     private void Update()
     {
         TargetPosition_MovementUpdate();
@@ -56,7 +65,9 @@ public class Card_Movement : MonoBehaviour
         cursor.Set_CurrentCard(setCard);
 
         if (_dragging) return;
+        
         Assign_TargetPosition(transform.position);
+        Update_OuterPosition();
     }
     
     private void MouseFollow_Update()
@@ -69,13 +80,34 @@ public class Card_Movement : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * _moveSpeed);
     }
 
+    public void Dragging_Update()
+    {
+        if (_draggingUpdateCoroutine != null)
+        {
+            StopCoroutine(_draggingUpdateCoroutine);
+            _draggingUpdateCoroutine = null;
+        }
+
+        if (_dragging == false) return;
+        _draggingUpdateCoroutine = StartCoroutine(DraggingUpdate_Coroutine());
+    }
+    private IEnumerator DraggingUpdate_Coroutine()
+    {
+        while (_dragging)
+        {
+            WhileDragging?.Invoke();
+            yield return new WaitForSeconds(_dragTikTime);
+        }
+        _draggingUpdateCoroutine = null;
+    }
+
     
-    // Target Direction Movement
+    // Target Position Movement
     public bool Is_Moving()
     {
         return Vector2.Distance(transform.position, _targetPosition) > 0.01f;
     }
-    
+
     public void Assign_TargetPosition(Vector2 targetPosition)
     {
         _targetPosition = targetPosition;
@@ -86,14 +118,41 @@ public class Card_Movement : MonoBehaviour
         if (_dragging) return;
         if (Is_Moving() == false) return;
 
-        transform.position = Vector2.Lerp(transform.position, _targetPosition, Time.deltaTime * _moveSpeed);
+        float breakValue = _moveBreakValue * 0.1f;
+        transform.position = Vector2.SmoothDamp(transform.position, _targetPosition, ref _currentVelocity, breakValue, _moveSpeed);
+    }
+
+    private void Update_OuterPosition()
+    {
+        if (_outerPositionCoroutine != null)
+        {
+            StopCoroutine(_outerPositionCoroutine);
+            _outerPositionCoroutine = null;
+        }
+
+        if (_dragging) return;
+
+        _outerPositionCoroutine = StartCoroutine(OuterPosition_UpdateCoroutine());
+    }
+    private IEnumerator OuterPosition_UpdateCoroutine()
+    {
+        TableTop tableTop = Game_Controller.instance.tableTop;
+
+        while (Is_Moving()) yield return null;
+        
+        if (tableTop.Is_OuterGrid(transform.position) == false) yield break;
+        Assign_TargetPosition(tableTop.Grid_ClampPosition(transform.position));
+
+        _outerPositionCoroutine = null;
     }
     
     
     // Seperation
     private Vector2 Pushed_TargetPosition(Vector2 pushStartPos, Vector2 pushedCardPosition)
     {
-        float seperationDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
+        TableTop tableTop = Game_Controller.instance.tableTop;
+        
+        float seperationDistance = tableTop.cardSeperationDistance;
         float currentDistance = Vector2.Distance(pushStartPos, pushedCardPosition);
         
         if (currentDistance >= seperationDistance) return pushedCardPosition;
@@ -122,6 +181,7 @@ public class Card_Movement : MonoBehaviour
             Vector2 pushedPos = Pushed_TargetPosition(detectedCardPos);
             
             movement.Assign_TargetPosition(pushedPos);
+            movement.Update_OuterPosition();
         }
     }
     
@@ -132,17 +192,18 @@ public class Card_Movement : MonoBehaviour
 
         Card_Movement pushingCardMovement = _card.detection.detectedCards[0].movement;
         if (pushingCardMovement._dragging) return;
-        
+
         Vector2 pushingCardTargetPos = pushingCardMovement._targetPosition;
         
         float pushDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
         Vector2 pushedPosition = Pushed_TargetPosition(pushingCardTargetPos, transform.position);
         
         Assign_TargetPosition(pushedPosition);
+        Update_OuterPosition();
     }
     
     
-    // Effects
+    // Visual
     public void Update_Shadows()
     {
         Vector2 updatePos = _dragging ? _shadowOffset : Vector2.zero;

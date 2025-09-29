@@ -6,14 +6,22 @@ using UnityEngine;
 public class TableTop : MonoBehaviour
 {
     [Space(20)] 
-    [SerializeField] private Vector2 _cardGridRange;
-    
-    [SerializeField][Range(0, 10)] private float _cardSeperationDistance;
+    [SerializeField] private Vector2 _xGridRange;
+    [SerializeField] private Vector2 _yGridRange;
+
+    [Space(10)]
+    [SerializeField][Range(0, 100)] private float _cardSeperationDistance;
     public float cardSeperationDistance => _cardSeperationDistance;
 
-    [Space(20)]
+    [Space(20)] 
+    [SerializeField] private Vector2 _cardLaunchPosition;
+    
+    [Space(10)] 
     [SerializeField] private CardLauncher _cardLauncher;
-    [SerializeField] private Transform _launchedCards;
+    public CardLauncher cardLauncher => _cardLauncher;
+    
+    [SerializeField] private Transform _allCards;
+    public Transform allCards => _allCards;
 
     [Space(20)] 
     [SerializeField][Range(0, 100)] private int _startingCardAmount;
@@ -37,14 +45,32 @@ public class TableTop : MonoBehaviour
     }
 
 
+    // Grid
+    public bool Is_OuterGrid(Vector2 checkPosition)
+    {
+        if (checkPosition.x < _xGridRange.x || checkPosition.x > _xGridRange.y) return true;
+        if (checkPosition.y < _yGridRange.x || checkPosition.y > _yGridRange.y) return true;
+        
+        return false;
+    }
+
+    public Vector2 Grid_ClampPosition(Vector2 position)
+    {
+        float xPos = Mathf.Clamp(position.x, _xGridRange.x, _xGridRange.y);
+        float yPos = Mathf.Clamp(position.y, _yGridRange.x, _yGridRange.y);
+        
+        return new Vector2(xPos, yPos);
+    }
+    
+    
     // New Cards
     private void Launch_StaticCard()
     {
-        float randXPos = UnityEngine.Random.Range(-_cardGridRange.x, _cardGridRange.x);
-        float randYPos = UnityEngine.Random.Range(-_cardGridRange.y, _cardGridRange.y);
-
-        Card launchedCard = _cardLauncher.Launch_Card(new(randXPos, randYPos));
-        launchedCard.transform.SetParent(_launchedCards);
+        float randXPos = UnityEngine.Random.Range(_xGridRange.x, _xGridRange.y);
+        float randYPos = UnityEngine.Random.Range(_yGridRange.x, _yGridRange.y);
+        
+        Card launchedCard = _cardLauncher.Launch_Card(_cardLaunchPosition, new(randXPos, randYPos));
+        launchedCard.transform.SetParent(_allCards);
     }
     private IEnumerator LaunchCards_Coroutine()
     {
@@ -69,5 +95,16 @@ public class TableTop : MonoBehaviour
             maxOrder = sortingOrder;
         }
         return maxOrder;
+    }
+
+    public void UpdateCards_LayerOrder()
+    {
+        for (int i = 0; i < _currentCards.Count; i++)
+        {
+            Card card = _currentCards[i];
+
+            if (card.detection.detectedCards.Count > 0) continue;
+            card.sortingGroup.sortingOrder = 0;
+        }
     }
 }

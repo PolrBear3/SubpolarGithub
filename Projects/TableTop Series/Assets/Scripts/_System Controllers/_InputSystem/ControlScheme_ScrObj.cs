@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(menuName = "New ScriptableObject/ New Scheme!")]
+[CreateAssetMenu(menuName = "ScriptableObject/ New Scheme")]
 public class ControlScheme_ScrObj : ScriptableObject
 {
     [Header("")]
