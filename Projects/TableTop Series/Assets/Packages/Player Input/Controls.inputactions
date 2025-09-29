@@ -15,6 +15,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "MultiSelect",
+                    "type": "Button",
+                    "id": "f80afc8d-9f32-471c-97af-22a632af3b35",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Exit",
                     "type": "Button",
                     "id": "1537059a-675d-4898-b84c-256c704d3e07",
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f091794c-9490-4b47-9711-e3a2ba839a99",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "MultiSelect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

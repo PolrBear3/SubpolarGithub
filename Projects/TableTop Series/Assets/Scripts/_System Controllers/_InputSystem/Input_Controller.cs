@@ -27,6 +27,7 @@ public class Input_Controller : MonoBehaviour
     public Action OnSchemeUpdate;
 
     public Action OnSelect;
+    public Action OnMultiSelect;
     public Action OnExit;
 
     
@@ -106,6 +107,12 @@ public class Input_Controller : MonoBehaviour
     {
         if (context.performed == false) return;
         OnSelect?.Invoke();
+    }
+    
+    public void MultiSelect(InputAction.CallbackContext context)
+    {
+        if (context.performed == false) return;
+        OnMultiSelect?.Invoke();
     }
     
     public void Exit(InputAction.CallbackContext context)

@@ -8,6 +8,10 @@ using Random = UnityEngine.Random;
 public class Card : MonoBehaviour
 {
     [Space(20)] 
+    [SerializeField] private SpriteRenderer _base;
+    [SerializeField] private SpriteRenderer _icon;
+    
+    [Space(20)] 
     [SerializeField] private SortingGroup _sortingGroup;
     public SortingGroup sortingGroup => _sortingGroup;
     
@@ -113,5 +117,11 @@ public class Card : MonoBehaviour
     {
         if (_movement.dragging == false) return;
         _sortingGroup.sortingOrder = Game_Controller.instance.tableTop.Max_CardLayerOrder() + 1;
+    }
+
+    public void Update_Visuals()
+    {
+        // _base.sprite = 
+        _icon.sprite = _data.cardScrObj.iconSprite;
     }
 }

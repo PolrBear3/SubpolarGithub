@@ -26,6 +26,8 @@ public class TableTop : MonoBehaviour
     [Space(20)] 
     [SerializeField][Range(0, 100)] private int _startingCardAmount;
     
+    [SerializeField] private Card_ScrObj[] _startingCards;
+    
     
     private List<Card> _currentCards = new();
     public List<Card> currentCards => _currentCards;
@@ -71,6 +73,11 @@ public class TableTop : MonoBehaviour
         
         Card launchedCard = _cardLauncher.Launch_Card(_cardLaunchPosition, new(randXPos, randYPos));
         launchedCard.transform.SetParent(_allCards);
+        
+        int randIndex = UnityEngine.Random.Range(0, _startingCards.Length);
+        
+        launchedCard.Set_Data(new(_startingCards[randIndex]));
+        launchedCard.Update_Visuals();
     }
     private IEnumerator LaunchCards_Coroutine()
     {
