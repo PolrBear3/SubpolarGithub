@@ -47,47 +47,71 @@ public class Card : MonoBehaviour
         tableTop.currentCards.Add(this);
         
         // subscriptions
-        _eventSystem.OnClick += _movement.Toggle_DragDrop;
+        _eventSystem.OnSelect += _movement.Toggle_DragDrop;
+        _eventSystem.OnMultiSelect += _movement.Toggle_DragDrop;
         
-        _eventSystem.OnClick += _movement.Dragging_Update;
+        // drag subscriptions
+        _eventSystem.OnSelect += _movement.Dragging_Update;
+        _eventSystem.OnMultiSelect += _movement.Dragging_Update;
+        
         _movement.WhileDragging += _interaction.Point_ClosestCard;
+        
+        // drop subscriptions
+        _eventSystem.OnSelect += _interaction.Interact_PointedCard;
 
-        // _eventSystem.OnClick += _interaction.Spawn_StackedCard_OnEmpty;
-        _eventSystem.OnClick += _interaction.Interact_PointedCard;
-
-        _eventSystem.OnClick += _interaction.UpdateCards_Pointer;
+        _eventSystem.OnSelect += _interaction.UpdateCards_Pointer;
+        _eventSystem.OnMultiSelect += _interaction.UpdateCards_Pointer;
         _detection.OnCardExit += _interaction.UpdateCards_Pointer;
 
-        _eventSystem.OnClick += _movement.Push_OverlappedCards;
+        _eventSystem.OnSelect += _movement.Push_OverlappedCards;
+        _eventSystem.OnMultiSelect += _movement.Push_OverlappedCards;
+        
         _detection.OnCardDetection += _movement.Update_PushedMovement;
         
-        _eventSystem.OnClick += tableTop.UpdateCards_LayerOrder;
-        _eventSystem.OnClick += Update_LayerOrder;
+        _eventSystem.OnSelect += tableTop.UpdateCards_LayerOrder;
+        _eventSystem.OnSelect += Update_LayerOrder;
         
-        _eventSystem.OnClick += _movement.Update_Shadows;
+        _eventSystem.OnMultiSelect += tableTop.UpdateCards_LayerOrder;
+        _eventSystem.OnMultiSelect += Update_LayerOrder;
+        
+        _eventSystem.OnSelect += _movement.Update_Shadows;
+        _eventSystem.OnMultiSelect += _movement.Update_Shadows;
     }
 
     private void OnDestroy()
     {
-        // subscriptions
-        _eventSystem.OnClick -= _movement.Toggle_DragDrop;
+        TableTop tableTop = Game_Controller.instance.tableTop;
         
-        _eventSystem.OnClick -= _movement.Dragging_Update;
+        // subscriptions
+        _eventSystem.OnSelect -= _movement.Toggle_DragDrop;
+        _eventSystem.OnMultiSelect -= _movement.Toggle_DragDrop;
+        
+        // drag subscriptions
+        _eventSystem.OnSelect -= _movement.Dragging_Update;
+        _eventSystem.OnMultiSelect -= _movement.Dragging_Update;
+        
         _movement.WhileDragging -= _interaction.Point_ClosestCard;
         
-        // _eventSystem.OnClick -= _interaction.Spawn_StackedCard_OnEmpty;
-        _eventSystem.OnClick -= _interaction.Interact_PointedCard;
+        // drop subscriptions
+        _eventSystem.OnSelect -= _interaction.Interact_PointedCard;
         
-        _eventSystem.OnClick -= _interaction.UpdateCards_Pointer;
+        _eventSystem.OnSelect -= _interaction.UpdateCards_Pointer;
+        _eventSystem.OnMultiSelect -= _interaction.UpdateCards_Pointer;
         _detection.OnCardExit -= _interaction.UpdateCards_Pointer;
 
-        _eventSystem.OnClick -= _movement.Push_OverlappedCards;
+        _eventSystem.OnSelect -= _movement.Push_OverlappedCards;
+        _eventSystem.OnMultiSelect -= _movement.Push_OverlappedCards;
+        
         _detection.OnCardDetection -= _movement.Update_PushedMovement;
         
-        _eventSystem.OnClick -= Game_Controller.instance.tableTop.UpdateCards_LayerOrder;
-        _eventSystem.OnClick -= Update_LayerOrder;
+        _eventSystem.OnSelect -= tableTop.UpdateCards_LayerOrder;
+        _eventSystem.OnSelect -= Update_LayerOrder;
         
-        _eventSystem.OnClick -= _movement.Update_Shadows;
+        _eventSystem.OnMultiSelect += tableTop.UpdateCards_LayerOrder;
+        _eventSystem.OnMultiSelect += Update_LayerOrder;
+        
+        _eventSystem.OnSelect -= _movement.Update_Shadows;
+        _eventSystem.OnMultiSelect -= _movement.Update_Shadows;
     }
     
     

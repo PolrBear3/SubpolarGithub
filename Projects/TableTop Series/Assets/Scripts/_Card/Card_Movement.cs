@@ -64,6 +64,8 @@ public class Card_Movement : MonoBehaviour
         Card setCard = _dragging ? _card : null;
         cursor.Set_CurrentCard(setCard);
 
+        cursor.Update_HoverCardInfo(setCard); // test
+        
         if (_dragging) return;
         
         Assign_TargetPosition(transform.position);

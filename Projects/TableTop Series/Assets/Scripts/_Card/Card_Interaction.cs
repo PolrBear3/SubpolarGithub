@@ -24,11 +24,13 @@ public class Card_Interaction : MonoBehaviour
         Toggle_Pointer(false);
         
         // subscriptions
+        OnInteract += Stack_PointedCard;
     }
 
     private void OnDestroy()
     {
         // subscriptions
+        OnInteract -= Stack_PointedCard;
     }
 
 
@@ -84,30 +86,6 @@ public class Card_Interaction : MonoBehaviour
     }
 
     
-    public void Stack_Card(Card stackCard)
-    {
-        if (stackCard == null) return;
-        _card.data.stackedCardDatas.Add(stackCard.data);
-        
-        Game_Controller.instance.tableTop.currentCards.Remove(stackCard);
-        Destroy(stackCard.gameObject);
-    }
-
-    public void Spawn_StackedCard()
-    {
-        List<Card_Data> stackedCardDatas = _card.data.stackedCardDatas;
-        if (stackedCardDatas.Count == 0) return;
-
-        Card_Data recentCardData = stackedCardDatas[stackedCardDatas.Count - 1];
-        
-        Vector2 spawnPos = _card.RandomPeripheral_SpawnPosition();
-        _card.cardLauncher.Launch_Card(spawnPos).Set_Data(recentCardData);
-
-        stackedCardDatas.Remove(recentCardData);
-    }
-    
-    
-    // Examples for Custom Cards (OnInteract Subscriptions)
     private void CheckInteract_Debug(Card pointedCard)
     {
         List<Card> detectedCards = _card.detection.detectedCards;
@@ -123,14 +101,15 @@ public class Card_Interaction : MonoBehaviour
 
     private void Stack_PointedCard(Card pointedCard)
     {
-        Stack_Card(pointedCard);
-    }
-
-    public void Spawn_StackedCard_OnEmpty()
-    {
-        if (_card.movement.dragging) return;
-        if (_card.detection.detectedCards.Count > 0) return;
+        Card_Data currentCardData = _card.data;
+        Card_Data pointedCardData = pointedCard.data;
         
-        Spawn_StackedCard();
+        if (_card.data.cardScrObj != pointedCardData.cardScrObj) return;
+        
+        int setAmount = currentCardData.stackAmount + pointedCardData.stackAmount;
+        currentCardData.Set_StackAmount(setAmount);
+
+        Game_Controller.instance.tableTop.currentCards.Remove(pointedCard);
+        Destroy(pointedCard.gameObject);
     }
 }
