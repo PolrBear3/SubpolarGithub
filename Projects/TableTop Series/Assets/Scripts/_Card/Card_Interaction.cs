@@ -53,7 +53,10 @@ public class Card_Interaction : MonoBehaviour
 
         for (int i = 0; i < detectedCards.Count; i++)
         {
-            detectedCards[i].interaction.Toggle_Pointer(detectedCards[i] == closestCard);
+            if (detectedCards[i] == null) continue;
+
+            bool toggle = closestCard != null && detectedCards[i] == closestCard;
+            detectedCards[i].interaction.Toggle_Pointer(toggle);
         }
     }
 
@@ -70,35 +73,20 @@ public class Card_Interaction : MonoBehaviour
     }
     
     
-    // Interactions
+    // Select
     public void Interact_PointedCard()
     {
         List<Card> detectedCards = _card.detection.detectedCards;
-        if (detectedCards.Count == 0) return;
-        
+
         for (int i = 0; i < detectedCards.Count; i++)
         {
-            if (!detectedCards[i].interaction.pointerToggled) continue;
+            if (detectedCards[i] == null) continue;
+            if (detectedCards[i].interaction.pointerToggled == false) continue;
             
             OnInteract?.Invoke(detectedCards[i]);
-            return;
         }
     }
-
     
-    private void CheckInteract_Debug(Card pointedCard)
-    {
-        List<Card> detectedCards = _card.detection.detectedCards;
-
-        for (int i = 0; i < detectedCards.Count; i++)
-        {
-            if (pointedCard != detectedCards[i]) continue;
-            
-            Debug.Log("Interact Card Index Number: " + i);
-            return;
-        }
-    }
-
     private void Stack_PointedCard(Card pointedCard)
     {
         Card_Data currentCardData = _card.data;
@@ -109,7 +97,34 @@ public class Card_Interaction : MonoBehaviour
         int setAmount = currentCardData.stackAmount + pointedCardData.stackAmount;
         currentCardData.Set_StackAmount(setAmount);
 
+        pointedCard.detection.collider.enabled = false;
+        
         Game_Controller.instance.tableTop.currentCards.Remove(pointedCard);
         Destroy(pointedCard.gameObject);
+    }
+    
+    
+    // Multi Select
+    public void Drop_StackedCard()
+    {
+        Card_Movement cardMovement = _card.movement;
+        
+        Card_Data stackedCardData = _card.data;
+        int stackedAmount = stackedCardData.stackAmount;
+        
+        if (cardMovement.dragging == false || stackedAmount <= 1) return;
+        
+        Game_Controller gameController = Game_Controller.instance;
+
+        Vector2 spawnPos = _card.RandomPeripheral_SpawnPosition();
+        Card launchedCard = _card.cardLauncher.Launch_Card(spawnPos);
+        
+        launchedCard.transform.SetParent(gameController.tableTop.allCards);
+
+        launchedCard.Set_Data(new(stackedCardData.cardScrObj));
+        launchedCard.Update_Visuals();
+
+        stackedCardData.Set_StackAmount(stackedAmount - 1);
+        gameController.cursor.Update_HoverCardInfo(_card);
     }
 }

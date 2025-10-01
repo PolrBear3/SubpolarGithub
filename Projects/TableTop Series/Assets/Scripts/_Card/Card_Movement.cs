@@ -31,7 +31,7 @@ public class Card_Movement : MonoBehaviour
 
     private Vector2 _targetPosition;
     private Vector2 _currentVelocity;
-    
+
     private Coroutine _draggingUpdateCoroutine;
     private Coroutine _outerPositionCoroutine;
     
@@ -114,7 +114,7 @@ public class Card_Movement : MonoBehaviour
     {
         _targetPosition = targetPosition;
     }
-    
+
     private void TargetPosition_MovementUpdate()
     {
         if (_dragging) return;
@@ -124,7 +124,7 @@ public class Card_Movement : MonoBehaviour
         transform.position = Vector2.SmoothDamp(transform.position, _targetPosition, ref _currentVelocity, breakValue, _moveSpeed);
     }
 
-    private void Update_OuterPosition()
+    public void Update_OuterPosition()
     {
         if (_outerPositionCoroutine != null)
         {
@@ -177,6 +177,7 @@ public class Card_Movement : MonoBehaviour
 
         for (int i = 0; i < detectedCards.Count; i++)
         {
+            if (detectedCards[i] == null) continue;
             Card_Movement movement = detectedCards[i].movement;
             
             Vector2 detectedCardPos = detectedCards[i].transform.position;
@@ -192,16 +193,25 @@ public class Card_Movement : MonoBehaviour
         if (_dragging) return;
         if (Is_Moving()) return;
 
-        Card_Movement pushingCardMovement = _card.detection.detectedCards[0].movement;
-        if (pushingCardMovement._dragging) return;
+        List<Card> detectedCards = _card.detection.detectedCards;
+        
+        for (int i = 0; i < detectedCards.Count; i++)
+        {
+            if (detectedCards[i] == null) continue;
+            
+            Card_Movement pushingCardMovement = detectedCards[i].movement;
+            if (pushingCardMovement.dragging) continue;
 
-        Vector2 pushingCardTargetPos = pushingCardMovement._targetPosition;
+            Vector2 pushingCardTargetPos = pushingCardMovement._targetPosition;
         
-        float pushDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
-        Vector2 pushedPosition = Pushed_TargetPosition(pushingCardTargetPos, transform.position);
+            float pushDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
+            Vector2 pushedPosition = Pushed_TargetPosition(pushingCardTargetPos, transform.position);
         
-        Assign_TargetPosition(pushedPosition);
-        Update_OuterPosition();
+            Assign_TargetPosition(pushedPosition);
+            Update_OuterPosition();
+
+            return;
+        }
     }
     
     

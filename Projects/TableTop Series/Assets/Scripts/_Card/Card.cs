@@ -48,32 +48,34 @@ public class Card : MonoBehaviour
         
         // subscriptions
         _eventSystem.OnSelect += _movement.Toggle_DragDrop;
-        _eventSystem.OnMultiSelect += _movement.Toggle_DragDrop;
+        _eventSystem.OnMultiSelect += _interaction.Drop_StackedCard;
         
         // drag subscriptions
         _eventSystem.OnSelect += _movement.Dragging_Update;
         _eventSystem.OnMultiSelect += _movement.Dragging_Update;
-        
+
+        // pointer
         _movement.WhileDragging += _interaction.Point_ClosestCard;
-        
-        // drop subscriptions
         _eventSystem.OnSelect += _interaction.Interact_PointedCard;
 
         _eventSystem.OnSelect += _interaction.UpdateCards_Pointer;
         _eventSystem.OnMultiSelect += _interaction.UpdateCards_Pointer;
         _detection.OnCardExit += _interaction.UpdateCards_Pointer;
 
+        // movement
         _eventSystem.OnSelect += _movement.Push_OverlappedCards;
         _eventSystem.OnMultiSelect += _movement.Push_OverlappedCards;
-        
-        _detection.OnCardDetection += _movement.Update_PushedMovement;
-        
+
+        tableTop.OnLoopUpdate += _movement.Update_OuterPosition;
+        tableTop.OnLoopUpdate += _movement.Update_PushedMovement;
+
+        // visual
         _eventSystem.OnSelect += tableTop.UpdateCards_LayerOrder;
         _eventSystem.OnSelect += Update_LayerOrder;
-        
+
         _eventSystem.OnMultiSelect += tableTop.UpdateCards_LayerOrder;
         _eventSystem.OnMultiSelect += Update_LayerOrder;
-        
+
         _eventSystem.OnSelect += _movement.Update_Shadows;
         _eventSystem.OnMultiSelect += _movement.Update_Shadows;
     }
@@ -84,32 +86,34 @@ public class Card : MonoBehaviour
         
         // subscriptions
         _eventSystem.OnSelect -= _movement.Toggle_DragDrop;
-        _eventSystem.OnMultiSelect -= _movement.Toggle_DragDrop;
+        _eventSystem.OnMultiSelect -= _interaction.Drop_StackedCard;
         
         // drag subscriptions
         _eventSystem.OnSelect -= _movement.Dragging_Update;
         _eventSystem.OnMultiSelect -= _movement.Dragging_Update;
-        
+
+        // pointer
         _movement.WhileDragging -= _interaction.Point_ClosestCard;
-        
-        // drop subscriptions
         _eventSystem.OnSelect -= _interaction.Interact_PointedCard;
-        
+
         _eventSystem.OnSelect -= _interaction.UpdateCards_Pointer;
         _eventSystem.OnMultiSelect -= _interaction.UpdateCards_Pointer;
         _detection.OnCardExit -= _interaction.UpdateCards_Pointer;
 
+        // movement
         _eventSystem.OnSelect -= _movement.Push_OverlappedCards;
         _eventSystem.OnMultiSelect -= _movement.Push_OverlappedCards;
-        
-        _detection.OnCardDetection -= _movement.Update_PushedMovement;
-        
+
+        tableTop.OnLoopUpdate -= _movement.Update_OuterPosition;
+        tableTop.OnLoopUpdate -= _movement.Update_PushedMovement;
+
+        // visual
         _eventSystem.OnSelect -= tableTop.UpdateCards_LayerOrder;
         _eventSystem.OnSelect -= Update_LayerOrder;
-        
-        _eventSystem.OnMultiSelect += tableTop.UpdateCards_LayerOrder;
-        _eventSystem.OnMultiSelect += Update_LayerOrder;
-        
+
+        _eventSystem.OnMultiSelect -= tableTop.UpdateCards_LayerOrder;
+        _eventSystem.OnMultiSelect -= Update_LayerOrder;
+
         _eventSystem.OnSelect -= _movement.Update_Shadows;
         _eventSystem.OnMultiSelect -= _movement.Update_Shadows;
     }

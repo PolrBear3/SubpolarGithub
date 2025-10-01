@@ -15,9 +15,11 @@ public class CardLauncher : MonoBehaviour
         GameObject launchedCard = Instantiate(_cardPrefab, launchPosition, Quaternion.identity);
         
         if (launchedCard.TryGetComponent(out Card card) == false) return null;
-        if (launchPosition == launchDestination) return card;
+        card.sortingGroup.sortingOrder = 0;
         
+        if (launchPosition == launchDestination) return card;
         card.movement.Assign_TargetPosition(launchDestination);
+        
         return card;
     }
     public Card Launch_Card(Vector2 launchDestination)

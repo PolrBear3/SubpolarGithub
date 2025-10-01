@@ -6,6 +6,9 @@ using UnityEngine;
 public class TableTop : MonoBehaviour
 {
     [Space(20)] 
+    [SerializeField][Range(0, 10)] private float _loopUpdateTikTime;
+    
+    [Space(10)] 
     [SerializeField] private Vector2 _xGridRange;
     [SerializeField] private Vector2 _yGridRange;
 
@@ -31,19 +34,16 @@ public class TableTop : MonoBehaviour
     
     private List<Card> _currentCards = new();
     public List<Card> currentCards => _currentCards;
+
+    private Coroutine _loopUpdateCoroutine;
+    public Action OnLoopUpdate;
     
     
     // MonoBehaviour
     private void Start()
     {
         StartCoroutine(LaunchCards_Coroutine());
-        
-        // subscriptions
-    }
-
-    private void OnDestroy()
-    {
-        // subscriptions
+        Toggle_LoopUpdate(true);
     }
 
 
@@ -89,7 +89,29 @@ public class TableTop : MonoBehaviour
     }
     
     
-    // Current Cards
+    // Current TableTop
+    private void Toggle_LoopUpdate(bool toggle)
+    {
+        if (_loopUpdateCoroutine != null)
+        {
+            StopCoroutine(_loopUpdateCoroutine);
+            _loopUpdateCoroutine = null;
+        }
+        
+        if (toggle == false) return;
+
+        _loopUpdateCoroutine = StartCoroutine(LoopUpdate_Coroutine());
+    }
+    private IEnumerator LoopUpdate_Coroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(_loopUpdateTikTime);
+            OnLoopUpdate?.Invoke();
+        }
+    }
+    
+    
     public int Max_CardLayerOrder()
     {
         int maxOrder = 0;
@@ -97,8 +119,8 @@ public class TableTop : MonoBehaviour
         for (int i = 0; i < _currentCards.Count; i++)
         {
             int sortingOrder = _currentCards[i].sortingGroup.sortingOrder;
-            if (sortingOrder <= maxOrder) continue;
             
+            if (sortingOrder <= maxOrder) continue;
             maxOrder = sortingOrder;
         }
         return maxOrder;
@@ -109,7 +131,7 @@ public class TableTop : MonoBehaviour
         for (int i = 0; i < _currentCards.Count; i++)
         {
             Card card = _currentCards[i];
-
+            
             if (card.detection.detectedCards.Count > 0) continue;
             card.sortingGroup.sortingOrder = 0;
         }
