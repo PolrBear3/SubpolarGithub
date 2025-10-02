@@ -43,53 +43,10 @@ public class TableTop : MonoBehaviour
     private void Start()
     {
         StartCoroutine(LaunchCards_Coroutine());
-        Toggle_LoopUpdate(true);
     }
 
 
-    // Grid
-    public bool Is_OuterGrid(Vector2 checkPosition)
-    {
-        if (checkPosition.x < _xGridRange.x || checkPosition.x > _xGridRange.y) return true;
-        if (checkPosition.y < _yGridRange.x || checkPosition.y > _yGridRange.y) return true;
-        
-        return false;
-    }
-
-    public Vector2 Grid_ClampPosition(Vector2 position)
-    {
-        float xPos = Mathf.Clamp(position.x, _xGridRange.x, _xGridRange.y);
-        float yPos = Mathf.Clamp(position.y, _yGridRange.x, _yGridRange.y);
-        
-        return new Vector2(xPos, yPos);
-    }
-    
-    
-    // New Cards
-    private void Launch_StaticCard()
-    {
-        float randXPos = UnityEngine.Random.Range(_xGridRange.x, _xGridRange.y);
-        float randYPos = UnityEngine.Random.Range(_yGridRange.x, _yGridRange.y);
-        
-        Card launchedCard = _cardLauncher.Launch_Card(_cardLaunchPosition, new(randXPos, randYPos));
-        launchedCard.transform.SetParent(_allCards);
-        
-        int randIndex = UnityEngine.Random.Range(0, _startingCards.Length);
-        
-        launchedCard.Set_Data(new(_startingCards[randIndex]));
-        launchedCard.Update_Visuals();
-    }
-    private IEnumerator LaunchCards_Coroutine()
-    {
-        for (int i = 0; i < _startingCardAmount; i++)
-        {
-            Launch_StaticCard();
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-    
-    
-    // Current TableTop
+    // Main
     private void Toggle_LoopUpdate(bool toggle)
     {
         if (_loopUpdateCoroutine != null)
@@ -111,6 +68,50 @@ public class TableTop : MonoBehaviour
         }
     }
     
+    
+    // Grid
+    
+    
+    
+    public bool Is_OuterGrid(Vector2 checkPosition)
+    {
+        if (checkPosition.x < _xGridRange.x || checkPosition.x > _xGridRange.y) return true;
+        if (checkPosition.y < _yGridRange.x || checkPosition.y > _yGridRange.y) return true;
+        
+        return false;
+    }
+    
+    public Vector2 Grid_ClampPosition(Vector2 position)
+    {
+        float xPos = Mathf.Clamp(position.x, _xGridRange.x, _xGridRange.y);
+        float yPos = Mathf.Clamp(position.y, _yGridRange.x, _yGridRange.y);
+        
+        return new Vector2(xPos, yPos);
+    }
+    
+    
+    // Cards
+    private void Launch_StaticCard()
+    {
+        float randXPos = UnityEngine.Random.Range(_xGridRange.x, _xGridRange.y);
+        float randYPos = UnityEngine.Random.Range(_yGridRange.x, _yGridRange.y);
+        
+        Card launchedCard = _cardLauncher.Launch_Card(_cardLaunchPosition, new(randXPos, randYPos));
+        launchedCard.transform.SetParent(_allCards);
+        
+        int randIndex = UnityEngine.Random.Range(0, _startingCards.Length);
+        
+        launchedCard.Set_Data(new(_startingCards[randIndex]));
+        launchedCard.Update_Visuals();
+    }
+    private IEnumerator LaunchCards_Coroutine()
+    {
+        for (int i = 0; i < _startingCardAmount; i++)
+        {
+            Launch_StaticCard();
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
     
     public int Max_CardLayerOrder()
     {

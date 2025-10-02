@@ -24,13 +24,13 @@ public class Card_Interaction : MonoBehaviour
         Toggle_Pointer(false);
         
         // subscriptions
-        OnInteract += Stack_PointedCard;
+        // OnInteract += Stack_PointedCard;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        OnInteract -= Stack_PointedCard;
+        // OnInteract -= Stack_PointedCard;
     }
 
 

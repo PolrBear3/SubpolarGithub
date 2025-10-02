@@ -152,9 +152,7 @@ public class Card_Movement : MonoBehaviour
     // Seperation
     private Vector2 Pushed_TargetPosition(Vector2 pushStartPos, Vector2 pushedCardPosition)
     {
-        TableTop tableTop = Game_Controller.instance.tableTop;
-        
-        float seperationDistance = tableTop.cardSeperationDistance;
+        float seperationDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
         float currentDistance = Vector2.Distance(pushStartPos, pushedCardPosition);
         
         if (currentDistance >= seperationDistance) return pushedCardPosition;
