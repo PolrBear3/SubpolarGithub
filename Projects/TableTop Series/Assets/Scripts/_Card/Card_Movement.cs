@@ -56,10 +56,12 @@ public class Card_Movement : MonoBehaviour
     public void Toggle_DragDrop(bool toggle)
     {
         Cursor cursor = Game_Controller.instance.cursor;
+        cursor.Update_HoverCardInfo(null);
+
         List<Card> dragCards = cursor.currentCards;
         
         _dragging = toggle;
-        
+
         if (_dragging)
         {
             dragCards.Add(_card);
@@ -212,8 +214,6 @@ public class Card_Movement : MonoBehaviour
             if (pushingCardMovement.dragging) continue;
 
             Vector2 pushingCardTargetPos = pushingCardMovement._targetPosition;
-        
-            float pushDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
             Vector2 pushedPosition = Pushed_TargetPosition(pushingCardTargetPos, transform.position);
         
             Assign_TargetPosition(pushedPosition);

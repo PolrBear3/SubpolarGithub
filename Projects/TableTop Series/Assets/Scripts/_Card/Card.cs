@@ -31,8 +31,11 @@ public class Card : MonoBehaviour
     
     [SerializeField] private Card_Interaction _interaction;
     public Card_Interaction interaction => _interaction;
-    
-    
+
+    [Space(20)]
+    [SerializeField] private Vector2 _descriptionToggleOffset;
+
+
     private Card_Data _data;
     public Card_Data data => _data;
 
@@ -164,11 +167,14 @@ public class Card : MonoBehaviour
     {
         Input_Controller input = Input_Controller.instance;
         Cursor cursor = Game_Controller.instance.cursor;
+
+        bool toggle = input.isIdle;
+        Card infoCard = toggle ? this : null;
         
-        Card infoCard = input.isIdle ? this : null;
-        
-        cursor.Toggle_CursorPoint(infoCard != null);
         cursor.Update_HoverCardInfo(infoCard);
+
+        if (!toggle) return;
+        cursor.Update_CursorPoint((Vector2)transform.position + _descriptionToggleOffset);
     }
     
     

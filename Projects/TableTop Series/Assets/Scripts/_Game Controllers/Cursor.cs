@@ -14,8 +14,8 @@ public class Cursor : MonoBehaviour
     [SerializeField] private RectTransform _uiCursorPoint;
     
     [Space(20)] 
-    [SerializeField] private RectTransform _cardDescriptionBox;
-    [SerializeField] private TextMeshProUGUI _cardNameText;
+    [SerializeField] private RectTransform _cardDescription;
+    [SerializeField] private TextMeshProUGUI cardDescriptionText;
 
     [Space(20)] 
     [SerializeField] private RectTransform _stackAmountBox;
@@ -48,32 +48,43 @@ public class Cursor : MonoBehaviour
         if (_currentCards.Count <= 0) return null;
         return _currentCards[_currentCards.Count - 1];
     }
-    
-    
+
+
     // Main
+    public void Toggle_CursorPointUpdate(bool toggle)
+    {
+        _cursorPointActive = toggle;
+
+        if (!toggle) return;
+        Update_CursorPoint();
+    }
     private void CursorPoint_Update()
     {
         if (!_cursorPointActive) return;
-        
-        _uiCursorPoint.position = Mouse.current.position.ReadValue();
+
+        Update_CursorPoint();
     }
-    
-    public void Toggle_CursorPoint(bool toggle)
+
+    public void Update_CursorPoint(Vector2 pointPosition)
     {
-        _cursorPointActive = toggle;
+        _uiCursorPoint.position = _camera.WorldToScreenPoint(pointPosition);
+    }
+    public void Update_CursorPoint()
+    {
+        _uiCursorPoint.position = Mouse.current.position.ReadValue();
     }
     
     
     // Hover Card Info
     public void Update_HoverCardInfo(Card hoveringCard)
     {
-        _cardDescriptionBox.gameObject.SetActive(hoveringCard != null);
+        _cardDescription.gameObject.SetActive(hoveringCard != null);
         if (hoveringCard == null) return;
         
         Card_Data data = hoveringCard.data;
         int currentCardsCount = _currentCards.Count;
         
-        _cardNameText.text = data.cardScrObj.cardName;
+        cardDescriptionText.text = data.cardScrObj.cardName;
         
         _stackAmountBox.gameObject.SetActive(currentCardsCount > 1);
         if (currentCardsCount <= 1) return;
