@@ -7,21 +7,20 @@ public class Card_Data
     private Card_ScrObj _cardScrObj;
     public Card_ScrObj cardScrObj => _cardScrObj;
 
-    private int _stackAmount;
-    public int stackAmount => _stackAmount;
+    private Vector2 _droppedPosition;
+    public Vector2 droppedPosition => _droppedPosition;
     
     
     // New
     public Card_Data(Card_ScrObj cardScrObj)
     {
         _cardScrObj = cardScrObj;
-        _stackAmount = 1;
     }
     
     
     // Data
-    public void Set_StackAmount(int setValue)
+    public void Update_DroppedPosition(Vector2 position)
     {
-        _stackAmount = (int)Mathf.Max(1f, setValue);
+        _droppedPosition = position;
     }
 }

@@ -6,6 +6,15 @@
             "id": "3a2c6b9f-435d-4415-94f9-8efdd44b50e7",
             "actions": [
                 {
+                    "name": "Point",
+                    "type": "Value",
+                    "id": "3659bc20-d9cd-436c-b941-aed5c2ac6f91",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Select",
                     "type": "Button",
                     "id": "bf1576cf-bcec-4cbb-9f8e-0771498d1243",
@@ -36,17 +45,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "8e3640c4-abdf-4305-a74d-fefde70dc8ab",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b342b453-d7ae-4bbd-9642-f0fa7f977d9c",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
@@ -64,6 +62,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "MultiSelect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4964731f-f61a-4cfc-877a-d163ab45d240",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e3640c4-abdf-4305-a74d-fefde70dc8ab",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

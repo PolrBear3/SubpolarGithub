@@ -42,6 +42,7 @@ public class TableTop : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
+        Toggle_LoopUpdate(true);
         StartCoroutine(LaunchCards_Coroutine());
     }
 
@@ -70,9 +71,6 @@ public class TableTop : MonoBehaviour
     
     
     // Grid
-    
-    
-    
     public bool Is_OuterGrid(Vector2 checkPosition)
     {
         if (checkPosition.x < _xGridRange.x || checkPosition.x > _xGridRange.y) return true;
@@ -80,8 +78,8 @@ public class TableTop : MonoBehaviour
         
         return false;
     }
-    
-    public Vector2 Grid_ClampPosition(Vector2 position)
+
+    public Vector2 InnerGrid_Position(Vector2 position)
     {
         float xPos = Mathf.Clamp(position.x, _xGridRange.x, _xGridRange.y);
         float yPos = Mathf.Clamp(position.y, _yGridRange.x, _yGridRange.y);

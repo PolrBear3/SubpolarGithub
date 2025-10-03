@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Card_Movement : MonoBehaviour
 {
@@ -52,31 +53,37 @@ public class Card_Movement : MonoBehaviour
 
 
     // Drag and Drop
-    public void Toggle_DragDrop()
+    public void Toggle_DragDrop(bool toggle)
     {
-        Game_Controller controller = Game_Controller.instance;
+        Cursor cursor = Game_Controller.instance.cursor;
+        List<Card> dragCards = cursor.currentCards;
         
-        Cursor cursor = controller.cursor;
-        if (cursor.currentCard != null && cursor.currentCard != _card) return;
+        _dragging = toggle;
         
-        _dragging = !_dragging;
+        if (_dragging)
+        {
+            dragCards.Add(_card);
+            return;
+        }
         
-        Card setCard = _dragging ? _card : null;
-        cursor.Set_CurrentCard(setCard);
+        dragCards.Remove(_card);
 
-        cursor.Update_HoverCardInfo(setCard); // test
-        
-        if (_dragging) return;
-        
         Assign_TargetPosition(transform.position);
         Update_OuterPosition();
+    }
+    public void Toggle_DragDrop()
+    {
+        List<Card> dragCards = Game_Controller.instance.cursor.currentCards;
+
+        if (dragCards.Count > 0 && !dragCards.Contains(_card)) return;
+        Toggle_DragDrop(!_dragging);
     }
     
     private void MouseFollow_Update()
     {
         if (_dragging == false) return;
         
-        Vector2 mousePos = Input.mousePosition;
+        Vector2 mousePos = Mouse.current.position.ReadValue();;
         Vector2 targetPos = _camera.ScreenToWorldPoint(mousePos);
         
         transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * _moveSpeed);
@@ -113,6 +120,7 @@ public class Card_Movement : MonoBehaviour
     public void Assign_TargetPosition(Vector2 targetPosition)
     {
         _targetPosition = targetPosition;
+        _card.data.Update_DroppedPosition(_targetPosition);
     }
 
     private void TargetPosition_MovementUpdate()
@@ -133,6 +141,7 @@ public class Card_Movement : MonoBehaviour
         }
 
         if (_dragging) return;
+        if (Is_Moving()) return;
 
         _outerPositionCoroutine = StartCoroutine(OuterPosition_UpdateCoroutine());
     }
@@ -143,28 +152,29 @@ public class Card_Movement : MonoBehaviour
         while (Is_Moving()) yield return null;
         
         if (tableTop.Is_OuterGrid(transform.position) == false) yield break;
-        Assign_TargetPosition(tableTop.Grid_ClampPosition(transform.position));
+        Assign_TargetPosition(tableTop.InnerGrid_Position(transform.position));
 
         _outerPositionCoroutine = null;
     }
     
     
     // Seperation
-    private Vector2 Pushed_TargetPosition(Vector2 pushStartPos, Vector2 pushedCardPosition)
+    private Vector2 Pushed_TargetPosition(Vector2 pushingCardPos, Vector2 pushedCardPos)
     {
         float seperationDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
-        float currentDistance = Vector2.Distance(pushStartPos, pushedCardPosition);
+        float currentDistance = Vector2.Distance(pushingCardPos, pushedCardPos);
         
-        if (currentDistance >= seperationDistance) return pushedCardPosition;
+        if (currentDistance >= seperationDistance) return pushedCardPos;
 
-        Vector2 pushDirection = pushedCardPosition - pushStartPos;
+        Vector2 pushDirection = pushedCardPos - pushingCardPos;
         float pushDistance = seperationDistance - currentDistance;
         
-        return pushedCardPosition + pushDirection.normalized * pushDistance;
-    }
-    private Vector2 Pushed_TargetPosition(Vector2 pushedCardPosition)
-    {
-        return Pushed_TargetPosition(transform.position, pushedCardPosition);
+        float diagonalFactor = Mathf.Abs(pushDirection.normalized.x) + Mathf.Abs(pushDirection.normalized.y);
+        diagonalFactor = Mathf.Clamp(diagonalFactor, 1f, Mathf.Sqrt(2f));
+        
+        pushDistance *= diagonalFactor;
+        
+        return pushedCardPos + pushDirection.normalized * pushDistance;
     }
     
     public void Push_OverlappedCards()
@@ -172,6 +182,7 @@ public class Card_Movement : MonoBehaviour
         if (_dragging) return;
 
         List<Card> detectedCards = _card.detection.detectedCards;
+        if (detectedCards.Count == 0) return;
 
         for (int i = 0; i < detectedCards.Count; i++)
         {
@@ -179,10 +190,9 @@ public class Card_Movement : MonoBehaviour
             Card_Movement movement = detectedCards[i].movement;
             
             Vector2 detectedCardPos = detectedCards[i].transform.position;
-            Vector2 pushedPos = Pushed_TargetPosition(detectedCardPos);
+            Vector2 pushedPos = Pushed_TargetPosition(transform.position, detectedCardPos);
             
             movement.Assign_TargetPosition(pushedPos);
-            movement.Update_OuterPosition();
         }
     }
     
@@ -192,7 +202,8 @@ public class Card_Movement : MonoBehaviour
         if (Is_Moving()) return;
 
         List<Card> detectedCards = _card.detection.detectedCards;
-        
+        if (detectedCards.Count == 0) return;
+
         for (int i = 0; i < detectedCards.Count; i++)
         {
             if (detectedCards[i] == null) continue;
@@ -206,8 +217,6 @@ public class Card_Movement : MonoBehaviour
             Vector2 pushedPosition = Pushed_TargetPosition(pushingCardTargetPos, transform.position);
         
             Assign_TargetPosition(pushedPosition);
-            Update_OuterPosition();
-
             return;
         }
     }

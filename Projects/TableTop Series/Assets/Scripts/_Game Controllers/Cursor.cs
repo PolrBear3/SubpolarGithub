@@ -2,26 +2,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class Cursor : MonoBehaviour
 {
     private Camera _camera;
-    
-    private Card _currentCard;
-    public Card currentCard => _currentCard;
-    
+
     
     [Space(20)]
     [SerializeField] private RectTransform _uiCursorPoint;
-
+    
     [Space(20)] 
-    [SerializeField] private RectTransform _hoverCardInfo;
+    [SerializeField] private RectTransform _cardDescriptionBox;
     [SerializeField] private TextMeshProUGUI _cardNameText;
 
     [Space(20)] 
     [SerializeField] private RectTransform _stackAmountBox;
     [SerializeField] private TextMeshProUGUI _stackAmountText;
+    
+    
+    private List<Card> _currentCards = new();
+    public List<Card> currentCards => _currentCards;
+
+    private bool _cursorPointActive;
 
 
     // MonoBehaviour
@@ -32,36 +36,48 @@ public class Cursor : MonoBehaviour
         Update_HoverCardInfo(null);
     }
 
+    private void Update()
+    {
+        CursorPoint_Update();
+    }
+
 
     // Data
-    public void Set_CurrentCard(Card setCard)
+    public Card Recent_CurrentCard()
     {
-        _currentCard = setCard;
+        if (_currentCards.Count <= 0) return null;
+        return _currentCards[_currentCards.Count - 1];
     }
     
     
-    // UI
-    public void Update_PointPosition()
+    // Main
+    private void CursorPoint_Update()
     {
-        Vector2 mousePos = Input.mousePosition;
-        _uiCursorPoint.position = mousePos;
+        if (!_cursorPointActive) return;
+        
+        _uiCursorPoint.position = Mouse.current.position.ReadValue();
+    }
+    
+    public void Toggle_CursorPoint(bool toggle)
+    {
+        _cursorPointActive = toggle;
     }
     
     
     // Hover Card Info
     public void Update_HoverCardInfo(Card hoveringCard)
     {
-        _hoverCardInfo.gameObject.SetActive(hoveringCard != null);
+        _cardDescriptionBox.gameObject.SetActive(hoveringCard != null);
         if (hoveringCard == null) return;
         
         Card_Data data = hoveringCard.data;
-        int stackAmount = data.stackAmount;
-
+        int currentCardsCount = _currentCards.Count;
+        
         _cardNameText.text = data.cardScrObj.cardName;
         
-        _stackAmountBox.gameObject.SetActive(stackAmount > 1);
-        if (stackAmount <= 1) return;
+        _stackAmountBox.gameObject.SetActive(currentCardsCount > 1);
+        if (currentCardsCount <= 1) return;
         
-        _stackAmountText.text = data.stackAmount.ToString();
+        _stackAmountText.text = currentCardsCount.ToString();
     }
 }

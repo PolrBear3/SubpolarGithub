@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc3cf6b4ef9449f9b2d52ba3731aa21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enterDelayTime: 1
 --- !u!114 &2881334272277491606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca27ce6138f82472a9c3a03cffe73be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _base: {fileID: 6206210800022853744}
+  _cardBase: {fileID: 6206210800022853744}
   _icon: {fileID: 6958411024513101862}
   _sortingGroup: {fileID: 7256426217675558681}
   _eventSystem: {fileID: 7383046950187760491}
@@ -257,7 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _card: {fileID: 2881334272277491606}
-  _collider: {fileID: 5533151480087203687}
+  _boxCollider: {fileID: 5533151480087203687}
   _detectedCards: []
 --- !u!114 &6196072701508708868
 MonoBehaviour:

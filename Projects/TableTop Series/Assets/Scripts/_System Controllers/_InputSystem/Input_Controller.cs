@@ -17,18 +17,27 @@ public class Input_Controller : MonoBehaviour
     [Space(20)]
     [SerializeField] private ControlScheme_ScrObj[] _schemes;
 
+    [Space(20)] 
+    [SerializeField] [Range(0, 10)] private float _idleThreshold;
+
     
     private ControlScheme_ScrObj _currentScheme;
     public ControlScheme_ScrObj currentScheme => _currentScheme;
 
     private string _currentSchemeName;
-    
-
     public Action OnSchemeUpdate;
 
+    public Action OnPoint;
+    public Action OnIdle;
+    
     public Action OnSelect;
     public Action OnMultiSelect;
     public Action OnExit;
+    
+    private Coroutine _idleCoroutine;
+
+    private bool _isIdle;
+    public bool isIdle => _isIdle;
 
     
     // MonoBehaviour
@@ -103,6 +112,22 @@ public class Input_Controller : MonoBehaviour
 
 
     // InGame
+    public void Point(InputAction.CallbackContext contex)
+    {
+        _isIdle = false;
+        OnPoint?.Invoke();
+
+        if (_idleCoroutine != null) StopCoroutine(_idleCoroutine);
+        _idleCoroutine = StartCoroutine(Idle_Coroutine());
+    }
+    private IEnumerator Idle_Coroutine()
+    {
+        yield return new WaitForSeconds(_idleThreshold);
+        
+        _isIdle = true;
+        OnIdle?.Invoke();
+    }
+    
     public void Select(InputAction.CallbackContext context)
     {
         if (context.performed == false) return;
@@ -134,7 +159,7 @@ public class Input_Controller_Inspector : Editor
         base.OnInspectorGUI();
         serializedObject.Update();
 
-        GUILayout.Space(60);
+        GUILayout.Space(40);
 
         if (GUILayout.Button("Toggle Scheme"))
         {

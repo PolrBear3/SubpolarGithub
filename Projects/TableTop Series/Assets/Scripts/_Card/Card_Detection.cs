@@ -8,8 +8,8 @@ public class Card_Detection : MonoBehaviour
     [Space(20)] 
     [SerializeField] private Card _card;
 
-    [SerializeField] private BoxCollider2D _collider;
-    public BoxCollider2D collider => _collider;
+    [SerializeField] private BoxCollider2D _boxCollider;
+    public BoxCollider2D boxCollider => _boxCollider;
 
     [Space(20)] 
     [SerializeField] private List<Card> _detectedCards = new();
@@ -51,24 +51,5 @@ public class Card_Detection : MonoBehaviour
         });
         
         return sortedCards;
-    }
-    
-    public Card Closest_DetectedCard()
-    {
-        if (_detectedCards.Count == 0) return null;
-        Card closestCard = _detectedCards[0];
-
-        for (int i = 0; i < _detectedCards.Count; i++)
-        {
-            if (i == 0) continue;
-            if (_detectedCards[i] == null) continue;
-
-            float closestDistance = Vector2.Distance(transform.position, closestCard.transform.position);
-            if (Vector2.Distance(transform.position, _detectedCards[i].transform.position) >= closestDistance) continue;
-            
-            closestCard = _detectedCards[i];
-        }
-        
-        return closestCard;
     }
 }
