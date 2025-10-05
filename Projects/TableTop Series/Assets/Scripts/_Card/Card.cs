@@ -18,6 +18,7 @@ public class Card : MonoBehaviour
     public SortingGroup sortingGroup => _sortingGroup;
     
     [SerializeField] private IPointer_EventSystem _eventSystem;
+    public IPointer_EventSystem eventSystem => _eventSystem;
     
     [SerializeField] private CardLauncher _cardLauncher;
     public CardLauncher cardLauncher => _cardLauncher;
@@ -49,12 +50,17 @@ public class Card : MonoBehaviour
     private void Start()
     {
         Input_Controller input = Input_Controller.instance;
-        
-        TableTop tableTop = Game_Controller.instance.tableTop;
+
+        Game_Controller controller = Game_Controller.instance;
+
+        TableTop tableTop = controller.tableTop;
+        Cursor cursor = controller.cursor;
+
         tableTop.currentCards.Add(this);
         
         // subscriptions
         _eventSystem.OnSelect += _movement.Toggle_DragDrop;
+        _eventSystem.OnSelect += cursor.DragUpdate_CurrentCard;
 
         // drag subscriptions
         _eventSystem.OnSelect += _movement.Dragging_Update;
@@ -72,66 +78,34 @@ public class Card : MonoBehaviour
         _detection.OnCardExit += _interaction.UpdateCards_Pointer;
 
         // movement
-        _eventSystem.OnSelect += _movement.Push_OverlappedCards;
+        _eventSystem.OnSelect += _movement.Push_OverlappedCards; // push overlapped cards on normal drop
         _eventSystem.OnMultiSelect += _movement.Push_OverlappedCards;
-        
-        _detection.OnCardDetection += _movement.Update_PushedMovement;
+
+        _eventSystem.OnSelect += _movement.Update_PushedMovement; // get pushed after interaction
+        _eventSystem.OnSelect += interaction.ResetFlag_Interacted;
+
+        _detection.OnCardDetection += _movement.Update_PushedMovement; // get pushed
         tableTop.OnLoopUpdate += _movement.Update_PushedMovement;
-        
+
         tableTop.OnLoopUpdate += _movement.Update_OuterPosition;
 
         // visual
         _eventSystem.OnSelect += tableTop.UpdateCards_LayerOrder;
         _eventSystem.OnSelect += Update_LayerOrder;
 
-        _eventSystem.OnMultiSelect += tableTop.UpdateCards_LayerOrder;
-        _eventSystem.OnMultiSelect += Update_LayerOrder;
-
         _eventSystem.OnSelect += _movement.Update_Shadows;
-        _eventSystem.OnMultiSelect += _movement.Update_Shadows;
     }
 
     private void OnDestroy()
     {
-        Input_Controller input = Input_Controller.instance;
-        TableTop tableTop = Game_Controller.instance.tableTop;
-        
-        // subscriptions
-        _eventSystem.OnSelect -= _movement.Toggle_DragDrop;
+        Game_Controller controller = Game_Controller.instance;
 
-        // drag subscriptions
-        _eventSystem.OnSelect -= _movement.Dragging_Update;
-        _eventSystem.OnMultiSelect -= _movement.Dragging_Update;
+        TableTop tableTop = controller.tableTop;
 
-        // pointer
-        _eventSystem.OnIdle -= Toggle_Description;
-        _eventSystem.OnPoint -= Toggle_Description;
-        
-        _movement.WhileDragging -= _interaction.Point_ClosestCard;
-        _eventSystem.OnSelect -= _interaction.Interact_PointedCard;
-
-        _eventSystem.OnSelect -= _interaction.UpdateCards_Pointer;
-        _eventSystem.OnMultiSelect -= _interaction.UpdateCards_Pointer;
-        _detection.OnCardExit -= _interaction.UpdateCards_Pointer;
-
-        // movement
-        _eventSystem.OnSelect -= _movement.Push_OverlappedCards;
-        _eventSystem.OnMultiSelect -= _movement.Push_OverlappedCards;
-
-        _detection.OnCardDetection -= _movement.Update_PushedMovement;
         tableTop.OnLoopUpdate -= _movement.Update_PushedMovement;
-
         tableTop.OnLoopUpdate -= _movement.Update_OuterPosition;
 
-        // visual
-        _eventSystem.OnSelect -= tableTop.UpdateCards_LayerOrder;
-        _eventSystem.OnSelect -= Update_LayerOrder;
-
-        _eventSystem.OnMultiSelect -= tableTop.UpdateCards_LayerOrder;
-        _eventSystem.OnMultiSelect -= Update_LayerOrder;
-
-        _eventSystem.OnSelect -= _movement.Update_Shadows;
-        _eventSystem.OnMultiSelect -= _movement.Update_Shadows;
+        _eventSystem.OnSelect -= controller.cursor.DragUpdate_CurrentCard;
     }
     
     
@@ -156,13 +130,20 @@ public class Card : MonoBehaviour
     }
     
     
-    // Visual
-    private void Update_LayerOrder()
+    // Visual    
+    public void Update_Visuals()
+    {
+        // _base.sprite = 
+        _icon.sprite = _data.cardScrObj.iconSprite;
+    }
+
+    public void Update_LayerOrder()
     {
         if (_movement.dragging == false) return;
         _sortingGroup.sortingOrder = Game_Controller.instance.tableTop.Max_CardLayerOrder() + 1;
     }
-    
+
+
     private void Toggle_Description()
     {
         Input_Controller input = Input_Controller.instance;
@@ -170,17 +151,10 @@ public class Card : MonoBehaviour
 
         bool toggle = input.isIdle;
         Card infoCard = toggle ? this : null;
-        
+
         cursor.Update_HoverCardInfo(infoCard);
 
         if (!toggle) return;
         cursor.Update_CursorPoint((Vector2)transform.position + _descriptionToggleOffset);
-    }
-    
-    
-    public void Update_Visuals()
-    {
-        // _base.sprite = 
-        _icon.sprite = _data.cardScrObj.iconSprite;
     }
 }

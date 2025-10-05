@@ -88,7 +88,7 @@ public class TableTop : MonoBehaviour
     }
     
     
-    // Cards
+    // Current Cards
     private void Launch_StaticCard()
     {
         float randXPos = UnityEngine.Random.Range(_xGridRange.x, _xGridRange.y);
@@ -110,7 +110,19 @@ public class TableTop : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
-    
+
+    public Card Current_DraggingCard()
+    {
+        for (int i = 0; i < _currentCards.Count; i++)
+        {
+            if (!_currentCards[i].movement.dragging) continue;
+            return _currentCards[i];
+        }
+        return null;
+    }
+
+
+    // Current Card Layers
     public int Max_CardLayerOrder()
     {
         int maxOrder = 0;

@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Card_Interaction : MonoBehaviour
+public interface IInteractCondition
+{
+    public bool Interactable();
+}
+
+public class Card_Interaction : MonoBehaviour, IInteractCondition
 {
     [Space(20)]
     [SerializeField] private Card _card;
@@ -14,6 +19,9 @@ public class Card_Interaction : MonoBehaviour
     
     private bool _pointerToggled;
     public bool pointerToggled => _pointerToggled;
+
+    private bool _interacted;
+    public bool interacted => _interacted;
 
     public Action<Card> OnInteract;
 
@@ -26,9 +34,11 @@ public class Card_Interaction : MonoBehaviour
         // subscriptions
     }
 
-    private void OnDestroy()
+
+    // IInteractCondition (use on custom card components)
+    public bool Interactable()
     {
-        // subscriptions
+        return false;
     }
 
 
@@ -38,7 +48,13 @@ public class Card_Interaction : MonoBehaviour
         _pointerToggled = toggle;
         _cardPointer.SetActive(_pointerToggled);
     }
-    
+
+    public void ResetFlag_Interacted()
+    {
+        if (_card.movement.dragging) return;
+
+        _interacted = false;
+    }
     public void Interact_PointedCard()
     {
         List<Card> detectedCards = _card.detection.detectedCards;
@@ -49,25 +65,36 @@ public class Card_Interaction : MonoBehaviour
             if (detectedCards[i].interaction.pointerToggled == false) continue;
             
             OnInteract?.Invoke(detectedCards[i]);
+            _interacted = true;
         }
     }
     
     
     // Current Card
+    private bool Card_Interactable(Card card)
+    {
+        if (!card.gameObject.TryGetComponent(out IInteractCondition interactCondition)) return false;
+        return interactCondition.Interactable();
+    }
     public void Point_ClosestCard()
+
     {
         Card_Detection detection = _card.detection;
-        List<Card> detectedCards = detection.detectedCards;
-        
+
+        List<Card> detectedCards = detection.Closest_DetectedCards();
         if (detectedCards.Count == 0) return;
-        Card closestCard = detection.Closest_DetectedCards()[0];
+
+        bool cardPointed = false;
 
         for (int i = 0; i < detectedCards.Count; i++)
         {
-            if (detectedCards[i] == null) continue;
+            Card card = detectedCards[i];
+            if (card == null) continue;
 
-            bool toggle = closestCard != null && detectedCards[i] == closestCard;
+            bool toggle = !cardPointed && Card_Interactable(card);
             detectedCards[i].interaction.Toggle_Pointer(toggle);
+
+            cardPointed = toggle;
         }
     }
 
@@ -82,7 +109,4 @@ public class Card_Interaction : MonoBehaviour
             allCards[i].interaction.Toggle_Pointer(false);
         }
     }
-    
-    
-    // Multi Pickup
 }

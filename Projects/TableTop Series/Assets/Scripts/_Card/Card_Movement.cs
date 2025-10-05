@@ -23,10 +23,12 @@ public class Card_Movement : MonoBehaviour
     [Space(20)] 
     [SerializeField][Range(0, 100)] private float _moveSpeed;
     [SerializeField][Range(0, 10)] private float _moveBreakValue;
-    
-    
+
+
     private bool _dragging;
     public bool dragging => _dragging;
+
+    private Transform _dragTarget;
 
     public Action WhileDragging;
 
@@ -48,7 +50,7 @@ public class Card_Movement : MonoBehaviour
     private void Update()
     {
         TargetPosition_MovementUpdate();
-        MouseFollow_Update();
+        DragPosition_Update();
     }
 
 
@@ -58,37 +60,38 @@ public class Card_Movement : MonoBehaviour
         Cursor cursor = Game_Controller.instance.cursor;
         cursor.Update_HoverCardInfo(null);
 
-        List<Card> dragCards = cursor.currentCards;
+        List<Card_Data> dragDatas = cursor.currentCardDatas;
         
         _dragging = toggle;
 
+        if (_dragging && dragDatas.Contains(_card.data)) return;
+
         if (_dragging)
         {
-            dragCards.Add(_card);
+            dragDatas.Add(_card.data);
             return;
         }
-        
-        dragCards.Remove(_card);
+        dragDatas.Remove(_card.data);
 
         Assign_TargetPosition(transform.position);
         Update_OuterPosition();
     }
     public void Toggle_DragDrop()
     {
-        List<Card> dragCards = Game_Controller.instance.cursor.currentCards;
+        Card currentDragCard = Game_Controller.instance.tableTop.Current_DraggingCard();
+        if (currentDragCard != null && currentDragCard != _card) return;
 
-        if (dragCards.Count > 0 && !dragCards.Contains(_card)) return;
         Toggle_DragDrop(!_dragging);
     }
-    
-    private void MouseFollow_Update()
+
+    private void DragPosition_Update()
     {
         if (_dragging == false) return;
-        
-        Vector2 mousePos = Mouse.current.position.ReadValue();;
-        Vector2 targetPos = _camera.ScreenToWorldPoint(mousePos);
-        
-        transform.position = Vector2.Lerp(transform.position, targetPos, Time.deltaTime * _moveSpeed);
+
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector2 dragPos = _camera.ScreenToWorldPoint(mousePos);
+
+        transform.position = Vector2.Lerp(transform.position, dragPos, Time.deltaTime * _moveSpeed);
     }
 
     public void Dragging_Update()
@@ -182,6 +185,7 @@ public class Card_Movement : MonoBehaviour
     public void Push_OverlappedCards()
     {
         if (_dragging) return;
+        if (_card.interaction.interacted) return;
 
         List<Card> detectedCards = _card.detection.detectedCards;
         if (detectedCards.Count == 0) return;
@@ -209,6 +213,7 @@ public class Card_Movement : MonoBehaviour
         for (int i = 0; i < detectedCards.Count; i++)
         {
             if (detectedCards[i] == null) continue;
+            if (detectedCards[i].interaction.interacted) continue;
             
             Card_Movement pushingCardMovement = detectedCards[i].movement;
             if (pushingCardMovement.dragging) continue;
