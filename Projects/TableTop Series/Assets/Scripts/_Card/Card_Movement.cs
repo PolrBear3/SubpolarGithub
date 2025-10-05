@@ -28,8 +28,6 @@ public class Card_Movement : MonoBehaviour
     private bool _dragging;
     public bool dragging => _dragging;
 
-    private Transform _dragTarget;
-
     public Action WhileDragging;
 
     private Vector2 _targetPosition;
@@ -58,8 +56,6 @@ public class Card_Movement : MonoBehaviour
     public void Toggle_DragDrop(bool toggle)
     {
         Cursor cursor = Game_Controller.instance.cursor;
-        cursor.Update_HoverCardInfo(null);
-
         List<Card_Data> dragDatas = cursor.currentCardDatas;
         
         _dragging = toggle;
@@ -73,7 +69,12 @@ public class Card_Movement : MonoBehaviour
         }
         dragDatas.Remove(_card.data);
 
-        Assign_TargetPosition(transform.position);
+        cursor.Update_CursorPoint();
+        Vector2 dropPos = cursor.Card_DropPoint();
+
+        transform.position = dropPos;
+        Assign_TargetPosition(dropPos);
+
         Update_OuterPosition();
     }
     public void Toggle_DragDrop()

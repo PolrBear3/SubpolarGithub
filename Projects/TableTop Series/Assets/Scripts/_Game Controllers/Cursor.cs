@@ -19,10 +19,13 @@ public class Cursor : MonoBehaviour
     [SerializeField] private TextMeshProUGUI cardDescriptionText;
 
     [Space(20)] 
-    [SerializeField] private RectTransform _stackAmountBox;
-    [SerializeField] private TextMeshProUGUI _stackAmountText;
-    
-    
+    [SerializeField] private RectTransform _dragCardCountBox;
+    [SerializeField] private TextMeshProUGUI _dragCardCountText;
+
+    [Space(20)]
+    [SerializeField] private RectTransform _cardDropPoint;
+
+
     private List<Card_Data> _currentCardDatas = new();
     public List<Card_Data> currentCardDatas => _currentCardDatas;
 
@@ -34,16 +37,20 @@ public class Cursor : MonoBehaviour
     {
         _camera = Game_Controller.instance.mainCamera;
 
-        Update_HoverCardInfo(null);
+        Toggle_DragCardCount();
 
         // subscriptions
-        Input_Controller.instance.OnMultiSelect += DragDrop_MultipleCards;
+        Input_Controller input = Input_Controller.instance;
+
+        input.OnMultiSelect += DragDrop_MultipleCards;
     }
 
     private void OnDestroy()
     {
         // subscriptions
-        Input_Controller.instance.OnMultiSelect -= DragDrop_MultipleCards;
+        Input_Controller input = Input_Controller.instance;
+
+        input.OnMultiSelect -= DragDrop_MultipleCards;
     }
 
     private void Update()
@@ -52,7 +59,7 @@ public class Cursor : MonoBehaviour
     }
 
 
-    // Main
+    // Curor Point
     public void Toggle_CursorPointUpdate(bool toggle)
     {
         _cursorPointActive = toggle;
@@ -76,8 +83,13 @@ public class Cursor : MonoBehaviour
         _uiCursorPoint.position = Mouse.current.position.ReadValue();
     }
 
+    public Vector2 Card_DropPoint()
+    {
+        return _camera.ScreenToWorldPoint(_cardDropPoint.position);
+    }
 
-    // Cards
+
+    // Current Cards Data Control
     private void DragDrop_MultipleCards()
     {
         TableTop tableTop = Game_Controller.instance.tableTop;
@@ -103,7 +115,9 @@ public class Cursor : MonoBehaviour
 
     public void DragUpdate_CurrentCard()
     {
-        if (Game_Controller.instance.tableTop.Current_DraggingCard() != null) return;
+        TableTop tableTop = Game_Controller.instance.tableTop;
+
+        if (tableTop.Current_DraggingCard() != null) return;
         if (_currentCardDatas.Count == 0) return;
 
         Card_Data recentData = _currentCardDatas[_currentCardDatas.Count - 1];
@@ -113,19 +127,29 @@ public class Cursor : MonoBehaviour
         Vector2 spawnPos = _camera.ScreenToWorldPoint(mousePos);
 
         GameObject emptyCard = Instantiate(_emptyCardPrefab, spawnPos, Quaternion.identity);
+        emptyCard.transform.SetParent(tableTop.allCards);
+
         if (emptyCard.TryGetComponent(out Card dragCard) == false) return;
-
         dragCard.Set_Data(recentData);
-
-        dragCard.Update_Visuals();
-        dragCard.Update_LayerOrder();
 
         Card_Movement movement = dragCard.movement;
 
         movement.Toggle_DragDrop(true);
         movement.Update_Shadows();
+
+        dragCard.Update_Visuals();
+        dragCard.Update_LayerOrder();
     }
 
+
+    public void Toggle_DragCardCount()
+    {
+        bool toggle = _currentCardDatas.Count > 1;
+        _dragCardCountBox.gameObject.SetActive(toggle);
+
+        if (!toggle) return;
+        _dragCardCountText.text = _currentCardDatas.Count.ToString();
+    }
 
     public void Update_HoverCardInfo(Card hoveringCard)
     {
@@ -133,13 +157,6 @@ public class Cursor : MonoBehaviour
         if (hoveringCard == null) return;
         
         Card_Data data = hoveringCard.data;
-        int currentCardsCount = _currentCardDatas.Count;
-        
         cardDescriptionText.text = data.cardScrObj.cardName;
-        
-        _stackAmountBox.gameObject.SetActive(currentCardsCount > 1);
-        if (currentCardsCount <= 1) return;
-        
-        _stackAmountText.text = currentCardsCount.ToString();
     }
 }

@@ -67,9 +67,6 @@ public class Card : MonoBehaviour
         _eventSystem.OnMultiSelect += _movement.Dragging_Update;
 
         // pointer
-        _eventSystem.OnIdle += Toggle_Description;
-        _eventSystem.OnPoint += Toggle_Description;
-        
         _movement.WhileDragging += _interaction.Point_ClosestCard;
         _eventSystem.OnSelect += _interaction.Interact_PointedCard;
 
@@ -100,12 +97,13 @@ public class Card : MonoBehaviour
     {
         Game_Controller controller = Game_Controller.instance;
 
+        Cursor cursor = controller.cursor;
+        _eventSystem.OnSelect -= cursor.DragUpdate_CurrentCard;
+
         TableTop tableTop = controller.tableTop;
 
         tableTop.OnLoopUpdate -= _movement.Update_PushedMovement;
         tableTop.OnLoopUpdate -= _movement.Update_OuterPosition;
-
-        _eventSystem.OnSelect -= controller.cursor.DragUpdate_CurrentCard;
     }
     
     
@@ -141,20 +139,5 @@ public class Card : MonoBehaviour
     {
         if (_movement.dragging == false) return;
         _sortingGroup.sortingOrder = Game_Controller.instance.tableTop.Max_CardLayerOrder() + 1;
-    }
-
-
-    private void Toggle_Description()
-    {
-        Input_Controller input = Input_Controller.instance;
-        Cursor cursor = Game_Controller.instance.cursor;
-
-        bool toggle = input.isIdle;
-        Card infoCard = toggle ? this : null;
-
-        cursor.Update_HoverCardInfo(infoCard);
-
-        if (!toggle) return;
-        cursor.Update_CursorPoint((Vector2)transform.position + _descriptionToggleOffset);
     }
 }
