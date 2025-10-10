@@ -224,7 +224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dc3cf6b4ef9449f9b2d52ba3731aa21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enterDelayTime: 1
 --- !u!114 &2881334272277491606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,6 +244,7 @@ MonoBehaviour:
   _detection: {fileID: 761480076168002142}
   _movement: {fileID: 6196072701508708868}
   _interaction: {fileID: 527146622228302552}
+  _descriptionToggleOffset: {x: 0, y: 0}
 --- !u!114 &761480076168002142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +275,8 @@ MonoBehaviour:
   _card: {fileID: 2881334272277491606}
   _cardShadow: {fileID: 9154163581197185254}
   _dragTikTime: 0.05
-  _shadowOffset: {x: 0.1, y: -0.1}
+  _defaultOffset: {x: 0.1, y: -0.1}
+  _shadowOffset: {x: 0.2, y: -0.2}
   _shadowSpeed: 0.05
   _moveSpeed: 25
   _moveBreakValue: 2

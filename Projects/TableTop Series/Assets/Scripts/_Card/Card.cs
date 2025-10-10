@@ -75,14 +75,7 @@ public class Card : MonoBehaviour
         _detection.OnCardExit += _interaction.UpdateCards_Pointer;
 
         // movement
-        _eventSystem.OnSelect += _movement.Push_OverlappedCards; // push overlapped cards on normal drop
-        _eventSystem.OnMultiSelect += _movement.Push_OverlappedCards;
-
-        _eventSystem.OnSelect += _movement.Update_PushedMovement; // get pushed after interaction
         _eventSystem.OnSelect += interaction.ResetFlag_Interacted;
-
-        _detection.OnCardDetection += _movement.Update_PushedMovement; // get pushed
-        tableTop.OnLoopUpdate += _movement.Update_PushedMovement;
 
         tableTop.OnLoopUpdate += _movement.Update_OuterPosition;
 
@@ -101,8 +94,6 @@ public class Card : MonoBehaviour
         _eventSystem.OnSelect -= cursor.DragUpdate_CurrentCard;
 
         TableTop tableTop = controller.tableTop;
-
-        tableTop.OnLoopUpdate -= _movement.Update_PushedMovement;
         tableTop.OnLoopUpdate -= _movement.Update_OuterPosition;
     }
     

@@ -15,8 +15,9 @@ public class Card_Movement : MonoBehaviour
 
     [Space(20)] 
     [SerializeField][Range(0, 10)] private float _dragTikTime;
-    
+
     [Space(20)]
+    [SerializeField] private Vector2 _defaultOffset;
     [SerializeField] private Vector2 _shadowOffset;
     [SerializeField][Range(0, 10)] private float _shadowSpeed;
     
@@ -31,6 +32,8 @@ public class Card_Movement : MonoBehaviour
     public Action WhileDragging;
 
     private Vector2 _targetPosition;
+    public Vector2 targetPosition => _targetPosition;
+
     private Vector2 _currentVelocity;
 
     private Coroutine _draggingUpdateCoroutine;
@@ -42,7 +45,7 @@ public class Card_Movement : MonoBehaviour
     {
         _camera = Game_Controller.instance.mainCamera;
 
-        _cardShadow.transform.localPosition = Vector2.zero;
+        Update_Shadows();
     }
     
     private void Update()
@@ -53,11 +56,30 @@ public class Card_Movement : MonoBehaviour
 
 
     // Drag and Drop
+    public Vector2 DropPosition()
+    {
+        TableTop tableTop = Game_Controller.instance.tableTop;
+
+        List<Vector2> dropPositions = tableTop.CardSnapPoints(transform.position);
+        if (dropPositions.Count == 0) return transform.position;
+
+        for (int i = 0; i < dropPositions.Count; i++)
+        {
+            if (tableTop.Card_OverlapPosition(dropPositions[i])) continue;
+            return dropPositions[i];
+        }
+        return transform.position;
+    }
+
     public void Toggle_DragDrop(bool toggle)
     {
-        Cursor cursor = Game_Controller.instance.cursor;
+        Game_Controller controller = Game_Controller.instance;
+
+        Cursor cursor = controller.cursor;
         List<Card_Data> dragDatas = cursor.currentCardDatas;
-        
+
+        Vector2 dropPosition = DropPosition();
+
         _dragging = toggle;
 
         if (_dragging && dragDatas.Contains(_card.data)) return;
@@ -69,12 +91,7 @@ public class Card_Movement : MonoBehaviour
         }
         dragDatas.Remove(_card.data);
 
-        cursor.Update_CursorPoint();
-        Vector2 dropPos = cursor.Card_DropPoint();
-
-        transform.position = dropPos;
-        Assign_TargetPosition(dropPos);
-
+        Assign_TargetPosition(dropPosition);
         Update_OuterPosition();
     }
     public void Toggle_DragDrop()
@@ -84,6 +101,7 @@ public class Card_Movement : MonoBehaviour
 
         Toggle_DragDrop(!_dragging);
     }
+
 
     private void DragPosition_Update()
     {
@@ -123,6 +141,7 @@ public class Card_Movement : MonoBehaviour
         return Vector2.Distance(transform.position, _targetPosition) > 0.01f;
     }
 
+
     public void Assign_TargetPosition(Vector2 targetPosition)
     {
         _targetPosition = targetPosition;
@@ -158,13 +177,24 @@ public class Card_Movement : MonoBehaviour
         while (Is_Moving()) yield return null;
         
         if (tableTop.Is_OuterGrid(transform.position) == false) yield break;
-        Assign_TargetPosition(tableTop.InnerGrid_Position(transform.position));
+        Assign_TargetPosition(DropPosition());
 
         _outerPositionCoroutine = null;
     }
-    
-    
-    // Seperation
+
+
+    // Visual
+    public void Update_Shadows()
+    {
+        Vector2 updatePos = _dragging ? _shadowOffset : _defaultOffset;
+        
+        LeanTween.cancel(_cardShadow);
+        LeanTween.moveLocal(_cardShadow, updatePos, _shadowSpeed);
+    }
+
+
+    // Card to Card Seperation
+    /*
     private Vector2 Pushed_TargetPosition(Vector2 pushingCardPos, Vector2 pushedCardPos)
     {
         float seperationDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
@@ -182,7 +212,7 @@ public class Card_Movement : MonoBehaviour
         
         return pushedCardPos + pushDirection.normalized * pushDistance;
     }
-    
+
     public void Push_OverlappedCards()
     {
         if (_dragging) return;
@@ -226,14 +256,5 @@ public class Card_Movement : MonoBehaviour
             return;
         }
     }
-    
-    
-    // Visual
-    public void Update_Shadows()
-    {
-        Vector2 updatePos = _dragging ? _shadowOffset : Vector2.zero;
-        
-        LeanTween.cancel(_cardShadow);
-        LeanTween.moveLocal(_cardShadow, updatePos, _shadowSpeed);
-    }
+    */
 }
