@@ -55,7 +55,7 @@ public class Card : MonoBehaviour
         TableTop tableTop = controller.tableTop;
         Cursor cursor = controller.cursor;
 
-        tableTop.currentCards.Add(this);
+        tableTop.Track_CurrentCard(this);
         
         // subscriptions
         _eventSystem.OnSelect += _movement.Toggle_DragDrop;

@@ -211,8 +211,10 @@ public class Card_Movement : MonoBehaviour
             bool targetPositionMatch = overlapCardMovement.targetPosition == _targetPosition;
             Vector2 dropPos = targetPositionMatch ? transform.position : _targetPosition;
 
-            // for diagonal snappoints
+            // for diagonal snappoints, restrict direction 0 for identical positions of overlapped card and drop position
             Vector2 direction = (overlapCardMovement.targetPosition - dropPos).normalized;
+            direction = direction != Vector2.zero ? direction : _card.RandomPeripheral_SpawnPosition();
+
             Vector2 pushPos = direction * tableTop.cardSeperationDistance + _targetPosition;
 
             int closestPosIndex = 0;

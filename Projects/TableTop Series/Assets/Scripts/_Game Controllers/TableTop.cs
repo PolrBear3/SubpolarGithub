@@ -34,7 +34,7 @@ public class TableTop : MonoBehaviour
 
     private List<Vector2> _cardSnapPoints = new();
 
-    private List<Card> _currentCards = new();
+    [SerializeField]private List<Card> _currentCards = new();
     public List<Card> currentCards => _currentCards;
 
     private Coroutine _loopUpdateCoroutine;
@@ -136,6 +136,13 @@ public class TableTop : MonoBehaviour
 
 
     // Current Cards
+    public void Track_CurrentCard(Card trackCard)
+    {
+        if (_currentCards.Contains(trackCard)) return;
+        _currentCards.Add(trackCard);
+    }
+
+
     private void Launch_StaticCard()
     {
         if (TotalCardCount_Max()) return;
@@ -154,6 +161,8 @@ public class TableTop : MonoBehaviour
             }
 
             Card launchedCard = _cardLauncher.Launch_Card(_cardLaunchPosition, launchPos);
+
+            Track_CurrentCard(launchedCard);
             launchedCard.transform.SetParent(_allCards);
 
             int cardIndex = UnityEngine.Random.Range(0, _startingCards.Length);
@@ -180,7 +189,6 @@ public class TableTop : MonoBehaviour
     {
         return _cardSnapPoints.Count / 2;
     }
-
     public bool TotalCardCount_Max()
     {
         return _currentCards.Count >= Max_TotalCardCount();

@@ -29,6 +29,9 @@ public class Cursor : MonoBehaviour
     private List<Card_Data> _currentCardDatas = new();
     public List<Card_Data> currentCardDatas => _currentCardDatas;
 
+    private Card _recentDragCard;
+
+
     private bool _cursorPointActive;
 
 
@@ -100,10 +103,17 @@ public class Cursor : MonoBehaviour
         Card currentCard = tableTop.Current_DraggingCard();
 
         List<Card> overlappedCards = currentCard.detection.Closest_DetectedCards();
-        if (overlappedCards.Count == 0) return;
+
+        if (overlappedCards.Count == 0)
+        {
+            _recentDragCard = null;
+            return;
+        }
 
         Card dragTargetCard = overlappedCards[0];
         _currentCardDatas.Add(dragTargetCard.data);
+
+        _recentDragCard = dragTargetCard;
 
         tableTop.currentCards.Remove(dragTargetCard);
         Destroy(dragTargetCard.gameObject);
@@ -112,7 +122,43 @@ public class Cursor : MonoBehaviour
     {
         if (_currentCardDatas.Count == 0) return;
 
-        // ?
+        if (_recentDragCard != null) return;
+        _recentDragCard = null;
+
+        TableTop tableTop = Game_Controller.instance.tableTop;
+        Card currentCard = tableTop.Current_DraggingCard();
+
+        List<Card> overlappedCards = currentCard.detection.Closest_DetectedCards();
+        if (overlappedCards.Count > 0) return;
+
+        Vector2 cursorPos = currentCard.transform.position;
+
+        List<Vector2> dropPositions = tableTop.CardSnapPoints(cursorPos);
+        int dropCount = _currentCardDatas.Count;
+
+        for (int i = 0; i < dropCount; i++)
+        {
+            if (_currentCardDatas.Count == 0) return;
+
+            Card dropCard = tableTop.Current_DraggingCard();
+            if (dropCard == null) continue;
+
+            Card_Movement dropCardMovement = dropCard.movement;
+
+            Vector2 dropPos = dropPositions.Count > 0 ? dropPositions[0] : cursorPos;
+            dropPositions.RemoveAt(0);
+
+            dropCardMovement.Toggle_DragDrop(false);
+            dropCardMovement.Update_Shadows();
+
+            dropCard.Update_Visuals();
+            dropCard.Update_LayerOrder();
+
+            dropCardMovement.Assign_TargetPosition(dropPos);
+            dropCardMovement.Push_OverlappedCards();
+
+            DragUpdate_CurrentCard();
+        }
     }
 
     public void DragUpdate_CurrentCard()
@@ -132,6 +178,8 @@ public class Cursor : MonoBehaviour
         emptyCard.transform.SetParent(tableTop.allCards);
 
         if (emptyCard.TryGetComponent(out Card dragCard) == false) return;
+
+        tableTop.Track_CurrentCard(dragCard);
         dragCard.Set_Data(recentData);
 
         Card_Movement movement = dragCard.movement;
