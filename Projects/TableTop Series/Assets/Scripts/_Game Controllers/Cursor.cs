@@ -42,7 +42,8 @@ public class Cursor : MonoBehaviour
         // subscriptions
         Input_Controller input = Input_Controller.instance;
 
-        input.OnMultiSelect += DragDrop_MultipleCards;
+        input.OnMultiSelect += Drag_MultipleCards;
+        input.OnMultiSelect += DropAll_CurrentCards;
     }
 
     private void OnDestroy()
@@ -50,7 +51,8 @@ public class Cursor : MonoBehaviour
         // subscriptions
         Input_Controller input = Input_Controller.instance;
 
-        input.OnMultiSelect -= DragDrop_MultipleCards;
+        input.OnMultiSelect -= Drag_MultipleCards;
+        input.OnMultiSelect -= DropAll_CurrentCards;
     }
 
     private void Update()
@@ -90,27 +92,27 @@ public class Cursor : MonoBehaviour
 
 
     // Current Cards Data Control
-    private void DragDrop_MultipleCards()
+    private void Drag_MultipleCards()
     {
-        TableTop tableTop = Game_Controller.instance.tableTop;
+        if (_currentCardDatas.Count == 0) return;
 
+        TableTop tableTop = Game_Controller.instance.tableTop;
         Card currentCard = tableTop.Current_DraggingCard();
-        if (currentCard == null) return;
 
         List<Card> overlappedCards = currentCard.detection.Closest_DetectedCards();
-
-        // drop all
-        if (overlappedCards.Count == 0)
-        {
-            Debug.Log("Drop Actions for all current cards");
-            return;
-        }
+        if (overlappedCards.Count == 0) return;
 
         Card dragTargetCard = overlappedCards[0];
         _currentCardDatas.Add(dragTargetCard.data);
 
         tableTop.currentCards.Remove(dragTargetCard);
         Destroy(dragTargetCard.gameObject);
+    }
+    private void DropAll_CurrentCards()
+    {
+        if (_currentCardDatas.Count == 0) return;
+
+        // ?
     }
 
     public void DragUpdate_CurrentCard()
@@ -142,6 +144,7 @@ public class Cursor : MonoBehaviour
     }
 
 
+    // Current Cards Visual
     public void Toggle_DragCardCount()
     {
         bool toggle = _currentCardDatas.Count > 1;

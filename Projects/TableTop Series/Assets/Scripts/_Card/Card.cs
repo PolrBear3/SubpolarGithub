@@ -50,7 +50,6 @@ public class Card : MonoBehaviour
     private void Start()
     {
         Input_Controller input = Input_Controller.instance;
-
         Game_Controller controller = Game_Controller.instance;
 
         TableTop tableTop = controller.tableTop;
@@ -75,9 +74,8 @@ public class Card : MonoBehaviour
         _detection.OnCardExit += _interaction.UpdateCards_Pointer;
 
         // movement
-        _eventSystem.OnSelect += interaction.ResetFlag_Interacted;
-
-        tableTop.OnLoopUpdate += _movement.Update_OuterPosition;
+        _eventSystem.OnSelect += _movement.Push_OverlappedCards;
+        _eventSystem.OnSelect += _movement.UpdatePosition_OnInteract;
 
         // visual
         _eventSystem.OnSelect += tableTop.UpdateCards_LayerOrder;
@@ -89,12 +87,9 @@ public class Card : MonoBehaviour
     private void OnDestroy()
     {
         Game_Controller controller = Game_Controller.instance;
-
         Cursor cursor = controller.cursor;
-        _eventSystem.OnSelect -= cursor.DragUpdate_CurrentCard;
 
-        TableTop tableTop = controller.tableTop;
-        tableTop.OnLoopUpdate -= _movement.Update_OuterPosition;
+        _eventSystem.OnSelect -= cursor.DragUpdate_CurrentCard;
     }
     
     

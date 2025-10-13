@@ -75,7 +75,7 @@ public class TableTop : MonoBehaviour
             OnLoopUpdate?.Invoke();
         }
     }
-    
+
     
     // Grid
     private void Load_CardSnapPoints()
@@ -110,6 +110,22 @@ public class TableTop : MonoBehaviour
         return snapPoints;
     }
 
+    public List<Vector2> Surrounding_CardSnapPoints(Vector2 pivotPosition)
+    {
+        Vector2 pivotSnapPos = CardSnapPoints(pivotPosition)[0];
+
+        List<Vector2> directions = Utility.SurroundingPositions(Vector2.zero);
+        List<Vector2> surroundings = new();
+
+        for (int i = 0; i < directions.Count; i++)
+        {
+            Vector2 surroundingPos = pivotSnapPos + directions[i] * _cardSeperationDistance;
+            surroundings.Add(surroundingPos);
+        }
+
+        return surroundings;
+    }
+
     public bool Is_OuterGrid(Vector2 checkPosition)
     {
         if (checkPosition.x < _xGridRange.x || checkPosition.x > _xGridRange.y) return true;
@@ -122,25 +138,54 @@ public class TableTop : MonoBehaviour
     // Current Cards
     private void Launch_StaticCard()
     {
-        float randXPos = UnityEngine.Random.Range(_xGridRange.x, _xGridRange.y);
-        float randYPos = UnityEngine.Random.Range(_yGridRange.x, _yGridRange.y);
-        
-        Card launchedCard = _cardLauncher.Launch_Card(_cardLaunchPosition, new(randXPos, randYPos));
-        launchedCard.transform.SetParent(_allCards);
-        
-        int randIndex = UnityEngine.Random.Range(0, _startingCards.Length);
-        
-        launchedCard.Set_Data(new(_startingCards[randIndex]));
-        launchedCard.Update_Visuals();
+        if (TotalCardCount_Max()) return;
+
+        List<Vector2> launchPositions = new(_cardSnapPoints);
+
+        while (launchPositions.Count > 0)
+        {
+            int posIndex = UnityEngine.Random.Range(0, launchPositions.Count);
+            Vector2 launchPos = launchPositions[posIndex];
+
+            if (Card_OverlapPosition(launchPos))
+            {
+                launchPositions.RemoveAt(posIndex);
+                continue;
+            }
+
+            Card launchedCard = _cardLauncher.Launch_Card(_cardLaunchPosition, launchPos);
+            launchedCard.transform.SetParent(_allCards);
+
+            int cardIndex = UnityEngine.Random.Range(0, _startingCards.Length);
+
+            launchedCard.Set_Data(new(_startingCards[cardIndex]));
+            launchedCard.Update_Visuals();
+
+            return;
+        }
     }
     private IEnumerator LaunchCards_Coroutine()
     {
         for (int i = 0; i < _startingCardAmount; i++)
         {
+            if (TotalCardCount_Max()) yield break;
+
             Launch_StaticCard();
             yield return new WaitForSeconds(0.5f);
         }
     }
+
+
+    public int Max_TotalCardCount()
+    {
+        return _cardSnapPoints.Count / 2;
+    }
+
+    public bool TotalCardCount_Max()
+    {
+        return _currentCards.Count >= Max_TotalCardCount();
+    }
+
 
     public Card Current_DraggingCard()
     {
@@ -160,7 +205,7 @@ public class TableTop : MonoBehaviour
             if (movement.dragging) continue;
 
             float distance = Vector2.Distance(checkPosition, movement.targetPosition);
-            if (distance > _cardSeperationDistance) continue;
+            if (distance >= _cardSeperationDistance) continue;
 
             return true;
         }

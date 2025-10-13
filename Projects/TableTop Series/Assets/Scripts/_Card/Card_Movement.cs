@@ -15,6 +15,7 @@ public class Card_Movement : MonoBehaviour
 
     [Space(20)] 
     [SerializeField][Range(0, 10)] private float _dragTikTime;
+    [SerializeField][Range(0, 10)] private float _pushDelayTime;
 
     [Space(20)]
     [SerializeField] private Vector2 _defaultOffset;
@@ -37,7 +38,7 @@ public class Card_Movement : MonoBehaviour
     private Vector2 _currentVelocity;
 
     private Coroutine _draggingUpdateCoroutine;
-    private Coroutine _outerPositionCoroutine;
+    private Coroutine _pushUpdateCoroutine;
     
 
     // MonoBehaviour
@@ -56,19 +57,13 @@ public class Card_Movement : MonoBehaviour
 
 
     // Drag and Drop
-    public Vector2 DropPosition()
+    private Vector2 SnapPosition(Vector2 position)
     {
         TableTop tableTop = Game_Controller.instance.tableTop;
+        List<Vector2> dropPositions = tableTop.CardSnapPoints(position);
 
-        List<Vector2> dropPositions = tableTop.CardSnapPoints(transform.position);
         if (dropPositions.Count == 0) return transform.position;
-
-        for (int i = 0; i < dropPositions.Count; i++)
-        {
-            if (tableTop.Card_OverlapPosition(dropPositions[i])) continue;
-            return dropPositions[i];
-        }
-        return transform.position;
+        return dropPositions[0];
     }
 
     public void Toggle_DragDrop(bool toggle)
@@ -77,8 +72,6 @@ public class Card_Movement : MonoBehaviour
 
         Cursor cursor = controller.cursor;
         List<Card_Data> dragDatas = cursor.currentCardDatas;
-
-        Vector2 dropPosition = DropPosition();
 
         _dragging = toggle;
 
@@ -91,8 +84,8 @@ public class Card_Movement : MonoBehaviour
         }
         dragDatas.Remove(_card.data);
 
-        Assign_TargetPosition(dropPosition);
-        Update_OuterPosition();
+        Vector2 snapPos = SnapPosition(transform.position);
+        Assign_TargetPosition(snapPos);
     }
     public void Toggle_DragDrop()
     {
@@ -157,29 +150,132 @@ public class Card_Movement : MonoBehaviour
         transform.position = Vector2.SmoothDamp(transform.position, _targetPosition, ref _currentVelocity, breakValue, _moveSpeed);
     }
 
-    public void Update_OuterPosition()
-    {
-        if (_outerPositionCoroutine != null)
-        {
-            StopCoroutine(_outerPositionCoroutine);
-            _outerPositionCoroutine = null;
-        }
 
-        if (_dragging) return;
-        if (Is_Moving()) return;
-
-        _outerPositionCoroutine = StartCoroutine(OuterPosition_UpdateCoroutine());
-    }
-    private IEnumerator OuterPosition_UpdateCoroutine()
+    // Card to Card Push Update
+    private List<Card> DistanceOverlapped_Cards()
     {
         TableTop tableTop = Game_Controller.instance.tableTop;
 
-        while (Is_Moving()) yield return null;
-        
-        if (tableTop.Is_OuterGrid(transform.position) == false) yield break;
-        Assign_TargetPosition(DropPosition());
+        List<Card> allCards = tableTop.currentCards;
+        float seperationDistance = tableTop.cardSeperationDistance;
 
-        _outerPositionCoroutine = null;
+        List<Card> overlappedCards = new();
+
+        for (int i = 0; i < allCards.Count; i++)
+        {
+            if (allCards[i] == _card) continue;
+
+            Vector2 cardPos = allCards[i].movement.targetPosition;
+            float distance = (_targetPosition - cardPos).sqrMagnitude;
+
+            if (distance > seperationDistance) continue;
+            overlappedCards.Add(allCards[i]);
+        }
+
+        return overlappedCards;
+    }
+
+    public void Push_OverlappedCards()
+    {
+        if (_pushUpdateCoroutine != null)
+        {
+            StopCoroutine(_pushUpdateCoroutine);
+            _pushUpdateCoroutine = null;
+        }
+
+        if (_dragging) return;
+        if (_card.interaction.interactedCard != null) return;
+
+        _pushUpdateCoroutine = StartCoroutine(OverlappedCards_PushCoroutine());
+    }
+    private IEnumerator OverlappedCards_PushCoroutine()
+    {
+        yield return new WaitForSeconds(_pushDelayTime);
+
+        List<Card> overlappedCards = DistanceOverlapped_Cards();
+
+        if (overlappedCards.Count == 0)
+        {
+            _pushUpdateCoroutine = null;
+            yield break;
+        }
+
+        TableTop tableTop = Game_Controller.instance.tableTop;
+        List<Vector2> pushPositions = new(tableTop.Surrounding_CardSnapPoints(_targetPosition));
+
+        for (int i = 0; i < overlappedCards.Count; i++)
+        {
+            Card_Movement overlapCardMovement = overlappedCards[i].movement;
+
+            // calculates direction to exact drop position on same position overlap
+            bool targetPositionMatch = overlapCardMovement.targetPosition == _targetPosition;
+            Vector2 dropPos = targetPositionMatch ? transform.position : _targetPosition;
+
+            // for diagonal snappoints
+            Vector2 direction = (overlapCardMovement.targetPosition - dropPos).normalized;
+            Vector2 pushPos = direction * tableTop.cardSeperationDistance + _targetPosition;
+
+            int closestPosIndex = 0;
+
+            for (int j = 0; j < pushPositions.Count; j++)
+            {
+                if (j == closestPosIndex) continue;
+
+                float closestDistance = (pushPos - pushPositions[closestPosIndex]).sqrMagnitude;
+                float checkDistance = (pushPos - pushPositions[j]).sqrMagnitude;
+
+                if (checkDistance >= closestDistance) continue;
+                closestPosIndex = j;
+            }
+
+            // outer grid position restriction
+            Vector2 snapPushPos = pushPositions[closestPosIndex];
+            snapPushPos = tableTop.Is_OuterGrid(snapPushPos) ? SnapPosition(snapPushPos) : snapPushPos;
+
+            overlapCardMovement.Assign_TargetPosition(snapPushPos);
+            overlapCardMovement.Push_OverlappedCards();
+
+            pushPositions.RemoveAt(closestPosIndex);
+        }
+
+        _pushUpdateCoroutine = null;
+    }
+
+    public void UpdatePosition_OnInteract()
+    {
+        if (_dragging) return;
+
+        Card_Interaction interaction = _card.interaction;
+        Card interactedCard = interaction.interactedCard;
+
+        if (interactedCard == null) return;
+
+        TableTop tableTop = Game_Controller.instance.tableTop;
+
+        Vector2 interactCardPos = interactedCard.movement.targetPosition;
+        Vector2 droppedPos = transform.position;
+
+        Vector2 pushDirection = (droppedPos - interactCardPos).normalized;
+        Vector2 pushPos = pushDirection * tableTop.cardSeperationDistance + droppedPos;
+
+        List<Vector2> pushedPositions = new(tableTop.Surrounding_CardSnapPoints(interactCardPos));
+        int closestPosIndex = 0;
+
+        for (int i = 0; i < pushedPositions.Count; i++)
+        {
+            if (i == closestPosIndex) continue;
+
+            float closestDistance = (pushPos - pushedPositions[closestPosIndex]).sqrMagnitude;
+            float checkDistance = (pushPos - pushedPositions[i]).sqrMagnitude;
+
+            if (checkDistance >= closestDistance) continue;
+            closestPosIndex = i;
+        }
+
+        interaction.Reset_InteractData();
+
+        Assign_TargetPosition(pushedPositions[closestPosIndex]);
+        Push_OverlappedCards();
     }
 
 
@@ -191,70 +287,4 @@ public class Card_Movement : MonoBehaviour
         LeanTween.cancel(_cardShadow);
         LeanTween.moveLocal(_cardShadow, updatePos, _shadowSpeed);
     }
-
-
-    // Card to Card Seperation
-    /*
-    private Vector2 Pushed_TargetPosition(Vector2 pushingCardPos, Vector2 pushedCardPos)
-    {
-        float seperationDistance = Game_Controller.instance.tableTop.cardSeperationDistance;
-        float currentDistance = Vector2.Distance(pushingCardPos, pushedCardPos);
-        
-        if (currentDistance >= seperationDistance) return pushedCardPos;
-
-        Vector2 pushDirection = pushedCardPos - pushingCardPos;
-        float pushDistance = seperationDistance - currentDistance;
-        
-        float diagonalFactor = Mathf.Abs(pushDirection.normalized.x) + Mathf.Abs(pushDirection.normalized.y);
-        diagonalFactor = Mathf.Clamp(diagonalFactor, 1f, Mathf.Sqrt(2f));
-        
-        pushDistance *= diagonalFactor;
-        
-        return pushedCardPos + pushDirection.normalized * pushDistance;
-    }
-
-    public void Push_OverlappedCards()
-    {
-        if (_dragging) return;
-        if (_card.interaction.interacted) return;
-
-        List<Card> detectedCards = _card.detection.detectedCards;
-        if (detectedCards.Count == 0) return;
-
-        for (int i = 0; i < detectedCards.Count; i++)
-        {
-            if (detectedCards[i] == null) continue;
-            Card_Movement movement = detectedCards[i].movement;
-            
-            Vector2 detectedCardPos = detectedCards[i].transform.position;
-            Vector2 pushedPos = Pushed_TargetPosition(transform.position, detectedCardPos);
-            
-            movement.Assign_TargetPosition(pushedPos);
-        }
-    }
-    
-    public void Update_PushedMovement()
-    {
-        if (_dragging) return;
-        if (Is_Moving()) return;
-
-        List<Card> detectedCards = _card.detection.detectedCards;
-        if (detectedCards.Count == 0) return;
-
-        for (int i = 0; i < detectedCards.Count; i++)
-        {
-            if (detectedCards[i] == null) continue;
-            if (detectedCards[i].interaction.interacted) continue;
-            
-            Card_Movement pushingCardMovement = detectedCards[i].movement;
-            if (pushingCardMovement.dragging) continue;
-
-            Vector2 pushingCardTargetPos = pushingCardMovement._targetPosition;
-            Vector2 pushedPosition = Pushed_TargetPosition(pushingCardTargetPos, transform.position);
-        
-            Assign_TargetPosition(pushedPosition);
-            return;
-        }
-    }
-    */
 }

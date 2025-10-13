@@ -17,11 +17,12 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     public GameObject cardPointer => _cardPointer;
     
     
-    private bool _pointerToggled;
-    public bool pointerToggled => _pointerToggled;
+    private Card _pointingCard;
+    public Card pointingCard => _pointingCard;
 
-    private bool _interacted;
-    public bool interacted => _interacted;
+    private Card _interactedCard;
+    public Card interactedCard => _interactedCard;
+
 
     public Action<Card> OnInteract;
 
@@ -29,7 +30,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     // MonoBehaviour
     private void Start()
     {
-        Toggle_Pointer(false);
+        _cardPointer.SetActive(false);
         
         // subscriptions
     }
@@ -43,30 +44,19 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
 
     // From Other Card
-    public void Toggle_Pointer(bool toggle)
-    {
-        _pointerToggled = toggle;
-        _cardPointer.SetActive(_pointerToggled);
-    }
-
-    public void ResetFlag_Interacted()
+    public void Reset_InteractData()
     {
         if (_card.movement.dragging) return;
 
-        _interacted = false;
+        _pointingCard = null;
+        _interactedCard = null;
     }
     public void Interact_PointedCard()
     {
-        List<Card> detectedCards = _card.detection.detectedCards;
+        if (_pointingCard == null) return;
 
-        for (int i = 0; i < detectedCards.Count; i++)
-        {
-            if (detectedCards[i] == null) continue;
-            if (detectedCards[i].interaction.pointerToggled == false) continue;
-            
-            OnInteract?.Invoke(detectedCards[i]);
-            _interacted = true;
-        }
+        OnInteract?.Invoke(_pointingCard);
+        _interactedCard = _pointingCard;
     }
     
     
@@ -76,8 +66,8 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         if (!card.gameObject.TryGetComponent(out IInteractCondition interactCondition)) return false;
         return interactCondition.Interactable();
     }
-    public void Point_ClosestCard()
 
+    public void Point_ClosestCard()
     {
         Card_Detection detection = _card.detection;
 
@@ -89,24 +79,25 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         for (int i = 0; i < detectedCards.Count; i++)
         {
             Card card = detectedCards[i];
-            if (card == null) continue;
-
             bool toggle = !cardPointed && Card_Interactable(card);
-            detectedCards[i].interaction.Toggle_Pointer(toggle);
 
-            cardPointed = toggle;
+            detectedCards[i].interaction.cardPointer.SetActive(toggle);
+
+            if (toggle == false || toggle && cardPointed) continue;
+
+            _pointingCard = card;
+            cardPointed = true;
         }
     }
-
     public void UpdateCards_Pointer()
     {
         List<Card> allCards = Game_Controller.instance.tableTop.currentCards;
-        List<Card> detectedCards = _card.detection.detectedCards;
 
         for (int i = 0; i < allCards.Count; i++)
         {
-            if (_card.movement.dragging && detectedCards.Contains(allCards[i])) continue;
-            allCards[i].interaction.Toggle_Pointer(false);
+            if (_card.movement.dragging && allCards[i] == _pointingCard) continue;
+
+            allCards[i].interaction.cardPointer.SetActive(false);
         }
     }
 }

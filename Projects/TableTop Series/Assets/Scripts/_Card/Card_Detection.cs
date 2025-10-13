@@ -14,7 +14,8 @@ public class Card_Detection : MonoBehaviour
     [Space(20)] 
     [SerializeField] private List<Card> _detectedCards = new();
     public List<Card> detectedCards => _detectedCards;
-    
+
+
     public Action OnCardDetection;
     public Action OnCardExit;
     
