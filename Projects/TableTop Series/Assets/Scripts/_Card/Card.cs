@@ -12,7 +12,12 @@ public class Card : MonoBehaviour
     public SpriteRenderer cardBase => _cardBase;
     
     [SerializeField] private SpriteRenderer _icon;
-    
+
+    [Space(20)]
+    [SerializeField] private GameObject _stackCardPrefab;
+    [SerializeField] private Transform _allStackCards; // move to tableTop for movement effects
+    [SerializeField] private Vector2 _stackOffset;
+
     [Space(20)] 
     [SerializeField] private SortingGroup _sortingGroup;
     public SortingGroup sortingGroup => _sortingGroup;
@@ -61,6 +66,8 @@ public class Card : MonoBehaviour
         _eventSystem.OnSelect += _movement.Toggle_DragDrop;
         _eventSystem.OnSelect += cursor.DragUpdate_CurrentCard;
 
+        _eventSystem.OnSelect += cursor.Toggle_DragCardCount;
+
         // drag subscriptions
         _eventSystem.OnSelect += _movement.Dragging_Update;
         _eventSystem.OnMultiSelect += _movement.Dragging_Update;
@@ -79,8 +86,8 @@ public class Card : MonoBehaviour
 
         // visual
         _eventSystem.OnSelect += tableTop.UpdateCards_LayerOrder;
-        _eventSystem.OnSelect += Update_LayerOrder;
 
+        _eventSystem.OnSelect += Update_StackCards;
         _eventSystem.OnSelect += _movement.Update_Shadows;
     }
 
@@ -90,6 +97,9 @@ public class Card : MonoBehaviour
         Cursor cursor = controller.cursor;
 
         _eventSystem.OnSelect -= cursor.DragUpdate_CurrentCard;
+        _eventSystem.OnSelect -= cursor.Toggle_DragCardCount;
+
+        _eventSystem.OnSelect -= controller.tableTop.UpdateCards_LayerOrder;
     }
     
     
@@ -121,9 +131,32 @@ public class Card : MonoBehaviour
         _icon.sprite = _data.cardScrObj.iconSprite;
     }
 
-    public void Update_LayerOrder()
+
+    // Stack Card
+    public void Update_StackCards()
     {
-        if (_movement.dragging == false) return;
-        _sortingGroup.sortingOrder = Game_Controller.instance.tableTop.Max_CardLayerOrder() + 1;
+        foreach (Transform stackCard in _allStackCards)
+        {
+            Destroy(stackCard.gameObject);
+        }
+
+        Game_Controller controller = Game_Controller.instance;
+        
+        Card currentDragCard = controller.tableTop.Current_DraggingCard();
+        if (currentDragCard == null || currentDragCard != this) return;
+
+        int stackAmount = controller.cursor.currentCardDatas.Count - 1;
+        if (stackAmount <= 0) return;
+
+        for (int i = 0; i < stackAmount; i++)
+        {
+            Vector2 spawnPos = _stackOffset * (i + 1) + (Vector2)transform.position;
+
+            GameObject stackCardPrefab = Instantiate(_stackCardPrefab, spawnPos, Quaternion.identity);
+            Transform stackCardTransform = stackCardPrefab.transform;
+
+            stackCardTransform.SetParent(_allStackCards);
+            stackCardTransform.SetAsFirstSibling();
+        }
     }
 }

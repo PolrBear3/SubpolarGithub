@@ -38,24 +38,40 @@ public class Cursor : MonoBehaviour
     // MonoBehaviour
     private void Start()
     {
-        _camera = Game_Controller.instance.mainCamera;
+        Game_Controller controller = Game_Controller.instance;
+
+        _camera = controller.mainCamera;
 
         Toggle_DragCardCount();
 
         // subscriptions
         Input_Controller input = Input_Controller.instance;
+        TableTop tableTop = controller.tableTop;
 
         input.OnMultiSelect += Drag_MultipleCards;
         input.OnMultiSelect += DropAll_CurrentCards;
+
+        input.OnMultiSelect += tableTop.UpdateCards_LayerOrder;
+
+        input.OnMultiSelect += Toggle_DragCardCount;
+        input.OnPoint += Toggle_DragCardCount;
+        input.OnIdle += Toggle_DragCardCount;
     }
 
     private void OnDestroy()
     {
         // subscriptions
         Input_Controller input = Input_Controller.instance;
+        TableTop tableTop = Game_Controller.instance.tableTop;
 
         input.OnMultiSelect -= Drag_MultipleCards;
         input.OnMultiSelect -= DropAll_CurrentCards;
+
+        input.OnMultiSelect -= tableTop.UpdateCards_LayerOrder;
+
+        input.OnMultiSelect -= Toggle_DragCardCount;
+        input.OnPoint -= Toggle_DragCardCount;
+        input.OnIdle -= Toggle_DragCardCount;
     }
 
     private void Update()
@@ -110,13 +126,19 @@ public class Cursor : MonoBehaviour
             return;
         }
 
-        Card dragTargetCard = overlappedCards[0];
-        _currentCardDatas.Add(dragTargetCard.data);
+        Card additionalTargetCard = overlappedCards[0];
+        _recentDragCard = additionalTargetCard;
 
-        _recentDragCard = dragTargetCard;
+        Card_Data additionalCardData = additionalTargetCard.data;
+        _currentCardDatas.Add(additionalCardData);
 
-        tableTop.currentCards.Remove(dragTargetCard);
-        Destroy(dragTargetCard.gameObject);
+        tableTop.currentCards.Remove(additionalTargetCard);
+        Destroy(additionalTargetCard.gameObject);
+
+        currentCard.Set_Data(additionalCardData);
+
+        currentCard.Update_Visuals();
+        currentCard.Update_StackCards();
     }
     private void DropAll_CurrentCards()
     {
@@ -152,7 +174,7 @@ public class Cursor : MonoBehaviour
             dropCardMovement.Update_Shadows();
 
             dropCard.Update_Visuals();
-            dropCard.Update_LayerOrder();
+            dropCard.Update_StackCards();
 
             dropCardMovement.Assign_TargetPosition(dropPos);
             dropCardMovement.Push_OverlappedCards();
@@ -188,17 +210,19 @@ public class Cursor : MonoBehaviour
         movement.Update_Shadows();
 
         dragCard.Update_Visuals();
-        dragCard.Update_LayerOrder();
+        dragCard.Update_StackCards();
     }
 
 
     // Current Cards Visual
     public void Toggle_DragCardCount()
     {
-        bool toggle = _currentCardDatas.Count > 1;
+        bool toggle = Input_Controller.instance.isIdle && _currentCardDatas.Count > 1;
         _dragCardCountBox.gameObject.SetActive(toggle);
 
         if (!toggle) return;
+
+        Update_CursorPoint();
         _dragCardCountText.text = _currentCardDatas.Count.ToString();
     }
 

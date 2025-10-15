@@ -245,5 +245,11 @@ public class TableTop : MonoBehaviour
             if (card.detection.detectedCards.Count > 0) continue;
             card.sortingGroup.sortingOrder = 0;
         }
+
+        Card currentDragCard = Current_DraggingCard();
+        if (currentDragCard == null) return;
+
+        int updatedMaxOrder = Game_Controller.instance.tableTop.Max_CardLayerOrder() + 1;
+        currentDragCard.sortingGroup.sortingOrder = updatedMaxOrder;
     }
 }

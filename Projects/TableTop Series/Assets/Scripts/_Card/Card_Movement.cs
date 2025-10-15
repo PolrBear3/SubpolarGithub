@@ -24,6 +24,8 @@ public class Card_Movement : MonoBehaviour
     
     [Space(20)] 
     [SerializeField][Range(0, 100)] private float _moveSpeed;
+    public float moveSpeed => _moveSpeed;
+
     [SerializeField][Range(0, 10)] private float _moveBreakValue;
 
 
@@ -89,8 +91,10 @@ public class Card_Movement : MonoBehaviour
     }
     public void Toggle_DragDrop()
     {
-        Card currentDragCard = Game_Controller.instance.tableTop.Current_DraggingCard();
-        if (currentDragCard != null && currentDragCard != _card) return;
+        Game_Controller controller = Game_Controller.instance;
+        Card currentDragCard = controller.tableTop.Current_DraggingCard();
+
+        if (controller.cursor.currentCardDatas.Count > 0 && currentDragCard != _card) return;
 
         Toggle_DragDrop(!_dragging);
     }
