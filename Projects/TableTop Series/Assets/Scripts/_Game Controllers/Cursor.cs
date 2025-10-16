@@ -139,6 +139,7 @@ public class Cursor : MonoBehaviour
 
         currentCard.Update_Visuals();
         currentCard.Update_StackCards();
+        currentCard.movement.Update_Shadows();
     }
     private void DropAll_CurrentCards()
     {
@@ -165,19 +166,19 @@ public class Cursor : MonoBehaviour
             Card dropCard = tableTop.Current_DraggingCard();
             if (dropCard == null) continue;
 
-            Card_Movement dropCardMovement = dropCard.movement;
+            Card_Movement movement = dropCard.movement;
 
             Vector2 dropPos = dropPositions.Count > 0 ? dropPositions[0] : cursorPos;
             dropPositions.RemoveAt(0);
 
-            dropCardMovement.Toggle_DragDrop(false);
-            dropCardMovement.Update_Shadows();
+            movement.Toggle_DragDrop(false);
 
             dropCard.Update_Visuals();
             dropCard.Update_StackCards();
+            movement.Update_Shadows();
 
-            dropCardMovement.Assign_TargetPosition(dropPos);
-            dropCardMovement.Push_OverlappedCards();
+            movement.Assign_TargetPosition(dropPos);
+            movement.Push_OverlappedCards();
 
             DragUpdate_CurrentCard();
         }
@@ -207,10 +208,14 @@ public class Cursor : MonoBehaviour
         Card_Movement movement = dragCard.movement;
 
         movement.Toggle_DragDrop(true);
-        movement.Update_Shadows();
 
         dragCard.Update_Visuals();
         dragCard.Update_StackCards();
+
+        Vector2 initialShadowPos = movement.shadowOffset + dragCard.StackOffset(_currentCardDatas.Count + 1);
+
+        movement.Update_Shadows(initialShadowPos);
+        movement.Update_Shadows();
     }
 
 

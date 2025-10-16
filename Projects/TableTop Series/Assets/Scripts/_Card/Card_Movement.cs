@@ -19,7 +19,10 @@ public class Card_Movement : MonoBehaviour
 
     [Space(20)]
     [SerializeField] private Vector2 _defaultOffset;
+
     [SerializeField] private Vector2 _shadowOffset;
+    public Vector2 shadowOffset => _shadowOffset;
+
     [SerializeField][Range(0, 10)] private float _shadowSpeed;
     
     [Space(20)] 
@@ -47,8 +50,6 @@ public class Card_Movement : MonoBehaviour
     private void Start()
     {
         _camera = Game_Controller.instance.mainCamera;
-
-        Update_Shadows();
     }
     
     private void Update()
@@ -286,10 +287,14 @@ public class Card_Movement : MonoBehaviour
 
 
     // Visual
+    public void Update_Shadows(Vector2 updatePosition)
+    {
+        _cardShadow.transform.localPosition = updatePosition;
+    }
     public void Update_Shadows()
     {
-        Vector2 updatePos = _dragging ? _shadowOffset : _defaultOffset;
-        
+        Vector2 updatePos = _dragging ? _shadowOffset + _card.Current_StackOffset() : _defaultOffset;
+
         LeanTween.cancel(_cardShadow);
         LeanTween.moveLocal(_cardShadow, updatePos, _shadowSpeed);
     }

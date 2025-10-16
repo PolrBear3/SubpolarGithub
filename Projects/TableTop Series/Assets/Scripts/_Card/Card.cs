@@ -133,6 +133,17 @@ public class Card : MonoBehaviour
 
 
     // Stack Card
+    public Vector2 StackOffset(int stackCount)
+    {
+        if (stackCount <= 1) return Vector2.zero;
+        return _stackOffset * (stackCount - 1);
+    }
+    public Vector2 Current_StackOffset()
+    {
+        int dragCount = Game_Controller.instance.cursor.currentCardDatas.Count;
+        return StackOffset(dragCount);
+    }
+
     public void Update_StackCards()
     {
         foreach (Transform stackCard in _allStackCards)

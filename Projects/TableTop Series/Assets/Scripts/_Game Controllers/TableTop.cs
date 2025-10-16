@@ -142,6 +142,16 @@ public class TableTop : MonoBehaviour
         _currentCards.Add(trackCard);
     }
 
+    public int CurrentCard_TrackIndexNum(Card card)
+    {
+        for (int i = 0; i < _currentCards.Count; i++)
+        {
+            if (card != _currentCards[i]) continue;
+            return i;
+        }
+        return -1;
+    }
+
 
     private void Launch_StaticCard()
     {
@@ -168,7 +178,9 @@ public class TableTop : MonoBehaviour
             int cardIndex = UnityEngine.Random.Range(0, _startingCards.Length);
 
             launchedCard.Set_Data(new(_startingCards[cardIndex]));
+
             launchedCard.Update_Visuals();
+            launchedCard.movement.Update_Shadows();
 
             return;
         }
