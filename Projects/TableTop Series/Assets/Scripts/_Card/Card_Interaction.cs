@@ -51,13 +51,8 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     {
         _cardPointer.SetActive(false);
 
-        _card.data.SetMax_FillBarValue(20);
-        _card.data.SetCurrent_FillBarValue(20);
-
-        Update_FillBar();
-        Update_FillBar(0);
-
-        // subscriptions
+        Update_Icon(null);
+        Update_FillBar(false);
     }
 
 
@@ -128,8 +123,21 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
 
     // Indicators
-    public void Update_FillBar()
+    public void Update_Icon(Sprite iconSprite)
     {
+        bool toggle = iconSprite != null;
+        _iconBox.SetActive(toggle);
+
+        if (toggle == false) return;
+        _iconSR.sprite = iconSprite;
+    }
+
+    public void Update_FillBar(bool toggle)
+    {
+        _barBox.SetActive(toggle);
+
+        if (toggle == false) return;
+
         Card_Data data = _card.data;
 
         float widthStep = _barMaxWidth / data.maxFillBarValue;
@@ -171,7 +179,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         }
 
         data.SetCurrent_FillBarValue(targetValue);
-        Update_FillBar();
+        Update_FillBar(true);
 
         OnFillbarComplete?.Invoke();
 
