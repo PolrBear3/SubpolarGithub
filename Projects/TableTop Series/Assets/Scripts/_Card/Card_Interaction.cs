@@ -15,23 +15,48 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
     [SerializeField] private GameObject _cardPointer;
     public GameObject cardPointer => _cardPointer;
-    
-    
+
+    [Space(20)]
+    [SerializeField] private GameObject _iconBox;
+    [SerializeField] private SpriteRenderer _iconSR;
+
+    [Space(20)]
+    [SerializeField] private GameObject _barBox;
+    [SerializeField] private SpriteRenderer _fillBarSR;
+
+    [Space(20)]
+    [SerializeField][Range(0, 10)] private float _barMinWidth;
+    [SerializeField][Range(0, 10)] private float _barMaxWidth;
+
+    [Space(20)]
+    [SerializeField][Range(0, 10)] private float _fillBarSpeed;
+
+
     private Card _pointingCard;
     public Card pointingCard => _pointingCard;
 
     private Card _interactedCard;
     public Card interactedCard => _interactedCard;
 
+    private Coroutine _fillBarCoroutine;
+
 
     public Action<Card> OnInteract;
+
+    public Action OnFillbarComplete;
 
 
     // MonoBehaviour
     private void Start()
     {
         _cardPointer.SetActive(false);
-        
+
+        _card.data.SetMax_FillBarValue(20);
+        _card.data.SetCurrent_FillBarValue(20);
+
+        Update_FillBar();
+        Update_FillBar(0);
+
         // subscriptions
     }
 
@@ -43,7 +68,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     }
 
 
-    // From Other Card
+    // From Other Card Pointer
     public void Reset_InteractData()
     {
         if (_card.movement.dragging) return;
@@ -60,7 +85,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     }
     
     
-    // Current Card
+    // Current Card Pointer
     private bool Card_Interactable(Card card)
     {
         if (!card.gameObject.TryGetComponent(out IInteractCondition interactCondition)) return false;
@@ -99,5 +124,58 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
             allCards[i].interaction.cardPointer.SetActive(false);
         }
+    }
+
+
+    // Indicators
+    public void Update_FillBar()
+    {
+        Card_Data data = _card.data;
+
+        float widthStep = _barMaxWidth / data.maxFillBarValue;
+        float targetWidth = widthStep * data.currentFillBarValue;
+
+        float restrictedSize = targetWidth >= _barMinWidth || targetWidth <= 0f ? targetWidth : _barMinWidth;
+        Vector2 barSize = new(restrictedSize, _fillBarSR.size.y);
+
+        _fillBarSR.size = barSize;
+    }
+
+    public void Update_FillBar(int targetValue)
+    {
+        if (_fillBarCoroutine != null)
+        {
+            StopCoroutine(_fillBarCoroutine);
+            _fillBarCoroutine = null;
+        }
+
+        Card_Data data = _card.data;
+        if (targetValue == data.currentFillBarValue) return;
+
+        _fillBarCoroutine = StartCoroutine(FillBar_UpdateCoroutine(targetValue));
+    }
+    private IEnumerator FillBar_UpdateCoroutine(int targetValue)
+    {
+        Card_Data data = _card.data;
+
+        float widthStep = _barMaxWidth / data.maxFillBarValue;
+        float targetWidth = widthStep * targetValue;
+
+        while (Mathf.Abs(_fillBarSR.size.x - targetWidth) > 0.001f && _fillBarSR.size.x >= _barMinWidth)
+        {
+            float moveStep = Time.deltaTime * _fillBarSpeed * 0.1f;
+            float updateWidth = Mathf.MoveTowards(_fillBarSR.size.x, targetWidth, moveStep);
+
+            _fillBarSR.size = new Vector2(updateWidth, _fillBarSR.size.y);
+            yield return null;
+        }
+
+        data.SetCurrent_FillBarValue(targetValue);
+        Update_FillBar();
+
+        OnFillbarComplete?.Invoke();
+
+        _fillBarCoroutine = null;
+        yield break;
     }
 }
