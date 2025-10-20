@@ -16,6 +16,8 @@ public class Cursor : MonoBehaviour
     
     [Space(20)] 
     [SerializeField] private RectTransform _cardDescription;
+
+    [SerializeField] private TextMeshProUGUI cardNameText;
     [SerializeField] private TextMeshProUGUI cardDescriptionText;
 
     [Space(20)] 
@@ -56,6 +58,10 @@ public class Cursor : MonoBehaviour
         input.OnMultiSelect += Toggle_DragCardCount;
         input.OnPoint += Toggle_DragCardCount;
         input.OnIdle += Toggle_DragCardCount;
+
+        input.OnMultiSelect += Update_CardDescriptions;
+        input.OnPoint += Update_CardDescriptions;
+        input.OnIdle += Update_CardDescriptions;
     }
 
     private void OnDestroy()
@@ -72,6 +78,10 @@ public class Cursor : MonoBehaviour
         input.OnMultiSelect -= Toggle_DragCardCount;
         input.OnPoint -= Toggle_DragCardCount;
         input.OnIdle -= Toggle_DragCardCount;
+
+        input.OnMultiSelect -= Update_CardDescriptions;
+        input.OnPoint -= Update_CardDescriptions;
+        input.OnIdle -= Update_CardDescriptions;
     }
 
     private void Update()
@@ -99,7 +109,7 @@ public class Cursor : MonoBehaviour
     {
         _uiCursorPoint.position = _camera.WorldToScreenPoint(pointPosition);
     }
-    public void Update_CursorPoint()
+    private void Update_CursorPoint()
     {
         _uiCursorPoint.position = Mouse.current.position.ReadValue();
     }
@@ -219,7 +229,7 @@ public class Cursor : MonoBehaviour
     }
 
 
-    // Current Cards Visual
+    // Cursor Point Indicators
     public void Toggle_DragCardCount()
     {
         bool toggle = Input_Controller.instance.isIdle && _currentCardDatas.Count > 1;
@@ -231,12 +241,25 @@ public class Cursor : MonoBehaviour
         _dragCardCountText.text = _currentCardDatas.Count.ToString();
     }
 
-    public void Update_HoverCardInfo(Card hoveringCard)
+    private void Update_CardDescriptions(Card updateCard)
     {
-        _cardDescription.gameObject.SetActive(hoveringCard != null);
-        if (hoveringCard == null) return;
-        
-        Card_Data data = hoveringCard.data;
-        cardDescriptionText.text = data.cardScrObj.cardName;
+        _cardDescription.gameObject.SetActive(updateCard != null);
+        if (updateCard == null) return;
+
+        Update_CursorPoint(updateCard.transform.position);
+
+        Card_ScrObj cardScrObj = updateCard.data.cardScrObj;
+        if (cardScrObj == null) return;
+
+        cardNameText.text = cardScrObj.cardName;
+        cardDescriptionText.text = cardScrObj.cardName; // add descriptions data, update the data !
+    }
+    public void Update_CardDescriptions()
+    {
+        TableTop tableTop = Game_Controller.instance.tableTop;
+        // if (tableTop.Current_DraggingCard() != null) return;
+
+        Card currentHoverCard = Input_Controller.instance.isIdle ? tableTop.Current_HoverCard() : null;
+        Update_CardDescriptions(currentHoverCard);
     }
 }

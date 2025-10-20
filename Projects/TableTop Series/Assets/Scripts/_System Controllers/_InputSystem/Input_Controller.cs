@@ -131,6 +131,8 @@ public class Input_Controller : MonoBehaviour
     public void Select(InputAction.CallbackContext context)
     {
         if (context.performed == false) return;
+
+        Point(context);
         OnSelect?.Invoke();
     }
     

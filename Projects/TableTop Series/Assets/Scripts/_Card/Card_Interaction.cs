@@ -132,6 +132,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         _iconSR.sprite = iconSprite;
     }
 
+
     public void Update_FillBar(bool toggle)
     {
         _barBox.SetActive(toggle);

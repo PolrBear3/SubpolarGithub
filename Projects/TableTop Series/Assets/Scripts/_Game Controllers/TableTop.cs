@@ -207,6 +207,18 @@ public class TableTop : MonoBehaviour
     }
 
 
+    public Card Current_HoverCard()
+    {
+        for (int i = 0; i < _currentCards.Count; i++)
+        {
+            if (_currentCards[i].eventSystem.pointerEntered == false) continue;
+            if (_currentCards[i].movement.dragging) continue;
+
+            return _currentCards[i];
+        }
+        return null;
+    }
+
     public Card Current_DraggingCard()
     {
         for (int i = 0; i < _currentCards.Count; i++)
