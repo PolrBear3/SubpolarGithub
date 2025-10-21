@@ -34,7 +34,7 @@ public class Cursor : MonoBehaviour
     private Card _recentDragCard;
 
 
-    private Vector2 _defaultDescriptionsPosition;
+    private float _pivotUpdatePositionY;
     private bool _cursorPointActive;
 
 
@@ -42,9 +42,9 @@ public class Cursor : MonoBehaviour
     private void Start()
     {
         Game_Controller controller = Game_Controller.instance;
-
         _camera = controller.mainCamera;
-        _defaultDescriptionsPosition = _cardDescription.anchoredPosition;
+
+        _pivotUpdatePositionY = _cardDescription.anchoredPosition.y;
 
         Toggle_DragCardCount();
         Update_CardDescriptions(null);
@@ -278,23 +278,16 @@ public class Cursor : MonoBehaviour
 
         Update_CursorPoint(updateCard.transform.position);
 
-        _cardDescription.pivot = new(0.5f, 1f);
-        _cardDescription.anchoredPosition = _defaultDescriptionsPosition;
-
         Vector2 mousePoint = Mouse_WorldPoint();
         bool flip = mousePoint.x > 0 ? true : false;
 
         float posX = Mathf.Abs(_cardDescription.anchoredPosition.x);
-        _cardDescription.anchoredPosition = new (flip ? -posX : posX, _cardDescription.anchoredPosition.y);
-
-        Debug.Log(_cardDescription.anchoredPosition.y);
+        posX = flip ? -posX : posX;
 
         float pivotY = mousePoint.y > 0f ? 1f : 0f;
         _cardDescription.pivot = new(_cardDescription.pivot.x, pivotY);
 
-        Debug.Log(_cardDescription.anchoredPosition.y);
-
-        float posY = _cardDescription.anchoredPosition.y;
-        _cardDescription.anchoredPosition = new(_defaultDescriptionsPosition.x, posY);
+        float posY = pivotY == 1f ? _pivotUpdatePositionY : -_pivotUpdatePositionY;
+        _cardDescription.anchoredPosition = new(posX, posY);
     }
 }
