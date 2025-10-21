@@ -34,6 +34,7 @@ public class Cursor : MonoBehaviour
     private Card _recentDragCard;
 
 
+    private Vector2 _defaultDescriptionsPosition;
     private bool _cursorPointActive;
 
 
@@ -43,8 +44,10 @@ public class Cursor : MonoBehaviour
         Game_Controller controller = Game_Controller.instance;
 
         _camera = controller.mainCamera;
+        _defaultDescriptionsPosition = _cardDescription.anchoredPosition;
 
         Toggle_DragCardCount();
+        Update_CardDescriptions(null);
 
         // subscriptions
         Input_Controller input = Input_Controller.instance;
@@ -112,6 +115,11 @@ public class Cursor : MonoBehaviour
     private void Update_CursorPoint()
     {
         _uiCursorPoint.position = Mouse.current.position.ReadValue();
+    }
+
+    public Vector2 Mouse_WorldPoint()
+    {
+        return _camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
     }
 
     public Vector2 Card_DropPoint()
@@ -241,12 +249,11 @@ public class Cursor : MonoBehaviour
         _dragCardCountText.text = _currentCardDatas.Count.ToString();
     }
 
+
     private void Update_CardDescriptions(Card updateCard)
     {
         _cardDescription.gameObject.SetActive(updateCard != null);
         if (updateCard == null) return;
-
-        Update_CursorPoint(updateCard.transform.position);
 
         Card_ScrObj cardScrObj = updateCard.data.cardScrObj;
         if (cardScrObj == null) return;
@@ -260,6 +267,34 @@ public class Cursor : MonoBehaviour
         // if (tableTop.Current_DraggingCard() != null) return;
 
         Card currentHoverCard = Input_Controller.instance.isIdle ? tableTop.Current_HoverCard() : null;
+
+        Update_CardDescriptions_Position(currentHoverCard);
         Update_CardDescriptions(currentHoverCard);
+    }
+
+    private void Update_CardDescriptions_Position(Card updateCard)
+    {
+        if (updateCard == null) return;
+
+        Update_CursorPoint(updateCard.transform.position);
+
+        _cardDescription.pivot = new(0.5f, 1f);
+        _cardDescription.anchoredPosition = _defaultDescriptionsPosition;
+
+        Vector2 mousePoint = Mouse_WorldPoint();
+        bool flip = mousePoint.x > 0 ? true : false;
+
+        float posX = Mathf.Abs(_cardDescription.anchoredPosition.x);
+        _cardDescription.anchoredPosition = new (flip ? -posX : posX, _cardDescription.anchoredPosition.y);
+
+        Debug.Log(_cardDescription.anchoredPosition.y);
+
+        float pivotY = mousePoint.y > 0f ? 1f : 0f;
+        _cardDescription.pivot = new(_cardDescription.pivot.x, pivotY);
+
+        Debug.Log(_cardDescription.anchoredPosition.y);
+
+        float posY = _cardDescription.anchoredPosition.y;
+        _cardDescription.anchoredPosition = new(_defaultDescriptionsPosition.x, posY);
     }
 }
