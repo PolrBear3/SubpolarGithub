@@ -89,17 +89,10 @@ public class Card : MonoBehaviour
 
         _eventSystem.OnSelect += Update_StackCards;
         _eventSystem.OnSelect += _movement.Update_Shadows;
-    }
 
-    private void OnDestroy()
-    {
-        Game_Controller controller = Game_Controller.instance;
-        Cursor cursor = controller.cursor;
-
-        _eventSystem.OnSelect -= cursor.DragUpdate_CurrentCard;
-        _eventSystem.OnSelect -= cursor.Toggle_DragCardCount;
-
-        _eventSystem.OnSelect -= controller.tableTop.UpdateCards_LayerOrder;
+        _eventSystem.OnSelect += cursor.UnToggle_CardDescriptions;
+        _eventSystem.OnEnterDelay += cursor.Update_CardDescriptions;
+        _eventSystem.OnExit += cursor.Update_CardDescriptions;
     }
     
     

@@ -91,11 +91,17 @@ public class IPointer_EventSystem : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         if (!_pointerEntered) return;
         OnSelect?.Invoke();
+
+        if (_enterDelayCoroutine != null) StopCoroutine(_enterDelayCoroutine);
+        _enterDelayCoroutine = StartCoroutine(EnterDelay_Coroutine());
     }
 
     public void OnPointer_MultiSelect()
     {
         if (!_pointerEntered) return;
         OnMultiSelect?.Invoke();
+
+        if (_enterDelayCoroutine != null) StopCoroutine(_enterDelayCoroutine);
+        _enterDelayCoroutine = StartCoroutine(EnterDelay_Coroutine());
     }
 }

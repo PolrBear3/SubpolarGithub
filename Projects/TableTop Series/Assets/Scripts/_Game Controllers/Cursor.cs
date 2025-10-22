@@ -61,10 +61,6 @@ public class Cursor : MonoBehaviour
         input.OnMultiSelect += Toggle_DragCardCount;
         input.OnPoint += Toggle_DragCardCount;
         input.OnIdle += Toggle_DragCardCount;
-
-        input.OnSelect += Update_CardDescriptions;
-        input.OnPoint += Update_CardDescriptions;
-        input.OnIdle += Update_CardDescriptions;
     }
 
     private void OnDestroy()
@@ -81,10 +77,6 @@ public class Cursor : MonoBehaviour
         input.OnMultiSelect -= Toggle_DragCardCount;
         input.OnPoint -= Toggle_DragCardCount;
         input.OnIdle -= Toggle_DragCardCount;
-
-        input.OnSelect -= Update_CardDescriptions;
-        input.OnPoint -= Update_CardDescriptions;
-        input.OnIdle -= Update_CardDescriptions;
     }
 
     private void Update()
@@ -261,7 +253,7 @@ public class Cursor : MonoBehaviour
         cardNameText.text = cardScrObj.cardName;
         cardDescriptionText.text = cardScrObj.cardName; // add descriptions data, update the data !
     }
-    private void Update_CardDescriptions()
+    public void Update_CardDescriptions()
     {
         TableTop tableTop = Game_Controller.instance.tableTop;
 
@@ -270,6 +262,11 @@ public class Cursor : MonoBehaviour
 
         Update_CardDescriptions_Position(currentHoverCard);
         Update_CardDescriptions(currentHoverCard);
+    }
+
+    public void UnToggle_CardDescriptions()
+    {
+        _cardDescription.gameObject.SetActive(false);
     }
 
     private void Update_CardDescriptions_Position(Card updateCard)
