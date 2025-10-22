@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class IPointer_EventSystem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Action OnEnter;
+    public Action OnEnterDelay;
     
     public Action OnPoint;
     public Action OnIdle;
@@ -16,7 +17,9 @@ public class IPointer_EventSystem : MonoBehaviour, IPointerEnterHandler, IPointe
     public Action OnSelect;
     public Action OnMultiSelect;
 
-    
+
+    private Coroutine _enterDelayCoroutine;
+
     private bool _pointerEntered;
     public bool pointerEntered => _pointerEntered;
     
@@ -50,15 +53,28 @@ public class IPointer_EventSystem : MonoBehaviour, IPointerEnterHandler, IPointe
     {
         _pointerEntered = true;
         OnEnter?.Invoke();
+
+        if (_enterDelayCoroutine != null) StopCoroutine(_enterDelayCoroutine);
+        _enterDelayCoroutine = StartCoroutine(EnterDelay_Coroutine());
+    }
+    private IEnumerator EnterDelay_Coroutine()
+    {
+        float delayTime = Input_Controller.instance.idleThreshold;
+        yield return new WaitForSeconds(delayTime);
+
+        OnEnterDelay?.Invoke();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         _pointerEntered = false;
         OnExit?.Invoke();
+
+        if (_enterDelayCoroutine == null) return;
+        StopCoroutine(_enterDelayCoroutine);
     }
 
-    
+
     private void OnPointer_Idle()
     {
         if (!_pointerEntered) return;

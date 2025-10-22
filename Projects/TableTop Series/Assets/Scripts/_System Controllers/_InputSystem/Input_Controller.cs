@@ -19,8 +19,9 @@ public class Input_Controller : MonoBehaviour
 
     [Space(20)] 
     [SerializeField] [Range(0, 10)] private float _idleThreshold;
+    public float idleThreshold => _idleThreshold;
 
-    
+
     private ControlScheme_ScrObj _currentScheme;
     public ControlScheme_ScrObj currentScheme => _currentScheme;
 

@@ -62,7 +62,7 @@ public class Cursor : MonoBehaviour
         input.OnPoint += Toggle_DragCardCount;
         input.OnIdle += Toggle_DragCardCount;
 
-        input.OnMultiSelect += Update_CardDescriptions;
+        input.OnSelect += Update_CardDescriptions;
         input.OnPoint += Update_CardDescriptions;
         input.OnIdle += Update_CardDescriptions;
     }
@@ -82,7 +82,7 @@ public class Cursor : MonoBehaviour
         input.OnPoint -= Toggle_DragCardCount;
         input.OnIdle -= Toggle_DragCardCount;
 
-        input.OnMultiSelect -= Update_CardDescriptions;
+        input.OnSelect -= Update_CardDescriptions;
         input.OnPoint -= Update_CardDescriptions;
         input.OnIdle -= Update_CardDescriptions;
     }
@@ -261,12 +261,12 @@ public class Cursor : MonoBehaviour
         cardNameText.text = cardScrObj.cardName;
         cardDescriptionText.text = cardScrObj.cardName; // add descriptions data, update the data !
     }
-    public void Update_CardDescriptions()
+    private void Update_CardDescriptions()
     {
         TableTop tableTop = Game_Controller.instance.tableTop;
-        // if (tableTop.Current_DraggingCard() != null) return;
 
-        Card currentHoverCard = Input_Controller.instance.isIdle ? tableTop.Current_HoverCard() : null;
+        Card currentHoverCard = tableTop.Current_DraggingCard() == null ? tableTop.Current_HoverCard() : null;
+        if (currentHoverCard != null && _cardDescription.gameObject.activeSelf) return;
 
         Update_CardDescriptions_Position(currentHoverCard);
         Update_CardDescriptions(currentHoverCard);

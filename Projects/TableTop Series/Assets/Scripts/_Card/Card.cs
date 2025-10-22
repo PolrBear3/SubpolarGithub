@@ -67,7 +67,6 @@ public class Card : MonoBehaviour
         _eventSystem.OnSelect += cursor.DragUpdate_CurrentCard;
 
         _eventSystem.OnSelect += cursor.Toggle_DragCardCount;
-        _eventSystem.OnSelect += cursor.Update_CardDescriptions;
 
         // drag subscriptions
         _eventSystem.OnSelect += _movement.Dragging_Update;
@@ -98,9 +97,7 @@ public class Card : MonoBehaviour
         Cursor cursor = controller.cursor;
 
         _eventSystem.OnSelect -= cursor.DragUpdate_CurrentCard;
-
         _eventSystem.OnSelect -= cursor.Toggle_DragCardCount;
-        _eventSystem.OnSelect -= cursor.Update_CardDescriptions;
 
         _eventSystem.OnSelect -= controller.tableTop.UpdateCards_LayerOrder;
     }
