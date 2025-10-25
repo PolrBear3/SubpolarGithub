@@ -16,8 +16,8 @@ public class CardLauncher : MonoBehaviour
         
         if (launchedCard.TryGetComponent(out Card card) == false) return null;
         card.sortingGroup.sortingOrder = 0;
-        
-        if (launchPosition == launchDestination) return card;
+
+        card.detection.detectedCards.Clear();
         card.movement.Assign_TargetPosition(launchDestination);
         
         return card;

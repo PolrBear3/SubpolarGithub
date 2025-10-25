@@ -30,6 +30,7 @@ public class TableTop : MonoBehaviour
     [SerializeField][Range(0, 100)] private int _startingCardAmount;
     
     [SerializeField] private Card_ScrObj[] _startingCards;
+    public Card_ScrObj[] startingCards => _startingCards;
 
 
     private List<Vector2> _cardSnapPoints = new();
@@ -96,14 +97,14 @@ public class TableTop : MonoBehaviour
         }
     }
 
-    public List<Vector2> CardSnapPoints(Vector2 position)
+    public List<Vector2> CardSnapPoints(Vector2 closestPointPosition)
     {
         List<Vector2> snapPoints = new(_cardSnapPoints);
 
         snapPoints.Sort((a, b) =>
         {
-            float distA = Vector2.Distance(a, position);
-            float distB = Vector2.Distance(b, position);
+            float distA = Vector2.Distance(a, closestPointPosition);
+            float distB = Vector2.Distance(b, closestPointPosition);
             return distA.CompareTo(distB);
         });
 
@@ -111,6 +112,23 @@ public class TableTop : MonoBehaviour
     }
 
     public List<Vector2> Surrounding_CardSnapPoints(Vector2 pivotPosition)
+    {
+        Vector2 pivotSnapPos = CardSnapPoints(pivotPosition)[0];
+
+        float snapPointDistance = _cardSeperationDistance / 2;
+
+        List<Vector2> directions = Utility.SurroundingPositions(Vector2.zero);
+        List<Vector2> surroundings = new();
+
+        for (int i = 0; i < directions.Count; i++)
+        {
+            Vector2 surroundingPos = pivotSnapPos + directions[i] * snapPointDistance;
+            surroundings.Add(surroundingPos);
+        }
+
+        return surroundings;
+    }
+    public List<Vector2> SurroundingSeperated_CardSnapPoints(Vector2 pivotPosition)
     {
         Vector2 pivotSnapPos = CardSnapPoints(pivotPosition)[0];
 
@@ -164,7 +182,7 @@ public class TableTop : MonoBehaviour
             int posIndex = UnityEngine.Random.Range(0, launchPositions.Count);
             Vector2 launchPos = launchPositions[posIndex];
 
-            if (Card_OverlapPosition(launchPos))
+            if (Card_OverlappedPosition(launchPos))
             {
                 launchPositions.RemoveAt(posIndex);
                 continue;
@@ -218,7 +236,6 @@ public class TableTop : MonoBehaviour
         }
         return null;
     }
-
     public Card Current_DraggingCard()
     {
         for (int i = 0; i < _currentCards.Count; i++)
@@ -229,7 +246,16 @@ public class TableTop : MonoBehaviour
         return null;
     }
 
-    public bool Card_OverlapPosition(Vector2 checkPosition)
+    public bool Card_PlacedPosition(Vector2 checkPosition)
+    {
+        for (int i = 0; i < _currentCards.Count; i++)
+        {
+            if (checkPosition != _currentCards[i].movement.targetPosition) continue;
+            return true;
+        }
+        return false;
+    }
+    public bool Card_OverlappedPosition(Vector2 checkPosition)
     {
         for (int i = 0; i < _currentCards.Count; i++)
         {

@@ -26,4 +26,18 @@ public class Utility
             position + new Vector2(-1, 1),
         };
     }
+
+    public static List<Vector2> ClosestConverted_Positions(Vector2 pivotPosition, List<Vector2> positionsToConvert)
+    {
+        List<Vector2> convertedPositions = new(positionsToConvert);
+
+        convertedPositions.Sort((a, b) =>
+        {
+            float distA = Vector2.Distance(a, pivotPosition);
+            float distB = Vector2.Distance(b, pivotPosition);
+            return distA.CompareTo(distB);
+        });
+
+        return convertedPositions;
+    }
 }

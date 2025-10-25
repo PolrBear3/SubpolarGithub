@@ -38,9 +38,6 @@ public class Card : MonoBehaviour
     [SerializeField] private Card_Interaction _interaction;
     public Card_Interaction interaction => _interaction;
 
-    [Space(20)]
-    [SerializeField] private Vector2 _descriptionToggleOffset;
-
 
     private Card_Data _data;
     public Card_Data data => _data;

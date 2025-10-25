@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IInteractCondition
 {
-    public bool Interactable();
+    public bool Interactable(Card interactCheckCard);
 }
 
 public class Card_Interaction : MonoBehaviour, IInteractCondition
@@ -35,14 +35,12 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     private Card _pointingCard;
     public Card pointingCard => _pointingCard;
 
-    private Card _interactedCard;
-    public Card interactedCard => _interactedCard;
-
-    private Coroutine _fillBarCoroutine;
-
+    private Card _interactedCardFlag;
+    public Card interactedCardFlag => _interactedCardFlag;
 
     public Action<Card> OnInteract;
 
+    private Coroutine _fillBarCoroutine;
     public Action OnFillbarComplete;
 
 
@@ -53,30 +51,38 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
         Update_Icon(null);
         Update_FillBar(false);
+
+        // subscriptions (Interaction Examples)
+        OnInteract += Launch_AdditionalCards;
     }
 
 
     // IInteractCondition (use on custom card components)
-    public bool Interactable()
+    public bool Interactable(Card droppedCard)
     {
-        return false;
+        return InteractCard_Match(droppedCard);
     }
 
 
-    // From Other Card Pointer
+    // Pointed From Other Card
     public void Reset_InteractData()
     {
         if (_card.movement.dragging) return;
 
         _pointingCard = null;
-        _interactedCard = null;
+        _interactedCardFlag = null;
     }
     public void Interact_PointedCard()
     {
-        if (_pointingCard == null) return;
+        if (_card.movement.dragging) return;
 
-        OnInteract?.Invoke(_pointingCard);
-        _interactedCard = _pointingCard;
+        if (_pointingCard == null) return;
+        if (Card_Interactable(_pointingCard) == false) return;
+
+        _interactedCardFlag = _pointingCard;
+
+        if (Interactable(_interactedCardFlag) == false) return;
+        OnInteract?.Invoke(_interactedCardFlag);
     }
     
     
@@ -84,14 +90,16 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     private bool Card_Interactable(Card card)
     {
         if (!card.gameObject.TryGetComponent(out IInteractCondition interactCondition)) return false;
-        return interactCondition.Interactable();
+        return interactCondition.Interactable(_card);
     }
 
     public void Point_ClosestCard()
     {
-        Card_Detection detection = _card.detection;
+        _pointingCard = null;
 
+        Card_Detection detection = _card.detection;
         List<Card> detectedCards = detection.Closest_DetectedCards();
+
         if (detectedCards.Count == 0) return;
 
         bool cardPointed = false;
@@ -186,5 +194,54 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
         _fillBarCoroutine = null;
         yield break;
+    }
+
+
+    // Interaction Examples
+    private bool InteractCard_Match(Card compareCard)
+    {
+        if (compareCard == null) return false;
+        Card_ScrObj interactCard = compareCard.data.cardScrObj;
+
+        return _card.data.cardScrObj == interactCard;
+    }
+
+    public void Launch_AdditionalCards(Card interactedCard)
+    {
+        Game_Controller controller = Game_Controller.instance;
+        TableTop tableTop = controller.tableTop;
+
+        Vector2 interactCardPos = interactedCard.transform.position;
+
+        List<Vector2> spawnPositions = tableTop.Surrounding_CardSnapPoints(interactCardPos);
+        List<Vector2> launchPositions = tableTop.SurroundingSeperated_CardSnapPoints(interactCardPos);
+
+        int launchCardCountExample = 3;
+
+        for (int i = 0; i < launchCardCountExample; i++)
+        {
+            int randIndex = UnityEngine.Random.Range(0, spawnPositions.Count);
+            Vector2 spawnPos = spawnPositions[randIndex];
+
+            Vector2 launchPos = Utility.ClosestConverted_Positions(spawnPos, launchPositions)[0];
+            launchPos = tableTop.Is_OuterGrid(launchPos) ? tableTop.CardSnapPoints(launchPos)[0] : launchPos;
+
+            Card spawnedCard = _card.cardLauncher.Launch_Card(spawnPos, launchPos);
+            spawnPositions.RemoveAt(randIndex);
+
+            spawnedCard.movement.Push_OverlappedCards();
+
+            // set data
+            tableTop.Track_CurrentCard(spawnedCard);
+            spawnedCard.transform.SetParent(tableTop.allCards);
+
+            Card_ScrObj[] startingCards = tableTop.startingCards;
+            int cardIndex = UnityEngine.Random.Range(0, startingCards.Length);
+
+            spawnedCard.Set_Data(new(startingCards[cardIndex]));
+
+            spawnedCard.Update_Visuals();
+            spawnedCard.movement.Update_Shadows();
+        }
     }
 }

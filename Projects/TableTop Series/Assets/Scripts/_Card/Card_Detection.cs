@@ -18,7 +18,7 @@ public class Card_Detection : MonoBehaviour
 
     public Action OnCardDetection;
     public Action OnCardExit;
-    
+
 
     // OnTrigger
     private void OnTriggerEnter2D(Collider2D other)

@@ -36,6 +36,7 @@ public class Card_Movement : MonoBehaviour
     public bool dragging => _dragging;
 
     public Action WhileDragging;
+    public Action OnMovementComplete;
 
     private Vector2 _targetPosition;
     public Vector2 targetPosition => _targetPosition;
@@ -43,6 +44,7 @@ public class Card_Movement : MonoBehaviour
     private Vector2 _currentVelocity;
 
     private Coroutine _draggingUpdateCoroutine;
+    private Coroutine _assignMovementCoroutine;
     private Coroutine _pushUpdateCoroutine;
     
 
@@ -139,11 +141,20 @@ public class Card_Movement : MonoBehaviour
         return Vector2.Distance(transform.position, _targetPosition) > 0.01f;
     }
 
-
     public void Assign_TargetPosition(Vector2 targetPosition)
     {
         _targetPosition = targetPosition;
         _card.data.Update_DroppedPosition(_targetPosition);
+
+        if (_assignMovementCoroutine != null) StopCoroutine(_assignMovementCoroutine);
+        _assignMovementCoroutine = StartCoroutine(AssignMovement_Coroutine());
+    }
+    private IEnumerator AssignMovement_Coroutine()
+    {
+        while (Is_Moving()) yield return null;
+        OnMovementComplete?.Invoke();
+
+        _assignMovementCoroutine = null;
     }
 
     private void TargetPosition_MovementUpdate()
@@ -179,6 +190,21 @@ public class Card_Movement : MonoBehaviour
 
         return overlappedCards;
     }
+    private Vector2 Updated_OuterPosition(Vector2 position)
+    {
+        TableTop tableTop = Game_Controller.instance.tableTop;
+        if (tableTop.Is_OuterGrid(position) == false) return position;
+
+        List<Vector2> closestPositions = tableTop.CardSnapPoints(position);
+
+        for (int i = 0; i < closestPositions.Count; i++)
+        {
+            if (tableTop.Card_PlacedPosition(closestPositions[i])) continue;
+            return closestPositions[i];
+        }
+
+        return position;
+    }
 
     public void Push_OverlappedCards()
     {
@@ -189,7 +215,7 @@ public class Card_Movement : MonoBehaviour
         }
 
         if (_dragging) return;
-        if (_card.interaction.interactedCard != null) return;
+        if (_card.interaction.interactedCardFlag != null) return;
 
         _pushUpdateCoroutine = StartCoroutine(OverlappedCards_PushCoroutine());
     }
@@ -206,7 +232,7 @@ public class Card_Movement : MonoBehaviour
         }
 
         TableTop tableTop = Game_Controller.instance.tableTop;
-        List<Vector2> pushPositions = new(tableTop.Surrounding_CardSnapPoints(_targetPosition));
+        List<Vector2> pushPositions = new(tableTop.SurroundingSeperated_CardSnapPoints(_targetPosition));
 
         for (int i = 0; i < overlappedCards.Count; i++)
         {
@@ -236,8 +262,7 @@ public class Card_Movement : MonoBehaviour
             }
 
             // outer grid position restriction
-            Vector2 snapPushPos = pushPositions[closestPosIndex];
-            snapPushPos = tableTop.Is_OuterGrid(snapPushPos) ? SnapPosition(snapPushPos) : snapPushPos;
+            Vector2 snapPushPos = Updated_OuterPosition(pushPositions[closestPosIndex]);
 
             overlapCardMovement.Assign_TargetPosition(snapPushPos);
             overlapCardMovement.Push_OverlappedCards();
@@ -253,7 +278,7 @@ public class Card_Movement : MonoBehaviour
         if (_dragging) return;
 
         Card_Interaction interaction = _card.interaction;
-        Card interactedCard = interaction.interactedCard;
+        Card interactedCard = interaction.interactedCardFlag;
 
         if (interactedCard == null) return;
 
@@ -265,7 +290,7 @@ public class Card_Movement : MonoBehaviour
         Vector2 pushDirection = (droppedPos - interactCardPos).normalized;
         Vector2 pushPos = pushDirection * tableTop.cardSeperationDistance + droppedPos;
 
-        List<Vector2> pushedPositions = new(tableTop.Surrounding_CardSnapPoints(interactCardPos));
+        List<Vector2> pushedPositions = new(tableTop.SurroundingSeperated_CardSnapPoints(interactCardPos));
         int closestPosIndex = 0;
 
         for (int i = 0; i < pushedPositions.Count; i++)
@@ -278,10 +303,11 @@ public class Card_Movement : MonoBehaviour
             if (checkDistance >= closestDistance) continue;
             closestPosIndex = i;
         }
+        Vector2 pushedPos = SnapPosition(pushedPositions[closestPosIndex]);
 
         interaction.Reset_InteractData();
 
-        Assign_TargetPosition(pushedPositions[closestPosIndex]);
+        Assign_TargetPosition(pushedPos);
         Push_OverlappedCards();
     }
 
