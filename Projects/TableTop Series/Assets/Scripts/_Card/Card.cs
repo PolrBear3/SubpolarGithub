@@ -65,10 +65,6 @@ public class Card : MonoBehaviour
 
         _eventSystem.OnSelect += cursor.Toggle_DragCardCount;
 
-        // drag subscriptions
-        _eventSystem.OnSelect += _movement.Dragging_Update;
-        _eventSystem.OnMultiSelect += _movement.Dragging_Update;
-
         // pointer
         _movement.WhileDragging += _interaction.Point_ClosestCard;
         _eventSystem.OnSelect += _interaction.Interact_PointedCard;

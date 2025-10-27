@@ -241,6 +241,8 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
             spawnedCard.Set_Data(new(startingCards[cardIndex]));
 
             spawnedCard.Update_Visuals();
+            spawnedCard.Update_StackCards();
+
             spawnedCard.movement.Update_Shadows();
         }
     }

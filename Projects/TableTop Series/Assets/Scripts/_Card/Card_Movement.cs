@@ -79,6 +79,7 @@ public class Card_Movement : MonoBehaviour
         List<Card_Data> dragDatas = cursor.currentCardDatas;
 
         _dragging = toggle;
+        Dragging_Update();
 
         if (_dragging && dragDatas.Contains(_card.data)) return;
 
@@ -113,7 +114,7 @@ public class Card_Movement : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, dragPos, Time.deltaTime * _moveSpeed);
     }
 
-    public void Dragging_Update()
+    private void Dragging_Update()
     {
         if (_draggingUpdateCoroutine != null)
         {
