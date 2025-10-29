@@ -96,9 +96,12 @@ public class Card_Movement : MonoBehaviour
     public void Toggle_DragDrop()
     {
         Game_Controller controller = Game_Controller.instance;
-        Card currentDragCard = controller.tableTop.Current_DraggingCard();
 
-        if (controller.cursor.currentCardDatas.Count > 0 && currentDragCard != _card) return;
+        Card currentDragCard = controller.tableTop.Current_DraggingCard();
+        List<Card_Data> currentCardDatas = controller.cursor.currentCardDatas;
+
+        if (currentCardDatas.Count <= 0 && currentDragCard != null) return;
+        if (currentCardDatas.Count > 0 && currentDragCard != _card) return;
 
         Toggle_DragDrop(!_dragging);
     }

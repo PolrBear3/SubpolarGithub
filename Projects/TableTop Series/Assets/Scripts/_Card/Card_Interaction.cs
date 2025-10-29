@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IInteractCondition
 {
-    public bool Interactable(Card interactCheckCard);
+    public bool Interactable();
 }
 
 public class Card_Interaction : MonoBehaviour, IInteractCondition
@@ -53,14 +53,14 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         Update_FillBar(false);
 
         // subscriptions (Interaction Examples)
-        OnInteract += Launch_AdditionalCards;
+        OnInteract += Remove_MatchCards;
     }
 
 
     // IInteractCondition (use on custom card components)
-    public bool Interactable(Card droppedCard)
+    public bool Interactable()
     {
-        return InteractCard_Match(droppedCard);
+        return InteractCard_Match();
     }
 
 
@@ -74,23 +74,21 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     }
     public void Interact_PointedCard()
     {
-        if (_card.movement.dragging) return;
+        if (_card.movement.dragging == false) return;
 
         if (_pointingCard == null) return;
         if (Card_Interactable(_pointingCard) == false) return;
 
         _interactedCardFlag = _pointingCard;
-
-        if (Interactable(_interactedCardFlag) == false) return;
         OnInteract?.Invoke(_interactedCardFlag);
     }
     
     
     // Current Card Pointer
-    private bool Card_Interactable(Card card)
+    public bool Card_Interactable(Card card)
     {
-        if (!card.gameObject.TryGetComponent(out IInteractCondition interactCondition)) return false;
-        return interactCondition.Interactable(_card);
+        if (card.gameObject.TryGetComponent(out IInteractCondition interactCondition) == false) return false;
+        return interactCondition.Interactable();
     }
 
     public void Point_ClosestCard()
@@ -107,14 +105,13 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         for (int i = 0; i < detectedCards.Count; i++)
         {
             Card card = detectedCards[i];
-            bool toggle = !cardPointed && Card_Interactable(card);
+            bool toggle = cardPointed == false && Card_Interactable(card);
 
-            detectedCards[i].interaction.cardPointer.SetActive(toggle);
+            card.interaction.cardPointer.SetActive(toggle);
+            if (toggle == false) continue;
 
-            if (toggle == false || toggle && cardPointed) continue;
-
-            _pointingCard = card;
             cardPointed = true;
+            _pointingCard = card;
         }
     }
     public void UpdateCards_Pointer()
@@ -123,6 +120,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
         for (int i = 0; i < allCards.Count; i++)
         {
+            if (allCards[i] == null) continue;
             if (_card.movement.dragging && allCards[i] == _pointingCard) continue;
 
             allCards[i].interaction.cardPointer.SetActive(false);
@@ -198,12 +196,29 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
 
     // Interaction Examples
-    private bool InteractCard_Match(Card compareCard)
+    private bool InteractCard_Match()
     {
-        if (compareCard == null) return false;
-        Card_ScrObj interactCard = compareCard.data.cardScrObj;
+        List<Card_Data> draggingCardDatas = Game_Controller.instance.cursor.currentCardDatas;
+        Card_ScrObj interactCard = _card.data.cardScrObj;
 
-        return _card.data.cardScrObj == interactCard;
+        for (int i = 0; i < draggingCardDatas.Count; i++)
+        {
+            if (interactCard != draggingCardDatas[i].cardScrObj) continue;
+            return true;
+        }
+        return false;
+    }
+
+    public void Remove_MatchCards(Card interactedCard)
+    {
+        List<Card_Data> draggingCardDatas = Game_Controller.instance.cursor.currentCardDatas;
+        Card_ScrObj interactCard = interactedCard.data.cardScrObj;
+
+        for (int i = draggingCardDatas.Count - 1; i >= 0; i--)
+        {
+            if (draggingCardDatas[i].cardScrObj != interactCard) continue;
+            draggingCardDatas.RemoveAt(i);
+        }
     }
 
     public void Launch_AdditionalCards(Card interactedCard)

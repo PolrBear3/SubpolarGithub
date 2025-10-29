@@ -60,6 +60,8 @@ public class Card : MonoBehaviour
         tableTop.Track_CurrentCard(this);
         
         // subscriptions
+        _eventSystem.OnSelect += _interaction.Interact_PointedCard;
+
         _eventSystem.OnSelect += _movement.Toggle_DragDrop;
         _eventSystem.OnSelect += cursor.DragUpdate_CurrentCard;
 
@@ -67,7 +69,6 @@ public class Card : MonoBehaviour
 
         // pointer
         _movement.WhileDragging += _interaction.Point_ClosestCard;
-        _eventSystem.OnSelect += _interaction.Interact_PointedCard;
 
         _eventSystem.OnSelect += _interaction.UpdateCards_Pointer;
         _eventSystem.OnMultiSelect += _interaction.UpdateCards_Pointer;

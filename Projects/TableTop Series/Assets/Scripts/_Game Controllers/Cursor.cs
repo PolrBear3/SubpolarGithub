@@ -197,8 +197,18 @@ public class Cursor : MonoBehaviour
     public void DragUpdate_CurrentCard()
     {
         TableTop tableTop = Game_Controller.instance.tableTop;
+        Card draggingCard = tableTop.Current_DraggingCard();
 
-        if (tableTop.Current_DraggingCard() != null) return;
+        // remove current drag card if data does not exist
+        if (draggingCard != null && _currentCardDatas.Contains(draggingCard.data) == false)
+        {
+            tableTop.currentCards.Remove(draggingCard);
+            Destroy(draggingCard.gameObject);
+
+            return;
+        }
+
+        if (draggingCard != null) return;
         if (_currentCardDatas.Count == 0) return;
 
         Card_Data recentData = _currentCardDatas[_currentCardDatas.Count - 1];

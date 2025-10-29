@@ -35,7 +35,7 @@ public class TableTop : MonoBehaviour
 
     private List<Vector2> _cardSnapPoints = new();
 
-    [SerializeField]private List<Card> _currentCards = new();
+    [SerializeField] private List<Card> _currentCards = new();
     public List<Card> currentCards => _currentCards;
 
     private Coroutine _loopUpdateCoroutine;
@@ -291,6 +291,7 @@ public class TableTop : MonoBehaviour
         for (int i = 0; i < _currentCards.Count; i++)
         {
             Card card = _currentCards[i];
+            if (card == null) continue;
             
             if (card.detection.detectedCards.Count > 0) continue;
             card.sortingGroup.sortingOrder = 0;
