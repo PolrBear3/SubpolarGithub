@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Random = UnityEngine.Random;
 
 public class Card : MonoBehaviour
 {
@@ -104,8 +103,8 @@ public class Card : MonoBehaviour
         TableTop tableTop = Game_Controller.instance.tableTop;
         float launchRange = tableTop.cardSeperationDistance;
         
-        float horizontalRange = Random.Range(-launchRange, launchRange);
-        float verticalRange = Random.Range(-launchRange, launchRange);
+        float horizontalRange = UnityEngine.Random.Range(-launchRange, launchRange);
+        float verticalRange = UnityEngine.Random.Range(-launchRange, launchRange);
         
         return (Vector2)transform.position + new Vector2(horizontalRange, verticalRange);
     }

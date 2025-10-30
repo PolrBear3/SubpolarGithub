@@ -100,10 +100,17 @@ public class Card_Movement : MonoBehaviour
         Card currentDragCard = controller.tableTop.Current_DraggingCard();
         List<Card_Data> currentCardDatas = controller.cursor.currentCardDatas;
 
-        if (currentCardDatas.Count <= 0 && currentDragCard != null) return;
+        if (currentCardDatas.Count == 0 && currentDragCard != null) return;
         if (currentCardDatas.Count > 0 && currentDragCard != _card) return;
 
-        Toggle_DragDrop(!_dragging);
+        bool dragToggle = !_dragging;
+
+        if (dragToggle == false && _card.interaction.flagData != null)
+        {
+            controller.cursor.DropAll_CurrentCards();
+            return;
+        }
+        Toggle_DragDrop(dragToggle);
     }
 
 
@@ -219,7 +226,7 @@ public class Card_Movement : MonoBehaviour
         }
 
         if (_dragging) return;
-        if (_card.interaction.interactedCardFlag != null) return;
+        if (_card.interaction.flagData != null) return;
 
         _pushUpdateCoroutine = StartCoroutine(OverlappedCards_PushCoroutine());
     }
@@ -282,14 +289,14 @@ public class Card_Movement : MonoBehaviour
         if (_dragging) return;
 
         Card_Interaction interaction = _card.interaction;
-        Card interactedCard = interaction.interactedCardFlag;
+        InteractCard_FlagData flagData = interaction.flagData;
 
-        if (interactedCard == null) return;
+        if (flagData == null) return;
+
+        Vector2 interactCardPos = flagData.interactedPosition;
+        Vector2 droppedPos = transform.position;
 
         TableTop tableTop = Game_Controller.instance.tableTop;
-
-        Vector2 interactCardPos = interactedCard.movement.targetPosition;
-        Vector2 droppedPos = transform.position;
 
         Vector2 pushDirection = (droppedPos - interactCardPos).normalized;
         Vector2 pushPos = pushDirection * tableTop.cardSeperationDistance + droppedPos;

@@ -8,6 +8,21 @@ public interface IInteractCondition
     public bool Interactable();
 }
 
+public class InteractCard_FlagData
+{
+    private Card _interactedCard;
+    public Card interactedCard => _interactedCard;
+
+    private Vector2 _interactedPosition;
+    public Vector2 interactedPosition => _interactedPosition;
+
+    public InteractCard_FlagData(Card card, Vector2 position)
+    {
+        _interactedCard = card;
+        _interactedPosition = position;
+    }
+}
+
 public class Card_Interaction : MonoBehaviour, IInteractCondition
 {
     [Space(20)]
@@ -35,8 +50,8 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
     private Card _pointingCard;
     public Card pointingCard => _pointingCard;
 
-    private Card _interactedCardFlag;
-    public Card interactedCardFlag => _interactedCardFlag;
+    private InteractCard_FlagData _flagData;
+    public InteractCard_FlagData flagData => _flagData;
 
     public Action<Card> OnInteract;
 
@@ -70,7 +85,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         if (_card.movement.dragging) return;
 
         _pointingCard = null;
-        _interactedCardFlag = null;
+        _flagData = null;
     }
     public void Interact_PointedCard()
     {
@@ -79,8 +94,8 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         if (_pointingCard == null) return;
         if (Card_Interactable(_pointingCard) == false) return;
 
-        _interactedCardFlag = _pointingCard;
-        OnInteract?.Invoke(_interactedCardFlag);
+        _flagData = new(_pointingCard, _pointingCard.transform.position);
+        OnInteract?.Invoke(_pointingCard);
     }
     
     
@@ -211,7 +226,9 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
     public void Remove_MatchCards(Card interactedCard)
     {
-        List<Card_Data> draggingCardDatas = Game_Controller.instance.cursor.currentCardDatas;
+        Cursor cursor = Game_Controller.instance.cursor;
+
+        List<Card_Data> draggingCardDatas = cursor.currentCardDatas;
         Card_ScrObj interactCard = interactedCard.data.cardScrObj;
 
         for (int i = draggingCardDatas.Count - 1; i >= 0; i--)
