@@ -1,0 +1,24 @@
+{
+	"ReadOnly": {
+		"prefix": "ro",
+		"body": [
+			"private ${1} _${2};",
+			"public ${1} ${2} => _${2};$0"
+		]
+	},
+
+	"Space": {
+		"prefix": "space",
+		"body": "[Space(${1})]$0"
+	},
+
+	"SerializeField": {
+		"prefix": "sf",
+		"body": "[SerializeField]$0"
+	},
+
+	"DebugLog": {
+		"prefix": "dl",
+		"body": "Debug.Log(${1});$0"
+	}
+}
