@@ -498,13 +498,13 @@ MonoBehaviour:
   _stackCardPrefab: {fileID: 9082400806709103657, guid: ac4909279a60b4a70bbf4ac10b77ebd1, type: 3}
   _allStackCards: {fileID: 4599118773116143028}
   _stackOffset: {x: 0, y: -0.1}
+  _stackAnimateDuration: 0.1
   _sortingGroup: {fileID: 7256426217675558681}
   _eventSystem: {fileID: 7383046950187760491}
   _cardLauncher: {fileID: 4195756465644348766}
   _detection: {fileID: 761480076168002142}
   _movement: {fileID: 6196072701508708868}
   _interaction: {fileID: 527146622228302552}
-  _descriptionToggleOffset: {x: 0, y: 0}
 --- !u!114 &761480076168002142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,7 +562,6 @@ MonoBehaviour:
   _barMinWidth: 0.7
   _barMaxWidth: 1.5
   _fillBarSpeed: 1
-  _exampleIndication: {fileID: 11400000, guid: cffe249bf8c7948d1a97329b8d2a7917, type: 2}
 --- !u!1 &4050097140653114111
 GameObject:
   m_ObjectHideFlags: 0

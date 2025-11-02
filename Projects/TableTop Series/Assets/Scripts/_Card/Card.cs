@@ -6,34 +6,37 @@ using UnityEngine.Rendering;
 
 public class Card : MonoBehaviour
 {
-    [Space(20)] 
+    [Space(20)]
     [SerializeField] private SpriteRenderer _cardBase;
     public SpriteRenderer cardBase => _cardBase;
-    
+
     [SerializeField] private SpriteRenderer _icon;
 
     [Space(20)]
     [SerializeField] private GameObject _stackCardPrefab;
     [SerializeField] private Transform _allStackCards; // move to tableTop for movement effects
-    [SerializeField] private Vector2 _stackOffset;
 
-    [Space(20)] 
+    [Space(10)]
+    [SerializeField] private Vector2 _stackOffset;
+    [SerializeField][Range(0, 10)] private float _stackAnimateDuration;
+
+    [Space(20)]
     [SerializeField] private SortingGroup _sortingGroup;
     public SortingGroup sortingGroup => _sortingGroup;
-    
+
     [SerializeField] private IPointer_EventSystem _eventSystem;
     public IPointer_EventSystem eventSystem => _eventSystem;
-    
+
     [SerializeField] private CardLauncher _cardLauncher;
     public CardLauncher cardLauncher => _cardLauncher;
-    
-    [Space(20)] 
+
+    [Space(20)]
     [SerializeField] private Card_Detection _detection;
     public Card_Detection detection => _detection;
-    
+
     [SerializeField] private Card_Movement _movement;
     public Card_Movement movement => _movement;
-    
+
     [SerializeField] private Card_Interaction _interaction;
     public Card_Interaction interaction => _interaction;
 
@@ -41,7 +44,9 @@ public class Card : MonoBehaviour
     private Card_Data _data;
     public Card_Data data => _data;
 
-    
+
+
+
     // MonoBehaviour
     private void Awake()
     {
@@ -57,7 +62,7 @@ public class Card : MonoBehaviour
         Cursor cursor = controller.cursor;
 
         tableTop.Track_CurrentCard(this);
-        
+
         // subscriptions
         _eventSystem.OnSelect += _interaction.Interact_PointedCard;
 
@@ -87,29 +92,29 @@ public class Card : MonoBehaviour
         _eventSystem.OnEnterDelay += cursor.Update_CardDescriptions;
         _eventSystem.OnExit += cursor.Update_CardDescriptions;
     }
-    
-    
+
+
     // Data
     public Card_Data Set_Data(Card_Data setData)
     {
         if (setData == null) return _data;
-        
+
         _data = setData;
         return _data;
     }
-    
+
     public Vector2 RandomPeripheral_SpawnPosition()
     {
         TableTop tableTop = Game_Controller.instance.tableTop;
         float launchRange = tableTop.cardSeperationDistance;
-        
+
         float horizontalRange = UnityEngine.Random.Range(-launchRange, launchRange);
         float verticalRange = UnityEngine.Random.Range(-launchRange, launchRange);
-        
+
         return (Vector2)transform.position + new Vector2(horizontalRange, verticalRange);
     }
-    
-    
+
+
     // Visual    
     public void Update_Visuals()
     {
@@ -130,6 +135,17 @@ public class Card : MonoBehaviour
         return StackOffset(dragCount);
     }
 
+    public GameObject Spawn_StackCard(Vector2 spawnPosition)
+    {
+        GameObject stackCardPrefab = Instantiate(_stackCardPrefab, spawnPosition, Quaternion.identity);
+        Transform stackCardTransform = stackCardPrefab.transform;
+
+        stackCardTransform.SetParent(_allStackCards);
+        stackCardTransform.SetAsFirstSibling();
+
+        return stackCardPrefab;
+    }
+
     public void Update_StackCards()
     {
         foreach (Transform stackCard in _allStackCards)
@@ -138,7 +154,7 @@ public class Card : MonoBehaviour
         }
 
         Game_Controller controller = Game_Controller.instance;
-        
+
         Card currentDragCard = controller.tableTop.Current_DraggingCard();
         if (currentDragCard == null || currentDragCard != this) return;
 
@@ -148,12 +164,32 @@ public class Card : MonoBehaviour
         for (int i = 0; i < stackAmount; i++)
         {
             Vector2 spawnPos = _stackOffset * (i + 1) + (Vector2)transform.position;
-
-            GameObject stackCardPrefab = Instantiate(_stackCardPrefab, spawnPos, Quaternion.identity);
-            Transform stackCardTransform = stackCardPrefab.transform;
-
-            stackCardTransform.SetParent(_allStackCards);
-            stackCardTransform.SetAsFirstSibling();
+            Spawn_StackCard(spawnPos);
         }
+    }
+    public void Update_StackCards(Vector2 stackingCardPosition)
+    {
+        foreach (Transform stackCard in _allStackCards)
+        {
+            Destroy(stackCard.gameObject);
+        }
+
+        Game_Controller controller = Game_Controller.instance;
+
+        Card currentDragCard = controller.tableTop.Current_DraggingCard();
+        if (currentDragCard == null || currentDragCard != this) return;
+
+        int stackAmount = controller.cursor.currentCardDatas.Count - 1;
+        if (stackAmount <= 0) return;
+
+        for (int i = 0; i < stackAmount - 1; i++)
+        {
+            Vector2 spawnPos = _stackOffset * (i + 1) + (Vector2)transform.position;
+            Spawn_StackCard(spawnPos);
+        }
+
+        // stack animation card
+        GameObject animCard = Spawn_StackCard(stackingCardPosition);
+        LeanTween.moveLocal(animCard, StackOffset(stackAmount + 1), _stackAnimateDuration);
     }
 }

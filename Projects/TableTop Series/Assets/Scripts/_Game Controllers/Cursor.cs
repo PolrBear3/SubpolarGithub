@@ -9,18 +9,18 @@ public class Cursor : MonoBehaviour
 {
     private Camera _camera;
 
-    
+
     [Space(20)]
     [SerializeField] private RectTransform _uiCursorPoint;
     [SerializeField] private GameObject _emptyCardPrefab;
-    
-    [Space(20)] 
+
+    [Space(20)]
     [SerializeField] private RectTransform _cardDescription;
 
     [SerializeField] private TextMeshProUGUI cardNameText;
     [SerializeField] private TextMeshProUGUI cardDescriptionText;
 
-    [Space(20)] 
+    [Space(20)]
     [SerializeField] private RectTransform _dragCardCountBox;
     [SerializeField] private TextMeshProUGUI _dragCardCountText;
 
@@ -205,6 +205,7 @@ public class Cursor : MonoBehaviour
         Card additionalTargetCard = overlappedCards[0];
         Card_Data additionalCardData = additionalTargetCard.data;
 
+        Vector2 dragCardPos = additionalTargetCard.transform.position;
         _currentCardDatas.Add(additionalCardData);
 
         tableTop.currentCards.Remove(additionalTargetCard);
@@ -213,7 +214,7 @@ public class Cursor : MonoBehaviour
         currentCard.Set_Data(additionalCardData);
 
         currentCard.Update_Visuals();
-        currentCard.Update_StackCards();
+        currentCard.Update_StackCards(dragCardPos);
         currentCard.movement.Update_Shadows();
     }
 
