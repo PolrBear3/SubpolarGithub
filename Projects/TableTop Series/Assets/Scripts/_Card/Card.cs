@@ -19,6 +19,7 @@ public class Card : MonoBehaviour
     [Space(10)]
     [SerializeField] private Vector2 _stackOffset;
     [SerializeField][Range(0, 10)] private float _stackAnimateDuration;
+    [SerializeField] private LeanTweenType _stackTweenType;
 
     [Space(20)]
     [SerializeField] private SortingGroup _sortingGroup;
@@ -45,8 +46,6 @@ public class Card : MonoBehaviour
     public Card_Data data => _data;
 
 
-
-
     // MonoBehaviour
     private void Awake()
     {
@@ -68,7 +67,7 @@ public class Card : MonoBehaviour
 
         _eventSystem.OnSelect += _movement.Toggle_DragDrop;
         _eventSystem.OnSelect += cursor.DragUpdate_CurrentCard;
-
+        
         _eventSystem.OnSelect += cursor.Toggle_DragCardCount;
 
         // pointer
@@ -146,20 +145,19 @@ public class Card : MonoBehaviour
         return stackCardPrefab;
     }
 
-    public void Update_StackCards()
+    private void Update_StackCards(int stackAmount)
     {
         foreach (Transform stackCard in _allStackCards)
         {
             Destroy(stackCard.gameObject);
         }
 
-        Game_Controller controller = Game_Controller.instance;
-
-        Card currentDragCard = controller.tableTop.Current_DraggingCard();
-        if (currentDragCard == null || currentDragCard != this) return;
-
-        int stackAmount = controller.cursor.currentCardDatas.Count - 1;
         if (stackAmount <= 0) return;
+       
+        Game_Controller controller = Game_Controller.instance;
+        Card currentDragCard = controller.tableTop.Current_DraggingCard();
+
+        if (currentDragCard == null || currentDragCard != this) return;
 
         for (int i = 0; i < stackAmount; i++)
         {
@@ -167,29 +165,19 @@ public class Card : MonoBehaviour
             Spawn_StackCard(spawnPos);
         }
     }
+    public void Update_StackCards()
+    {
+        int stackAmount = Game_Controller.instance.cursor.currentCardDatas.Count - 1;
+        Update_StackCards(stackAmount);
+    }
     public void Update_StackCards(Vector2 stackingCardPosition)
     {
-        foreach (Transform stackCard in _allStackCards)
-        {
-            Destroy(stackCard.gameObject);
-        }
+        Cursor cursor = Game_Controller.instance.cursor;
 
-        Game_Controller controller = Game_Controller.instance;
+        int stackAmount = cursor.currentCardDatas.Count - 1;
+        Update_StackCards(stackAmount - 1);
 
-        Card currentDragCard = controller.tableTop.Current_DraggingCard();
-        if (currentDragCard == null || currentDragCard != this) return;
-
-        int stackAmount = controller.cursor.currentCardDatas.Count - 1;
-        if (stackAmount <= 0) return;
-
-        for (int i = 0; i < stackAmount - 1; i++)
-        {
-            Vector2 spawnPos = _stackOffset * (i + 1) + (Vector2)transform.position;
-            Spawn_StackCard(spawnPos);
-        }
-
-        // stack animation card
         GameObject animCard = Spawn_StackCard(stackingCardPosition);
-        LeanTween.moveLocal(animCard, StackOffset(stackAmount + 1), _stackAnimateDuration);
+        LeanTween.moveLocal(animCard, StackOffset(stackAmount + 1), _stackAnimateDuration).setEase(_stackTweenType);
     }
 }

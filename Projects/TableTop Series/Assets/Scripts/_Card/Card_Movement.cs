@@ -110,7 +110,11 @@ public class Card_Movement : MonoBehaviour
             controller.cursor.DropAll_CurrentCards();
             return;
         }
+
         Toggle_DragDrop(dragToggle);
+
+        if (dragToggle == false) return;
+        _card.interaction.Update_FillBar(false);
     }
 
 

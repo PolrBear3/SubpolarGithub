@@ -68,7 +68,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         Update_FillBar(false);
 
         // subscriptions (Interaction Examples)
-        OnInteract += Remove_MatchCards;
+        OnInteract += Update_FillBarTest;
     }
 
 
@@ -156,6 +156,12 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
 
     public void Update_FillBar(bool toggle)
     {
+        if (_fillBarCoroutine != null)
+        {
+            StopCoroutine(_fillBarCoroutine);
+            _fillBarCoroutine = null;
+        }
+
         _barBox.SetActive(toggle);
 
         if (toggle == false) return;
@@ -165,7 +171,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         float widthStep = _barMaxWidth / data.maxFillBarValue;
         float targetWidth = widthStep * data.currentFillBarValue;
 
-        float restrictedSize = targetWidth >= _barMinWidth || targetWidth <= 0f ? targetWidth : _barMinWidth;
+        float restrictedSize = targetWidth > _barMinWidth ? targetWidth : _barMinWidth;
         Vector2 barSize = new(restrictedSize, _fillBarSR.size.y);
 
         _fillBarSR.size = barSize;
@@ -180,8 +186,8 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         }
 
         Card_Data data = _card.data;
-        if (targetValue == data.currentFillBarValue) return;
 
+        if (targetValue == data.currentFillBarValue) return;
         _fillBarCoroutine = StartCoroutine(FillBar_UpdateCoroutine(targetValue));
     }
     private IEnumerator FillBar_UpdateCoroutine(int targetValue)
@@ -195,18 +201,32 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         {
             float moveStep = Time.deltaTime * _fillBarSpeed * 0.1f;
             float updateWidth = Mathf.MoveTowards(_fillBarSR.size.x, targetWidth, moveStep);
-
+            
             _fillBarSR.size = new Vector2(updateWidth, _fillBarSR.size.y);
+
             yield return null;
         }
 
         data.SetCurrent_FillBarValue(targetValue);
-        Update_FillBar(true);
-
+        
+        Update_FillBar(false);
         OnFillbarComplete?.Invoke();
 
         _fillBarCoroutine = null;
         yield break;
+    }
+
+
+    private void Update_FillBarTest(Card updateCard)
+    {
+        Card_Interaction interaction = updateCard.interaction;
+        if (interaction._fillBarCoroutine != null) return;
+        
+        Card_Data data = updateCard.data;
+        data.SetMax_FillBarValue(10);
+
+        interaction.Update_FillBar(data.currentFillBarValue != data.maxFillBarValue);
+        interaction.Update_FillBar(10);
     }
 
 

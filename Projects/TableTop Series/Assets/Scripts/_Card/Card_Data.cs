@@ -18,7 +18,6 @@ public class Card_Data
     public int currentFillBarValue => _currentFillBarValue;
 
 
-
     // New
     public Card_Data(Card_ScrObj cardScrObj)
     {
@@ -31,6 +30,7 @@ public class Card_Data
     {
         _droppedPosition = position;
     }
+
 
     public void SetMax_FillBarValue(int setValue)
     {
