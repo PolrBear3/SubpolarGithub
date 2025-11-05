@@ -2,10 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class IPointer_EventSystem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [Space(20)]
+    [SerializeField] private UnityEvent[] _selectActions;
+
+    
     public Action OnEnter;
     public Action OnEnterDelay;
     
@@ -90,7 +95,13 @@ public class IPointer_EventSystem : MonoBehaviour, IPointerEnterHandler, IPointe
     public void OnPointer_Select()
     {
         if (!_pointerEntered) return;
+        
         OnSelect?.Invoke();
+
+        foreach (UnityEvent action in _selectActions)
+        {
+            action?.Invoke();   
+        }
 
         if (_enterDelayCoroutine != null) StopCoroutine(_enterDelayCoroutine);
         _enterDelayCoroutine = StartCoroutine(EnterDelay_Coroutine());
