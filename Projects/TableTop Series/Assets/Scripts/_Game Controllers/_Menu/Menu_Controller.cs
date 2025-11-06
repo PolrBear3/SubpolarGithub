@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Menu_Controller : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Space(20)]
+    [SerializeField] private RectTransform _menuPanelTab;
+    public RectTransform menuPanelTab => _menuPanelTab;
+
+
+    // MonoBehaviour
+    private void OnEnable()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+
     }
 }
