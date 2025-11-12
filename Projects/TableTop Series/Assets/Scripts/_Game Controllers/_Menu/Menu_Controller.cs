@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,18 +6,30 @@ using UnityEngine.UI;
 
 public class Menu_Controller : MonoBehaviour
 {
-    [Space(20)]
+    [SerializeField] private GameMenu_Controller _gameMenu;
+    public GameMenu_Controller gameMenu => _gameMenu;
+    
     [SerializeField] private RectTransform _menuPanelTab;
     public RectTransform menuPanelTab => _menuPanelTab;
 
 
     // MonoBehaviour
-    private void OnEnable()
+    public void Start()
+    {
+        
+    }
+
+    public void OnDestroy()
+    {
+        
+    }
+
+    public void OnEnable()
     {
 
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
 
     }

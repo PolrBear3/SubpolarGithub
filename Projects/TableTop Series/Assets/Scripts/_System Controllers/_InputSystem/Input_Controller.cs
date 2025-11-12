@@ -30,6 +30,7 @@ public class Input_Controller : MonoBehaviour
 
     public Action OnPoint;
     public Action OnIdle;
+    public Action<int> OnScroll;
     
     public Action OnSelect;
     public Action OnMultiSelect;
@@ -129,6 +130,14 @@ public class Input_Controller : MonoBehaviour
         OnIdle?.Invoke();
     }
     
+    public void Scroll(InputAction.CallbackContext context)
+    {
+        if (context.performed == false) return;
+
+        Vector2 scrollValue = context.ReadValue<Vector2>();
+        OnScroll?.Invoke(-(int)Mathf.Sign(scrollValue.y));
+    }
+
     public void Select(InputAction.CallbackContext context)
     {
         if (context.performed == false) return;
