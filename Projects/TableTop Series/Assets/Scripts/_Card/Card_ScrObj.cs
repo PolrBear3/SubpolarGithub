@@ -11,4 +11,11 @@ public class Card_ScrObj : ScriptableObject
 
     [SerializeField] private Sprite _iconSprite;
     public Sprite iconSprite => _iconSprite;
+
+    [SerializeField] private Sprite _baseSprite;
+    public Sprite baseSprite => _baseSprite;
+
+    [Space(20)]
+    [SerializeField] private Card_IngredientData[] _ingredientDatas;
+    public Card_IngredientData[] ingredientDatas => _ingredientDatas;
 }
