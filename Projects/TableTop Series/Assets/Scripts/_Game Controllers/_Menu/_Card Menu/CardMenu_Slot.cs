@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,10 @@ public class CardMenu_Slot : MonoBehaviour
     [Space(20)]
     [SerializeField] private Image _baseImage;
     [SerializeField] private Image _cardIconImage;
+
+    [Space(20)]
+    [SerializeField] private Image _amountPanel;
+    [SerializeField] private TextMeshProUGUI _amountText;
 
     [Space(20)]
     [SerializeField][Range(0, 1)] private float _lockTransparency;
@@ -85,5 +90,14 @@ public class CardMenu_Slot : MonoBehaviour
     public void Toggle_Highlight()
     {
         Toggle_Highlight(!_highlighted);
+    }
+
+    public void Update_AmountIndication(int updateValue)
+    {
+        bool toggle = updateValue > 0;
+        _amountPanel.gameObject.SetActive(toggle);
+
+        if (toggle == false) return;
+        _amountText.text = updateValue.ToString(); 
     }
 }

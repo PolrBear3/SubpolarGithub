@@ -68,7 +68,7 @@ public class Card_Interaction : MonoBehaviour, IInteractCondition
         Update_FillBar(false);
 
         // subscriptions (Interaction Examples)
-        OnInteract += Update_FillBarTest;
+        // OnInteract += Update_FillBarTest;
     }
 
 

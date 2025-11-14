@@ -18,6 +18,7 @@ public class CardMenu : Menu_Controller
     private new void OnEnable()
     {
         // subscriptions
+        if (Input_Controller.instance == null) return;
         Input_Controller.instance.OnScroll += Update_Slider;
         
         base.OnEnable();
@@ -80,6 +81,8 @@ public class CardMenu : Menu_Controller
         for (int i = 0; i < _cardSlots.Length; i++)
         {
             CardMenu_Slot slot = _cardSlots[i];
+
+            slot.Update_AmountIndication(0);
 
             if (i > _menuCards.Length - 1)
             {
