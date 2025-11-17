@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 [CreateAssetMenu(menuName = "ScriptableObject/ New Card")]
 public class Card_ScrObj : ScriptableObject
@@ -12,6 +13,10 @@ public class Card_ScrObj : ScriptableObject
     [SerializeField][TextArea(3, 5)] private string _cardDescription;
     public string cardDescription => _cardDescription;
 
+    [Space(5)]
+    [SerializeField] private LocalizedString _localizedCardName;
+    [SerializeField] private LocalizedString _localizedDescription;
+
     [Space(20)]
     [SerializeField] private Sprite _iconSprite;
     public Sprite iconSprite => _iconSprite;
@@ -22,6 +27,24 @@ public class Card_ScrObj : ScriptableObject
     [Space(20)]
     [SerializeField] private Card_IngredientData[] _ingredientDatas;
     public Card_IngredientData[] ingredientDatas => _ingredientDatas;
+
+
+    // Localization
+    public string CardName()
+    {
+        if (_localizedCardName == null) return _cardName;
+        if (string.IsNullOrEmpty(_localizedCardName.TableReference) && string.IsNullOrEmpty(_localizedCardName.TableEntryReference)) return _cardName;
+
+        return _localizedCardName.GetLocalizedString();
+    }
+
+    public string CardDescription()
+    {
+        if (_localizedDescription == null) return _cardName;
+        if (string.IsNullOrEmpty(_localizedDescription.TableReference) && string.IsNullOrEmpty(_localizedDescription.TableEntryReference)) return _cardDescription;
+
+        return _localizedDescription.GetLocalizedString();
+    }
 
 
     // Data

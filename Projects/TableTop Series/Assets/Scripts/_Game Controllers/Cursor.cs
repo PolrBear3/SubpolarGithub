@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 
@@ -16,9 +17,11 @@ public class Cursor : MonoBehaviour
 
     [Space(20)]
     [SerializeField] private RectTransform _cardDescription;
+    [SerializeField] private RectTransform _cardDescriptionShadow;
 
-    [SerializeField] private TextMeshProUGUI cardNameText;
-    [SerializeField] private TextMeshProUGUI cardDescriptionText;
+    [Space(5)]
+    [SerializeField] private TextMeshProUGUI _cardNameText;
+    [SerializeField] private TextMeshProUGUI _cardDescriptionText;
 
     [Space(20)]
     [SerializeField] private RectTransform _dragCardCountBox;
@@ -34,7 +37,7 @@ public class Cursor : MonoBehaviour
     private List<Card_Data> _currentCardDatas = new();
     public List<Card_Data> currentCardDatas => _currentCardDatas;
 
-    private float _pivotUpdatePositionY;
+    private float _shadowPositionY;
     private bool _cursorPointActive;
 
 
@@ -44,7 +47,7 @@ public class Cursor : MonoBehaviour
         Game_Controller controller = Game_Controller.instance;
         _camera = controller.mainCamera;
 
-        _pivotUpdatePositionY = _cardDescription.anchoredPosition.y;
+        _shadowPositionY = _cardDescriptionShadow.anchoredPosition.y;
 
         Toggle_DragCardCount();
         Update_CardDescriptions(null);
@@ -246,8 +249,8 @@ public class Cursor : MonoBehaviour
         Card_ScrObj cardScrObj = updateCard.data.cardScrObj;
         if (cardScrObj == null) return;
 
-        cardNameText.text = cardScrObj.cardName;
-        cardDescriptionText.text = cardScrObj.cardDescription;
+        _cardNameText.text = cardScrObj.CardName();
+        _cardDescriptionText.text = cardScrObj.CardDescription();
     }
     public void Update_CardDescriptions()
     {
@@ -275,12 +278,14 @@ public class Cursor : MonoBehaviour
         bool flip = mousePoint.x > 0 ? true : false;
 
         float posX = Mathf.Abs(_cardDescription.anchoredPosition.x);
+
         posX = flip ? -posX : posX;
+        _cardDescription.anchoredPosition = new(posX, _cardDescription.anchoredPosition.y);
 
         float pivotY = mousePoint.y > 0f ? 1f : 0f;
-        _cardDescription.pivot = new(_cardDescription.pivot.x, pivotY);
+        _cardDescriptionShadow.pivot = new(_cardDescriptionShadow.pivot.x, pivotY);
 
-        float posY = pivotY == 1f ? _pivotUpdatePositionY : -_pivotUpdatePositionY;
-        _cardDescription.anchoredPosition = new(posX, posY);
+        float posY = pivotY == 1f ? _shadowPositionY : -_shadowPositionY;
+        _cardDescriptionShadow.anchoredPosition = new(_cardDescriptionShadow.anchoredPosition.x, posY);
     }
 }

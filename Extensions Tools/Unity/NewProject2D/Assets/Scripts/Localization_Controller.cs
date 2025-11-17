@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
-using UnityEngine.Localization.Tables;
-using UnityEngine.Serialization;
+using UnityEditor;
 
 public class Localization_Controller : MonoBehaviour
 {
     public static Localization_Controller instance;
     
-    [Header("")]
+    [Space(20)]
     [SerializeField] private string[] _tableReferences;
     
     private List<string> _languageNames = new();
@@ -104,3 +103,35 @@ public class Localization_Controller : MonoBehaviour
         }
     }
 }
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Localization_Controller))]
+public class Localization_Editor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        Localization_Controller controller = (Localization_Controller)target;
+
+        base.OnInspectorGUI();
+
+        GUILayout.Space(20);
+
+        if (GUILayout.Button("Update Language"))
+        {
+            List<string> languages = controller.languageNames;
+            string currentLanguage = controller.Current_LanguageName();
+
+            for (int i = 0; i < languages.Count; i++)
+            {
+                if (currentLanguage != languages[i]) continue;
+
+                i = (i + 1 + languages.Count) % languages.Count;
+                controller.Update_Language(languages[i]);
+
+                break;
+            }
+        }
+    }
+}
+#endif
