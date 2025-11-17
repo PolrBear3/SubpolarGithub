@@ -27,6 +27,9 @@ public class Cursor : MonoBehaviour
     [Space(20)]
     [SerializeField] private RectTransform _cardDropPoint;
 
+    [Space(20)]
+    [SerializeField][Range(0, 100)] private int _maxDragCount;
+
 
     private List<Card_Data> _currentCardDatas = new();
     public List<Card_Data> currentCardDatas => _currentCardDatas;
@@ -189,7 +192,8 @@ public class Cursor : MonoBehaviour
     }
     private void DragDrop_MultipleCards()
     {
-        if (_currentCardDatas.Count == 0) return;
+        int currentDragCount = _currentCardDatas.Count;
+        if (currentDragCount == 0) return;
 
         TableTop tableTop = Game_Controller.instance.tableTop;
         Card currentCard = tableTop.Current_DraggingCard();
@@ -201,6 +205,8 @@ public class Cursor : MonoBehaviour
             DropAll_CurrentCards();
             return;
         }
+
+        if (currentDragCount >= _maxDragCount) return;
 
         Card additionalTargetCard = overlappedCards[0];
         Card_Data additionalCardData = additionalTargetCard.data;

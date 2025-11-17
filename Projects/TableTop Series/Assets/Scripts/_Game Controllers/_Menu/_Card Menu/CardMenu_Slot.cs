@@ -12,18 +12,22 @@ public class CardMenu_Slot : MonoBehaviour
     [SerializeField] private Image _cardIconImage;
 
     [Space(20)]
+    [SerializeField] private Sprite[] _amountPanelSprites;
     [SerializeField] private Image _amountPanel;
     [SerializeField] private TextMeshProUGUI _amountText;
 
     [Space(20)]
-    [SerializeField][Range(0, 1)] private float _lockTransparency;
+    [SerializeField][Range(0, 1)] private float _transparencyValue;
 
     [SerializeField][Range(0, 100)] private float _highlightScaleValue;
     [SerializeField][Range(0, 10)] private float _highlightDuration;
 
 
     private Card_ScrObj _currentCard;
-    private bool _highlighted;
+    public Card_ScrObj currentCard => _currentCard;
+    
+    private bool _selected;
+    public bool selected => _selected;
 
 
     // Data Control
@@ -53,11 +57,11 @@ public class CardMenu_Slot : MonoBehaviour
 
 
     // Toggle
-    public void Toggle_LockIndication(bool toggle)
+    public void Toggle_Transparency(bool toggle)
     {
         if (_currentCard == null) return;
         
-        float lockAlpha = toggle ? _lockTransparency : 1f;
+        float lockAlpha = toggle ? _transparencyValue : 1f;
 
         Color baseColor = _baseImage.color;
         baseColor.a = lockAlpha;
@@ -70,12 +74,12 @@ public class CardMenu_Slot : MonoBehaviour
         _cardIconImage.color = iconColor;
     }
 
-    public void Toggle_Highlight(bool toggle)
+    public void Toggle_SelectHighlight(bool toggle)
     {
-        if (toggle == _highlighted) return;
-        _highlighted = toggle;
+        if (toggle == _selected) return;
+        _selected = toggle;
 
-        float scaleValue = _highlighted ? _highlightScaleValue : -_highlightScaleValue;
+        float scaleValue = _selected ? _highlightScaleValue : -_highlightScaleValue;
 
         RectTransform baseRect = _baseImage.rectTransform;
         Vector2 baseSize = new(baseRect.rect.width + scaleValue, baseRect.rect.height + scaleValue);
@@ -87,11 +91,13 @@ public class CardMenu_Slot : MonoBehaviour
 
         LeanTween.size(iconRect, iconSize, _highlightDuration);
     }
-    public void Toggle_Highlight()
+    public void Toggle_SelectHighlight()
     {
-        Toggle_Highlight(!_highlighted);
+        Toggle_SelectHighlight(!_selected);
     }
 
+
+    // Amount Panel
     public void Update_AmountIndication(int updateValue)
     {
         bool toggle = updateValue > 0;
@@ -99,5 +105,24 @@ public class CardMenu_Slot : MonoBehaviour
 
         if (toggle == false) return;
         _amountText.text = updateValue.ToString(); 
+    }
+    public void Update_AmountIndication(int updateValue, int currentValue)
+    {
+        bool toggle = updateValue > 0;
+        _amountPanel.gameObject.SetActive(toggle);
+
+        if (toggle == false) return;
+        _amountText.text = currentValue + "/" + updateValue;
+    }
+
+    public void Update_AmountPanel(bool toggleGreen)
+    {
+        Sprite panelSprite = toggleGreen ? _amountPanelSprites[2] : _amountPanelSprites[1];
+        
+        _amountPanel.sprite = panelSprite;
+    }
+    public void Update_AmountPanel()
+    {
+        _amountPanel.sprite = _amountPanelSprites[0];
     }
 }

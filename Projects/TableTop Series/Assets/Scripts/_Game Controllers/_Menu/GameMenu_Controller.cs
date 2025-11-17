@@ -83,4 +83,15 @@ public class GameMenu_Controller : MonoBehaviour
             return;
         }
     }
+
+    public void Update_CurrentMenu()
+    {
+        for (int i = 0; i < _menuControllers.Length; i++)
+        {
+            if (_menuControllers[i].gameObject.activeSelf == false) continue;
+            
+            _menuControllers[i].OnMenuUpdate?.Invoke();
+            return;
+        }
+    }
 }

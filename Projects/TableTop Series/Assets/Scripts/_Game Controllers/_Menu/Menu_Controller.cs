@@ -12,6 +12,8 @@ public class Menu_Controller : MonoBehaviour
     [SerializeField] private RectTransform _menuPanelTab;
     public RectTransform menuPanelTab => _menuPanelTab;
 
+    public Action OnMenuUpdate;
+
 
     // MonoBehaviour
     public void Start()
