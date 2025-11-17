@@ -9,6 +9,10 @@ public class Card_ScrObj : ScriptableObject
     [SerializeField] private string _cardName;
     public string cardName => _cardName;
 
+    [SerializeField][TextArea(3, 5)] private string _cardDescription;
+    public string cardDescription => _cardDescription;
+
+    [Space(20)]
     [SerializeField] private Sprite _iconSprite;
     public Sprite iconSprite => _iconSprite;
 
@@ -42,11 +46,11 @@ public class Card_ScrObj : ScriptableObject
         {
             Card_ScrObj dataCard = _ingredientDatas[i].ingredientCard;
             bool hasData = false;
-            
+
             for (int j = 0; j < datas.Count; j++)
             {
                 if (dataCard != datas[j].ingredientCard) continue;
-                
+
                 hasData = true;
                 break;
             }

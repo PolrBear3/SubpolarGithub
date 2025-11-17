@@ -247,7 +247,7 @@ public class Cursor : MonoBehaviour
         if (cardScrObj == null) return;
 
         cardNameText.text = cardScrObj.cardName;
-        cardDescriptionText.text = cardScrObj.cardName; // add descriptions data, update the data !
+        cardDescriptionText.text = cardScrObj.cardDescription;
     }
     public void Update_CardDescriptions()
     {
