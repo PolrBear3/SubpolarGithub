@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd930bb9e36654a29951dddaefe425b5, type: 3}
+  m_Name: Example Red
+  m_EditorClassIdentifier: 
+  _cardName: <sprite=1> Example Red
+  _cardDescription: This is a <sprite=1> Example Red card description
+  _localizedCardName:
+    m_TableReference:
+      m_TableCollectionName: GUID:0078ef8d63a7347ef8fcdf2aebf0fb3c
+    m_TableEntryReference:
+      m_KeyId: 14457446064128
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _localizedDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:425783d68581040b0a9d517ff0af9167
+    m_TableEntryReference:
+      m_KeyId: 13625853992960
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _iconSprite: {fileID: -1892341207, guid: 629a05ed5a58849c582255ca426b66fc, type: 3}
+  _baseSprite: {fileID: 0}
+  _ingredientDatas:
+  - _ingredientCard: {fileID: 11400000, guid: 0427ae0633ae4417d9cfc5b8398b6aba, type: 2}
+    _amount: 3
+  references:
+    version: 2
+    RefIds: []
